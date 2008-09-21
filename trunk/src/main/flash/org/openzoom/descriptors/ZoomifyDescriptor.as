@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  OpenZoom
-//  Copyright (c) 2008 Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2008, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -11,7 +11,7 @@
 //  OpenZoom is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Affero General Public License for more details.
+//  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
@@ -20,7 +20,9 @@
 package org.openzoom.descriptors
 {
 
-import flash.utils.Dictionary;	
+import flash.utils.Dictionary;
+
+import org.openzoom.utils.math.clamp;
 
 /**
  * Descriptor for the Zoomify <http://zoomify.com/> multi-scale image format.
@@ -48,7 +50,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * Constructor.
      */
-	public function ZoomifyDescriptor( source : String, data : XML )
+    public function ZoomifyDescriptor( source : String, data : XML )
     {
         this.data = data
         
@@ -77,26 +79,37 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     {
         return _source.substr( 0, _source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length )
                    + DEFAULT_TILE_FOLDER_NAME + "/" + String( level ) + "-"
-                   + String( column ) + "-" + String( row ) + "." + format
+                   + String( column ) + "-" + String( row ) + "." + tileFormat
 
     }
 
     public function getMinimumLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
     {
+        // TODO: Implement a smart algorithm
+        
         var index : int = numLevels - 1
 
-        while( IMultiScaleImageLevel( levels[ index ] ).width >= width
+        while( index >= 0
+               && IMultiScaleImageLevel( levels[ index ] ).width >= width
                && IMultiScaleImageLevel( levels[ index ] ).height >= height )
         {
             index--
         }
 
-        return levels[ index + 1 ]
+        // FIXME
+        index = clamp( index + 1, 0, numLevels - 1 )
+
+        return IMultiScaleImageLevel( levels[ index ] ).clone()
     }
 
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
     {
         return levels[ index ]
+    }
+    
+    public function clone() : IMultiScaleImageDescriptor
+    {
+        return new ZoomifyDescriptor( source, new XML( data ) )
     }
     
     //--------------------------------------------------------------------------
@@ -118,12 +131,12 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     
     private function parseXML( data : XML ) : void
     {
-    	// <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290" NUMTILES="169" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
+        // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290" NUMTILES="169" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
         _width = data.@WIDTH
         _height = data.@HEIGHT
         _tileWidth = _tileHeight = data.@TILESIZE
         
-        _format = DEFAULT_TILE_FORMAT
+        _tileFormat = DEFAULT_TILE_FORMAT
         _tileOverlap = DEFAULT_TILE_OVERLAP
     }
     

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  OpenZoom
-//  Copyright (c) 2008 Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2008, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -11,7 +11,7 @@
 //  OpenZoom is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Affero General Public License for more details.
+//  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
@@ -20,7 +20,7 @@
 package org.openzoom.descriptors
 {
 
-import flash.geom.Point;	
+import flash.geom.Point;
 
 /**
  * Base class for classes implementing IMultiScaleImageDescriptor.
@@ -43,17 +43,6 @@ public class MultiScaleImageDescriptorBase
     public function get source() : String
     {
         return _source
-    }
-    
-    //----------------------------------
-    //  format
-    //----------------------------------
-    
-    protected var _format : String
-  
-    public function get format() : String
-    {
-        return _format
     }
         
     //----------------------------------
@@ -122,6 +111,17 @@ public class MultiScaleImageDescriptorBase
         return _tileOverlap
     }
     
+    //----------------------------------
+    //  tileFormat
+    //----------------------------------
+    
+    protected var _tileFormat : String
+  
+    public function get tileFormat() : String
+    {
+        return _tileFormat
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleImageDescriptor
@@ -155,7 +155,7 @@ public class MultiScaleImageDescriptorBase
                "tileWidth:" + tileWidth + "\n" +
                "tileHeight:" + tileHeight + "\n" +
                "tileOverlap:" + tileOverlap + "\n" +
-               "format:" + format
+               "tileFormat:" + tileFormat
     }
 }
 

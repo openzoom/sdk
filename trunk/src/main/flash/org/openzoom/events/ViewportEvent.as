@@ -17,76 +17,67 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.descriptors
+package org.openzoom.events
 {
 
-/**
- * The IMultiScaleImageLevel interface defines a set of properties
- * a level of a multi-scale image pyramid has to expose.
- */
-public interface IMultiScaleImageLevel
+import flash.events.Event;
+
+public class ViewportEvent extends Event
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Class Constants
+    //
+    //--------------------------------------------------------------------------
+
+    public static const RESIZE : String = "resize"
+    public static const CHANGE : String = "change"
+    public static const CHANGE_COMPLETE : String = "changeComplete"
+
+    //--------------------------------------------------------------------------
+    //
+    //  Constructor
+    //
+    //--------------------------------------------------------------------------
+  
+    /**
+     * Constructor.
+     */
+    public function ViewportEvent( type : String, bubbles : Boolean = false,
+                                   cancelable : Boolean = false, oldZ : Number = NaN )
+    {
+        super( type, bubbles, cancelable )
+    
+        _oldZ = oldZ
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+  
     //----------------------------------
-    //  index
+    //  oldZ
     //----------------------------------
-    
-    /**
-     * Returns the index of this level which is in the range [0, numLevels)
-     */
-    function get index() : int
-    
-    //----------------------------------
-    //  width
-    //----------------------------------
-    
-    /**
-     * Returns the width of this level in pixels.
-     */ 
-    function get width() : uint
-    
-    //----------------------------------
-    //  height
-    //----------------------------------
-    
-    /**
-     * Returns the height of this level in pixels.
-     */
-    function get height() : uint
-    
-    //----------------------------------
-    //  numColumns
-    //----------------------------------
-    
-    /**
-     * Returns the number of columns of tiles for this level.
-     */
-    function get numColumns() : uint
-    
-    //----------------------------------
-    //  numRows
-    //----------------------------------
-
-    /**
-     * Returns the number of rows of tiles for this level.
-     */
-    function get numRows() : uint
+  
+    private var _oldZ : Number = NaN
+  
+    public function get oldZ() : Number
+    {
+        return _oldZ
+    }
     
     //--------------------------------------------------------------------------
     //
-    //  Methods
+    //  Overriden methods: Event
     //
     //--------------------------------------------------------------------------
-    
-    /**
-     * Returns a copy of this object.
-     */ 
-    function clone() : IMultiScaleImageLevel
+  
+    override public function clone() : Event
+    {
+        return new ViewportEvent( type, bubbles, cancelable, oldZ )
+    }
 }
 
 }

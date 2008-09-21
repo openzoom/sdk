@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  OpenZoom
-//  Copyright (c) 2008 Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2008, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -11,7 +11,7 @@
 //  OpenZoom is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Affero General Public License for more details.
+//  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
@@ -20,7 +20,7 @@
 package org.openzoom.descriptors
 {
 
-import flash.utils.Dictionary;	
+import flash.utils.Dictionary;
 
 /**
  * Descriptor for the Microsoft Deep Zoom Image (DZI) format.
@@ -75,7 +75,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     {
         return _source.substring( 0, _source.length - 4 ) + "_files/"
                    + String( index ) + "/" + String( column ) + "_"
-                   + String( row ) + "." + format
+                   + String( row ) + "." + tileFormat
     }
     
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
@@ -84,10 +84,16 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     }
     
     
-    public function getMinimumLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
+    public function getMinimumLevelForSize( width : Number,
+                                            height : Number ) : IMultiScaleImageLevel
     {
-        var index : int = Math.min( numLevels, Math.ceil( Math.log( Math.max( width, height ) ) / Math.LN2 ) )
-        return getLevelAt( index )
+        var index : int = Math.min( numLevels - 1, Math.ceil( Math.log( Math.max( width, height ) ) / Math.LN2 ) )
+        return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
+    }
+    
+    public function clone() : IMultiScaleImageDescriptor
+    {
+        return new DZIDescriptor( source, new XML( data ) )
     }
 
     //--------------------------------------------------------------------------
@@ -115,7 +121,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         _height = data.Size.@Height
         _tileWidth = _tileHeight = data.@TileSize
 
-        _format = data.@Format
+        _tileFormat = data.@Format
         _tileOverlap = data.@Overlap
     }
 
@@ -138,11 +144,11 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
             levels[ index ] = new MultiScaleImageLevel( index, w, h, Math.ceil( w / tileWidth ), Math.ceil( h / tileHeight ) )
             w = Math.ceil( w * 0.5 )
             h = Math.ceil( h * 0.5 )
-	    }
-	    
+        }
+        
 //        Twitter on 17.09.2008
 //        for(var i:int=max;i>=0;i--){levels[i]=new Level(w,h,Math.ceil(w/tileWidth),Math.ceil(h/tileHeight));w=Math.ceil(w/2);h=Math.ceil(h/2)}
-	    
+        
         return levels 
     }
 }

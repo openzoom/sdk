@@ -16,14 +16,34 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>bin-debug</name>
+			<name>[source path] src</name>
 			<type>2</type>
-			<location>/Users/dani/Development/workspace/openzoom/target/main/flash</location>
+			<locationURI>OPENZOOM/libs/flash/bulkloader/src</locationURI>
 		</link>
 		<link>
-			<name>[source path] resources</name>
+			<name>bin-debug</name>
 			<type>2</type>
-			<locationURI>OPENZOOM/src/main/resources</locationURI>
+			<location>/Users/dani/Development/workspace/openzoom/target/main/flash/debug</location>
+		</link>
+		<link>
+			<name>[source path] external-mousewheel</name>
+			<type>2</type>
+			<locationURI>OPENZOOM/libs/flash/external-mousewheel</locationURI>
+		</link>
+		<link>
+			<name>[source path] gtween</name>
+			<type>2</type>
+			<locationURI>OPENZOOM/libs/flash/gtween</locationURI>
+		</link>
+		<link>
+			<name>[source path] as3</name>
+			<type>2</type>
+			<locationURI>OPENZOOM/libs/flash/tweener/as%33</locationURI>
+		</link>
+		<link>
+			<name>bin-release</name>
+			<type>2</type>
+			<location>/Users/dani/Development/workspace/openzoom/target/main/flash/release</location>
 		</link>
 	</linkedResources>
 </projectDescription>

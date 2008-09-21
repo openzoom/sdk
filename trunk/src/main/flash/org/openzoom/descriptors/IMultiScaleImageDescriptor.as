@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  OpenZoom
-//  Copyright (c) 2008 Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2008, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -11,7 +11,7 @@
 //  OpenZoom is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU Affero General Public License for more details.
+//  GNU General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
@@ -20,7 +20,7 @@
 package org.openzoom.descriptors
 {
 
-import flash.geom.Point;	
+import flash.geom.Point;
 
 /**
  * Interface describing the common API of a multi-scale image.
@@ -41,15 +41,6 @@ public interface IMultiScaleImageDescriptor
      * Returns the source URI of this multiscale image.
      */ 
     function get source() : String
-      
-    //----------------------------------
-    //  format
-    //----------------------------------
-      
-    /**
-     * Returns the image format of the image pyramid tiles, e.g. JPEG, PNG, etc.
-     */
-    function get format() : String
     
     //----------------------------------
     //  width
@@ -85,7 +76,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the width of a single tile of the image pyramid in pixels.
      */ 
-	function get tileWidth() : uint
+    function get tileWidth() : uint
     
     //----------------------------------
     //  tileHeight
@@ -94,7 +85,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the height of a single tile of the image pyramid in pixels.
      */ 
-	function get tileHeight() : uint
+    function get tileHeight() : uint
     
     //----------------------------------
     //  overlap
@@ -104,8 +95,17 @@ public interface IMultiScaleImageDescriptor
      * Returns the tile overlap in pixels.
      * @default 0
      */
-	function get tileOverlap() : uint
-	
+    function get tileOverlap() : uint
+      
+    //----------------------------------
+    //  tileFormat
+    //----------------------------------
+      
+    /**
+     * Returns the image format of the image pyramid tiles, e.g. JPEG, PNG, etc.
+     */
+    function get tileFormat() : String
+
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -128,9 +128,14 @@ public interface IMultiScaleImageDescriptor
     function getLevelAt( index : int ) : IMultiScaleImageLevel
 
     /**
-     * Returns the minimum level that has greater or equal size as specified by width and height.
+     * Returns the minimum level that has a greater or equal size as specified by width and height.
      */
     function getMinimumLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
+    
+    /**
+     * Returns a copy of this object.
+     */ 
+    function clone() : IMultiScaleImageDescriptor
 }
 
 }

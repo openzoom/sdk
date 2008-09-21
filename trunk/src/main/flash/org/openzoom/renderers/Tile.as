@@ -17,34 +17,36 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.descriptors
+package org.openzoom.renderers
 {
 
+import flash.display.Bitmap;  
+
 /**
- * The MultiScaleImageLevel class represents a single level of a
- * multi-scale image pyramid. It is a default implementation of IMultiScaleImageLevel.
+ * Multi-scale image tile.
  */
-public class MultiScaleImageLevel implements IMultiScaleImageLevel
+public class Tile
 {
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-
+  
     /**
      * Constructor.
-     */ 
-    public function MultiScaleImageLevel( index : int, width : uint, height : uint,
-                                          numColumns : uint, numRows : uint )
+     */
+    public function Tile( bitmap : Bitmap,
+                          level : uint,
+                          row : uint,
+                          column : uint,
+                          overlap : uint = 0 )
     {
-        _index = index
-
-        _width = width
-        _height = height
-
-        _numColumns = numColumns
-        _numRows = numRows
+        this.bitmap = bitmap
+        _level = level
+        _row = row
+        _column = column
+        _overlap = overlap
     }
 
     //--------------------------------------------------------------------------
@@ -52,73 +54,66 @@ public class MultiScaleImageLevel implements IMultiScaleImageLevel
     //  Properties
     //
     //--------------------------------------------------------------------------
+        
+    //----------------------------------
+    //  bitmap
+    //----------------------------------
+  
+    public var bitmap : Bitmap
+        
+    //----------------------------------
+    //  level
+    //----------------------------------
+  
+    private var _level : int 
     
-    //----------------------------------
-    //  index
-    //----------------------------------
-
-    private var _index : int
-
-    public function get index() : int
+    public function get level() : int
     {
-        return _index
+        return _level
     }
-
+        
     //----------------------------------
-    //  width
+    //  column
     //----------------------------------
-
-    private var _width : uint
-
-    public function get width() : uint
-    {
-        return _width
-    }
-
-    //----------------------------------
-    //  height
-    //----------------------------------
-
-    private var _height : uint
     
-    public function get height() : uint
-    {
-        return _height
-    }
+    private var _column : uint 
     
-    //----------------------------------
-    //  numColumns
-    //----------------------------------
-
-    private var _numColumns : uint
-
-    public function get numColumns() : uint
+    public function get column() : uint
     {
-        return _numColumns
+        return _column
     }
-
+        
     //----------------------------------
-    //  numRows
+    //  row
     //----------------------------------
-
-    private var _numRows : uint
     
-    public function get numRows() : uint
+    private var _row : uint 
+    
+    public function get row() : uint
     {
-        return _numRows
+        return _row
     }
-
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: IMultiScaleImageLevel
-    //
-    //--------------------------------------------------------------------------
+        
+    //----------------------------------
+    //  overlap
+    //----------------------------------
     
-    public function clone() : IMultiScaleImageLevel
+    private var _overlap : uint = 0 
+    
+    public function get overlap() : uint
     {
-        return new MultiScaleImageLevel( index, width, height, numColumns, numRows )
+        return _overlap
     }
     
+    //----------------------------------
+    //  hashCode
+    //---------------------------------- 
+    
+    public function get hashCode() : int
+    {
+        return int( level.toString() + column.toString() + row.toString() )
+    }
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Debug
@@ -127,12 +122,12 @@ public class MultiScaleImageLevel implements IMultiScaleImageLevel
 
     public function toString() : String
     {
-        return "[MultiScaleImageLevel]" + "\n" +
-               "index:" + index + "\n" +
-               "width:" + width + "\n" +
-               "height:" + height + "\n" +
-               "numRows:" + numRows + "\n" +
-               "numColumns:" + numColumns + "\n"
+        return "[Tile]" + "\n"
+               + "bitmap: " + bitmap + "\n"
+               + "level: " + level + "\n"
+               + "column: " + column + "\n"
+               + "row: " + row + "\n"
+               + "overlap: " + overlap
     }
 }
 
