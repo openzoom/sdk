@@ -23,6 +23,7 @@ package org.openzoom.renderers
 import br.com.stimuli.loading.BulkLoader;
 
 import flash.display.Bitmap;
+import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
@@ -92,8 +93,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     private var frame : Shape
     
     private var backgroundTile : Bitmap
-    private var backgroundLayer : TileLayer
-    private var foregroundLayer : TileLayer
+    private var backgroundLayer : ITileLayer
+    private var foregroundLayer : ITileLayer
     
     private var debugLayer : Shape
     
@@ -152,10 +153,10 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
 
         
         backgroundLayer = new TileLayer( descriptor.clone() )
-        addChild( backgroundLayer )
+        addChild( backgroundLayer as DisplayObject )
         
         foregroundLayer = new TileLayer( descriptor.clone() )
-        addChild( foregroundLayer )
+        addChild( foregroundLayer as DisplayObject )
         
         
         debugLayer = new Shape()
@@ -207,6 +208,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         
         foregroundLayer.width = explicitWidth
         foregroundLayer.height = explicitHeight
+        
+//        trace( foregroundLayer.width, foregroundLayer.height )
         
         loadTiles( level, visibleArea )
         

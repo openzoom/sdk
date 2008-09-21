@@ -35,7 +35,7 @@ import org.openzoom.descriptors.IMultiScaleImageLevel;
 /**
  * Layer for holding tiles.
  */
-public class TileLayer extends Sprite
+public class TileLayer extends Sprite implements ITileLayer
 {
     //--------------------------------------------------------------------------
     //
@@ -94,23 +94,23 @@ public class TileLayer extends Sprite
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     public function containsTile( tile : Tile ) : Boolean
     {
         return tiles[ tile.hashCode ]
     }
     
-    public function addTile( tile : Tile ) : void
+    public function addTile( tile : Tile ) : Tile
     {
         if( tile.level != level.index )
         {
             trace( "[TileLayer]: Adding Tile from wrong level." )
-            return
+            return null
         }
         
         // return if tile already added
         if( tiles[ tile.hashCode ] )
-           return
+           return null
         
         // store reference to tile
         tiles[ tile.hashCode ] = tile
@@ -128,6 +128,8 @@ public class TileLayer extends Sprite
         addChild( tileBitmap )
         
         Tweener.addTween( tileBitmap, { alpha: 1, time: 1 } )
+        
+        return tile
     }
     
     public function removeAllTiles() : void

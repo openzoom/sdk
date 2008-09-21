@@ -85,8 +85,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 
     public function getMinimumLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
     {
-        // TODO: Implement a smart algorithm
-        
+        // TODO: Implement a smart(er) algorithm
         var index : int = numLevels - 1
 
         while( index >= 0
@@ -144,9 +143,9 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     {
         var numLevels : uint = 1
     
-        while( width > tileWidth && height > tileHeight )
+        while( width > tileWidth || height > tileHeight )
         {
-            width = Math.floor( width * 0.5 )
+            width  = Math.floor( width  * 0.5 )
             height = Math.floor( height * 0.5 )
             numLevels++
         }

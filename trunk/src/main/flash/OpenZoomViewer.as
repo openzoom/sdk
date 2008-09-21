@@ -38,6 +38,7 @@ import flash.ui.Keyboard;
 
 import org.hasseg.externalMouseWheel.ExternalMouseWheelSupport;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.descriptors.IMultiScaleImageLevel;
 import org.openzoom.descriptors.MultiScaleImageDescriptorFactory;
 import org.openzoom.viewer.MultiScaleImageViewer;
 import org.openzoom.viewer.assets.Sad;
@@ -74,9 +75,9 @@ public class OpenZoomViewer extends Sprite
     
     private static const ABOUT_MENU_CAPTION              : String = "Powered by OpenZoom.org"
     
-    private static const DEFAULT_IMAGE_NAME              : String = "morocco"
-    private static const DEFAULT_SOURCE                  : String = "images/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
-//    private static const DEFAULT_SOURCE                  : String = "images/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
+    private static const DEFAULT_IMAGE_NAME              : String = "la-degustation"
+//    private static const DEFAULT_SOURCE                  : String = "images/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
+    private static const DEFAULT_SOURCE                  : String = "images/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
     
     //--------------------------------------------------------------------------
     //
@@ -322,6 +323,8 @@ public class OpenZoomViewer extends Sprite
         var factory : MultiScaleImageDescriptorFactory = MultiScaleImageDescriptorFactory.getInstance()
         descriptor = factory.getDescriptor( source, new XML( descriptorLoader.data ) )
 
+//        debugDescriptor( descriptor )
+
         viewer = createMultiScaleImageViewer( descriptor )
         addChildAt( viewer, 0 )
     }
@@ -423,6 +426,21 @@ public class OpenZoomViewer extends Sprite
         }
         
         return defaultValue
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Debug
+    //
+    //--------------------------------------------------------------------------
+    
+    private function debugDescriptor( descriptor : IMultiScaleImageDescriptor ) : void
+    {
+    	for( var i : int = 0; i < descriptor.numLevels; i++ )
+        {
+            var level : IMultiScaleImageLevel = descriptor.getLevelAt( i )
+            trace( level.index, level.width, level.height, level.numColumns, level.numRows )
+        }
     }
 }
 

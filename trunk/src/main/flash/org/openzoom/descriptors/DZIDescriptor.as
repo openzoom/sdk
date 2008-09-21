@@ -87,7 +87,9 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     public function getMinimumLevelForSize( width : Number,
                                             height : Number ) : IMultiScaleImageLevel
     {
-        var index : int = Math.min( numLevels - 1, Math.ceil( Math.log( Math.max( width, height ) ) / Math.LN2 ) )
+    	// FIXME: Some images appear blurry.
+    	// For now, just be more generous and return one level higher than necessary…
+        var index : int = Math.min( numLevels - 1, Math.ceil( Math.log( Math.min( width, height ) ) / Math.LN2 ) + 1 )
         return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
     }
     
