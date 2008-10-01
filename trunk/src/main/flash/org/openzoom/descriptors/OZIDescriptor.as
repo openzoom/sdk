@@ -23,10 +23,10 @@ package org.openzoom.descriptors
 import flash.utils.Dictionary;
 
 /**
- * Descriptor for the Microsoft Deep Zoom Image (DZI) format.
- * <http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx>
+ * Descriptor for the OpenZoom Image (OZI) format.
+ * <http://openzoom.org/>
  */
-public class DZIDescriptor extends MultiScaleImageDescriptorBase
+public class OZIDescriptor extends MultiScaleImageDescriptorBase
                            implements IMultiScaleImageDescriptor
 {
     //--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    namespace deepzoom = "http://schemas.microsoft.com/deepzoom/2008"
+    namespace openzoom = "http://openzoom.org/2008/ozi"
 
     //--------------------------------------------------------------------------
     //
@@ -46,7 +46,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * Constructor.
      */
-    public function DZIDescriptor( source : String, data : XML )
+    public function OZIDescriptor( source : String, data : XML )
     {
         this.data = data
 
@@ -73,9 +73,9 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-        return _source.substring( 0, _source.length - 4 ) + "_files/"
-                   + String( level ) + "/" + String( column ) + "_"
-                   + String( row ) + "." + tileFormat
+        return _source.substring( 0, _source.length - 8 )
+               + String( level ) + "/" + String( column ) + "-"
+               + String( row ) + "." + tileFormat
     }
     
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
@@ -95,7 +95,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     
     public function clone() : IMultiScaleImageDescriptor
     {
-        return new DZIDescriptor( source, new XML( data ) )
+        return new OZIDescriptor( source, new XML( data ) )
     }
 
     //--------------------------------------------------------------------------
@@ -106,7 +106,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     
     override public function toString() : String
     {
-        return "[DZIDescriptor]" + "\n" + super.toString()
+        return "[OZIDescriptor]" + "\n" + super.toString()
     }
     
     //--------------------------------------------------------------------------
@@ -117,14 +117,14 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     
     private function parseXML( data : XML ) : void
     {
-        use namespace deepzoom
+        use namespace openzoom
 
-        _width = data.Size.@Width
-        _height = data.Size.@Height
-        _tileWidth = _tileHeight = data.@TileSize
+        _width = data.pyramid.@width
+        _height = data.pyramid.@height
+        _tileWidth = _tileHeight = data.pyramid.@tileSize
 
-        _tileFormat = data.@Format
-        _tileOverlap = data.@Overlap
+        _tileFormat = data.pyramid.@format
+        _tileOverlap = data.pyramid.@overlap
     }
 
     private function computeNumLevels( width : Number, height : Number ) : int
@@ -138,7 +138,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     {
         var levels : Dictionary = new Dictionary()
 
-        var width  : Number = originalWidth
+        var width : Number = originalWidth
         var height : Number = originalHeight
 
         for( var index : int = numLevels - 1; index >= 0; index-- )
@@ -149,9 +149,6 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
             width = Math.ceil( width * 0.5 )
             height = Math.ceil( height * 0.5 )
         }
-        
-//        Twitter on 17.09.2008
-//        for(var i:int=max;i>=0;i--){levels[i]=new Level(w,h,Math.ceil(w/tileWidth),Math.ceil(h/tileHeight));w=Math.ceil(w/2);h=Math.ceil(h/2)}
         
         return levels 
     }

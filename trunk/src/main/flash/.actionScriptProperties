@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actionScriptProperties mainApplicationPath="OpenZoomViewer.as" version="3">
-<compiler additionalCompilerArguments="" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="OPENZOOM/target/main/flash/debug" outputFolderPath="bin-debug" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compiler additionalCompilerArguments="-use-network=false" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="OPENZOOM/target/main/flash/debug" outputFolderPath="bin-debug" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath>
 <compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/libs/flash/gtween"/>
 <compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/libs/flash/tweener/as3"/>

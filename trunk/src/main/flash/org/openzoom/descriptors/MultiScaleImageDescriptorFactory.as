@@ -32,6 +32,7 @@ public class MultiScaleImageDescriptorFactory
     //--------------------------------------------------------------------------
     
     private static const DEEPZOOM_NAMESPACE_URI : String = "http://schemas.microsoft.com/deepzoom/2008"
+    private static const OPENZOOM_NAMESPACE_URI : String = "http://openzoom.org/2008/ozi"
     private static const ZOOMIFY_ROOT_TAG_NAME : String = "IMAGE_PROPERTIES"
   
     //--------------------------------------------------------------------------
@@ -78,6 +79,8 @@ public class MultiScaleImageDescriptorFactory
     public function getDescriptor( source : String,
                                    data : XML ) : IMultiScaleImageDescriptor
     {
+        if( data.namespace().uri == OPENZOOM_NAMESPACE_URI )
+            return new OZIDescriptor( source, data )
         if( data.namespace().uri == DEEPZOOM_NAMESPACE_URI )
             return new DZIDescriptor( source, data )
         else if( data.name() == ZOOMIFY_ROOT_TAG_NAME )

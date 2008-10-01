@@ -153,14 +153,14 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
         return numLevels
     }
     
-    private function computeLevels( width : Number, height : Number,
+    private function computeLevels( originalWidth : uint, originalHeight : uint,
                                     tileWidth : uint, tileHeight : uint,
                                     numLevels : int ) : Dictionary
     {
         var levels : Dictionary = new Dictionary()
 
-        var w : Number = width
-        var h : Number = height
+        var w : Number = originalWidth
+        var h : Number = originalHeight
 
         for( var index : int = numLevels - 1; index >= 0; index-- )
         {

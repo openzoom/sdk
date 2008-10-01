@@ -204,7 +204,7 @@ public class MouseNavigationController extends ViewportControllerBase
         {
             var factor : Number
             
-            if( event.shiftKey )
+            if( event.shiftKey || event.ctrlKey )
                 factor = ZOOM_OUT_FACTOR
             else
                 factor = ZOOM_IN_FACTOR

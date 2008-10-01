@@ -76,7 +76,7 @@ public class MultiScaleImageViewer extends Sprite
         // image
         image = createImage()
         var bounds : Rectangle = image.getBounds( this )
-        viewport.content = bounds
+        viewport.scene = bounds
         addChild( image )
         
         // controllers

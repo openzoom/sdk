@@ -252,8 +252,8 @@ public interface IViewport extends IEventDispatcher
     /**
      * Size of the content in content coordinates.
      */ 
-    function get content() : Rectangle
-    function set content( value : Rectangle ) : void
+    function get scene() : Rectangle
+    function set scene( value : Rectangle ) : void
     
     //--------------------------------------------------------------------------
     //

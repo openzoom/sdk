@@ -50,9 +50,6 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     private static const TILE_LOADER_NAME : String = "tileLoader"
     private static const BACKGROUND_LOADER_NAME : String = "backgroundLoader"
     
-    // FIXME
-    private static const EXTRA_TILES : uint = 4
-    
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -209,11 +206,11 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         foregroundLayer.width = explicitWidth
         foregroundLayer.height = explicitHeight
         
-//        trace( foregroundLayer.width, foregroundLayer.height )
+//      trace( foregroundLayer.width, foregroundLayer.height )
         
         loadTiles( level, visibleArea )
         
-        drawVisibleArea( visibleArea )
+//      drawVisibleArea( visibleArea )
     }
     
     private function drawVisibleArea( area : Rectangle ) : void
@@ -234,10 +231,12 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private function loadTiles( level : IMultiScaleImageLevel, area : Rectangle ) : void
     {
-        var minColumn : int = Math.max( 0, Math.floor( ( area.left / width  * level.numColumns ) ) - EXTRA_TILES )
-        var maxColumn : int = Math.min( level.numColumns, Math.ceil( ( area.right / width  * level.numColumns ) ) + EXTRA_TILES )
-        var minRow    : int = Math.max( 0, Math.floor( ( area.top / height * level.numRows ) ) - EXTRA_TILES )
-        var maxRow    : int = Math.min( level.numRows, Math.ceil( ( area.bottom / height * level.numRows ) ) + EXTRA_TILES )
+        var minColumn : int = Math.max( 0, Math.floor(( area.left / unscaledWidth  * level.numColumns )))
+        var maxColumn : int = Math.min( level.numColumns, Math.ceil( ( area.right / unscaledWidth * level.numColumns )))
+        var minRow    : int = Math.max( 0, Math.floor(( area.top / unscaledHeight * level.numRows )))
+        var maxRow    : int = Math.min( level.numRows, Math.ceil(( area.bottom / unscaledHeight * level.numRows )))
+
+//        trace( area.left / unscaledWidth, area.right / unscaledWidth, area.top / unscaledHeight, area.bottom / unscaledHeight )
 
         for( var column : int = minColumn; column < maxColumn; column++ )
         {

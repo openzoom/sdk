@@ -150,12 +150,12 @@ public class Viewport extends EventDispatcher implements IViewport
 
     private var _content : Rectangle = new Rectangle( 0, 0, 100, 100 )
 
-    public function get content() : Rectangle
+    public function get scene() : Rectangle
     {
         return _content.clone()
     }
 
-    public function set content( value : Rectangle ) : void
+    public function set scene( value : Rectangle ) : void
     {
         if( _content.equals( value ) )
            return 
@@ -562,7 +562,7 @@ public class Viewport extends EventDispatcher implements IViewport
     
     public function get x() : Number
     {
-        return normalizedX * content.width
+        return normalizedX * scene.width
     }
     
     //----------------------------------
@@ -571,7 +571,7 @@ public class Viewport extends EventDispatcher implements IViewport
     
     public function get y() : Number
     {
-       return normalizedY * content.height
+       return normalizedY * scene.height
     }
     
     //----------------------------------
@@ -580,7 +580,7 @@ public class Viewport extends EventDispatcher implements IViewport
     
     public function get width() : Number
     {
-        return normalizedWidth * content.width
+        return normalizedWidth * scene.width
     }
     
     //----------------------------------
@@ -589,7 +589,7 @@ public class Viewport extends EventDispatcher implements IViewport
     
     public function get height() : Number
     {
-        return normalizedHeight * content.height
+        return normalizedHeight * scene.height
     }
     
     //----------------------------------
@@ -745,8 +745,8 @@ public class Viewport extends EventDispatcher implements IViewport
                + "y=" + y + "\n"
                + "w=" + width + "\n"
                + "h=" + height + "\n"
-               + "cW=" + content.width + "\n"
-               + "cH=" + content.height
+               + "cW=" + scene.width + "\n"
+               + "cH=" + scene.height
     }
 }
 
