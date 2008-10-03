@@ -159,14 +159,18 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     {
         var levels : Dictionary = new Dictionary()
 
-        var w : Number = originalWidth
-        var h : Number = originalHeight
+        var width : uint = originalWidth
+        var height : uint = originalHeight
 
         for( var index : int = numLevels - 1; index >= 0; index-- )
         {
-            levels[ index ] = new MultiScaleImageLevel( index, w, h, Math.ceil( w / tileWidth ), Math.ceil( h / tileHeight ) )
-            w = Math.floor( w * 0.5 )
-            h = Math.floor( h * 0.5 )
+            levels[ index ] = new MultiScaleImageLevel( this, index, width, height,
+                                                        Math.ceil( width / tileWidth ),
+                                                        Math.ceil( height / tileHeight ))
+            width >>= 1
+            height >>= 1
+//            width = Math.floor( width * 0.5 )
+//            height = Math.floor( height * 0.5 )
         }
 
         return levels 

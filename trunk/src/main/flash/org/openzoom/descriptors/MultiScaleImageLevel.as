@@ -20,6 +20,9 @@
 package org.openzoom.descriptors
 {
 
+import flash.geom.Point;
+	
+
 /**
  * The MultiScaleImageLevel class represents a single level of a
  * multi-scale image pyramid. It is a default implementation of IMultiScaleImageLevel.
@@ -35,9 +38,12 @@ public class MultiScaleImageLevel implements IMultiScaleImageLevel
     /**
      * Constructor.
      */ 
-    public function MultiScaleImageLevel( index : int, width : uint, height : uint,
+    public function MultiScaleImageLevel( descriptor : IMultiScaleImageDescriptor,
+                                          index : int, width : uint, height : uint,
                                           numColumns : uint, numRows : uint )
     {
+    	this.descriptor = descriptor
+    	
         _index = index
 
         _width = width
@@ -47,6 +53,14 @@ public class MultiScaleImageLevel implements IMultiScaleImageLevel
         _numRows = numRows
     }
 
+    //--------------------------------------------------------------------------
+    //
+    //  Variables
+    //
+    //--------------------------------------------------------------------------
+    
+    private var descriptor : IMultiScaleImageDescriptor
+    
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -114,9 +128,19 @@ public class MultiScaleImageLevel implements IMultiScaleImageLevel
     //
     //--------------------------------------------------------------------------
     
+    public function getTileURL( column : uint, row : uint ) : String
+    {
+        return descriptor.getTileURL( index, column, row )
+    }
+    
+    public function getTilePosition( column : uint, row : uint ) : Point
+    {
+        return descriptor.getTilePosition( index, column, row )
+    }
+    
     public function clone() : IMultiScaleImageLevel
     {
-        return new MultiScaleImageLevel( index, width, height, numColumns, numRows )
+        return new MultiScaleImageLevel( descriptor, index, width, height, numColumns, numRows )
     }
     
     //--------------------------------------------------------------------------

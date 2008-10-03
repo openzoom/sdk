@@ -29,7 +29,6 @@ import flash.display.Sprite;
 import flash.geom.Point;
 import flash.utils.Dictionary;
 
-import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.descriptors.IMultiScaleImageLevel;
 
 /**
@@ -46,10 +45,10 @@ public class TileLayer extends Sprite implements ITileLayer
     /**
      * Constructor.
      */
-    public function TileLayer( descriptor : IMultiScaleImageDescriptor )
+    public function TileLayer( level : IMultiScaleImageLevel )
     {
-        this.descriptor = descriptor
-        frame = createFrame()
+        _level = level
+        frame = createFrame( level.width, level.height )
     }
     
     //--------------------------------------------------------------------------
@@ -60,7 +59,6 @@ public class TileLayer extends Sprite implements ITileLayer
     
     // TODO: Consider using Sprite because of event propagation.
     private var frame : Shape
-    private var descriptor : IMultiScaleImageDescriptor
     private var data : IMultiScaleImageLevel
     
     private var tiles : Dictionary = new Dictionary( true )
@@ -76,17 +74,6 @@ public class TileLayer extends Sprite implements ITileLayer
     public function get level() : IMultiScaleImageLevel
     {
         return _level
-    }
-    
-    public function set level( value : IMultiScaleImageLevel ) : void
-    {
-        if( level && level.index == value.index )
-           return
-         
-        _level = value
-        
-        frame.width = level.width
-        frame.height = level.height
     }
     
     //--------------------------------------------------------------------------
@@ -118,7 +105,7 @@ public class TileLayer extends Sprite implements ITileLayer
         // add tile
         var tileBitmap : Bitmap = tile.bitmap 
 
-        var position : Point = descriptor.getTilePosition( tile.level, tile.column, tile.row )
+        var position : Point = level.getTilePosition( tile.column, tile.row )
         tileBitmap.x = position.x
         tileBitmap.y = position.y
     
@@ -147,12 +134,12 @@ public class TileLayer extends Sprite implements ITileLayer
     //
     //--------------------------------------------------------------------------
     
-    private function createFrame() : Shape
+    private function createFrame( width : Number, height : Number ) : Shape
     {
         var background : Shape = new Shape()
         var g : Graphics = background.graphics
         g.beginFill( 0xFF0000, 0 )
-        g.drawRect( 0, 0, 100, 100 )
+        g.drawRect( 0, 0, width, height )
         g.endFill()
         
         addChild( background )

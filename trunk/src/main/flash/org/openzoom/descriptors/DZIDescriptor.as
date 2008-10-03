@@ -138,16 +138,18 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     {
         var levels : Dictionary = new Dictionary()
 
-        var width  : Number = originalWidth
-        var height : Number = originalHeight
+        var width  : uint = originalWidth
+        var height : uint = originalHeight
 
         for( var index : int = numLevels - 1; index >= 0; index-- )
         {
-            levels[ index ] = new MultiScaleImageLevel( index, width, height,
+            levels[ index ] = new MultiScaleImageLevel( this, index, width, height,
                                                         Math.ceil( width / tileWidth ),
                                                         Math.ceil( height / tileHeight ) )
-            width = Math.ceil( width * 0.5 )
-            height = Math.ceil( height * 0.5 )
+            width = ( width + 1 ) >> 1
+            height = ( height + 1 ) >> 1
+//            width = Math.ceil( width * 0.5 )
+//            height = Math.ceil( height * 0.5 )
         }
         
 //        Twitter on 17.09.2008

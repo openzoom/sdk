@@ -65,8 +65,6 @@ public class MultiScaleImageViewer extends Sprite
         
         // viewport
         createViewport()
-        
-        // TODO: Does it make sense to zoom out?
         viewport.minZ = 1
         viewport.maxZ = 10
         

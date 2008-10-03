@@ -32,12 +32,15 @@ public interface ITileLayer
     function removeAllTiles() : void
     
     function get level() : IMultiScaleImageLevel
-    function set level( value : IMultiScaleImageLevel ) : void
     
     function get width() : Number
     function set width( value : Number ) : void
+    
     function get height() : Number
     function set height( value : Number ) : void
+    
+    function get visible() : Boolean
+    function set visible( value : Boolean ) : void
 }
 
 }

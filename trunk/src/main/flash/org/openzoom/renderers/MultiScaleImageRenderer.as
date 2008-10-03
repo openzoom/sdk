@@ -23,12 +23,12 @@ package org.openzoom.renderers
 import br.com.stimuli.loading.BulkLoader;
 
 import flash.display.Bitmap;
-import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Rectangle;
+import flash.sampler.getSize;
 
 import org.openzoom.core.IViewport;
 import org.openzoom.core.IZoomable;
@@ -49,6 +49,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private static const TILE_LOADER_NAME : String = "tileLoader"
     private static const BACKGROUND_LOADER_NAME : String = "backgroundLoader"
+    private static const LAYER_REMOVAL_DISTANCE : uint = 1
     
     //--------------------------------------------------------------------------
     //
@@ -63,15 +64,18 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     {
         this.descriptor = descriptor
         
+//        backgroundLevel = getHighestSingleTileLevel()
+        
         explicitWidth = descriptor.width
         explicitHeight = descriptor.height
         
         createChildren()
         createLoader()
+        createLayers( descriptor )
         
         // FIXME
-//        if( descriptor.tileOverlap == 0 ) 
-            loadBackground()
+//      if( descriptor.tileOverlap == 0 ) 
+//          loadBackground()
     }
     
     //--------------------------------------------------------------------------
@@ -87,13 +91,11 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     private var tileLoader : BulkLoader
     private var backgroundLoader : BulkLoader
 
-    private var frame : Shape
-    
+    private var backgroundLevel : int = 0
     private var backgroundTile : Bitmap
-    private var backgroundLayer : ITileLayer
-    private var foregroundLayer : ITileLayer
     
-    private var debugLayer : Shape
+    private var layers : Array /* of ITileLayer */ = []
+    private var frame : Shape
     
     //--------------------------------------------------------------------------
     //
@@ -147,35 +149,35 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     {   
         frame = createFrame( explicitWidth, explicitHeight )
         addChild( frame )
-
-        
-        backgroundLayer = new TileLayer( descriptor.clone() )
-        addChild( backgroundLayer as DisplayObject )
-        
-        foregroundLayer = new TileLayer( descriptor.clone() )
-        addChild( foregroundLayer as DisplayObject )
-        
-        
-        debugLayer = new Shape()
-        debugLayer.visible = false
-        addChild( debugLayer )
     }
     
     private function createFrame( width : Number, height : Number ) : Shape
     {
-        var background : Shape = new Shape()
-        var g : Graphics = background.graphics
+        var frame : Shape = new Shape()
+        var g : Graphics = frame.graphics
         g.beginFill( 0x000000, 0 )
         g.drawRect( 0, 0, width, height )
         g.endFill()
         
-        return background
+        return frame
     }
     
     private function createLoader() : void
     {       
         tileLoader = new BulkLoader( TILE_LOADER_NAME )
         backgroundLoader = new BulkLoader( BACKGROUND_LOADER_NAME )
+    }
+    
+    private function createLayers( descriptor : IMultiScaleImageDescriptor ) : void
+    {
+        for( var i : int = 0; i < descriptor.numLevels; i++ )
+        {
+        	var layer : TileLayer = new TileLayer( descriptor.getLevelAt( i ) )
+        	layers[ i ] = layer
+        	layer.width = width
+        	layer.height = height
+        	addChild( layer )
+        }	
     }
     
     private function loadBackground() : void
@@ -189,54 +191,34 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private function updateDisplayList() : void
     {
-        // FIXME        
         var bounds : Rectangle = new Rectangle( 0, 0, unscaledWidth, unscaledHeight )
         var visibleArea : Rectangle = viewport.intersection( bounds )
         
         var level : IMultiScaleImageLevel = descriptor.getMinimumLevelForSize( width, height )
         
-        if( foregroundLayer.level && foregroundLayer.level.index != level.index )
+        // hide single tile background layer in case we go above it
+//        if( ITileLayer( layers[ backgroundLevel ] ) )
+//            ITileLayer( layers[ backgroundLevel ] ).visible = ( level.index < backgroundLevel )
+        
+        // remove all tiles from loading queue
+        tileLoader.removeAll()
+        
+        for( var i : int = level.index + LAYER_REMOVAL_DISTANCE; i < descriptor.numLevels; i++ )
         {
-            foregroundLayer.removeAllTiles()
-            tileLoader.removeAll()
+            ITileLayer( layers[ i ] ).removeAllTiles()	
         }
-         
-        foregroundLayer.level = level
-        
-        foregroundLayer.width = explicitWidth
-        foregroundLayer.height = explicitHeight
-        
-//      trace( foregroundLayer.width, foregroundLayer.height )
-        
+             
         loadTiles( level, visibleArea )
-        
-//      drawVisibleArea( visibleArea )
-    }
-    
-    private function drawVisibleArea( area : Rectangle ) : void
-    {
-        debugLayer.x = area.x
-        debugLayer.y = area.y
-        
-        // move debug layer to front
-        setChildIndex( debugLayer, numChildren - 1 )
-        
-        var g : Graphics = debugLayer.graphics
-            g.clear()
-            g.lineStyle( 0, 0xFF0000 )
-            g.beginFill( 0xFF0000, 0.2 )
-            g.drawRect( 0, 0, area.width, area.height )
-            g.endFill()
     }
     
     private function loadTiles( level : IMultiScaleImageLevel, area : Rectangle ) : void
     {
-        var minColumn : int = Math.max( 0, Math.floor(( area.left / unscaledWidth  * level.numColumns )))
-        var maxColumn : int = Math.min( level.numColumns, Math.ceil( ( area.right / unscaledWidth * level.numColumns )))
-        var minRow    : int = Math.max( 0, Math.floor(( area.top / unscaledHeight * level.numRows )))
-        var maxRow    : int = Math.min( level.numRows, Math.ceil(( area.bottom / unscaledHeight * level.numRows )))
+        var minColumn : int = Math.max( 0, Math.floor(( area.left * level.numColumns / unscaledWidth )))
+        var maxColumn : int = Math.min( level.numColumns, Math.ceil( ( area.right * level.numColumns / unscaledWidth )))
+        var minRow    : int = Math.max( 0, Math.floor(( area.top * level.numRows / unscaledHeight )))
+        var maxRow    : int = Math.min( level.numRows, Math.ceil(( area.bottom * level.numRows / unscaledHeight )))
 
-//        trace( area.left / unscaledWidth, area.right / unscaledWidth, area.top / unscaledHeight, area.bottom / unscaledHeight )
+        var layer : ITileLayer = ITileLayer( layers[ level.index ] )
 
         for( var column : int = minColumn; column < maxColumn; column++ )
         {
@@ -244,7 +226,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
             {
                 var tile : Tile = new Tile( null, level.index, row, column, descriptor.tileOverlap )
                 
-                if( foregroundLayer.containsTile( tile ) )
+                if( layer.containsTile( tile ) )
                    continue
                 
                 var url : String = descriptor.getTileURL( tile.level, tile.column, tile.row )
@@ -270,7 +252,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
            tile.bitmap = event.target.loader.content
 //         tile.bitmap = tileLoader.getBitmap( tile.hashCode.toString(), true )
         
-        foregroundLayer.addTile( tile )
+        ITileLayer( layers[ tile.level ] ).addTile( tile )
     }
     
     private function backgroundCompleteHandler( event : Event ) : void

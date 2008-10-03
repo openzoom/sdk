@@ -20,6 +20,8 @@
 package org.openzoom.descriptors
 {
 
+import flash.geom.Point;	
+
 /**
  * The IMultiScaleImageLevel interface defines a set of properties
  * a level of a multi-scale image pyramid has to expose.
@@ -82,6 +84,16 @@ public interface IMultiScaleImageLevel
     //  Methods
     //
     //--------------------------------------------------------------------------
+    
+    /**
+     * Returns the URL of the tile at the specified position.
+     */ 
+    function getTileURL( column : uint, row : uint ) : String
+    
+    /**
+     * Returns the position of the specified tile.
+     */
+    function getTilePosition( column : uint, row : uint ) : Point
     
     /**
      * Returns a copy of this object.
