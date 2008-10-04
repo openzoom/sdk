@@ -34,6 +34,7 @@ import org.openzoom.core.IZoomable;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.descriptors.IMultiScaleImageLevel;
 import org.openzoom.events.ViewportEvent;
+import org.openzoom.utils.math.clamp;
 
 /**
  * Generic renderer for multi-scale images.
@@ -48,7 +49,6 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private static const TILE_LOADER_NAME : String = "tileLoader"
     private static const BACKGROUND_LOADER_NAME : String = "backgroundLoader"
-    private static const LAYER_REMOVAL_DISTANCE : uint = 1
     
     //--------------------------------------------------------------------------
     //
@@ -70,9 +70,11 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         createLoader()
         createLayers( descriptor )
         
-        // FIXME
-      if( descriptor.tileOverlap == 0 ) 
-          loadBackground()
+        // Load highest single tile level as background to prevent
+        // artifacts between tiles in case we have a format that doesn't
+        // feature tile overlap.
+        if( descriptor.tileOverlap == 0 ) 
+            loadBackground()
     }
     
     //--------------------------------------------------------------------------
@@ -80,6 +82,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     //  Variables
     //
     //--------------------------------------------------------------------------
+    
+    private var renderingMode : String = RenderingMode.FAST
     
     private var explicitWidth : Number
     private var explicitHeight : Number
@@ -194,12 +198,20 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         // remove all tiles from loading queue
         tileLoader.removeAll()
         
-        for( var i : int = level.index + LAYER_REMOVAL_DISTANCE; i < descriptor.numLevels; i++ )
+        for( var i : int = level.index + 1; i < descriptor.numLevels; i++ )
         {
             getLayer( i ).removeAllTiles()	
         }
-             
-        loadTiles( level, visibleArea )
+        
+        if( renderingMode == RenderingMode.SMOOTH )
+        {
+	        for( var l : int = 0; l <= level.index; l++ )
+	            loadTiles( descriptor.getLevelAt( l ), visibleArea )
+        }
+        else
+        {
+            loadTiles( level, visibleArea )
+        }
     }
     
     private function loadTiles( level : IMultiScaleImageLevel, area : Rectangle ) : void
@@ -296,7 +308,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         }
         while( level.numColumns == 1 && level.numRows == 1 )
         
-        return level.index - 1
+        var index : int = clamp( level.index - 1, 0, descriptor.numLevels - 1 ) 
+        return index
     }
 }
 

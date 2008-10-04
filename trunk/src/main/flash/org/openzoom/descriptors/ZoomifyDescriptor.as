@@ -79,7 +79,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     {
         return _source.substr( 0, _source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length )
                    + DEFAULT_TILE_FOLDER_NAME + "/" + String( level ) + "-"
-                   + String( column ) + "-" + String( row ) + "." + tileFormat
+                   + String( column ) + "-" + String( row ) + "." + type
 
     }
 
@@ -135,7 +135,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
         _height = data.@HEIGHT
         _tileWidth = _tileHeight = data.@TILESIZE
         
-        _tileFormat = DEFAULT_TILE_FORMAT
+        _type = DEFAULT_TILE_FORMAT
         _tileOverlap = DEFAULT_TILE_OVERLAP
     }
     

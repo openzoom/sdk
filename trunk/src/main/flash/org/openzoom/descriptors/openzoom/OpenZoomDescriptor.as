@@ -17,17 +17,23 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.descriptors
+package org.openzoom.descriptors.openzoom
 {
 
 import flash.utils.Dictionary;
 
+import org.openzoom.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.descriptors.IMultiScaleImageLevel;
+import org.openzoom.descriptors.MultiScaleImageDescriptorBase;
+import org.openzoom.descriptors.MultiScaleImageLevel;
+import org.openzoom.utils.math.clamp;
+
 /**
- * Descriptor for the Microsoft Deep Zoom Image (DZI) format.
- * <http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx>
+ * OpenZoom Descriptor.
+ * <http://openzoom.org/>
  */
-public class DZIDescriptor extends MultiScaleImageDescriptorBase
-                           implements IMultiScaleImageDescriptor
+public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
+                                implements IMultiScaleImageDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -35,7 +41,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    namespace deepzoom = "http://schemas.microsoft.com/deepzoom/2008"
+    namespace openzoom = "http://openzoom.org/2008/ozd"
 
     //--------------------------------------------------------------------------
     //
@@ -46,14 +52,14 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * Constructor.
      */
-    public function DZIDescriptor( source : String, data : XML )
+    public function OpenZoomDescriptor( source : String, data : XML )
     {
+    	use namespace openzoom
+    	
         this.data = data
 
         _source = source        
         parseXML( data )
-        _numLevels = computeNumLevels( width, height )
-        levels = computeLevels( width, height, tileWidth, tileHeight, numLevels )
     }
 
     //--------------------------------------------------------------------------
@@ -62,9 +68,8 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private var extension : String
     private var data : XML
-    private var levels : Dictionary 
+    private var levels : Dictionary = new Dictionary()
 
     //--------------------------------------------------------------------------
     //
@@ -74,9 +79,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-        return _source.substring( 0, _source.length - 4 ) + "_files/"
-                   + String( level ) + "/" + String( column ) + "_"
-                   + String( row ) + "." + extension
+        return IMultiScaleImageLevel( levels[ level ] ).getTileURL( column, row )
     }
     
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
@@ -88,15 +91,22 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     public function getMinimumLevelForSize( width : Number,
                                             height : Number ) : IMultiScaleImageLevel
     {
-    	// FIXME: Some images appear blurry.
-    	// For now, just be more generous and return one level higher than necessary…
-        var index : int = Math.min( numLevels - 1, Math.ceil( Math.log( Math.min( width, height ) ) / Math.LN2 ) + 1 )
-        return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
+    	// TODO
+    	var level : IMultiScaleImageLevel
+    	
+    	for( var i : int = numLevels - 1; i >= 0; i-- )
+    	{
+        	level = getLevelAt( i )
+    		if( level.width < width || level.height < height )
+    		  break 
+    	}  
+    	
+        return getLevelAt( clamp( level.index, 0, numLevels - 1 ) ).clone()
     }
     
     public function clone() : IMultiScaleImageDescriptor
     {
-        return new DZIDescriptor( source, new XML( data ) )
+        return new OpenZoomDescriptor( source, new XML( data ) )
     }
 
     //--------------------------------------------------------------------------
@@ -107,7 +117,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     
     override public function toString() : String
     {
-        return "[DZIDescriptor]" + "\n" + super.toString()
+        return "[OpenZoomDescriptor]" + "\n" + super.toString()
     }
     
     //--------------------------------------------------------------------------
@@ -118,33 +128,33 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     
     private function parseXML( data : XML ) : void
     {
-        use namespace deepzoom
+        use namespace openzoom
 
-        _width = data.Size.@Width
-        _height = data.Size.@Height
-        _tileWidth = _tileHeight = data.@TileSize
+        _width = data.pyramid.@width
+        _height = data.pyramid.@height
+        _tileWidth = data.pyramid.@tileWidth
+        _tileHeight = data.pyramid.@tileHeight
 
-        extension = data.@Format
+        _type = data.pyramid.@type
+        _tileOverlap = data.pyramid.@overlap
         
-        switch( extension )
+        _numLevels = data.pyramid.level.length()
+        
+        for each( var level : XML in data.pyramid.level )
         {
-        	case "jpg":
-        	   _type = "image/jpeg"
-        	   break
-        	   
-        	case "png":
-        	   _type = "image/png"
-        	   break
+        	var uris : Array = []
+        	for each( var uri : XML in level.uri )
+        	{
+        		uris.push( uri.@template.toString() )
+        	}
+        	
+        	levels[ int(level.@index.toString()) ] = new OpenZoomLevel( this, level.@index,
+        	                                     level.@width, level.@height,
+        	                                     level.@columns, level.@rows,
+        	                                     uris )
         }
-        
-        _tileOverlap = data.@Overlap
     }
 
-    private function computeNumLevels( width : Number, height : Number ) : int
-    {
-        return Math.ceil( Math.log( Math.max( width, height ) ) / Math.LN2 ) + 1
-    }
-    
     private function computeLevels( originalWidth : uint, originalHeight : uint,
                                     tileWidth : uint, tileHeight : uint,
                                     numLevels : int ) : Dictionary
@@ -153,20 +163,17 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
         var width  : uint = originalWidth
         var height : uint = originalHeight
-
+        
         for( var index : int = numLevels - 1; index >= 0; index-- )
         {
             levels[ index ] = new MultiScaleImageLevel( this, index, width, height,
                                                         Math.ceil( width / tileWidth ),
                                                         Math.ceil( height / tileHeight ) )
             width = ( width + 1 ) >> 1
-            height = ( height + 1 ) >> 1
+            height = ( height + 1 ) >> 1                                                        
 //            width = Math.ceil( width * 0.5 )
 //            height = Math.ceil( height * 0.5 )
         }
-        
-//        Twitter on 17.09.2008
-//        for(var i:int=max;i>=0;i--){levels[i]=new Level(w,h,Math.ceil(w/tileWidth),Math.ceil(h/tileHeight));w=Math.ceil(w/2);h=Math.ceil(h/2)}
         
         return levels 
     }

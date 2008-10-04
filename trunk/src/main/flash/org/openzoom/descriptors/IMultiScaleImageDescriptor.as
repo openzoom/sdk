@@ -102,9 +102,9 @@ public interface IMultiScaleImageDescriptor
     //----------------------------------
       
     /**
-     * Returns the image format of the image pyramid tiles, e.g. JPEG, PNG, etc.
+     * Returns the mimetype of the image pyramid tiles, e.g. <image/jpeg> or <image/png>.
      */
-    function get tileFormat() : String
+    function get type() : String
 
     //--------------------------------------------------------------------------
     //
@@ -118,9 +118,9 @@ public interface IMultiScaleImageDescriptor
     function getTileURL( level : int, column : uint, row : uint ) : String
 
     /**
-     * Returns the position of the tile specified by its level, column & row.
+     * Returns the position of the tile specified by its column & row.
      */
-    function getTilePosition( level : int, column : uint, row : uint ) : Point
+    function getTilePosition( column : uint, row : uint ) : Point
 
     /**
      * Returns the image pyramid level that exists at the specified index.

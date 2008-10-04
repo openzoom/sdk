@@ -46,6 +46,9 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
    
+    private static const DEFAULT_MIN_ZOOM     : Number = 1
+    private static const DEFAULT_MAX_ZOOM     : Number = 50000
+    
     private static const ZOOM_IN_FACTOR     : Number = 2.0
     private static const ZOOM_OUT_FACTOR    : Number = 0.3
     private static const TRANSLATION_FACTOR : Number = 0.1
@@ -65,8 +68,8 @@ public class MultiScaleImageViewer extends Sprite
         
         // viewport
         createViewport()
-        viewport.minZ = 1
-        viewport.maxZ = 10
+        viewport.minZ = DEFAULT_MIN_ZOOM
+        viewport.maxZ = DEFAULT_MAX_ZOOM
         
         // children
         createChildren()

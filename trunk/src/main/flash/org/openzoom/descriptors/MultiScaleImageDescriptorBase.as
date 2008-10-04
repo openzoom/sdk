@@ -115,11 +115,11 @@ public class MultiScaleImageDescriptorBase
     //  tileFormat
     //----------------------------------
     
-    protected var _tileFormat : String
+    protected var _type : String
   
-    public function get tileFormat() : String
+    public function get type() : String
     {
-        return _tileFormat
+        return _type
     }
     
     //--------------------------------------------------------------------------
@@ -128,7 +128,7 @@ public class MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
-    public function getTilePosition( level : int, column : uint, row : uint ) : Point
+    public function getTilePosition( column : uint, row : uint ) : Point
     {
         var position : Point = new Point()
 
@@ -155,7 +155,7 @@ public class MultiScaleImageDescriptorBase
                "tileWidth:" + tileWidth + "\n" +
                "tileHeight:" + tileHeight + "\n" +
                "tileOverlap:" + tileOverlap + "\n" +
-               "tileFormat:" + tileFormat
+               "tileFormat:" + type
     }
 }
 

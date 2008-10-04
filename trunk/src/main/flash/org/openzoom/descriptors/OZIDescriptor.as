@@ -75,7 +75,7 @@ public class OZIDescriptor extends MultiScaleImageDescriptorBase
     {
         return _source.substring( 0, _source.length - 8 )
                + String( level ) + "/" + String( column ) + "-"
-               + String( row ) + "." + tileFormat
+               + String( row ) + "." + type
     }
     
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
@@ -123,7 +123,7 @@ public class OZIDescriptor extends MultiScaleImageDescriptorBase
         _height = data.pyramid.@height
         _tileWidth = _tileHeight = data.pyramid.@tileSize
 
-        _tileFormat = data.pyramid.@format
+        _type = data.pyramid.@format
         _tileOverlap = data.pyramid.@overlap
     }
 

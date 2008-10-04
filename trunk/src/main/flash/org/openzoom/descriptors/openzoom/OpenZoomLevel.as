@@ -17,18 +17,21 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.descriptors
+package org.openzoom.descriptors.openzoom
 {
 
 import flash.geom.Point;
+
+import org.openzoom.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.descriptors.IMultiScaleImageLevel;
+import org.openzoom.descriptors.MultiScaleImageLevelBase;
 	
 
 /**
- * The MultiScaleImageLevel class represents a single level of a
- * multi-scale image pyramid. It is a default implementation of IMultiScaleImageLevel.
+ * The OpenZoomLevel class represents a single level of a multi-scale image pyramid.
  */
-public class MultiScaleImageLevel extends MultiScaleImageLevelBase
-                                  implements IMultiScaleImageLevel
+public class OpenZoomLevel extends MultiScaleImageLevelBase
+                           implements IMultiScaleImageLevel
 {
     //--------------------------------------------------------------------------
     //
@@ -39,11 +42,12 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * Constructor.
      */ 
-    public function MultiScaleImageLevel( descriptor : IMultiScaleImageDescriptor,
-                                          index : int, width : uint, height : uint,
-                                          numColumns : uint, numRows : uint )
+    public function OpenZoomLevel( descriptor : IMultiScaleImageDescriptor,
+                                   index : int, width : uint, height : uint,
+                                   numColumns : uint, numRows : uint, uris : Array )
     {
     	this.descriptor = descriptor
+    	this.uris = uris
     	
         super( index, width, height, numColumns, numRows )
     }
@@ -54,6 +58,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     //
     //--------------------------------------------------------------------------
     
+    private var uris : Array /* of String */
     private var descriptor : IMultiScaleImageDescriptor
     
     //--------------------------------------------------------------------------
@@ -64,7 +69,13 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     
     public function getTileURL( column : uint, row : uint ) : String
     {
-        return descriptor.getTileURL( index, column, row )
+        if( uris && uris.length > 0 )
+        {
+        	var uri : String =  String( uris[ Math.floor( Math.random() * ( uris.length - 1 )) ] )
+        	return uri.replace( /{column}/, column ).replace( /{row}/, row )
+        }
+        
+        return ""
     }
     
     public function getTilePosition( column : uint, row : uint ) : Point
@@ -74,7 +85,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     
     public function clone() : IMultiScaleImageLevel
     {
-        return new MultiScaleImageLevel( descriptor, index, width, height, numColumns, numRows )
+        return new OpenZoomLevel( descriptor.clone(), this.index, width, height, numColumns, numRows, uris.slice() )
     }
     
     //--------------------------------------------------------------------------
@@ -85,7 +96,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
 
     override public function toString() : String
     {
-        return "[MultiScaleImageLevel]" + "\n" + super.toString()
+        return "[OpenZoomLevel]" + "\n" + super.toString()
     }
 }
 
