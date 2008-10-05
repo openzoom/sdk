@@ -41,6 +41,9 @@ public interface ITileLayer
     
     function get visible() : Boolean
     function set visible( value : Boolean ) : void
+    
+    function get alpha() : Number
+    function set alpha( value : Number ) : void
 }
 
 }

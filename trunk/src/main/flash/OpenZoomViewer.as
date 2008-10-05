@@ -37,7 +37,6 @@ import flash.net.URLRequest;
 import flash.net.navigateToURL;
 import flash.ui.ContextMenu;
 import flash.ui.ContextMenuItem;
-import flash.ui.Keyboard;
 
 import org.hasseg.externalMouseWheel.ExternalMouseWheelSupport;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
@@ -84,7 +83,11 @@ public class OpenZoomViewer extends Sprite
 //  private static const DEFAULT_SOURCE                  : String = "images/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
 //  private static const DEFAULT_SOURCE                  : String = "images/openzoom/" + DEFAULT_IMAGE_NAME + ".ozi/meta.xml"
 //  private static const DEFAULT_SOURCE                  : String = "images/openzoom/google-maps-road.xml"
+//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/google-maps-satellite.xml"
+//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/google-maps-terrain.xml"
     private static const DEFAULT_SOURCE                  : String = "images/openzoom/openstreetmap.xml"
+//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/butterfly.xml"
+//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/bluemarble.xml"
     
     //--------------------------------------------------------------------------
     //
@@ -103,7 +106,7 @@ public class OpenZoomViewer extends Sprite
         
         createChildren()
         
-        source = getParameter( OpenZoomViewerParameters.SOURCE, DEFAULT_SOURCE )        
+        source = getParameter( OpenZoomViewerParameters.SOURCE, DEFAULT_SOURCE )
         loadDescriptor( source )
         
         layout()

@@ -60,6 +60,7 @@ public class OpenZoomLevel extends MultiScaleImageLevelBase
     
     private var uris : Array /* of String */
     private var descriptor : IMultiScaleImageDescriptor
+    private static var  uriIndex : uint = 0
     
     //--------------------------------------------------------------------------
     //
@@ -71,7 +72,10 @@ public class OpenZoomLevel extends MultiScaleImageLevelBase
     {
         if( uris && uris.length > 0 )
         {
-        	var uri : String =  String( uris[ Math.floor( Math.random() * ( uris.length - 1 )) ] )
+            if( ++uriIndex >= uris.length )
+                uriIndex = 0
+                
+        	var uri : String =  String( uris[ uriIndex ] )
         	return uri.replace( /{column}/, column ).replace( /{row}/, row )
         }
         

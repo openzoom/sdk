@@ -38,6 +38,14 @@ public class TileLayer extends Sprite implements ITileLayer
 {
     //--------------------------------------------------------------------------
     //
+    //  Class constants
+    //
+    //--------------------------------------------------------------------------
+    
+    private static const DEFAULT_TILE_SHOW_DURATION : Number = 2.0
+    
+    //--------------------------------------------------------------------------
+    //
     //  Constructor
     //
     //--------------------------------------------------------------------------
@@ -114,7 +122,7 @@ public class TileLayer extends Sprite implements ITileLayer
     
         addChild( tileBitmap )
         
-        Tweener.addTween( tileBitmap, { alpha: 1, time: 1 } )
+        Tweener.addTween( tileBitmap, { alpha: 1, time: DEFAULT_TILE_SHOW_DURATION } )
         
         return tile
     }

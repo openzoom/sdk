@@ -59,16 +59,14 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     /**
      * Constructor.
      */
-    public function MultiScaleImageRenderer( descriptor : IMultiScaleImageDescriptor )
+    public function MultiScaleImageRenderer( descriptor : IMultiScaleImageDescriptor,
+                                             width : Number, height : Number )
     {
         this.descriptor = descriptor
         
-        explicitWidth = descriptor.width
-        explicitHeight = descriptor.height
-        
-        createChildren()
+        createFrame( width, height )
         createLoader()
-        createLayers( descriptor )
+        createLayers( descriptor, width, height )
         
         // Load highest single tile level as background to prevent
         // artifacts between tiles in case we have a format that doesn't
@@ -84,9 +82,6 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     //--------------------------------------------------------------------------
     
     private var renderingMode : String = RenderingMode.FAST
-    
-    private var explicitWidth : Number
-    private var explicitHeight : Number
     
     private var descriptor : IMultiScaleImageDescriptor
     private var tileLoader : BulkLoader
@@ -144,21 +139,15 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     //
     //--------------------------------------------------------------------------
     
-    private function createChildren() : void
-    {   
-        frame = createFrame( explicitWidth, explicitHeight )
-        addChild( frame )
-    }
-    
-    private function createFrame( width : Number, height : Number ) : Shape
+    private function createFrame( width : Number, height : Number ) : void
     {
-        var frame : Shape = new Shape()
+        frame = new Shape()
         var g : Graphics = frame.graphics
         g.beginFill( 0x000000, 0 )
         g.drawRect( 0, 0, width, height )
         g.endFill()
         
-        return frame
+        addChildAt( frame, 0 )
     }
     
     private function createLoader() : void
@@ -167,7 +156,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         backgroundLoader = new BulkLoader( BACKGROUND_LOADER_NAME )
     }
     
-    private function createLayers( descriptor : IMultiScaleImageDescriptor ) : void
+    private function createLayers( descriptor : IMultiScaleImageDescriptor, width : Number, height : Number  ) : void
     {
         for( var i : int = 0; i < descriptor.numLevels; i++ )
         {
@@ -182,8 +171,9 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     private function loadBackground() : void
     {
         var level : int = getHighestSingleTileLevel()
+        var url : String = descriptor.getTileURL( level, 0, 0 )
         
-        backgroundLoader.add( descriptor.getTileURL( level, 0, 0 ), { id: "background" } )
+        backgroundLoader.add( url, { id: "background"/*, type: "image"*/ } )
                         .addEventListener( Event.COMPLETE, backgroundCompleteHandler )
         backgroundLoader.start()
     } 
@@ -198,9 +188,24 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         // remove all tiles from loading queue
         tileLoader.removeAll()
         
+        
         for( var i : int = level.index + 1; i < descriptor.numLevels; i++ )
         {
-            getLayer( i ).removeAllTiles()	
+            getLayer( i ).removeAllTiles()
+        	
+//        	Tweener.addTween( layer,
+//        	                  {
+//        	                      alpha: 0,
+//        	                      time: 1,
+//        	                      onComplete:
+//        	                      function() : void
+//        	                      {
+//        	                          layer.removeAllTiles()
+//        	                          layer.alpha = 1
+//        	                      }
+//        	                   }
+//        	                 )
+        	                       
         }
         
         if( renderingMode == RenderingMode.SMOOTH )
@@ -216,10 +221,10 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private function loadTiles( level : IMultiScaleImageLevel, area : Rectangle ) : void
     {
-        var minColumn : int = Math.max( 0, Math.floor(( area.left * level.numColumns / unscaledWidth )))
-        var maxColumn : int = Math.min( level.numColumns, Math.ceil( ( area.right * level.numColumns / unscaledWidth )))
-        var minRow    : int = Math.max( 0, Math.floor(( area.top * level.numRows / unscaledHeight )))
-        var maxRow    : int = Math.min( level.numRows, Math.ceil(( area.bottom * level.numRows / unscaledHeight )))
+        var minColumn : int = Math.max( 0, Math.floor((( area.left * level.numColumns ) / unscaledWidth )))
+        var maxColumn : int = Math.min( level.numColumns, Math.ceil((( area.right * level.numColumns ) / unscaledWidth )))
+        var minRow    : int = Math.max( 0, Math.floor((( area.top * level.numRows ) / unscaledHeight )))
+        var maxRow    : int = Math.min( level.numRows, Math.ceil((( area.bottom * level.numRows ) / unscaledHeight )))
 
         var layer : ITileLayer = getLayer( level.index )
 
@@ -229,7 +234,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
             {
                 var tile : Tile = new Tile( null, level.index, row, column, descriptor.tileOverlap )
                 
-                if( layer.containsTile( tile ) )
+                if( layer.containsTile( tile ))
                    continue
                 
                 var url : String = descriptor.getTileURL( tile.level, tile.column, tile.row )
@@ -254,7 +259,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         if( tile )
            tile.bitmap = event.target.loader.content
         
-        getLayer( tile.level ).addTile( tile )
+        var layer : ITileLayer = getLayer( tile.level )
+        layer.addTile( tile )
     }
     
     private function backgroundCompleteHandler( event : Event ) : void

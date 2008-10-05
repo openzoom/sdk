@@ -46,8 +46,13 @@ public class ViewTransformationController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_TRANSFORMATION_DURATION : Number = 1.5
+    private static const CRITICAL_DIMENSION : Number = 3000000
+    
+    private static const DEFAULT_TRANSFORMATION_DURATION : Number = 2.0
     private static const DEFAULT_TRANSFORMATION_EASING : String = "easeOutExpo"
+    
+    private static const FALLBACK_TRANSFORMATION_DURATION : Number = 0.2
+    private static const FALLBACK_TRANSFORMATION_EASING : String = "linear"
     
     //--------------------------------------------------------------------------
     //
@@ -121,10 +126,18 @@ public class ViewTransformationController extends ViewportControllerBase
     
     private function transformView( duration : Number ) : void
     {
+    	var transition : String = DEFAULT_TRANSFORMATION_EASING
         var newWidth  : Number = viewport.bounds.width  / viewport.normalizedWidth
         var newHeight : Number = viewport.bounds.height / viewport.normalizedHeight
         var newX      : Number = -viewport.normalizedX * newWidth
         var newY      : Number = -viewport.normalizedY * newHeight
+        
+        // FIXME
+//        if( duration != 0 && ( newWidth > CRITICAL_DIMENSION || newHeight > CRITICAL_DIMENSION ))
+//        {
+//        	duration = FALLBACK_TRANSFORMATION_DURATION
+//        	transition = FALLBACK_TRANSFORMATION_EASING
+//        }
         
         Tweener.addTween(
                             view,
@@ -134,7 +147,7 @@ public class ViewTransformationController extends ViewportControllerBase
                                 width: newWidth,
                                 height: newHeight,
                                 time: duration,
-                                transition: DEFAULT_TRANSFORMATION_EASING,
+                                transition: transition,
                                 onComplete: viewport.dispatchChangeCompleteEvent
                             }
                         )

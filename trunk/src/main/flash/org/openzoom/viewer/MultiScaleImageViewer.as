@@ -46,8 +46,10 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
    
-    private static const DEFAULT_MIN_ZOOM     : Number = 1
-    private static const DEFAULT_MAX_ZOOM     : Number = 50000
+    private static const DEFAULT_MIN_ZOOM   : Number = 0.001
+    private static const DEFAULT_MAX_ZOOM   : Number = 2*2*2*2*2*2*2*2*2*2*2*2*2*2
+    
+    private static const DEFAULT_DIMENSION  : Number = 1000
     
     private static const ZOOM_IN_FACTOR     : Number = 2.0
     private static const ZOOM_OUT_FACTOR    : Number = 0.3
@@ -75,7 +77,12 @@ public class MultiScaleImageViewer extends Sprite
         createChildren()
         
         // image
-        image = createImage()
+        var aspectRatio : Number = descriptor.width / descriptor.height
+        
+        var width : Number = DEFAULT_DIMENSION
+        var height : Number = DEFAULT_DIMENSION / aspectRatio
+        
+        image = createImage( descriptor, width, height )
         var bounds : Rectangle = image.getBounds( this )
         viewport.scene = bounds
         addChild( image )
@@ -244,9 +251,12 @@ public class MultiScaleImageViewer extends Sprite
         return mouseCatcher
     }
     
-    private function createImage() : MultiScaleImageRenderer
+    private function createImage( descriptor : IMultiScaleImageDescriptor,
+                                  width : Number,
+                                  height : Number ) : MultiScaleImageRenderer
     {
-        var image : MultiScaleImageRenderer = new MultiScaleImageRenderer( descriptor )
+        var image : MultiScaleImageRenderer = new MultiScaleImageRenderer( descriptor,
+                                                                           width, height )
         image.viewport = viewport
 
         return image

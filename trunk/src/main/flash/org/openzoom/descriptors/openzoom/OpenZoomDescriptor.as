@@ -25,7 +25,6 @@ import flash.utils.Dictionary;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.descriptors.IMultiScaleImageLevel;
 import org.openzoom.descriptors.MultiScaleImageDescriptorBase;
-import org.openzoom.descriptors.MultiScaleImageLevel;
 import org.openzoom.utils.math.clamp;
 
 /**
@@ -98,15 +97,15 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     	{
         	level = getLevelAt( i )
     		if( level.width < width || level.height < height )
-    		  break 
+                break 
     	}  
     	
-        return getLevelAt( clamp( level.index, 0, numLevels - 1 ) ).clone()
+        return getLevelAt( clamp( level.index, 0, numLevels - 1 )).clone()
     }
     
     public function clone() : IMultiScaleImageDescriptor
     {
-        return new OpenZoomDescriptor( source, new XML( data ) )
+        return new OpenZoomDescriptor( source, new XML( data ))
     }
 
     //--------------------------------------------------------------------------
@@ -142,40 +141,17 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
         
         for each( var level : XML in data.pyramid.level )
         {
-        	var uris : Array = []
-        	for each( var uri : XML in level.uri )
-        	{
-        		uris.push( uri.@template.toString() )
-        	}
-        	
-        	levels[ int(level.@index.toString()) ] = new OpenZoomLevel( this, level.@index,
-        	                                     level.@width, level.@height,
-        	                                     level.@columns, level.@rows,
-        	                                     uris )
+            var uris : Array = []
+            for each( var uri : XML in level.uri )
+            {
+                uris.push( uri.@template.toString() )
+            }
+            
+            levels[ int(level.@index.toString()) ] = new OpenZoomLevel( this, level.@index,
+                                                 level.@width, level.@height,
+                                                 level.@columns, level.@rows,
+                                                 uris )
         }
-    }
-
-    private function computeLevels( originalWidth : uint, originalHeight : uint,
-                                    tileWidth : uint, tileHeight : uint,
-                                    numLevels : int ) : Dictionary
-    {
-        var levels : Dictionary = new Dictionary()
-
-        var width  : uint = originalWidth
-        var height : uint = originalHeight
-        
-        for( var index : int = numLevels - 1; index >= 0; index-- )
-        {
-            levels[ index ] = new MultiScaleImageLevel( this, index, width, height,
-                                                        Math.ceil( width / tileWidth ),
-                                                        Math.ceil( height / tileHeight ) )
-            width = ( width + 1 ) >> 1
-            height = ( height + 1 ) >> 1                                                        
-//            width = Math.ceil( width * 0.5 )
-//            height = Math.ceil( height * 0.5 )
-        }
-        
-        return levels 
     }
 }
 

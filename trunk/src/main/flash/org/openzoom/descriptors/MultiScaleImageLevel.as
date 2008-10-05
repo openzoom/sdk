@@ -21,7 +21,6 @@ package org.openzoom.descriptors
 {
 
 import flash.geom.Point;
-	
 
 /**
  * The MultiScaleImageLevel class represents a single level of a
