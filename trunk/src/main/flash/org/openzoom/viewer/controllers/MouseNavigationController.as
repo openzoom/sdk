@@ -139,7 +139,7 @@ public class MouseNavigationController extends ViewportControllerBase
         var originY : Number = view.mouseY / view.height
     
         // transform viewport
-        viewport.normalizedZoomBy( factor, originX, originY )
+        viewport.zoomBy( factor, originX, originY )
     }
     
     //--------------------------------------------------------------------------
@@ -170,7 +170,7 @@ public class MouseNavigationController extends ViewportControllerBase
          
         // register where we are in the view as well as in the viewport
         viewDragVector.topLeft = new Point( view.mouseX, view.mouseY )
-        viewportDragVector.topLeft = new Point( viewport.normalizedX, viewport.normalizedY )
+        viewportDragVector.topLeft = new Point( viewport.x, viewport.y )
         
         beginPanning()
     }
@@ -183,11 +183,11 @@ public class MouseNavigationController extends ViewportControllerBase
         // update view drag vector
         viewDragVector.bottomRight = new Point( view.mouseX, view.mouseY )
         
-        viewport.normalizedMoveTo(
+        viewport.moveTo(
             viewportDragVector.x - ( viewDragVector.width / viewport.bounds.width )
-              * viewport.normalizedWidth,
+              * viewport.width,
           viewportDragVector.y - ( viewDragVector.height / viewport.bounds.height )
-              * viewport.normalizedHeight )
+              * viewport.height )
     }
     
     private function view_mouseUpHandler( event : MouseEvent ) : void
@@ -209,9 +209,9 @@ public class MouseNavigationController extends ViewportControllerBase
             else
                 factor = ZOOM_IN_FACTOR
             
-            viewport.normalizedZoomBy( factor,
-                                       view.mouseX / view.width,
-                                       view.mouseY / view.height )
+            viewport.zoomBy( factor,
+                             view.mouseX / view.width,
+                             view.mouseY / view.height )
         }
         
         click = false

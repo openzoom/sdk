@@ -1,7 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  OpenZoom
-//  Copyright (c) 2008, Daniel Gasienica <daniel@gasienica.ch>
+//
+//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,16 +21,11 @@
 package org.openzoom.core
 {
 
-import flash.events.IEventDispatcher;
-
 /**
- * Interface for the Viewport content.
+ * Marker interface for a viewport with a normalized coordinate system.
  */
-public interface IScene extends IEventDispatcher
+public interface INormalizedViewport extends IViewport
 {
-    function get width() : Number
-    function get height() : Number
-    function get aspectRatio() : Number
 }
 
 }

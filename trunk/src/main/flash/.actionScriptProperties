@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="OpenZoomViewer.as" version="3">
+<actionScriptProperties mainApplicationPath="DeepZoomFlashViewer.as" version="3">
 <compiler additionalCompilerArguments="" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="OPENZOOM/target/main/flash/debug" outputFolderPath="bin-debug" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath>
 <compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/libs/flash/gtween"/>
@@ -28,6 +28,7 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
+<application path="DeepZoomFlashViewer.as"/>
 <application path="OpenZoomViewer.as"/>
 <application path="OpenZoomDescriptionGenerator.as"/>
 </applications>

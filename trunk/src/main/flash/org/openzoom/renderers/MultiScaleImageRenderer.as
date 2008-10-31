@@ -23,6 +23,7 @@ package org.openzoom.renderers
 import br.com.stimuli.loading.BulkLoader;
 
 import flash.display.Bitmap;
+import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
@@ -81,7 +82,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     //
     //--------------------------------------------------------------------------
     
-    private var renderingMode : String = RenderingMode.FAST
+    private var renderingMode : String = RenderingMode.SMOOTH
     
     private var descriptor : IMultiScaleImageDescriptor
     private var tileLoader : BulkLoader
@@ -162,8 +163,11 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         {
         	var layer : TileLayer = new TileLayer( descriptor.getLevelAt( i ) )
         	layers[ i ] = layer
-        	layer.width = width
-        	layer.height = height
+        	layer.width = frame.width
+        	layer.height = frame.height
+        	
+//        	trace( frame.width, frame.height )
+//        	trace( "[TileLayer]", layer.level.index, layer.width, layer.height )
         	addChild( layer )
         }	
     }
@@ -173,7 +177,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         var level : int = getHighestSingleTileLevel()
         var url : String = descriptor.getTileURL( level, 0, 0 )
         
-        backgroundLoader.add( url, { id: "background"/*, type: "image"*/ } )
+        backgroundLoader.add( url, { id: "background", type: "image" } )
                         .addEventListener( Event.COMPLETE, backgroundCompleteHandler )
         backgroundLoader.start()
     } 
@@ -221,10 +225,10 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private function loadTiles( level : IMultiScaleImageLevel, area : Rectangle ) : void
     {
-        var minColumn : int = Math.max( 0, Math.floor((( area.left * level.numColumns ) / unscaledWidth )))
-        var maxColumn : int = Math.min( level.numColumns, Math.ceil((( area.right * level.numColumns ) / unscaledWidth )))
-        var minRow    : int = Math.max( 0, Math.floor((( area.top * level.numRows ) / unscaledHeight )))
-        var maxRow    : int = Math.min( level.numRows, Math.ceil((( area.bottom * level.numRows ) / unscaledHeight )))
+        var minColumn : int = Math.max( 0, Math.floor( area.left * level.numColumns / unscaledWidth ))
+        var maxColumn : int = Math.min( level.numColumns, Math.ceil( area.right * level.numColumns / unscaledWidth ))
+        var minRow    : int = Math.max( 0, Math.floor( area.top * level.numRows / unscaledHeight ))
+        var maxRow    : int = Math.min( level.numRows, Math.ceil( area.bottom * level.numRows / unscaledHeight ))
 
         var layer : ITileLayer = getLayer( level.index )
 
@@ -238,7 +242,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
                    continue
                 
                 var url : String = descriptor.getTileURL( tile.level, tile.column, tile.row )
-                tileLoader.add( url, { type: "image", data: tile /*, id: tile.hashCode.toString() */ } )
+                tileLoader.add( url, { type: "image", data: tile } )
                           .addEventListener( Event.COMPLETE, tileCompleteHandler, false, 0, true  )
             }
         }
@@ -260,6 +264,16 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
            tile.bitmap = event.target.loader.content
         
         var layer : ITileLayer = getLayer( tile.level )
+       
+        // TODO: Remove
+//        var l : DisplayObject = DisplayObject( layer )
+//        
+//        trace( "PRE: frame:", frame.width, frame.height, " layer:", l.width, l.height, l.x, l.y, l.scaleX )
+//        
+//        l.x = ( frame.width - l.width ) / 2
+//        l.y = ( frame.height - l.height ) / 2
+//        trace( "POST: frame:", frame.width, frame.height, " layer:", l.width, l.height, l.x, l.y, l.scaleX )
+        
         layer.addTile( tile )
     }
     
@@ -304,6 +318,9 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private function getHighestSingleTileLevel() : int
     {
+    	return 1;
+    	// FIXME
+    	
         var i : int = 0
         var level : IMultiScaleImageLevel
 

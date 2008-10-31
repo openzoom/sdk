@@ -200,8 +200,8 @@ public class KeyboardNavigationController extends ViewportControllerBase
        
     private function keyboardTimerHandler( event : TimerEvent ) : void
     {      
-        var dx : Number = viewport.normalizedWidth * TRANSLATION_FACTOR
-        var dy : Number  = viewport.normalizedHeight * TRANSLATION_FACTOR
+        var dx : Number = viewport.width * TRANSLATION_FACTOR
+        var dy : Number  = viewport.height * TRANSLATION_FACTOR
          
         if( accelerationActivated )
         {
@@ -211,39 +211,39 @@ public class KeyboardNavigationController extends ViewportControllerBase
          
         // panning
         if( upActivated )
-            viewport.normalizedMoveBy( 0, -dy )
+            viewport.moveBy( 0, -dy )
          
         if( downActivated )
-            viewport.normalizedMoveBy( 0, dy )
+            viewport.moveBy( 0, dy )
          
         if( leftActivated )
-            viewport.normalizedMoveBy( -dx, 0 )
+            viewport.moveBy( -dx, 0 )
          
         if( rightActivated )
-            viewport.normalizedMoveBy( dx, 0 )
+            viewport.moveBy( dx, 0 )
          
         // quick navigation
         if( pageUpActivated )
-            viewport.normalizedMoveTo( viewport.normalizedX, 0 )
+            viewport.moveTo( viewport.x, 0 )
          
         if( pageDownActivated )
-            viewport.normalizedMoveTo( viewport.normalizedX, 1 )
+            viewport.moveTo( viewport.x, 1 )
          
         if( homeActivated )
-            viewport.normalizedMoveTo( 0, viewport.normalizedY )
+            viewport.moveTo( 0, viewport.y )
          
         if( endActivated )
-            viewport.normalizedMoveTo( 1, viewport.normalizedY )
+            viewport.moveTo( 1, viewport.y )
          
         if( spaceActivated )
-            viewport.normalizedZoomTo( 1 )
+            viewport.zoomTo( 1 )
          
         // zooming
         if( zoomInActivated )
-            viewport.normalizedZoomBy( ZOOM_IN_FACTOR )
+            viewport.zoomBy( ZOOM_IN_FACTOR )
          
         if( zoomOutActivated )
-            viewport.normalizedZoomBy( ZOOM_OUT_FACTOR )
+            viewport.zoomBy( ZOOM_OUT_FACTOR )
     }    
 }
 

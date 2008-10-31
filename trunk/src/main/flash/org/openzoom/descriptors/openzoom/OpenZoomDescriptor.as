@@ -147,10 +147,11 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
                 uris.push( uri.@template.toString() )
             }
             
-            levels[ int(level.@index.toString()) ] = new OpenZoomLevel( this, level.@index,
-                                                 level.@width, level.@height,
-                                                 level.@columns, level.@rows,
-                                                 uris )
+            var index : int = int(level.@index.toString())
+            levels[ index ] = new OpenZoomLevel( this, level.@index,
+				                                 level.@width, level.@height,
+				                                 level.@columns, level.@rows,
+				                                 uris )
         }
     }
 }
