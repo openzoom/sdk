@@ -466,37 +466,37 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         normalizedZoomTo( _z, 0.5, 0.5, dispatchEvent )
     }
 
-    /**
-     * @private
-     */ 
-    private function normalizeXCoordinate( value : Number ) : Number
-    {
-        return value / scene.width
-    }
-
-    /**
-     * @private
-     */
-    private function normalizeYCoordinate( value : Number ) : Number
-    {
-        return value / scene.height
-    }
-
-    /**
-     * @private
-     */ 
-    private function denormalizeXCoordinate( value : Number ) : Number
-    {
-        return value * scene.width
-    }
-
-    /**
-     * @private
-     */ 
-    private function denormalizeYCoordinate( value : Number ) : Number
-    {
-        return value * scene.height
-    }
+//    /**
+//     * @private
+//     */ 
+//    private function normalizeXCoordinate( value : Number ) : Number
+//    {
+//        return value / scene.width
+//    }
+//
+//    /**
+//     * @private
+//     */
+//    private function normalizeYCoordinate( value : Number ) : Number
+//    {
+//        return value / scene.height
+//    }
+//
+//    /**
+//     * @private
+//     */ 
+//    private function denormalizeXCoordinate( value : Number ) : Number
+//    {
+//        return value * scene.width
+//    }
+//
+//    /**
+//     * @private
+//     */ 
+//    private function denormalizeYCoordinate( value : Number ) : Number
+//    {
+//        return value * scene.height
+//    }
 
     //--------------------------------------------------------------------------
     //
@@ -546,9 +546,22 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
 //        return new Rectangle( x, y, width, height ).intersects( toIntersect )
 //    }
     
+    // TODO: Implement using normalized coordinates
     public function intersection( toIntersect : Rectangle ) : Rectangle
     {
-        return new Rectangle( x, y, width, height ).intersection( toIntersect )
+//    	var normalizedViewport : Rectangle = new Rectangle( normalizedX,
+//    	                                                    normalizedY,
+//    	                                                    normalizedWidth,
+//    	                                                    normalizedHeight )
+//    	var normalizedBounds : Rectangle = new Rectangle( toIntersect.x / scene.width,
+//    	                                                  toIntersect.y / scene.height,
+//    	                                                  toIntersect.width / scene.width,
+//    	                                                  toIntersect.height / scene.height )
+        var sceneViewport : Rectangle = new Rectangle( normalizedX * scene.width,
+                                                       normalizedY * scene.height, 
+                                                       normalizedWidth * scene.width,
+                                                       normalizedHeight * scene.height )
+        return sceneViewport.intersection( toIntersect )
     }
 
     //--------------------------------------------------------------------------
@@ -557,77 +570,77 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     //
     //--------------------------------------------------------------------------  
     
-    //----------------------------------
-    //  x
-    //----------------------------------
-    
-    public function get x() : Number
-    {
-        return normalizedX * scene.width
-    }
-    
-    //----------------------------------
-    //  y
-    //----------------------------------
-    
-    public function get y() : Number
-    {
-       return normalizedY * scene.height
-    }
-    
-    //----------------------------------
-    //  width
-    //----------------------------------
-    
-    public function get width() : Number
-    {
-        return normalizedWidth * scene.width
-    }
-    
-    //----------------------------------
-    //  height
-    //----------------------------------
-    
-    public function get height() : Number
-    {
-        return normalizedHeight * scene.height
-    }
-    
-    //----------------------------------
-    //  left
-    //----------------------------------
-    
-    public function get left() : Number
-    {
-        return x
-    }
-    
-    //----------------------------------
-    //  right
-    //----------------------------------
-    
-    public function get right() : Number
-    {
-        return x + width
-    }
-    
-    //----------------------------------
-    //  top
-    //----------------------------------
-    
-    public function get top() : Number
-    {
-        return y
-    }
-    
-    //----------------------------------
-    //  bottom
-    //----------------------------------
-    
-    public function get bottom() : Number
-    {
-        return y + height
-    }
+//    //----------------------------------
+//    //  x
+//    //----------------------------------
+//    
+//    public function get x() : Number
+//    {
+//        return normalizedX * scene.width
+//    }
+//    
+//    //----------------------------------
+//    //  y
+//    //----------------------------------
+//    
+//    public function get y() : Number
+//    {
+//       return normalizedY * scene.height
+//    }
+//    
+//    //----------------------------------
+//    //  width
+//    //----------------------------------
+//    
+//    public function get width() : Number
+//    {
+//        return normalizedWidth * scene.width
+//    }
+//    
+//    //----------------------------------
+//    //  height
+//    //----------------------------------
+//    
+//    public function get height() : Number
+//    {
+//        return normalizedHeight * scene.height
+//    }
+//    
+//    //----------------------------------
+//    //  left
+//    //----------------------------------
+//    
+//    public function get left() : Number
+//    {
+//        return x
+//    }
+//    
+//    //----------------------------------
+//    //  right
+//    //----------------------------------
+//    
+//    public function get right() : Number
+//    {
+//        return x + width
+//    }
+//    
+//    //----------------------------------
+//    //  top
+//    //----------------------------------
+//    
+//    public function get top() : Number
+//    {
+//        return y
+//    }
+//    
+//    //----------------------------------
+//    //  bottom
+//    //----------------------------------
+//    
+//    public function get bottom() : Number
+//    {
+//        return y + height
+//    }
     
     //----------------------------------
     //  normalizedX
