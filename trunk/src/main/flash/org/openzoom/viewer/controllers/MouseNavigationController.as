@@ -210,8 +210,8 @@ public class MouseNavigationController extends ViewportControllerBase
                 factor = ZOOM_IN_FACTOR
             
             viewport.zoomBy( factor,
-                             view.mouseX / view.width,
-                             view.mouseY / view.height )
+                                       view.mouseX / view.width,
+                                       view.mouseY / view.height )
         }
         
         click = false

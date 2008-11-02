@@ -45,12 +45,112 @@ import flash.geom.Rectangle;
  * Interface a viewport implementation has to provide.
  */
 public interface IViewport extends IEventDispatcher
-{
+{   
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Coordinates
+    //
+    //--------------------------------------------------------------------------
+     
+    //----------------------------------
+    //  x
+    //----------------------------------
+    
+    /**
+     * Horizontal coordinate of the viewport.
+     */
+    function get x() : Number
+    function set x( value : Number ) : void
+    
+    //----------------------------------
+    //  y
+    //----------------------------------
+    
+    /**
+     * Vertical coordinate of the viewport.
+     */
+    function get y() : Number
+    function set y( value : Number ) : void
+    
+    //----------------------------------
+    //  width
+    //----------------------------------
+    
+    /**
+     * Horizontal dimension of the viewport.
+     */
+    function get width() : Number
+    
+    //----------------------------------
+    //  height
+    //----------------------------------
+    
+    /**
+     * Vertical dimension of the viewport.
+     */
+    function get height() : Number
+    
+    //----------------------------------
+    //  top
+    //----------------------------------
+    
+    /**
+     * Coordinate of the upper boundary of the viewport.
+     */
+    function get top() : Number
+    
+    //----------------------------------
+    //  right
+    //----------------------------------
+    
+    /**
+     * Coordinate of the right boundary of the viewport.
+     */    
+    function get right() : Number
+    
+    //----------------------------------
+    //  bottom
+    //----------------------------------
+    
+    /**
+     * Coordinate of the lower boundary of the viewport.
+     */ 
+    function get bottom() : Number
+    
+    //----------------------------------
+    //  left
+    //----------------------------------
+    
+    /**
+     * Coordinate of the left boundary of the viewport.
+     */ 
+    function get left() : Number
+    
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
+     
+    //----------------------------------
+    //  bounds
+    //----------------------------------
+    
+    /**
+     * Bounds of the viewport in viewport coordinates.
+     */
+    function get bounds() : Rectangle
+    function set bounds( value : Rectangle ) : void
+    
+    //----------------------------------
+    //  scene
+    //----------------------------------
+    
+    /**
+     * Size of the content in content coordinates.
+     */ 
+    function get scene() : IScene
+    function set scene( value : IScene ) : void
 
     //----------------------------------
     //  scale
@@ -98,45 +198,22 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
     
-//    /**
-//     * Zoom the viewport to a zoom level z.
-//     * @param originX Horizontal coordinate of the zooming center in scene coordinates
-//     * @param originY Vertical coordinate of the zooming center in scene coordinates
-//     */
-//    function zoomTo( z : Number, originX : Number = NaN, originY : Number = NaN,
-//                     dispatchChangeEvent : Boolean = true ) : void
-//    
-//    /**
-//     * Zoom the viewport by a factor.
-//     * @param factor The factor by which the z coordinate will be multiplied.
-//     * @param originX Horizontal coordinate of the zooming center in scene coordinates
-//     * @param originY Vertical coordinate of the zooming center in scene coordinates
-//     */
-//    function zoomBy( factor : Number, originX : Number = NaN, originY : Number = NaN,
-//                     dispatchChangeEvent : Boolean = true ) : void
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Zooming (normalized)
-    //
-    //--------------------------------------------------------------------------
-    
     /**
      * Zoom the viewport to a zoom level z.
-     * @param originX Normalized horizontal coordinate of the zooming center
-     * @param originY Normalized vertical coordinate of the zooming center
+     * @param originX Horizontal coordinate of the zooming center
+     * @param originY Vertical coordinate of the zooming center
      */
-    function normalizedZoomTo( z : Number, originX : Number = 0.5, originY : Number = 0.5,
-                               dispatchChangeEvent : Boolean = true ) : void
+    function zoomTo( z : Number, originX : Number = 0.5, originY : Number = 0.5,
+                     dispatchChangeEvent : Boolean = true ) : void
     
     /**
      * Zoom the viewport by a factor.
-     * @param factor The scale factor for the zoom.
-     * @param originX Normalized horizontal coordinate of the zooming center
-     * @param originY Normalized vertical coordinate of the zooming center
+     * @param factor Scale factor for the zoom.
+     * @param originX Horizontal coordinate of the zooming center
+     * @param originY Vertical coordinate of the zooming center
      */
-    function normalizedZoomBy( factor : Number, originX : Number = 0.5, originY : Number = 0.5,
-                               dispatchChangeEvent : Boolean = true ) : void
+    function zoomBy( factor : Number, originX : Number = 0.5, originY : Number = 0.5,
+                     dispatchChangeEvent : Boolean = true ) : void
     
     //--------------------------------------------------------------------------
     //
@@ -144,233 +221,53 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
     
-//    /**
-//     * Move the viewport.
-//     * @param x Horizontal coordinate in the scene coordinate system.
-//     * @param y Vertical coordinate in the scene coordinate system.
-//     */
-//    function moveTo( x : Number, y : Number,
-//                     dispatchChangeEvent : Boolean = true ) : void
-//    
-//    /**
-//     * Move the viewport.
-//     * @param dx Horizontal translation in the scene coordinate system.
-//     * @param dy Vertical translation in the scene coordinate system.
-//     */
-//    function moveBy( dx : Number, dy : Number,
-//                     dispatchChangeEvent : Boolean = true ) : void
-//    
-//    /**
-//     * Move the viewport center.
-//     * @param x Horizontal coordinate in the scene coordinate system.
-//     * @param y Vertical coordinate in the scene coordinate system.
-//     */                 
-//    function moveCenterTo( x : Number, y : Number,
-//                           dispatchChangeEvent : Boolean = true ) : void
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Panning (normalized)
-    //
-    //--------------------------------------------------------------------------
+    /**
+     * Move the viewport.
+     * @param x Horizontal coordinate
+     * @param y Vertical coordinate
+     */
+    function moveTo( x : Number, y : Number,
+                     dispatchChangeEvent : Boolean = true ) : void
     
     /**
      * Move the viewport.
-     * @param x Normalized horizontal coordinate
-     * @param y Normalized vertical coordinate
+     * @param dx Horizontal translation delta
+     * @param dy Vertical translation delta
      */
-    function normalizedMoveTo( x : Number, y : Number,
-                               dispatchChangeEvent : Boolean = true ) : void
-    
-    /**
-     * Move the viewport.
-     * @param dx Normalized horizontal delta translation
-     * @param dy Normalized vertical delta translation
-     */
-    function normalizedMoveBy( dx : Number, dy : Number,
-                               dispatchChangeEvent : Boolean = true ) : void
+    function moveBy( dx : Number, dy : Number,
+                     dispatchChangeEvent : Boolean = true ) : void
     
     /**
      * Move the viewport center.
-     * @param x Normalized x (horizontal) coordinate
-     * @param y Normalized y (vertical) coordinate
+     * @param x Horizontal coordinate
+     * @param y Vertical coordinate
      */                 
-    function normalizedMoveCenterTo( x : Number, y : Number,
-                                     dispatchChangeEvent : Boolean = true ) : void
+    function moveCenterTo( x : Number, y : Number,
+                           dispatchChangeEvent : Boolean = true ) : void
     
     //--------------------------------------------------------------------------
     //
     //  Methods: Navigation
     //
     //--------------------------------------------------------------------------
-//    
-//    /**
-//     * Go to a point in the scene.
-//     * @param x Horizontal coordinate in the scene coordinate system.
-//     * @param y Vertical coordinate in the scene coordinate system.
-//     * @param z Zoom level
-//     */
-//    function goto( x : Number, y : Number, z : Number,
-//                   dispatchChangeEvent : Boolean = true ) : void
-    
-    /**
-     * Show an area of the scene inside the viewport.
-     * 
-     * @param area Box that describes the area in sceen coordinates
-     *             to be shown in the viewport.
-     * @param scale scale a which the area is beeing displayed.
-     */             
-    function showArea( area : Rectangle, scale : Number = 1.0,
-                       dispatchChangeEvent : Boolean = true ) : void
-
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Navigation (normalized)
-    //
-    //--------------------------------------------------------------------------
     
     /**
      * Go to a point in the scene.
-     * @param x Normalized horizontal coordinate
-     * @param y Normalized vertical coordinate
+     * @param x Horizontal coordinate
+     * @param y Vertical coordinate
      * @param z Zoom level
      */
-    function normalizedGoto( x : Number, y : Number, z : Number,
-                             dispatchChangeEvent : Boolean = true ) : void
-                             
-    //--------------------------------------------------------------------------
-    //
-    //  Properties: Content
-    //
-    //--------------------------------------------------------------------------
-    
-    //----------------------------------
-    //  content
-    //----------------------------------
-    
+    function goto( x : Number, y : Number, z : Number,
+                   dispatchChangeEvent : Boolean = true ) : void
+                   
     /**
-     * Size of the content in content coordinates.
-     */ 
-    function get scene() : IScene
-    function set scene( value : IScene ) : void
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Properties: Normalized coordinates
-    //
-    //--------------------------------------------------------------------------
-     
-    //----------------------------------
-    //  normalizedX
-    //----------------------------------
-    
-    /**
-     * Normalized horizontal coordinate of the viewport.
-     * If z > 1 and the value is 0 the viewport is at
-     * the left boundary of the content.
-     */
-    function get normalizedX() : Number
-    function set normalizedX( value : Number ) : void
-    
-    //----------------------------------
-    //  normalizedY
-    //----------------------------------
-    
-    /**
-     * Normalized vertical coordinate of the viewport.
-     * If z > 1 and the value is 0 the viewport is at
-     * the top boundary of the content.
-     */
-    function get normalizedY() : Number
-    function set normalizedY( value : Number ) : void
-    
-    //----------------------------------
-    //  normalizedWidth
-    //----------------------------------
-    
-    /**
-     * Normalized horizontal dimension of the viewport.
-     * The viewport has the width of the content at value 1
-     * if aspectRatio > 1.
-     */
-    function get normalizedWidth() : Number
-    
-    //----------------------------------
-    //  normalizedHeight
-    //----------------------------------
-    
-    /**
-     * Normalized vertical dimension of the viewport.
-     * The viewport has the height of the content at value 1
-     * if aspectRatio < 1.
-     */
-    function get normalizedHeight() : Number
-    
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Properties: Coordinates in content coordinate system
-    //
-    //--------------------------------------------------------------------------
-    
-//    //----------------------------------
-//    //  x
-//    //----------------------------------
-//    
-//    function get x() : Number
-//    
-//    //----------------------------------
-//    //  y
-//    //----------------------------------
-//    
-//    function get y() : Number
-//    
-//    //----------------------------------
-//    //  width
-//    //----------------------------------
-//    
-//    function get width() : Number
-//    
-//    //----------------------------------
-//    //  height
-//    //----------------------------------
-//     
-//    function get height() : Number
-    
-//    //----------------------------------
-//    //  top
-//    //----------------------------------
-//    
-//    function get top() : Number
-//    
-//    //----------------------------------
-//    //  right
-//    //----------------------------------
-//    
-//    function get right() : Number
-//    
-//    //----------------------------------
-//    //  bottom
-//    //----------------------------------
-//    
-//    function get bottom() : Number
-//    
-//    //----------------------------------
-//    //  left
-//    //----------------------------------
-//    
-//    function get left() : Number
-     
-    //----------------------------------
-    //  bounds
-    //----------------------------------
-    
-    /**
-     * Bounds of the viewport in viewport coordinates.
-     */
-    function get bounds() : Rectangle
-    function set bounds( value : Rectangle ) : void
+     * Show an area of the scene inside the viewport.
+     * 
+     * @param area Area to be shown in the viewport.
+     * @param scale Scale at which the area is beeing displayed.
+     */             
+    function showArea( area : Rectangle, scale : Number = 1.0,
+                       dispatchChangeEvent : Boolean = true ) : void
     
     //--------------------------------------------------------------------------
     //
@@ -396,7 +293,7 @@ public interface IViewport extends IEventDispatcher
      * @return true if this Viewport object contains the specified
      * point; otherwise false. 
      */ 
-//    function contains( x : Number, y : Number ) : Boolean
+    function contains( x : Number, y : Number ) : Boolean
         
     /**
      * Determines whether the object specified in the toIntersect parameter
@@ -409,7 +306,7 @@ public interface IViewport extends IEventDispatcher
      * @return true if the specified object intersects with this Viewport
      * object; otherwise false. 
      */
-//    function intersects( toIntersect : Rectangle ) : Boolean
+    function intersects( toIntersect : Rectangle ) : Boolean
     
     /**
      * If the Rectangle object specified in the toIntersect parameter intersects

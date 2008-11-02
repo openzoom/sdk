@@ -27,9 +27,11 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.core.INormalizedViewport;
+import org.openzoom.core.ISceneViewport;
 import org.openzoom.core.IViewportController;
 import org.openzoom.core.NormalizedViewport;
 import org.openzoom.core.Scene;
+import org.openzoom.core.SceneViewport;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.renderers.MultiScaleImageRenderer;
 import org.openzoom.viewer.controllers.KeyboardNavigationController;
@@ -173,45 +175,45 @@ public class MultiScaleImageViewer extends Sprite
     
     public function showAll() : void
     {
-        viewport.normalizedZoomTo( 1 )
+        viewport.zoomTo( 1 )
     }
     
     // zooming
     public function zoomIn() : void
     {
         var origin : Point = getMouseOrigin()
-        viewport.normalizedZoomBy( ZOOM_IN_FACTOR, origin.x, origin.y )
+        viewport.zoomBy( ZOOM_IN_FACTOR, origin.x, origin.y )
     }
     
     public function zoomOut() : void
     {
         var origin : Point = getMouseOrigin()
-        viewport.normalizedZoomBy( ZOOM_OUT_FACTOR, origin.x, origin.y )
+        viewport.zoomBy( ZOOM_OUT_FACTOR, origin.x, origin.y )
     }
     
     // panning
     public function moveUp() : void
     {
-        var dy : Number = viewport.normalizedHeight * TRANSLATION_FACTOR
-        viewport.normalizedMoveBy( 0, -dy )
+        var dy : Number = viewport.height * TRANSLATION_FACTOR
+        viewport.moveBy( 0, -dy )
     }
     
     public function moveDown() : void
     {
-        var dy : Number = viewport.normalizedHeight * TRANSLATION_FACTOR
-        viewport.normalizedMoveBy( 0, dy )
+        var dy : Number = viewport.height * TRANSLATION_FACTOR
+        viewport.moveBy( 0, dy )
     }
     
     public function moveLeft() : void
     {
-        var dx : Number = viewport.normalizedWidth * TRANSLATION_FACTOR
-        viewport.normalizedMoveBy( -dx, 0 )
+        var dx : Number = viewport.width * TRANSLATION_FACTOR
+        viewport.moveBy( -dx, 0 )
     }
     
     public function moveRight() : void
     {
-        var dx : Number = viewport.normalizedWidth * TRANSLATION_FACTOR
-        viewport.normalizedMoveBy( dx, 0 )
+        var dx : Number = viewport.width * TRANSLATION_FACTOR
+        viewport.moveBy( dx, 0 )
     }
     
     public function setSize( width : Number, height : Number ) : void
