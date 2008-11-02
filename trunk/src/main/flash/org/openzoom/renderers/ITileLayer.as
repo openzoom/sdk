@@ -23,7 +23,7 @@ package org.openzoom.renderers
 import org.openzoom.descriptors.IMultiScaleImageLevel;
 	
 /**
- * Interface a tile layer has to provide.
+ * Tile layer interface.
  */
 public interface ITileLayer
 {

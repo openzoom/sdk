@@ -49,10 +49,10 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
    
-    private static const DEFAULT_MIN_ZOOM   : Number = 0.01
-    private static const DEFAULT_MAX_ZOOM   : Number = 5000
+    private static const DEFAULT_MIN_ZOOM   : Number = 1
+    private static const DEFAULT_MAX_ZOOM   : Number = 50000000
     
-    private static const DEFAULT_DIMENSION  : Number = 2000
+    private static const DEFAULT_DIMENSION  : Number = 20000
     
     private static const ZOOM_IN_FACTOR     : Number = 2.0
     private static const ZOOM_OUT_FACTOR    : Number = 0.3
@@ -86,6 +86,7 @@ public class MultiScaleImageViewer extends Sprite
         var height : Number = DEFAULT_DIMENSION / aspectRatio
         
         image = createImage( descriptor, width, height )
+//        image = createImage( descriptor, descriptor.width / 2048, descriptor.height / 2048 )
         var bounds : Rectangle = image.getBounds( this )
         viewport.scene = new Scene( bounds.width, bounds.height )
         addChild( image )
@@ -175,7 +176,7 @@ public class MultiScaleImageViewer extends Sprite
     
     public function showAll() : void
     {
-        viewport.zoomTo( 1 )
+        viewport.fitToScene()
     }
     
     // zooming

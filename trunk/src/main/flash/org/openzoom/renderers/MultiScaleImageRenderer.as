@@ -161,13 +161,13 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
     {
         for( var i : int = 0; i < descriptor.numLevels; i++ )
         {
-        	var layer : TileLayer = new TileLayer( descriptor.getLevelAt( i ) )
+        	var layer : TileLayer = new TileLayer( frame.width, frame.height, descriptor.getLevelAt( i ))
         	layers[ i ] = layer
-        	layer.width = frame.width
-        	layer.height = frame.height
         	
-//        	trace( frame.width, frame.height )
-//        	trace( "[TileLayer]", layer.level.index, layer.width, layer.height )
+        	// FIXME: Very large layer dimensions cause problems…
+//        	layer.width = width
+//        	layer.height = height
+        	
         	addChild( layer )
         }	
     }
@@ -189,8 +189,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
                                                           bounds.y / viewport.scene.height,
                                                           bounds.width / viewport.scene.width,
                                                           bounds.height / viewport.scene.height )
-        var visibleArea : Rectangle = viewport.intersection( bounds )
-//      var visibleArea : Rectangle = viewport.intersection( normalizedBounds )
+        var visibleArea : Rectangle = viewport.intersection( normalizedBounds )
         
         var level : IMultiScaleImageLevel = descriptor.getMinimumLevelForSize( width, height )
         
@@ -199,23 +198,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
         
         
         for( var i : int = level.index + 1; i < descriptor.numLevels; i++ )
-        {
             getLayer( i ).removeAllTiles()
-        	
-//        	Tweener.addTween( layer,
-//        	                  {
-//        	                      alpha: 0,
-//        	                      time: 1,
-//        	                      onComplete:
-//        	                      function() : void
-//        	                      {
-//        	                          layer.removeAllTiles()
-//        	                          layer.alpha = 1
-//        	                      }
-//        	                   }
-//        	                 )
-        	                       
-        }
+        
         
         if( renderingMode == RenderingMode.SMOOTH )
         {
@@ -269,16 +253,6 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
            tile.bitmap = event.target.loader.content
         
         var layer : ITileLayer = getLayer( tile.level )
-       
-        // TODO: Remove
-//        var l : DisplayObject = DisplayObject( layer )
-//        
-//        trace( "PRE: frame:", frame.width, frame.height, " layer:", l.width, l.height, l.x, l.y, l.scaleX )
-//        
-//        l.x = ( frame.width - l.width ) / 2
-//        l.y = ( frame.height - l.height ) / 2
-//        trace( "POST: frame:", frame.width, frame.height, " layer:", l.width, l.height, l.x, l.y, l.scaleX )
-        
         layer.addTile( tile )
     }
     

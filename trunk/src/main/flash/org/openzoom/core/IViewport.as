@@ -214,6 +214,11 @@ public interface IViewport extends IEventDispatcher
      */
     function zoomBy( factor : Number, originX : Number = 0.5, originY : Number = 0.5,
                      dispatchChangeEvent : Boolean = true ) : void
+                     
+    /**
+     * Fit entire scene into the viewport.
+     */ 
+    function fitToScene() : void
     
     //--------------------------------------------------------------------------
     //

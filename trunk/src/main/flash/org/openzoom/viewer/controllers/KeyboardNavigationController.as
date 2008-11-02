@@ -47,8 +47,8 @@ public class KeyboardNavigationController extends ViewportControllerBase
    
     private static const KEYBOARD_REFRESH_DELAY : Number = 60 // milliseconds
    
-    private static const ZOOM_IN_FACTOR         : Number = 1.6
-    private static const ZOOM_OUT_FACTOR        : Number = 0.7
+    private static const ZOOM_IN_FACTOR         : Number = 2.0
+    private static const ZOOM_OUT_FACTOR        : Number = 0.3
     private static const ACCELERATION_FACTOR    : Number = 15
     private static const TRANSLATION_FACTOR     : Number = 0.05
    
@@ -199,9 +199,9 @@ public class KeyboardNavigationController extends ViewportControllerBase
     }
        
     private function keyboardTimerHandler( event : TimerEvent ) : void
-    {      
+    {
         var dx : Number = viewport.width * TRANSLATION_FACTOR
-        var dy : Number  = viewport.height * TRANSLATION_FACTOR
+        var dy : Number = viewport.height * TRANSLATION_FACTOR
          
         if( accelerationActivated )
         {

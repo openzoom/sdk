@@ -189,11 +189,16 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     //  Methods: Zooming
     //
     //--------------------------------------------------------------------------
+    
+    public function fitToScene() : void
+    {
+    	zoomTo( 1 )
+    }
 
     public function zoomTo( z : Number,
-                                      originX : Number = 0.5,
-                                      originY : Number = 0.5,
-                                      dispatchChangeEvent : Boolean = true ) : void
+                            originX : Number = 0.5,
+                            originY : Number = 0.5,
+                            dispatchChangeEvent : Boolean = true ) : void
     {
         var oldZ : Number = this.z
 
@@ -228,8 +233,8 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     }
 
     public function zoomBy( factor : Number,
-                                      originX : Number = 0.5, originY : Number = 0.5,
-                                      dispatchChangeEvent : Boolean = true ) : void
+                            originX : Number = 0.5, originY : Number = 0.5,
+                            dispatchChangeEvent : Boolean = true ) : void
     {
         zoomTo( z * factor, originX, originY, dispatchChangeEvent )
     }
@@ -241,7 +246,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     //--------------------------------------------------------------------------
 
     public function moveTo( x : Number, y : Number,
-                                      dispatchChangeEvent : Boolean = true ) : void
+                            dispatchChangeEvent : Boolean = true ) : void
     {
         // store the given (normalized) coordinates
         _x = x
@@ -260,7 +265,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
            // align it with the right margin
            if( ( _x + _width * ( 1 - BOUNDS_TOLERANCE ) ) > 1 )
                _x = 1 - _width * ( 1 - BOUNDS_TOLERANCE )      
-         }
+        }
         else
         {
             // viewport is wider than content:
@@ -294,10 +299,10 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     }
 
 
-    public function moveBy( x : Number, y : Number,
-                                      dispatchChangeEvent : Boolean = true  ) : void
+    public function moveBy( dx : Number, dy : Number,
+                            dispatchChangeEvent : Boolean = true  ) : void
     {
-        moveTo( x + x, y + y, dispatchChangeEvent )
+        moveTo( x + dx, y + dy, dispatchChangeEvent )
     }
 
     public function goto( x : Number, y : Number, z : Number,
@@ -309,7 +314,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
 
 
     public function moveCenterTo( x : Number, y : Number,
-                                            dispatchChangeEvent : Boolean = true ) : void
+                                  dispatchChangeEvent : Boolean = true ) : void
     {
         moveOriginTo( x, y, 0.5, 0.5, dispatchChangeEvent )
     }
@@ -448,31 +453,27 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     //
     //--------------------------------------------------------------------------
     
-    // TODO: Implement using normalized coordinates
     public function contains( x : Number, y : Number ) : Boolean
     {
-        return ( x >= left * scene.width ) && ( x <= right * scene.width )
-               && ( y >= top * scene.height ) && ( y <= bottom * scene.height )
+        return ( x >= left ) && ( x <= right ) && ( y >= top ) && ( y <= bottom )
     }
     
-    // TODO: Implement using normalized coordinates
     public function intersects( toIntersect : Rectangle ) : Boolean
     {
     	var sceneViewport : Rectangle = new Rectangle( x * scene.width,
                                                        y * scene.height, 
                                                        width * scene.width,
                                                        height * scene.height )
-        return sceneViewport.intersects( toIntersect )
+        return sceneViewport.intersects( denormalizeRectangle( toIntersect ))
     }
     
-    // TODO: Implement using normalized coordinates
     public function intersection( toIntersect : Rectangle ) : Rectangle
     {
         var sceneViewport : Rectangle = new Rectangle( x * scene.width,
                                                        y * scene.height, 
                                                        width * scene.width,
                                                        height * scene.height )
-        return sceneViewport.intersection( toIntersect )
+        return sceneViewport.intersection( denormalizeRectangle( toIntersect ))
     }
 
     //--------------------------------------------------------------------------
@@ -586,6 +587,84 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     public function dispatchChangeCompleteEvent() : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.CHANGE_COMPLETE ) )
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Coordinate conversion
+    //
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @private
+     */ 
+    private function normalizeX( value : Number ) : Number
+    {
+        return value / scene.width
+    }
+
+    /**
+     * @private
+     */
+    private function normalizeY( value : Number ) : Number
+    {
+        return value / scene.height
+    }
+    
+    /**
+     * @private
+     */
+    private function normalizeRectangle( value : Rectangle ) : Rectangle
+    {
+        return new Rectangle( normalizeX( value.x ),
+                              normalizeY( value.y ),
+                              normalizeX( value.width ),
+                              normalizeY( value.height ))
+    }
+    
+    /**
+     * @private
+     */
+    private function normalizePoint( value : Point ) : Point
+    {
+        return new Point( normalizeX( value.x ),
+                          normalizeY( value.y ))
+    }
+    
+    /**
+     * @private
+     */ 
+    private function denormalizeX( value : Number ) : Number
+    {
+        return value * scene.width
+    }
+
+    /**
+     * @private
+     */
+    private function denormalizeY( value : Number ) : Number
+    {
+        return value * scene.height
+    }
+    
+    /**
+     * @private
+     */
+    private function denormalizePoint( value : Point ) : Point
+    {
+        return new Point( denormalizeX( value.x ),
+                          denormalizeY( value.y ))
+    }
+    
+    /**
+     * @private
+     */
+    private function denormalizeRectangle( value : Rectangle ) : Rectangle
+    {
+        return new Rectangle( denormalizeX( value.x ),
+                              denormalizeY( value.y ),
+                              denormalizeX( value.width ),
+                              denormalizeY( value.height ))
     }
     
     //--------------------------------------------------------------------------

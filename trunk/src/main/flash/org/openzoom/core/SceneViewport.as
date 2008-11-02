@@ -298,7 +298,12 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
     //  Methods: Zooming (content coordinate system)
     //
     //--------------------------------------------------------------------------
-
+	
+	public function fitToScene() : void
+	{
+        viewport.fitToScene()
+	}
+    
     public function zoomTo( z : Number,
                             originX : Number = NaN,
                             originY : Number = NaN,

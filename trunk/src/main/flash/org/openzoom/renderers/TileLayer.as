@@ -53,10 +53,12 @@ public class TileLayer extends Sprite implements ITileLayer
     /**
      * Constructor.
      */
-    public function TileLayer( level : IMultiScaleImageLevel )
+    public function TileLayer( width : Number, height : Number, level : IMultiScaleImageLevel )
     {
         _level = level
-        frame = createFrame( level.width, level.height )
+        scaleXFactor = width  / level.width
+        scaleYFactor = height / level.height
+        frame = createFrame( width, height )
     }
     
     //--------------------------------------------------------------------------
@@ -68,6 +70,8 @@ public class TileLayer extends Sprite implements ITileLayer
     // TODO: Consider using Sprite because of event propagation.
     private var frame : Shape
     private var data : IMultiScaleImageLevel
+    private var scaleXFactor : Number = 1
+    private var scaleYFactor : Number = 1
     
     private var tiles : Dictionary = new Dictionary( true )
     
@@ -114,8 +118,13 @@ public class TileLayer extends Sprite implements ITileLayer
         var tileBitmap : Bitmap = tile.bitmap 
 
         var position : Point = level.getTilePosition( tile.column, tile.row )
-        tileBitmap.x = position.x
-        tileBitmap.y = position.y
+        
+        tileBitmap.scaleX = scaleXFactor
+        tileBitmap.scaleY = scaleYFactor
+        
+        tileBitmap.x = position.x * scaleXFactor
+        tileBitmap.y = position.y * scaleYFactor
+        
     
         tileBitmap.smoothing = true
         tileBitmap.alpha = 0
