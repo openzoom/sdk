@@ -126,17 +126,17 @@ public class ViewTransformationController extends ViewportControllerBase
     
     private function transformView( duration : Number ) : void
     {
-    	var transition : String = DEFAULT_TRANSFORMATION_EASING
-        var newWidth  : Number = viewport.bounds.width  / viewport.width
-        var newHeight : Number = viewport.bounds.height / viewport.height
-        var newX      : Number = -viewport.x * newWidth
-        var newY      : Number = -viewport.y * newHeight
+        var transition : String = DEFAULT_TRANSFORMATION_EASING
+        var newWidth  : Number = viewport.bounds.width  / viewport.normalizedWidth
+        var newHeight : Number = viewport.bounds.height / viewport.normalizedHeight
+        var newX      : Number = -viewport.normalizedX * newWidth
+        var newY      : Number = -viewport.normalizedY * newHeight
         
         // FIXME
 //        if( duration != 0 && ( newWidth > CRITICAL_DIMENSION || newHeight > CRITICAL_DIMENSION ))
 //        {
-//        	duration = FALLBACK_TRANSFORMATION_DURATION
-//        	transition = FALLBACK_TRANSFORMATION_EASING
+//          duration = FALLBACK_TRANSFORMATION_DURATION
+//          transition = FALLBACK_TRANSFORMATION_EASING
 //        }
         
         Tweener.addTween(

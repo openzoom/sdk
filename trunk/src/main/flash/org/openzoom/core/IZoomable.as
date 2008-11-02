@@ -22,8 +22,8 @@ package org.openzoom.core
 
 public interface IZoomable
 {
-    function get viewport() : IViewport
-    function set viewport( value : IViewport ) : void
+    function get viewport() : INormalizedViewport
+    function set viewport( value : INormalizedViewport ) : void
 }
 
 }

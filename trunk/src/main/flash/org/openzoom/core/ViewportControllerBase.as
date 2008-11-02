@@ -29,7 +29,7 @@ package org.openzoom.core
 import flash.display.DisplayObject;
 import flash.events.Event;
 
-import org.openzoom.core.IViewport;
+import org.openzoom.core.INormalizedViewport;
 import org.openzoom.core.IViewportController;
 
 /**
@@ -93,14 +93,14 @@ public class ViewportControllerBase implements IViewportController
     //  viewport
     //----------------------------------
 
-    private var _viewport : IViewport
+    private var _viewport : INormalizedViewport
         
-    public function get viewport() : IViewport
+    public function get viewport() : INormalizedViewport
     {
         return _viewport
     }
     
-    public function set viewport( value : IViewport ) : void
+    public function set viewport( value : INormalizedViewport ) : void
     {
         _viewport = value
     }

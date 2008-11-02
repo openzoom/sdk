@@ -23,14 +23,14 @@ package org.openzoom.renderers
 import br.com.stimuli.loading.BulkLoader;
 
 import flash.display.Bitmap;
-import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Rectangle;
 
-import org.openzoom.core.IViewport;
+import org.openzoom.core.INormalizedViewport;
+import org.openzoom.core.IScene;
 import org.openzoom.core.IZoomable;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.descriptors.IMultiScaleImageLevel;
@@ -40,7 +40,7 @@ import org.openzoom.utils.math.clamp;
 /**
  * Generic renderer for multi-scale images.
  */
-public class MultiScaleImageRenderer extends Sprite implements IZoomable
+public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
 {
     //--------------------------------------------------------------------------
     //
@@ -98,14 +98,14 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     //
     //--------------------------------------------------------------------------
     
-    private var _viewport : IViewport
+    private var _viewport : INormalizedViewport
     
-    public function get viewport() : IViewport
+    public function get viewport() : INormalizedViewport
     {
         return _viewport
     }
     
-    public function set viewport( value : IViewport ) : void
+    public function set viewport( value : INormalizedViewport ) : void
     {
         if( viewport === value )
             return
@@ -185,7 +185,12 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     private function updateDisplayList() : void
     {
         var bounds : Rectangle = new Rectangle( 0, 0, unscaledWidth, unscaledHeight )
+        var normalizedBounds : Rectangle = new Rectangle( bounds.x / viewport.scene.width,
+                                                          bounds.y / viewport.scene.height,
+                                                          bounds.width / viewport.scene.width,
+                                                          bounds.height / viewport.scene.height )
         var visibleArea : Rectangle = viewport.intersection( bounds )
+//      var visibleArea : Rectangle = viewport.intersection( normalizedBounds )
         
         var level : IMultiScaleImageLevel = descriptor.getMinimumLevelForSize( width, height )
         

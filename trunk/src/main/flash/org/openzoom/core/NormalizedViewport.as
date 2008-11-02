@@ -45,7 +45,7 @@ import org.openzoom.utils.math.clamp;
 [Event(name="change", type="org.openzoom.events.ViewportEvent")]
 [Event(name="changeComplete", type="org.openzoom.events.ViewportEvent")]
 
-public class Viewport extends EventDispatcher implements IViewport
+public class NormalizedViewport extends EventDispatcher implements INormalizedViewport
 {
     //--------------------------------------------------------------------------
     //
@@ -66,7 +66,7 @@ public class Viewport extends EventDispatcher implements IViewport
     /**
      * Constructor.
      */
-    public function Viewport() : void
+    public function NormalizedViewport() : void
     {
     }
 
@@ -133,8 +133,8 @@ public class Viewport extends EventDispatcher implements IViewport
     public function get scale() : Number
     {
         // TODO: Cache
-        var topLeft : Point = localToViewport( _content.topLeft )
-        var bottomRight : Point = localToViewport( _content.bottomRight )
+        var topLeft : Point = sceneToLocal( _content.topLeft )
+        var bottomRight : Point = sceneToLocal( _content.bottomRight )
 
         // Pick one, should be the same =)
         var distanceX : Number = bottomRight.x - topLeft.x
@@ -192,23 +192,23 @@ public class Viewport extends EventDispatcher implements IViewport
     //
     //--------------------------------------------------------------------------
 
-    public function zoomTo( z : Number, originX : Number = NaN, originY : Number = NaN,
-                            dispatchEvent : Boolean = true ) : void
-    {
-        normalizedZoomTo( z,
-                          isNaN( originX ) ? 0.5 : normalizeXCoordinate( originX ),
-                          isNaN( originY ) ? 0.5 : normalizeYCoordinate( originY ),
-                          dispatchEvent )
-    }
-
-    public function zoomBy( factor : Number, originX : Number = NaN,
-                            originY : Number = NaN, dispatchEvent : Boolean = true ) : void
-    {
-        normalizedZoomBy( factor,
-                          isNaN( originX ) ? 0.5 : normalizeXCoordinate( originX ),
-                          isNaN( originY ) ? 0.5 : normalizeYCoordinate( originY ),
-                          dispatchEvent )
-    }
+//    public function zoomTo( z : Number, originX : Number = NaN, originY : Number = NaN,
+//                            dispatchEvent : Boolean = true ) : void
+//    {
+//        normalizedZoomTo( z,
+//                          isNaN( originX ) ? 0.5 : normalizeXCoordinate( originX ),
+//                          isNaN( originY ) ? 0.5 : normalizeYCoordinate( originY ),
+//                          dispatchEvent )
+//    }
+//
+//    public function zoomBy( factor : Number, originX : Number = NaN,
+//                            originY : Number = NaN, dispatchEvent : Boolean = true ) : void
+//    {
+//        normalizedZoomBy( factor,
+//                          isNaN( originX ) ? 0.5 : normalizeXCoordinate( originX ),
+//                          isNaN( originY ) ? 0.5 : normalizeYCoordinate( originY ),
+//                          dispatchEvent )
+//    }
 
     //--------------------------------------------------------------------------
     //
@@ -266,13 +266,13 @@ public class Viewport extends EventDispatcher implements IViewport
     //
     //--------------------------------------------------------------------------
 
-    public function moveTo( x : Number, y : Number,
-                            dispatchChangeEvent : Boolean = true ) : void
-    {
-        normalizedMoveTo( normalizeXCoordinate( x ),
-                          normalizeYCoordinate( y ),
-                          dispatchChangeEvent )
-    }
+//    public function moveTo( x : Number, y : Number,
+//                            dispatchChangeEvent : Boolean = true ) : void
+//    {
+//        normalizedMoveTo( normalizeXCoordinate( x ),
+//                          normalizeYCoordinate( y ),
+//                          dispatchChangeEvent )
+//    }
 
     public function normalizedMoveTo( x : Number, y : Number,
                                       dispatchChangeEvent : Boolean = true ) : void
@@ -341,13 +341,13 @@ public class Viewport extends EventDispatcher implements IViewport
         normalizedMoveTo( normalizedX + x, normalizedY + y, dispatchChangeEvent )
     }
 
-    public function goto( x : Number, y : Number, z : Number,
-                          dispatchChangeEvent : Boolean = true ) : void
-    {
-        normalizedGoto( normalizeXCoordinate( x ),
-                        normalizeYCoordinate( y ),
-                        z, dispatchChangeEvent )
-    }
+//    public function goto( x : Number, y : Number, z : Number,
+//                          dispatchChangeEvent : Boolean = true ) : void
+//    {
+//        normalizedGoto( normalizeXCoordinate( x ),
+//                        normalizeYCoordinate( y ),
+//                        z, dispatchChangeEvent )
+//    }
 
     public function normalizedGoto( x : Number, y : Number, z : Number,
                                     dispatchChangeEvent : Boolean = true ) : void
@@ -356,13 +356,13 @@ public class Viewport extends EventDispatcher implements IViewport
         normalizedMoveTo( x, y, dispatchChangeEvent )
     }
 
-    public function moveCenterTo( x : Number, y : Number,
-                                  dispatchChangeEvent : Boolean = true ) : void
-    {
-        normalizedMoveCenterTo( normalizeXCoordinate( x ),
-                                normalizeYCoordinate( y ),
-                                dispatchChangeEvent )
-    }
+//    public function moveCenterTo( x : Number, y : Number,
+//                                  dispatchChangeEvent : Boolean = true ) : void
+//    {
+//        normalizedMoveCenterTo( normalizeXCoordinate( x ),
+//                                normalizeYCoordinate( y ),
+//                                dispatchChangeEvent )
+//    }
 
     public function normalizedMoveCenterTo( x : Number, y : Number,
                                             dispatchChangeEvent : Boolean = true ) : void
@@ -414,19 +414,19 @@ public class Viewport extends EventDispatcher implements IViewport
     //
     //--------------------------------------------------------------------------
 
-    public function viewportToLocal( point : Point ) : Point
+    public function localToScene( point : Point ) : Point
     {
         var p : Point = new Point()
-        p.x = x + ( point.x / _bounds.width ) * width
-        p.y = y + ( point.y / _bounds.height ) * height
+        p.x = ( normalizedX  * scene.width ) + ( point.x / _bounds.width )  * ( normalizedWidth  * scene.width )
+        p.y = ( normalizedY  * scene.height ) + ( point.y / _bounds.height ) * ( normalizedHeight * scene.height )
         return p
     }
 
-    public function localToViewport( point : Point ) : Point
+    public function sceneToLocal( point : Point ) : Point
     {
         var p : Point = new Point()
-        p.x = ( point.x - x ) / width  * _bounds.width
-        p.y = ( point.y - y ) / height * _bounds.height
+        p.x = ( point.x - ( normalizedX  * scene.width )) / ( normalizedWidth  * scene.width )   * _bounds.width
+        p.y = ( point.y - ( normalizedY  * scene.height )) / ( normalizedHeight * scene.height ) * _bounds.height
         return p
     }
 
@@ -535,15 +535,15 @@ public class Viewport extends EventDispatcher implements IViewport
     //
     //--------------------------------------------------------------------------
     
-    public function contains( x : Number, y : Number ) : Boolean
-    {
-        return ( x >= left ) && ( x <= right ) && ( y >= top ) && ( y <= bottom )
-    }
+//    public function contains( x : Number, y : Number ) : Boolean
+//    {
+//        return ( x >= left ) && ( x <= right ) && ( y >= top ) && ( y <= bottom )
+//    }
     
-    public function intersects( toIntersect : Rectangle ) : Boolean
-    {
-        return new Rectangle( x, y, width, height ).intersects( toIntersect )
-    }
+//    public function intersects( toIntersect : Rectangle ) : Boolean
+//    {
+//        return new Rectangle( x, y, width, height ).intersects( toIntersect )
+//    }
     
     public function intersection( toIntersect : Rectangle ) : Rectangle
     {
@@ -735,18 +735,14 @@ public class Viewport extends EventDispatcher implements IViewport
     
     override public function toString() : String
     {
-        return "[Viewport]" + "\n" 
-               + "nX=" + normalizedX + "\n" 
-               + "nY=" + normalizedY  + "\n"
+        return "[NormalizedViewport]" + "\n" 
+               + "x=" + normalizedX + "\n" 
+               + "y=" + normalizedY  + "\n"
                + "z=" + z + "\n"
-               + "nW=" + normalizedWidth + "\n"
-               + "nH=" + normalizedHeight + "\n"
-               + "x=" + x + "\n"
-               + "y=" + y + "\n"
-               + "w=" + width + "\n"
-               + "h=" + height + "\n"
-               + "cW=" + scene.width + "\n"
-               + "cH=" + scene.height
+               + "w=" + normalizedWidth + "\n"
+               + "h=" + normalizedHeight + "\n"
+               + "sW=" + scene.width + "\n"
+               + "sH=" + scene.height
     }
 }
 

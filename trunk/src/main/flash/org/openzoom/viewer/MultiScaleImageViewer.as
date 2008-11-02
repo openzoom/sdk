@@ -26,9 +26,9 @@ import flash.display.Sprite;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import org.openzoom.core.IViewport;
+import org.openzoom.core.INormalizedViewport;
 import org.openzoom.core.IViewportController;
-import org.openzoom.core.Viewport;
+import org.openzoom.core.NormalizedViewport;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.renderers.MultiScaleImageRenderer;
 import org.openzoom.viewer.controllers.KeyboardNavigationController;
@@ -46,8 +46,8 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
    
-    private static const DEFAULT_MIN_ZOOM   : Number = 0.001
-    private static const DEFAULT_MAX_ZOOM   : Number = 2*2*2*2*2*2*2*2*2*2*2*2*2*2
+    private static const DEFAULT_MIN_ZOOM   : Number = 0.01
+    private static const DEFAULT_MAX_ZOOM   : Number = 5000
     
     private static const DEFAULT_DIMENSION  : Number = 1000
     
@@ -115,9 +115,9 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
 
-    private var _viewport : IViewport
+    private var _viewport : INormalizedViewport
     
-    public function get viewport() : IViewport
+    public function get viewport() : INormalizedViewport
     {
         return _viewport
     }
@@ -172,7 +172,7 @@ public class MultiScaleImageViewer extends Sprite
     
     public function showAll() : void
     {
-        viewport.zoomTo( 1 )
+        viewport.normalizedZoomTo( 1 )
     }
     
     // zooming
@@ -231,7 +231,7 @@ public class MultiScaleImageViewer extends Sprite
     
     private function createViewport() : void
     {
-        _viewport = new Viewport()
+        _viewport = new NormalizedViewport()
     }
     
     private function createChildren() : void

@@ -29,7 +29,6 @@ public interface IScene extends IEventDispatcher
 {
     function get width() : Number
     function get height() : Number
-    function get aspectRatio() : Number
 }
 
 }

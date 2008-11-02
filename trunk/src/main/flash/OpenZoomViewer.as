@@ -49,7 +49,7 @@ import org.openzoom.viewer.ui.MemoryDisplay;
 /**
  * Bootstrapper.
  */
-[SWF(width="900", height="600", frameRate="60", backgroundColor="#111111")]
+[SWF(width="960", height="600", frameRate="60", backgroundColor="#111111")]
 public class OpenZoomViewer extends Sprite
 {
     //--------------------------------------------------------------------------
@@ -80,12 +80,12 @@ public class OpenZoomViewer extends Sprite
     private static const ABOUT_MENU_URL                  : String = "http://openzoom.org/"
     
     private static const DEFAULT_IMAGE_NAME              : String = "billions"
-    private static const DEFAULT_SOURCE                  : String = "images/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
+//  private static const DEFAULT_SOURCE                  : String = "images/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
 //  private static const DEFAULT_SOURCE                  : String = "images/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
-//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/" + DEFAULT_IMAGE_NAME + ".ozi/meta.xml"
+    private static const DEFAULT_SOURCE                  : String = "images/openzoom/" + DEFAULT_IMAGE_NAME + ".ozi/meta.xml"
 //  private static const DEFAULT_SOURCE                  : String = "images/openzoom/google-maps-road.xml"
 //  private static const DEFAULT_SOURCE                  : String = "images/openzoom/google-maps-satellite.xml"
-//    private static const DEFAULT_SOURCE                  : String = "images/openzoom/google-maps-terrain.xml"
+//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/google-maps-terrain.xml"
 //  private static const DEFAULT_SOURCE                  : String = "images/openzoom/openstreetmap.xml"
 //  private static const DEFAULT_SOURCE                  : String = "images/openzoom/butterfly.xml"
 //  private static const DEFAULT_SOURCE                  : String = "images/openzoom/bluemarble.xml"

@@ -27,6 +27,7 @@
 package org.openzoom.core
 {
 
+import flash.display.MovieClip;
 import flash.events.IEventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -44,7 +45,7 @@ import flash.geom.Rectangle;
 /**
  * Interface a viewport implementation has to provide.
  */
-public interface IViewport extends IEventDispatcher
+public interface INormalizedViewport extends IEventDispatcher
 {
     //--------------------------------------------------------------------------
     //
@@ -98,22 +99,22 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    /**
-     * Zoom the viewport to a zoom level z.
-     * @param originX Horizontal coordinate of the zooming center in scene coordinates
-     * @param originY Vertical coordinate of the zooming center in scene coordinates
-     */
-    function zoomTo( z : Number, originX : Number = NaN, originY : Number = NaN,
-                     dispatchChangeEvent : Boolean = true ) : void
-    
-    /**
-     * Zoom the viewport by a factor.
-     * @param factor The factor by which the z coordinate will be multiplied.
-     * @param originX Horizontal coordinate of the zooming center in scene coordinates
-     * @param originY Vertical coordinate of the zooming center in scene coordinates
-     */
-    function zoomBy( factor : Number, originX : Number = NaN, originY : Number = NaN,
-                     dispatchChangeEvent : Boolean = true ) : void
+//    /**
+//     * Zoom the viewport to a zoom level z.
+//     * @param originX Horizontal coordinate of the zooming center in scene coordinates
+//     * @param originY Vertical coordinate of the zooming center in scene coordinates
+//     */
+//    function zoomTo( z : Number, originX : Number = NaN, originY : Number = NaN,
+//                     dispatchChangeEvent : Boolean = true ) : void
+//    
+//    /**
+//     * Zoom the viewport by a factor.
+//     * @param factor The factor by which the z coordinate will be multiplied.
+//     * @param originX Horizontal coordinate of the zooming center in scene coordinates
+//     * @param originY Vertical coordinate of the zooming center in scene coordinates
+//     */
+//    function zoomBy( factor : Number, originX : Number = NaN, originY : Number = NaN,
+//                     dispatchChangeEvent : Boolean = true ) : void
     
     //--------------------------------------------------------------------------
     //
@@ -144,29 +145,29 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    /**
-     * Move the viewport.
-     * @param x Horizontal coordinate in the scene coordinate system.
-     * @param y Vertical coordinate in the scene coordinate system.
-     */
-    function moveTo( x : Number, y : Number,
-                     dispatchChangeEvent : Boolean = true ) : void
-    
-    /**
-     * Move the viewport.
-     * @param dx Horizontal translation in the scene coordinate system.
-     * @param dy Vertical translation in the scene coordinate system.
-     */
-    function moveBy( dx : Number, dy : Number,
-                     dispatchChangeEvent : Boolean = true ) : void
-    
-    /**
-     * Move the viewport center.
-     * @param x Horizontal coordinate in the scene coordinate system.
-     * @param y Vertical coordinate in the scene coordinate system.
-     */                 
-    function moveCenterTo( x : Number, y : Number,
-                           dispatchChangeEvent : Boolean = true ) : void
+//    /**
+//     * Move the viewport.
+//     * @param x Horizontal coordinate in the scene coordinate system.
+//     * @param y Vertical coordinate in the scene coordinate system.
+//     */
+//    function moveTo( x : Number, y : Number,
+//                     dispatchChangeEvent : Boolean = true ) : void
+//    
+//    /**
+//     * Move the viewport.
+//     * @param dx Horizontal translation in the scene coordinate system.
+//     * @param dy Vertical translation in the scene coordinate system.
+//     */
+//    function moveBy( dx : Number, dy : Number,
+//                     dispatchChangeEvent : Boolean = true ) : void
+//    
+//    /**
+//     * Move the viewport center.
+//     * @param x Horizontal coordinate in the scene coordinate system.
+//     * @param y Vertical coordinate in the scene coordinate system.
+//     */                 
+//    function moveCenterTo( x : Number, y : Number,
+//                           dispatchChangeEvent : Boolean = true ) : void
     
     //--------------------------------------------------------------------------
     //
@@ -203,15 +204,15 @@ public interface IViewport extends IEventDispatcher
     //  Methods: Navigation
     //
     //--------------------------------------------------------------------------
-    
-    /**
-     * Go to a point in the scene.
-     * @param x Horizontal coordinate in the scene coordinate system.
-     * @param y Vertical coordinate in the scene coordinate system.
-     * @param z Zoom level
-     */
-    function goto( x : Number, y : Number, z : Number,
-                   dispatchChangeEvent : Boolean = true ) : void
+//    
+//    /**
+//     * Go to a point in the scene.
+//     * @param x Horizontal coordinate in the scene coordinate system.
+//     * @param y Vertical coordinate in the scene coordinate system.
+//     * @param z Zoom level
+//     */
+//    function goto( x : Number, y : Number, z : Number,
+//                   dispatchChangeEvent : Boolean = true ) : void
     
     /**
      * Show an area of the scene inside the viewport.
@@ -314,53 +315,53 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    //----------------------------------
-    //  x
-    //----------------------------------
+//    //----------------------------------
+//    //  x
+//    //----------------------------------
+//    
+//    function get x() : Number
+//    
+//    //----------------------------------
+//    //  y
+//    //----------------------------------
+//    
+//    function get y() : Number
+//    
+//    //----------------------------------
+//    //  width
+//    //----------------------------------
+//    
+//    function get width() : Number
+//    
+//    //----------------------------------
+//    //  height
+//    //----------------------------------
+//     
+//    function get height() : Number
     
-    function get x() : Number
-    
-    //----------------------------------
-    //  y
-    //----------------------------------
-    
-    function get y() : Number
-    
-    //----------------------------------
-    //  width
-    //----------------------------------
-    
-    function get width() : Number
-    
-    //----------------------------------
-    //  height
-    //----------------------------------
-     
-    function get height() : Number
-    
-    //----------------------------------
-    //  top
-    //----------------------------------
-    
-    function get top() : Number
-    
-    //----------------------------------
-    //  right
-    //----------------------------------
-    
-    function get right() : Number
-    
-    //----------------------------------
-    //  bottom
-    //----------------------------------
-    
-    function get bottom() : Number
-    
-    //----------------------------------
-    //  left
-    //----------------------------------
-    
-    function get left() : Number
+//    //----------------------------------
+//    //  top
+//    //----------------------------------
+//    
+//    function get top() : Number
+//    
+//    //----------------------------------
+//    //  right
+//    //----------------------------------
+//    
+//    function get right() : Number
+//    
+//    //----------------------------------
+//    //  bottom
+//    //----------------------------------
+//    
+//    function get bottom() : Number
+//    
+//    //----------------------------------
+//    //  left
+//    //----------------------------------
+//    
+//    function get left() : Number
      
     //----------------------------------
     //  bounds
@@ -378,8 +379,8 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    function viewportToLocal( point : Point ) : Point
-    function localToViewport( point : Point ) : Point
+    function localToScene( point : Point ) : Point
+    function sceneToLocal( point : Point ) : Point
     
     //--------------------------------------------------------------------------
     //
@@ -396,7 +397,7 @@ public interface IViewport extends IEventDispatcher
      * @return true if this Viewport object contains the specified
      * point; otherwise false. 
      */ 
-    function contains( x : Number, y : Number ) : Boolean
+//    function contains( x : Number, y : Number ) : Boolean
         
     /**
      * Determines whether the object specified in the toIntersect parameter
@@ -409,7 +410,7 @@ public interface IViewport extends IEventDispatcher
      * @return true if the specified object intersects with this Viewport
      * object; otherwise false. 
      */
-    function intersects( toIntersect : Rectangle ) : Boolean
+//    function intersects( toIntersect : Rectangle ) : Boolean
     
     /**
      * If the Rectangle object specified in the toIntersect parameter intersects
