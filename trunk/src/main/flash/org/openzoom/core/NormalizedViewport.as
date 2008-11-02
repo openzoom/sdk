@@ -133,34 +133,35 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     public function get scale() : Number
     {
         // TODO: Cache
-        var topLeft : Point = sceneToLocal( _content.topLeft )
-        var bottomRight : Point = sceneToLocal( _content.bottomRight )
+        var topLeft : Point = sceneToLocal( new Point( 0, 0 ) )
+        var bottomRight : Point = sceneToLocal( new Point( scene.width, scene.height ))
 
         // Pick one, should be the same =)
         var distanceX : Number = bottomRight.x - topLeft.x
-        return distanceX / _content.width
+        return distanceX / scene.width
 
         //var distanceY : Number = bottomRight.y - topLeft.y
-        //return distanceY / _content.height
+        //return distanceY / scene.height
     }
  
     //----------------------------------
     //  content
     //----------------------------------
 
-    private var _content : Rectangle = new Rectangle( 0, 0, 100, 100 )
+//    private var _content : Rectangle = new Rectangle( 0, 0, 100, 100 )
+    private var _scene : IScene = new Scene( 100, 100 )
 
-    public function get scene() : Rectangle
+    public function get scene() : IScene
     {
-        return _content.clone()
+        return new Scene( _scene.width, _scene.height )
     }
 
-    public function set scene( value : Rectangle ) : void
+    public function set scene( value : IScene ) : void
     {
-        if( _content.equals( value ) )
+        if( _scene.width == value.width && _scene.height == value.height )
            return 
         
-        _content = value
+        _scene = new Scene( value.width, value.height )
         validate()
     }
 
@@ -327,13 +328,13 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
             this.dispatchChangeEvent()
     }
 
-    public function moveBy( x : Number, y : Number,
-                            dispatchChangeEvent : Boolean = true ) : void
-    {
-        normalizedMoveBy( normalizeXCoordinate( x ),
-                          normalizeYCoordinate( y ),
-                          dispatchChangeEvent )
-    }
+//    public function moveBy( x : Number, y : Number,
+//                            dispatchChangeEvent : Boolean = true ) : void
+//    {
+//        normalizedMoveBy( normalizeXCoordinate( x ),
+//                          normalizeYCoordinate( y ),
+//                          dispatchChangeEvent )
+//    }
 
     public function normalizedMoveBy( x : Number, y : Number,
                                       dispatchChangeEvent : Boolean = true  ) : void
@@ -376,8 +377,8 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         var centerX : Number = area.x + area.width  * 0.5
         var centerY : Number = area.y + area.height * 0.5
     
-        var normalizedCenter : Point = new Point( centerX / _content.width,
-                                                  centerY / _content.height )
+        var normalizedCenter : Point = new Point( centerX / scene.width,
+                                                  centerY / scene.height )
                                                  
         var scaledWidth : Number = area.width / scale
         var scaledHeight : Number = area.height / scale
@@ -389,13 +390,13 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         if( scaledWidth  > ( aspectRatio * scaledHeight ) )
         {
             // Area must fit horizontally in the viewport
-            ratio = ( ratio < 1 ) ? ( _content.width / ratio ) : _content.width
+            ratio = ( ratio < 1 ) ? ( scene.width / ratio ) : scene.width
             ratio = ratio / scaledWidth
         }
         else
         {
             // Area must fit vertically in the viewport  
-            ratio = ( ratio > 1 ) ? ( _content.height * ratio )  : _content.height
+            ratio = ( ratio > 1 ) ? ( scene.height * ratio )  : scene.height
             ratio = ratio / scaledHeight
         }
     
@@ -470,7 +471,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */ 
     private function normalizeXCoordinate( value : Number ) : Number
     {
-        return value / _content.width
+        return value / scene.width
     }
 
     /**
@@ -478,7 +479,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */
     private function normalizeYCoordinate( value : Number ) : Number
     {
-        return value / _content.height
+        return value / scene.height
     }
 
     /**
@@ -486,7 +487,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */ 
     private function denormalizeXCoordinate( value : Number ) : Number
     {
-        return value * _content.width
+        return value * scene.width
     }
 
     /**
@@ -494,7 +495,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */ 
     private function denormalizeYCoordinate( value : Number ) : Number
     {
-        return value * _content.height
+        return value * scene.height
     }
 
     //--------------------------------------------------------------------------
@@ -526,7 +527,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */
     private function get contentAspectRatio() : Number
     {
-        return _content.width / _content.height
+        return scene.width / scene.height
     }
 
     //--------------------------------------------------------------------------

@@ -29,6 +29,7 @@ import flash.geom.Rectangle;
 import org.openzoom.core.INormalizedViewport;
 import org.openzoom.core.IViewportController;
 import org.openzoom.core.NormalizedViewport;
+import org.openzoom.core.Scene;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.renderers.MultiScaleImageRenderer;
 import org.openzoom.viewer.controllers.KeyboardNavigationController;
@@ -49,7 +50,7 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_MIN_ZOOM   : Number = 0.01
     private static const DEFAULT_MAX_ZOOM   : Number = 5000
     
-    private static const DEFAULT_DIMENSION  : Number = 1000
+    private static const DEFAULT_DIMENSION  : Number = 2000
     
     private static const ZOOM_IN_FACTOR     : Number = 2.0
     private static const ZOOM_OUT_FACTOR    : Number = 0.3
@@ -84,7 +85,7 @@ public class MultiScaleImageViewer extends Sprite
         
         image = createImage( descriptor, width, height )
         var bounds : Rectangle = image.getBounds( this )
-        viewport.scene = bounds
+        viewport.scene = new Scene( bounds.width, bounds.height )
         addChild( image )
         
         // controllers

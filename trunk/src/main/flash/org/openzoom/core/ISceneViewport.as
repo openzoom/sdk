@@ -21,7 +21,7 @@
 package org.openzoom.core
 {
 
-public interface INormalizedViewport extends IViewport
+public interface ISceneViewport extends IViewport
 {
 }
 
