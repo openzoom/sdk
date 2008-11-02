@@ -26,11 +26,9 @@ import flash.display.Sprite;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import org.openzoom.core.INormalizedViewport;
 import org.openzoom.core.IViewport;
 import org.openzoom.core.IViewportController;
-import org.openzoom.core.Scene;
-import org.openzoom.core.NormalizedViewport;
+import org.openzoom.core.Viewport;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.renderers.MultiScaleImageRenderer;
 import org.openzoom.viewer.controllers.KeyboardNavigationController;
@@ -48,10 +46,10 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
    
-    private static const DEFAULT_MIN_ZOOM   : Number = 0.125
-    private static const DEFAULT_MAX_ZOOM   : Number = 3200000
+    private static const DEFAULT_MIN_ZOOM   : Number = 0.001
+    private static const DEFAULT_MAX_ZOOM   : Number = 2*2*2*2*2*2*2*2*2*2*2*2*2*2
     
-    private static const DEFAULT_DIMENSION  : Number = 4000
+    private static const DEFAULT_DIMENSION  : Number = 1000
     
     private static const ZOOM_IN_FACTOR     : Number = 2.0
     private static const ZOOM_OUT_FACTOR    : Number = 0.3
@@ -86,7 +84,7 @@ public class MultiScaleImageViewer extends Sprite
         
         image = createImage( descriptor, width, height )
         var bounds : Rectangle = image.getBounds( this )
-        viewport.scene = new Scene( bounds.width, bounds.height )
+        viewport.scene = bounds
         addChild( image )
         
         // controllers
@@ -117,9 +115,9 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
 
-    private var _viewport : INormalizedViewport
+    private var _viewport : IViewport
     
-    public function get viewport() : INormalizedViewport
+    public function get viewport() : IViewport
     {
         return _viewport
     }
@@ -181,38 +179,38 @@ public class MultiScaleImageViewer extends Sprite
     public function zoomIn() : void
     {
         var origin : Point = getMouseOrigin()
-        viewport.zoomBy( ZOOM_IN_FACTOR, origin.x, origin.y )
+        viewport.normalizedZoomBy( ZOOM_IN_FACTOR, origin.x, origin.y )
     }
     
     public function zoomOut() : void
     {
         var origin : Point = getMouseOrigin()
-        viewport.zoomBy( ZOOM_OUT_FACTOR, origin.x, origin.y )
+        viewport.normalizedZoomBy( ZOOM_OUT_FACTOR, origin.x, origin.y )
     }
     
     // panning
     public function moveUp() : void
     {
-        var dy : Number = viewport.height * TRANSLATION_FACTOR
-        viewport.moveBy( 0, -dy )
+        var dy : Number = viewport.normalizedHeight * TRANSLATION_FACTOR
+        viewport.normalizedMoveBy( 0, -dy )
     }
     
     public function moveDown() : void
     {
-        var dy : Number = viewport.height * TRANSLATION_FACTOR
-        viewport.moveBy( 0, dy )
+        var dy : Number = viewport.normalizedHeight * TRANSLATION_FACTOR
+        viewport.normalizedMoveBy( 0, dy )
     }
     
     public function moveLeft() : void
     {
-        var dx : Number = viewport.width * TRANSLATION_FACTOR
-        viewport.moveBy( -dx, 0 )
+        var dx : Number = viewport.normalizedWidth * TRANSLATION_FACTOR
+        viewport.normalizedMoveBy( -dx, 0 )
     }
     
     public function moveRight() : void
     {
-        var dx : Number = viewport.width * TRANSLATION_FACTOR
-        viewport.moveBy( dx, 0 )
+        var dx : Number = viewport.normalizedWidth * TRANSLATION_FACTOR
+        viewport.normalizedMoveBy( dx, 0 )
     }
     
     public function setSize( width : Number, height : Number ) : void
@@ -233,7 +231,7 @@ public class MultiScaleImageViewer extends Sprite
     
     private function createViewport() : void
     {
-        _viewport = new NormalizedViewport()
+        _viewport = new Viewport()
     }
     
     private function createChildren() : void

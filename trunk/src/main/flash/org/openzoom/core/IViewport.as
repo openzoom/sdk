@@ -121,22 +121,22 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
     
-//    /**
-//     * Zoom the viewport to a zoom level z.
-//     * @param originX Normalized horizontal coordinate of the zooming center
-//     * @param originY Normalized vertical coordinate of the zooming center
-//     */
-//    function normalizedZoomTo( z : Number, originX : Number = 0.5, originY : Number = 0.5,
-//                               dispatchChangeEvent : Boolean = true ) : void
-//    
-//    /**
-//     * Zoom the viewport by a factor.
-//     * @param factor The scale factor for the zoom.
-//     * @param originX Normalized horizontal coordinate of the zooming center
-//     * @param originY Normalized vertical coordinate of the zooming center
-//     */
-//    function normalizedZoomBy( factor : Number, originX : Number = 0.5, originY : Number = 0.5,
-//                               dispatchChangeEvent : Boolean = true ) : void
+    /**
+     * Zoom the viewport to a zoom level z.
+     * @param originX Normalized horizontal coordinate of the zooming center
+     * @param originY Normalized vertical coordinate of the zooming center
+     */
+    function normalizedZoomTo( z : Number, originX : Number = 0.5, originY : Number = 0.5,
+                               dispatchChangeEvent : Boolean = true ) : void
+    
+    /**
+     * Zoom the viewport by a factor.
+     * @param factor The scale factor for the zoom.
+     * @param originX Normalized horizontal coordinate of the zooming center
+     * @param originY Normalized vertical coordinate of the zooming center
+     */
+    function normalizedZoomBy( factor : Number, originX : Number = 0.5, originY : Number = 0.5,
+                               dispatchChangeEvent : Boolean = true ) : void
     
     //--------------------------------------------------------------------------
     //
@@ -174,29 +174,29 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
     
-//    /**
-//     * Move the viewport.
-//     * @param x Normalized horizontal coordinate
-//     * @param y Normalized vertical coordinate
-//     */
-//    function normalizedMoveTo( x : Number, y : Number,
-//                               dispatchChangeEvent : Boolean = true ) : void
-//    
-//    /**
-//     * Move the viewport.
-//     * @param dx Normalized horizontal delta translation
-//     * @param dy Normalized vertical delta translation
-//     */
-//    function normalizedMoveBy( dx : Number, dy : Number,
-//                               dispatchChangeEvent : Boolean = true ) : void
-//    
-//    /**
-//     * Move the viewport center.
-//     * @param x Normalized x (horizontal) coordinate
-//     * @param y Normalized y (vertical) coordinate
-//     */                 
-//    function normalizedMoveCenterTo( x : Number, y : Number,
-//                                     dispatchChangeEvent : Boolean = true ) : void
+    /**
+     * Move the viewport.
+     * @param x Normalized horizontal coordinate
+     * @param y Normalized vertical coordinate
+     */
+    function normalizedMoveTo( x : Number, y : Number,
+                               dispatchChangeEvent : Boolean = true ) : void
+    
+    /**
+     * Move the viewport.
+     * @param dx Normalized horizontal delta translation
+     * @param dy Normalized vertical delta translation
+     */
+    function normalizedMoveBy( dx : Number, dy : Number,
+                               dispatchChangeEvent : Boolean = true ) : void
+    
+    /**
+     * Move the viewport center.
+     * @param x Normalized x (horizontal) coordinate
+     * @param y Normalized y (vertical) coordinate
+     */                 
+    function normalizedMoveCenterTo( x : Number, y : Number,
+                                     dispatchChangeEvent : Boolean = true ) : void
     
     //--------------------------------------------------------------------------
     //
@@ -230,14 +230,14 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
     
-//    /**
-//     * Go to a point in the scene.
-//     * @param x Normalized horizontal coordinate
-//     * @param y Normalized vertical coordinate
-//     * @param z Zoom level
-//     */
-//    function normalizedGoto( x : Number, y : Number, z : Number,
-//                             dispatchChangeEvent : Boolean = true ) : void
+    /**
+     * Go to a point in the scene.
+     * @param x Normalized horizontal coordinate
+     * @param y Normalized vertical coordinate
+     * @param z Zoom level
+     */
+    function normalizedGoto( x : Number, y : Number, z : Number,
+                             dispatchChangeEvent : Boolean = true ) : void
                              
     //--------------------------------------------------------------------------
     //
@@ -252,60 +252,60 @@ public interface IViewport extends IEventDispatcher
     /**
      * Size of the content in content coordinates.
      */ 
-    function get scene() : IScene
-    function set scene( value : IScene ) : void
+    function get scene() : Rectangle
+    function set scene( value : Rectangle ) : void
     
-//    //--------------------------------------------------------------------------
-//    //
-//    //  Properties: Normalized coordinates
-//    //
-//    //--------------------------------------------------------------------------
-//     
-//    //----------------------------------
-//    //  normalizedX
-//    //----------------------------------
-//    
-//    /**
-//     * Normalized horizontal coordinate of the viewport.
-//     * If z > 1 and the value is 0 the viewport is at
-//     * the left boundary of the content.
-//     */
-//    function get normalizedX() : Number
-//    function set normalizedX( value : Number ) : void
-//    
-//    //----------------------------------
-//    //  normalizedY
-//    //----------------------------------
-//    
-//    /**
-//     * Normalized vertical coordinate of the viewport.
-//     * If z > 1 and the value is 0 the viewport is at
-//     * the top boundary of the content.
-//     */
-//    function get normalizedY() : Number
-//    function set normalizedY( value : Number ) : void
-//    
-//    //----------------------------------
-//    //  normalizedWidth
-//    //----------------------------------
-//    
-//    /**
-//     * Normalized horizontal dimension of the viewport.
-//     * The viewport has the width of the content at value 1
-//     * if aspectRatio > 1.
-//     */
-//    function get normalizedWidth() : Number
-//    
-//    //----------------------------------
-//    //  normalizedHeight
-//    //----------------------------------
-//    
-//    /**
-//     * Normalized vertical dimension of the viewport.
-//     * The viewport has the height of the content at value 1
-//     * if aspectRatio < 1.
-//     */
-//    function get normalizedHeight() : Number
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Normalized coordinates
+    //
+    //--------------------------------------------------------------------------
+     
+    //----------------------------------
+    //  normalizedX
+    //----------------------------------
+    
+    /**
+     * Normalized horizontal coordinate of the viewport.
+     * If z > 1 and the value is 0 the viewport is at
+     * the left boundary of the content.
+     */
+    function get normalizedX() : Number
+    function set normalizedX( value : Number ) : void
+    
+    //----------------------------------
+    //  normalizedY
+    //----------------------------------
+    
+    /**
+     * Normalized vertical coordinate of the viewport.
+     * If z > 1 and the value is 0 the viewport is at
+     * the top boundary of the content.
+     */
+    function get normalizedY() : Number
+    function set normalizedY( value : Number ) : void
+    
+    //----------------------------------
+    //  normalizedWidth
+    //----------------------------------
+    
+    /**
+     * Normalized horizontal dimension of the viewport.
+     * The viewport has the width of the content at value 1
+     * if aspectRatio > 1.
+     */
+    function get normalizedWidth() : Number
+    
+    //----------------------------------
+    //  normalizedHeight
+    //----------------------------------
+    
+    /**
+     * Normalized vertical dimension of the viewport.
+     * The viewport has the height of the content at value 1
+     * if aspectRatio < 1.
+     */
+    function get normalizedHeight() : Number
     
     
     //--------------------------------------------------------------------------
@@ -338,29 +338,29 @@ public interface IViewport extends IEventDispatcher
      
     function get height() : Number
     
-//    //----------------------------------
-//    //  top
-//    //----------------------------------
-//    
-//    function get top() : Number
-//    
-//    //----------------------------------
-//    //  right
-//    //----------------------------------
-//    
-//    function get right() : Number
-//    
-//    //----------------------------------
-//    //  bottom
-//    //----------------------------------
-//    
-//    function get bottom() : Number
-//    
-//    //----------------------------------
-//    //  left
-//    //----------------------------------
-//    
-//    function get left() : Number
+    //----------------------------------
+    //  top
+    //----------------------------------
+    
+    function get top() : Number
+    
+    //----------------------------------
+    //  right
+    //----------------------------------
+    
+    function get right() : Number
+    
+    //----------------------------------
+    //  bottom
+    //----------------------------------
+    
+    function get bottom() : Number
+    
+    //----------------------------------
+    //  left
+    //----------------------------------
+    
+    function get left() : Number
      
     //----------------------------------
     //  bounds

@@ -41,8 +41,8 @@ public interface IViewportController
     //  viewport
     //----------------------------------
     
-    function get viewport() : INormalizedViewport
-    function set viewport( value : INormalizedViewport ) : void
+    function get viewport() : IViewport
+    function set viewport( value : IViewport ) : void
 }
 
 }

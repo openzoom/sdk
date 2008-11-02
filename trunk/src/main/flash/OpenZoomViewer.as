@@ -49,7 +49,7 @@ import org.openzoom.viewer.ui.MemoryDisplay;
 /**
  * Bootstrapper.
  */
-[SWF(width="400", height="400", frameRate="60", backgroundColor="#111111")]
+[SWF(width="900", height="600", frameRate="60", backgroundColor="#111111")]
 public class OpenZoomViewer extends Sprite
 {
     //--------------------------------------------------------------------------
