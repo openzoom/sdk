@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <image xmlns="http://openzoom.org/2008/ozd">
-	<pyramid width="4096" height="4096" tileWidth="256" tileHeight="256" tileOverlap="0" type="image/png">
+	<pyramid width="67108864" height="67108864" tileWidth="256" tileHeight="256" tileOverlap="0" type="image/png">
 		<level index="0" width="256" height="256" columns="1" rows="1">
 		    <uri template="http://tile.openstreetmap.org/0/{column}/{row}.png"/>
 		</level>
@@ -58,10 +58,5 @@
 		<level index="18" width="67108864" height="67108864" columns="262144" rows="262144">
 		    <uri template="http://tile.openstreetmap.org/18/{column}/{row}.png"/>
 		</level>
-		<!--
-		<level index="19" width="134217728" height="134217728" columns="524288" rows="524288">
-		    <uri template="http://tile.openstreetmap.org/19/{column}/{row}.png"/>
-		</level>
-		-->
 	</pyramid>
 </image>

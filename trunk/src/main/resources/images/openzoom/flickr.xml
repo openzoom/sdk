@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<image xmlns="http://openzoom.org/2008/ozd"> 
+    <pyramid width="3062" height="4083" tileWidth="3062" tileHeight="4083" tileOverlap="0" type="image/jpeg">
+        <level index="0" width="75" height="100" columns="1" rows="1">
+            <uri template="http://farm4.static.flickr.com/3036/2942075987_f03f3de10e_t.jpg"/>
+        </level>
+        <level index="1" width="180" height="240" columns="1" rows="1">
+            <uri template="http://farm4.static.flickr.com/3036/2942075987_f03f3de10e_m.jpg"/>
+        </level>
+        <level index="2" width="375" height="500" columns="1" rows="1">
+            <uri template="http://farm4.static.flickr.com/3036/2942075987_f03f3de10e.jpg"/>
+        </level>
+        <level index="3" width="768" height="1024" columns="1" rows="1">
+            <uri template="http://farm4.static.flickr.com/3036/2942075987_f03f3de10e_b.jpg"/>
+        </level>
+        <level index="4" width="3062" height="4083" columns="1" rows="1">
+            <uri template="http://farm4.static.flickr.com/3036/2942075987_6d3c25d8b4_o.jpg"/>
+        </level>
+    </pyramid>
+</image>
