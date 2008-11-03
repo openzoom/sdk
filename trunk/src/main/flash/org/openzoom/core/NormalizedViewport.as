@@ -57,7 +57,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     
     private static const DEFAULT_MIN_Z : Number = 0.01
     private static const DEFAULT_MAX_Z : Number = 100
-    private static const BOUNDS_TOLERANCE : Number = 0
+    private static const BOUNDS_TOLERANCE : Number = 0.0
 
     //--------------------------------------------------------------------------
     //
