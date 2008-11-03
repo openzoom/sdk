@@ -80,16 +80,17 @@ public class OpenZoomViewer extends Sprite
     private static const ABOUT_MENU_URL                  : String = "http://openzoom.org/"
     
     private static const DEFAULT_IMAGE_NAME              : String = "morocco"
-    private static const DEFAULT_SOURCE                  : String = "images/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
-//  private static const DEFAULT_SOURCE                  : String = "images/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
-//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/" + DEFAULT_IMAGE_NAME + ".ozi/meta.xml"
-//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/google-maps-road.xml"
-//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/google-maps-satellite.xml"
-//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/google-maps-terrain.xml"
-//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/openstreetmap.xml"
-//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/butterfly.xml"
-//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/bluemarble.xml"
-//  private static const DEFAULT_SOURCE                  : String = "images/openzoom/flickr.xml"
+    private static const DEFAULT_SOURCE_PATH             : String = "../../../../src/main/resources/images"
+    private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
+//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
+//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/" + DEFAULT_IMAGE_NAME + ".ozi/meta.xml"
+//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-road.xml"
+//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-satellite.xml"
+//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-terrain.xml"
+//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/openstreetmap.xml"
+//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/butterfly.xml"
+//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/bluemarble.xml"
+//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/flickr.xml"
     
     //--------------------------------------------------------------------------
     //
