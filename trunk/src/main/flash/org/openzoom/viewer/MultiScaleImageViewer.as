@@ -27,11 +27,9 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.core.INormalizedViewport;
-import org.openzoom.core.ISceneViewport;
 import org.openzoom.core.IViewportController;
 import org.openzoom.core.NormalizedViewport;
 import org.openzoom.core.Scene;
-import org.openzoom.core.SceneViewport;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.renderers.MultiScaleImageRenderer;
 import org.openzoom.viewer.controllers.KeyboardNavigationController;
@@ -49,14 +47,16 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
    
-    private static const DEFAULT_MIN_ZOOM   : Number = 1
-    private static const DEFAULT_MAX_ZOOM   : Number = 50000000
+    private static const DEFAULT_MIN_ZOOM     : Number = 0.25
+    private static const DEFAULT_MAX_ZOOM     : Number = 10000
     
-    private static const DEFAULT_DIMENSION  : Number = 20000
+    private static const DEFAULT_DIMENSION    : Number = 20000
+    private static const DEFAULT_SCENE_WIDTH  : Number = 36000
+    private static const DEFAULT_SCENE_HEIGHT : Number = 18000
     
-    private static const ZOOM_IN_FACTOR     : Number = 2.0
-    private static const ZOOM_OUT_FACTOR    : Number = 0.3
-    private static const TRANSLATION_FACTOR : Number = 0.1
+    private static const ZOOM_IN_FACTOR       : Number = 2.0
+    private static const ZOOM_OUT_FACTOR      : Number = 0.3
+    private static const TRANSLATION_FACTOR   : Number = 0.1
     
     //--------------------------------------------------------------------------
     //
@@ -80,19 +80,33 @@ public class MultiScaleImageViewer extends Sprite
         createChildren()
         
         // image
-        var aspectRatio : Number = descriptor.width / descriptor.height
+//        var aspectRatio : Number = descriptor.width / descriptor.height
+//        
+//        var width : Number = DEFAULT_DIMENSION
+//        var height : Number = DEFAULT_DIMENSION / aspectRatio
         
-        var width : Number = DEFAULT_DIMENSION
-        var height : Number = DEFAULT_DIMENSION / aspectRatio
+        scene = new MultiScaleScene( viewport, DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
         
-        image = createImage( descriptor, width, height )
-//        image = createImage( descriptor, descriptor.width / 2048, descriptor.height / 2048 )
-        var bounds : Rectangle = image.getBounds( this )
-        viewport.scene = new Scene( bounds.width, bounds.height )
-        addChild( image )
+        scene.width = DEFAULT_SCENE_WIDTH
+        scene.height = DEFAULT_SCENE_HEIGHT
+        viewport.scene = new Scene( DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
+        
+        for( var i : int = 0; i < 15; i++ )
+        {
+            for( var j : int = 0; j < 5; j++ )
+            {
+		        var image : MultiScaleImageRenderer = createImage( descriptor.clone(), descriptor.width, descriptor.height )
+		        image.x = i * (image.width + 100)
+		        image.y = j * (image.height + 100)
+		        scene.addChild( image )
+            }
+        }
+        
+        addChild( scene )
+        
         
         // controllers
-        createControllers( image )
+        createControllers( scene )
         
         updateViewport()  
     }
@@ -104,7 +118,7 @@ public class MultiScaleImageViewer extends Sprite
     //--------------------------------------------------------------------------
     
     private var descriptor : IMultiScaleImageDescriptor
-    private var image : MultiScaleImageRenderer
+    private var scene : MultiScaleScene
 
     private var mouseCatcher : Sprite
     private var controllers : Array = []
@@ -259,10 +273,9 @@ public class MultiScaleImageViewer extends Sprite
                                   width : Number,
                                   height : Number ) : MultiScaleImageRenderer
     {
-        var image : MultiScaleImageRenderer = new MultiScaleImageRenderer( descriptor,
-                                                                           width, height )
+        var image : MultiScaleImageRenderer =
+                        new MultiScaleImageRenderer( descriptor, width, height )
         image.viewport = viewport
-
         return image
     }
     

@@ -46,13 +46,8 @@ public class ViewTransformationController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
     
-    private static const CRITICAL_DIMENSION : Number = 3000000
-    
     private static const DEFAULT_TRANSFORMATION_DURATION : Number = 2.0
     private static const DEFAULT_TRANSFORMATION_EASING : String = "easeOutExpo"
-    
-    private static const FALLBACK_TRANSFORMATION_DURATION : Number = 0.2
-    private static const FALLBACK_TRANSFORMATION_EASING : String = "linear"
     
     //--------------------------------------------------------------------------
     //
@@ -131,13 +126,6 @@ public class ViewTransformationController extends ViewportControllerBase
         var newHeight : Number = viewport.bounds.height / viewport.height
         var newX      : Number = -viewport.x * newWidth
         var newY      : Number = -viewport.y * newHeight
-        
-        // FIXME
-//        if( duration != 0 && ( newWidth > CRITICAL_DIMENSION || newHeight > CRITICAL_DIMENSION ))
-//        {
-//          duration = FALLBACK_TRANSFORMATION_DURATION
-//          transition = FALLBACK_TRANSFORMATION_EASING
-//        }
         
         Tweener.addTween(
                             view,

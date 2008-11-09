@@ -30,7 +30,6 @@ import flash.events.Event;
 import flash.geom.Rectangle;
 
 import org.openzoom.core.INormalizedViewport;
-import org.openzoom.core.IScene;
 import org.openzoom.core.IZoomable;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.descriptors.IMultiScaleImageLevel;
@@ -40,7 +39,7 @@ import org.openzoom.utils.math.clamp;
 /**
  * Generic renderer for multi-scale images.
  */
-public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
+public class MultiScaleImageRenderer extends Sprite implements IZoomable
 {
     //--------------------------------------------------------------------------
     //
@@ -48,8 +47,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
     //
     //--------------------------------------------------------------------------
     
-    private static const TILE_LOADER_NAME : String = "tileLoader"
-    private static const BACKGROUND_LOADER_NAME : String = "backgroundLoader"
+    private var TILE_LOADER_NAME : String = "tileLoader"
+    private var BACKGROUND_LOADER_NAME : String = "backgroundLoader"
     
     //--------------------------------------------------------------------------
     //
@@ -63,11 +62,17 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
     public function MultiScaleImageRenderer( descriptor : IMultiScaleImageDescriptor,
                                              width : Number, height : Number )
     {
+    	TILE_LOADER_NAME = Math.random().toString()
+    	BACKGROUND_LOADER_NAME = Math.random().toString()
+    	
         this.descriptor = descriptor
         
         createFrame( width, height )
         createLoader()
         createLayers( descriptor, width, height )
+        
+        // TODO: Debug
+        createDebugLayer()
         
         // Load highest single tile level as background to prevent
         // artifacts between tiles in case we have a format that doesn't
@@ -91,12 +96,17 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
     private var layers : Array /* of ITileLayer */ = []
     private var backgroundTile : Bitmap
     private var frame : Shape
+    private var debugLayer : Shape
     
     //--------------------------------------------------------------------------
     //
     //  Properties: IZoomable
     //
     //--------------------------------------------------------------------------
+        
+    //----------------------------------
+    //  viewport
+    //----------------------------------
     
     private var _viewport : INormalizedViewport
     
@@ -144,7 +154,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
     {
         frame = new Shape()
         var g : Graphics = frame.graphics
-        g.beginFill( 0x000000, 0 )
+        g.beginFill( 0x333333, 0.1 )
         g.drawRect( 0, 0, width, height )
         g.endFill()
         
@@ -152,9 +162,25 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
     }
     
     private function createLoader() : void
-    {       
+    {
         tileLoader = new BulkLoader( TILE_LOADER_NAME )
         backgroundLoader = new BulkLoader( BACKGROUND_LOADER_NAME )
+    }
+    
+    private function createDebugLayer() : void
+    {
+    	debugLayer = new Shape()
+    	addChild( debugLayer )
+    }
+    
+    private function drawVisibleRegion( region : Rectangle ) : void
+    {
+    	var g : Graphics = debugLayer.graphics
+    	    g.clear()
+    	    g.lineStyle( 0, 0xFF0000 )
+    	    g.beginFill( 0x000000, 0 )
+    	    g.drawRect( region.x, region.y, region.width, region.height )
+    	    g.endFill()	
     }
     
     private function createLayers( descriptor : IMultiScaleImageDescriptor, width : Number, height : Number  ) : void
@@ -184,14 +210,20 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
     
     private function updateDisplayList() : void
     {
-        var bounds : Rectangle = new Rectangle( 0, 0, unscaledWidth, unscaledHeight )
+        var bounds : Rectangle
+            bounds = getBounds( parent )
         var normalizedBounds : Rectangle = new Rectangle( bounds.x / viewport.scene.width,
                                                           bounds.y / viewport.scene.height,
                                                           bounds.width / viewport.scene.width,
                                                           bounds.height / viewport.scene.height )
-        var visibleArea : Rectangle = viewport.intersection( normalizedBounds )
+
+        var visibleRegion : Rectangle = viewport.intersection( normalizedBounds )
+        visibleRegion.offset( -bounds.x, -bounds.y )        
+
+//        drawVisibleRegion( visibleRegion )
         
-        var level : IMultiScaleImageLevel = descriptor.getMinimumLevelForSize( width, height )
+        var viewportScale : Number = viewport.scale
+        var level : IMultiScaleImageLevel = descriptor.getMinimumLevelForSize( width * viewportScale, height * viewportScale )
         
         // remove all tiles from loading queue
         tileLoader.removeAll()
@@ -200,15 +232,14 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
         for( var i : int = level.index + 1; i < descriptor.numLevels; i++ )
             getLayer( i ).removeAllTiles()
         
-        
         if( renderingMode == RenderingMode.SMOOTH )
         {
 	        for( var l : int = 0; l <= level.index; l++ )
-	            loadTiles( descriptor.getLevelAt( l ), visibleArea )
+	            loadTiles( descriptor.getLevelAt( l ), visibleRegion )
         }
         else
         {
-            loadTiles( level, visibleArea )
+            loadTiles( level, visibleRegion )
         }
     }
     
@@ -264,7 +295,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable, IScene
         backgroundTile.width = frame.width
         backgroundTile.height = frame.height
         
-        addChildAt( backgroundTile, getChildIndex( frame ) )
+        addChildAt( backgroundTile, getChildIndex( frame ))
     }
     
     //--------------------------------------------------------------------------

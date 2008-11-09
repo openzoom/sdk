@@ -57,7 +57,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     
     private static const DEFAULT_MIN_Z : Number = 0.01
     private static const DEFAULT_MAX_Z : Number = 100
-    private static const BOUNDS_TOLERANCE : Number = 0.0
+    private static const BOUNDS_TOLERANCE : Number = 0.5
 
     //--------------------------------------------------------------------------
     //
@@ -142,6 +142,19 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         return distanceX / scene.width
     }
  
+    //----------------------------------
+    //  transform
+    //----------------------------------
+
+    public function get transform() : IViewportTransform
+    {
+    	return null
+    }
+
+    public function set transform( value : IViewportTransform ) : void
+    {
+    }
+    
     //----------------------------------
     //  scene
     //----------------------------------
@@ -269,11 +282,11 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         else
         {
             // viewport is wider than content:
-            // center the content horizontally
+            // center scene horizontally
             _x = ( 1 - _width ) * 0.5
         }
     
-        // content is taller than viewport
+        // scene is taller than viewport
         if( _height < 1 )
         {
             // vertical bounds checking:
@@ -289,8 +302,8 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         }
         else
         {
-            // viewport is taller than content
-            // center the content vertically
+            // viewport is taller than scene
+            // center scene vertically
             _y = ( 1 - _height ) * 0.5
         } 
         
@@ -334,7 +347,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         var ratio : Number = sceneAspectRatio / aspectRatio
      
         // We have be careful here, the way the zoom factor is
-        // interpreted depends on the relative ratio of content and viewport
+        // interpreted depends on the relative ratio of scene and viewport
         if( scaledWidth  > ( aspectRatio * scaledHeight ) )
         {
             // Area must fit horizontally in the viewport
@@ -440,7 +453,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     
     /**
      * @private 
-     * Returns the aspect ratio of the content.
+     * Returns the aspect ratio of scene.
      */
     private function get sceneAspectRatio() : Number
     {
@@ -449,7 +462,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IViewport (content coordinate system )
+    //  Methods: IViewport (scene coordinate system )
     //
     //--------------------------------------------------------------------------
     

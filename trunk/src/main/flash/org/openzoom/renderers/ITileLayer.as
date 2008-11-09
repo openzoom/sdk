@@ -27,20 +27,52 @@ import org.openzoom.descriptors.IMultiScaleImageLevel;
  */
 public interface ITileLayer
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+    
     function containsTile( tile : Tile ) : Boolean
     function addTile( tile : Tile ) : Tile
     function removeAllTiles() : void
+
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+     
+    //----------------------------------
+    //  level
+    //----------------------------------
     
     function get level() : IMultiScaleImageLevel
+        
+    //----------------------------------
+    //  width
+    //----------------------------------
     
     function get width() : Number
     function set width( value : Number ) : void
     
+    //----------------------------------
+    //  height
+    //----------------------------------
+    
     function get height() : Number
     function set height( value : Number ) : void
+        
+    //----------------------------------
+    //  visible
+    //----------------------------------
     
     function get visible() : Boolean
     function set visible( value : Boolean ) : void
+    
+    //----------------------------------
+    //  alpha
+    //----------------------------------
     
     function get alpha() : Number
     function set alpha( value : Number ) : void
