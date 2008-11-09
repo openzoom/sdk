@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>OpenZoomTest</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] flash</name>
+			<type>2</type>
+			<locationURI>OPENZOOM/src/main/flash</locationURI>
+		</link>
+		<link>
+			<name>bin-debug</name>
+			<type>2</type>
+			<location>/Users/dani/Documents/workspace/openzoom/target/test/flash</location>
+		</link>
+	</linkedResources>
+</projectDescription>
