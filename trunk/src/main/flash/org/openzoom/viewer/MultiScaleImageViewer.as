@@ -20,9 +20,12 @@
 package org.openzoom.viewer
 {
 
+import caurina.transitions.Tweener;
+
 import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Sprite;
+import flash.events.MouseEvent;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
@@ -31,7 +34,9 @@ import org.openzoom.core.IViewportController;
 import org.openzoom.core.NormalizedViewport;
 import org.openzoom.core.Scene;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.net.TileLoader;
 import org.openzoom.renderers.MultiScaleImageRenderer;
+import org.openzoom.utils.math.clamp;
 import org.openzoom.viewer.controllers.KeyboardNavigationController;
 import org.openzoom.viewer.controllers.MouseNavigationController;
 import org.openzoom.viewer.controllers.ViewTransformationController;
@@ -51,7 +56,7 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_MAX_ZOOM     : Number = 10000
     
     private static const DEFAULT_DIMENSION    : Number = 20000
-    private static const DEFAULT_SCENE_WIDTH  : Number = 36000
+    private static const DEFAULT_SCENE_WIDTH  : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT : Number = 18000
     
     private static const ZOOM_IN_FACTOR       : Number = 2.0
@@ -90,20 +95,23 @@ public class MultiScaleImageViewer extends Sprite
         scene.width = DEFAULT_SCENE_WIDTH
         scene.height = DEFAULT_SCENE_HEIGHT
         viewport.scene = new Scene( DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
+        var loader : TileLoader = new TileLoader()
         
-        for( var i : int = 0; i < 15; i++ )
+        for( var i : int = 0; i < 20; i++ )
         {
-            for( var j : int = 0; j < 5; j++ )
+            for( var j : int = 0; j < 15; j++ )
             {
-		        var image : MultiScaleImageRenderer = createImage( descriptor.clone(), descriptor.width, descriptor.height )
-		        image.x = i * (image.width + 100)
-		        image.y = j * (image.height + 100)
+            	var scale : Number = 0.25//clamp( Math.random() * 2, 0.2, 2 )
+		        var image : MultiScaleImageRenderer = createImage( descriptor, loader, descriptor.width * scale, descriptor.height * scale ) 
+		        image.x = i * (image.width * 1.1)
+		        image.y = j * (image.height * 1.1)
 		        scene.addChild( image )
             }
         }
         
+//        scene.doubleClickEnabled = true
+//        scene.addEventListener( MouseEvent.DOUBLE_CLICK, scene_doubleClickHandler )
         addChild( scene )
-        
         
         // controllers
         createControllers( scene )
@@ -190,7 +198,7 @@ public class MultiScaleImageViewer extends Sprite
     
     public function showAll() : void
     {
-        viewport.fitToScene()
+        viewport.showAll()
     }
     
     // zooming
@@ -270,11 +278,11 @@ public class MultiScaleImageViewer extends Sprite
     }
     
     private function createImage( descriptor : IMultiScaleImageDescriptor,
-                                  width : Number,
-                                  height : Number ) : MultiScaleImageRenderer
+                                  loader : TileLoader,
+                                  width : Number, height : Number ) : MultiScaleImageRenderer
     {
         var image : MultiScaleImageRenderer =
-                        new MultiScaleImageRenderer( descriptor, width, height )
+                        new MultiScaleImageRenderer( descriptor, loader, width, height )
         image.viewport = viewport
         return image
     }
@@ -334,6 +342,31 @@ public class MultiScaleImageViewer extends Sprite
     private function getMouseOrigin() : Point
     {
         return new Point( mouseX / width, mouseY / height )
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Event handlers
+    //
+    //--------------------------------------------------------------------------
+    
+    private function scene_doubleClickHandler( event : MouseEvent ) : void
+    {
+    	for( var i : int = 1; i < scene.numChildren; i++ )
+    	{
+    		var renderer : DisplayObject = scene.getChildAt( i )
+            var scale : Number = clamp( Math.random() * 2, 0.2, 2 )
+    		Tweener.addTween(
+    		                  renderer,
+    		                  {
+    		                      x: Math.random() * DEFAULT_SCENE_WIDTH * 0.5,
+    		                      y: Math.random() * DEFAULT_SCENE_WIDTH * 0.5,
+    		                      width: renderer.width * scale,
+    		                      height: renderer.height * scale,
+    		                      time: 2
+    		                  }
+    		                )
+    	}
     }
 }
 

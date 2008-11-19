@@ -134,12 +134,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
 
     public function get scale() : Number
     {
-        // TODO: Cache
-        var topLeft : Point = sceneToLocal( new Point( 0, 0 ) )
-        var bottomRight : Point = sceneToLocal( new Point( scene.width, scene.height ))
-
-        var distanceX : Number = bottomRight.x - topLeft.x
-        return distanceX / scene.width
+        return bounds.width / ( scene.width * width ) 
     }
  
     //----------------------------------
@@ -203,9 +198,9 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     //
     //--------------------------------------------------------------------------
     
-    public function fitToScene() : void
+    public function showAll() : void
     {
-    	zoomTo( 1 )
+    	showArea( new Rectangle( 0, 0, scene.width, scene.height ))
     }
 
     public function zoomTo( z : Number,
@@ -225,7 +220,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         // This is ratio of the normalized content width and height 
         var ratio : Number = sceneAspectRatio / aspectRatio
 
-        if( ratio > 1 )
+        if( ratio >= 1 )
         {
             // content is wider than viewport
             _width = 1 / _z
@@ -266,8 +261,8 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         _y = y
     
         // content is wider than viewport
-        if( _width < 1 )
-        {
+//        if( _width < 1 )
+//        {
             // horizontal bounds checking:
             // the viewport sticks out on the left:
             // align it with the left margin
@@ -278,17 +273,17 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
            // align it with the right margin
            if( ( _x + _width * ( 1 - BOUNDS_TOLERANCE ) ) > 1 )
                _x = 1 - _width * ( 1 - BOUNDS_TOLERANCE )      
-        }
-        else
-        {
-            // viewport is wider than content:
-            // center scene horizontally
-            _x = ( 1 - _width ) * 0.5
-        }
+//        }
+//        else
+//        {
+//            // viewport is wider than content:
+//            // center scene horizontally
+//            _x = ( 1 - _width ) * 0.5
+//        }
     
         // scene is taller than viewport
-        if( _height < 1 )
-        {
+//        if( _height < 1 )
+//        {
             // vertical bounds checking:
             // the viewport sticks out at the top:
             // align it with the top margin
@@ -299,13 +294,13 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
             // align it with the bottom margin
             if( _y + _height * ( 1 - BOUNDS_TOLERANCE ) > 1 )
               _y = 1 - _height * ( 1 - BOUNDS_TOLERANCE )
-        }
-        else
-        {
-            // viewport is taller than scene
-            // center scene vertically
-            _y = ( 1 - _height ) * 0.5
-        } 
+//        }
+//        else
+//        {
+//            // viewport is taller than scene
+//            // center scene vertically
+//            _y = ( 1 - _height ) * 0.5
+//        } 
         
         if( dispatchChangeEvent )
             this.dispatchChangeEvent()

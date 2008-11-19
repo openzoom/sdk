@@ -17,11 +17,15 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.descriptors
+package org.openzoom.descriptors.zoomify
 {
 
 import flash.utils.Dictionary;
 
+import org.openzoom.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.descriptors.IMultiScaleImageLevel;
+import org.openzoom.descriptors.MultiScaleImageDescriptorBase;
+import org.openzoom.descriptors.MultiScaleImageLevel;
 import org.openzoom.utils.math.clamp;
 
 /**
@@ -77,9 +81,8 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-        return _source.substr( 0, _source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length )
-                   + DEFAULT_TILE_FOLDER_NAME + "/" + String( level ) + "-"
-                   + String( column ) + "-" + String( row ) + "." + type
+    	var path : String = _source.substr( 0, _source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length ) + DEFAULT_TILE_FOLDER_NAME
+        return [ path, "/", level, "-", column, "-", row, ".", type ].join("")
 
     }
 

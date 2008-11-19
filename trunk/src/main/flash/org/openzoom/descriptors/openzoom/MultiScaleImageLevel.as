@@ -30,8 +30,8 @@ import org.openzoom.descriptors.MultiScaleImageLevelBase;
 /**
  * The OpenZoomLevel class represents a single level of a multi-scale image pyramid.
  */
-public class OpenZoomLevel extends MultiScaleImageLevelBase
-                           implements IMultiScaleImageLevel
+public class MultiScaleImageLevel extends MultiScaleImageLevelBase
+                                  implements IMultiScaleImageLevel
 {
     //--------------------------------------------------------------------------
     //
@@ -42,7 +42,7 @@ public class OpenZoomLevel extends MultiScaleImageLevelBase
     /**
      * Constructor.
      */ 
-    public function OpenZoomLevel( descriptor : IMultiScaleImageDescriptor,
+    public function MultiScaleImageLevel( descriptor : IMultiScaleImageDescriptor,
                                    index : int, width : uint, height : uint,
                                    numColumns : uint, numRows : uint, uris : Array )
     {
@@ -89,7 +89,7 @@ public class OpenZoomLevel extends MultiScaleImageLevelBase
     
     public function clone() : IMultiScaleImageLevel
     {
-        return new OpenZoomLevel( descriptor.clone(), this.index, width, height, numColumns, numRows, uris.slice() )
+        return new MultiScaleImageLevel( descriptor.clone(), this.index, width, height, numColumns, numRows, uris.slice() )
     }
     
     //--------------------------------------------------------------------------

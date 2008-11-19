@@ -42,7 +42,7 @@ public class TileLayer extends Sprite implements ITileLayer
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_TILE_SHOW_DURATION : Number = 2.0
+    private static const DEFAULT_TILE_SHOW_DURATION : Number = 2.5
     
     //--------------------------------------------------------------------------
     //

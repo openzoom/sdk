@@ -299,9 +299,9 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
     //
     //--------------------------------------------------------------------------
 	
-	public function fitToScene() : void
+	public function showAll() : void
 	{
-        viewport.fitToScene()
+        viewport.showAll()
 	}
     
     public function zoomTo( z : Number,

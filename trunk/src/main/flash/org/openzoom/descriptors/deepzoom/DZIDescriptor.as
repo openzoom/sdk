@@ -17,10 +17,16 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.descriptors
+package org.openzoom.descriptors.deepzoom
 {
 
 import flash.utils.Dictionary;
+
+import org.openzoom.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.descriptors.IMultiScaleImageLevel;
+import org.openzoom.descriptors.MultiScaleImageDescriptorBase;
+import org.openzoom.descriptors.MultiScaleImageLevel;
+import org.openzoom.utils.math.clamp;
 
 /**
  * Descriptor for the Microsoft Deep Zoom Image (DZI) format.
@@ -74,9 +80,8 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-        return _source.substring( 0, _source.length - 4 ) + "_files/"
-                   + String( level ) + "/" + String( column ) + "_"
-                   + String( row ) + "." + extension
+    	var path : String  = _source.substring( 0, _source.length - 4 ) + "_files"
+        return [ path, "/", level, "/", column, "_", row, ".", extension ].join("")
     }
     
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
@@ -88,9 +93,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     public function getMinimumLevelForSize( width : Number,
                                             height : Number ) : IMultiScaleImageLevel
     {
-    	// FIXME: Some images appear blurry.
-    	// For now, just be more generous and return one level higher than necessary…
-        var index : int = Math.max( 0, Math.min( numLevels - 1, Math.ceil( Math.log( Math.min( width, height ) ) / Math.LN2 ) + 1 ))
+        var index : int = clamp( Math.ceil( Math.log( Math.max( width, height )) / Math.LN2 ), 0, numLevels - 1 )
         return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
     }
     
@@ -141,7 +144,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     }
 
     private function computeNumLevels( width : Number, height : Number ) : int
-    {
+    {          //Math.ceil(Math.log(Math.max(width,height))/Math.log(2)
         return Math.ceil( Math.log( Math.max( width, height ) ) / Math.LN2 ) + 1
     }
     

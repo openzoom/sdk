@@ -225,7 +225,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * Fit entire scene into the viewport.
      */ 
-    function fitToScene() : void
+    function showAll() : void
     
     //--------------------------------------------------------------------------
     //

@@ -79,10 +79,10 @@ public class OpenZoomViewer extends Sprite
     private static const ABOUT_MENU_CAPTION              : String = "Powered by OpenZoom.org"
     private static const ABOUT_MENU_URL                  : String = "http://openzoom.org/"
     
-    private static const DEFAULT_IMAGE_NAME              : String = "morocco"
+    private static const DEFAULT_IMAGE_NAME              : String = "billions"
     private static const DEFAULT_SOURCE_PATH             : String = "../../../../src/main/resources/images"
-    private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
-//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
+//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
+    private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
 //  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/" + DEFAULT_IMAGE_NAME + ".ozi/meta.xml"
 //  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-road.xml"
 //  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-satellite.xml"

@@ -236,7 +236,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
             viewport.moveTo( 1, viewport.y )
          
         if( spaceActivated )
-            viewport.fitToScene()
+            viewport.showAll()
          
         // zooming
         if( zoomInActivated )

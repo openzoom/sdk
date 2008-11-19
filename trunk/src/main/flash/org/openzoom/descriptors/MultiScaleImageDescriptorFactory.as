@@ -19,7 +19,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.descriptors
 {
+	import org.openzoom.descriptors.deepzoom.DZIDescriptor;
 	import org.openzoom.descriptors.openzoom.OpenZoomDescriptor;
+	import org.openzoom.descriptors.zoomify.ZoomifyDescriptor;
 	
 
 /**
@@ -82,9 +84,6 @@ public class MultiScaleImageDescriptorFactory
     public function getDescriptor( source : String,
                                    data : XML ) : IMultiScaleImageDescriptor
     {
-        if( data.namespace().uri == OPENZOOM_IMAGE_NAMESPACE_URI )
-            return new OZIDescriptor( source, data )
-            
         if( data.namespace().uri == OPENZOOM_DESCRIPTION_NAMESPACE_URI )
             return new OpenZoomDescriptor( source, data )
             

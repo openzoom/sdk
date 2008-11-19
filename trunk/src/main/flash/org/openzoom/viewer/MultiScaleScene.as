@@ -45,7 +45,7 @@ public class MultiScaleScene extends Sprite implements IScene
     {
     	var background : Shape = new Shape()
     	var g : Graphics = background.graphics
-    	g.beginFill( 0x000000, 0.1 )
+    	g.beginFill( 0x333333, 0.4 )
     	g.drawRect( 0, 0, width, height )
     	g.endFill()
     	return background

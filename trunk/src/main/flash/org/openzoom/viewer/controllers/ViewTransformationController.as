@@ -127,6 +127,8 @@ public class ViewTransformationController extends ViewportControllerBase
         var newX      : Number = -viewport.x * newWidth
         var newY      : Number = -viewport.y * newHeight
         
+        trace( viewport.scale )
+        
         Tweener.addTween(
                             view,
                             {

@@ -20,10 +20,9 @@
 package org.openzoom.renderers
 {
 
-import br.com.stimuli.loading.BulkLoader;
-
 import flash.display.Bitmap;
 import flash.display.Graphics;
+import flash.display.Loader;
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
@@ -33,7 +32,9 @@ import org.openzoom.core.INormalizedViewport;
 import org.openzoom.core.IZoomable;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.descriptors.IMultiScaleImageLevel;
+import org.openzoom.events.TileRequestEvent;
 import org.openzoom.events.ViewportEvent;
+import org.openzoom.net.TileLoader;
 import org.openzoom.utils.math.clamp;
 
 /**
@@ -47,8 +48,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     //
     //--------------------------------------------------------------------------
     
-    private var TILE_LOADER_NAME : String = "tileLoader"
-    private var BACKGROUND_LOADER_NAME : String = "backgroundLoader"
+//    private var TILE_LOADER_NAME : String = "tileLoader"
+//    private var BACKGROUND_LOADER_NAME : String = "backgroundLoader"
     
     //--------------------------------------------------------------------------
     //
@@ -60,16 +61,17 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
      * Constructor.
      */
     public function MultiScaleImageRenderer( descriptor : IMultiScaleImageDescriptor,
-                                             width : Number, height : Number )
+                                             loader : TileLoader, width : Number, height : Number )
     {
-    	TILE_LOADER_NAME = Math.random().toString()
-    	BACKGROUND_LOADER_NAME = Math.random().toString()
+//    	TILE_LOADER_NAME = Math.random().toString()
+//    	BACKGROUND_LOADER_NAME = Math.random().toString()
+    	tileLoader = loader
     	
         this.descriptor = descriptor
         
         createFrame( width, height )
-        createLoader()
-        createLayers( descriptor, width, height )
+//        createLoader()
+        createLayers( descriptor, frame.width, frame.height )
         
         // TODO: Debug
         createDebugLayer()
@@ -77,8 +79,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         // Load highest single tile level as background to prevent
         // artifacts between tiles in case we have a format that doesn't
         // feature tile overlap.
-        if( descriptor.tileOverlap == 0 ) 
-            loadBackground()
+//        if( descriptor.tileOverlap == 0 ) 
+//            loadBackground()
     }
     
     //--------------------------------------------------------------------------
@@ -90,8 +92,9 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     private var renderingMode : String = RenderingMode.SMOOTH
     
     private var descriptor : IMultiScaleImageDescriptor
-    private var tileLoader : BulkLoader
-    private var backgroundLoader : BulkLoader
+//    private var tileLoader : BulkLoader
+    private var tileLoader : TileLoader
+    private var backgroundLoader : Loader
 
     private var layers : Array /* of ITileLayer */ = []
     private var backgroundTile : Bitmap
@@ -161,11 +164,11 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         addChildAt( frame, 0 )
     }
     
-    private function createLoader() : void
-    {
-        tileLoader = new BulkLoader( TILE_LOADER_NAME )
-        backgroundLoader = new BulkLoader( BACKGROUND_LOADER_NAME )
-    }
+//    private function createLoader() : void
+//    {
+//        tileLoader = new BulkLoader( TILE_LOADER_NAME )
+//        backgroundLoader = new BulkLoader( BACKGROUND_LOADER_NAME )
+//    }
     
     private function createDebugLayer() : void
     {
@@ -203,9 +206,11 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         var level : int = getHighestSingleTileLevel()
         var url : String = descriptor.getTileURL( level, 0, 0 )
         
-        backgroundLoader.add( url, { id: "background", type: "image" } )
-                        .addEventListener( Event.COMPLETE, backgroundCompleteHandler )
-        backgroundLoader.start()
+        tileLoader.add( url ).addEventListener( Event.COMPLETE, backgroundCompleteHandler )
+//        tileLoader.start()
+//        backgroundLoader = new Loader()
+//        backgroundLoader.contentLoaderInfo.addEventListener( Event.COMPLETE, backgroundCompleteHandler )
+//        backgroundLoader.load( new URLRequest( url ))
     } 
     
     private function updateDisplayList() : void
@@ -226,16 +231,21 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         var level : IMultiScaleImageLevel = descriptor.getMinimumLevelForSize( width * viewportScale, height * viewportScale )
         
         // remove all tiles from loading queue
-        tileLoader.removeAll()
+//        tileLoader.removeAll()
         
         
-        for( var i : int = level.index + 1; i < descriptor.numLevels; i++ )
+        var firstLevel : int = level.index + 1
+//        if( !viewport.intersects( normalizedBounds ))
+//            firstLevel = Math.max( 1, Math.ceil( level.index / 4 ))
+//            
+        for( var i : int = firstLevel; i < descriptor.numLevels; i++ )
             getLayer( i ).removeAllTiles()
         
         if( renderingMode == RenderingMode.SMOOTH )
         {
 	        for( var l : int = 0; l <= level.index; l++ )
 	            loadTiles( descriptor.getLevelAt( l ), visibleRegion )
+//	            setTimeout( loadTiles, i * 100, descriptor.getLevelAt( l ), visibleRegion )
         }
         else
         {
@@ -262,13 +272,15 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
                    continue
                 
                 var url : String = descriptor.getTileURL( tile.level, tile.column, tile.row )
-                tileLoader.add( url, { type: "image", data: tile } )
+//                tileLoader.add( url, { type: "image", data: tile } )
+//                          .addEventListener( Event.COMPLETE, tileCompleteHandler, false, 0, true  )
+                tileLoader.add( url, tile )
                           .addEventListener( Event.COMPLETE, tileCompleteHandler, false, 0, true  )
             }
         }
         
         // begin loading   
-        tileLoader.start()
+//        tileLoader.start()
     }
     
     //--------------------------------------------------------------------------
@@ -277,25 +289,31 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     //
     //--------------------------------------------------------------------------
     
-    private function tileCompleteHandler( event : Event ) : void
+    private function tileCompleteHandler( event : TileRequestEvent ) : void
     {
-        var tile : Tile = event.target.data as Tile
-        if( tile )
-           tile.bitmap = event.target.loader.content
+//        var tile : Tile = event.target.data as Tile
+//        if( tile )
+//           tile.bitmap = event.target.loader.content
+        var tile : Tile = event.context as Tile
+            tile.bitmap = event.data
         
         var layer : ITileLayer = getLayer( tile.level )
         layer.addTile( tile )
     }
     
-    private function backgroundCompleteHandler( event : Event ) : void
+    private function backgroundCompleteHandler( event : TileRequestEvent ) : void
     {
-        backgroundTile = backgroundLoader.getBitmap( "background", true )
-        
+//        backgroundTile = tileLoader.getBitmap( "background", true )
+//        backgroundTile = backgroundLoader.content as Bitmap
+        backgroundTile = event.data as Bitmap
         backgroundTile.smoothing = true
         backgroundTile.width = frame.width
         backgroundTile.height = frame.height
         
         addChildAt( backgroundTile, getChildIndex( frame ))
+        
+        backgroundLoader.close()
+        backgroundLoader = null
     }
     
     //--------------------------------------------------------------------------
