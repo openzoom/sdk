@@ -17,7 +17,7 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.viewer.ui
+package org.openzoom.components.common
 {
 
 import flash.display.Graphics;

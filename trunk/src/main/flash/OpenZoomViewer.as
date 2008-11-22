@@ -39,12 +39,12 @@ import flash.ui.ContextMenu;
 import flash.ui.ContextMenuItem;
 
 import org.hasseg.externalMouseWheel.ExternalMouseWheelSupport;
+import org.openzoom.components.common.MemoryDisplay;
+import org.openzoom.components.flash.MultiScaleImageViewer;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.descriptors.IMultiScaleImageLevel;
 import org.openzoom.descriptors.MultiScaleImageDescriptorFactory;
-import org.openzoom.viewer.MultiScaleImageViewer;
 import org.openzoom.viewer.assets.Sad;
-import org.openzoom.viewer.ui.MemoryDisplay;
 
 /**
  * Bootstrapper.

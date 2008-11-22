@@ -23,7 +23,7 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.viewer.controllers
+package org.openzoom.components.common.controllers
 {
 
 import flash.events.Event;

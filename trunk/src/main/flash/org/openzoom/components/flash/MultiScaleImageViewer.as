@@ -17,7 +17,7 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.viewer
+package org.openzoom.components.flash
 {
 
 import caurina.transitions.Tweener;
@@ -27,6 +27,9 @@ import flash.display.Graphics;
 import flash.display.Sprite;
 import flash.geom.Point;
 
+import org.openzoom.components.common.controllers.KeyboardNavigationController;
+import org.openzoom.components.common.controllers.MouseNavigationController;
+import org.openzoom.components.common.controllers.ViewTransformationController;
 import org.openzoom.core.IMultiScaleScene;
 import org.openzoom.core.INormalizedViewport;
 import org.openzoom.core.IViewportController;
@@ -35,9 +38,6 @@ import org.openzoom.core.NormalizedViewport;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.net.TileLoader;
 import org.openzoom.renderers.MultiScaleImageRenderer;
-import org.openzoom.viewer.controllers.KeyboardNavigationController;
-import org.openzoom.viewer.controllers.MouseNavigationController;
-import org.openzoom.viewer.controllers.ViewTransformationController;
 
 /**
  * Basic multi-scale image viewer.
