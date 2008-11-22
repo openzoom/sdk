@@ -597,7 +597,12 @@ public class NormalizedViewport extends EventDispatcher
                            false, false, isNaN( oldZ ) ? zoom : oldZ ) )
     }
     
-    public function dispatchChangeCompleteEvent() : void
+    public function beginTransform() : void
+    {
+        dispatchEvent( new ViewportEvent( ViewportEvent.CHANGE_COMPLETE ) )
+    }
+    
+    public function endTransform() : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.CHANGE_COMPLETE ) )
     }

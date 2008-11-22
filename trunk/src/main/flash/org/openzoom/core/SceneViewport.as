@@ -366,9 +366,9 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
     //
     //--------------------------------------------------------------------------
         
-    public function dispatchChangeCompleteEvent() : void
+    public function endTransform() : void
     {
-    	viewport.dispatchChangeCompleteEvent()
+    	viewport.endTransform()
     }
     
     //--------------------------------------------------------------------------

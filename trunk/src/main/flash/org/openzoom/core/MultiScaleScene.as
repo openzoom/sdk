@@ -37,10 +37,14 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     /**
      * Constructor.
      */
-     public function MultiScaleScene( width : Number, height : Number )
+     public function MultiScaleScene( width : Number, height : Number,
+                                      backgroundColor : uint = 0x000000,
+                                      backgroundAlpha : Number = 0.0 )
      {
+     	this.backgroundColor = backgroundColor
+     	this.backgroundAlpha = backgroundAlpha
      	frame = createFrame()
-     	resizeFrame( width, height )
+     	drawFrame( width, height )
      	super.addChildAt( frame, 0 )
      }
      
@@ -51,6 +55,8 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     //--------------------------------------------------------------------------
     
     private var frame : Shape
+    private var backgroundColor : uint = 0x00000000
+    private var backgroundAlpha : Number = 0.0
     
     //--------------------------------------------------------------------------
     //
@@ -124,7 +130,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     
     public function set sceneWidth( value : Number ) : void
     {
-    	resizeFrame( value, sceneHeight )
+    	drawFrame( value, sceneHeight )
     }
     
     //----------------------------------
@@ -138,7 +144,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     
     public function set sceneHeight( value : Number ) : void
     {
-        resizeFrame( sceneWidth, value )
+        drawFrame( sceneWidth, value )
     }
     
     //--------------------------------------------------------------------------
@@ -149,7 +155,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     
     public function setSize( width : Number, height : Number ) : void
     {
-    	resizeFrame( width, height )
+    	drawFrame( width, height )
     	dispatchEvent( new Event( Event.RESIZE ))
     }
     
@@ -159,11 +165,11 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     //
     //--------------------------------------------------------------------------
     
-    private function resizeFrame( width : Number, height : Number ) : void
+    private function drawFrame( width : Number, height : Number ) : void
     {
         var g : Graphics = frame.graphics
         g.clear()
-        g.beginFill( 0x333333, 0.4 )
+        g.beginFill( backgroundColor, backgroundAlpha )
         g.drawRect( 0, 0, width, height )
         g.endFill()
     }

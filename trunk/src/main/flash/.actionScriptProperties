@@ -4,6 +4,7 @@
 <compilerSourcePath>
 <compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/libs/flash/tweener/as3"/>
 <compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/libs/flash/external-mousewheel"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${PROJECT_FRAMEWORKS}/projects/framework/src"/>
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path="">

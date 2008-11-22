@@ -36,8 +36,7 @@ public class MultiScaleImageDescriptorFactory
     //--------------------------------------------------------------------------
     
     private static const DEEPZOOM_NAMESPACE_URI : String = "http://schemas.microsoft.com/deepzoom/2008"
-    private static const OPENZOOM_IMAGE_NAMESPACE_URI : String = "http://openzoom.org/2008/ozi"
-    private static const OPENZOOM_DESCRIPTION_NAMESPACE_URI : String = "http://openzoom.org/2008/ozd"
+    private static const OPENZOOM_DESCRIPTION_NAMESPACE_URI : String = "http://ns.openzoom.org/openzoom/2008"
     private static const ZOOMIFY_ROOT_TAG_NAME : String = "IMAGE_PROPERTIES"
   
     //--------------------------------------------------------------------------

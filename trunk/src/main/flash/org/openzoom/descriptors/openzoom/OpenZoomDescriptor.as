@@ -40,7 +40,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    namespace openzoom = "http://openzoom.org/2008/ozd"
+    namespace openzoom = "http://ns.openzoom.org/openzoom/2008"
 
     //--------------------------------------------------------------------------
     //
@@ -105,7 +105,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     
     public function clone() : IMultiScaleImageDescriptor
     {
-        return new OpenZoomDescriptor( source, new XML( data ))
+        return new OpenZoomDescriptor( source, data.copy())
     }
 
     //--------------------------------------------------------------------------

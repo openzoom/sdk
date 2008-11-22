@@ -63,7 +63,7 @@ public class MouseNavigationController extends ViewportControllerBase
     
     /**
      *  Constructor.
-     */ 
+     */
     public function MouseNavigationController()
     {
         createClickTimer()

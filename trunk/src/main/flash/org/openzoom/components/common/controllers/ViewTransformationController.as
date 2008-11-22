@@ -136,7 +136,7 @@ public class ViewTransformationController extends ViewportControllerBase
                                 height: newHeight,
                                 time: duration,
                                 transition: transition,
-                                onComplete: viewport.dispatchChangeCompleteEvent
+                                onComplete: viewport.endTransform
                             }
                         )
     }
@@ -149,7 +149,7 @@ public class ViewTransformationController extends ViewportControllerBase
     
     private function transformation_completeHandler( event : Event ) : void
     {
-        viewport.dispatchChangeCompleteEvent()
+        viewport.endTransform()
     }
 }
 

@@ -35,6 +35,11 @@ import org.openzoom.descriptors.IMultiScaleImageLevel;
 import org.openzoom.events.TileRequestEvent;
 import org.openzoom.events.ViewportEvent;
 import org.openzoom.net.TileLoader;
+import org.openzoom.renderers.images.ITileLayer;
+import org.openzoom.renderers.images.RenderingMode;
+import org.openzoom.renderers.images.Tile;
+import org.openzoom.renderers.images.TileLayer;
+import org.openzoom.utils.math.clamp;
 
 /**
  * Generic renderer for multi-scale images.
@@ -66,8 +71,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         // Load highest single tile level as background to prevent
         // artifacts between tiles in case we have a format that doesn't
         // feature tile overlap.
-//        if( descriptor.tileOverlap == 0 ) 
-//            loadBackground()
+        if( descriptor.tileOverlap == 0 ) 
+            loadBackground()
     }
     
     //--------------------------------------------------------------------------
@@ -143,7 +148,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     {
         frame = new Shape()
         var g : Graphics = frame.graphics
-        g.beginFill( 0x333333, 0.1 )
+        g.beginFill( 0x000000, 0 )
         g.drawRect( 0, 0, width, height )
         g.endFill()
         
@@ -175,12 +180,14 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     {
         for( var i : int = 0; i < descriptor.numLevels; i++ )
         {
-        	var layer : TileLayer = new TileLayer( frame.width, frame.height, descriptor.getLevelAt( i ))
+            var level : IMultiScaleImageLevel = descriptor.getLevelAt( i )
+        	var layer : TileLayer = new TileLayer( level.width, level.height, level )
+//          var layer : TileLayer = new TileLayer( frame.width, frame.height, level )
         	layers[ i ] = layer
         	
         	// FIXME: Very large layer dimensions cause problems…
-//        	layer.width = width
-//        	layer.height = height
+        	layer.width = width
+        	layer.height = height
         	
         	addChild( layer )
         }	
@@ -199,14 +206,12 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
 //    	debugLayer.graphics.clear()
     	
         var bounds : Rectangle
-            bounds = getBounds( parent )
+            bounds = getBounds( viewport.scene.owner )
             
             bounds.x /= Math.abs( scaleX )
             bounds.y /= Math.abs( scaleY )
             bounds.width /= Math.abs( scaleX )
             bounds.height /= Math.abs( scaleY )
-//        bounds = new Rectangle( x / Math.abs( scaleX ), y / Math.abs( scaleY ),
-//                                width / Math.abs( scaleX ), height / Math.abs( scaleY ) ) 
         
         var normalizedBounds : Rectangle = bounds.clone()
             normalizedBounds.x /= viewport.scene.sceneWidth
@@ -293,9 +298,6 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         backgroundTile.height = frame.height
         
         addChildAt( backgroundTile, getChildIndex( frame ))
-        
-        backgroundLoader.close()
-        backgroundLoader = null
     }
     
     //--------------------------------------------------------------------------
@@ -328,21 +330,21 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private function getHighestSingleTileLevel() : int
     {
-    	return 0;
-    	// FIXME
+    	if( !descriptor.getLevelAt( 0 ))
+    	   return 0;
     	
-//        var i : int = 0
-//        var level : IMultiScaleImageLevel
-//
-//        do        
-//        {
-//            level = descriptor.getLevelAt( i )
-//            i++
-//        }
-//        while( level.numColumns == 1 && level.numRows == 1 )
-//        
-//        var index : int = clamp( level.index - 1, 0, descriptor.numLevels - 1 ) 
-//        return index
+        var i : int = 0
+        var level : IMultiScaleImageLevel
+
+        do        
+        {
+            level = descriptor.getLevelAt( i )
+            i++
+        }
+        while( level.numColumns == 1 && level.numRows == 1 )
+        
+        var index : int = clamp( level.index - 1, 0, descriptor.numLevels - 1 ) 
+        return index
     }
 }
 

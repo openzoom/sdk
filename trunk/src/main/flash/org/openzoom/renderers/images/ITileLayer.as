@@ -17,7 +17,7 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.renderers
+package org.openzoom.renderers.images
 {
 
 import org.openzoom.descriptors.IMultiScaleImageLevel;

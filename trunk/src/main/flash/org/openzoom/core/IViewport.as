@@ -358,7 +358,13 @@ public interface IViewport extends IEventDispatcher
      * Dispatch changeComplete event to let all listeners
      * know that a Viewport transition has completed.
      */
-    function dispatchChangeCompleteEvent() : void	
+    function beginTransform() : void
+    	
+    /**
+     * Dispatch changeComplete event to let all listeners
+     * know that a Viewport transition has completed.
+     */
+    function endTransform() : void	
 }
 
 }

@@ -17,7 +17,7 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.renderers
+package org.openzoom.renderers.images
 {
 
 import caurina.transitions.Tweener;
@@ -56,9 +56,10 @@ public class TileLayer extends Sprite implements ITileLayer
     public function TileLayer( width : Number, height : Number, level : IMultiScaleImageLevel )
     {
         _level = level
-        scaleXFactor = width  / level.width
-        scaleYFactor = height / level.height
-        frame = createFrame( width, height )
+        // FIXME
+//        scaleXFactor = width  / level.width
+//        scaleYFactor = height / level.height
+        createFrame( width, height )
     }
     
     //--------------------------------------------------------------------------
@@ -124,7 +125,6 @@ public class TileLayer extends Sprite implements ITileLayer
         
         tileBitmap.x = position.x * scaleXFactor
         tileBitmap.y = position.y * scaleYFactor
-        
     
         tileBitmap.smoothing = true
         tileBitmap.alpha = 0
@@ -151,19 +151,18 @@ public class TileLayer extends Sprite implements ITileLayer
     //
     //--------------------------------------------------------------------------
     
-    private function createFrame( width : Number, height : Number ) : Shape
+    private function createFrame( width : Number, height : Number ) : void
     {
-        var background : Shape = new Shape()
-        var g : Graphics = background.graphics
-        g.lineStyle( 0, 0xFF0000 )
-        g.beginFill( Math.random() * 0xFFFFFF, 0.05 )
-//        g.beginFill( 0x000000, 0 )
-//        g.drawRect( 0, 0, width, height )
+        frame = new Shape()
+        var g : Graphics = frame.graphics
+        // DEBUG
+//        g.lineStyle( 0, 0xFF0000 )
+//        g.beginFill( Math.random() * 0xFFFFFF, 0.05 )
+        g.beginFill( 0x000000, 0 )
+        g.drawRect( 0, 0, width, height )
         g.endFill()
         
-        addChild( background )
-        
-        return background
+        addChild( frame )
     }
 }
 
