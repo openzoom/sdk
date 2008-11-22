@@ -294,11 +294,8 @@ public class MultiScaleImageViewer extends Sprite
     
     private function createScene() : void
     {
-        // scene        
         _scene = new MultiScaleScene( DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
         addChild( _scene )
-        
-//        _scene = new Scene( canvas, DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
     }
     
     private function createChildren() : void

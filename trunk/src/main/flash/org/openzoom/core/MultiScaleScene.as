@@ -41,7 +41,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
      {
      	frame = createFrame()
      	resizeFrame( width, height )
-     	addChildAt( frame, 0 )
+     	super.addChildAt( frame, 0 )
      }
      
     //--------------------------------------------------------------------------
@@ -54,7 +54,53 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     
     //--------------------------------------------------------------------------
     //
-    //  Properties
+    //  Overridden properties: DisplayObject
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  numChildren
+    //----------------------------------
+    
+    override public function get numChildren():int
+    {
+        return super.numChildren - 1
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Overridden methods: DisplayObject
+    //
+    //--------------------------------------------------------------------------
+    
+    override public function addChildAt( child : DisplayObject, index : int ) : DisplayObject
+    {
+    	return super.addChildAt( child, index + 1 )
+    }
+    
+    override public function removeChildAt( index : int ) : DisplayObject
+    {
+    	return super.removeChildAt( index + 1 )
+    }
+    
+    override public function setChildIndex( child : DisplayObject, index : int ) : void
+    {
+    	super.setChildIndex( child, index + 1 )
+    }
+    
+    override public function getChildAt( index : int ) : DisplayObject
+    {
+    	return super.getChildAt( index + 1 )
+    }
+    
+    override public function getChildIndex( child : DisplayObject ) : int
+    {
+        return super.getChildIndex( child ) + 1	
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: IMultiScaleScene
     //
     //--------------------------------------------------------------------------
     
