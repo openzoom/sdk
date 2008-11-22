@@ -113,28 +113,28 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
     //  minZ
     //----------------------------------
 
-    public function get minZ() : Number
+    public function get minZoom() : Number
     {
-        return viewport.minZ
+        return viewport.minZoom
     }
     
-    public function set minZ( value : Number ) : void
+    public function set minZoom( value : Number ) : void
     {
-    	viewport.minZ = value
+    	viewport.minZoom = value
     }
     
     //----------------------------------
     //  maxZ
     //----------------------------------
     
-    public function get maxZ() : Number
+    public function get maxZoom() : Number
     {
-        return viewport.maxZ
+        return viewport.maxZoom
     }
     
-    public function set maxZ( value : Number ) : void
+    public function set maxZoom( value : Number ) : void
     {
-        viewport.maxZ = value
+        viewport.maxZoom = value
     }
     
     //----------------------------------
@@ -150,14 +150,14 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
     //  z
     //----------------------------------
     
-    public function get z() : Number
+    public function get zoom() : Number
     {
-        return viewport.z
+        return viewport.zoom
     }
     
-    public function set z( value : Number ) : void
+    public function set zoom( value : Number ) : void
     {
-        viewport.z = value
+        viewport.zoom = value
     }
     
     //----------------------------------
@@ -460,7 +460,7 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
         return "[SceneViewport]" + "\n"
                + "x=" + x + "\n" 
                + "y=" + y  + "\n"
-               + "z=" + z + "\n"
+               + "z=" + zoom + "\n"
                + "w=" + width + "\n"
                + "h=" + height + "\n"
                + "sW=" + scene.width + "\n"

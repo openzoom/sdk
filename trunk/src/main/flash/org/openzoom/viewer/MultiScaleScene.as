@@ -8,7 +8,7 @@ import flash.display.Sprite;
 import org.openzoom.core.INormalizedViewport;
 import org.openzoom.core.IScene;	
 
-public class MultiScaleScene extends Sprite implements IScene
+public class MultiScaleScene extends Sprite
 {
     //--------------------------------------------------------------------------
     //
@@ -19,9 +19,8 @@ public class MultiScaleScene extends Sprite implements IScene
     /**
      * Constructor.
      */
-     public function MultiScaleScene( viewport : INormalizedViewport, width : Number, height : Number )
+     public function MultiScaleScene( width : Number, height : Number )
      {
-     	this.viewport = viewport
      	frame = createFrame( width, height )
      	addChildAt( frame, 0 )
      }
@@ -33,7 +32,6 @@ public class MultiScaleScene extends Sprite implements IScene
     //--------------------------------------------------------------------------
     
     private var frame : Shape
-    private var viewport : INormalizedViewport
     
     //--------------------------------------------------------------------------
     //

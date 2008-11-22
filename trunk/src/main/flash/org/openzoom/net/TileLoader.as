@@ -24,7 +24,7 @@ import org.openzoom.events.TileRequestEvent;
 	
 public class TileLoader
 {
-	private static const MAX_CONNECTIONS : uint = 8
+	private static const MAX_CONNECTIONS : uint = 20
 	
     private var stack : Array /* of TileRequests */ = []
     private var connections : Array /* of TileRequests */ = []

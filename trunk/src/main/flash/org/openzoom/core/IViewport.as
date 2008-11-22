@@ -80,6 +80,7 @@ public interface IViewport extends IEventDispatcher
      * Horizontal dimension of the viewport.
      */
     function get width() : Number
+//    function set width( value : Number )
     
     //----------------------------------
     //  height
@@ -89,6 +90,7 @@ public interface IViewport extends IEventDispatcher
      * Vertical dimension of the viewport.
      */
     function get height() : Number
+//    function set height( value : Number )
     
     //----------------------------------
     //  top
@@ -166,38 +168,39 @@ public interface IViewport extends IEventDispatcher
     /**
      * Scale of the scene.
      */ 
-    function get scale() : Number;
+    function get scale() : Number
+//    function set scale( value : Number )
       
     //----------------------------------
-    //  z
+    //  zoom
     //----------------------------------
     
     /**
      * Zoom level of the viewport.
      * Scene fits exactly into viewport at value 1.
      */
-    function get z() : Number
-    function set z( value : Number ) : void
+    function get zoom() : Number
+    function set zoom( value : Number ) : void
     
     //----------------------------------
-    //  minZ
+    //  minZoom
     //----------------------------------
     
     /**
      * Minimum zoom level.
      */
-    function get minZ() : Number
-    function set minZ( value : Number ) : void
+    function get minZoom() : Number
+    function set minZoom( value : Number ) : void
     
     //----------------------------------
-    //  maxZ
+    //  maxZoom
     //----------------------------------
     
     /**
      * Maximum zoom level.
      */
-    function get maxZ() : Number
-    function set maxZ( value : Number ) : void
+    function get maxZoom() : Number
+    function set maxZoom( value : Number ) : void
 
     //--------------------------------------------------------------------------
     //
@@ -210,16 +213,18 @@ public interface IViewport extends IEventDispatcher
      * @param originX Horizontal coordinate of the zooming center
      * @param originY Vertical coordinate of the zooming center
      */
-    function zoomTo( z : Number, originX : Number = 0.5, originY : Number = 0.5,
+    function zoomTo( zoom : Number,
+                     originX : Number = 0.5, originY : Number = 0.5,
                      dispatchChangeEvent : Boolean = true ) : void
     
     /**
      * Zoom the viewport by a factor.
-     * @param factor Scale factor for the zoom.
+     * @param factor Multiplier for the zoom.
      * @param originX Horizontal coordinate of the zooming center
      * @param originY Vertical coordinate of the zooming center
      */
-    function zoomBy( factor : Number, originX : Number = 0.5, originY : Number = 0.5,
+    function zoomBy( factor : Number,
+                     originX : Number = 0.5, originY : Number = 0.5,
                      dispatchChangeEvent : Boolean = true ) : void
                      
     /**
@@ -263,15 +268,6 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    /**
-     * Go to a point in the scene.
-     * @param x Horizontal coordinate
-     * @param y Vertical coordinate
-     * @param z Zoom level
-     */
-    function goto( x : Number, y : Number, z : Number,
-                   dispatchChangeEvent : Boolean = true ) : void
-                   
     /**
      * Show an area of the scene inside the viewport.
      * 

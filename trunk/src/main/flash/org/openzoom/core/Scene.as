@@ -21,6 +21,8 @@
 package org.openzoom.core
 {
 
+import flash.display.DisplayObjectContainer;
+import flash.events.Event;
 import flash.events.EventDispatcher;
 
 public class Scene extends EventDispatcher implements IScene
@@ -34,8 +36,9 @@ public class Scene extends EventDispatcher implements IScene
     /**
      * Constructor.
      */
-    public function Scene( width : Number, height : Number )
+    public function Scene( owner : DisplayObjectContainer, width : Number, height : Number )
     {
+    	_owner = owner
         _width = width
         _height = height
     }
@@ -56,6 +59,12 @@ public class Scene extends EventDispatcher implements IScene
     {
         return _width
     }
+    
+    public function set width( value : Number ) : void
+    {
+        _width = value
+        dispatchEvent( new Event( Event.RESIZE ))
+    }
 
     //----------------------------------
     //  height
@@ -68,9 +77,34 @@ public class Scene extends EventDispatcher implements IScene
         return _height
     }
     
-    public function get aspectRatio() : Number
+    public function set height( value : Number ) : void
     {
-    	return width / height
+        _height = value
+        dispatchEvent( new Event( Event.RESIZE ))
+    }
+
+    //----------------------------------
+    //  owner
+    //----------------------------------
+
+    private var _owner : DisplayObjectContainer
+
+    public function get owner() : DisplayObjectContainer
+    {
+        return _owner
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+    
+    public function setSize( width : Number, height : Number ) : void
+    {
+        _width = width
+        _height = height
+        dispatchEvent( new Event( Event.RESIZE ))
     }
 }
 

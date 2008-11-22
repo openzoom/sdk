@@ -35,22 +35,12 @@ import org.openzoom.descriptors.IMultiScaleImageLevel;
 import org.openzoom.events.TileRequestEvent;
 import org.openzoom.events.ViewportEvent;
 import org.openzoom.net.TileLoader;
-import org.openzoom.utils.math.clamp;
 
 /**
  * Generic renderer for multi-scale images.
  */
 public class MultiScaleImageRenderer extends Sprite implements IZoomable
 {
-    //--------------------------------------------------------------------------
-    //
-    //  Class constants
-    //
-    //--------------------------------------------------------------------------
-    
-//    private var TILE_LOADER_NAME : String = "tileLoader"
-//    private var BACKGROUND_LOADER_NAME : String = "backgroundLoader"
-    
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -63,14 +53,11 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     public function MultiScaleImageRenderer( descriptor : IMultiScaleImageDescriptor,
                                              loader : TileLoader, width : Number, height : Number )
     {
-//    	TILE_LOADER_NAME = Math.random().toString()
-//    	BACKGROUND_LOADER_NAME = Math.random().toString()
     	tileLoader = loader
     	
         this.descriptor = descriptor
         
         createFrame( width, height )
-//        createLoader()
         createLayers( descriptor, frame.width, frame.height )
         
         // TODO: Debug
@@ -92,7 +79,6 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     private var renderingMode : String = RenderingMode.SMOOTH
     
     private var descriptor : IMultiScaleImageDescriptor
-//    private var tileLoader : BulkLoader
     private var tileLoader : TileLoader
     private var backgroundLoader : Loader
 
@@ -164,12 +150,6 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         addChildAt( frame, 0 )
     }
     
-//    private function createLoader() : void
-//    {
-//        tileLoader = new BulkLoader( TILE_LOADER_NAME )
-//        backgroundLoader = new BulkLoader( BACKGROUND_LOADER_NAME )
-//    }
-    
     private function createDebugLayer() : void
     {
     	debugLayer = new Shape()
@@ -182,7 +162,12 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     	    g.clear()
     	    g.lineStyle( 0, 0xFF0000 )
     	    g.beginFill( 0x000000, 0 )
-    	    g.drawRect( region.x, region.y, region.width, region.height )
+    	    // TODO: Debug
+//    	    g.drawRect( Math.max( 0, region.x ),
+//    	                Math.max( 0, region.y ),
+//    	                Math.min( frame.width, region.width ),
+//    	                Math.min( frame.height, region.height ))
+            g.drawRect( region.x, region.y, region.width, region.height )
     	    g.endFill()	
     }
     
@@ -207,28 +192,35 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         var url : String = descriptor.getTileURL( level, 0, 0 )
         
         tileLoader.add( url ).addEventListener( Event.COMPLETE, backgroundCompleteHandler )
-//        tileLoader.start()
-//        backgroundLoader = new Loader()
-//        backgroundLoader.contentLoaderInfo.addEventListener( Event.COMPLETE, backgroundCompleteHandler )
-//        backgroundLoader.load( new URLRequest( url ))
     } 
     
     private function updateDisplayList() : void
     {
+//    	debugLayer.graphics.clear()
+    	
         var bounds : Rectangle
             bounds = getBounds( parent )
-        var normalizedBounds : Rectangle = new Rectangle( bounds.x / viewport.scene.width,
-                                                          bounds.y / viewport.scene.height,
-                                                          bounds.width / viewport.scene.width,
-                                                          bounds.height / viewport.scene.height )
+            
+            bounds.x /= Math.abs( scaleX )
+            bounds.y /= Math.abs( scaleY )
+            bounds.width /= Math.abs( scaleX )
+            bounds.height /= Math.abs( scaleY )
+//        bounds = new Rectangle( x / Math.abs( scaleX ), y / Math.abs( scaleY ),
+//                                width / Math.abs( scaleX ), height / Math.abs( scaleY ) ) 
+        
+        var normalizedBounds : Rectangle = bounds.clone()
+            normalizedBounds.x /= viewport.scene.width
+            normalizedBounds.y /= viewport.scene.height
+            normalizedBounds.width /= viewport.scene.width
+            normalizedBounds.height /= viewport.scene.height
 
         var visibleRegion : Rectangle = viewport.intersection( normalizedBounds )
-        visibleRegion.offset( -bounds.x, -bounds.y )        
+        visibleRegion.offset( -bounds.x, -bounds.y )      
 
 //        drawVisibleRegion( visibleRegion )
         
-        var viewportScale : Number = viewport.scale
-        var level : IMultiScaleImageLevel = descriptor.getMinimumLevelForSize( width * viewportScale, height * viewportScale )
+        var scale : Number = viewport.scale
+        var level : IMultiScaleImageLevel = descriptor.getMinimumLevelForSize( width * scale, height * scale )
         
         // remove all tiles from loading queue
 //        tileLoader.removeAll()
@@ -272,15 +264,10 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
                    continue
                 
                 var url : String = descriptor.getTileURL( tile.level, tile.column, tile.row )
-//                tileLoader.add( url, { type: "image", data: tile } )
-//                          .addEventListener( Event.COMPLETE, tileCompleteHandler, false, 0, true  )
                 tileLoader.add( url, tile )
                           .addEventListener( Event.COMPLETE, tileCompleteHandler, false, 0, true  )
             }
         }
-        
-        // begin loading   
-//        tileLoader.start()
     }
     
     //--------------------------------------------------------------------------
@@ -291,9 +278,6 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private function tileCompleteHandler( event : TileRequestEvent ) : void
     {
-//        var tile : Tile = event.target.data as Tile
-//        if( tile )
-//           tile.bitmap = event.target.loader.content
         var tile : Tile = event.context as Tile
             tile.bitmap = event.data
         
@@ -303,8 +287,6 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private function backgroundCompleteHandler( event : TileRequestEvent ) : void
     {
-//        backgroundTile = tileLoader.getBitmap( "background", true )
-//        backgroundTile = backgroundLoader.content as Bitmap
         backgroundTile = event.data as Bitmap
         backgroundTile.smoothing = true
         backgroundTile.width = frame.width
@@ -346,21 +328,21 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     
     private function getHighestSingleTileLevel() : int
     {
-    	return 1;
+    	return 0;
     	// FIXME
     	
-        var i : int = 0
-        var level : IMultiScaleImageLevel
-
-        do        
-        {
-            level = descriptor.getLevelAt( i )
-            i++
-        }
-        while( level.numColumns == 1 && level.numRows == 1 )
-        
-        var index : int = clamp( level.index - 1, 0, descriptor.numLevels - 1 ) 
-        return index
+//        var i : int = 0
+//        var level : IMultiScaleImageLevel
+//
+//        do        
+//        {
+//            level = descriptor.getLevelAt( i )
+//            i++
+//        }
+//        while( level.numColumns == 1 && level.numRows == 1 )
+//        
+//        var index : int = clamp( level.index - 1, 0, descriptor.numLevels - 1 ) 
+//        return index
     }
 }
 

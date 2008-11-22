@@ -27,6 +27,7 @@
 package org.openzoom.core
 {
 
+import flash.display.Sprite;
 import flash.events.EventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -68,8 +69,9 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     /**
      * Constructor.
      */
-    public function NormalizedViewport() : void
+    public function NormalizedViewport( scene : IScene ) : void
     {
+    	this.scene = scene
     }
 
     //--------------------------------------------------------------------------
@@ -84,12 +86,12 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
 
     private var _z : Number = 1
 
-    public function get z() : Number
+    public function get zoom() : Number
     {
         return _z
     }
 
-    public function set z( value : Number ) : void
+    public function set zoom( value : Number ) : void
     {
         zoomTo( value )
     }
@@ -100,12 +102,12 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
 
     private var _minZ : Number = DEFAULT_MIN_Z
 
-    public function get minZ() : Number
+    public function get minZoom() : Number
     {
         return _minZ
     }
 
-    public function set minZ( value : Number ) : void
+    public function set minZoom( value : Number ) : void
     {
         _minZ = value
         validate()
@@ -117,12 +119,12 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     
     private var _maxZ : Number = DEFAULT_MAX_Z
     
-    public function get maxZ() : Number
+    public function get maxZoom() : Number
     {
         return _maxZ
     }
     
-    public function set maxZ( value : Number ) : void
+    public function set maxZoom( value : Number ) : void
     {
        _maxZ = value
        validate()
@@ -154,11 +156,11 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     //  scene
     //----------------------------------
 
-    private var _scene : IScene = new Scene( 100, 100 )
+    private var _scene : IScene = new Scene( null, 100, 100 )
 
     public function get scene() : IScene
     {
-        return new Scene( _scene.width, _scene.height )
+        return new Scene( null, _scene.width, _scene.height )
     }
 
     public function set scene( value : IScene ) : void
@@ -166,7 +168,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         if( _scene.width == value.width && _scene.height == value.height )
            return 
         
-        _scene = new Scene( value.width, value.height )
+        _scene = new Scene( null, value.width, value.height )
         validate()
     }
     
@@ -189,7 +191,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         _bounds = value
         validate( false )
         
-        dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false, z ) )
+        dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false, zoom ) )
     }
 
     //--------------------------------------------------------------------------
@@ -208,10 +210,10 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
                             originY : Number = 0.5,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        var oldZ : Number = this.z
+        var oldZ : Number = this.zoom
 
         // keep z within min/max range
-        _z = clamp( z, minZ, maxZ )
+        _z = clamp( z, minZoom, maxZoom )
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( originX, originY )
@@ -244,7 +246,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
                             originX : Number = 0.5, originY : Number = 0.5,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        zoomTo( z * factor, originX, originY, dispatchChangeEvent )
+        zoomTo( zoom * factor, originX, originY, dispatchChangeEvent )
     }
 
     //--------------------------------------------------------------------------
@@ -271,7 +273,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     
            // the viewport sticks out on the right:
            // align it with the right margin
-           if( ( _x + _width * ( 1 - BOUNDS_TOLERANCE ) ) > 1 )
+           if(( _x + _width * ( 1 - BOUNDS_TOLERANCE )) > 1 )
                _x = 1 - _width * ( 1 - BOUNDS_TOLERANCE )      
 //        }
 //        else
@@ -292,7 +294,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         
             // the viewport sticks out at the bottom:
             // align it with the bottom margin
-            if( _y + _height * ( 1 - BOUNDS_TOLERANCE ) > 1 )
+            if( _y + _height * (1 - BOUNDS_TOLERANCE) > 1 )
               _y = 1 - _height * ( 1 - BOUNDS_TOLERANCE )
 //        }
 //        else
@@ -356,7 +358,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
             ratio = ratio / scaledHeight
         }
     
-        var oldZ : Number = z
+        var oldZ : Number = zoom
     
         zoomTo( ratio, 0.5, 0.5, false )
         moveCenterTo( normalizedCenter.x, normalizedCenter.y, false )
@@ -589,7 +591,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     private function dispatchChangeEvent( oldZ : Number = NaN ) : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.CHANGE,
-                           false, false, isNaN( oldZ ) ? z : oldZ ) )
+                           false, false, isNaN( oldZ ) ? zoom : oldZ ) )
     }
     
     public function dispatchChangeCompleteEvent() : void
@@ -686,7 +688,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         return "[NormalizedViewport]" + "\n"
                + "x=" + x + "\n" 
                + "y=" + y  + "\n"
-               + "z=" + z + "\n"
+               + "z=" + zoom + "\n"
                + "w=" + width + "\n"
                + "h=" + height + "\n"
                + "sW=" + scene.width + "\n"

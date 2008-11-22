@@ -26,24 +26,9 @@
 			<locationURI>OPENZOOM/libs/flash/external-mousewheel</locationURI>
 		</link>
 		<link>
-			<name>[source path] gtween</name>
-			<type>2</type>
-			<locationURI>OPENZOOM/libs/flash/gtween</locationURI>
-		</link>
-		<link>
-			<name>[source path] src</name>
-			<type>2</type>
-			<locationURI>OPENZOOM/libs/flash/bulkloader/src</locationURI>
-		</link>
-		<link>
 			<name>bin-debug</name>
 			<type>2</type>
 			<location>/Users/dani/Documents/workspace/openzoom/target/main/flash/debug</location>
-		</link>
-		<link>
-			<name>bin-release</name>
-			<type>2</type>
-			<location>/Users/dani/Development/workspace/openzoom/target/main/flash/release</location>
 		</link>
 	</linkedResources>
 </projectDescription>

@@ -20,6 +20,7 @@
 package org.openzoom.core
 {
 
+import flash.display.DisplayObjectContainer;
 import flash.events.IEventDispatcher;
 
 /**
@@ -28,7 +29,14 @@ import flash.events.IEventDispatcher;
 public interface IScene extends IEventDispatcher
 {
     function get width() : Number
+    function set width( value : Number ) : void
+    
     function get height() : Number
+    function set height( value : Number ) : void
+    
+    function setSize( width : Number, height : Number ) : void
+    
+    function get owner() : DisplayObjectContainer
 }
 
 }
