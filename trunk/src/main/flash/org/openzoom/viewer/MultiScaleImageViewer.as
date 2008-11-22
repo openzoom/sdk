@@ -26,7 +26,6 @@ import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Sprite;
 import flash.geom.Point;
-import flash.geom.Rectangle;
 
 import org.openzoom.core.IMultiScaleScene;
 import org.openzoom.core.INormalizedViewport;
@@ -51,16 +50,19 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
    
-    private static const DEFAULT_MIN_ZOOM     : Number = 0.25
-    private static const DEFAULT_MAX_ZOOM     : Number = 10000
+    private static const DEFAULT_MIN_ZOOM        : Number = 0.25
+    private static const DEFAULT_MAX_ZOOM        : Number = 10000
     
-    private static const DEFAULT_DIMENSION    : Number = 20000
-    private static const DEFAULT_SCENE_WIDTH  : Number = 24000
-    private static const DEFAULT_SCENE_HEIGHT : Number = 18000
+    private static const DEFAULT_DIMENSION       : Number = 20000
+    private static const DEFAULT_SCENE_WIDTH     : Number = 24000
+    private static const DEFAULT_SCENE_HEIGHT    : Number = 18000
     
-    private static const ZOOM_IN_FACTOR       : Number = 2.0
-    private static const ZOOM_OUT_FACTOR      : Number = 0.3
-    private static const TRANSLATION_FACTOR   : Number = 0.1
+    private static const DEFAULT_VIEWPORT_WIDTH  : Number = 800
+    private static const DEFAULT_VIEWPORT_HEIGHT : Number = 600
+    
+    private static const ZOOM_IN_FACTOR          : Number = 2.0
+    private static const ZOOM_OUT_FACTOR         : Number = 0.3
+    private static const TRANSLATION_FACTOR      : Number = 0.1
     
     //--------------------------------------------------------------------------
     //
@@ -285,7 +287,9 @@ public class MultiScaleImageViewer extends Sprite
     
     private function createViewport( scene : IMultiScaleScene ) : void
     {
-        _viewport = new NormalizedViewport( scene )
+        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
+                                            DEFAULT_VIEWPORT_HEIGHT,
+                                            scene )
     }
     
     private function createScene() : void

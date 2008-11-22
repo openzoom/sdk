@@ -48,7 +48,9 @@ import org.openzoom.utils.math.clamp;
 /**
  * IViewport implementation that is based on a normalized [0, 1] coordinate system.
  */
-public class NormalizedViewport extends EventDispatcher implements INormalizedViewport
+public class NormalizedViewport extends EventDispatcher
+                                implements INormalizedViewport,
+                                           IViewportContainer
 {
     //--------------------------------------------------------------------------
     //
@@ -69,8 +71,12 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     /**
      * Constructor.
      */
-    public function NormalizedViewport( scene : IMultiScaleScene ) : void
-    {        
+    public function NormalizedViewport( width : Number, height : Number,
+                                        scene : IMultiScaleScene ) : void
+    {
+    	_viewportWidth = width
+    	_viewportHeight = height
+    	
         _scene = scene
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler )
         validate()
@@ -138,7 +144,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
 
     public function get scale() : Number
     {
-        return bounds.width / ( scene.sceneWidth * width ) 
+        return viewportWidth / ( scene.sceneWidth * width ) 
     }
  
     //----------------------------------
@@ -166,43 +172,25 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     }
     
     //----------------------------------
-    //  bounds
-    //----------------------------------
-    
-    private var _bounds : Rectangle = new Rectangle( 0, 0, 100, 100 )
-    
-    public function get bounds() : Rectangle
-    {
-        return _bounds.clone()
-    }
-
-    public function setSize( width : Number, height : Number ) : void
-    {
-        if( _bounds.width == width && _bounds.height == height )
-          return
-        
-        _bounds = new Rectangle( 0, 0, width, height )
-        validate( false )
-        
-        dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false, zoom ) )
-    }
-    
-    //----------------------------------
     //  viewportWidth
     //----------------------------------
     
+    private var _viewportWidth : Number = 100
+    
     public function get viewportWidth() : Number
     {
-        return bounds.width
+        return _viewportWidth
     }
     
     //----------------------------------
     //  viewportHeight
     //----------------------------------
     
+    private var _viewportHeight : Number = 100
+    
     public function get viewportHeight() : Number
     {
-        return bounds.height
+        return _viewportHeight
     }
 
     //--------------------------------------------------------------------------
@@ -387,16 +375,20 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     public function localToScene( point : Point ) : Point
     {
         var p : Point = new Point()
-        p.x = ( x  * scene.sceneWidth ) + ( point.x / _bounds.width )  * ( width  * scene.sceneWidth )
-        p.y = ( y  * scene.sceneHeight ) + ( point.y / _bounds.height ) * ( height * scene.sceneHeight )
+        p.x = ( x * scene.sceneWidth ) 
+              + ( point.x / viewportWidth )  * ( width  * scene.sceneWidth )
+        p.y = ( y * scene.sceneHeight )
+              + ( point.y / viewportHeight ) * ( height * scene.sceneHeight )
         return p
     }
 
     public function sceneToLocal( point : Point ) : Point
     {
         var p : Point = new Point()
-        p.x = ( point.x - ( x  * scene.sceneWidth )) / ( width  * scene.sceneWidth )   * _bounds.width
-        p.y = ( point.y - ( y  * scene.sceneHeight )) / ( height * scene.sceneHeight ) * _bounds.height
+        p.x = ( point.x - ( x  * scene.sceneWidth ))
+              / ( width  * scene.sceneWidth ) * viewportWidth
+        p.y = ( point.y - ( y  * scene.sceneHeight ))
+              / ( height * scene.sceneHeight ) * viewportHeight
         return p
     }
 
@@ -452,7 +444,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */
     private function get aspectRatio() : Number
     {
-        return _bounds.width / _bounds.height
+        return viewportWidth / viewportHeight
     }
  
     //----------------------------------
@@ -608,6 +600,24 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     public function dispatchChangeCompleteEvent() : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.CHANGE_COMPLETE ) )
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Internal
+    //
+    //--------------------------------------------------------------------------
+    
+    public function setSize( width : Number, height : Number ) : void
+    {
+        if( _viewportWidth == width && _viewportHeight == height )
+            return
+        
+        _viewportWidth = width
+        _viewportHeight = height
+        validate( false )
+        
+        dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false, zoom ) )
     }
     
     //--------------------------------------------------------------------------
