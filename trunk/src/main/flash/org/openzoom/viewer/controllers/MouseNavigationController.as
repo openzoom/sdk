@@ -184,9 +184,9 @@ public class MouseNavigationController extends ViewportControllerBase
         viewDragVector.bottomRight = new Point( view.mouseX, view.mouseY )
         
         viewport.moveTo(
-            viewportDragVector.x - ( viewDragVector.width / viewport.bounds.width )
+            viewportDragVector.x - ( viewDragVector.width / viewport.viewportWidth )
               * viewport.width,
-          viewportDragVector.y - ( viewDragVector.height / viewport.bounds.height )
+          viewportDragVector.y - ( viewDragVector.height / viewport.viewportHeight )
               * viewport.height )
     }
     

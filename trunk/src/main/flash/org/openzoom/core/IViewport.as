@@ -128,6 +128,24 @@ public interface IViewport extends IEventDispatcher
      */ 
     function get left() : Number
     
+    //----------------------------------
+    //  viewportWidth
+    //----------------------------------
+    
+    /**
+     * Width of the viewport container.
+     */ 
+    function get viewportWidth() : Number
+    
+    //----------------------------------
+    //  viewportHeight
+    //----------------------------------
+    
+    /**
+     * Height of the viewport container.
+     */ 
+    function get viewportHeight() : Number
+    
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -141,15 +159,15 @@ public interface IViewport extends IEventDispatcher
     function get transform() : IViewportTransform
     function set transform( value : IViewportTransform ) : void
     
-    //----------------------------------
-    //  bounds
-    //----------------------------------
-    
-    /**
-     * Bounds of the viewport in viewport coordinates.
-     */
-    function get bounds() : Rectangle
-    function set bounds( value : Rectangle ) : void
+//    //----------------------------------
+//    //  bounds
+//    //----------------------------------
+//    
+//    /**
+//     * Bounds of the viewport in viewport coordinates.
+//     */
+//    function get bounds() : Rectangle
+//    function set bounds( value : Rectangle ) : void
     
     //----------------------------------
     //  scene

@@ -122,8 +122,8 @@ public class ViewTransformationController extends ViewportControllerBase
     private function transformView( duration : Number ) : void
     {
         var transition : String = DEFAULT_TRANSFORMATION_EASING
-        var newWidth  : Number = viewport.bounds.width  / viewport.width
-        var newHeight : Number = viewport.bounds.height / viewport.height
+        var newWidth  : Number = viewport.viewportWidth / viewport.width
+        var newHeight : Number = viewport.viewportHeight / viewport.height
         var newX      : Number = -viewport.x * newWidth
         var newY      : Number = -viewport.y * newHeight
         

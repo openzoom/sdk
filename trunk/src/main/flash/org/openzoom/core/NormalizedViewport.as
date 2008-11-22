@@ -176,15 +176,33 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         return _bounds.clone()
     }
 
-    public function set bounds( value : Rectangle ) : void
+    public function setSize( width : Number, height : Number ) : void
     {
-        if( _bounds.equals( value ) )
+        if( _bounds.width == width && _bounds.height == height )
           return
         
-        _bounds = value
+        _bounds = new Rectangle( 0, 0, width, height )
         validate( false )
         
         dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false, zoom ) )
+    }
+    
+    //----------------------------------
+    //  viewportWidth
+    //----------------------------------
+    
+    public function get viewportWidth() : Number
+    {
+        return bounds.width
+    }
+    
+    //----------------------------------
+    //  viewportHeight
+    //----------------------------------
+    
+    public function get viewportHeight() : Number
+    {
+        return bounds.height
     }
 
     //--------------------------------------------------------------------------

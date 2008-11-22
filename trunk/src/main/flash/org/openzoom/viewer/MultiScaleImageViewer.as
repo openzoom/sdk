@@ -139,7 +139,7 @@ public class MultiScaleImageViewer extends Sprite
     //  viewport
     //----------------------------------
     
-    private var _viewport : INormalizedViewport
+    private var _viewport : NormalizedViewport
     
     public function get viewport() : INormalizedViewport
     {
@@ -373,7 +373,7 @@ public class MultiScaleImageViewer extends Sprite
     
     private function updateViewport() : void
     {
-        viewport.bounds = new Rectangle( 0, 0, width, height )
+        _viewport.setSize( width, height )
     }
     
     private function getMouseOrigin() : Point
