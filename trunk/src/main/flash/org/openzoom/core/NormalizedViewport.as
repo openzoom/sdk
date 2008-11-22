@@ -27,7 +27,7 @@
 package org.openzoom.core
 {
 
-import flash.display.Sprite;
+import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -69,9 +69,11 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     /**
      * Constructor.
      */
-    public function NormalizedViewport( scene : IScene ) : void
-    {
-    	this.scene = scene
+    public function NormalizedViewport( scene : IMultiScaleScene ) : void
+    {        
+        _scene = scene
+        _scene.addEventListener( Event.RESIZE, scene_resizeHandler )
+        validate()
     }
 
     //--------------------------------------------------------------------------
@@ -136,7 +138,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
 
     public function get scale() : Number
     {
-        return bounds.width / ( scene.width * width ) 
+        return bounds.width / ( scene.sceneWidth * width ) 
     }
  
     //----------------------------------
@@ -156,20 +158,11 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     //  scene
     //----------------------------------
 
-    private var _scene : IScene = new Scene( null, 100, 100 )
+    private var _scene : IMultiScaleScene
 
-    public function get scene() : IScene
+    public function get scene() : IMultiScaleScene
     {
-        return new Scene( null, _scene.width, _scene.height )
-    }
-
-    public function set scene( value : IScene ) : void
-    {
-        if( _scene.width == value.width && _scene.height == value.height )
-           return 
-        
-        _scene = new Scene( null, value.width, value.height )
-        validate()
+        return _scene
     }
     
     //----------------------------------
@@ -202,7 +195,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     
     public function showAll() : void
     {
-    	showArea( new Rectangle( 0, 0, scene.width, scene.height ))
+    	showArea( new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight ))
     }
 
     public function zoomTo( z : Number,
@@ -335,8 +328,8 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         var centerX : Number = area.x + area.width  * 0.5
         var centerY : Number = area.y + area.height * 0.5
     
-        var normalizedCenter : Point = new Point( centerX / scene.width,
-                                                  centerY / scene.height )
+        var normalizedCenter : Point = new Point( centerX / scene.sceneWidth,
+                                                  centerY / scene.sceneHeight )
                                                  
         var scaledWidth : Number = area.width / scale
         var scaledHeight : Number = area.height / scale
@@ -348,13 +341,13 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
         if( scaledWidth  > ( aspectRatio * scaledHeight ) )
         {
             // Area must fit horizontally in the viewport
-            ratio = ( ratio < 1 ) ? ( scene.width / ratio ) : scene.width
+            ratio = ( ratio < 1 ) ? ( scene.sceneWidth / ratio ) : scene.sceneWidth
             ratio = ratio / scaledWidth
         }
         else
         {
             // Area must fit vertically in the viewport  
-            ratio = ( ratio > 1 ) ? ( scene.height * ratio )  : scene.height
+            ratio = ( ratio > 1 ) ? ( scene.sceneHeight * ratio )  : scene.sceneHeight
             ratio = ratio / scaledHeight
         }
     
@@ -376,16 +369,16 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     public function localToScene( point : Point ) : Point
     {
         var p : Point = new Point()
-        p.x = ( x  * scene.width ) + ( point.x / _bounds.width )  * ( width  * scene.width )
-        p.y = ( y  * scene.height ) + ( point.y / _bounds.height ) * ( height * scene.height )
+        p.x = ( x  * scene.sceneWidth ) + ( point.x / _bounds.width )  * ( width  * scene.sceneWidth )
+        p.y = ( y  * scene.sceneHeight ) + ( point.y / _bounds.height ) * ( height * scene.sceneHeight )
         return p
     }
 
     public function sceneToLocal( point : Point ) : Point
     {
         var p : Point = new Point()
-        p.x = ( point.x - ( x  * scene.width )) / ( width  * scene.width )   * _bounds.width
-        p.y = ( point.y - ( y  * scene.height )) / ( height * scene.height ) * _bounds.height
+        p.x = ( point.x - ( x  * scene.sceneWidth )) / ( width  * scene.sceneWidth )   * _bounds.width
+        p.y = ( point.y - ( y  * scene.sceneHeight )) / ( height * scene.sceneHeight ) * _bounds.height
         return p
     }
 
@@ -454,7 +447,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */
     private function get sceneAspectRatio() : Number
     {
-        return scene.width / scene.height
+        return scene.sceneWidth / scene.sceneHeight
     }
 
     //--------------------------------------------------------------------------
@@ -470,19 +463,19 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     
     public function intersects( toIntersect : Rectangle ) : Boolean
     {
-    	var sceneViewport : Rectangle = new Rectangle( x * scene.width,
-                                                       y * scene.height, 
-                                                       width * scene.width,
-                                                       height * scene.height )
+    	var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
+                                                       y * scene.sceneHeight, 
+                                                       width * scene.sceneWidth,
+                                                       height * scene.sceneHeight )
         return sceneViewport.intersects( denormalizeRectangle( toIntersect ))
     }
     
     public function intersection( toIntersect : Rectangle ) : Rectangle
     {
-        var sceneViewport : Rectangle = new Rectangle( x * scene.width,
-                                                       y * scene.height, 
-                                                       width * scene.width,
-                                                       height * scene.height )
+        var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
+                                                       y * scene.sceneHeight, 
+                                                       width * scene.sceneWidth,
+                                                       height * scene.sceneHeight )
         return sceneViewport.intersection( denormalizeRectangle( toIntersect ))
     }
 
@@ -610,7 +603,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */ 
     private function normalizeX( value : Number ) : Number
     {
-        return value / scene.width
+        return value / scene.sceneWidth
     }
 
     /**
@@ -618,7 +611,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */
     private function normalizeY( value : Number ) : Number
     {
-        return value / scene.height
+        return value / scene.sceneHeight
     }
     
     /**
@@ -646,7 +639,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */ 
     private function denormalizeX( value : Number ) : Number
     {
-        return value * scene.width
+        return value * scene.sceneWidth
     }
 
     /**
@@ -654,7 +647,7 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
      */
     private function denormalizeY( value : Number ) : Number
     {
-        return value * scene.height
+        return value * scene.sceneHeight
     }
     
     /**
@@ -679,6 +672,17 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
     
     //--------------------------------------------------------------------------
     //
+    //  Event handlers
+    //
+    //--------------------------------------------------------------------------
+    
+    private function scene_resizeHandler( event : Event ) : void
+    {
+    	validate()
+    }
+    
+    //--------------------------------------------------------------------------
+    //
     //  Methods: Debug
     //
     //--------------------------------------------------------------------------
@@ -691,8 +695,8 @@ public class NormalizedViewport extends EventDispatcher implements INormalizedVi
                + "z=" + zoom + "\n"
                + "w=" + width + "\n"
                + "h=" + height + "\n"
-               + "sW=" + scene.width + "\n"
-               + "sH=" + scene.height
+               + "sW=" + scene.sceneWidth + "\n"
+               + "sH=" + scene.sceneHeight
     }
 }
 

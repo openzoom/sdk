@@ -79,12 +79,12 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
     //  scene
     //----------------------------------
     
-    public function get scene() : IScene
+    public function get scene() : IMultiScaleScene
     {
     	return viewport.scene
     }
     
-    public function set scene( value : IScene ) : void
+    public function set scene( value : IMultiScaleScene ) : void
     {
     	viewport.scene = scene
     }
@@ -382,7 +382,7 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
      */ 
     private function normalizeX( value : Number ) : Number
     {
-        return value / scene.width
+        return value / scene.sceneWidth
     }
 
     /**
@@ -390,7 +390,7 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
      */
     private function normalizeY( value : Number ) : Number
     {
-        return value / scene.height
+        return value / scene.sceneHeight
     }
     
     /**
@@ -418,7 +418,7 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
      */ 
     private function denormalizeX( value : Number ) : Number
     {
-        return value * scene.width
+        return value * scene.sceneWidth
     }
 
     /**
@@ -426,7 +426,7 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
      */
     private function denormalizeY( value : Number ) : Number
     {
-        return value * scene.height
+        return value * scene.sceneHeight
     }
     
     /**
@@ -463,8 +463,8 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
                + "z=" + zoom + "\n"
                + "w=" + width + "\n"
                + "h=" + height + "\n"
-               + "sW=" + scene.width + "\n"
-               + "sH=" + scene.height
+               + "sW=" + scene.sceneWidth + "\n"
+               + "sH=" + scene.sceneHeight
     }
 }
 

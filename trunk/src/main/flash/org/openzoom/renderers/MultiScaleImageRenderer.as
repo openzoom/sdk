@@ -209,10 +209,10 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
 //                                width / Math.abs( scaleX ), height / Math.abs( scaleY ) ) 
         
         var normalizedBounds : Rectangle = bounds.clone()
-            normalizedBounds.x /= viewport.scene.width
-            normalizedBounds.y /= viewport.scene.height
-            normalizedBounds.width /= viewport.scene.width
-            normalizedBounds.height /= viewport.scene.height
+            normalizedBounds.x /= viewport.scene.sceneWidth
+            normalizedBounds.y /= viewport.scene.sceneHeight
+            normalizedBounds.width /= viewport.scene.sceneWidth
+            normalizedBounds.height /= viewport.scene.sceneHeight
 
         var visibleRegion : Rectangle = viewport.intersection( normalizedBounds )
         visibleRegion.offset( -bounds.x, -bounds.y )      

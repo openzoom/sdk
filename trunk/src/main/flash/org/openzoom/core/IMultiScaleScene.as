@@ -20,23 +20,39 @@
 package org.openzoom.core
 {
 
-import flash.display.DisplayObjectContainer;
+import flash.display.DisplayObject;
 import flash.events.IEventDispatcher;
 
 /**
  * Interface for the Viewport content.
  */
-public interface IScene extends IEventDispatcher
+public interface IMultiScaleScene extends IEventDispatcher
 {
-    function get width() : Number
-    function set width( value : Number ) : void
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+  
+    //----------------------------------
+    //  sceneWidth
+    //----------------------------------
     
-    function get height() : Number
-    function set height( value : Number ) : void
+    function get sceneWidth() : Number
+    function set sceneWidth( value : Number ) : void
+  
+    //----------------------------------
+    //  sceneHeight
+    //----------------------------------
     
-    function setSize( width : Number, height : Number ) : void
+    function get sceneHeight() : Number
+    function set sceneHeight( value : Number ) : void
     
-    function get owner() : DisplayObjectContainer
+    //----------------------------------
+    //  owner
+    //----------------------------------
+    
+    function get owner() : DisplayObject
 }
 
 }

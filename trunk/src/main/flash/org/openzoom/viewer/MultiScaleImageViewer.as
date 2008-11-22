@@ -28,11 +28,11 @@ import flash.display.Sprite;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
+import org.openzoom.core.IMultiScaleScene;
 import org.openzoom.core.INormalizedViewport;
-import org.openzoom.core.IScene;
 import org.openzoom.core.IViewportController;
+import org.openzoom.core.MultiScaleScene;
 import org.openzoom.core.NormalizedViewport;
-import org.openzoom.core.Scene;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.net.TileLoader;
 import org.openzoom.renderers.MultiScaleImageRenderer;
@@ -96,20 +96,19 @@ public class MultiScaleImageViewer extends Sprite
             {
             	var scale : Number = 0.5//clamp( Math.random() * 2, 0.2, 2 )
 		        var image : MultiScaleImageRenderer =
-		                      createImage( descriptor.clone(), loader, descriptor.width * scale, descriptor.height * scale ) 
+		                      createImage( descriptor.clone(), loader,
+		                                   descriptor.width * scale, descriptor.height * scale ) 
 //		        image.x = i * (image.width * 1.1)
 //		        image.y = j * (image.height * 1.1)
 
                 image.x = Math.random() * DEFAULT_SCENE_WIDTH * 0.8
                 image.y = Math.random() * DEFAULT_SCENE_HEIGHT * 0.8
-		        canvas.addChild( image )
+		        _scene.addChild( image )
             }
         }
         
-        addChild( canvas )
-        
         // controllers
-        createControllers( canvas )
+        createControllers( _scene )
         
         updateViewport()
         
@@ -123,7 +122,6 @@ public class MultiScaleImageViewer extends Sprite
     
     private var descriptor : IMultiScaleImageDescriptor
 
-    private var canvas : MultiScaleScene
     private var mouseCatcher : Sprite
     private var controllers : Array = []
     
@@ -137,6 +135,10 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
 
+    //----------------------------------
+    //  viewport
+    //----------------------------------
+    
     private var _viewport : INormalizedViewport
     
     public function get viewport() : INormalizedViewport
@@ -144,10 +146,13 @@ public class MultiScaleImageViewer extends Sprite
         return _viewport
     }
     
+    //----------------------------------
+    //  scene
+    //----------------------------------    
     
-    private var _scene : IScene
+    private var _scene : MultiScaleScene
     
-    public function get scene() : IScene
+    public function get scene() : IMultiScaleScene
     {
     	return _scene
     }
@@ -255,9 +260,9 @@ public class MultiScaleImageViewer extends Sprite
     
     public function shuffle() : void
     {
-    	for( var i : int = 1; i < canvas.numChildren; i++ )
+    	for( var i : int = 1; i < _scene.numChildren; i++ )
         {
-            var renderer : DisplayObject = canvas.getChildAt( i )
+            var renderer : DisplayObject = _scene.getChildAt( i )
             var scale : Number = 1// clamp( Math.random() * 2, 0.8, 2 )
             Tweener.addTween(
                               renderer,
@@ -278,7 +283,7 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
     
-    private function createViewport( scene : IScene ) : void
+    private function createViewport( scene : IMultiScaleScene ) : void
     {
         _viewport = new NormalizedViewport( scene )
     }
@@ -286,12 +291,10 @@ public class MultiScaleImageViewer extends Sprite
     private function createScene() : void
     {
         // scene        
-        canvas = new MultiScaleScene( DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
+        _scene = new MultiScaleScene( DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
+        addChild( _scene )
         
-        canvas.width = DEFAULT_SCENE_WIDTH
-        canvas.height = DEFAULT_SCENE_HEIGHT
-        
-        _scene = new Scene( canvas, DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
+//        _scene = new Scene( canvas, DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
     }
     
     private function createChildren() : void

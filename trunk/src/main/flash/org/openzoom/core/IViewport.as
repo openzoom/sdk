@@ -158,8 +158,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * Size of the content in content coordinates.
      */ 
-    function get scene() : IScene
-    function set scene( value : IScene ) : void
+    function get scene() : IMultiScaleScene
 
     //----------------------------------
     //  scale
