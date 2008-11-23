@@ -38,6 +38,7 @@ import org.openzoom.core.NormalizedViewport;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.net.TileLoader;
 import org.openzoom.renderers.MultiScaleImageRenderer;
+import org.openzoom.utils.math.clamp;
 
 /**
  * Basic multi-scale image viewer.
@@ -54,8 +55,8 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_MAX_ZOOM        : Number = 10000
     
     private static const DEFAULT_DIMENSION       : Number = 20000
-    private static const DEFAULT_SCENE_WIDTH     : Number = 24000
-    private static const DEFAULT_SCENE_HEIGHT    : Number = 18000
+    private static const DEFAULT_SCENE_WIDTH     : Number = 40000
+    private static const DEFAULT_SCENE_HEIGHT    : Number = 40000
     
     private static const DEFAULT_VIEWPORT_WIDTH  : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT : Number = 600
@@ -89,31 +90,29 @@ public class MultiScaleImageViewer extends Sprite
         viewport.minZoom = DEFAULT_MIN_ZOOM
         viewport.maxZoom = DEFAULT_MAX_ZOOM
         
-        
         var loader : TileLoader = new TileLoader()
         
         for( var i : int = 0; i < 5; i++ )
         {
             for( var j : int = 0; j < 5; j++ )
             {
-            	var scale : Number = 0.5//clamp( Math.random() * 2, 0.2, 2 )
+            	var scale : Number = clamp( Math.random(), 0.05, 0.25 )
 		        var image : MultiScaleImageRenderer =
 		                      createImage( descriptor.clone(), loader,
-		                                   descriptor.width * scale, descriptor.height * scale ) 
+		                                   descriptor.width * scale, descriptor.height * scale )
+		                                   
 //		        image.x = i * (image.width * 1.1)
 //		        image.y = j * (image.height * 1.1)
 
-                image.x = Math.random() * DEFAULT_SCENE_WIDTH * 0.8
-                image.y = Math.random() * DEFAULT_SCENE_HEIGHT * 0.8
+                image.x = Math.random() * DEFAULT_SCENE_WIDTH * 0.75
+                image.y = Math.random() * DEFAULT_SCENE_HEIGHT * 0.75
 		        _scene.addChild( image )
             }
         }
         
         // controllers
         createControllers( _scene )
-        
         updateViewport()
-        
     }
    
     //--------------------------------------------------------------------------

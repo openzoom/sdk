@@ -38,13 +38,8 @@ public class MultiScaleImageDescriptorBase
     //  source
     //----------------------------------
     
-    protected var _source : String
+    protected var source : String
   
-    public function get source() : String
-    {
-        return _source
-    }
-        
     //----------------------------------
     //  width
     //----------------------------------

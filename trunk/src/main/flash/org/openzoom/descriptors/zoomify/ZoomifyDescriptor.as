@@ -58,7 +58,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     {
         this.data = data
         
-        _source = source
+        this.source = source
         parseXML( data )
         _numLevels = computeNumLevels( width, height, tileWidth, tileHeight )
         levels = computeLevels( width, height, tileWidth, tileHeight, numLevels )
@@ -81,7 +81,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-    	var path : String = _source.substr( 0, _source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length ) + DEFAULT_TILE_FOLDER_NAME
+    	var path : String = source.substr( 0, source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length ) + DEFAULT_TILE_FOLDER_NAME
         return [ path, "/", level, "-", column, "-", row, ".", type ].join("")
 
     }

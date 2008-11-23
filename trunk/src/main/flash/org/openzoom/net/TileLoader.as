@@ -36,7 +36,8 @@ public class TileLoader
     public function add( url : String, context : * = null ) : TileRequest
     {
     	var request : TileRequest = new TileRequest( url, context )
-            request.addEventListener( TileRequest.COMPLETE, tileRequest_completeHandler )
+            request.addEventListener( TileRequestEvent.COMPLETE, tileRequest_completeHandler )
+            request.addEventListener( TileRequestEvent.ERROR, tileRequest_errorHandler )
             	
     	stack.unshift( request )
     	processQueue()
@@ -55,12 +56,18 @@ public class TileLoader
     
     private function tileRequest_completeHandler( event : TileRequestEvent ) : void
     {
-    	var index : int = connections.indexOf( event.request )
+        var index : int = connections.indexOf( event.request )
 
-    	if( index > 0 )
-    	   connections.splice( index, 1 ) 	
-    	
-    	processQueue()
+        if( index > 0 )
+           connections.splice( index, 1 )   
+        
+        processQueue()
+    }
+    
+    private function tileRequest_errorHandler( event : TileRequestEvent ) : void
+    {
+        tileRequest_completeHandler( event )
+        trace( "TileRequest Error: ", event.data )
     }
 }
 

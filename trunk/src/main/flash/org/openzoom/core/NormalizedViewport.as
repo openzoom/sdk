@@ -58,8 +58,8 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_MIN_Z : Number = 0.01
-    private static const DEFAULT_MAX_Z : Number = 1000
+    private static const DEFAULT_MIN_Z : Number = 0.001
+    private static const DEFAULT_MAX_Z : Number = 10000000
     private static const BOUNDS_TOLERANCE : Number = 0.5
 
     //--------------------------------------------------------------------------
@@ -153,15 +153,15 @@ public class NormalizedViewport extends EventDispatcher
     //  transform
     //----------------------------------
 
-    public function get transform() : IViewportTransform
-    {
-    	return null
-    }
-
-    public function set transform( value : IViewportTransform ) : void
-    {
-    	// TODO
-    }
+//    public function get transform() : IViewportTransform
+//    {
+//    	return null
+//    }
+//
+//    public function set transform( value : IViewportTransform ) : void
+//    {
+//    	// TODO
+//    }
     
     //----------------------------------
     //  scene

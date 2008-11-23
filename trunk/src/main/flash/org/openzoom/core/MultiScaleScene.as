@@ -68,10 +68,10 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     //  numChildren
     //----------------------------------
     
-    override public function get numChildren():int
-    {
-        return super.numChildren - 1
-    }
+//    override public function get numChildren():int
+//    {
+//        return super.numChildren - 1
+//    }
     
     //--------------------------------------------------------------------------
     //
@@ -79,30 +79,30 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     //
     //--------------------------------------------------------------------------
     
-    override public function addChildAt( child : DisplayObject, index : int ) : DisplayObject
-    {
-    	return super.addChildAt( child, index + 1 )
-    }
-    
-    override public function removeChildAt( index : int ) : DisplayObject
-    {
-    	return super.removeChildAt( index + 1 )
-    }
-    
-    override public function setChildIndex( child : DisplayObject, index : int ) : void
-    {
-    	super.setChildIndex( child, index + 1 )
-    }
-    
-    override public function getChildAt( index : int ) : DisplayObject
-    {
-    	return super.getChildAt( index + 1 )
-    }
-    
-    override public function getChildIndex( child : DisplayObject ) : int
-    {
-        return super.getChildIndex( child ) + 1	
-    }
+//    override public function addChildAt( child : DisplayObject, index : int ) : DisplayObject
+//    {
+//    	return super.addChildAt( child, index + 1 )
+//    }
+//    
+//    override public function removeChildAt( index : int ) : DisplayObject
+//    {
+//    	return super.removeChildAt( index + 1 )
+//    }
+//    
+//    override public function setChildIndex( child : DisplayObject, index : int ) : void
+//    {
+//    	super.setChildIndex( child, index + 1 )
+//    }
+//    
+//    override public function getChildAt( index : int ) : DisplayObject
+//    {
+//    	return super.getChildAt( index + 1 )
+//    }
+//    
+//    override public function getChildIndex( child : DisplayObject ) : int
+//    {
+//        return super.getChildIndex( child ) + 1	
+//    }
     
     //--------------------------------------------------------------------------
     //
@@ -164,6 +164,12 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
+
+    public function clear() : void
+    {
+    	while( numChildren > 1 )
+    	   removeChildAt( numChildren - 1 )
+    }
     
     private function drawFrame( width : Number, height : Number ) : void
     {

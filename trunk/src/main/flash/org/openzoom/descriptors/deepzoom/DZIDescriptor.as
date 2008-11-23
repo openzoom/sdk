@@ -56,7 +56,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     {
         this.data = data
 
-        _source = source        
+        this.source = source        
         parseXML( data )
         _numLevels = computeNumLevels( width, height )
         levels = computeLevels( width, height, tileWidth, tileHeight, numLevels )
@@ -80,7 +80,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-    	var path : String  = _source.substring( 0, _source.length - 4 ) + "_files"
+    	var path : String  = source.substring( 0, source.length - 4 ) + "_files"
         return [ path, "/", level, "/", column, "_", row, ".", extension ].join("")
     }
     

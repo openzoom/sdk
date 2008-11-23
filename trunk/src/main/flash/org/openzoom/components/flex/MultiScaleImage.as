@@ -44,6 +44,12 @@ import org.openzoom.descriptors.MultiScaleImageDescriptorFactory;
 import org.openzoom.net.TileLoader;
 import org.openzoom.renderers.MultiScaleImageRenderer;
 
+/**
+ * Component for displaying a single multi-scale image. Inspired by the Microsoft
+ * Silverlight Deep Zoom MultiScaleImage component. This implementation has built-in
+ * support for Zoomify, Deep Zoom and OpenZoom images. Basic keyboard and mouse navigation
+ * is included: «Batteries included» so to speak.
+ */
 public class MultiScaleImage extends UIComponent
 {   
     //--------------------------------------------------------------------------
@@ -55,7 +61,7 @@ public class MultiScaleImage extends UIComponent
     private static const DEFAULT_MIN_ZOOM        : Number = 0.25
     private static const DEFAULT_MAX_ZOOM        : Number = 10000
     
-    private static const DEFAULT_SCENE_DIMENSION : Number = 10000
+    private static const DEFAULT_SCENE_DIMENSION : Number = 20000
 //  private static const DEFAULT_SCENE_WIDTH     : Number = 24000
 //  private static const DEFAULT_SCENE_HEIGHT    : Number = 18000
     
@@ -101,6 +107,7 @@ public class MultiScaleImage extends UIComponent
     private var transformationController : ViewTransformationController
     
     private var loader : TileLoader
+    private var image : MultiScaleImageRenderer
     
 	//--------------------------------------------------------------------------
     //
@@ -120,9 +127,21 @@ public class MultiScaleImage extends UIComponent
     }
     
     public function set source( value : Object ) : void
-    {
+    {    	
+    	if( _source )
+    	{
+    		_source = null
+        
+            // TODO
+	        _scene.clear()
+	        viewport.showAll()
+    	}
+    	
     	if( value is String )
     	{
+    		if( sourceURL == String( value ))
+    		  return
+    		  
     		sourceURL = String( value )
     		sourceLoader = new URLLoader( new URLRequest( sourceURL ))
     		sourceLoader.addEventListener( Event.COMPLETE, sourceLoader_completeHandler )
@@ -313,6 +332,9 @@ public class MultiScaleImage extends UIComponent
     
     private function sourceLoader_completeHandler( event : Event ) : void
     {
+    	if( !sourceLoader.data )
+    	   return
+    	
         var data : XML = new XML( sourceLoader.data )
         var factory : MultiScaleImageDescriptorFactory =
                         MultiScaleImageDescriptorFactory.getInstance()
@@ -325,21 +347,19 @@ public class MultiScaleImage extends UIComponent
         
         if( aspectRatio > 1 )
         {
-        	sceneWidth = DEFAULT_SCENE_DIMENSION / aspectRatio
-        	sceneHeight = DEFAULT_SCENE_DIMENSION
+        	sceneWidth = DEFAULT_SCENE_DIMENSION
+        	sceneHeight = DEFAULT_SCENE_DIMENSION / aspectRatio
         }
         else
         {
-        	sceneWidth = DEFAULT_SCENE_DIMENSION
-        	sceneHeight = DEFAULT_SCENE_DIMENSION * aspectRatio
+        	sceneWidth = DEFAULT_SCENE_DIMENSION * aspectRatio
+        	sceneHeight = DEFAULT_SCENE_DIMENSION
         }
         
         _scene.setSize( sceneWidth, sceneHeight )
         
-        var image : MultiScaleImageRenderer =
-                    createImage( descriptor, loader,
-                                 sceneWidth, sceneHeight )
-                    
+        image = createImage( descriptor, loader, sceneWidth, sceneHeight )
+        
         _scene.addChild( image )
     }
     

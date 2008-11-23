@@ -156,8 +156,8 @@ public interface IViewport extends IEventDispatcher
     //  transform
     //----------------------------------
     
-    function get transform() : IViewportTransform
-    function set transform( value : IViewportTransform ) : void
+//    function get transform() : IViewportTransform
+//    function set transform( value : IViewportTransform ) : void
     
 //    //----------------------------------
 //    //  bounds

@@ -28,8 +28,9 @@ import org.openzoom.net.TileRequest;
 public class TileRequestEvent extends Event
 {
     public static const COMPLETE : String = "complete"
-    public var data : *
-    public var context : *
+    public static const ERROR : String = "error"
+    public var data : * = null
+    public var context : * = null
     public var request : TileRequest
     
     public function TileRequestEvent( type : String, bubbles : Boolean = false, cancelable : Boolean = false )

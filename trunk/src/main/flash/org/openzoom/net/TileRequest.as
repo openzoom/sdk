@@ -26,15 +26,15 @@ import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.HTTPStatusEvent;
 import flash.events.IOErrorEvent;
+import flash.events.SecurityErrorEvent;
 import flash.net.URLRequest;
+import flash.system.Capabilities;
 
 import org.openzoom.events.TileRequestEvent;
     
 
 public class TileRequest extends EventDispatcher
 {
-    public static const COMPLETE : String = "complete"
-    
     public function TileRequest( url : String, context : * = null )
     {
         this.url = url
@@ -49,9 +49,10 @@ public class TileRequest extends EventDispatcher
     {
        var request : URLRequest = new URLRequest( url )
        loader = new Loader()
-       loader.contentLoaderInfo.addEventListener( Event.COMPLETE, contentLoaderInfo_completeHandler )           
-       loader.contentLoaderInfo.addEventListener( HTTPStatusEvent.HTTP_STATUS, contentLoaderInfo_httpStatusHandler )
-       loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, contentLoaderInfo_ioErrorHandler )
+       loader.contentLoaderInfo.addEventListener( Event.COMPLETE, contentLoaderInfo_completeHandler, false, 0, true )           
+       loader.contentLoaderInfo.addEventListener( HTTPStatusEvent.HTTP_STATUS, contentLoaderInfo_httpStatusHandler, false, 0, true )
+       loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, contentLoaderInfo_ioErrorHandler, false, 0, true )
+       loader.contentLoaderInfo.addEventListener( SecurityErrorEvent.SECURITY_ERROR, contentLoaderInfo_securityErrorHandler, false, 0, true )
        loader.load( request )
     }
     
@@ -74,10 +75,26 @@ public class TileRequest extends EventDispatcher
     
     private function contentLoaderInfo_httpStatusHandler( event : HTTPStatusEvent ) : void
     {
+        var tileEvent : TileRequestEvent = new TileRequestEvent( TileRequestEvent.ERROR )
+            tileEvent.request = this
+            
+        dispatchEvent( tileEvent )
     }
     
     private function contentLoaderInfo_ioErrorHandler( event : IOErrorEvent ) : void
     {
+        var tileEvent : TileRequestEvent = new TileRequestEvent( TileRequestEvent.ERROR )
+            tileEvent.request = this
+            
+        dispatchEvent( tileEvent )
+    }
+    
+    private function contentLoaderInfo_securityErrorHandler( event : SecurityErrorEvent ) : void
+    {
+        var tileEvent : TileRequestEvent = new TileRequestEvent( TileRequestEvent.ERROR )
+            tileEvent.request = this
+            
+        dispatchEvent( tileEvent )
     }
     
     private function removeEventListeners() : void
@@ -85,6 +102,7 @@ public class TileRequest extends EventDispatcher
         loader.contentLoaderInfo.removeEventListener( Event.COMPLETE, contentLoaderInfo_completeHandler )           
         loader.contentLoaderInfo.removeEventListener( HTTPStatusEvent.HTTP_STATUS, contentLoaderInfo_httpStatusHandler )
         loader.contentLoaderInfo.removeEventListener( IOErrorEvent.IO_ERROR, contentLoaderInfo_ioErrorHandler )
+        loader.contentLoaderInfo.removeEventListener( SecurityErrorEvent.SECURITY_ERROR, contentLoaderInfo_securityErrorHandler )
     }
 }
 

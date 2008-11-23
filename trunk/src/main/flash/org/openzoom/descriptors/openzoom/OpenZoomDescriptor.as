@@ -57,7 +57,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     	
         this.data = data
 
-        _source = source        
+        this.source = source
         parseXML( data )
     }
 

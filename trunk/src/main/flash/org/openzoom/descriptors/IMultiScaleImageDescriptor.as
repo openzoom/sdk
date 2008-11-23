@@ -34,15 +34,6 @@ public interface IMultiScaleImageDescriptor
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  source
-    //----------------------------------
-    
-    /**
-     * Returns the source URI of this multiscale image.
-     */ 
-    function get source() : String
-    
-    //----------------------------------
     //  width
     //----------------------------------
     
@@ -113,12 +104,12 @@ public interface IMultiScaleImageDescriptor
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the URL of the tile specified by its level, column & row.
+     * Returns the URL of the tile specified by its level, column and row.
      */
     function getTileURL( level : int, column : uint, row : uint ) : String
 
     /**
-     * Returns the position of the tile specified by its column & row.
+     * Returns the position of the tile specified by its column and row.
      */
     function getTilePosition( column : uint, row : uint ) : Point
 
