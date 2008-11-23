@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<image xmlns="http://openzoom.org/2008/ozd">
+<image xmlns="http://ns.openzoom.org/openzoom/2008">
     <pyramid width="8388608" height="8388608" tileWidth="256" tileHeight="256" tileOverlap="0" type="image/jpeg">
 	    <level index="0" width="256" height="256" columns="1" rows="1">
 	        <uri template="http://mt0.google.com/mt?v=w2p.87&amp;x={column}&amp;y={row}&amp;z=0"/>
