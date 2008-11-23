@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:openzoom="org.openzoom.components.flex.*"
+    layout="absolute"
+    backgroundGradientColors="[ 0x333333, 0x000000 ]"
+    applicationComplete="applicationCompleteHandler( event )"
+    >
+    <mx:Style>
+        Label {
+            font-size: 12;
+            font-weight: bold;
+        }       
+    </mx:Style>
+
+    <mx:Script>
+        <![CDATA[
+            import org.openzoom.events.ViewportEvent;
+                
+            private static const DEFAULT_IMAGE_NAME  : String = "morocco"
+            private static const DEFAULT_SOURCE_PATH : String = "../../../../src/main/resources/images"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/" + DEFAULT_IMAGE_NAME + ".ozi/meta.xml"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-road.xml"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-satellite.xml"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-terrain.xml"
+            private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/openstreetmap.xml"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/butterfly.xml"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/bluemarble.xml"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/flickr.xml"
+
+            private function applicationCompleteHandler( event : Event ) : void
+            {
+                image.viewport.addEventListener( ViewportEvent.TRANSFORM, viewport_changeHandler )
+            }
+
+            private function viewport_changeHandler( event : ViewportEvent ) : void
+            {
+                trace( "show( " + image.viewport.x + ", " + image.viewport.y + ", " + image.viewport.width + ", " + image.viewport.height + " )" )
+            }
+            
+            private function show( x : Number, y : Number, width : Number, height : Number ) : void
+            {
+                var sceneWidth : Number = image.scene.sceneWidth
+                var sceneHeight : Number = image.scene.sceneHeight
+                
+                var area : Rectangle = new Rectangle( x * sceneWidth,
+                                                      y * sceneHeight,
+                                                      width * sceneWidth,
+                                                      height * sceneHeight )
+                image.viewport.showRect( area )
+            }
+
+        ]]>
+    </mx:Script>
+    <openzoom:MultiScaleImage
+        id="image"
+        top="0"
+        right="0"
+        bottom="0"
+        left="0"
+        source="{ DEFAULT_SOURCE }"
+        minZoom="1"
+        maxZoom="1000000000"
+        />
+    <mx:VBox
+        top="12"
+        left="12"
+        >
+        <mx:Label text="{ image.viewport.width }" />
+        <mx:Label text="{ image.viewport.height }" />
+        <mx:Label text="{ 'Scale: ' + image.viewport.scale }" />
+    </mx:VBox>
+    
+    <mx:HBox
+        left="12"
+        bottom="12"
+        >
+        <mx:Button label="New York" click="show( 0.2940529765543793, 0.3756995523702938, 0.0008536032246029341, 0.0005123415461714613 )" focusEnabled="false"/>
+        <mx:Button label="Dallas"   click="show( 0.23106636945910183, 0.40349788488762667, 0.00009783149740140344, 0.00005871948371120533 )" focusEnabled="false"/>
+        <mx:Button label="Zürich"   click="show( 0.5236880073327143, 0.3502011390261523, 0.00008156161479865066, 0.00004895413071291973 )" focusEnabled="false"/>
+    </mx:HBox>
+</mx:Application>

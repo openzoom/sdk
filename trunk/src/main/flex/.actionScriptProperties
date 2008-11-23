@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionScriptProperties mainApplicationPath="MultiScaleImageComponent.mxml" version="3">
+<compiler additionalCompilerArguments="-locale en_US" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderLocation="${OPENZOOM}/target/main/flex/debug" outputFolderPath="bin-debug" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compilerSourcePath>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/src/main/flash"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/libs/flash/tweener/as3"/>
+</compilerSourcePath>
+<libraryPath defaultLinkType="1">
+<libraryPathEntry kind="4" path=""/>
+</libraryPath>
+<sourceAttachmentPath/>
+</compiler>
+<applications>
+<application path="MultiScaleImageComponent.mxml"/>
+</applications>
+<modules/>
+<buildCSSFiles/>
+</actionScriptProperties>
