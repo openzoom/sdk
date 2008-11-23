@@ -31,9 +31,9 @@ public class ViewportEvent extends Event
     //--------------------------------------------------------------------------
 
     public static const RESIZE : String = "resize"
-    public static const CHANGE : String = "change"
-    public static const CHANGE_START : String = "changeStart"
-    public static const CHANGE_COMPLETE : String = "changeComplete"
+    public static const TRANSFORM : String = "transform"
+    public static const TRANSFORM_START : String = "transformStart"
+    public static const TRANSFORM_END : String = "transformEnd"
 
     //--------------------------------------------------------------------------
     //
@@ -49,7 +49,7 @@ public class ViewportEvent extends Event
     {
         super( type, bubbles, cancelable )
     
-        _oldZ = oldZ
+        _oldZoom = oldZ
     }
     
     //--------------------------------------------------------------------------
@@ -62,11 +62,11 @@ public class ViewportEvent extends Event
     //  oldZ
     //----------------------------------
   
-    private var _oldZ : Number = NaN
+    private var _oldZoom : Number = NaN
   
-    public function get oldZ() : Number
+    public function get oldZoom() : Number
     {
-        return _oldZ
+        return _oldZoom
     }
     
     //--------------------------------------------------------------------------
@@ -77,7 +77,7 @@ public class ViewportEvent extends Event
   
     override public function clone() : Event
     {
-        return new ViewportEvent( type, bubbles, cancelable, oldZ )
+        return new ViewportEvent( type, bubbles, cancelable, oldZoom )
     }
 }
 

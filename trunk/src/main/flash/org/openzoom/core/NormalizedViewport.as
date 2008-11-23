@@ -59,7 +59,7 @@ public class NormalizedViewport extends EventDispatcher
     //--------------------------------------------------------------------------
     
     private static const DEFAULT_MIN_Z : Number = 0.01
-    private static const DEFAULT_MAX_Z : Number = 100
+    private static const DEFAULT_MAX_Z : Number = 1000
     private static const BOUNDS_TOLERANCE : Number = 0.5
 
     //--------------------------------------------------------------------------
@@ -92,11 +92,12 @@ public class NormalizedViewport extends EventDispatcher
     //  z
     //----------------------------------
 
-    private var _z : Number = 1
+    private var _zoom : Number = 1;
 
+    [Bindable(event="zoomChanged")]
     public function get zoom() : Number
     {
-        return _z
+        return _zoom
     }
 
     public function set zoom( value : Number ) : void
@@ -142,6 +143,7 @@ public class NormalizedViewport extends EventDispatcher
     //  scale
     //----------------------------------
 
+    [Bindable(event="scaleChanged")]
     public function get scale() : Number
     {
         return viewportWidth / ( scene.sceneWidth * width ) 
@@ -158,6 +160,7 @@ public class NormalizedViewport extends EventDispatcher
 
     public function set transform( value : IViewportTransform ) : void
     {
+    	// TODO
     }
     
     //----------------------------------
@@ -175,8 +178,9 @@ public class NormalizedViewport extends EventDispatcher
     //  viewportWidth
     //----------------------------------
     
-    private var _viewportWidth : Number = 100
+    private var _viewportWidth : Number
     
+    [Bindable(event="viewportWidthChanged")]
     public function get viewportWidth() : Number
     {
         return _viewportWidth
@@ -186,8 +190,9 @@ public class NormalizedViewport extends EventDispatcher
     //  viewportHeight
     //----------------------------------
     
-    private var _viewportHeight : Number = 100
+    private var _viewportHeight : Number
     
+    [Bindable(event="viewportHeightChanged")]
     public function get viewportHeight() : Number
     {
         return _viewportHeight
@@ -198,21 +203,16 @@ public class NormalizedViewport extends EventDispatcher
     //  Methods: Zooming
     //
     //--------------------------------------------------------------------------
-    
-    public function showAll() : void
-    {
-    	showArea( new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight ))
-    }
 
-    public function zoomTo( z : Number,
+    public function zoomTo( zoom : Number,
                             originX : Number = 0.5,
                             originY : Number = 0.5,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        var oldZ : Number = this.zoom
+        var oldZoom : Number = this.zoom
 
         // keep z within min/max range
-        _z = clamp( z, minZoom, maxZoom )
+        _zoom = clamp( zoom, minZoom, maxZoom )
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( originX, originY )
@@ -224,13 +224,13 @@ public class NormalizedViewport extends EventDispatcher
         if( ratio >= 1 )
         {
             // content is wider than viewport
-            _width = 1 / _z
+            _width = 1 / _zoom
             _height  = _width * ratio
         }
         else
         {
             // content is taller than viewport
-            _height = 1 / _z
+            _height = 1 / _zoom
             _width  = _height / ratio
         }
 
@@ -238,7 +238,12 @@ public class NormalizedViewport extends EventDispatcher
         moveOriginTo( oldOrigin.x, oldOrigin.y, originX, originY, false )
 
         if( dispatchChangeEvent )
-            this.dispatchChangeEvent( oldZ )
+            this.dispatchChangeEvent( oldZoom )
+            
+        dispatchEvent( new Event( "zoomChanged" ))
+        dispatchEvent( new Event( "widthChanged" ))
+        dispatchEvent( new Event( "heightChanged" ))
+        dispatchEvent( new Event( "scaleChanged" ))
     }
 
     public function zoomBy( factor : Number,
@@ -314,21 +319,13 @@ public class NormalizedViewport extends EventDispatcher
         moveTo( x + dx, y + dy, dispatchChangeEvent )
     }
 
-    public function goto( x : Number, y : Number, z : Number,
-                                    dispatchChangeEvent : Boolean = true ) : void
-    {
-        zoomTo( z, 0.5, 0.5, false )
-        moveTo( x, y, dispatchChangeEvent )
-    }
-
-
     public function moveCenterTo( x : Number, y : Number,
                                   dispatchChangeEvent : Boolean = true ) : void
     {
         moveOriginTo( x, y, 0.5, 0.5, dispatchChangeEvent )
     }
 
-    public function showArea( area : Rectangle, scale : Number = 1.0, 
+    public function showRect( area : Rectangle, scale : Number = 1.0, 
                               dispatchChangeEvent : Boolean = true ) : void
     {
         var centerX : Number = area.x + area.width  * 0.5
@@ -344,7 +341,7 @@ public class NormalizedViewport extends EventDispatcher
      
         // We have be careful here, the way the zoom factor is
         // interpreted depends on the relative ratio of scene and viewport
-        if( scaledWidth  > ( aspectRatio * scaledHeight ) )
+        if( scaledWidth > ( aspectRatio * scaledHeight ) )
         {
             // Area must fit horizontally in the viewport
             ratio = ( ratio < 1 ) ? ( scene.sceneWidth / ratio ) : scene.sceneWidth
@@ -353,17 +350,22 @@ public class NormalizedViewport extends EventDispatcher
         else
         {
             // Area must fit vertically in the viewport  
-            ratio = ( ratio > 1 ) ? ( scene.sceneHeight * ratio )  : scene.sceneHeight
+            ratio = ( ratio > 1 ) ? ( scene.sceneHeight * ratio ) : scene.sceneHeight
             ratio = ratio / scaledHeight
         }
     
-        var oldZ : Number = zoom
+        var oldZoom : Number = zoom
     
         zoomTo( ratio, 0.5, 0.5, false )
         moveCenterTo( normalizedCenter.x, normalizedCenter.y, false )
     
         if( dispatchChangeEvent )
-            this.dispatchChangeEvent( oldZ )
+            this.dispatchChangeEvent( oldZoom )
+    }
+    
+    public function showAll() : void
+    {
+        showRect( new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight ))
     }
 
     //--------------------------------------------------------------------------
@@ -424,7 +426,7 @@ public class NormalizedViewport extends EventDispatcher
      */ 
     private function validate( dispatchEvent : Boolean = true ) : void
     {
-        zoomTo( _z, 0.5, 0.5, dispatchEvent )
+        zoomTo( _zoom, 0.5, 0.5, dispatchEvent )
     }
 
 
@@ -531,8 +533,9 @@ public class NormalizedViewport extends EventDispatcher
     //  width
     //----------------------------------
     
-    private var _width : Number = 1
+    private var _width : Number = 1;
     
+    [Bindable(event="widthChanged")]
     public function get width() : Number
     {
         return _width
@@ -542,8 +545,9 @@ public class NormalizedViewport extends EventDispatcher
     //  height
     //----------------------------------
     
-    private var _height : Number = 1
+    private var _height : Number = 1;
     
+    [Bindable(event="heightChanged")]
     public function get height() : Number
     {
         return _height
@@ -591,20 +595,20 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    private function dispatchChangeEvent( oldZ : Number = NaN ) : void
+    private function dispatchChangeEvent( oldZoom : Number = NaN ) : void
     {
-        dispatchEvent( new ViewportEvent( ViewportEvent.CHANGE,
-                           false, false, isNaN( oldZ ) ? zoom : oldZ ) )
+        dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM,
+                           false, false, isNaN( oldZoom ) ? zoom : oldZoom ))
     }
     
     public function beginTransform() : void
     {
-        dispatchEvent( new ViewportEvent( ViewportEvent.CHANGE_COMPLETE ) )
+        dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_START ))
     }
     
     public function endTransform() : void
     {
-        dispatchEvent( new ViewportEvent( ViewportEvent.CHANGE_COMPLETE ) )
+        dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_END ))
     }
     
     //--------------------------------------------------------------------------
@@ -622,7 +626,7 @@ public class NormalizedViewport extends EventDispatcher
         _viewportHeight = height
         validate( false )
         
-        dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false, zoom ) )
+        dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false, zoom ))
     }
     
     //--------------------------------------------------------------------------

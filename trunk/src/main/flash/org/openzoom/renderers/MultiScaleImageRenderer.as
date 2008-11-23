@@ -116,14 +116,14 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         
         // remove old event listener
         if( viewport )
-            viewport.removeEventListener( ViewportEvent.CHANGE_COMPLETE,
+            viewport.removeEventListener( ViewportEvent.TRANSFORM_END,
                                           viewport_changeCompleteHandler )
         
         _viewport = value
         
         // register new event listener
         if( viewport )
-            viewport.addEventListener( ViewportEvent.CHANGE_COMPLETE,
+            viewport.addEventListener( ViewportEvent.TRANSFORM_END,
                                        viewport_changeCompleteHandler, false, 0, true )
     }
     
@@ -137,6 +137,11 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     {
         updateDisplayList()
     }
+    
+//    private function viewport_changeHandler( event : ViewportEvent ) : void
+//    {
+//        updateDisplayList()
+//    }
        
     //--------------------------------------------------------------------------
     //

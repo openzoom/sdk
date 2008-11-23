@@ -243,11 +243,6 @@ public interface IViewport extends IEventDispatcher
     function zoomBy( factor : Number,
                      originX : Number = 0.5, originY : Number = 0.5,
                      dispatchChangeEvent : Boolean = true ) : void
-                     
-    /**
-     * Fit entire scene into the viewport.
-     */ 
-    function showAll() : void
     
     //--------------------------------------------------------------------------
     //
@@ -286,13 +281,18 @@ public interface IViewport extends IEventDispatcher
     //--------------------------------------------------------------------------
     
     /**
-     * Show an area of the scene inside the viewport.
+     * Show a rectangular area of the scene inside the viewport.
      * 
-     * @param area Area to be shown in the viewport.
+     * @param rect Rectangle to be shown in the viewport.
      * @param scale Scale at which the area is beeing displayed.
      */             
-    function showArea( area : Rectangle, scale : Number = 1.0,
+    function showRect( rect : Rectangle, scale : Number = 1.0,
                        dispatchChangeEvent : Boolean = true ) : void
+                     
+    /**
+     * Fit entire scene into the viewport.
+     */ 
+    function showAll() : void
     
     //--------------------------------------------------------------------------
     //

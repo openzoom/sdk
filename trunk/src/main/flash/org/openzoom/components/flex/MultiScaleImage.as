@@ -153,8 +153,9 @@ public class MultiScaleImage extends UIComponent
     //  viewport
     //----------------------------------
     
-    private var _viewport : NormalizedViewport
+    private var _viewport : NormalizedViewport;
     
+    [Bindable(event="viewportChanged")]
     public function get viewport() : INormalizedViewport
     {
         return _viewport
@@ -239,6 +240,7 @@ public class MultiScaleImage extends UIComponent
         _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
                                             DEFAULT_VIEWPORT_HEIGHT,
                                             scene )
+       dispatchEvent( new Event("viewportChanged" ))
     }
     
     private function createScene() : void

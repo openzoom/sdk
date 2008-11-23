@@ -338,10 +338,10 @@ public class SceneViewport extends EventDispatcher implements ISceneViewport
    	    viewport.goto( normalizeX( x ), normalizeY( y ), z, dispatchChangeEvent )
     }
                    
-    public function showArea( area : Rectangle, scale : Number = 1.0,
+    public function showRect( area : Rectangle, scale : Number = 1.0,
                               dispatchChangeEvent : Boolean = true ) : void
 	{
-		viewport.showArea( area, scale, dispatchChangeEvent )  	
+		viewport.showRect( area, scale, dispatchChangeEvent )  	
 	}
 
     //--------------------------------------------------------------------------
