@@ -54,9 +54,8 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_MIN_ZOOM        : Number = 0.25
     private static const DEFAULT_MAX_ZOOM        : Number = 10000
     
-    private static const DEFAULT_DIMENSION       : Number = 20000
-    private static const DEFAULT_SCENE_WIDTH     : Number = 40000
-    private static const DEFAULT_SCENE_HEIGHT    : Number = 40000
+    private static const DEFAULT_SCENE_WIDTH     : Number = 2048
+    private static const DEFAULT_SCENE_HEIGHT    : Number = 2048 // 8.86429177
     
     private static const DEFAULT_VIEWPORT_WIDTH  : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT : Number = 600
@@ -92,20 +91,25 @@ public class MultiScaleImageViewer extends Sprite
         
         var loader : TileLoader = new TileLoader()
         
-        for( var i : int = 0; i < 5; i++ )
+        for( var i : int = 0; i < 1; i++ )
         {
-            for( var j : int = 0; j < 5; j++ )
+            for( var j : int = 0; j < 1; j++ )
             {
-            	var scale : Number = clamp( Math.random(), 0.05, 0.25 )
+            	var scale : Number = 0.01//clamp( Math.random(), 0.05, 0.25 )
 		        var image : MultiScaleImageRenderer =
 		                      createImage( descriptor.clone(), loader,
-		                                   descriptor.width * scale, descriptor.height * scale )
+		                                   DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
+//		                      createImage( descriptor.clone(), loader,
+//		                                   descriptor.width * scale, descriptor.height * scale )
 		                                   
 //		        image.x = i * (image.width * 1.1)
 //		        image.y = j * (image.height * 1.1)
 
-                image.x = Math.random() * DEFAULT_SCENE_WIDTH * 0.75
-                image.y = Math.random() * DEFAULT_SCENE_HEIGHT * 0.75
+                image.x = 0//Math.random() * DEFAULT_SCENE_WIDTH * 0.75
+                image.y = 0//Math.random() * DEFAULT_SCENE_HEIGHT * 0.75
+                
+                trace( image.width, image.height )
+                
 		        _scene.addChild( image )
             }
         }

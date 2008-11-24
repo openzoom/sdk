@@ -67,7 +67,7 @@ public class TileLoader
     private function tileRequest_errorHandler( event : TileRequestEvent ) : void
     {
         tileRequest_completeHandler( event )
-        trace( "TileRequest Error: ", event.data )
+//        trace( "TileRequest Error: ", event.data )
     }
 }
 

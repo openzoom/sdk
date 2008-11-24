@@ -136,6 +136,12 @@ public class MultiScaleImageDescriptorBase
         return position
     }
     
+    public function existsTile( level : int, column : uint, row : uint ) : Boolean
+    {
+    	// By default all tiles exist
+    	return true
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Methods: Debug

@@ -79,7 +79,7 @@ public interface IMultiScaleImageDescriptor
     function get tileHeight() : uint
     
     //----------------------------------
-    //  overlap
+    //  tileOverlap
     //----------------------------------
     
     /**
@@ -89,19 +89,40 @@ public interface IMultiScaleImageDescriptor
     function get tileOverlap() : uint
       
     //----------------------------------
-    //  tileFormat
+    //  type
     //----------------------------------
       
     /**
-     * Returns the mimetype of the image pyramid tiles, e.g. <image/jpeg> or <image/png>.
+     * Returns the mime-type of the image pyramid tiles, e.g. <image/jpeg> or <image/png>.
      */
     function get type() : String
 
     //--------------------------------------------------------------------------
     //
-    //  Methods
+    //  Methods: Levels
     //
     //--------------------------------------------------------------------------
+
+    /**
+     * Returns the image pyramid level that exists at the specified index.
+     */
+    function getLevelAt( index : int ) : IMultiScaleImageLevel
+
+    /**
+     * Returns the minimum level that has a greater or equal size as specified by width and height.
+     */
+    function getMinimumLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Tiles
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns a Boolean indicating if the tile at the given level, row and column exists.
+     */
+    function existsTile( level : int, column : uint, row : uint ) : Boolean
 
     /**
      * Returns the URL of the tile specified by its level, column and row.
@@ -113,15 +134,11 @@ public interface IMultiScaleImageDescriptor
      */
     function getTilePosition( column : uint, row : uint ) : Point
 
-    /**
-     * Returns the image pyramid level that exists at the specified index.
-     */
-    function getLevelAt( index : int ) : IMultiScaleImageLevel
-
-    /**
-     * Returns the minimum level that has a greater or equal size as specified by width and height.
-     */
-    function getMinimumLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Utility
+    //
+    //--------------------------------------------------------------------------
     
     /**
      * Returns a copy of this object.

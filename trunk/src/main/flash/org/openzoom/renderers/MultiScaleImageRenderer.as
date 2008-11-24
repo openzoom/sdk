@@ -65,6 +65,9 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         createFrame( width, height )
         createLayers( descriptor, frame.width, frame.height )
         
+        var aspectRatio : Number = 8.86429177
+        createImageMask( aspectRatio, frame.width, frame.height )
+        
         // TODO: Debug
         createDebugLayer()
         
@@ -90,6 +93,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     private var layers : Array /* of ITileLayer */ = []
     private var backgroundTile : Bitmap
     private var frame : Shape
+    private var imageMask : Shape
     private var debugLayer : Shape
     
     //--------------------------------------------------------------------------
@@ -168,6 +172,21 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         addChildAt( frame, 0 )
     }
     
+    private function createImageMask( aspectRatio : Number, width : Number, height : Number ) : void
+    {
+        imageMask = new Shape()
+        var g : Graphics = imageMask.graphics
+        g.beginFill( 0x000000, 0 )
+        if( aspectRatio > 1 )
+            g.drawRect( 0, 0, width, height / aspectRatio )
+        else
+            g.drawRect( 0, 0, width * aspectRatio, height )
+        g.endFill()
+        
+        addChild( imageMask )
+        this.mask = imageMask
+    }
+    
     private function createDebugLayer() : void
     {
     	debugLayer = new Shape()
@@ -209,6 +228,10 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     private function loadBackground() : void
     {
         var level : int = getHighestSingleTileLevel()
+        
+        if( !descriptor.existsTile( level, 0, 0 ))
+            return
+        
         var url : String = descriptor.getTileURL( level, 0, 0 )
         
         tileLoader.add( url ).addEventListener( Event.COMPLETE, backgroundCompleteHandler )
@@ -278,7 +301,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
             {
                 var tile : Tile = new Tile( null, level.index, row, column, descriptor.tileOverlap )
                 
-                if( layer.containsTile( tile ))
+                if( layer.containsTile( tile ) || !descriptor.existsTile( tile.level, tile.column, tile.row ))
                    continue
                 
                 var url : String = descriptor.getTileURL( tile.level, tile.column, tile.row )

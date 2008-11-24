@@ -44,6 +44,7 @@ import org.openzoom.components.flash.MultiScaleImageViewer;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.descriptors.IMultiScaleImageLevel;
 import org.openzoom.descriptors.MultiScaleImageDescriptorFactory;
+import org.openzoom.descriptors.gigapan.GigaPanDescriptor;
 import org.openzoom.viewer.assets.Sad;
 
 /**
@@ -109,8 +110,10 @@ public class OpenZoomViewer extends Sprite
         
         createChildren()
         
-        source = getParameter( OpenZoomViewerParameters.SOURCE, DEFAULT_SOURCE )
-        loadDescriptor( source )
+//        source = getParameter( OpenZoomViewerParameters.SOURCE, DEFAULT_SOURCE )
+//        loadDescriptor( source )
+
+        createViewer( new GigaPanDescriptor())
 
         layout()
     }
