@@ -115,6 +115,7 @@ public class MultiScaleImage extends UIComponent
     
     private var _source : IMultiScaleImageDescriptor
     
+    [Bindable(event="sourceChanged")]
     public function get source() : Object
     {
     	return _source
@@ -125,8 +126,6 @@ public class MultiScaleImage extends UIComponent
     	if( _source )
     	{
     		_source = null
-        
-            // TODO
 	        _scene.removeChildAt( 0 )
 	        viewport.showAll()
     	}
@@ -142,13 +141,10 @@ public class MultiScaleImage extends UIComponent
     	}
     	else if( value is IMultiScaleImageDescriptor )
     	{
-            _source = IMultiScaleImageDescriptor( value ) 
+            _source = IMultiScaleImageDescriptor( value )
+            dispatchEvent( new Event( "sourceChanged" ))
+            
             addImage( _source )
-    	}
-    	else
-    	{
-    		throw new ArgumentError("MultiScaleImage source must be either " + 
-    				                "a URL or a IMultiScaleImageDescriptor")
     	}
     }
     
@@ -360,6 +356,8 @@ public class MultiScaleImage extends UIComponent
         var descriptor : IMultiScaleImageDescriptor = factory.getDescriptor( sourceURL, data )
         
         _source = descriptor
+        dispatchEvent( new Event( "sourceChanged" ))
+        
         addImage( descriptor )
     }
     

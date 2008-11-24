@@ -62,23 +62,16 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
         this.source = url
         this.extension = extension
 
-        // needed for checking if a tile exists
-        aspectRatio = width / height
-        originalWidth = width
-        originalHeight = height
-
         _numLevels = numLevels
-//        _width = _height = 1 << (DEFAULT_BASE_LEVEL + (numLevels - 1))
-        _width = originalWidth
-        _height = originalHeight
+        _width = width
+        _height = height
         
         _tileWidth = DEFAULT_TILE_SIZE
         _tileHeight = DEFAULT_TILE_SIZE
         
         _type = "image/jpeg"
 
-        levels = computeLevels( originalWidth, originalHeight,
-                                DEFAULT_TILE_SIZE, this.numLevels )
+        levels = computeLevels( width, height, DEFAULT_TILE_SIZE, numLevels )
     }
 
     //--------------------------------------------------------------------------
@@ -87,10 +80,6 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private var aspectRatio : Number
-    private var originalWidth : Number
-    private var originalHeight : Number
-    
     private var extension : String
     private var levels : Dictionary 
 
@@ -173,9 +162,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     
     public function clone() : IMultiScaleImageDescriptor
     {
-        return new GigaPanDescriptor( source, extension,
-                                      originalWidth, originalHeight,
-                                      numLevels )
+        return new GigaPanDescriptor( source, extension, width, height, numLevels )
     }
 
     //--------------------------------------------------------------------------
