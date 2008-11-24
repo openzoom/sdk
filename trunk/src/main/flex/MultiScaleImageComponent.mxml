@@ -25,10 +25,11 @@
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-road.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-satellite.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-terrain.xml"
-            private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/openstreetmap.xml"
+          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/openstreetmap.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/butterfly.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/bluemarble.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/flickr.xml"
+//            private static const DEFAULT_SOURCE      : String = "http://seadragon.com/content/images/CarinaNebula.dzi"
 
             private function applicationCompleteHandler( event : Event ) : void
             {
@@ -45,10 +46,7 @@
                 var sceneWidth : Number = image.scene.sceneWidth
                 var sceneHeight : Number = image.scene.sceneHeight
                 
-                var area : Rectangle = new Rectangle( x * sceneWidth,
-                                                      y * sceneHeight,
-                                                      width * sceneWidth,
-                                                      height * sceneHeight )
+                var area : Rectangle = new Rectangle( x, y, width, height )
                 image.viewport.showRect( area )
             }
 

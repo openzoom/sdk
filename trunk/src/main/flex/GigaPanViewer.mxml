@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:openzoom="org.openzoom.components.flex.*"
+    backgroundGradientColors="[ 0x000000, 0x000000 ]"
+    applicationComplete="loadImage( 'http://gigapan.org/viewGigapan.php?id=5322' )"
+    layout="absolute"
+    horizontalScrollPolicy="off"
+    verticalScrollPolicy="off"
+    >
+    
+    <!--
+    
+        OpenZoom Sample Application
+        GIGAPAN.org VIEWER
+        
+        Developed by Daniel Gasienica
+        
+        All Images Copyright GigaPan.org 
+    
+    -->
+    
+    <mx:Style>
+        global {
+            theme-color: #00AA00;
+        }	
+    </mx:Style>
+    
+    <mx:Script>
+    	<![CDATA[
+    	
+    		import mx.events.ItemClickEvent;
+    		import mx.controls.Alert;
+    		
+            import org.openzoom.descriptors.IMultiScaleImageDescriptor;
+            import org.openzoom.descriptors.gigapan.GigaPanDescriptor;
+    		
+            private const GIGAPAN_PARAMETER_REGEX : RegExp = /\?url=*(.*)&suffix=(.*)&.*&width=(\d*)&height=(\d*)&nLevels=(\d*)/gi
+    	
+            private var loader : URLLoader = new URLLoader()
+    	   
+    	   ;[Bindable]
+            private var samples : Array = [
+                                            { label: "Golden Gate Bridge", url: "http://gigapan.org/viewGigapan.php?id=6" },
+                                            { label: "Hanauma Bay", url: "http://gigapan.org/viewGigapan.php?id=5322" },
+                                            { label: "Seattle Skyline From Kerry Park", url: "http://gigapan.org/viewGigapan.php?id=9531" },
+                                          ]
+    	
+    	   ;[Bindable]
+            public var image : IMultiScaleImageDescriptor
+    	          
+            private function loadButton_clickHandler( event : Event ) : void
+            {
+                var url : String = urlInput.text 
+            	loadImage( url )
+            }
+            
+            private function loadImage( url : String ) : void
+            {
+            	errorMessage.visible = false
+                loader.load( new URLRequest( url ))
+                loader.addEventListener( Event.COMPLETE, loader_completeHandler )
+                loader.addEventListener( IOErrorEvent.IO_ERROR, loader_errorHandler )
+                loader.addEventListener( SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler )
+            }
+            
+            private function loader_completeHandler( event : Event ) : void
+            {
+            	var htmlString : String = new String( loader.data )
+            	var parameters : Array =  GIGAPAN_PARAMETER_REGEX.exec( htmlString ) as Array
+            	
+            	if( parameters && parameters.length == 6 )
+            	{
+	            	var url : String       = parameters[ 1 ]
+	            	var extension : String = parameters[ 2 ]
+	            	var width : uint       = parameters[ 3 ]
+	            	var height : uint      = parameters[ 4 ]
+	            	var numLevels : int    = parameters[ 5 ]
+	            	
+	            	image = new GigaPanDescriptor( url, extension, width, height, numLevels )
+	            }
+	            else
+	            {
+	            	displayErrorMessage()
+	            }
+            }
+            
+            private function loader_errorHandler( event : Event ) : void
+            {
+            	displayErrorMessage()
+            }
+            
+            private function displayErrorMessage() : void
+            {
+                errorMessage.visible = true  
+            }
+            
+            private function samplesLinkBar_itemClickHandler( event : ItemClickEvent ) : void
+            {
+            	loadImage( event.item.url )
+            }
+    	    
+    	]]>
+    </mx:Script>
+    
+    <mx:HBox
+    	left="10"
+    	top="10"
+    	height="30"
+    	right="10"
+        verticalAlign="middle"
+    	>    	
+	    <mx:TextInput
+	    	id="urlInput"
+	    	minWidth="300"
+	    	/>
+	    <mx:Button
+	    	id="loadButton"
+	    	label="Go!"
+	    	click="loadButton_clickHandler( event )"
+	        focusEnabled="false"
+	        tabEnabled="false"
+	        enabled="{ urlInput.text.length > 0 }"
+	    	/>
+        <mx:Spacer width="100%"/>
+        <mx:Label
+        	id="errorMessage"
+        	text="Oops, something went wrong! Why don't you try a different GigaPan…"
+        	fontWeight="bold"
+        	fontSize="14"
+        	color="#FF0000"
+            visible="false"
+        	/>
+        <mx:Spacer width="100%"/>
+	    <mx:LinkBar
+	    	id="samplesLinkBar"
+	    	dataProvider="{ samples }"
+	    	itemClick="samplesLinkBar_itemClickHandler( event )"
+	        focusEnabled="false"
+	        tabEnabled="false"
+            color="#FFFFFF"
+	    	/>
+    </mx:HBox>
+    
+    <openzoom:MultiScaleImage
+        id="viewer"
+        top="50"
+        right="0"
+        bottom="50"
+        left="0"
+        source="{ image }"
+        />
+    
+    <mx:Label
+        text="All Images Copyright GigaPan.org"
+        color="#666666"
+        fontSize="8"
+        right="8"
+        bottom="8"
+        />
+    
+    <mx:HBox
+        left="10"
+        bottom="10"
+        height="30"
+        right="10"
+        horizontalAlign="center"
+        verticalAlign="middle"
+        >
+        <mx:Button label="Show All" click="{ viewer.viewport.showAll() }" />    	
+        <mx:Button label="-" click="{ viewer.viewport.zoomBy( 0.6 ) }" />
+        <mx:Button label="+" click="{ viewer.viewport.zoomBy( 1.3 ) }" />
+    </mx:HBox>
+    	
+</mx:Application>
