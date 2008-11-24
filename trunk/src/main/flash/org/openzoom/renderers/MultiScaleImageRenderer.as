@@ -29,7 +29,6 @@ import flash.events.Event;
 import flash.geom.Rectangle;
 
 import org.openzoom.core.INormalizedViewport;
-import org.openzoom.core.IZoomable;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.descriptors.IMultiScaleImageLevel;
 import org.openzoom.events.TileRequestEvent;
@@ -44,7 +43,7 @@ import org.openzoom.utils.math.clamp;
 /**
  * Generic renderer for multi-scale images.
  */
-public class MultiScaleImageRenderer extends Sprite implements IZoomable
+public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRenderer
 {
     //--------------------------------------------------------------------------
     //
@@ -65,8 +64,8 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         createFrame( width, height )
         createLayers( descriptor, frame.width, frame.height )
         
-        var aspectRatio : Number = 8.86429177
-        createImageMask( aspectRatio, frame.width, frame.height )
+//        var aspectRatio : Number = 8.86429177
+//        createImageMask( aspectRatio, frame.width, frame.height )
         
         // TODO: Debug
         createDebugLayer()
@@ -93,7 +92,7 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
     private var layers : Array /* of ITileLayer */ = []
     private var backgroundTile : Bitmap
     private var frame : Shape
-    private var imageMask : Shape
+//    private var imageMask : Shape
     private var debugLayer : Shape
     
     //--------------------------------------------------------------------------
@@ -172,20 +171,20 @@ public class MultiScaleImageRenderer extends Sprite implements IZoomable
         addChildAt( frame, 0 )
     }
     
-    private function createImageMask( aspectRatio : Number, width : Number, height : Number ) : void
-    {
-        imageMask = new Shape()
-        var g : Graphics = imageMask.graphics
-        g.beginFill( 0x000000, 0 )
-        if( aspectRatio > 1 )
-            g.drawRect( 0, 0, width, height / aspectRatio )
-        else
-            g.drawRect( 0, 0, width * aspectRatio, height )
-        g.endFill()
-        
-        addChild( imageMask )
-        this.mask = imageMask
-    }
+//    private function createImageMask( aspectRatio : Number, width : Number, height : Number ) : void
+//    {
+//        imageMask = new Shape()
+//        var g : Graphics = imageMask.graphics
+//        g.beginFill( 0x000000, 0 )
+//        if( aspectRatio > 1 )
+//            g.drawRect( 0, 0, width, height / aspectRatio )
+//        else
+//            g.drawRect( 0, 0, width * aspectRatio, height )
+//        g.endFill()
+//        
+//        addChild( imageMask )
+//        this.mask = imageMask
+//    }
     
     private function createDebugLayer() : void
     {

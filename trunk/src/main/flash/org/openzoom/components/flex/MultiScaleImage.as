@@ -61,16 +61,10 @@ public class MultiScaleImage extends UIComponent
     private static const DEFAULT_MIN_ZOOM        : Number = 0.25
     private static const DEFAULT_MAX_ZOOM        : Number = 10000
     
-    private static const DEFAULT_SCENE_DIMENSION : Number = 20000
-//  private static const DEFAULT_SCENE_WIDTH     : Number = 24000
-//  private static const DEFAULT_SCENE_HEIGHT    : Number = 18000
+    private static const DEFAULT_SCENE_DIMENSION : Number = 12000
     
     private static const DEFAULT_VIEWPORT_WIDTH  : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT : Number = 600
-    
-    private static const ZOOM_IN_FACTOR          : Number = 1.8
-    private static const ZOOM_OUT_FACTOR         : Number = 0.25
-    private static const TRANSLATION_FACTOR      : Number = 0.1
     
 	//--------------------------------------------------------------------------
     //
@@ -133,7 +127,7 @@ public class MultiScaleImage extends UIComponent
     		_source = null
         
             // TODO
-	        _scene.clear()
+	        _scene.removeChildAt( 0 )
 	        viewport.showAll()
     	}
     	

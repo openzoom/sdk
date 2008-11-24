@@ -325,9 +325,12 @@ public class NormalizedViewport extends EventDispatcher
         moveOriginTo( x, y, 0.5, 0.5, dispatchChangeEvent )
     }
 
-    public function showRect( area : Rectangle, scale : Number = 1.0, 
+    public function showRect( rect : Rectangle, scale : Number = 1.0, 
                               dispatchChangeEvent : Boolean = true ) : void
     {
+    	// TODO: Implement for normalized coordinate system
+    	var area : Rectangle = denormalizeRectangle( rect )
+    	
         var centerX : Number = area.x + area.width  * 0.5
         var centerY : Number = area.y + area.height * 0.5
     
@@ -365,7 +368,8 @@ public class NormalizedViewport extends EventDispatcher
     
     public function showAll() : void
     {
-        showRect( new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight ))
+    	var area : Rectangle = new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight )
+        showRect( normalizeRectangle( area ))
     }
 
     //--------------------------------------------------------------------------

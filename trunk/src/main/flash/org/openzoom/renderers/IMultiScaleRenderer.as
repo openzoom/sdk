@@ -17,10 +17,12 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.core
+package org.openzoom.renderers
 {
 
-public interface IZoomable
+import org.openzoom.core.INormalizedViewport;
+
+public interface IMultiScaleRenderer
 {
     function get viewport() : INormalizedViewport
     function set viewport( value : INormalizedViewport ) : void

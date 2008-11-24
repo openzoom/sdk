@@ -55,7 +55,7 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_MAX_ZOOM        : Number = 10000
     
     private static const DEFAULT_SCENE_WIDTH     : Number = 2048
-    private static const DEFAULT_SCENE_HEIGHT    : Number = 2048 // 8.86429177
+    private static const DEFAULT_SCENE_HEIGHT    : Number = 2048
     
     private static const DEFAULT_VIEWPORT_WIDTH  : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT : Number = 600
@@ -107,8 +107,6 @@ public class MultiScaleImageViewer extends Sprite
 
                 image.x = 0//Math.random() * DEFAULT_SCENE_WIDTH * 0.75
                 image.y = 0//Math.random() * DEFAULT_SCENE_HEIGHT * 0.75
-                
-                trace( image.width, image.height )
                 
 		        _scene.addChild( image )
             }

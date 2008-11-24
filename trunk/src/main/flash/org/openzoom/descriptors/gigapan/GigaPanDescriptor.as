@@ -53,10 +53,10 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     /**
      * Constructor.
      */
-    public function GigaPanDescriptor( url : String = "http://share.gigapan.org/gigapans0/9539/tiles/",
-                                       extension : String = ".jpg",
-                                       width : uint = 125412,
-                                       height : uint = 14148,
+    public function GigaPanDescriptor( url : String,
+                                       extension : String,
+                                       width : uint,
+                                       height : uint,
                                        numLevels : uint = 10 )
     {
         this.source = url
@@ -158,7 +158,9 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     
     public function clone() : IMultiScaleImageDescriptor
     {
-        return new GigaPanDescriptor( source, extension, originalWidth, originalHeight, numLevels )
+        return new GigaPanDescriptor( source, extension,
+                                      originalWidth, originalHeight,
+                                      numLevels )
     }
 
     //--------------------------------------------------------------------------
