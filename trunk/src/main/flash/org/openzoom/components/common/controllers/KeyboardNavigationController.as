@@ -45,13 +45,21 @@ public class KeyboardNavigationController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
    
-    private static const KEYBOARD_REFRESH_DELAY : Number = 60 // milliseconds
+    private static const KEYBOARD_REFRESH_DELAY    : Number = 60 // milliseconds
    
-    private static const ZOOM_IN_FACTOR         : Number = 2.0
-    private static const ZOOM_OUT_FACTOR        : Number = 0.3
-    private static const ACCELERATION_FACTOR    : Number = 15
-    private static const TRANSLATION_FACTOR     : Number = 0.05
-   
+    private static const ZOOM_IN_FACTOR            : Number = 2.0
+    private static const ZOOM_OUT_FACTOR           : Number = 0.3
+    private static const ACCELERATION_FACTOR       : Number = 15
+    private static const TRANSLATION_FACTOR        : Number = 0.05
+    
+    private static const DEFAULT_UP_KEY_CODE       : uint = 87 // W
+    private static const DEFAULT_RIGHT_KEY_CODE    : uint = 68 // D
+    private static const DEFAULT_DOWN_KEY_CODE     : uint =83 // S
+    private static const DEFAULT_LEFT_KEY_CODE     : uint =  65 // A
+    
+    private static const DEFAULT_ZOOM_IN_KEY_CODE  : uint = 73 // I
+    private static const DEFAULT_ZOOM_OUT_KEY_CODE : uint = 79 // 0
+               
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -88,7 +96,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
    
     private var zoomInActivated : Boolean
     private var zoomOutActivated : Boolean
-   
+    
     //--------------------------------------------------------------------------
     //
     //  Overridden methods: AbstractViewportController
@@ -105,23 +113,125 @@ public class KeyboardNavigationController extends ViewportControllerBase
      
         view.stage.addEventListener( KeyboardEvent.KEY_DOWN, keyDownHandler, false, 0, true )
         view.stage.addEventListener( KeyboardEvent.KEY_UP, keyUpHandler, false, 0, true )
-   }
+    }
    
-   override protected function view_removedFromStageHandler( event : Event ) : void
-   {
+    override protected function view_removedFromStageHandler( event : Event ) : void
+    {
         keyboardTimer.removeEventListener( TimerEvent.TIMER, keyboardTimerHandler )
         keyboardTimer.stop()
         keyboardTimer = null
      
         view.stage.removeEventListener( KeyboardEvent.KEY_DOWN, keyDownHandler )
         view.stage.removeEventListener( KeyboardEvent.KEY_UP, keyUpHandler )
-   }
+    }
    
-   //--------------------------------------------------------------------------
-   //
-   //  Event handlers: Keyboard
-   //
-   //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+  
+    //----------------------------------
+    //  upKey
+    //----------------------------------
+    
+    private var upKeyCode : uint = DEFAULT_UP_KEY_CODE
+   
+    public function get upKey() : String
+    {
+        return String.fromCharCode( upKeyCode )
+    }
+    
+    public function set upKey( value : String ) : void
+    {
+        upKeyCode = value.charCodeAt( 0 )
+    }
+  
+    //----------------------------------
+    //  rightKey
+    //----------------------------------
+    
+    private var rightKeyCode : uint = DEFAULT_RIGHT_KEY_CODE 
+   
+    public function get rightKey() : String
+    {
+        return String.fromCharCode( rightKeyCode )
+    }
+    
+    public function set rightKey( value : String ) : void
+    {
+        rightKeyCode = value.charCodeAt( 0 )
+    }
+  
+    //----------------------------------
+    //  downKey
+    //----------------------------------
+    
+    private var downKeyCode : uint = DEFAULT_DOWN_KEY_CODE
+   
+    public function get downKey() : String
+    {
+        return String.fromCharCode( downKeyCode )
+    }
+    
+    public function set downKey( value : String ) : void
+    {
+        downKeyCode = value.charCodeAt( 0 )
+    }
+  
+    //----------------------------------
+    //  leftKey
+    //----------------------------------
+    
+    private var leftKeyCode : uint = DEFAULT_LEFT_KEY_CODE
+   
+    public function get leftKey() : String
+    {
+        return String.fromCharCode( leftKeyCode )
+    }
+    
+    public function set leftKey( value : String ) : void
+    {
+        leftKeyCode = value.charCodeAt( 0 )
+    }
+  
+    //----------------------------------
+    //  zoomInKey
+    //----------------------------------
+    
+    private var zoomInKeyCode : uint = DEFAULT_ZOOM_IN_KEY_CODE
+   
+    public function get zoomInKey() : String
+    {
+        return String.fromCharCode( zoomInKeyCode )
+    }
+    
+    public function set zoomInKey( value : String ) : void
+    {
+        zoomInKeyCode = value.charCodeAt( 0 )
+    }
+  
+    //----------------------------------
+    //  zoomOutKey
+    //----------------------------------
+    
+    private var zoomOutKeyCode : uint = DEFAULT_ZOOM_OUT_KEY_CODE
+   
+    public function get zoomOutKey() : String
+    {
+        return String.fromCharCode( zoomOutKeyCode )
+    }
+    
+    public function set zoomOutKey( value : String ) : void
+    {
+        zoomOutKeyCode = value.charCodeAt( 0 )
+    }
+   
+    //--------------------------------------------------------------------------
+    //
+    //  Event handlers: Keyboard
+    //
+    //--------------------------------------------------------------------------
    
     private function keyDownHandler( event : KeyboardEvent ) : void
     {
@@ -134,7 +244,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
     }
    
     private function updateFlags( event : KeyboardEvent,
-                                  value : Boolean = true ) : void
+                                  value : Boolean ) : void
     {
         switch( event.keyCode )
         { 
@@ -145,22 +255,22 @@ public class KeyboardNavigationController extends ViewportControllerBase
                
             // panning
             case Keyboard.UP:
-            case 87: // W
+            case upKeyCode:
                 upActivated = value
                 break
                
             case Keyboard.DOWN:
-            case 83: // S
+            case downKeyCode:
                 downActivated = value
                 break
                
             case Keyboard.LEFT:
-            case 65: // A
+            case leftKeyCode:
                 leftActivated = value
                 break
                
             case Keyboard.RIGHT:
-            case 68: // D
+            case rightKeyCode:
                 rightActivated = value
                 break
                
@@ -187,12 +297,12 @@ public class KeyboardNavigationController extends ViewportControllerBase
                
             // zooming
             case Keyboard.NUMPAD_ADD:
-            case 73: // I
+            case zoomInKeyCode:
                 zoomInActivated = value
                 break
                
             case Keyboard.NUMPAD_SUBTRACT:
-            case 79: // O
+            case zoomOutKeyCode:
                 zoomOutActivated = value
                 break
         }
