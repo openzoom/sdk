@@ -30,7 +30,7 @@ import org.openzoom.descriptors.MultiScaleImageLevelBase;
 /**
  * The OpenZoomLevel class represents a single level of a multi-scale image pyramid.
  */
-public class MultiScaleImageLevel extends MultiScaleImageLevelBase
+internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
                                   implements IMultiScaleImageLevel
 {
     //--------------------------------------------------------------------------

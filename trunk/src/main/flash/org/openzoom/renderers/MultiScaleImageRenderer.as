@@ -20,12 +20,16 @@
 package org.openzoom.renderers
 {
 
+import caurina.transitions.Tweener;
+
 import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Loader;
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.core.INormalizedViewport;
@@ -47,6 +51,14 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
 {
     //--------------------------------------------------------------------------
     //
+    //  Class constants
+    //
+    //--------------------------------------------------------------------------
+    
+    private static const DEFAULT_BACKGROUND_SHOW_DURATION : Number = 2.5
+    
+    //--------------------------------------------------------------------------
+    //
     //  Constructor
     //
     //--------------------------------------------------------------------------
@@ -64,15 +76,14 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
         createFrame( width, height )
         createLayers( descriptor, frame.width, frame.height )
         
-//        var aspectRatio : Number = 8.86429177
-//        createImageMask( aspectRatio, frame.width, frame.height )
-        
         // TODO: Debug
         createDebugLayer()
         
         // Load highest single tile level as background to prevent
         // artifacts between tiles in case we have a format that doesn't
         // feature tile overlap.
+        
+        // FIXME: Crop if necessary
         if( descriptor.tileOverlap == 0 ) 
             loadBackground()
     }
@@ -92,7 +103,6 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
     private var layers : Array /* of ITileLayer */ = []
     private var backgroundTile : Bitmap
     private var frame : Shape
-//    private var imageMask : Shape
     private var debugLayer : Shape
     
     //--------------------------------------------------------------------------
@@ -170,21 +180,6 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
         
         addChildAt( frame, 0 )
     }
-    
-//    private function createImageMask( aspectRatio : Number, width : Number, height : Number ) : void
-//    {
-//        imageMask = new Shape()
-//        var g : Graphics = imageMask.graphics
-//        g.beginFill( 0x000000, 0 )
-//        if( aspectRatio > 1 )
-//            g.drawRect( 0, 0, width, height / aspectRatio )
-//        else
-//            g.drawRect( 0, 0, width * aspectRatio, height )
-//        g.endFill()
-//        
-//        addChild( imageMask )
-//        this.mask = imageMask
-//    }
     
     private function createDebugLayer() : void
     {
@@ -328,11 +323,29 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
     private function backgroundCompleteHandler( event : TileRequestEvent ) : void
     {
         backgroundTile = event.data as Bitmap
+        
+        var level : IMultiScaleImageLevel = descriptor.getLevelAt(getHighestSingleTileLevel())
+        var tooWide : Boolean = backgroundTile.width > level.width 
+        var tooHigh : Boolean = backgroundTile.height > level.height 
+        
+        if( tooWide || tooHigh )
+        {
+            var cropBitmapData : BitmapData =
+                   new BitmapData( Math.min( level.width, backgroundTile.width ),
+                                   Math.min( level.height, backgroundTile.height ))
+            cropBitmapData.copyPixels( backgroundTile.bitmapData, cropBitmapData.rect, new Point( 0, 0 ))
+            var croppedTileBitmap : Bitmap = new Bitmap( cropBitmapData )
+            backgroundTile = croppedTileBitmap
+        }
+        
         backgroundTile.smoothing = true
         backgroundTile.width = frame.width
         backgroundTile.height = frame.height
+        backgroundTile.alpha = 0
         
         addChildAt( backgroundTile, getChildIndex( frame ))
+
+        Tweener.addTween( backgroundTile, { alpha: 1, time: DEFAULT_BACKGROUND_SHOW_DURATION } )
     }
     
     //--------------------------------------------------------------------------

@@ -22,6 +22,9 @@ package org.openzoom.renderers
 
 import org.openzoom.core.INormalizedViewport;
 
+/**
+ * Interface for a renderer that is multi-scalar.
+ */
 public interface IMultiScaleRenderer
 {
     function get viewport() : INormalizedViewport

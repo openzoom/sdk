@@ -23,6 +23,7 @@ package org.openzoom.renderers.images
 import caurina.transitions.Tweener;
 
 import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
@@ -108,6 +109,8 @@ public class TileLayer extends Sprite implements ITileLayer
             return null
         }
         
+//        trace( level.index, level.width, level.height )
+        
         // return if tile already added
         if( tiles[ tile.hashCode ] )
            return null
@@ -125,7 +128,34 @@ public class TileLayer extends Sprite implements ITileLayer
         
         tileBitmap.x = position.x * scaleXFactor
         tileBitmap.y = position.y * scaleYFactor
-    
+        
+        var tileBitmapRight : Number = tileBitmap.x + tileBitmap.width
+        var tileBitmapBottom : Number = tileBitmap.y + tileBitmap.height
+        var horizontalOverflow : Boolean = tileBitmapRight > level.width 
+        var verticalOverflow : Boolean = tileBitmapBottom > level.height
+        
+        if( tileBitmap.x >= level.width || tileBitmap.y >= level.height )
+            trace( "[TileLayer]: Wrong tile positioning" )
+
+            
+        // Fix for too large tiles
+        if( horizontalOverflow || verticalOverflow )
+        {
+        	var cropBitmapData : BitmapData =
+        	       new BitmapData( Math.min( level.width  - tileBitmap.x, tileBitmap.width ),
+        	                       Math.min( level.height - tileBitmap.y, tileBitmap.height ))
+        	cropBitmapData.copyPixels( tileBitmap.bitmapData, cropBitmapData.rect, new Point( 0, 0 ))
+        	var croppedTileBitmap : Bitmap = new Bitmap( cropBitmapData )
+        	croppedTileBitmap.x = tileBitmap.x
+        	croppedTileBitmap.y = tileBitmap.y
+        	croppedTileBitmap.scaleX = tileBitmap.scaleX
+        	croppedTileBitmap.scaleY = tileBitmap.scaleY
+        	tileBitmap = croppedTileBitmap
+        }
+        
+        if( tileBitmap.x + tileBitmap.width > level.width || tileBitmap.y + tileBitmap.height > level.height )
+            trace( "[TileLayer]: Bad cropping" )
+        
         tileBitmap.smoothing = true
         tileBitmap.alpha = 0
     

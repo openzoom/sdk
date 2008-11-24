@@ -113,7 +113,14 @@ public class OpenZoomViewer extends Sprite
 //        source = getParameter( OpenZoomViewerParameters.SOURCE, DEFAULT_SOURCE )
 //        loadDescriptor( source )
 
-        createViewer( new GigaPanDescriptor())
+//      url=http://share.gigapan.org/gigapans0/9524/tiles/&suffix=.jpg&startHideControls=0&width=60488&height=27024&nlevels=9&cleft=0&ctop=0&cright=60488.0&cbottom=27024.0&startEnabled=1&notifyWhenLoaded=1
+        
+//        var descriptor : IMultiScaleImageDescriptor = new GigaPanDescriptor( "http://share.gigapan.org/gigapans0/9524/tiles/", ".jpg", 60488, 27024, 10 )
+
+        //http://share.gigapan.org/gigapans0/5322/tiles/&suffix=.jpg&startHideControls=0&width=154730&height=36408&nlevels=11&cleft=0&ctop=0&cright=154730.0&cbottom=36408.0&startEnabled=1&notifyWhenLoaded=1
+        var descriptor : IMultiScaleImageDescriptor = new GigaPanDescriptor( "http://share.gigapan.org/gigapans0/5322/tiles/", ".jpg", 154730, 36408, 11 )
+        debugDescriptor( descriptor )
+        createViewer( descriptor )
 
         layout()
     }
@@ -276,14 +283,6 @@ public class OpenZoomViewer extends Sprite
         sad.visible = false
         addChildAt( sad, 0 )
     }
-
-    private function createMultiScaleImageViewer( descriptor : IMultiScaleImageDescriptor ) : MultiScaleImageViewer
-    {
-        var viewer : MultiScaleImageViewer = new MultiScaleImageViewer( descriptor )
-        viewer.setSize( stage.stageWidth, stage.stageHeight )
-            
-        return viewer
-    }
     
     private function createViewer( descriptor : IMultiScaleImageDescriptor ) : void
     {
@@ -293,6 +292,14 @@ public class OpenZoomViewer extends Sprite
         addChildAt( viewer, getChildIndex( fullScreenBackground ) + 1 )
         
         stage.addEventListener( KeyboardEvent.KEY_UP, stage_keyUpHandler )
+    }
+
+    private function createMultiScaleImageViewer( descriptor : IMultiScaleImageDescriptor ) : MultiScaleImageViewer
+    {
+        var viewer : MultiScaleImageViewer = new MultiScaleImageViewer( descriptor )
+        viewer.setSize( stage.stageWidth, stage.stageHeight )
+            
+        return viewer
     }
     
     private function layout() : void
@@ -504,7 +511,7 @@ public class OpenZoomViewer extends Sprite
         for( var i : int = 0; i < descriptor.numLevels; i++ )
         {
             var level : IMultiScaleImageLevel = descriptor.getLevelAt( i )
-//            trace( level.index, level.width, level.height, level.numColumns, level.numRows )
+            trace( level.index, level.width, level.height, level.numColumns, level.numRows )
         }
     }
 }

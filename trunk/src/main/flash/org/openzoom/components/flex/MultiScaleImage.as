@@ -143,6 +143,7 @@ public class MultiScaleImage extends UIComponent
     	else if( value is IMultiScaleImageDescriptor )
     	{
             _source = IMultiScaleImageDescriptor( value ) 
+            addImage( _source )
     	}
     	else
     	{
@@ -318,6 +319,30 @@ public class MultiScaleImage extends UIComponent
         return true
     }
     
+    private function addImage( descriptor : IMultiScaleImageDescriptor ) : void
+    {
+        var aspectRatio : Number = descriptor.width / descriptor.height 
+        var sceneWidth : Number
+        var sceneHeight : Number
+        
+        if( aspectRatio > 1 )
+        {
+            sceneWidth = DEFAULT_SCENE_DIMENSION
+            sceneHeight = DEFAULT_SCENE_DIMENSION / aspectRatio
+        }
+        else
+        {
+            sceneWidth = DEFAULT_SCENE_DIMENSION * aspectRatio
+            sceneHeight = DEFAULT_SCENE_DIMENSION
+        }
+        
+        _scene.setSize( sceneWidth, sceneHeight )
+        
+        image = createImage( descriptor, loader, sceneWidth, sceneHeight )
+        
+        _scene.addChild( image )
+    }
+    
 	//--------------------------------------------------------------------------
     //
     //  Event handlers
@@ -333,28 +358,9 @@ public class MultiScaleImage extends UIComponent
         var factory : MultiScaleImageDescriptorFactory =
                         MultiScaleImageDescriptorFactory.getInstance()
         var descriptor : IMultiScaleImageDescriptor = factory.getDescriptor( sourceURL, data )
+        
         _source = descriptor
-        
-        var aspectRatio : Number = descriptor.width / descriptor.height 
-        var sceneWidth : Number
-        var sceneHeight : Number
-        
-        if( aspectRatio > 1 )
-        {
-        	sceneWidth = DEFAULT_SCENE_DIMENSION
-        	sceneHeight = DEFAULT_SCENE_DIMENSION / aspectRatio
-        }
-        else
-        {
-        	sceneWidth = DEFAULT_SCENE_DIMENSION * aspectRatio
-        	sceneHeight = DEFAULT_SCENE_DIMENSION
-        }
-        
-        _scene.setSize( sceneWidth, sceneHeight )
-        
-        image = createImage( descriptor, loader, sceneWidth, sceneHeight )
-        
-        _scene.addChild( image )
+        addImage( descriptor )
     }
     
     private function resizeHandler( event : ResizeEvent ) : void
