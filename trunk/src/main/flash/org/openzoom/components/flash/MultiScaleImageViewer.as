@@ -51,20 +51,20 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
    
-    private static const DEFAULT_MIN_ZOOM        : Number = 0.25
-    private static const DEFAULT_MAX_ZOOM        : Number = 10000
+    private static const DEFAULT_MIN_ZOOM               : Number = 0.25
+    private static const DEFAULT_MAX_ZOOM               : Number = 10000
     
-    private static const DEFAULT_SCENE_WIDTH     : Number = 24000
-    private static const DEFAULT_SCENE_HEIGHT    : Number = 16000
+    private static const DEFAULT_SCENE_WIDTH            : Number = 24000
+    private static const DEFAULT_SCENE_HEIGHT           : Number = 16000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
     private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0
     
-    private static const DEFAULT_VIEWPORT_WIDTH  : Number = 800
-    private static const DEFAULT_VIEWPORT_HEIGHT : Number = 600
+    private static const DEFAULT_VIEWPORT_WIDTH         : Number = 800
+    private static const DEFAULT_VIEWPORT_HEIGHT        : Number = 600
     
-    private static const ZOOM_IN_FACTOR          : Number = 2.0
-    private static const ZOOM_OUT_FACTOR         : Number = 0.3
-    private static const TRANSLATION_FACTOR      : Number = 0.1
+    private static const ZOOM_IN_FACTOR                 : Number = 2.0
+    private static const ZOOM_OUT_FACTOR                : Number = 0.3
+    private static const TRANSLATION_FACTOR             : Number = 0.1
     
     //--------------------------------------------------------------------------
     //
@@ -87,7 +87,7 @@ public class MultiScaleImageViewer extends Sprite
         
         // viewport
         createViewport( scene )
-        viewport.boundsStrategy = null
+        viewport.constraint = null
         viewport.minZoom = DEFAULT_MIN_ZOOM
         viewport.maxZoom = DEFAULT_MAX_ZOOM
         
@@ -267,7 +267,7 @@ public class MultiScaleImageViewer extends Sprite
     
     public function shuffle() : void
     {
-    	for( var i : int = 1; i < _scene.numChildren; i++ )
+    	for( var i : int = 0; i < _scene.numChildren; i++ )
         {
             var renderer : DisplayObject = _scene.getChildAt( i )
             var scale : Number = 1

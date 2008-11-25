@@ -54,8 +54,8 @@ public class KeyboardNavigationController extends ViewportControllerBase
     
     private static const DEFAULT_UP_KEY_CODE       : uint = 87 // W
     private static const DEFAULT_RIGHT_KEY_CODE    : uint = 68 // D
-    private static const DEFAULT_DOWN_KEY_CODE     : uint =83 // S
-    private static const DEFAULT_LEFT_KEY_CODE     : uint =  65 // A
+    private static const DEFAULT_DOWN_KEY_CODE     : uint = 83 // S
+    private static const DEFAULT_LEFT_KEY_CODE     : uint = 65 // A
     
     private static const DEFAULT_ZOOM_IN_KEY_CODE  : uint = 73 // I
     private static const DEFAULT_ZOOM_OUT_KEY_CODE : uint = 79 // 0
@@ -144,7 +144,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
     
     public function set upKey( value : String ) : void
     {
-        upKeyCode = value.charCodeAt( 0 )
+        upKeyCode = value.toUpperCase().charCodeAt( 0 )
     }
   
     //----------------------------------
@@ -160,7 +160,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
     
     public function set rightKey( value : String ) : void
     {
-        rightKeyCode = value.charCodeAt( 0 )
+        rightKeyCode = value.toUpperCase().charCodeAt( 0 )
     }
   
     //----------------------------------
@@ -176,7 +176,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
     
     public function set downKey( value : String ) : void
     {
-        downKeyCode = value.charCodeAt( 0 )
+        downKeyCode = value.toUpperCase().charCodeAt( 0 )
     }
   
     //----------------------------------
@@ -192,7 +192,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
     
     public function set leftKey( value : String ) : void
     {
-        leftKeyCode = value.charCodeAt( 0 )
+        leftKeyCode = value.toUpperCase().charCodeAt( 0 )
     }
   
     //----------------------------------
@@ -208,7 +208,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
     
     public function set zoomInKey( value : String ) : void
     {
-        zoomInKeyCode = value.charCodeAt( 0 )
+        zoomInKeyCode = value.toUpperCase().charCodeAt( 0 )
     }
   
     //----------------------------------
@@ -224,7 +224,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
     
     public function set zoomOutKey( value : String ) : void
     {
-        zoomOutKeyCode = value.charCodeAt( 0 )
+        zoomOutKeyCode = value.toUpperCase().charCodeAt( 0 )
     }
    
     //--------------------------------------------------------------------------

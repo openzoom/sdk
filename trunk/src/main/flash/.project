@@ -16,11 +16,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[source path] as3</name>
-			<type>2</type>
-			<locationURI>OPENZOOM/libs/flash/tweener/as%2533</locationURI>
-		</link>
-		<link>
 			<name>[source path] external-mousewheel</name>
 			<type>2</type>
 			<locationURI>OPENZOOM/libs/flash/external-mousewheel</locationURI>
@@ -28,7 +23,7 @@
 		<link>
 			<name>[source path] src</name>
 			<type>2</type>
-			<location>/Applications/Adobe Flex Builder 3 Plug-in/sdks/3.1.0/frameworks/projects/framework/src</location>
+			<location>/Applications/Adobe Flex Builder 3 Plug-in/sdks/3.2.0/frameworks/projects/framework/src</location>
 		</link>
 		<link>
 			<name>bin-debug</name>

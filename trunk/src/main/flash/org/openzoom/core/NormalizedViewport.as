@@ -42,8 +42,9 @@ import org.openzoom.utils.math.clamp;
 //------------------------------------------------------------------------------
 
 [Event(name="resize", type="org.openzoom.events.ViewportEvent")]
-[Event(name="change", type="org.openzoom.events.ViewportEvent")]
-[Event(name="changeComplete", type="org.openzoom.events.ViewportEvent")]
+[Event(name="transformStart", type="org.openzoom.events.ViewportEvent")]
+[Event(name="transform", type="org.openzoom.events.ViewportEvent")]
+[Event(name="transformComplete", type="org.openzoom.events.ViewportEvent")]
 
 /**
  * IViewport implementation that is based on a normalized [0, 1] coordinate system.
@@ -60,8 +61,7 @@ public class NormalizedViewport extends EventDispatcher
     //--------------------------------------------------------------------------
     
     private static const DEFAULT_MIN_Z : Number = 0.001
-    private static const DEFAULT_MAX_Z : Number = 10000000
-    private static const BOUNDS_TOLERANCE : Number = 0.5
+    private static const DEFAULT_MAX_Z : Number = 10000
 
     //--------------------------------------------------------------------------
     //
@@ -80,6 +80,7 @@ public class NormalizedViewport extends EventDispatcher
     	
         _scene = scene
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler )
+        
         validate()
     }
 
@@ -154,14 +155,14 @@ public class NormalizedViewport extends EventDispatcher
     //  transform
     //----------------------------------
 
-    private var _boundsChecker : IViewportBoundsStrategy = new DefaultBoundsStrategy()
+    private var _boundsChecker : IViewportConstraint = new DefaultViewportConstraint()
 
-    public function get boundsStrategy() : IViewportBoundsStrategy
+    public function get constraint() : IViewportConstraint
     {
         return _boundsChecker
     }
     
-    public function set boundsStrategy( value : IViewportBoundsStrategy ) : void
+    public function set constraint( value : IViewportConstraint ) : void
     {
     	_boundsChecker = value
     }
@@ -284,14 +285,14 @@ public class NormalizedViewport extends EventDispatcher
         _y = y
 
         // use bounds strategy if available
-        if( boundsStrategy )
+        if( constraint )
         {
             // compute bounds
-            boundsStrategy.computeBounds( this )
+            var p : Point = constraint.computePosition( this )
             
             // capture new position
-            _x = boundsStrategy.x
-            _y = boundsStrategy.y	
+            _x = p.x
+            _y = p.y	
         }
         
         if( dispatchChangeEvent )
@@ -598,7 +599,7 @@ public class NormalizedViewport extends EventDispatcher
     
     public function endTransform() : void
     {
-        dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_END ))
+        dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_COMPLETE ))
     }
     
     //--------------------------------------------------------------------------

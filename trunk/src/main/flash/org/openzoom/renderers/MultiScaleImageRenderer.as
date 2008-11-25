@@ -130,7 +130,7 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
         // remove old event listener
         if( viewport )
         {
-            viewport.removeEventListener( ViewportEvent.TRANSFORM_END,
+            viewport.removeEventListener( ViewportEvent.TRANSFORM_COMPLETE,
                                           viewport_transformEndHandler )
         	viewport.removeEventListener( ViewportEvent.TRANSFORM,
         	                              viewport_transformHandler )
@@ -141,7 +141,7 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
         // register new event listener
         if( viewport )
         {
-            viewport.addEventListener( ViewportEvent.TRANSFORM_END,
+            viewport.addEventListener( ViewportEvent.TRANSFORM_COMPLETE,
                                        viewport_transformEndHandler, false, 0, true )
             viewport.addEventListener( ViewportEvent.TRANSFORM,
                                        viewport_transformHandler, false, 0, true )
@@ -236,7 +236,7 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
 //    	debugLayer.graphics.clear()
     	
         var bounds : Rectangle
-            bounds = getBounds( viewport.scene.owner )
+            bounds = getBounds( viewport.scene.targetCoordinateSpace )
             
             bounds.x /= Math.abs( scaleX )
             bounds.y /= Math.abs( scaleY )

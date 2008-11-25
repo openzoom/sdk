@@ -1,14 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  OpenZoom
-//
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
-//  Copyright (c) 2008,      Zoomorama
-//                           Olivier Gambier <viapanda@gmail.com>
-//                           Daniel Gasienica <daniel@gasienica.ch>
-//                           Eric Hubscher <erich@zoomorama.com>
-//                           David Marteau <dhmarteau@gmail.com>
-//  Copyright (c) 2007,      Rick Companje <rick@companje.nl>
+//  Copyright (c) 2008, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,33 +19,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.core
 {
+	import flash.geom.Point;
+	
 
-public class DefaultBoundsStrategy implements IViewportBoundsStrategy
+public class DefaultViewportConstraint implements IViewportConstraint
 {
 	private static const BOUNDS_TOLERANCE : Number = 0.5
 	
-    public function DefaultBoundsStrategy()
+    public function DefaultViewportConstraint()
     {
     }
     
-    private var _x : Number = 0
-    
-    public function get x() : Number
+    public function computePosition( viewport : IReadonlyViewport ) : Point
     {
-    	return _x
-    }
-    
-    private var _y : Number = 0
-    
-    public function get y() : Number
-    {
-    	return _y
-    }
-    
-    public function computeBounds( viewport : IReadonlyViewport ) : void
-    {
-    	_x = viewport.x
-    	_y = viewport.y
+    	var x : Number = viewport.x
+    	var y : Number = viewport.y
     	
     	// content is wider than viewport
         if( viewport.width < 1 )
@@ -61,18 +42,18 @@ public class DefaultBoundsStrategy implements IViewportBoundsStrategy
             // the viewport sticks out on the left:
             // align it with the left margin
             if( viewport.x + viewport.width * BOUNDS_TOLERANCE < 0 )
-                _x = -viewport.width * BOUNDS_TOLERANCE
+                x = -viewport.width * BOUNDS_TOLERANCE
     
            // the viewport sticks out on the right:
            // align it with the right margin
            if(( viewport.x + viewport.width * ( 1 - BOUNDS_TOLERANCE )) > 1 )
-               _x = 1 - viewport.width * ( 1 - BOUNDS_TOLERANCE )      
+               x = 1 - viewport.width * ( 1 - BOUNDS_TOLERANCE )      
         }
         else
         {
             // viewport is wider than content:
             // center scene horizontally
-            _x = ( 1 - viewport.width ) * 0.5
+            x = ( 1 - viewport.width ) * 0.5
         }
     
         // scene is taller than viewport
@@ -82,19 +63,21 @@ public class DefaultBoundsStrategy implements IViewportBoundsStrategy
             // the viewport sticks out at the top:
             // align it with the top margin
             if( viewport.y + viewport.height * BOUNDS_TOLERANCE < 0 )
-             _y = -viewport.height * BOUNDS_TOLERANCE
+                y = -viewport.height * BOUNDS_TOLERANCE
         
             // the viewport sticks out at the bottom:
             // align it with the bottom margin
             if( viewport.y + viewport.height * (1 - BOUNDS_TOLERANCE) > 1 )
-              _y = 1 - viewport.height * ( 1 - BOUNDS_TOLERANCE )
+                y = 1 - viewport.height * ( 1 - BOUNDS_TOLERANCE )
         }
         else
         {
             // viewport is taller than scene
             // center scene vertically
-            _y = ( 1 - viewport.height ) * 0.5
-        } 
+            y = ( 1 - viewport.height ) * 0.5
+        }
+        
+        return new Point( x, y )
     }
 }
 

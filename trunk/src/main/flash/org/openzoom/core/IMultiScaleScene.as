@@ -24,7 +24,7 @@ import flash.display.DisplayObject;
 import flash.events.IEventDispatcher;
 
 /**
- * Interface for the Viewport content.
+ * Interface for the viewport content.
  */
 public interface IMultiScaleScene extends IEventDispatcher
 {
@@ -38,6 +38,9 @@ public interface IMultiScaleScene extends IEventDispatcher
     //  sceneWidth
     //----------------------------------
     
+    /**
+     * Indicates the width of the scene, in pixels.
+     */
     function get sceneWidth() : Number
     function set sceneWidth( value : Number ) : void
   
@@ -45,14 +48,23 @@ public interface IMultiScaleScene extends IEventDispatcher
     //  sceneHeight
     //----------------------------------
     
+    /**
+     * Indicates the height of the scene, in pixels.
+     */
     function get sceneHeight() : Number
     function set sceneHeight( value : Number ) : void
     
     //----------------------------------
-    //  owner
+    //  targetCoordinateSpace
     //----------------------------------
     
-    function get owner() : DisplayObject
+    /**
+     * The display object that defines the coordinate system to use.
+     * This is mainly used for renderers that want to compute their
+     * bounds with DisplayObject::getBounds relative to the scene
+     * they are contained in.
+     */ 
+    function get targetCoordinateSpace() : DisplayObject
 }
 
 }

@@ -26,7 +26,6 @@ import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
 
-import mx.core.Container;
 import mx.core.UIComponent;
 import mx.events.ResizeEvent;
 
@@ -35,6 +34,7 @@ import org.openzoom.components.common.controllers.MouseNavigationController;
 import org.openzoom.components.common.controllers.ViewTransformationController;
 import org.openzoom.core.IMultiScaleScene;
 import org.openzoom.core.INormalizedViewport;
+import org.openzoom.core.IViewportContainer;
 import org.openzoom.core.IViewportController;
 import org.openzoom.core.MultiScaleScene;
 import org.openzoom.core.NormalizedViewport;
@@ -86,10 +86,8 @@ public class MultiScaleContainer extends UIComponent
     private var mouseCatcher : Sprite
     private var contentMask : Shape
     
-    private var _controllers : Array = []
-    
-    private var keyboardNavigationController : KeyboardNavigationController
-    private var mouseNavigationController : MouseNavigationController
+//    private var keyboardNavigationController : KeyboardNavigationController
+//    private var mouseNavigationController : MouseNavigationController
     private var transformationController : ViewTransformationController
     
     private var loader : TileLoader
@@ -116,12 +114,32 @@ public class MultiScaleContainer extends UIComponent
     //  viewport
     //----------------------------------
     
-    private var _viewport : NormalizedViewport;
+    private var _viewport : IViewportContainer;
     
     [Bindable(event="viewportChanged")]
     public function get viewport() : INormalizedViewport
     {
         return _viewport
+    }
+    
+    //----------------------------------
+    //  controllers
+    //----------------------------------
+    
+    [ArrayElementType("org.openzoom.core.IViewportController")]
+    private var _controllers : Array = []
+    
+   ;[ArrayElementType("org.openzoom.core.IViewportController")]
+    public function get controllers() : Array
+    {
+    	return _controllers.slice()
+    }
+    
+    public function set controllers( value : Array ) : void
+    {
+        _controllers = []
+    	for each( var controller : IViewportController in value )
+    		addController( controller )
     }
     
     //----------------------------------
@@ -138,9 +156,7 @@ public class MultiScaleContainer extends UIComponent
     public function set children( value : Array ) : void
     {
         for each( var child : DisplayObject in value )
-        {
             addChild( child )
-        }
     }
     
     //--------------------------------------------------------------------------
@@ -297,15 +313,15 @@ public class MultiScaleContainer extends UIComponent
   
     private function createDefaultControllers() : void
     {   
-        mouseNavigationController = new MouseNavigationController()
-        keyboardNavigationController = new KeyboardNavigationController()
-
-        addController( mouseNavigationController )
-        addController( keyboardNavigationController )
+//        mouseNavigationController = new MouseNavigationController()
+//        keyboardNavigationController = new KeyboardNavigationController()
+//
+//        addController( mouseNavigationController )
+//        addController( keyboardNavigationController )
         
         transformationController = new ViewTransformationController()
         transformationController.viewport = viewport
-        transformationController.view = scene.owner
+        transformationController.view = scene.targetCoordinateSpace
     }
   
     private function addController( controller : IViewportController ) : Boolean

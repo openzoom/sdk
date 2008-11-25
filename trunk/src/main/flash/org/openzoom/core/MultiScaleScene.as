@@ -116,7 +116,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene
     //  owner
     //----------------------------------
     
-    public function get owner() : DisplayObject
+    public function get targetCoordinateSpace() : DisplayObject
     {
     	return this
     }

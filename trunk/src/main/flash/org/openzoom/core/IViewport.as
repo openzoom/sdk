@@ -153,11 +153,11 @@ public interface IViewport extends IEventDispatcher
     //--------------------------------------------------------------------------
      
     //----------------------------------
-    //  transform
+    //  constraint
     //----------------------------------
     
-    function get boundsStrategy() : IViewportBoundsStrategy
-    function set boundsStrategy( value : IViewportBoundsStrategy ) : void
+    function get constraint() : IViewportConstraint
+    function set constraint( value : IViewportConstraint ) : void
 
     //----------------------------------
     //  transform
