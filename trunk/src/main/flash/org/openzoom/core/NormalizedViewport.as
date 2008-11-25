@@ -50,6 +50,7 @@ import org.openzoom.utils.math.clamp;
  */
 public class NormalizedViewport extends EventDispatcher
                                 implements INormalizedViewport,
+                                           IReadonlyViewport,
                                            IViewportContainer
 {
     //--------------------------------------------------------------------------
@@ -149,6 +150,22 @@ public class NormalizedViewport extends EventDispatcher
         return viewportWidth / ( scene.sceneWidth * width ) 
     }
  
+    //----------------------------------
+    //  transform
+    //----------------------------------
+
+    private var _boundsChecker : IViewportBoundsStrategy = new DefaultBoundsStrategy()
+
+    public function get boundsStrategy() : IViewportBoundsStrategy
+    {
+        return _boundsChecker
+    }
+    
+    public function set boundsStrategy( value : IViewportBoundsStrategy ) : void
+    {
+    	_boundsChecker = value
+    }
+
     //----------------------------------
     //  transform
     //----------------------------------
@@ -265,48 +282,17 @@ public class NormalizedViewport extends EventDispatcher
         // store the given (normalized) coordinates
         _x = x
         _y = y
-    
-        // content is wider than viewport
-//        if( _width < 1 )
-//        {
-            // horizontal bounds checking:
-            // the viewport sticks out on the left:
-            // align it with the left margin
-            if( _x + _width * BOUNDS_TOLERANCE < 0 )
-                _x = -_width * BOUNDS_TOLERANCE
-    
-           // the viewport sticks out on the right:
-           // align it with the right margin
-           if(( _x + _width * ( 1 - BOUNDS_TOLERANCE )) > 1 )
-               _x = 1 - _width * ( 1 - BOUNDS_TOLERANCE )      
-//        }
-//        else
-//        {
-//            // viewport is wider than content:
-//            // center scene horizontally
-//            _x = ( 1 - _width ) * 0.5
-//        }
-    
-        // scene is taller than viewport
-//        if( _height < 1 )
-//        {
-            // vertical bounds checking:
-            // the viewport sticks out at the top:
-            // align it with the top margin
-            if( _y + _height * BOUNDS_TOLERANCE < 0 )
-             _y = -_height * BOUNDS_TOLERANCE
-        
-            // the viewport sticks out at the bottom:
-            // align it with the bottom margin
-            if( _y + _height * (1 - BOUNDS_TOLERANCE) > 1 )
-              _y = 1 - _height * ( 1 - BOUNDS_TOLERANCE )
-//        }
-//        else
-//        {
-//            // viewport is taller than scene
-//            // center scene vertically
-//            _y = ( 1 - _height ) * 0.5
-//        } 
+
+        // use bounds strategy if available
+        if( boundsStrategy )
+        {
+            // compute bounds
+            boundsStrategy.computeBounds( this )
+            
+            // capture new position
+            _x = boundsStrategy.x
+            _y = boundsStrategy.y	
+        }
         
         if( dispatchChangeEvent )
             this.dispatchChangeEvent()

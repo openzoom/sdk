@@ -1,7 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  OpenZoom
-//  Copyright (c) 2008, Daniel Gasienica <daniel@gasienica.ch>
+//
+//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2008,      Zoomorama
+//                           Olivier Gambier <viapanda@gmail.com>
+//                           Daniel Gasienica <daniel@gasienica.ch>
+//                           Eric Hubscher <erich@zoomorama.com>
+//                           David Marteau <dhmarteau@gmail.com>
+//  Copyright (c) 2007,      Rick Companje <rick@companje.nl>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,15 +27,20 @@
 package org.openzoom.core
 {
 
-/**
- * Default bounds checking strategy for INormalizedViewport.
- */
-public interface IViewportBoundsCheckingStrategy
+public interface IReadonlyViewport
 {
-	function get x() : Number
-	function get y() : Number
-	
-	function calculatePosition( x : Number, y : Number, width : Number, height : Number, z : Number )
+    function get x() : Number
+    function get y() : Number
+    
+    function get top() : Number		
+    function get right() : Number		
+    function get bottom() : Number		
+    function get left() : Number
+    		
+    function get width() : Number
+    function get height() : Number
+    
+    function get zoom() : Number
 }
 
 }

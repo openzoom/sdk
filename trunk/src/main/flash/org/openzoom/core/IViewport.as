@@ -156,19 +156,16 @@ public interface IViewport extends IEventDispatcher
     //  transform
     //----------------------------------
     
+    function get boundsStrategy() : IViewportBoundsStrategy
+    function set boundsStrategy( value : IViewportBoundsStrategy ) : void
+
+    //----------------------------------
+    //  transform
+    //----------------------------------
+    
 //    function get transform() : IViewportTransform
 //    function set transform( value : IViewportTransform ) : void
-    
-//    //----------------------------------
-//    //  bounds
-//    //----------------------------------
-//    
-//    /**
-//     * Bounds of the viewport in viewport coordinates.
-//     */
-//    function get bounds() : Rectangle
-//    function set bounds( value : Rectangle ) : void
-    
+        
     //----------------------------------
     //  scene
     //----------------------------------

@@ -110,17 +110,8 @@ public class OpenZoomViewer extends Sprite
         
         createChildren()
         
-//        source = getParameter( OpenZoomViewerParameters.SOURCE, DEFAULT_SOURCE )
-//        loadDescriptor( source )
-
-//      url=http://share.gigapan.org/gigapans0/9524/tiles/&suffix=.jpg&startHideControls=0&width=60488&height=27024&nlevels=9&cleft=0&ctop=0&cright=60488.0&cbottom=27024.0&startEnabled=1&notifyWhenLoaded=1
-        
-//        var descriptor : IMultiScaleImageDescriptor = new GigaPanDescriptor( "http://share.gigapan.org/gigapans0/9524/tiles/", ".jpg", 60488, 27024, 10 )
-
-        //http://share.gigapan.org/gigapans0/5322/tiles/&suffix=.jpg&startHideControls=0&width=154730&height=36408&nlevels=11&cleft=0&ctop=0&cright=154730.0&cbottom=36408.0&startEnabled=1&notifyWhenLoaded=1
-        var descriptor : IMultiScaleImageDescriptor = new GigaPanDescriptor( "http://share.gigapan.org/gigapans0/5322/tiles/", ".jpg", 154730, 36408, 11 )
-        debugDescriptor( descriptor )
-        createViewer( descriptor )
+        source = getParameter( OpenZoomViewerParameters.SOURCE, DEFAULT_SOURCE )
+        loadDescriptor( source )
 
         layout()
     }

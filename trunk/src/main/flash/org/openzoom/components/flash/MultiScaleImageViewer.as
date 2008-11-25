@@ -54,8 +54,8 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_MIN_ZOOM        : Number = 0.25
     private static const DEFAULT_MAX_ZOOM        : Number = 10000
     
-    private static const DEFAULT_SCENE_WIDTH     : Number = 60488/2
-    private static const DEFAULT_SCENE_HEIGHT    : Number = 27024/2
+    private static const DEFAULT_SCENE_WIDTH     : Number = 24000
+    private static const DEFAULT_SCENE_HEIGHT    : Number = 16000
     
     private static const DEFAULT_VIEWPORT_WIDTH  : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT : Number = 600
@@ -77,7 +77,6 @@ public class MultiScaleImageViewer extends Sprite
     {
         this.descriptor = descriptor
         
-        
         // children
         createChildren()
         
@@ -91,21 +90,25 @@ public class MultiScaleImageViewer extends Sprite
         
         var loader : TileLoader = new TileLoader()
         
-        for( var i : int = 0; i < 1; i++ )
+        for( var i : int = 0; i < 5; i++ )
         {
-            for( var j : int = 0; j < 1; j++ )
+            for( var j : int = 0; j < 5; j++ )
             {
-            	var scale : Number = 0.12//clamp( Math.random(), 0.05, 0.25 )
+            	var scale : Number = clamp( Math.random() / 2, 0.2, 0.5 )
 		        var image : MultiScaleImageRenderer =
-		                      createImage( descriptor.clone(), loader,
-		                                   descriptor.width * scale, descriptor.height * scale )
-		                                   
+		                      createImage( descriptor.clone(),
+		                                   loader,
+		                                   descriptor.width * scale,
+		                                   descriptor.height * scale )
+		                      
+                // Random layout             
+                image.x = Math.random() * DEFAULT_SCENE_WIDTH  * 0.8
+                image.y = Math.random() * DEFAULT_SCENE_HEIGHT * 0.8
+                
+                // Grid layout
 //		        image.x = i * (image.width * 1.1)
 //		        image.y = j * (image.height * 1.1)
 
-                image.x = 0//Math.random() * DEFAULT_SCENE_WIDTH * 0.75
-                image.y = 0//Math.random() * DEFAULT_SCENE_HEIGHT * 0.75
-                
 		        _scene.addChild( image )
             }
         }
@@ -264,12 +267,13 @@ public class MultiScaleImageViewer extends Sprite
     	for( var i : int = 1; i < _scene.numChildren; i++ )
         {
             var renderer : DisplayObject = _scene.getChildAt( i )
-            var scale : Number = 1// clamp( Math.random() * 2, 0.8, 2 )
+            var scale : Number = 1
+//          var scale : Number = clamp( Math.random() * 2, 0.8, 2 )
             Tweener.addTween(
                               renderer,
                               {
-                                  x: Math.random() * DEFAULT_SCENE_WIDTH * 0.95,
-                                  y: Math.random() * DEFAULT_SCENE_HEIGHT * 0.95,
+                                  x: Math.random() * DEFAULT_SCENE_WIDTH  * 0.90,
+                                  y: Math.random() * DEFAULT_SCENE_HEIGHT * 0.90,
                                   width: renderer.width * scale,
                                   height: renderer.height * scale,
                                   time: 2

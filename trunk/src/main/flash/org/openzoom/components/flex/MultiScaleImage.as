@@ -133,7 +133,7 @@ public class MultiScaleImage extends UIComponent
     	if( value is String )
     	{
     		if( sourceURL == String( value ))
-    		  return
+                return
     		  
     		sourceURL = String( value )
     		sourceLoader = new URLLoader( new URLRequest( sourceURL ))

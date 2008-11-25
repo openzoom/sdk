@@ -30,7 +30,7 @@ import org.openzoom.utils.math.clamp;
 
 /**
  * Descriptor for the GigaPan.org project panoramas.
- * <http://gigapan.org/>
+ * Copyright GigaPan, <http://gigapan.org/>
  */
 public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
                                implements IMultiScaleImageDescriptor
@@ -69,7 +69,10 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
         _tileWidth = DEFAULT_TILE_SIZE
         _tileHeight = DEFAULT_TILE_SIZE
         
-        _type = "image/jpeg"
+        if( extension == ".png" )
+            _type = "image/png"
+        else
+            _type = "image/jpeg"
 
         levels = computeLevels( width, height, DEFAULT_TILE_SIZE, numLevels )
     }
@@ -89,26 +92,8 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
-//    override public function existsTile( level : int, column : uint, row : uint ) : Boolean
-//    {
-//    	var l : IMultiScaleImageLevel = getLevelAt( level )
-//    	if( aspectRatio > 1 )
-//    	{
-//            // all columns exist
-//            return (( row / l.numRows ) < ( 1 / aspectRatio ))	
-//    	}
-//    	else
-//    	{
-//    		// all rows exist
-//            return (( column / l.numColumns ) < ( aspectRatio ))	
-//    	}
-//    }
-
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-    	//http://www.gigapan.org/viewer/PanoramaViewer.swd?url=http://share.gigapan.org/gigapans0/9490/tiles/
-    	//&suffix=.jpg&startHideControls=0&width=43000&height=11522&nlevels=9&cleft=0&ctop=0&cright=43000.0&cbottom=11522.0&startEnabled=1&notifyWhenLoaded=1
-    	
     	var url : String = source
     	var name : String = "r"
     	var z : int = level
@@ -142,22 +127,10 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     public function getMinimumLevelForSize( width : Number,
                                             height : Number ) : IMultiScaleImageLevel
     {
-//        var index : int =
-//            clamp( Math.ceil( Math.log( Math.max( width, height )) / Math.LN2
-//                              - DEFAULT_BASE_LEVEL - 1 ), 0, numLevels - 1 )
-//        return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
-
-        // TODO
-        var level : IMultiScaleImageLevel
-        
-        for( var i : int = numLevels - 1; i >= 0; i-- )
-        {
-            level = getLevelAt( i )
-            if( level.width < width || level.height < height )
-                break 
-        }  
-        
-        return getLevelAt( clamp( level.index, 0, numLevels - 1 )).clone()
+        var index : int =
+                clamp( Math.ceil( Math.log( Math.max( width, height )) / Math.LN2
+                               - DEFAULT_BASE_LEVEL ), 0, numLevels - 1 )
+        return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
     }
     
     public function clone() : IMultiScaleImageDescriptor
@@ -197,18 +170,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
                                                         Math.ceil( height / tileHeight ) )
             width = ( width + 1 ) >> 1
             height = ( height + 1 ) >> 1
-//            width = Math.ceil( width * 0.5 )
-//            height = Math.ceil( height * 0.5 )
         }
-
-//        for( var i : int = 0; i < numLevels; i++ )
-//        {
-//            width = 1 << ( DEFAULT_BASE_LEVEL + i )
-//            height = 1 << ( DEFAULT_BASE_LEVEL + i )
-//            levels[ i ] = new MultiScaleImageLevel( this, i, width, height,
-//                                                    Math.ceil( width / tileSize ),
-//                                                    Math.ceil( height / tileSize ))
-//        }
         
         return levels
     }
