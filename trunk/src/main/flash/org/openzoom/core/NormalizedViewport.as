@@ -612,6 +612,9 @@ public class NormalizedViewport extends EventDispatcher
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_UPDATE,
                            false, false ))
+
+        // FIXME
+        endTransform()
     }
     
     public function endTransform() : void

@@ -361,14 +361,14 @@ public interface INormalizedViewport extends IEventDispatcher
     //--------------------------------------------------------------------------
   
     /**
-     * Dispatch changeComplete event to let all listeners
-     * know that a Viewport transition has completed.
+     * Dispatch <code>transformStart</code> event to
+     * let all listeners know that a viewport transition has started.
      */
     function beginTransform() : void
         
     /**
-     * Dispatch changeComplete event to let all listeners
-     * know that a Viewport transition has completed.
+     * Dispatch <code>transformEnd</code> event to
+     * let all listeners know that a viewport transition has finished.
      */
     function endTransform() : void  
 }

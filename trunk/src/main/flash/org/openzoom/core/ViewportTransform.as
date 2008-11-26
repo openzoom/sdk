@@ -100,10 +100,10 @@ public class ViewportTransform implements IViewportTransform
                             transformX : Number = 0.5,
                             transformY : Number = 0.5 ) : void
     {
-        trace( "@pre", _zoom, zoom )
+//        trace( "@pre", _zoom, zoom )
         // keep z within min/max range
         _zoom = clamp( zoom, viewport.minZoom, viewport.maxZoom )
-        trace( "@post", _zoom, zoom )
+//        trace( "@post", _zoom, zoom )
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( transformX, transformY )
@@ -198,8 +198,9 @@ public class ViewportTransform implements IViewportTransform
     
     public function showAll() : void
     {
-    	var area : Rectangle = new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight )
-        showRect( normalizeRectangle( area ))
+//    	var area : Rectangle = new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight )
+//        showRect( normalizeRectangle( area ))
+        showRect( new Rectangle( 0, 0, 1, 1 ))
     }
 
 
@@ -212,7 +213,7 @@ public class ViewportTransform implements IViewportTransform
     private function moveOriginTo( x : Number, y : Number,
                                    transformX : Number, transformY : Number ) : void
     {
-        var newX : Number = x - width * transformX
+        var newX : Number = x - width  * transformX
         var newY : Number = y - height * transformY
 
         moveTo( newX, newY )
@@ -221,7 +222,7 @@ public class ViewportTransform implements IViewportTransform
     private function getViewportOrigin( transformX : Number,
                                         transformY : Number ) : Point
     {
-        var viewportOriginX : Number = x + width * transformX
+        var viewportOriginX : Number = x + width  * transformX
         var viewportOriginY : Number = y + height * transformY
  
         return new Point( viewportOriginX, viewportOriginY )
@@ -516,10 +517,17 @@ public class ViewportTransform implements IViewportTransform
             transform._height = _height
             transform._zoom = _zoom
             
-            if( this.zoom != transform.zoom )
+            if( !equals( transform ))
                 trace( "AAARGH" )
             
         return transform	
+    }
+    
+    public function equals( other : IViewportTransform ) : Boolean
+    {
+    	return x == other.x && y == other.y
+    	       && width == other.width && height == other.height
+    	       && zoom == other.zoom
     }
 }
 

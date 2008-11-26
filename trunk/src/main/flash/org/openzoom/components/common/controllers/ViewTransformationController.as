@@ -116,18 +116,18 @@ public class ViewTransformationController extends ViewportControllerBase
     
     private function viewport_transformStartHandler( event : ViewportEvent ) : void
     {
-//    	trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_START" )
+    	trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_START" )
     }
 
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
-//        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_UPDATE" )
+        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_UPDATE" )
         transformView( DEFAULT_TRANSFORMATION_DURATION )
     }
     
     private function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
-//        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_END" )
+        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_END" )
     }
     
     private function viewport_resizeHandler( event : ViewportEvent ) : void
@@ -144,10 +144,10 @@ public class ViewTransformationController extends ViewportControllerBase
     private function transformView( duration : Number ) : void
     {
         var transition : String = DEFAULT_TRANSFORMATION_EASING
-        var newWidth  : Number = viewport.viewportWidth / viewport.width
-        var newHeight : Number = viewport.viewportHeight / viewport.height
-        var newX      : Number = -viewport.x * newWidth
-        var newY      : Number = -viewport.y * newHeight
+        var newWidth   : Number = viewport.viewportWidth / viewport.width
+        var newHeight  : Number = viewport.viewportHeight / viewport.height
+        var newX       : Number = -viewport.x * newWidth
+        var newY       : Number = -viewport.y * newHeight
         
 ////        viewport.beginTransform()
         view.x = newX

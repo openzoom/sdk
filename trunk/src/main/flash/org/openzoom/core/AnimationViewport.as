@@ -25,7 +25,7 @@ import flash.events.EventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import org.openzoom.components.common.transformers.TweenerViewportAnimator;
+import org.openzoom.components.common.transformers.GTweenViewportAnimator;
 import org.openzoom.events.ViewportEvent;
 
 //------------------------------------------------------------------------------
@@ -79,11 +79,22 @@ public class AnimationViewport extends EventDispatcher
         _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
         
         // FIXME
-        _animator = new TweenerViewportAnimator( this )
+        targetTransform = transform
+        
+        // FIXME
+        _animator = new GTweenViewportAnimator( this )
         
         validate()
     }
 
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+    
+    private var targetTransform : IViewportTransform
+    
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -153,7 +164,7 @@ public class AnimationViewport extends EventDispatcher
     //  constraint
     //----------------------------------
 
-    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
+    private var _constraint : IViewportConstraint// = new DefaultViewportConstraint()
 
     public function get constraint() : IViewportConstraint
     {
@@ -252,7 +263,7 @@ public class AnimationViewport extends EventDispatcher
                             transformY : Number = 0.5,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        var t :IViewportTransform = transform
+    	var t : IViewportTransform = getViewportTransform()
         t.zoomTo( zoom, transformX, transformY )
         applyTransform( t )
     }
@@ -262,7 +273,7 @@ public class AnimationViewport extends EventDispatcher
                             transformY : Number = 0.5,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-    	var t :IViewportTransform = transform
+        var t : IViewportTransform = getViewportTransform()
     	t.zoomBy( factor, transformX, transformY )
         applyTransform( t )
     }
@@ -276,7 +287,7 @@ public class AnimationViewport extends EventDispatcher
     public function moveTo( x : Number, y : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        var t :IViewportTransform = transform
+        var t : IViewportTransform = getViewportTransform()
         t.moveTo( x, y )
         applyTransform( t )
     }
@@ -285,7 +296,7 @@ public class AnimationViewport extends EventDispatcher
     public function moveBy( dx : Number, dy : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        var t :IViewportTransform = transform
+        var t : IViewportTransform = getViewportTransform()
         t.moveBy( dx, dy )
         applyTransform( t )
     }
@@ -293,7 +304,7 @@ public class AnimationViewport extends EventDispatcher
     public function moveCenterTo( x : Number, y : Number,
                                   dispatchChangeEvent : Boolean = true ) : void
     {
-        var t :IViewportTransform = transform
+        var t : IViewportTransform = getViewportTransform()
         t.moveCenterTo( x, y )
         applyTransform( t )
     }
@@ -301,14 +312,14 @@ public class AnimationViewport extends EventDispatcher
     public function showRect( rect : Rectangle, scale : Number = 1.0, 
                               dispatchChangeEvent : Boolean = true ) : void
     {
-        var t :IViewportTransform = transform
+        var t : IViewportTransform = getViewportTransform()
         t.showRect( rect, scale )
         applyTransform( t )
     }
     
     public function showAll() : void
     {
-        var t :IViewportTransform = transform
+        var t : IViewportTransform = getViewportTransform()
         t.showAll()
         applyTransform( t )
     }
@@ -346,9 +357,8 @@ public class AnimationViewport extends EventDispatcher
      */ 
     private function validate( dispatchEvent : Boolean = true ) : void
     {
-        var t :IViewportTransform = transform
+        var t : IViewportTransform = getViewportTransform()
         t.zoomTo( zoom )
-        
         applyTransform( t, false )
     }
     
@@ -519,6 +529,24 @@ public class AnimationViewport extends EventDispatcher
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
+    //
+    //--------------------------------------------------------------------------
+    
+    private function getViewportTransform() : IViewportTransform
+    {
+        var t : IViewportTransform
+        
+        if( animator )
+            t = targetTransform         
+        else
+            t = transform
+        
+        return t
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IViewportContainer
     //
     //--------------------------------------------------------------------------
     

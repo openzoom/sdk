@@ -224,6 +224,7 @@ public interface IViewportTransform
     //--------------------------------------------------------------------------
     
     function clone() : IViewportTransform
+    function equals( value : IViewportTransform ) : Boolean
 }
 
 }
