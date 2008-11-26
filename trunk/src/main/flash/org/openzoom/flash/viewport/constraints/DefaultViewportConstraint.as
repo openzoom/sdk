@@ -26,8 +26,7 @@ import flash.geom.Point;
 import org.openzoom.flash.viewport.IReadonlyViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 
-public class DefaultViewportConstraint extends NullViewportConstraint
-                                       implements IViewportConstraint
+public class DefaultViewportConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
     //
@@ -50,8 +49,44 @@ public class DefaultViewportConstraint extends NullViewportConstraint
 	 */
     public function DefaultViewportConstraint()
     {
-    	_minZ = DEFAULT_MIN_ZOOM
-    	_maxZ = DEFAULT_MAX_ZOOM
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: IViewportConstraint
+    //
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  minZoom
+    //----------------------------------
+
+    protected var _minZoom : Number = DEFAULT_MIN_ZOOM
+
+    public function get minZoom() : Number
+    {
+        return _minZoom
+    }
+
+    public function set minZoom( value : Number ) : void
+    {
+        _minZoom = value
+    }
+
+    //----------------------------------
+    //  maxZoom
+    //----------------------------------
+    
+    protected var _maxZoom : Number = DEFAULT_MAX_ZOOM
+    
+    public function get maxZoom() : Number
+    {
+        return _maxZoom
+    }
+    
+    public function set maxZoom( value : Number ) : void
+    {
+       _maxZoom = value
     }
     
     //--------------------------------------------------------------------------
@@ -60,7 +95,7 @@ public class DefaultViewportConstraint extends NullViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-    override public function computePosition( viewport : IReadonlyViewport ) : Point
+    public function computePosition( viewport : IReadonlyViewport ) : Point
     {
     	var x : Number = viewport.x
     	var y : Number = viewport.y

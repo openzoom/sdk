@@ -59,7 +59,7 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT           : Number = 16000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
-    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.25
+    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0
     
     private static const DEFAULT_VIEWPORT_WIDTH         : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT        : Number = 600
@@ -98,11 +98,11 @@ public class MultiScaleImageViewer extends Sprite
         
         var loader : TileLoader = new TileLoader()
         
-        for( var i : int = 0; i < 5; i++ )
+        for( var i : int = 0; i < 10; i++ )
         {
             for( var j : int = 0; j < 5; j++ )
             {
-            	var scale : Number = clamp( Math.random() / 2, 0.2, 0.5 )
+            	var scale : Number = clamp( Math.random() / 2, 0.025, 0.25 )
 		        var image : MultiScaleImageRenderer =
 		                      createImage( descriptor.clone(),
 		                                   loader,

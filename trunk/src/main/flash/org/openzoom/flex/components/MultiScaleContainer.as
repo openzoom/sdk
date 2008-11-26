@@ -33,6 +33,7 @@ import org.openzoom.flash.net.TileLoader;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.NormalizedViewport;
@@ -118,6 +119,20 @@ public class MultiScaleContainer extends UIComponent
     public function get viewport() : INormalizedViewport
     {
         return _viewport
+    }
+    
+    //----------------------------------
+    //  viewportConstraint
+    //----------------------------------
+
+    public function get viewportConstraint() : IViewportConstraint
+    {
+        return viewport.constraint
+    }
+    
+    public function set viewportConstraint( value : IViewportConstraint ) : void
+    {
+        return viewport.constraint = value
     }
     
     //----------------------------------

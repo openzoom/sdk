@@ -37,8 +37,8 @@ public class NullViewportConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_MIN_Z : Number = 0.0
-    private static const DEFAULT_MAX_Z : Number = Infinity
+    private static const DEFAULT_MIN_ZOOM : Number = 0.001
+    private static const DEFAULT_MAX_ZOOM : Number = Number.MAX_VALUE
 	
     //--------------------------------------------------------------------------
     //
@@ -60,35 +60,31 @@ public class NullViewportConstraint implements IViewportConstraint
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  minZ
+    //  minZoom
     //----------------------------------
-
-    protected var _minZ : Number = DEFAULT_MIN_Z
 
     public function get minZoom() : Number
     {
-        return _minZ
+        return DEFAULT_MIN_ZOOM
     }
 
     public function set minZoom( value : Number ) : void
     {
-        _minZ = value
+    	// Do nothing
     }
 
     //----------------------------------
-    //  maxZ
+    //  maxZoom
     //----------------------------------
-    
-    protected var _maxZ : Number = DEFAULT_MAX_Z
     
     public function get maxZoom() : Number
     {
-        return _maxZ
+        return DEFAULT_MAX_ZOOM
     }
     
     public function set maxZoom( value : Number ) : void
     {
-       _maxZ = value
+    	// Do nothing
     }
     
     //--------------------------------------------------------------------------

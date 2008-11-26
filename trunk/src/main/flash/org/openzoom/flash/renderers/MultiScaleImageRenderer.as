@@ -236,9 +236,10 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     
     private function loadTiles( level : IMultiScaleImageLevel, area : Rectangle ) : void
     {
-        var minColumn : int = Math.max( 0, Math.floor( area.left * level.numColumns / unscaledWidth ))
+    	// FIXME
+        var minColumn : int = Math.max( 0, Math.floor( area.left * level.numColumns / unscaledWidth ) - 1)
         var maxColumn : int = Math.min( level.numColumns, Math.ceil( area.right * level.numColumns / unscaledWidth ))
-        var minRow    : int = Math.max( 0, Math.floor( area.top * level.numRows / unscaledHeight ))
+        var minRow    : int = Math.max( 0, Math.floor( area.top * level.numRows / unscaledHeight ) - 1)
         var maxRow    : int = Math.min( level.numRows, Math.ceil( area.bottom * level.numRows / unscaledHeight ))
 
         var layer : ITileLayer = getLayer( level.index )
