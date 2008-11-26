@@ -22,8 +22,8 @@ package org.openzoom.flash.renderers
 {
 import flash.display.Sprite;
 
-import org.openzoom.flash.core.INormalizedViewport;
 import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.viewport.INormalizedViewport;
 
 /**
  * Multi-scale renderer base class.

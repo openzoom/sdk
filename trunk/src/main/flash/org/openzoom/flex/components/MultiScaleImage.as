@@ -31,18 +31,18 @@ import flash.net.URLRequest;
 
 import mx.core.UIComponent;
 
-import org.openzoom.flash.controllers.KeyboardNavigationController;
-import org.openzoom.flash.controllers.MouseNavigationController;
-import org.openzoom.flash.controllers.ViewTransformationController;
-import org.openzoom.flash.core.IMultiScaleScene;
-import org.openzoom.flash.core.INormalizedViewport;
-import org.openzoom.flash.core.IViewportController;
-import org.openzoom.flash.core.MultiScaleScene;
-import org.openzoom.flash.core.NormalizedViewport;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
 import org.openzoom.flash.net.TileLoader;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
+import org.openzoom.flash.scene.IMultiScaleScene;
+import org.openzoom.flash.scene.MultiScaleScene;
+import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.IViewportController;
+import org.openzoom.flash.viewport.NormalizedViewport;
+import org.openzoom.flash.viewport.controllers.KeyboardNavigationController;
+import org.openzoom.flash.viewport.controllers.MouseNavigationController;
+import org.openzoom.flash.viewport.controllers.ViewTransformationController;
 
 /**
  * Component for displaying a single multi-scale image. Inspired by the Microsoft

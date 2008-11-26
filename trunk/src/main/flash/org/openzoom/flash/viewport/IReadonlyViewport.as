@@ -18,13 +18,34 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.core
+package org.openzoom.flash.viewport
 {
 
-public interface IViewportAnimator
+import flash.events.IEventDispatcher;	
+
+/**
+ * Read-only interface to IViewport.
+ */
+public interface IReadonlyViewport extends IEventDispatcher
 {
-    function animate( viewport : INormalizedViewport,
-                      targetTransform : IViewportTransform ) : void		
+    function get x() : Number
+    function get y() : Number
+    
+    function get top() : Number
+    function get right() : Number
+    function get bottom() : Number		
+    function get left() : Number
+    		
+    function get width() : Number
+    function get height() : Number
+    
+    function get zoom() : Number
+    
+    function get viewportWidth() : Number
+    function get viewportHeight() : Number
+    
+    function get minZoom() : Number
+    function get maxZoom() : Number
 }
 
 }

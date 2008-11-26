@@ -18,13 +18,13 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.controllers
+package org.openzoom.flash.viewport.controllers
 {
 
 import flash.display.DisplayObject;
 
-import org.openzoom.flash.core.INormalizedViewport;
-import org.openzoom.flash.events.ViewportEvent;    
+import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.viewport.INormalizedViewport;    
 
 /**
  * Transforms the view in the viewport.

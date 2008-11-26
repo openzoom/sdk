@@ -18,7 +18,7 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.core
+package org.openzoom.flash.viewport
 {
 
 public interface IViewportContainer extends INormalizedViewport

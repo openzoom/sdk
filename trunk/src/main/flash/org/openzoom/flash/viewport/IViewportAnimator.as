@@ -18,18 +18,16 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.renderers
+package org.openzoom.flash.viewport
 {
 
 import org.openzoom.flash.viewport.INormalizedViewport;
-
-/**
- * Interface for a renderer that is multi-scalar.
- */
-public interface IMultiScaleRenderer
+import org.openzoom.flash.viewport.IViewportTransform;
+	
+public interface IViewportAnimator
 {
-    function get viewport() : INormalizedViewport
-    function set viewport( value : INormalizedViewport ) : void
+    function animate( viewport : INormalizedViewport,
+                      targetTransform : IViewportTransform ) : void		
 }
 
 }

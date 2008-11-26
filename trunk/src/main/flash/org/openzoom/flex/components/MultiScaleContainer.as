@@ -29,14 +29,14 @@ import flash.events.Event;
 
 import mx.core.UIComponent;
 
-import org.openzoom.flash.controllers.ViewTransformationController;
-import org.openzoom.flash.core.IMultiScaleScene;
-import org.openzoom.flash.core.INormalizedViewport;
-import org.openzoom.flash.core.IViewportContainer;
-import org.openzoom.flash.core.IViewportController;
-import org.openzoom.flash.core.MultiScaleScene;
-import org.openzoom.flash.core.NormalizedViewport;
 import org.openzoom.flash.net.TileLoader;
+import org.openzoom.flash.scene.IMultiScaleScene;
+import org.openzoom.flash.scene.MultiScaleScene;
+import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.IViewportContainer;
+import org.openzoom.flash.viewport.IViewportController;
+import org.openzoom.flash.viewport.NormalizedViewport;
+import org.openzoom.flash.viewport.controllers.ViewTransformationController;
 
 [DefaultProperty("children")]
 public class MultiScaleContainer extends UIComponent
@@ -124,10 +124,10 @@ public class MultiScaleContainer extends UIComponent
     //  controllers
     //----------------------------------
     
-    [ArrayElementType("org.openzoom.flash.core.IViewportController")]
+   ;[ArrayElementType("org.openzoom.flash.viewport.IViewportController")]
     private var _controllers : Array = []
     
-   ;[ArrayElementType("org.openzoom.flash.core.IViewportController")]
+   ;[ArrayElementType("org.openzoom.flash.viewport.IViewportController")]
     public function get controllers() : Array
     {
     	return _controllers.slice()

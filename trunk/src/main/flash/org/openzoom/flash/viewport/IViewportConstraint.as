@@ -18,20 +18,19 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.core
+package org.openzoom.flash.viewport
 {
 
-import flash.events.IEventDispatcher;
+import flash.geom.Point;
 
-[Event(name="resize", type="flash.events.Event")]
+import org.openzoom.flash.viewport.IReadonlyViewport;	
 
 /**
- * Read-only interface to IMultiScaleScene.
+ * Interface for bounds constraint for INormalizedViewport.
  */
-public interface IReadonlyMultiScaleScene extends IEventDispatcher
+public interface IViewportConstraint
 {
-	function get sceneWidth() : Number
-	function get sceneHeight() : Number
+	function computePosition( viewport : IReadonlyViewport ) : Point
 }
 
 }

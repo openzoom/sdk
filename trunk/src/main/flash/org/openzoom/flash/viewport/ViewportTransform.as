@@ -18,7 +18,7 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.core
+package org.openzoom.flash.viewport
 {
 
 import flash.events.Event;
@@ -26,6 +26,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.utils.math.clamp;
 
 public class ViewportTransform implements IViewportTransform
@@ -39,7 +40,8 @@ public class ViewportTransform implements IViewportTransform
     /**
      * Constructor.
      */
-    public function ViewportTransform( viewport : IReadonlyViewport, scene : IReadonlyMultiScaleScene )
+    public function ViewportTransform( viewport : IReadonlyViewport,
+                                       scene : IReadonlyMultiScaleScene )
     {
     	// FIXME: Remove references to viewport and scene
         this.viewport = viewport

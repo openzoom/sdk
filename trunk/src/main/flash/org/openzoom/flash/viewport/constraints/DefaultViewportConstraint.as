@@ -18,10 +18,13 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.core
+package org.openzoom.flash.viewport.constraints
 {
 
 import flash.geom.Point;
+
+import org.openzoom.flash.viewport.IReadonlyViewport;
+import org.openzoom.flash.viewport.IViewportConstraint;
 
 public class DefaultViewportConstraint implements IViewportConstraint
 {

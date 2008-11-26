@@ -24,12 +24,14 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.core
+package org.openzoom.flash.viewport
 {
 
 import flash.events.IEventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+
+import org.openzoom.flash.scene.IMultiScaleScene;
 
 //------------------------------------------------------------------------------
 //
@@ -45,7 +47,7 @@ import flash.geom.Rectangle;
 /**
  * Interface a viewport implementation has to provide.
  */
-public interface INormalizedViewport extends IEventDispatcher
+public interface IViewport extends IEventDispatcher
 {   
     //--------------------------------------------------------------------------
     //
@@ -173,14 +175,18 @@ public interface INormalizedViewport extends IEventDispatcher
     
     function get transform() : IViewportTransform
     function set transform( value : IViewportTransform ) : void
+
+    //----------------------------------
+    //  targetTransform
+    //----------------------------------
+    
+    function get targetTransform() : IViewportTransform
+    function set targetTransform( value : IViewportTransform ) : void
         
     //----------------------------------
     //  scene
     //----------------------------------
     
-    /**
-     * Size of the content in content coordinates.
-     */ 
     function get scene() : IMultiScaleScene
 
     //----------------------------------

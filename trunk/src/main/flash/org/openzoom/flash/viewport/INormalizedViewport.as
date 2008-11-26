@@ -18,34 +18,16 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.core
+package org.openzoom.flash.viewport
 {
 
-import flash.events.IEventDispatcher;	
+import org.openzoom.flash.viewport.IViewport;
 
 /**
- * Read-only interface to IViewport.
+ * Interface for a viewport with a normalized coordinate system.
  */
-public interface IReadonlyViewport extends IEventDispatcher
+public interface INormalizedViewport extends IViewport
 {
-    function get x() : Number
-    function get y() : Number
-    
-    function get top() : Number
-    function get right() : Number
-    function get bottom() : Number		
-    function get left() : Number
-    		
-    function get width() : Number
-    function get height() : Number
-    
-    function get zoom() : Number
-    
-    function get viewportWidth() : Number
-    function get viewportHeight() : Number
-    
-    function get minZoom() : Number
-    function get maxZoom() : Number
 }
 
 }

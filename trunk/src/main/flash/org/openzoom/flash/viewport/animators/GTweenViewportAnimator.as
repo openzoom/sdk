@@ -18,16 +18,16 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.animators
+package org.openzoom.flash.viewport.animators
 {
 
 import com.gskinner.motion.GTween;
 
 import flash.events.Event;
 
-import org.openzoom.flash.core.INormalizedViewport;
-import org.openzoom.flash.core.IViewportAnimator;
-import org.openzoom.flash.core.IViewportTransform;
+import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.IViewportAnimator;
+import org.openzoom.flash.viewport.IViewportTransform;
 	
 public class GTweenViewportAnimator implements IViewportAnimator
 {
