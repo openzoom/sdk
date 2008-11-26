@@ -26,15 +26,41 @@ import flash.geom.Point;
 import org.openzoom.flash.viewport.IReadonlyViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 
-public class DefaultViewportConstraint implements IViewportConstraint
+public class DefaultViewportConstraint extends NullViewportConstraint
+                                       implements IViewportConstraint
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Class constants
+    //
+    //--------------------------------------------------------------------------
+    
+    private static const DEFAULT_MIN_ZOOM : Number = 0.25
+    private static const DEFAULT_MAX_ZOOM : Number = 10000
 	private static const BOUNDS_TOLERANCE : Number = 0.5
 	
+    //--------------------------------------------------------------------------
+    //
+    //  Constructor
+    //
+    //--------------------------------------------------------------------------
+	
+	/**
+	 * Constructor.
+	 */
     public function DefaultViewportConstraint()
     {
+    	_minZ = DEFAULT_MIN_ZOOM
+    	_maxZ = DEFAULT_MAX_ZOOM
     }
     
-    public function computePosition( viewport : IReadonlyViewport ) : Point
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IViewportConstraint
+    //
+    //--------------------------------------------------------------------------
+    
+    override public function computePosition( viewport : IReadonlyViewport ) : Point
     {
     	var x : Number = viewport.x
     	var y : Number = viewport.y

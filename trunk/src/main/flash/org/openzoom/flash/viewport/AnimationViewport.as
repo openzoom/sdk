@@ -29,7 +29,8 @@ import flash.geom.Rectangle;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.viewport.animators.GTweenViewportAnimator;
+import org.openzoom.flash.viewport.animators.TweenerViewportAnimator;
+import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 
 //------------------------------------------------------------------------------
 //
@@ -56,9 +57,8 @@ public class AnimationViewport extends EventDispatcher
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
-    private static const DEFAULT_MIN_Z : Number = 0.001
-    private static const DEFAULT_MAX_Z : Number = 10000
+
+    private static const NULL_CONSTRAINT : IViewportConstraint = new NullViewportConstraint()
 
     //--------------------------------------------------------------------------
     //
@@ -85,7 +85,8 @@ public class AnimationViewport extends EventDispatcher
         _targetTransform = transform
         
         // FIXME
-        _animator = new GTweenViewportAnimator( this )
+//        _animator = new GTweenViewportAnimator( this )
+        _animator = new TweenerViewportAnimator()
         
         validate()
     }
@@ -108,41 +109,7 @@ public class AnimationViewport extends EventDispatcher
 
     public function set zoom( value : Number ) : void
     {
-//        zoomTo( value )
-    }
-
-    //----------------------------------
-    //  minZ
-    //----------------------------------
-
-    private var _minZ : Number = DEFAULT_MIN_Z
-
-    public function get minZoom() : Number
-    {
-        return _minZ
-    }
-
-    public function set minZoom( value : Number ) : void
-    {
-        _minZ = value
-        validate()
-    }
-
-    //----------------------------------
-    //  maxZ
-    //----------------------------------
-    
-    private var _maxZ : Number = DEFAULT_MAX_Z
-    
-    public function get maxZoom() : Number
-    {
-        return _maxZ
-    }
-    
-    public function set maxZoom( value : Number ) : void
-    {
-       _maxZ = value
-       validate()
+        zoomTo( value )
     }
 
     //----------------------------------
@@ -158,8 +125,8 @@ public class AnimationViewport extends EventDispatcher
     //----------------------------------
     //  constraint
     //----------------------------------
-
-    private var _constraint : IViewportConstraint// = new DefaultViewportConstraint()
+    
+    private var _constraint : IViewportConstraint = NULL_CONSTRAINT
 
     public function get constraint() : IViewportConstraint
     {
@@ -168,7 +135,10 @@ public class AnimationViewport extends EventDispatcher
     
     public function set constraint( value : IViewportConstraint ) : void
     {
-    	_constraint = value
+        if( value )
+           _constraint = value
+        else
+           _constraint = NULL_CONSTRAINT
     }
 
     //----------------------------------
@@ -203,11 +173,8 @@ public class AnimationViewport extends EventDispatcher
     	var oldTransform : IViewportTransform = _transform.clone()
     	_transform = value.clone()
     	
-    	if( constraint )
-    	{
-    		var position : Point = constraint.computePosition( this )
-    		_transform.moveTo( position.x, position.y )
-    	}
+		var position : Point = constraint.computePosition( this )
+		_transform.moveTo( position.x, position.y )
     	
     	updateTransform( oldTransform )
     }
@@ -548,7 +515,7 @@ public class AnimationViewport extends EventDispatcher
         var t : IViewportTransform
         
         if( animator )
-            t = _targetTransform    
+            t = _targetTransform
         else
             t = transform
         

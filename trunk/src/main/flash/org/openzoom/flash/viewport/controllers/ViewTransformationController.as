@@ -21,6 +21,8 @@
 package org.openzoom.flash.viewport.controllers
 {
 
+import caurina.transitions.Tweener;
+
 import flash.display.DisplayObject;
 
 import org.openzoom.flash.events.ViewportEvent;
@@ -144,25 +146,25 @@ public class ViewTransformationController extends ViewportControllerBase
         var newY       : Number = -viewport.y * newHeight
         
 ////        viewport.beginTransform()
-        view.x = newX
-        view.y = newY
-        view.width = newWidth
-        view.height = newHeight
+//        view.x = newX
+//        view.y = newY
+//        view.width = newWidth
+//        view.height = newHeight
 ////        viewport.endTransform()
         
-//        Tweener.addTween(
-//                            view,
-//                            {
-//                                x: newX,
-//                                y: newY,
-//                                width: newWidth,
-//                                height: newHeight,
-//                                time: duration,
-//                                transition: transition,
-//                                onStart: viewport.beginTransform,   
-//                                onComplete: viewport.endTransform
-//                            }
-//                        )
+        Tweener.addTween(
+                            view,
+                            {
+                                x: newX,
+                                y: newY,
+                                width: newWidth,
+                                height: newHeight,
+                                time: duration,
+                                transition: transition,
+                                onStart: viewport.beginTransform,   
+                                onComplete: viewport.endTransform
+                            }
+                        )
     }
 }
 

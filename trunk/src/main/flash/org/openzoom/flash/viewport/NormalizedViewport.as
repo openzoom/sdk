@@ -35,7 +35,7 @@ import flash.geom.Rectangle;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.utils.math.clamp;
-import org.openzoom.flash.viewport.constraints.DefaultViewportConstraint;
+import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 
 //------------------------------------------------------------------------------
 //
@@ -61,10 +61,9 @@ public class NormalizedViewport extends EventDispatcher
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
-    private static const DEFAULT_MIN_Z : Number = 0.001
-    private static const DEFAULT_MAX_Z : Number = 10000
 
+    private static const NULL_CONSTRAINT : IViewportConstraint = new NullViewportConstraint()
+    
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -110,40 +109,6 @@ public class NormalizedViewport extends EventDispatcher
     }
 
     //----------------------------------
-    //  minZ
-    //----------------------------------
-
-    private var _minZ : Number = DEFAULT_MIN_Z
-
-    public function get minZoom() : Number
-    {
-        return _minZ
-    }
-
-    public function set minZoom( value : Number ) : void
-    {
-        _minZ = value
-        validate()
-    }
-
-    //----------------------------------
-    //  maxZ
-    //----------------------------------
-    
-    private var _maxZ : Number = DEFAULT_MAX_Z
-    
-    public function get maxZoom() : Number
-    {
-        return _maxZ
-    }
-    
-    public function set maxZoom( value : Number ) : void
-    {
-       _maxZ = value
-       validate()
-    }
-
-    //----------------------------------
     //  scale
     //----------------------------------
 
@@ -156,8 +121,8 @@ public class NormalizedViewport extends EventDispatcher
     //----------------------------------
     //  constraint
     //----------------------------------
-
-    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
+    
+    private var _constraint : IViewportConstraint = NULL_CONSTRAINT
 
     public function get constraint() : IViewportConstraint
     {
@@ -166,7 +131,10 @@ public class NormalizedViewport extends EventDispatcher
     
     public function set constraint( value : IViewportConstraint ) : void
     {
-    	_constraint = value
+    	if( value )
+    	   _constraint = value
+    	else
+    	   _constraint = NULL_CONSTRAINT
     }
 
     //----------------------------------
@@ -264,7 +232,7 @@ public class NormalizedViewport extends EventDispatcher
         var oldZoom : Number = this.zoom
 
         // keep z within min/max range
-        _zoom = clamp( zoom, minZoom, maxZoom )
+        _zoom = clamp( zoom, constraint.minZoom, constraint.maxZoom )
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( originX, originY )
@@ -318,16 +286,12 @@ public class NormalizedViewport extends EventDispatcher
         _x = x
         _y = y
 
-        // use constraint if available
-        if( constraint )
-        {
-            // compute position
-            var position : Point = constraint.computePosition( this )
+        // compute position
+        var position : Point = constraint.computePosition( this )
             
-            // capture new position
-            _x = position.x
-            _y = position.y
-        }
+        // capture new position
+        _x = position.x
+        _y = position.y
         
         if( dispatchChangeEvent )
             this.updateTransform()
@@ -630,9 +594,6 @@ public class NormalizedViewport extends EventDispatcher
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_UPDATE,
                            false, false ))
-
-        // FIXME
-        endTransform()
     }
     
     public function endTransform() : void

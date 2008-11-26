@@ -34,9 +34,10 @@ import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.utils.math.clamp;
-import org.openzoom.flash.viewport.AnimationViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
+import org.openzoom.flash.viewport.NormalizedViewport;
 import org.openzoom.flash.viewport.controllers.KeyboardNavigationController;
 import org.openzoom.flash.viewport.controllers.MouseNavigationController;
 import org.openzoom.flash.viewport.controllers.ViewTransformationController;
@@ -58,7 +59,7 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT           : Number = 16000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
-    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0
+    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.25
     
     private static const DEFAULT_VIEWPORT_WIDTH         : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT        : Number = 600
@@ -88,10 +89,12 @@ public class MultiScaleImageViewer extends Sprite
         
         // viewport
         createViewport( scene )
+        
         // TODO
 //        viewport.constraint = null
-        viewport.minZoom = DEFAULT_MIN_ZOOM
-        viewport.maxZoom = DEFAULT_MAX_ZOOM
+//        viewport.minZoom = DEFAULT_MIN_ZOOM
+//        viewport.maxZoom = DEFAULT_MAX_ZOOM
+        
         
         var loader : TileLoader = new TileLoader()
         
@@ -148,7 +151,7 @@ public class MultiScaleImageViewer extends Sprite
     //  viewport
     //----------------------------------
     
-    private var _viewport : AnimationViewport
+    private var _viewport : IViewportContainer
     
     public function get viewport() : INormalizedViewport
     {
@@ -295,9 +298,9 @@ public class MultiScaleImageViewer extends Sprite
     
     private function createViewport( scene : IMultiScaleScene ) : void
     {
-        _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
-                                           DEFAULT_VIEWPORT_HEIGHT,
-                                           scene )
+        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
+                                            DEFAULT_VIEWPORT_HEIGHT,
+                                            scene )
     }
     
     private function createScene() : void

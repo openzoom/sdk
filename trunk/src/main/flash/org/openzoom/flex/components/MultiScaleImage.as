@@ -171,33 +171,33 @@ public class MultiScaleImage extends UIComponent
         return _viewport
     }
     
-    //----------------------------------
-    //  minZoom
-    //----------------------------------
-    
-    public function get minZoom() : Number
-    {
-        return viewport.minZoom
-    }
-    
-    public function set minZoom( value : Number ) : void
-    {
-        viewport.minZoom = value
-    }
-    
-    //----------------------------------
-    //  maxZoom
-    //----------------------------------
-    
-    public function get maxZoom() : Number
-    {
-        return viewport.maxZoom
-    }
-    
-    public function set maxZoom( value : Number ) : void
-    {
-        viewport.maxZoom = value
-    }
+//    //----------------------------------
+//    //  minZoom
+//    //----------------------------------
+//    
+//    public function get minZoom() : Number
+//    {
+//        return viewport.minZoom
+//    }
+//    
+//    public function set minZoom( value : Number ) : void
+//    {
+//        viewport.minZoom = value
+//    }
+//    
+//    //----------------------------------
+//    //  maxZoom
+//    //----------------------------------
+//    
+//    public function get maxZoom() : Number
+//    {
+//        return viewport.maxZoom
+//    }
+//    
+//    public function set maxZoom( value : Number ) : void
+//    {
+//        viewport.maxZoom = value
+//    }
     
 	//--------------------------------------------------------------------------
     //

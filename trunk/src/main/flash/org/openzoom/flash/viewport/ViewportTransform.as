@@ -104,10 +104,8 @@ public class ViewportTransform implements IViewportTransform
                             transformX : Number = 0.5,
                             transformY : Number = 0.5 ) : void
     {
-//        trace( "@pre", _zoom, zoom )
         // keep z within min/max range
-        _zoom = clamp( zoom, viewport.minZoom, viewport.maxZoom )
-//        trace( "@post", _zoom, zoom )
+        _zoom = clamp( zoom, viewport.constraint.minZoom, viewport.constraint.maxZoom )
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( transformX, transformY )

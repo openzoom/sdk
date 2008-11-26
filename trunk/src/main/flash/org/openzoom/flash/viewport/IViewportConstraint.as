@@ -21,15 +21,19 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.geom.Point;
-
-import org.openzoom.flash.viewport.IReadonlyViewport;	
+import flash.geom.Point;	
 
 /**
  * Interface for bounds constraint for INormalizedViewport.
  */
 public interface IViewportConstraint
 {
+	function get minZoom() : Number
+	function set minZoom( value : Number ) : void
+	
+	function get maxZoom() : Number
+	function set maxZoom( value : Number ) : void
+	
 	function computePosition( viewport : IReadonlyViewport ) : Point
 }
 

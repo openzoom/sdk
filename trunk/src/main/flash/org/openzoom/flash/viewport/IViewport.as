@@ -210,26 +210,6 @@ public interface IViewport extends IEventDispatcher
     function get zoom() : Number
     function set zoom( value : Number ) : void
     
-    //----------------------------------
-    //  minZoom
-    //----------------------------------
-    
-    /**
-     * Minimum zoom level.
-     */
-    function get minZoom() : Number
-    function set minZoom( value : Number ) : void
-    
-    //----------------------------------
-    //  maxZoom
-    //----------------------------------
-    
-    /**
-     * Maximum zoom level.
-     */
-    function get maxZoom() : Number
-    function set maxZoom( value : Number ) : void
-
     //--------------------------------------------------------------------------
     //
     //  Methods: Zooming

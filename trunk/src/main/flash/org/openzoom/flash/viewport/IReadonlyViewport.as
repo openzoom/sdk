@@ -44,8 +44,7 @@ public interface IReadonlyViewport extends IEventDispatcher
     function get viewportWidth() : Number
     function get viewportHeight() : Number
     
-    function get minZoom() : Number
-    function get maxZoom() : Number
+    function get constraint() : IViewportConstraint
 }
 
 }
