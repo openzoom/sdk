@@ -21,16 +21,18 @@
 package org.openzoom.core
 {
 
+import flash.events.IEventDispatcher;	
+
 /**
  * Read-only interface to IViewport.
  */
-public interface IReadonlyViewport
+public interface IReadonlyViewport extends IEventDispatcher
 {
     function get x() : Number
     function get y() : Number
     
-    function get top() : Number		
-    function get right() : Number		
+    function get top() : Number
+    function get right() : Number
     function get bottom() : Number		
     function get left() : Number
     		
@@ -38,6 +40,9 @@ public interface IReadonlyViewport
     function get height() : Number
     
     function get zoom() : Number
+    
+    function get viewportWidth() : Number
+    function get viewportHeight() : Number
 }
 
 }

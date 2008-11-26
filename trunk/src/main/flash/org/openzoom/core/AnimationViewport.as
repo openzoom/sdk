@@ -1,14 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  OpenZoom
-//
 //  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
-//  Copyright (c) 2008,      Zoomorama
-//                           Olivier Gambier <viapanda@gmail.com>
-//                           Daniel Gasienica <daniel@gasienica.ch>
-//                           Eric Hubscher <erich@zoomorama.com>
-//                           David Marteau <dhmarteau@gmail.com>
-//  Copyright (c) 2007,      Rick Companje <rick@companje.nl>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -48,11 +41,12 @@ import org.openzoom.utils.math.clamp;
 
 /**
  * IViewport implementation that is based on a normalized [0, 1] coordinate system.
+ * Features an advanced mechanism for efficient viewport animations.
  */
-public class NormalizedViewport extends EventDispatcher
-                                implements INormalizedViewport,
-                                           IReadonlyViewport,
-                                           IViewportContainer
+public class AnimationViewport extends EventDispatcher
+                               implements INormalizedViewport,
+                                          IReadonlyViewport,
+                                          IViewportContainer
 {
     //--------------------------------------------------------------------------
     //
@@ -72,9 +66,12 @@ public class NormalizedViewport extends EventDispatcher
     /**
      * Constructor.
      */
-    public function NormalizedViewport( width : Number, height : Number,
+    public function AnimationViewport( width : Number, height : Number,
                                         scene : IMultiScaleScene )
     {
+    	// FIXME: Unsafe cast
+    	_transform = new ViewportTransform( width, height, IReadonlyMultiScaleScene( scene ))
+    	
     	_viewportWidth = width
     	_viewportHeight = height
     	
@@ -155,25 +152,27 @@ public class NormalizedViewport extends EventDispatcher
     //  transform
     //----------------------------------
 
-    private var _boundsChecker : IViewportConstraint = new DefaultViewportConstraint()
+    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
 
     public function get constraint() : IViewportConstraint
     {
-        return _boundsChecker
+        return _constraint
     }
     
     public function set constraint( value : IViewportConstraint ) : void
     {
-    	_boundsChecker = value
+    	_constraint = value
     }
 
     //----------------------------------
     //  transform
     //----------------------------------
 
+    private var _transform : IViewportTransform
+
     public function get transform() : IViewportTransform
-    {
-    	return null
+    {   	
+    	return _transform.clone()
     }
 
     public function set transform( value : IViewportTransform ) : void

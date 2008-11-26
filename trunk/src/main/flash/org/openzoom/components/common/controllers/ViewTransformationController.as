@@ -76,7 +76,7 @@ public class ViewTransformationController extends ViewportControllerBase
         // remove old event listeners
         if( viewport ) 
         {
-            viewport.removeEventListener( ViewportEvent.TRANSFORM, viewport_changeHandler );
+            viewport.removeEventListener( ViewportEvent.TRANSFORM_UPDATE, viewport_changeHandler );
             viewport.removeEventListener( ViewportEvent.RESIZE, viewport_resizeHandler );
         }
         
@@ -86,7 +86,7 @@ public class ViewTransformationController extends ViewportControllerBase
         // register new event listeners
         if( viewport )
         {
-            viewport.addEventListener( ViewportEvent.TRANSFORM, viewport_changeHandler, false, 0, true );
+            viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE, viewport_changeHandler, false, 0, true );
             viewport.addEventListener( ViewportEvent.RESIZE, viewport_resizeHandler, false, 0, true );
         }
     }

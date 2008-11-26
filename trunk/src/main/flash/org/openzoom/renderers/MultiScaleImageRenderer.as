@@ -27,12 +27,10 @@ import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Loader;
 import flash.display.Shape;
-import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import org.openzoom.core.INormalizedViewport;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.descriptors.IMultiScaleImageLevel;
 import org.openzoom.events.TileRequestEvent;
@@ -47,7 +45,7 @@ import org.openzoom.utils.math.clamp;
 /**
  * Generic renderer for multi-scale images.
  */
-public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRenderer
+public class MultiScaleImageRenderer extends MultiScaleRenderer
 {
     //--------------------------------------------------------------------------
     //
@@ -82,8 +80,6 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
         // Load highest single tile level as background to prevent
         // artifacts between tiles in case we have a format that doesn't
         // feature tile overlap.
-        
-        // FIXME: Crop if necessary
         if( descriptor.tileOverlap == 0 ) 
             loadBackground()
     }
@@ -107,59 +103,16 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
     
     //--------------------------------------------------------------------------
     //
-    //  Properties: IZoomable
-    //
-    //--------------------------------------------------------------------------
-        
-    //----------------------------------
-    //  viewport
-    //----------------------------------
-    
-    private var _viewport : INormalizedViewport
-    
-    public function get viewport() : INormalizedViewport
-    {
-        return _viewport
-    }
-    
-    public function set viewport( value : INormalizedViewport ) : void
-    {
-        if( viewport === value )
-            return
-        
-        // remove old event listener
-        if( viewport )
-        {
-            viewport.removeEventListener( ViewportEvent.TRANSFORM_COMPLETE,
-                                          viewport_transformEndHandler )
-        	viewport.removeEventListener( ViewportEvent.TRANSFORM,
-        	                              viewport_transformHandler )
-        }
-        
-        _viewport = value
-        
-        // register new event listener
-        if( viewport )
-        {
-            viewport.addEventListener( ViewportEvent.TRANSFORM_COMPLETE,
-                                       viewport_transformEndHandler, false, 0, true )
-            viewport.addEventListener( ViewportEvent.TRANSFORM,
-                                       viewport_transformHandler, false, 0, true )
-        }
-    }
-    
-    //--------------------------------------------------------------------------
-    //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
     
-    private function viewport_transformEndHandler( event : ViewportEvent ) : void
+    override protected function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
         updateDisplayList()
     }
     
-    private function viewport_transformHandler( event : ViewportEvent ) : void
+    override protected function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
 //        updateDisplayList()
     }
@@ -255,7 +208,7 @@ public class MultiScaleImageRenderer extends Sprite implements IMultiScaleRender
 //        drawVisibleRegion( visibleRegion )
         
         var scale : Number = viewport.scale
-        var level : IMultiScaleImageLevel = descriptor.getMinimumLevelForSize( width * scale, height * scale )
+        var level : IMultiScaleImageLevel = descriptor.getMinLevelForSize( width * scale, height * scale )
         
         // remove all tiles from loading queue
 //        tileLoader.removeAll()

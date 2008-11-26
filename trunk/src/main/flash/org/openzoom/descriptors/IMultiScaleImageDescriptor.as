@@ -111,7 +111,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the minimum level that has a greater or equal size as specified by width and height.
      */
-    function getMinimumLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
+    function getMinLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
 
     //--------------------------------------------------------------------------
     //

@@ -86,7 +86,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 
     }
 
-    public function getMinimumLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
+    public function getMinLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
     {
         // TODO: Implement a smart(er) algorithm
         var index : int = numLevels - 1

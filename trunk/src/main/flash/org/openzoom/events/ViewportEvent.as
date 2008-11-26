@@ -22,6 +22,8 @@ package org.openzoom.events
 
 import flash.events.Event;
 
+import org.openzoom.core.IViewportTransform;
+
 public class ViewportEvent extends Event
 {
     //--------------------------------------------------------------------------
@@ -31,9 +33,9 @@ public class ViewportEvent extends Event
     //--------------------------------------------------------------------------
 
     public static const RESIZE : String = "resize"
-    public static const TRANSFORM : String = "transform"
     public static const TRANSFORM_START : String = "transformStart"
-    public static const TRANSFORM_COMPLETE : String = "transformComplete"
+    public static const TRANSFORM_UPDATE : String = "transformUpdate"
+    public static const TRANSFORM_END : String = "transformComplete"
 
     //--------------------------------------------------------------------------
     //
@@ -44,12 +46,14 @@ public class ViewportEvent extends Event
     /**
      * Constructor.
      */
-    public function ViewportEvent( type : String, bubbles : Boolean = false,
-                                   cancelable : Boolean = false, oldZ : Number = NaN )
+    public function ViewportEvent( type : String,
+                                   bubbles : Boolean = false,
+                                   cancelable : Boolean = false,
+                                   oldTransform : IViewportTransform = null )
     {
         super( type, bubbles, cancelable )
-    
-        _oldZoom = oldZ
+        
+        _oldTransform = oldTransform    
     }
     
     //--------------------------------------------------------------------------
@@ -59,14 +63,14 @@ public class ViewportEvent extends Event
     //--------------------------------------------------------------------------
   
     //----------------------------------
-    //  oldZ
+    //  oldTransform
     //----------------------------------
   
-    private var _oldZoom : Number = NaN
+    private var _oldTransform : IViewportTransform
   
-    public function get oldZoom() : Number
+    public function get oldTransform() : IViewportTransform
     {
-        return _oldZoom
+        return _oldTransform
     }
     
     //--------------------------------------------------------------------------
@@ -77,7 +81,7 @@ public class ViewportEvent extends Event
   
     override public function clone() : Event
     {
-        return new ViewportEvent( type, bubbles, cancelable, oldZoom )
+        return new ViewportEvent( type, bubbles, cancelable, oldTransform )
     }
 }
 

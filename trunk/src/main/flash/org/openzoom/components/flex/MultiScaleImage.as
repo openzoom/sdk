@@ -29,7 +29,6 @@ import flash.net.URLLoader;
 import flash.net.URLRequest;
 
 import mx.core.UIComponent;
-import mx.events.ResizeEvent;
 
 import org.openzoom.components.common.controllers.KeyboardNavigationController;
 import org.openzoom.components.common.controllers.MouseNavigationController;
@@ -213,7 +212,6 @@ public class MultiScaleImage extends UIComponent
         
         createLoader()
         createControllers( _scene )
-        addEventListener( ResizeEvent.RESIZE, resizeHandler )
     }
     
 	//--------------------------------------------------------------------------
@@ -361,15 +359,22 @@ public class MultiScaleImage extends UIComponent
         addImage( descriptor )
     }
     
-    private function resizeHandler( event : ResizeEvent ) : void
+    //--------------------------------------------------------------------------
+    //
+    //  Overridden methods: UIComponent
+    //
+    //--------------------------------------------------------------------------
+    
+    override protected function updateDisplayList( unscaledWidth : Number,
+                                                   unscaledHeight : Number ) : void
     {
-        mouseCatcher.width = width
-        mouseCatcher.height = height
+        mouseCatcher.width = unscaledWidth
+        mouseCatcher.height = unscaledHeight
         
-        contentMask.width = width
-        contentMask.height = height
+        contentMask.width = unscaledWidth
+        contentMask.height = unscaledHeight
         
-        _viewport.setSize( width, height )	
+        _viewport.setSize( unscaledWidth, unscaledHeight )  
     }
 }
 

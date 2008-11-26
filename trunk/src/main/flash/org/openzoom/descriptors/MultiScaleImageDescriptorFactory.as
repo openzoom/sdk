@@ -25,7 +25,8 @@ package org.openzoom.descriptors
 	
 
 /**
- * The MultiScaleImageDescriptorFactory creates MultiScaleImageDescriptor objects.
+ * The MultiScaleImageDescriptorFactory
+ * creates MultiScaleImageDescriptor objects.
  */
 public class MultiScaleImageDescriptorFactory
 {
@@ -36,7 +37,7 @@ public class MultiScaleImageDescriptorFactory
     //--------------------------------------------------------------------------
     
     private static const DEEPZOOM_NAMESPACE_URI : String = "http://schemas.microsoft.com/deepzoom/2008"
-    private static const OPENZOOM_DESCRIPTION_NAMESPACE_URI : String = "http://ns.openzoom.org/openzoom/2008"
+    private static const OPENZOOM_NAMESPACE_URI : String = "http://ns.openzoom.org/openzoom/2008"
     private static const ZOOMIFY_ROOT_TAG_NAME : String = "IMAGE_PROPERTIES"
   
     //--------------------------------------------------------------------------
@@ -83,7 +84,7 @@ public class MultiScaleImageDescriptorFactory
     public function getDescriptor( source : String,
                                    data : XML ) : IMultiScaleImageDescriptor
     {
-        if( data.namespace().uri == OPENZOOM_DESCRIPTION_NAMESPACE_URI )
+        if( data.namespace().uri == OPENZOOM_NAMESPACE_URI )
             return new OpenZoomDescriptor( source, data )
             
         if( data.namespace().uri == DEEPZOOM_NAMESPACE_URI )

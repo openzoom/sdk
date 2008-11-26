@@ -48,8 +48,6 @@ public class ViewportControllerBase implements IViewportController
     */
     public function ViewportControllerBase() : void
     {
-        // ViewportControllerBase is an abstract class.
-        // Please extend it with your own, concrete controller.
     }
         
     //--------------------------------------------------------------------------

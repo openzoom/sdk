@@ -26,11 +26,10 @@ import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
 
+import mx.controls.Label;
 import mx.core.UIComponent;
 import mx.events.ResizeEvent;
 
-import org.openzoom.components.common.controllers.KeyboardNavigationController;
-import org.openzoom.components.common.controllers.MouseNavigationController;
 import org.openzoom.components.common.controllers.ViewTransformationController;
 import org.openzoom.core.IMultiScaleScene;
 import org.openzoom.core.INormalizedViewport;
@@ -155,6 +154,7 @@ public class MultiScaleContainer extends UIComponent
     
     public function set children( value : Array ) : void
     {
+        // TODO Remove all children beforehands
         for each( var child : DisplayObject in value )
             addChild( child )
     }
@@ -245,7 +245,6 @@ public class MultiScaleContainer extends UIComponent
         
         createLoader()
         createDefaultControllers()
-        addEventListener( ResizeEvent.RESIZE, resizeHandler )
     }
     
     override public function addChild( child : DisplayObject ) : DisplayObject
@@ -348,19 +347,20 @@ public class MultiScaleContainer extends UIComponent
     
     //--------------------------------------------------------------------------
     //
-    //  Event handlers
+    //  Overridden methods: UIComponent
     //
     //--------------------------------------------------------------------------
     
-    private function resizeHandler( event : ResizeEvent ) : void
+    override protected function updateDisplayList( unscaledWidth : Number,
+                                                   unscaledHeight : Number ) : void
     {
-        mouseCatcher.width = width
-        mouseCatcher.height = height
+        mouseCatcher.width = unscaledWidth
+        mouseCatcher.height = unscaledHeight
         
-        contentMask.width = width
-        contentMask.height = height
+        contentMask.width = unscaledWidth
+        contentMask.height = unscaledHeight
         
-        _viewport.setSize( width, height )  
+        _viewport.setSize( unscaledWidth, unscaledHeight )  
     }
 }
 

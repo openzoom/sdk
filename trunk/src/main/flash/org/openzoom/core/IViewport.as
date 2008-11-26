@@ -38,8 +38,9 @@ import flash.geom.Rectangle;
 //------------------------------------------------------------------------------
 
 [Event(name="resize", type="org.openzoom.events.ViewportEvent")]
-[Event(name="change", type="org.openzoom.events.ViewportEvent")]
-[Event(name="changeComplete", type="org.openzoom.events.ViewportEvent")]
+[Event(name="transformStart", type="org.openzoom.events.ViewportEvent")]
+[Event(name="transformUpdate", type="org.openzoom.events.ViewportEvent")]
+[Event(name="transformEnd", type="org.openzoom.events.ViewportEvent")]
 
 /**
  * Interface a viewport implementation has to provide.
@@ -80,7 +81,7 @@ public interface IViewport extends IEventDispatcher
      * Horizontal dimension of the viewport.
      */
     function get width() : Number
-//    function set width( value : Number )
+//  function set width( value : Number )
     
     //----------------------------------
     //  height
@@ -90,7 +91,7 @@ public interface IViewport extends IEventDispatcher
      * Vertical dimension of the viewport.
      */
     function get height() : Number
-//    function set height( value : Number )
+//  function set height( value : Number )
     
     //----------------------------------
     //  top
@@ -158,13 +159,20 @@ public interface IViewport extends IEventDispatcher
     
     function get constraint() : IViewportConstraint
     function set constraint( value : IViewportConstraint ) : void
+     
+    //----------------------------------
+    //  animator
+    //----------------------------------
+    
+//    function get animator() : IViewportAnimator
+//    function set animator( value : IViewportAnimator ) : void
 
     //----------------------------------
     //  transform
     //----------------------------------
     
-//    function get transform() : IViewportTransform
-//    function set transform( value : IViewportTransform ) : void
+    function get transform() : IViewportTransform
+    function set transform( value : IViewportTransform ) : void
         
     //----------------------------------
     //  scene
@@ -183,7 +191,7 @@ public interface IViewport extends IEventDispatcher
      * Scale of the scene.
      */ 
     function get scale() : Number
-//    function set scale( value : Number )
+//  function set scale( value : Number )
       
     //----------------------------------
     //  zoom
@@ -224,21 +232,22 @@ public interface IViewport extends IEventDispatcher
     
     /**
      * Zoom the viewport to a zoom level z.
-     * @param originX Horizontal coordinate of the zooming center
-     * @param originY Vertical coordinate of the zooming center
+     * @param zoom Target value for the viewport's zoom property
+     * @param transformX Horizontal coordinate of the zooming center
+     * @param transformY Vertical coordinate of the zooming center
      */
     function zoomTo( zoom : Number,
-                     originX : Number = 0.5, originY : Number = 0.5,
+                     transformX : Number = 0.5, transformY : Number = 0.5,
                      dispatchChangeEvent : Boolean = true ) : void
     
     /**
      * Zoom the viewport by a factor.
      * @param factor Multiplier for the zoom.
-     * @param originX Horizontal coordinate of the zooming center
-     * @param originY Vertical coordinate of the zooming center
+     * @param transformX Horizontal coordinate of the zooming center
+     * @param transformY Vertical coordinate of the zooming center
      */
     function zoomBy( factor : Number,
-                     originX : Number = 0.5, originY : Number = 0.5,
+                     transformX : Number = 0.5, transformY : Number = 0.5,
                      dispatchChangeEvent : Boolean = true ) : void
     
     //--------------------------------------------------------------------------

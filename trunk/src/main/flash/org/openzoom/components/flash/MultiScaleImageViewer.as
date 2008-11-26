@@ -30,11 +30,11 @@ import flash.geom.Point;
 import org.openzoom.components.common.controllers.KeyboardNavigationController;
 import org.openzoom.components.common.controllers.MouseNavigationController;
 import org.openzoom.components.common.controllers.ViewTransformationController;
+import org.openzoom.core.AnimationViewport;
 import org.openzoom.core.IMultiScaleScene;
 import org.openzoom.core.INormalizedViewport;
 import org.openzoom.core.IViewportController;
 import org.openzoom.core.MultiScaleScene;
-import org.openzoom.core.NormalizedViewport;
 import org.openzoom.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.net.TileLoader;
 import org.openzoom.renderers.MultiScaleImageRenderer;
@@ -146,7 +146,7 @@ public class MultiScaleImageViewer extends Sprite
     //  viewport
     //----------------------------------
     
-    private var _viewport : NormalizedViewport
+    private var _viewport : AnimationViewport
     
     public function get viewport() : INormalizedViewport
     {
@@ -293,9 +293,9 @@ public class MultiScaleImageViewer extends Sprite
     
     private function createViewport( scene : IMultiScaleScene ) : void
     {
-        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
-                                            DEFAULT_VIEWPORT_HEIGHT,
-                                            scene )
+        _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
+                                           DEFAULT_VIEWPORT_HEIGHT,
+                                           scene )
     }
     
     private function createScene() : void

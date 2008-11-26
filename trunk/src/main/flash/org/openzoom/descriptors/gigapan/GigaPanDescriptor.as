@@ -124,7 +124,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     }
     
     
-    public function getMinimumLevelForSize( width : Number,
+    public function getMinLevelForSize( width : Number,
                                             height : Number ) : IMultiScaleImageLevel
     {
         var index : int =
