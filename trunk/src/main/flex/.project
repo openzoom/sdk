@@ -17,11 +17,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[source path] as3</name>
-			<type>2</type>
-			<locationURI>OPENZOOM/libs/flash/tweener/as%2533</locationURI>
-		</link>
-		<link>
 			<name>[source path] flash</name>
 			<type>2</type>
 			<locationURI>OPENZOOM/src/main/flash</locationURI>

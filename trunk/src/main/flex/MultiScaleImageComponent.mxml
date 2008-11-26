@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application
     xmlns:mx="http://www.adobe.com/2006/mxml"
-    xmlns:openzoom="org.openzoom.components.flex.*"
+    xmlns:openzoom="org.openzoom.flex.components.*"
     layout="absolute"
     backgroundGradientColors="[ 0x333333, 0x000000 ]"
     applicationComplete="applicationCompleteHandler( event )"
@@ -15,7 +15,8 @@
 
     <mx:Script>
         <![CDATA[
-            import org.openzoom.events.ViewportEvent;
+        
+        	import org.openzoom.flash.events.ViewportEvent;
                 
             private static const DEFAULT_IMAGE_NAME  : String = "morocco"
             private static const DEFAULT_SOURCE_PATH : String = "../../../../src/main/resources/images"
@@ -33,7 +34,7 @@
 
             private function applicationCompleteHandler( event : Event ) : void
             {
-                image.viewport.addEventListener( ViewportEvent.TRANSFORM, viewport_changeHandler )
+                image.viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE, viewport_changeHandler )
             }
 
             private function viewport_changeHandler( event : ViewportEvent ) : void

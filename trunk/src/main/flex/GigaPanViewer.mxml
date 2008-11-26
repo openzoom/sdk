@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application
     xmlns:mx="http://www.adobe.com/2006/mxml"
-    xmlns:openzoom="org.openzoom.components.flex.*"
+    xmlns:openzoom="org.openzoom.flex.components.*"
     backgroundGradientColors="[ 0x000000, 0x000000 ]"
     applicationComplete="loadImage( 'http://gigapan.org/viewGigapan.php?id=5322' )"
     layout="absolute"
@@ -28,12 +28,13 @@
     
     <mx:Script>
     	<![CDATA[
+    		import org.openzoom.flash.core.DefaultViewportConstraint;
+    		import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+    		import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
     	
     		import mx.events.ItemClickEvent;
     		import mx.controls.Alert;
     		
-            import org.openzoom.descriptors.IMultiScaleImageDescriptor;
-            import org.openzoom.descriptors.gigapan.GigaPanDescriptor;
     		
             private const GIGAPAN_PARAMETER_REGEX : RegExp = /\?url=*(.*)&suffix=(.*)&.*&width=(\d*)&height=(\d*)&nLevels=(\d*)/gi
     	
@@ -167,9 +168,18 @@
         horizontalAlign="center"
         verticalAlign="middle"
         >
-        <mx:Button label="Show All" click="{ viewer.viewport.showAll() }" />    	
+        <mx:Button label="Show All" click="{ viewer.viewport.showAll() }" />        
         <mx:Button label="-" click="{ viewer.viewport.zoomBy( 0.6 ) }" />
         <mx:Button label="+" click="{ viewer.viewport.zoomBy( 1.3 ) }" />
+        <mx:Spacer width="30" />
+        
+        <mx:Button
+            id="boundsChecking"
+            toggle="true"
+            selected="true"
+            label="Bounds Checking"
+            click="{ viewer.viewport.constraint = ( boundsChecking.selected ? new DefaultViewportConstraint() : null )}"
+            />
     </mx:HBox>
     	
 </mx:Application>

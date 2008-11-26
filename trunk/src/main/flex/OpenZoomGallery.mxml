@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application
     xmlns:mx="http://www.adobe.com/2006/mxml"
-    xmlns:openzoom="org.openzoom.components.flex.*"
+    xmlns:openzoom="org.openzoom.flex.components.*"
     layout="absolute"
     backgroundGradientColors="[ 0x000000, 0x000000 ]"
     >
