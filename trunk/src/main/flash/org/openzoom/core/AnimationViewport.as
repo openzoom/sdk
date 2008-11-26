@@ -78,6 +78,9 @@ public class AnimationViewport extends EventDispatcher
         // FIXME: Unsafe cast
         _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
         
+        // FIXME
+        _animator = new TweenerViewportAnimator( this )
+        
         validate()
     }
 
@@ -140,7 +143,7 @@ public class AnimationViewport extends EventDispatcher
     //  scale
     //----------------------------------
 
-    [Bindable(event="scaleChanged")]
+    [Bindable(event="transformUpdate")]
     public function get scale() : Number
     {
         return viewportWidth / ( scene.sceneWidth * width ) 
@@ -150,7 +153,7 @@ public class AnimationViewport extends EventDispatcher
     //  constraint
     //----------------------------------
 
-    private var _constraint : IViewportConstraint// = new DefaultViewportConstraint()
+    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
 
     public function get constraint() : IViewportConstraint
     {
@@ -166,7 +169,7 @@ public class AnimationViewport extends EventDispatcher
     //  animator
     //----------------------------------
 
-    private var _animator : IViewportAnimator //new TweenerViewportAnimator()
+    private var _animator : IViewportAnimator
 
     public function get animator() : IViewportAnimator
     {
@@ -197,7 +200,7 @@ public class AnimationViewport extends EventDispatcher
     	if( constraint )
     	{
     		var position : Point = constraint.computePosition( this )
-    		_transform.moveTo( position.x, position.y ) 
+    		_transform.moveTo( position.x, position.y )
     	}
     	
     	updateTransform( oldTransform )
@@ -292,7 +295,7 @@ public class AnimationViewport extends EventDispatcher
     {
         var t :IViewportTransform = transform
         t.moveCenterTo( x, y )
-        transform = t
+        applyTransform( t )
     }
 
     public function showRect( rect : Rectangle, scale : Number = 1.0, 
@@ -346,21 +349,20 @@ public class AnimationViewport extends EventDispatcher
         var t :IViewportTransform = transform
         t.zoomTo( zoom )
         
-        applyTransform( t )
+        applyTransform( t, false )
     }
     
-    private function applyTransform( transform : IViewportTransform ) : void
+    private function applyTransform( transform : IViewportTransform, animate : Boolean = true ) : void
     {
-    	if( animator )
+    	if( animate && animator )
     	{
-    		animator.animate( this, transform )
+    		animator.animate( this, transform.clone() )
     	}
         else
         {
-            // FIXME
-//            beginTransform()
+            beginTransform()
             this.transform = transform
-//            endTransform()
+            endTransform()
         }
     }
 

@@ -47,7 +47,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
    
     private static const KEYBOARD_REFRESH_DELAY    : Number = 80 // milliseconds
    
-    private static const ZOOM_IN_FACTOR            : Number = 2.0
+    private static const ZOOM_IN_FACTOR            : Number = 15.0
     private static const ZOOM_OUT_FACTOR           : Number = 0.3
     private static const ACCELERATION_FACTOR       : Number = 15
     private static const TRANSLATION_FACTOR        : Number = 0.05

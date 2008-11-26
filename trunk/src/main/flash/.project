@@ -21,6 +21,11 @@
 			<locationURI>OPENZOOM/libs/flash/external-mousewheel</locationURI>
 		</link>
 		<link>
+			<name>[source path] gtween</name>
+			<type>2</type>
+			<locationURI>OPENZOOM/libs/flash/gtween</locationURI>
+		</link>
+		<link>
 			<name>[source path] src</name>
 			<type>2</type>
 			<location>/Applications/Adobe Flex Builder 3 Plug-in/sdks/3.2.0/frameworks/projects/framework/src</location>

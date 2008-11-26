@@ -26,8 +26,6 @@
 package org.openzoom.components.common.controllers
 {
 
-import caurina.transitions.Tweener;
-
 import flash.display.DisplayObject;
 
 import org.openzoom.core.INormalizedViewport;
@@ -75,10 +73,15 @@ public class ViewTransformationController extends ViewportControllerBase
         // remove old event listeners
         if( viewport ) 
         {
-            viewport.removeEventListener( ViewportEvent.TRANSFORM_UPDATE,
-                                          viewport_transformUpdateHandler );
             viewport.removeEventListener( ViewportEvent.RESIZE,
-                                          viewport_resizeHandler );
+                                          viewport_resizeHandler )
+                                          
+            viewport.removeEventListener( ViewportEvent.TRANSFORM_START,
+                                          viewport_transformStartHandler )
+            viewport.removeEventListener( ViewportEvent.TRANSFORM_UPDATE,
+                                          viewport_transformUpdateHandler )
+            viewport.removeEventListener( ViewportEvent.TRANSFORM_END,
+                                          viewport_transformEndHandler )
         }
         
         // set new viewport
@@ -87,10 +90,15 @@ public class ViewTransformationController extends ViewportControllerBase
         // register new event listeners
         if( viewport )
         {
-            viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE,
-                                       viewport_transformUpdateHandler, false, 0, true );
             viewport.addEventListener( ViewportEvent.RESIZE,
-                                       viewport_resizeHandler, false, 0, true );
+                                       viewport_resizeHandler, false, 0, true )
+                                       
+            viewport.addEventListener( ViewportEvent.TRANSFORM_START,
+                                       viewport_transformStartHandler, false, 0, true )
+            viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE,
+                                       viewport_transformUpdateHandler, false, 0, true )
+            viewport.addEventListener( ViewportEvent.TRANSFORM_END,
+                                       viewport_transformEndHandler, false, 0, true )
         }
     }
     
@@ -105,15 +113,26 @@ public class ViewTransformationController extends ViewportControllerBase
     //  Event handlers
     //
     //--------------------------------------------------------------------------
+    
+    private function viewport_transformStartHandler( event : ViewportEvent ) : void
+    {
+//    	trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_START" )
+    }
 
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
+//        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_UPDATE" )
         transformView( DEFAULT_TRANSFORMATION_DURATION )
+    }
+    
+    private function viewport_transformEndHandler( event : ViewportEvent ) : void
+    {
+//        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_END" )
     }
     
     private function viewport_resizeHandler( event : ViewportEvent ) : void
     {
-        transformView( 0 )    
+        transformView( 0 )
     }
 
     //--------------------------------------------------------------------------
@@ -131,25 +150,25 @@ public class ViewTransformationController extends ViewportControllerBase
         var newY      : Number = -viewport.y * newHeight
         
 ////        viewport.beginTransform()
-//        view.x = newX
-//        view.y = newY
-//        view.width = newWidth
-//        view.height = newHeight
+        view.x = newX
+        view.y = newY
+        view.width = newWidth
+        view.height = newHeight
 ////        viewport.endTransform()
         
-        Tweener.addTween(
-                            view,
-                            {
-                                x: newX,
-                                y: newY,
-                                width: newWidth,
-                                height: newHeight,
-                                time: duration,
-                                transition: transition,
-                                onStart: viewport.beginTransform,   
-                                onComplete: viewport.endTransform
-                            }
-                        )
+//        Tweener.addTween(
+//                            view,
+//                            {
+//                                x: newX,
+//                                y: newY,
+//                                width: newWidth,
+//                                height: newHeight,
+//                                time: duration,
+//                                transition: transition,
+//                                onStart: viewport.beginTransform,   
+//                                onComplete: viewport.endTransform
+//                            }
+//                        )
     }
 }
 

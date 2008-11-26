@@ -161,6 +161,7 @@ public class TileLayer extends Sprite implements ITileLayer
     
         addChild( tileBitmap )
         
+//        tileBitmap.alpha = 1
         Tweener.addTween( tileBitmap, { alpha: 1, time: DEFAULT_TILE_SHOW_DURATION } )
         
         return tile

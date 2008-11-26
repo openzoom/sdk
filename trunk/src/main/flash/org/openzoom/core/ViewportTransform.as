@@ -100,8 +100,10 @@ public class ViewportTransform implements IViewportTransform
                             transformX : Number = 0.5,
                             transformY : Number = 0.5 ) : void
     {
+        trace( "@pre", _zoom, zoom )
         // keep z within min/max range
         _zoom = clamp( zoom, viewport.minZoom, viewport.maxZoom )
+        trace( "@post", _zoom, zoom )
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( transformX, transformY )
@@ -232,7 +234,8 @@ public class ViewportTransform implements IViewportTransform
      */ 
     private function validate() : void
     {
-//        zoomTo( _zoom, 0.5, 0.5 )
+    	// FIXME
+//        zoomTo( zoom )
     }
 
 
@@ -507,11 +510,14 @@ public class ViewportTransform implements IViewportTransform
     {
         var transform : ViewportTransform =
                 new ViewportTransform( viewport, scene )
-            transform._x = x	
-            transform._y = y
-            transform._width = width	
-            transform._height = height
-            transform._zoom = zoom
+            transform._x = _x	
+            transform._y = _y
+            transform._width = _width	
+            transform._height = _height
+            transform._zoom = _zoom
+            
+            if( this.zoom != transform.zoom )
+                trace( "AAARGH" )
             
         return transform	
     }

@@ -298,6 +298,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         
         addChildAt( backgroundTile, getChildIndex( frame ))
 
+//        backgroundTile.alpha = 1
         Tweener.addTween( backgroundTile, { alpha: 1, time: DEFAULT_BACKGROUND_SHOW_DURATION } )
     }
     
