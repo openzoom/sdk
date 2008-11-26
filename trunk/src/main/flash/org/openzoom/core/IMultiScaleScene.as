@@ -23,6 +23,8 @@ package org.openzoom.core
 import flash.display.DisplayObject;
 import flash.events.IEventDispatcher;
 
+[Event(name="resize", type="flash.events.Event")]
+
 /**
  * Interface for the viewport content.
  */

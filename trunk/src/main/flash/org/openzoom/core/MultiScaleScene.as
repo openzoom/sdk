@@ -26,6 +26,9 @@ import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;	
 
+
+[Event(name="resize", type="flash.events.Event")]
+
 public class MultiScaleScene extends Sprite implements IMultiScaleScene,
                                                        IReadonlyMultiScaleScene
 {

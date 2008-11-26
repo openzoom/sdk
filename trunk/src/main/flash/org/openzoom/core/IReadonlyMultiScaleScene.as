@@ -22,7 +22,8 @@ package org.openzoom.core
 {
 
 import flash.events.IEventDispatcher;
-	
+
+[Event(name="resize", type="flash.events.Event")]
 
 /**
  * Read-only interface to IMultiScaleScene.

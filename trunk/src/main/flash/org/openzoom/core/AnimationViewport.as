@@ -26,7 +26,6 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.events.ViewportEvent;
-import org.openzoom.utils.math.clamp;
 
 //------------------------------------------------------------------------------
 //
@@ -67,16 +66,16 @@ public class AnimationViewport extends EventDispatcher
      * Constructor.
      */
     public function AnimationViewport( width : Number, height : Number,
-                                        scene : IMultiScaleScene )
+                                       scene : IMultiScaleScene )
     {
-    	// FIXME: Unsafe cast
-    	_transform = new ViewportTransform( width, height, IReadonlyMultiScaleScene( scene ))
-    	
     	_viewportWidth = width
     	_viewportHeight = height
     	
         _scene = scene
-        _scene.addEventListener( Event.RESIZE, scene_resizeHandler )
+        _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
+        
+        // FIXME: Unsafe cast
+        _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
         
         validate()
     }
@@ -88,20 +87,18 @@ public class AnimationViewport extends EventDispatcher
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  z
+    //  zoom
     //----------------------------------
 
-    private var _zoom : Number = 1;
-
-    [Bindable(event="zoomChanged")]
+    [Bindable(event="transformChanged")]
     public function get zoom() : Number
     {
-        return _zoom
+        return _transform.zoom
     }
 
     public function set zoom( value : Number ) : void
     {
-        zoomTo( value )
+//        zoomTo( value )
     }
 
     //----------------------------------
@@ -177,7 +174,9 @@ public class AnimationViewport extends EventDispatcher
 
     public function set transform( value : IViewportTransform ) : void
     {
-    	// TODO
+    	var oldTransform : IViewportTransform = _transform.clone()
+    	_transform = value
+    	transformUpdate( oldTransform )
     }
     
     //----------------------------------
@@ -222,52 +221,23 @@ public class AnimationViewport extends EventDispatcher
     //--------------------------------------------------------------------------
 
     public function zoomTo( zoom : Number,
-                            originX : Number = 0.5,
-                            originY : Number = 0.5,
+                            transformX : Number = 0.5,
+                            transformY : Number = 0.5,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        var oldZoom : Number = this.zoom
-
-        // keep z within min/max range
-        _zoom = clamp( zoom, minZoom, maxZoom )
-
-        // remember old origin
-        var oldOrigin : Point = getViewportOrigin( originX, originY )
-
-        // Compute normalized dimensions aspect ratio
-        // This is ratio of the normalized content width and height 
-        var ratio : Number = sceneAspectRatio / aspectRatio
-
-        if( ratio >= 1 )
-        {
-            // content is wider than viewport
-            _width = 1 / _zoom
-            _height  = _width * ratio
-        }
-        else
-        {
-            // content is taller than viewport
-            _height = 1 / _zoom
-            _width  = _height / ratio
-        }
-
-        // move new origin to old origin
-        moveOriginTo( oldOrigin.x, oldOrigin.y, originX, originY, false )
-
-        if( dispatchChangeEvent )
-            this.dispatchChangeEvent( oldZoom )
-            
-        dispatchEvent( new Event( "zoomChanged" ))
-        dispatchEvent( new Event( "widthChanged" ))
-        dispatchEvent( new Event( "heightChanged" ))
-        dispatchEvent( new Event( "scaleChanged" ))
+        var t :IViewportTransform = transform
+        t.zoomTo( zoom, transformX, transformY )
+        transform = t
     }
 
     public function zoomBy( factor : Number,
-                            originX : Number = 0.5, originY : Number = 0.5,
+                            transformX : Number = 0.5,
+                            transformY : Number = 0.5,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        zoomTo( zoom * factor, originX, originY, dispatchChangeEvent )
+    	var t :IViewportTransform = transform
+    	t.zoomBy( factor, transformX, transformY )
+    	transform = t
     }
 
     //--------------------------------------------------------------------------
@@ -279,83 +249,41 @@ public class AnimationViewport extends EventDispatcher
     public function moveTo( x : Number, y : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        // store the given (normalized) coordinates
-        _x = x
-        _y = y
-
-        // use bounds strategy if available
-        if( constraint )
-        {
-            // compute bounds
-            var p : Point = constraint.computePosition( this )
-            
-            // capture new position
-            _x = p.x
-            _y = p.y	
-        }
-        
-        if( dispatchChangeEvent )
-            this.dispatchChangeEvent()
+        var t :IViewportTransform = transform
+        t.moveTo( x, y )
+        transform = t
     }
 
 
     public function moveBy( dx : Number, dy : Number,
-                            dispatchChangeEvent : Boolean = true  ) : void
+                            dispatchChangeEvent : Boolean = true ) : void
     {
-        moveTo( x + dx, y + dy, dispatchChangeEvent )
+        var t :IViewportTransform = transform
+        t.moveBy( dx, dy )
+        transform = t
     }
 
     public function moveCenterTo( x : Number, y : Number,
                                   dispatchChangeEvent : Boolean = true ) : void
     {
-        moveOriginTo( x, y, 0.5, 0.5, dispatchChangeEvent )
+        var t :IViewportTransform = transform
+        t.moveCenterTo( x, y )
+        transform = t
     }
 
     public function showRect( rect : Rectangle, scale : Number = 1.0, 
                               dispatchChangeEvent : Boolean = true ) : void
     {
-    	// TODO: Implement for normalized coordinate system
-    	var area : Rectangle = denormalizeRectangle( rect )
-    	
-        var centerX : Number = area.x + area.width  * 0.5
-        var centerY : Number = area.y + area.height * 0.5
-    
-        var normalizedCenter : Point = new Point( centerX / scene.sceneWidth,
-                                                  centerY / scene.sceneHeight )
-                                                 
-        var scaledWidth : Number = area.width / scale
-        var scaledHeight : Number = area.height / scale
-    
-        var ratio : Number = sceneAspectRatio / aspectRatio
-     
-        // We have be careful here, the way the zoom factor is
-        // interpreted depends on the relative ratio of scene and viewport
-        if( scaledWidth > ( aspectRatio * scaledHeight ) )
-        {
-            // Area must fit horizontally in the viewport
-            ratio = ( ratio < 1 ) ? ( scene.sceneWidth / ratio ) : scene.sceneWidth
-            ratio = ratio / scaledWidth
-        }
-        else
-        {
-            // Area must fit vertically in the viewport  
-            ratio = ( ratio > 1 ) ? ( scene.sceneHeight * ratio ) : scene.sceneHeight
-            ratio = ratio / scaledHeight
-        }
-    
-        var oldZoom : Number = zoom
-    
-        zoomTo( ratio, 0.5, 0.5, false )
-        moveCenterTo( normalizedCenter.x, normalizedCenter.y, false )
-    
-        if( dispatchChangeEvent )
-            this.dispatchChangeEvent( oldZoom )
+        var t :IViewportTransform = transform
+        t.showRect( rect, scale )
+        transform = t
     }
     
     public function showAll() : void
     {
-    	var area : Rectangle = new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight )
-        showRect( normalizeRectangle( area ))
+        var t :IViewportTransform = transform
+        t.showAll()
+        transform = t
     }
 
     //--------------------------------------------------------------------------
@@ -384,31 +312,6 @@ public class AnimationViewport extends EventDispatcher
         return p
     }
 
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Internal
-    //
-    //--------------------------------------------------------------------------
-
-    private function moveOriginTo( x : Number, y : Number,
-                                   originX : Number, originY : Number,
-                                   dispatchChangeEvent : Boolean = true ) : void
-    {
-        var newX : Number = x - width * originX
-        var newY : Number = y - height * originY
-
-        moveTo( newX, newY, dispatchChangeEvent )
-    }
-
-    private function getViewportOrigin( originX : Number,
-                                        originY : Number ) : Point
-    {
-        var viewportOriginX : Number = x + width * originX
-        var viewportOriginY : Number = y + height * originY
- 
-        return new Point( viewportOriginX, viewportOriginY )
-    }
-
     /**
      * @private
      * 
@@ -416,40 +319,9 @@ public class AnimationViewport extends EventDispatcher
      */ 
     private function validate( dispatchEvent : Boolean = true ) : void
     {
-        zoomTo( _zoom, 0.5, 0.5, dispatchEvent )
-    }
-
-
-    //--------------------------------------------------------------------------
-    //
-    //  Properties: Internal
-    //
-    //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  aspectRatio
-    //----------------------------------
-    
-    /**
-     * @private 
-     * Returns the aspect ratio of this Viewport object.
-     */
-    private function get aspectRatio() : Number
-    {
-        return viewportWidth / viewportHeight
-    }
- 
-    //----------------------------------
-    //  sceneAspectRatio
-    //----------------------------------
-    
-    /**
-     * @private 
-     * Returns the aspect ratio of scene.
-     */
-    private function get sceneAspectRatio() : Number
-    {
-        return scene.sceneWidth / scene.sceneHeight
+        var t :IViewportTransform = transform
+        t.zoomTo( zoom )
+        transform = t
     }
 
     //--------------------------------------------------------------------------
@@ -491,109 +363,108 @@ public class AnimationViewport extends EventDispatcher
     //  x
     //----------------------------------
     
-    private var _x : Number = 0
-    
+    [Bindable(event="transformChanged")]
     public function get x() : Number
     {
-        return _x
+        return _transform.x
     }
     
     public function set x( value : Number ) : void
     {
-        moveTo( value, y )
+    	// TODO
     }
     
     //----------------------------------
     //  y
     //----------------------------------
     
-    private var _y : Number = 0
-    
+    [Bindable(event="transformChanged")]
     public function get y() : Number
     {
-       return _y
+       return _transform.y
     }
     
     public function set y( value : Number ) : void
     {
-        moveTo( x, value )
+    	// TODO
     }
     
     //----------------------------------
     //  width
     //----------------------------------
     
-    private var _width : Number = 1;
-    
-    [Bindable(event="widthChanged")]
+    [Bindable(event="transformChanged")]
     public function get width() : Number
     {
-        return _width
+        return _transform.width
     }
     
     //----------------------------------
     //  height
     //----------------------------------
     
-    private var _height : Number = 1;
     
-    [Bindable(event="heightChanged")]
+    [Bindable(event="transformChanged")]
     public function get height() : Number
     {
-        return _height
+        return _transform.height
     }
     
     //----------------------------------
     //  left
     //----------------------------------
     
+    [Bindable(event="transformChanged")]
     public function get left() : Number
     {
-        return x
+        return _transform.left
     }
     
     //----------------------------------
     //  right
     //----------------------------------
     
+    [Bindable(event="transformChanged")]
     public function get right() : Number
     {
-        return x + width
+        return _transform.right
     }
     
     //----------------------------------
     //  top
     //----------------------------------
     
+    [Bindable(event="transformChanged")]
     public function get top() : Number
     {
-        return y
+        return _transform.top
     }
     
     //----------------------------------
     //  bottom
     //----------------------------------
     
+    [Bindable(event="transformChanged")]
     public function get bottom() : Number
     {
-        return y + height
+        return _transform.bottom
     }
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: Events
+    //  Methods: Transform Events
     //
     //--------------------------------------------------------------------------
-    
-    private function dispatchChangeEvent( oldZoom : Number = NaN ) : void
-    {
-        dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_UPDATE,
-                           false, false ))
-    }
     
     public function beginTransform() : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_START ))
+    }
+    
+    private function transformUpdate( oldTransform : IViewportTransform = null ) : void
+    {
+        dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_UPDATE,
+                           false, false, oldTransform ))
     }
     
     public function endTransform() : void

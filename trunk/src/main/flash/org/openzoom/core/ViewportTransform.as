@@ -24,6 +24,7 @@ import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
+import org.openzoom.events.ViewportEvent;
 import org.openzoom.utils.math.clamp;
 
 public class ViewportTransform implements IViewportTransform
@@ -37,36 +38,32 @@ public class ViewportTransform implements IViewportTransform
     /**
      * Constructor.
      */
-    public function ViewportTransform( width : Number,
-                                       height : Number,
-                                       scene : IReadonlyMultiScaleScene )
+    public function ViewportTransform( viewport : IReadonlyViewport, scene : IReadonlyMultiScaleScene )
     {
-    	_viewportWidth = width
-    	_viewportHeight = height
-    	
-        _scene = scene
-        _scene.addEventListener( Event.RESIZE, scene_resizeHandler )
+        this.viewport = viewport
+        this.viewport.addEventListener( ViewportEvent.RESIZE, viewport_resizeHandler, false, 0, true )
+        
+        this.scene = scene
+        this.scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
         
         validate()
     }
 
     //--------------------------------------------------------------------------
     //
+    //  Variables
+    //
+    //--------------------------------------------------------------------------
+    
+    private var viewport : IReadonlyViewport
+    private var scene : IReadonlyMultiScaleScene
+    
+    //--------------------------------------------------------------------------
+    //
     //  Properties
     //
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    //  scene
-    //----------------------------------
-
-    private var _scene : IReadonlyMultiScaleScene;
-
-    public function get scene() : IReadonlyMultiScaleScene
-    {
-        return _scene
-    }
-    
     //----------------------------------
     //  zoom
     //----------------------------------
@@ -103,7 +100,8 @@ public class ViewportTransform implements IViewportTransform
                             transformX : Number = 0.5,
                             transformY : Number = 0.5 ) : void
     {
-        _zoom = zoom
+        // keep z within min/max range
+        _zoom = clamp( zoom, viewport.minZoom, viewport.maxZoom )
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( transformX, transformY )
@@ -397,22 +395,18 @@ public class ViewportTransform implements IViewportTransform
     //  viewportWidth
     //----------------------------------
     
-    private var _viewportWidth : Number
-    
     public function get viewportWidth() : Number
     {
-        return _viewportWidth
+        return viewport.viewportWidth
     }
     
     //----------------------------------
     //  viewportHeight
     //----------------------------------
     
-    private var _viewportHeight : Number
-    
     public function get viewportHeight() : Number
     {
-        return _viewportHeight
+        return viewport.viewportHeight
     }    
     //--------------------------------------------------------------------------
     //
@@ -503,6 +497,11 @@ public class ViewportTransform implements IViewportTransform
     	validate()
     }
     
+    private function viewport_resizeHandler( event : ViewportEvent ) : void
+    {
+    	validate()
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Methods: Debug
@@ -524,7 +523,7 @@ public class ViewportTransform implements IViewportTransform
     public function clone() : IViewportTransform
     {
         var transform : ViewportTransform =
-                new ViewportTransform( _viewportWidth, _viewportHeight, _scene )
+                new ViewportTransform( viewport, scene )
             transform._x = x	
             transform._y = y	
             transform._width = width	

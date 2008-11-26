@@ -79,7 +79,7 @@ public class NormalizedViewport extends EventDispatcher
     	_viewportHeight = height
     	
         _scene = scene
-        _scene.addEventListener( Event.RESIZE, scene_resizeHandler )
+        _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
         
         validate()
     }
