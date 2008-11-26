@@ -28,7 +28,7 @@
     
     <mx:Script>
     	<![CDATA[
-    		import org.openzoom.flash.core.DefaultViewportConstraint;
+    		import org.openzoom.flash.viewport.constraints.DefaultViewportConstraint;
     		import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
     		import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
     	
