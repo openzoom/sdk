@@ -19,8 +19,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.core
 {
-	import flash.geom.Point;
-	
+
+import flash.geom.Point;
 
 public class DefaultViewportConstraint implements IViewportConstraint
 {

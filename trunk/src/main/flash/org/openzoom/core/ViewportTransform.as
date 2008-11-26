@@ -68,7 +68,7 @@ public class ViewportTransform implements IViewportTransform
     //  zoom
     //----------------------------------
 
-    private var _zoom : Number = 1;
+    private var _zoom : Number = 1
 
     public function get zoom() : Number
     {
@@ -120,7 +120,7 @@ public class ViewportTransform implements IViewportTransform
         {
             // content is taller than viewport
             _height = 1 / _zoom
-            _width  = _height / ratio
+            _width = _height / ratio
         }
 
         // move new origin to old origin
@@ -200,31 +200,6 @@ public class ViewportTransform implements IViewportTransform
         showRect( normalizeRectangle( area ))
     }
 
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Coordinate transformations
-    //
-    //--------------------------------------------------------------------------
-
-    public function localToScene( point : Point ) : Point
-    {
-        var p : Point = new Point()
-        p.x = ( x * scene.sceneWidth ) 
-              + ( point.x / viewportWidth )  * ( width  * scene.sceneWidth )
-        p.y = ( y * scene.sceneHeight )
-              + ( point.y / viewportHeight ) * ( height * scene.sceneHeight )
-        return p
-    }
-
-    public function sceneToLocal( point : Point ) : Point
-    {
-        var p : Point = new Point()
-        p.x = ( point.x - ( x  * scene.sceneWidth ))
-              / ( width  * scene.sceneWidth ) * viewportWidth
-        p.y = ( point.y - ( y  * scene.sceneHeight ))
-              / ( height * scene.sceneHeight ) * viewportHeight
-        return p
-    }
 
     //--------------------------------------------------------------------------
     //
@@ -257,7 +232,7 @@ public class ViewportTransform implements IViewportTransform
      */ 
     private function validate() : void
     {
-        zoomTo( _zoom, 0.5, 0.5 )
+//        zoomTo( _zoom, 0.5, 0.5 )
     }
 
 
@@ -528,6 +503,7 @@ public class ViewportTransform implements IViewportTransform
             transform._y = y	
             transform._width = width	
             transform._height = height
+            transform._zoom = zoom
             
         return transform	
     }

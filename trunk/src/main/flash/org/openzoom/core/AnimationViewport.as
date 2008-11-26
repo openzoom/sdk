@@ -176,6 +176,14 @@ public class AnimationViewport extends EventDispatcher
     {
     	var oldTransform : IViewportTransform = _transform.clone()
     	_transform = value
+    	
+    	// FIXME
+    	if( constraint )
+    	{
+    		var position : Point = constraint.computePosition( this )
+    		_transform.moveTo( position.x, position.y ) 
+    	}
+    	
     	transformUpdate( oldTransform )
     }
     

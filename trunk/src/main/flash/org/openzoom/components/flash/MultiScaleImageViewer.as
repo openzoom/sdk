@@ -87,7 +87,8 @@ public class MultiScaleImageViewer extends Sprite
         
         // viewport
         createViewport( scene )
-        viewport.constraint = null
+        // TODO
+//        viewport.constraint = null
         viewport.minZoom = DEFAULT_MIN_ZOOM
         viewport.maxZoom = DEFAULT_MAX_ZOOM
         

@@ -284,15 +284,15 @@ public class NormalizedViewport extends EventDispatcher
         _x = x
         _y = y
 
-        // use bounds strategy if available
+        // use constraint if available
         if( constraint )
         {
-            // compute bounds
-            var p : Point = constraint.computePosition( this )
+            // compute position
+            var position : Point = constraint.computePosition( this )
             
             // capture new position
-            _x = p.x
-            _y = p.y	
+            _x = position.x
+            _y = position.y
         }
         
         if( dispatchChangeEvent )

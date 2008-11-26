@@ -127,6 +127,13 @@ public class ViewTransformationController extends ViewportControllerBase
         var newX      : Number = -viewport.x * newWidth
         var newY      : Number = -viewport.y * newHeight
         
+//        viewport.beginTransform()
+//        view.x = newX
+//        view.y = newY
+//        view.width = newWidth
+//        view.height = newHeight
+//        viewport.endTransform()
+        
         Tweener.addTween(
                             view,
                             {
@@ -136,6 +143,7 @@ public class ViewTransformationController extends ViewportControllerBase
                                 height: newHeight,
                                 time: duration,
                                 transition: transition,
+                                onStart: viewport.beginTransform,   
                                 onComplete: viewport.endTransform
                             }
                         )
