@@ -73,8 +73,8 @@ public class OpenZoomViewer extends Sprite
     private static const MOVE_LEFT_MENU_CAPTION          : String = "Move Left	A / Left"
     private static const MOVE_RIGHT_MENU_CAPTION         : String = "Move Right	D / Right"
     
-    private static const DEBUG_MENU_DISABLED_CAPTION     : String = "Show Memory Consumption"
-    private static const DEBUG_MENU_ENABLED_CAPTION      : String = "Hide Memory Consumption"
+    private static const DEBUG_MENU_DISABLED_CAPTION     : String = "Show Memory Consumption    M"
+    private static const DEBUG_MENU_ENABLED_CAPTION      : String = "Hide Memory Consumption    M"
     
     private static const ABOUT_MENU_CAPTION              : String = "Powered by OpenZoom.org"
     private static const ABOUT_MENU_URL                  : String = "http://openzoom.org/"
@@ -398,7 +398,9 @@ public class OpenZoomViewer extends Sprite
     private function stage_keyUpHandler( event : KeyboardEvent ) : void
     {
     	if( viewer && event.keyCode == 82 ) // R
-    	   viewer.shuffle()
+            viewer.shuffle()
+        if( event.keyCode == String("M").charCodeAt() )
+            toggleMemoryDisplay()
     }
     
     //--------------------------------------------------------------------------
@@ -457,8 +459,17 @@ public class OpenZoomViewer extends Sprite
             viewer.moveRight()
     }
     
-    // extra
     private function debugMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
+    {
+    	toggleMemoryDisplay()
+    }
+    
+    private function aboutMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
+    {
+        navigateToURL( new URLRequest( ABOUT_MENU_URL ), "_blank" )
+    }
+    
+    private function toggleMemoryDisplay() : void
     {
         memoryDisplay.visible = !memoryDisplay.visible
         
@@ -466,11 +477,6 @@ public class OpenZoomViewer extends Sprite
             debugMenu.caption = DEBUG_MENU_ENABLED_CAPTION
         else
             debugMenu.caption = DEBUG_MENU_DISABLED_CAPTION
-    }
-    
-    private function aboutMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
-    {
-        navigateToURL( new URLRequest( ABOUT_MENU_URL ), "_blank" )
     }
     
     //--------------------------------------------------------------------------

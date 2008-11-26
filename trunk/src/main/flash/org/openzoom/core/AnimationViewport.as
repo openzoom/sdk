@@ -25,6 +25,7 @@ import flash.events.EventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
+import org.openzoom.components.common.transformers.TweenerViewportAnimator;
 import org.openzoom.events.ViewportEvent;
 
 //------------------------------------------------------------------------------
@@ -36,7 +37,7 @@ import org.openzoom.events.ViewportEvent;
 [Event(name="resize", type="org.openzoom.events.ViewportEvent")]
 [Event(name="transformStart", type="org.openzoom.events.ViewportEvent")]
 [Event(name="transform", type="org.openzoom.events.ViewportEvent")]
-[Event(name="transformComplete", type="org.openzoom.events.ViewportEvent")]
+[Event(name="transformEnd", type="org.openzoom.events.ViewportEvent")]
 
 /**
  * IViewport implementation that is based on a normalized [0, 1] coordinate system.
@@ -90,7 +91,7 @@ public class AnimationViewport extends EventDispatcher
     //  zoom
     //----------------------------------
 
-    [Bindable(event="transformChanged")]
+    [Bindable(event="transformUpdate")]
     public function get zoom() : Number
     {
         return _transform.zoom
@@ -146,10 +147,10 @@ public class AnimationViewport extends EventDispatcher
     }
  
     //----------------------------------
-    //  transform
+    //  constraint
     //----------------------------------
 
-    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
+    private var _constraint : IViewportConstraint// = new DefaultViewportConstraint()
 
     public function get constraint() : IViewportConstraint
     {
@@ -159,6 +160,22 @@ public class AnimationViewport extends EventDispatcher
     public function set constraint( value : IViewportConstraint ) : void
     {
     	_constraint = value
+    }
+
+    //----------------------------------
+    //  animator
+    //----------------------------------
+
+    private var _animator : IViewportAnimator //new TweenerViewportAnimator()
+
+    public function get animator() : IViewportAnimator
+    {
+        return _animator
+    }
+
+    public function set animator( value : IViewportAnimator ) : void
+    {
+        _animator = value
     }
 
     //----------------------------------
@@ -175,16 +192,15 @@ public class AnimationViewport extends EventDispatcher
     public function set transform( value : IViewportTransform ) : void
     {
     	var oldTransform : IViewportTransform = _transform.clone()
-    	_transform = value
+    	_transform = value.clone()
     	
-    	// FIXME
     	if( constraint )
     	{
     		var position : Point = constraint.computePosition( this )
     		_transform.moveTo( position.x, position.y ) 
     	}
     	
-    	transformUpdate( oldTransform )
+    	updateTransform( oldTransform )
     }
     
     //----------------------------------
@@ -235,7 +251,7 @@ public class AnimationViewport extends EventDispatcher
     {
         var t :IViewportTransform = transform
         t.zoomTo( zoom, transformX, transformY )
-        transform = t
+        applyTransform( t )
     }
 
     public function zoomBy( factor : Number,
@@ -245,7 +261,7 @@ public class AnimationViewport extends EventDispatcher
     {
     	var t :IViewportTransform = transform
     	t.zoomBy( factor, transformX, transformY )
-    	transform = t
+        applyTransform( t )
     }
 
     //--------------------------------------------------------------------------
@@ -259,7 +275,7 @@ public class AnimationViewport extends EventDispatcher
     {
         var t :IViewportTransform = transform
         t.moveTo( x, y )
-        transform = t
+        applyTransform( t )
     }
 
 
@@ -268,7 +284,7 @@ public class AnimationViewport extends EventDispatcher
     {
         var t :IViewportTransform = transform
         t.moveBy( dx, dy )
-        transform = t
+        applyTransform( t )
     }
 
     public function moveCenterTo( x : Number, y : Number,
@@ -284,14 +300,14 @@ public class AnimationViewport extends EventDispatcher
     {
         var t :IViewportTransform = transform
         t.showRect( rect, scale )
-        transform = t
+        applyTransform( t )
     }
     
     public function showAll() : void
     {
         var t :IViewportTransform = transform
         t.showAll()
-        transform = t
+        applyTransform( t )
     }
 
     //--------------------------------------------------------------------------
@@ -329,7 +345,23 @@ public class AnimationViewport extends EventDispatcher
     {
         var t :IViewportTransform = transform
         t.zoomTo( zoom )
-        transform = t
+        
+        applyTransform( t )
+    }
+    
+    private function applyTransform( transform : IViewportTransform ) : void
+    {
+    	if( animator )
+    	{
+    		animator.animate( this, transform )
+    	}
+        else
+        {
+            // FIXME
+//            beginTransform()
+            this.transform = transform
+//            endTransform()
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -345,6 +377,7 @@ public class AnimationViewport extends EventDispatcher
     
     public function intersects( toIntersect : Rectangle ) : Boolean
     {
+    	// FIXME
     	var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
                                                        y * scene.sceneHeight, 
                                                        width * scene.sceneWidth,
@@ -354,6 +387,7 @@ public class AnimationViewport extends EventDispatcher
     
     public function intersection( toIntersect : Rectangle ) : Rectangle
     {
+    	// FIXME
         var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
                                                        y * scene.sceneHeight, 
                                                        width * scene.sceneWidth,
@@ -371,7 +405,7 @@ public class AnimationViewport extends EventDispatcher
     //  x
     //----------------------------------
     
-    [Bindable(event="transformChanged")]
+    [Bindable(event="transformUpdate")]
     public function get x() : Number
     {
         return _transform.x
@@ -386,7 +420,7 @@ public class AnimationViewport extends EventDispatcher
     //  y
     //----------------------------------
     
-    [Bindable(event="transformChanged")]
+    [Bindable(event="transformUpdate")]
     public function get y() : Number
     {
        return _transform.y
@@ -401,7 +435,7 @@ public class AnimationViewport extends EventDispatcher
     //  width
     //----------------------------------
     
-    [Bindable(event="transformChanged")]
+    [Bindable(event="transformUpdate")]
     public function get width() : Number
     {
         return _transform.width
@@ -412,7 +446,7 @@ public class AnimationViewport extends EventDispatcher
     //----------------------------------
     
     
-    [Bindable(event="transformChanged")]
+    [Bindable(event="transformUpdate")]
     public function get height() : Number
     {
         return _transform.height
@@ -422,7 +456,7 @@ public class AnimationViewport extends EventDispatcher
     //  left
     //----------------------------------
     
-    [Bindable(event="transformChanged")]
+    [Bindable(event="transformUpdate")]
     public function get left() : Number
     {
         return _transform.left
@@ -432,7 +466,7 @@ public class AnimationViewport extends EventDispatcher
     //  right
     //----------------------------------
     
-    [Bindable(event="transformChanged")]
+    [Bindable(event="transformUpdate")]
     public function get right() : Number
     {
         return _transform.right
@@ -442,7 +476,7 @@ public class AnimationViewport extends EventDispatcher
     //  top
     //----------------------------------
     
-    [Bindable(event="transformChanged")]
+    [Bindable(event="transformUpdate")]
     public function get top() : Number
     {
         return _transform.top
@@ -452,7 +486,7 @@ public class AnimationViewport extends EventDispatcher
     //  bottom
     //----------------------------------
     
-    [Bindable(event="transformChanged")]
+    [Bindable(event="transformUpdate")]
     public function get bottom() : Number
     {
         return _transform.bottom
@@ -469,7 +503,7 @@ public class AnimationViewport extends EventDispatcher
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_START ))
     }
     
-    private function transformUpdate( oldTransform : IViewportTransform = null ) : void
+    private function updateTransform( oldTransform : IViewportTransform = null ) : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_UPDATE,
                            false, false, oldTransform ))

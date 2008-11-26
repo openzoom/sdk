@@ -152,19 +152,35 @@ public class NormalizedViewport extends EventDispatcher
     }
  
     //----------------------------------
-    //  transform
+    //  constraint
     //----------------------------------
 
-    private var _boundsChecker : IViewportConstraint = new DefaultViewportConstraint()
+    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
 
     public function get constraint() : IViewportConstraint
     {
-        return _boundsChecker
+        return _constraint
     }
     
     public function set constraint( value : IViewportConstraint ) : void
     {
-    	_boundsChecker = value
+    	_constraint = value
+    }
+
+    //----------------------------------
+    //  animator
+    //----------------------------------
+
+    private var _animator : IViewportAnimator
+
+    public function get animator() : IViewportAnimator
+    {
+        return _animator
+    }
+
+    public function set animator( value : IViewportAnimator ) : void
+    {
+        _animator = value
     }
 
     //----------------------------------
@@ -256,7 +272,7 @@ public class NormalizedViewport extends EventDispatcher
         moveOriginTo( oldOrigin.x, oldOrigin.y, originX, originY, false )
 
         if( dispatchChangeEvent )
-            this.dispatchChangeEvent( oldZoom )
+            this.updateTransform( oldZoom )
             
         dispatchEvent( new Event( "zoomChanged" ))
         dispatchEvent( new Event( "widthChanged" ))
@@ -296,7 +312,7 @@ public class NormalizedViewport extends EventDispatcher
         }
         
         if( dispatchChangeEvent )
-            this.dispatchChangeEvent()
+            this.updateTransform()
     }
 
 
@@ -350,7 +366,7 @@ public class NormalizedViewport extends EventDispatcher
         moveCenterTo( normalizedCenter.x, normalizedCenter.y, false )
     
         if( dispatchChangeEvent )
-            this.dispatchChangeEvent( oldZoom )
+            this.updateTransform( oldZoom )
     }
     
     public function showAll() : void
@@ -586,15 +602,16 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    private function dispatchChangeEvent( oldZoom : Number = NaN ) : void
-    {
-        dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_UPDATE,
-                           false, false ))
-    }
     
     public function beginTransform() : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_START ))
+    }
+    
+    private function updateTransform( oldZoom : Number = NaN ) : void
+    {
+        dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_UPDATE,
+                           false, false ))
     }
     
     public function endTransform() : void

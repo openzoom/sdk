@@ -61,7 +61,7 @@ public interface IViewportTransform
      * Horizontal dimension of the viewport.
      */
     function get width() : Number
-//    function set width( value : Number ) : void
+    function set width( value : Number ) : void
     
     //----------------------------------
     //  height
@@ -71,7 +71,7 @@ public interface IViewportTransform
      * Vertical dimension of the viewport.
      */
     function get height() : Number
-//    function set height( value : Number ) : void
+    function set height( value : Number ) : void
     
     //----------------------------------
     //  top

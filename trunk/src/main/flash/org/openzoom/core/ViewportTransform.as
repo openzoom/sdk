@@ -318,6 +318,11 @@ public class ViewportTransform implements IViewportTransform
         return _width
     }
     
+    public function set width( value : Number ) : void
+    {
+    	_width = value
+    }
+    
     //----------------------------------
     //  height
     //----------------------------------
@@ -327,6 +332,11 @@ public class ViewportTransform implements IViewportTransform
     public function get height() : Number
     {
         return _height
+    }
+    
+    public function set height( value : Number ) : void
+    {
+    	_height = value
     }
     
     //----------------------------------
@@ -485,14 +495,12 @@ public class ViewportTransform implements IViewportTransform
     
     public function toString() : String
     {
-        return "[ViewportTransform]" + "\n"
-               + "x=" + x + "\n" 
-               + "y=" + y  + "\n"
-               + "z=" + zoom + "\n"
-               + "w=" + width + "\n"
-               + "h=" + height + "\n"
-               + "sW=" + scene.sceneWidth + "\n"
-               + "sH=" + scene.sceneHeight
+        return "[ViewportTransform]" + "("
+               + "x=" + x + ", " 
+               + "y=" + y  + ", "
+               + "z=" + zoom + ", "
+               + "w=" + width + ", "
+               + "h=" + height + ")"
     }
     
     public function clone() : IViewportTransform
@@ -500,7 +508,7 @@ public class ViewportTransform implements IViewportTransform
         var transform : ViewportTransform =
                 new ViewportTransform( viewport, scene )
             transform._x = x	
-            transform._y = y	
+            transform._y = y
             transform._width = width	
             transform._height = height
             transform._zoom = zoom
