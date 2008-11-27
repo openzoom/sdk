@@ -25,14 +25,10 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportTransform;
 	
 public interface IViewportTransformer
-{
-	function get viewport() : INormalizedViewport
-	function set viewport( value : INormalizedViewport ) : void
-	
-	function get target() : ITransformationTarget
-	function set target( value : ITransformationTarget ) : void
-	
-    function transform( targetTransform : IViewportTransform,
+{	
+    function transform( viewport : INormalizedViewport,
+                        target : IViewportTransformationTarget,
+                        targetTransform : IViewportTransform,
                         immediately : Boolean = false ) : void		
 }
 

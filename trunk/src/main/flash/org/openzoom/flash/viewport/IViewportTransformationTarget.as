@@ -1,7 +1,7 @@
 package org.openzoom.flash.viewport
 {
 
-public interface ITransformationTarget
+public interface IViewportTransformationTarget
 {
 	function get x() : Number
 	function set x( value : Number ) : void

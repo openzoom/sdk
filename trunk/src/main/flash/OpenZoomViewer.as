@@ -20,6 +20,9 @@
 package
 {
 
+import caurina.transitions.Tweener;
+import caurina.transitions.properties.CurveModifiers;
+
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
@@ -44,6 +47,8 @@ import org.openzoom.flash.components.MultiScaleImageViewer;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
+import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.viewer.assets.Sad;
 
 /**
@@ -399,7 +404,24 @@ public class OpenZoomViewer extends Sprite
     private function stage_keyUpHandler( event : KeyboardEvent ) : void
     {
     	if( viewer && event.keyCode == 82 ) // R
-            viewer.shuffle()
+    	{
+    		  CurveModifiers.init()
+    		  var v : INormalizedViewport = viewer.viewport
+              
+              var t : IViewportTransform = v.transform
+              
+              var myPath:Array = new Array();
+                  myPath.push({zoom:2});
+                  myPath.push({zoom:10});
+                  myPath.push({zoom:0.1});
+                  Tweener.addTween(t, { x:0, y:0, zoom: 1, _bezier:myPath, time:2, transition:"easeoutquad",
+                                        onStart: v.beginTransform,
+                                        onUpdate: function() : void { v.transform = t },
+                                        onComplete: v.endTransform });
+
+    		  
+//            viewer.shuffle()
+    	}
         if( event.keyCode == String("M").charCodeAt() )
             toggleMemoryDisplay()
     }

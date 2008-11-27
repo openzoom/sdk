@@ -112,18 +112,18 @@ public class ViewTransformationController extends ViewportControllerBase
     
     private function viewport_transformStartHandler( event : ViewportEvent ) : void
     {
-//    	trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_START" )
+    	trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_START" )
     }
 
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
-//        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_UPDATE" )
+        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_UPDATE" )
         transformView( DEFAULT_TRANSFORMATION_DURATION )
     }
     
     private function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
-//        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_END" )
+        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_END" )
     }
     
     private function viewport_resizeHandler( event : ViewportEvent ) : void
@@ -152,19 +152,19 @@ public class ViewTransformationController extends ViewportControllerBase
 //        view.height = newHeight
 ////        viewport.endTransform()
         
-        Tweener.addTween(
-                            view,
-                            {
-                                x: newX,
-                                y: newY,
-                                width: newWidth,
-                                height: newHeight,
-                                time: duration,
-                                transition: transition,
-                                onStart: viewport.beginTransform,   
-                                onComplete: viewport.endTransform
-                            }
-                        )
+//        Tweener.addTween(
+//                            view,
+//                            {
+//                                x: newX,
+//                                y: newY,
+//                                width: newWidth,
+//                                height: newHeight,
+//                                time: duration,
+//                                transition: transition,
+//                                onStart: viewport.beginTransform,   
+//                                onComplete: viewport.endTransform
+//                            }
+//                        )
     }
 }
 

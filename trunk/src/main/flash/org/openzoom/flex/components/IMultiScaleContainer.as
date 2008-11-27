@@ -21,8 +21,8 @@
 package org.openzoom.components.flex
 {
 
-import org.openzoom.core.IMultiScaleScene;
-import org.openzoom.core.IViewport;
+import org.openzoom.flash.viewport.IViewportConstraint;
+import org.openzoom.flash.viewport.IViewportTransformer;
 	
 
 public interface IMultiScaleContainer
@@ -39,6 +39,12 @@ public interface IMultiScaleContainer
      * Viewport belonging to this container.
      */ 
     function get viewport() : IViewport
+    
+    function get constraint() : IViewportConstraint
+    function set constraint( value : IViewportConstraint ) : void
+    
+    function get transformer() : IViewportTransformer
+    function set transformer( value : IViewportTransformer ) : void
 }
 
 }
