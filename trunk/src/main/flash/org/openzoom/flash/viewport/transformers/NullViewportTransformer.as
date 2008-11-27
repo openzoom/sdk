@@ -21,8 +21,9 @@
 package org.openzoom.flash.viewport.transformers
 {
 
+import flash.geom.Rectangle;
+
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformationTarget;
 import org.openzoom.flash.viewport.IViewportTransformer;   
 
@@ -47,20 +48,19 @@ public class NullViewportTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
+    public function stop() : void
+    {
+    }
+    
     public function transform( viewport : INormalizedViewport,
                                target : IViewportTransformationTarget,
-                               targetTransform : IViewportTransform,
+                               bounds : Rectangle,
                                immediately : Boolean = false ) : void
     {
-        var targetWidth   : Number = viewport.viewportWidth / viewport.width
-        var targetHeight  : Number = viewport.viewportHeight / viewport.height
-        var targetX       : Number = -viewport.x * targetWidth
-        var targetY       : Number = -viewport.y * targetHeight
-
-        target.x      = targetX
-        target.y      = targetY
-        target.width  = targetWidth
-        target.height = targetHeight
+        target.x      = bounds.x
+        target.y      = bounds.y
+        target.width  = bounds.width
+        target.height = bounds.height
     }
 }
 

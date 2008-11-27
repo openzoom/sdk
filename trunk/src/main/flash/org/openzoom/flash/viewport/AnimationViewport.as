@@ -31,6 +31,7 @@ import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
+import org.openzoom.flash.viewport.transformers.TweenerViewportTransformer;
 
 //------------------------------------------------------------------------------
 //
@@ -58,7 +59,8 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    private static const NULL_CONSTRAINT : IViewportConstraint = new NullViewportConstraint()
+    private static const NULL_CONSTRAINT  : IViewportConstraint  = new NullViewportConstraint()
+    private static const NULL_TRANSFORMER : IViewportTransformer = new NullViewportTransformer()
 
     //--------------------------------------------------------------------------
     //
@@ -82,8 +84,8 @@ public class AnimationViewport extends EventDispatcher
         _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
         
         // FIXME
-//        _transformer = new TweenerTransformer()
-        _transformer = new NullViewportTransformer()
+        _transformer = new TweenerViewportTransformer()
+//        _transformer = new NullViewportTransformer()
         
         validate()
     }
@@ -151,7 +153,13 @@ public class AnimationViewport extends EventDispatcher
 
     public function set transformer( value : IViewportTransformer ) : void
     {
-        _transformer = value
+        if( value )
+           _transformer = value
+        else
+        {
+           _transformer.stop()        	
+           _transformer = NULL_TRANSFORMER
+        }
     }
 
     //----------------------------------
@@ -172,11 +180,18 @@ public class AnimationViewport extends EventDispatcher
         
         var position : Point = constraint.computePosition( this )
         _transform.moveTo( position.x, position.y )
+
+        var targetWidth   : Number = viewportWidth / width
+        var targetHeight  : Number = viewportHeight / height
+        var targetX       : Number = -x * targetWidth
+        var targetY       : Number = -y * targetHeight
+                
+        var bounds : Rectangle = new Rectangle( targetX, targetY, targetWidth, targetHeight )
         
         if( transformer )
             transformer.transform( this,
                                    IViewportTransformationTarget( scene.targetCoordinateSpace ),
-                                   transform,
+                                   bounds,
                                    false )
         
         updateTransform( oldTransform )
@@ -330,12 +345,19 @@ public class AnimationViewport extends EventDispatcher
     private function applyTransform( transform : IViewportTransform,
                                      immediately : Boolean = false ) : void
     {
-        // FIXME
-//        var position : Point = constraint.computePosition( this )
-//        transform.moveTo( position.x, position.y )
-          
-            
-        this.transform = transform
+    	if( !immediately )
+    	{
+            this.transform = transform
+    	}
+    	else
+    	{
+    		var t : IViewportTransformer = transformer
+    		transformer = null
+    		beginTransform()
+    		this.transform = transform
+    		endTransform()
+    		transformer = t
+    	}
     }
 
     //--------------------------------------------------------------------------
@@ -471,6 +493,7 @@ public class AnimationViewport extends EventDispatcher
     //  Methods: Transform Events
     //
     //--------------------------------------------------------------------------
+    
     
     public function beginTransform() : void
     {

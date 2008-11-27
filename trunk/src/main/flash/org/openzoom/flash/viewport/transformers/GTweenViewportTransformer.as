@@ -29,7 +29,7 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.IViewportTransform;
 	
-public class GTweenViewportAnimator implements IViewportTransformer
+public class GTweenViewportTransformer implements IViewportTransformer
 {
     //--------------------------------------------------------------------------
     //
@@ -57,7 +57,7 @@ public class GTweenViewportAnimator implements IViewportTransformer
     /**
      * Constructor.
      */
-    public function GTweenViewportAnimator( viewport : INormalizedViewport )
+    public function GTweenViewportTransformer( viewport : INormalizedViewport )
     {
     	_viewport = viewport
     	tween = new GTween( viewport.transform, DEFAULT_DURATION )

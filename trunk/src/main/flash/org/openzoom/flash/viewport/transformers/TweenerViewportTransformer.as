@@ -23,12 +23,13 @@ package org.openzoom.flash.viewport.transformers
 
 import caurina.transitions.Tweener;
 
+import flash.geom.Rectangle;
+
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformationTarget;
 import org.openzoom.flash.viewport.IViewportTransformer;
-    
-public class TweenerTransformer implements IViewportTransformer
+
+public class TweenerViewportTransformer implements IViewportTransformer
 {
     //--------------------------------------------------------------------------
     //
@@ -48,7 +49,7 @@ public class TweenerTransformer implements IViewportTransformer
     /**
      * Constructor.
      */
-    public function TweenerTransformer()
+    public function TweenerViewportTransformer()
     {
     } 
     
@@ -58,40 +59,50 @@ public class TweenerTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
+    private var target : IViewportTransformationTarget
+    
+    public function stop() : void
+    {
+    	if( target )
+            Tweener.removeTweens( target )
+    }
+    
     public function transform( viewport : INormalizedViewport,
                                target : IViewportTransformationTarget,
-                               targetTransform : IViewportTransform,
+                               bounds : Rectangle,
                                immediately : Boolean = false ) : void
     {
-        var newWidth   : Number = viewport.viewportWidth / viewport.width
-        var newHeight  : Number = viewport.viewportHeight / viewport.height
-        var newX       : Number = -viewport.x * newWidth
-        var newY       : Number = -viewport.y * newHeight
-        
+    	this.target = target
+    	
         if( immediately )
         {
-        	// FIXME
-        	Tweener.removeAllTweens()
+        	Tweener.removeTweens( target )
 	        viewport.beginTransform()
-	        target.x = newX
-	        target.y = newY
-	        target.width = newWidth
-	        target.height = newHeight
+	        target.x = bounds.x
+	        target.y = bounds.y
+	        target.width = bounds.width
+	        target.height = bounds.height
 	        viewport.endTransform()
+	        this.target = null
         }
         else
         {
 	        Tweener.addTween( 
 	                          target,
 	                          {
-                                  x: newX,
-	                              y: newY,
-	                              width: newWidth,
-	                              height: newHeight,
+                                  x: bounds.x,
+	                              y: bounds.y,
+	                              width: bounds.width,
+	                              height: bounds.height,
 	                              time: DEFAULT_DURATION,
 	                              transition: DEFAULT_EASING,
 	                              onStart: viewport.beginTransform,
-	                              onComplete: viewport.endTransform
+	                              onComplete:
+	                              function() : void
+	                              {
+                                      viewport.endTransform()
+                                      this.target = null
+                                  }
 	                          }
 	                        )
         }

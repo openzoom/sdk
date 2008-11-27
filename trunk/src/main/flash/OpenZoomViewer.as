@@ -49,6 +49,7 @@ import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.viewer.assets.Sad;
 
 /**
@@ -407,17 +408,22 @@ public class OpenZoomViewer extends Sprite
     	{
     		  CurveModifiers.init()
     		  var v : INormalizedViewport = viewer.viewport
-              
+              var tr : IViewportTransformer = v.transformer
               var t : IViewportTransform = v.transform
               
               var myPath:Array = new Array();
                   myPath.push({zoom:2});
                   myPath.push({zoom:10});
                   myPath.push({zoom:0.1});
-                  Tweener.addTween(t, { x:0, y:0, zoom: 1, _bezier:myPath, time:2, transition:"easeoutquad",
-                                        onStart: v.beginTransform,
-                                        onUpdate: function() : void { v.transform = t },
-                                        onComplete: v.endTransform });
+                  Tweener.addTween(
+                                    t, { x:0, y:0, zoom: 1, _bezier:myPath, time:2, transition:"easeoutquad",
+                                    onStart:    function() : void { v.beginTransform();
+                                                                    v.transformer = null; },
+                                    onUpdate:   function() : void { v.transform = t; },
+                                    onComplete: function() : void { v.endTransform();
+                                                                    v.transformer = tr; }
+                                    }
+                                   );
 
     		  
 //            viewer.shuffle()

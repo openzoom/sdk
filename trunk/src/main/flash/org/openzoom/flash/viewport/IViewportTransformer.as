@@ -21,14 +21,15 @@
 package org.openzoom.flash.viewport
 {
 
-import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportTransform;
+import flash.geom.Rectangle;
 	
 public interface IViewportTransformer
-{	
+{
+	function stop() : void
+	
     function transform( viewport : INormalizedViewport,
                         target : IViewportTransformationTarget,
-                        targetTransform : IViewportTransform,
+                        bounds : Rectangle,
                         immediately : Boolean = false ) : void		
 }
 
