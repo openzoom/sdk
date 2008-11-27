@@ -145,14 +145,14 @@ public class AnimationViewport extends EventDispatcher
     //  animator
     //----------------------------------
 
-    private var _animator : IViewportAnimator
+    private var _animator : IViewportTransformer
 
-    public function get animator() : IViewportAnimator
+    public function get transformer() : IViewportTransformer
     {
         return _animator
     }
 
-    public function set animator( value : IViewportAnimator ) : void
+    public function set transformer( value : IViewportTransformer ) : void
     {
         _animator = value
     }
@@ -342,9 +342,9 @@ public class AnimationViewport extends EventDispatcher
     
     private function applyTransform( transform : IViewportTransform, animate : Boolean = true ) : void
     {
-    	if( animate && animator )
+    	if( animate && transformer )
     	{
-    		animator.animate( this, transform.clone() )
+    		transformer.transform( this, transform.clone() )
     	}
         else
         {
@@ -514,7 +514,7 @@ public class AnimationViewport extends EventDispatcher
     {
         var t : IViewportTransform
         
-        if( animator )
+        if( transformer )
             t = _targetTransform
         else
             t = transform

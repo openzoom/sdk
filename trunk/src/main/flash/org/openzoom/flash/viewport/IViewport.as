@@ -163,25 +163,25 @@ public interface IViewport extends IEventDispatcher
     function set constraint( value : IViewportConstraint ) : void
      
     //----------------------------------
-    //  animator
+    //  transformer
     //----------------------------------
     
-    function get animator() : IViewportAnimator
-    function set animator( value : IViewportAnimator ) : void
+    function get transformer() : IViewportTransformer
+    function set transformer( value : IViewportTransformer ) : void
 
     //----------------------------------
     //  transform
     //----------------------------------
     
-    function get transform() : IViewportTransform
-    function set transform( value : IViewportTransform ) : void
+//    function get transform() : IViewportTransform
+//    function set transform( value : IViewportTransform ) : void
 
     //----------------------------------
     //  targetTransform
     //----------------------------------
     
-    function get targetTransform() : IViewportTransform
-    function set targetTransform( value : IViewportTransform ) : void
+//    function get targetTransform() : IViewportTransform
+//    function set targetTransform( value : IViewportTransform ) : void
         
     //----------------------------------
     //  scene

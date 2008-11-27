@@ -25,13 +25,16 @@ import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
-import flash.events.Event;	
+import flash.events.Event;
+
+import org.openzoom.flash.viewport.ITransformationTarget;	
 
 
 [Event(name="resize", type="flash.events.Event")]
 
 public class MultiScaleScene extends Sprite implements IMultiScaleScene,
-                                                       IReadonlyMultiScaleScene
+                                                       IReadonlyMultiScaleScene,
+                                                       ITransformationTarget 
 {
     //--------------------------------------------------------------------------
     //

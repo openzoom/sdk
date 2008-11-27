@@ -43,6 +43,18 @@ public class ViewportTransform implements IViewportTransform
     public function ViewportTransform( viewport : IReadonlyViewport,
                                        scene : IReadonlyMultiScaleScene )
     {
+//        _x = x
+//        _y = y
+//        _width = width
+//        _height = height
+//        _zoom = zoom
+//    	
+//        _sceneWidth = sceneWidth    
+//        _sceneHeight = sceneHeight
+//        
+//        _viewportWidth = viewportWidth
+//        _viewportHeight = viewportHeight
+    	
     	// FIXME: Remove references to viewport and scene
         this.viewport = viewport
         this.viewport.addEventListener( ViewportEvent.RESIZE, viewport_resizeHandler, false, 0, true )

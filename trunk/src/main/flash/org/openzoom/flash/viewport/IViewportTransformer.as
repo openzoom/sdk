@@ -24,10 +24,16 @@ package org.openzoom.flash.viewport
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportTransform;
 	
-public interface IViewportAnimator
+public interface IViewportTransformer
 {
-    function animate( viewport : INormalizedViewport,
-                      targetTransform : IViewportTransform ) : void		
+	function get viewport() : INormalizedViewport
+	function set viewport( value : INormalizedViewport ) : void
+	
+	function get target() : ITransformationTarget
+	function set target( value : ITransformationTarget ) : void
+	
+    function transform( targetTransform : IViewportTransform,
+                        immediately : Boolean = false ) : void		
 }
 
 }

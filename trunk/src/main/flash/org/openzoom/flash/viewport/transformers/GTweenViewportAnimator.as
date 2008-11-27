@@ -18,7 +18,7 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.viewport.animators
+package org.openzoom.flash.viewport.transformers
 {
 
 import com.gskinner.motion.GTween;
@@ -26,10 +26,10 @@ import com.gskinner.motion.GTween;
 import flash.events.Event;
 
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportAnimator;
+import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.IViewportTransform;
 	
-public class GTweenViewportAnimator implements IViewportAnimator
+public class GTweenViewportAnimator implements IViewportTransformer
 {
     //--------------------------------------------------------------------------
     //
@@ -92,7 +92,7 @@ public class GTweenViewportAnimator implements IViewportAnimator
     //
     //--------------------------------------------------------------------------
     
-    public function animate( viewport : INormalizedViewport,
+    public function transform( viewport : INormalizedViewport,
                              targetTransform : IViewportTransform ) : void
     {
     	var duration : Number = DEFAULT_DURATION

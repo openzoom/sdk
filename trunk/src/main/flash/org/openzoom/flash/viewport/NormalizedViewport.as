@@ -142,47 +142,47 @@ public class NormalizedViewport extends EventDispatcher
     //  animator
     //----------------------------------
 
-    private var _animator : IViewportAnimator
+    private var _animator : IViewportTransformer
 
-    public function get animator() : IViewportAnimator
+    public function get transformer() : IViewportTransformer
     {
         return _animator
     }
 
-    public function set animator( value : IViewportAnimator ) : void
+    public function set transformer( value : IViewportTransformer ) : void
     {
         _animator = value
     }
 
-    //----------------------------------
-    //  transform
-    //----------------------------------
-
-    public function get transform() : IViewportTransform
-    {
-    	return null
-    }
-
-    public function set transform( value : IViewportTransform ) : void
-    {
-    	// TODO
-    }
-    
-    //----------------------------------
-    //  targetTransform
-    //----------------------------------
-
-    private var _targetTransform : IViewportTransform
-    
-    public function get targetTransform() : IViewportTransform
-    {       
-        return _targetTransform.clone()
-    }
-
-    public function set targetTransform( value : IViewportTransform ) : void
-    {
-        _targetTransform = value.clone()
-    }
+//    //----------------------------------
+//    //  transform
+//    //----------------------------------
+//
+//    public function get transform() : IViewportTransform
+//    {
+//    	return null
+//    }
+//
+//    public function set transform( value : IViewportTransform ) : void
+//    {
+//    	// TODO
+//    }
+//    
+//    //----------------------------------
+//    //  targetTransform
+//    //----------------------------------
+//
+//    private var _targetTransform : IViewportTransform
+//    
+//    public function get targetTransform() : IViewportTransform
+//    {       
+//        return _targetTransform.clone()
+//    }
+//
+//    public function set targetTransform( value : IViewportTransform ) : void
+//    {
+//        _targetTransform = value.clone()
+//    }
     
     //----------------------------------
     //  scene
