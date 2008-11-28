@@ -29,7 +29,7 @@ import flash.events.Event;
 
 import mx.core.UIComponent;
 
-import org.openzoom.flash.net.TileLoader;
+import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
@@ -89,7 +89,7 @@ public class MultiScaleContainer extends UIComponent
 //    private var mouseNavigationController : MouseNavigationController
     private var transformationController : ViewTransformationController
     
-    private var loader : TileLoader
+    private var loader : LoadingQueue
     
     //--------------------------------------------------------------------------
     //
@@ -132,7 +132,7 @@ public class MultiScaleContainer extends UIComponent
     
     public function set viewportConstraint( value : IViewportConstraint ) : void
     {
-        return viewport.constraint = value
+        viewport.constraint = value
     }
     
     //----------------------------------
@@ -315,7 +315,7 @@ public class MultiScaleContainer extends UIComponent
     
     private function createLoader() : void
     {
-        loader = new TileLoader()
+        loader = new LoadingQueue()
     }
     
     //--------------------------------------------------------------------------

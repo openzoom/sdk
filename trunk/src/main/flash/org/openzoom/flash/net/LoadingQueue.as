@@ -21,46 +21,46 @@
 package org.openzoom.flash.net
 {
 
-import org.openzoom.flash.events.TileRequestEvent;
+import org.openzoom.flash.events.LoadingItemEvent;
 
 /**
  * Basic queue loader for image tiles.
  */
-public class TileLoader
+public class LoadingQueue
 {
 	private static const MAX_CONNECTIONS : uint = 20
 	
-    private var stack : Array /* of TileRequests */ = []
+    private var queue : Array /* of TileRequests */ = []
     private var connections : Array /* of TileRequests */ = []
 	
-    public function TileLoader()
+    public function LoadingQueue()
     {
     }
     
-    public function add( url : String, context : * = null ) : TileRequest
+    public function addItem( url : String, context : * = null ) : LoadingItem
     {
-    	var request : TileRequest = new TileRequest( url, context )
-            request.addEventListener( TileRequestEvent.COMPLETE, tileRequest_completeHandler )
-            request.addEventListener( TileRequestEvent.ERROR, tileRequest_errorHandler )
+    	var request : LoadingItem = new LoadingItem( url, context )
+            request.addEventListener( LoadingItemEvent.COMPLETE, request_completeHandler )
+            request.addEventListener( LoadingItemEvent.ERROR, request_errorHandler )
             	
-    	stack.unshift( request )
+    	queue.unshift( request )
     	processQueue()
     	return request
     }
     
     private function processQueue() : void
     {
-    	while( stack.length > 0 && connections.length < MAX_CONNECTIONS )
+    	while( queue.length > 0 && connections.length < MAX_CONNECTIONS )
     	{
-	    	var request : TileRequest = TileRequest( stack.shift() )
+	    	var request : LoadingItem = LoadingItem( queue.shift() )
 	    	connections.push( request )
 	    	request.start()
     	}
     }
     
-    private function tileRequest_completeHandler( event : TileRequestEvent ) : void
+    private function request_completeHandler( event : LoadingItemEvent ) : void
     {
-        var index : int = connections.indexOf( event.request )
+        var index : int = connections.indexOf( event.item )
 
         if( index > 0 )
            connections.splice( index, 1 )   
@@ -68,9 +68,9 @@ public class TileLoader
         processQueue()
     }
     
-    private function tileRequest_errorHandler( event : TileRequestEvent ) : void
+    private function request_errorHandler( event : LoadingItemEvent ) : void
     {
-        tileRequest_completeHandler( event )
+        request_completeHandler( event )
 //        trace( "TileRequest Error: ", event.data )
     }
 }

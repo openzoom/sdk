@@ -154,19 +154,19 @@ public class NormalizedViewport extends EventDispatcher
         _animator = value
     }
 
-//    //----------------------------------
-//    //  transform
-//    //----------------------------------
-//
-//    public function get transform() : IViewportTransform
-//    {
-//    	return null
-//    }
-//
-//    public function set transform( value : IViewportTransform ) : void
-//    {
-//    	// TODO
-//    }
+    //----------------------------------
+    //  transform
+    //----------------------------------
+
+    public function get transform() : IViewportTransform
+    {
+    	return null
+    }
+
+    public function set transform( value : IViewportTransform ) : void
+    {
+    	// TODO
+    }
 //    
 //    //----------------------------------
 //    //  targetTransform

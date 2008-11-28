@@ -23,25 +23,26 @@ package org.openzoom.flash.events
 
 import flash.events.Event;
 
-import org.openzoom.flash.net.TileRequest;
+import org.openzoom.flash.net.LoadingItem;
 
 	
-public class TileRequestEvent extends Event
+public class LoadingItemEvent extends Event
 {
     public static const COMPLETE : String = "complete"
     public static const ERROR : String = "error"
+    
     public var data : * = null
     public var context : * = null
-    public var request : TileRequest
+    public var item : LoadingItem
     
-    public function TileRequestEvent( type : String, bubbles : Boolean = false, cancelable : Boolean = false )
+    public function LoadingItemEvent( type : String, bubbles : Boolean = false, cancelable : Boolean = false )
     {
         super( type, bubbles, cancelable )
     }
     
     override public function clone() : Event
     {
-        return new TileRequestEvent( type, bubbles, cancelable )
+        return new LoadingItemEvent( type, bubbles, cancelable )
     }
 }
 

@@ -124,6 +124,7 @@ public interface IViewportTransform
      * Scale of the scene.
      */ 
     function get scale() : Number
+    // TODO
 //  function set scale( value : Number ) : void
       
     //----------------------------------
@@ -209,15 +210,6 @@ public interface IViewportTransform
      */ 
     function showAll() : void
     
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Coordinate transformations
-    //
-    //--------------------------------------------------------------------------
-
-//    function localToScene( point : Point ) : Point
-//    function sceneToLocal( point : Point ) : Point
-
     //--------------------------------------------------------------------------
     //
     //  Methods

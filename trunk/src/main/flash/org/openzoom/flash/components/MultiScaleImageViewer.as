@@ -29,7 +29,8 @@ import flash.display.Sprite;
 import flash.geom.Point;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.net.TileLoader;
+import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
@@ -95,7 +96,7 @@ public class MultiScaleImageViewer extends Sprite
 //        viewport.minZoom = DEFAULT_MIN_ZOOM
 //        viewport.maxZoom = DEFAULT_MAX_ZOOM
         
-        var loader : TileLoader = new TileLoader()
+        var loader : LoadingQueue = new LoadingQueue()
         
         for( var i : int = 0; i < 10; i++ )
         {
@@ -138,7 +139,7 @@ public class MultiScaleImageViewer extends Sprite
     
     private var keyboardNavigationController : KeyboardNavigationController
     private var mouseNavigationController : MouseNavigationController
-    private var transformationController : ViewTransformationController
+//    private var transformationController : ViewTransformationController
     
     //--------------------------------------------------------------------------
     //
@@ -300,6 +301,31 @@ public class MultiScaleImageViewer extends Sprite
         _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
                                            DEFAULT_VIEWPORT_HEIGHT,
                                            scene )
+                                           
+        _viewport.addEventListener( ViewportEvent.TRANSFORM_START,
+                                    viewport_transformStartHandler,
+                                    false, 0, true ) 
+        _viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE,
+                                    viewport_transformUpdateHandler,
+                                    false, 0, true )
+        _viewport.addEventListener( ViewportEvent.TRANSFORM_END,
+                                    viewport_transformEndHandler,
+                                    false, 0, true ) 
+    }
+    
+    private function viewport_transformStartHandler( event : ViewportEvent ) : void
+    {
+    	trace("ViewportEvent.TRANSFORM_START")
+    }
+    
+    private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
+    {
+        trace("ViewportEvent.TRANSFORM_UPDATE")
+    }
+    
+    private function viewport_transformEndHandler( event : ViewportEvent ) : void
+    {
+        trace("ViewportEvent.TRANSFORM_END")
     }
     
     private function createScene() : void
@@ -329,7 +355,7 @@ public class MultiScaleImageViewer extends Sprite
     }
     
     private function createImage( descriptor : IMultiScaleImageDescriptor,
-                                  loader : TileLoader,
+                                  loader : LoadingQueue,
                                   width : Number, height : Number ) : MultiScaleImageRenderer
     {
         var image : MultiScaleImageRenderer =
@@ -352,9 +378,9 @@ public class MultiScaleImageViewer extends Sprite
         addController( mouseNavigationController )
         addController( keyboardNavigationController )
         
-        transformationController = new ViewTransformationController()
-        transformationController.viewport = viewport
-        transformationController.view = view
+//        transformationController = new ViewTransformationController()
+//        transformationController.viewport = viewport
+//        transformationController.view = view
     }
   
     private function addController( controller : IViewportController ) : Boolean

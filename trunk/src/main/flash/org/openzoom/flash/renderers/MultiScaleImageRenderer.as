@@ -34,9 +34,9 @@ import flash.geom.Rectangle;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.events.TileRequestEvent;
+import org.openzoom.flash.events.LoadingItemEvent;
 import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.net.TileLoader;
+import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.images.ITileLayer;
 import org.openzoom.flash.renderers.images.RenderingMode;
 import org.openzoom.flash.renderers.images.Tile;
@@ -66,7 +66,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
      * Constructor.
      */
     public function MultiScaleImageRenderer( descriptor : IMultiScaleImageDescriptor,
-                                             loader : TileLoader, width : Number, height : Number )
+                                             loader : LoadingQueue, width : Number, height : Number )
     {
     	tileLoader = loader
     	
@@ -94,7 +94,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     private var renderingMode : String = RenderingMode.SMOOTH
     
     private var descriptor : IMultiScaleImageDescriptor
-    private var tileLoader : TileLoader
+    private var tileLoader : LoadingQueue
     private var backgroundLoader : Loader
 
     private var layers : Array /* of ITileLayer */ = []
@@ -182,7 +182,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         
         var url : String = descriptor.getTileURL( level, 0, 0 )
         
-        tileLoader.add( url ).addEventListener( Event.COMPLETE, backgroundCompleteHandler )
+        tileLoader.addItem( url ).addEventListener( Event.COMPLETE, backgroundCompleteHandler )
     } 
     
     private function updateDisplayList() : void
@@ -254,7 +254,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
                    continue
                 
                 var url : String = descriptor.getTileURL( tile.level, tile.column, tile.row )
-                tileLoader.add( url, tile )
+                tileLoader.addItem( url, tile )
                           .addEventListener( Event.COMPLETE, tileCompleteHandler, false, 0, true  )
             }
         }
@@ -266,7 +266,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //
     //--------------------------------------------------------------------------
     
-    private function tileCompleteHandler( event : TileRequestEvent ) : void
+    private function tileCompleteHandler( event : LoadingItemEvent ) : void
     {
         var tile : Tile = event.context as Tile
             tile.bitmap = event.data
@@ -275,7 +275,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         layer.addTile( tile )
     }
     
-    private function backgroundCompleteHandler( event : TileRequestEvent ) : void
+    private function backgroundCompleteHandler( event : LoadingItemEvent ) : void
     {
         backgroundTile = event.data as Bitmap
         

@@ -21,6 +21,7 @@
 package org.openzoom.flash.viewport
 {
 
+import flash.display.DisplayObject;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.geom.Point;
@@ -51,7 +52,8 @@ import org.openzoom.flash.viewport.transformers.TweenerViewportTransformer;
 public class AnimationViewport extends EventDispatcher
                                implements INormalizedViewport,
                                           IReadonlyViewport,
-                                          IViewportContainer
+                                          IViewportContainer,
+                                          ITransformerViewport
 {
     //--------------------------------------------------------------------------
     //
@@ -82,14 +84,37 @@ public class AnimationViewport extends EventDispatcher
         
         // FIXME: Unsafe cast
         _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
+        _targetTransform = transform
         
         // FIXME
         _transformer = new TweenerViewportTransformer()
+        _transformer.viewport = this
 //        _transformer = new NullViewportTransformer()
         
         validate()
     }
 
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+    
+    private var _targetTransform : IViewportTransform
+    
+    public function get targetTransform() : IViewportTransform
+    {
+    	return _targetTransform.clone()
+    }
+    
+    public function set targetTransform( value : IViewportTransform ) : void
+    {
+    	_targetTransform = value.clone()
+    	
+        transformer.stop()
+        transformer.transform( transform, _targetTransform )
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -180,20 +205,19 @@ public class AnimationViewport extends EventDispatcher
         
         var position : Point = constraint.computePosition( this )
         _transform.moveTo( position.x, position.y )
-
-        var targetWidth   : Number = viewportWidth / width
-        var targetHeight  : Number = viewportHeight / height
+        
+        // FIXME
+        var targetWidth   : Number =  viewportWidth / width
+        var targetHeight  : Number =  viewportHeight / height
         var targetX       : Number = -x * targetWidth
         var targetY       : Number = -y * targetHeight
+        
+        var target : DisplayObject = scene.targetCoordinateSpace
+            target.x = targetX
+            target.y = targetY
+            target.width = targetWidth
+            target.height = targetHeight
                 
-        var bounds : Rectangle = new Rectangle( targetX, targetY, targetWidth, targetHeight )
-        
-        if( transformer )
-            transformer.transform( this,
-                                   IViewportTransformationTarget( scene.targetCoordinateSpace ),
-                                   bounds,
-                                   false )
-        
         updateTransform( oldTransform )
     }
     
@@ -347,16 +371,17 @@ public class AnimationViewport extends EventDispatcher
     {
     	if( !immediately )
     	{
-            this.transform = transform
+            targetTransform = transform
     	}
     	else
     	{
-    		var t : IViewportTransformer = transformer
-    		transformer = null
+//    		var t : IViewportTransformer = transformer
+//    		transformer = null
     		beginTransform()
     		this.transform = transform
+    		_targetTransform = transform
     		endTransform()
-    		transformer = t
+//    		transformer = t
     	}
     }
 
@@ -508,6 +533,8 @@ public class AnimationViewport extends EventDispatcher
     
     public function endTransform() : void
     {
+    	// FIXME
+//    	targetTransform = transform
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_END ))
     }
     
@@ -519,7 +546,7 @@ public class AnimationViewport extends EventDispatcher
     
     private function getViewportTransform() : IViewportTransform
     {
-        var t : IViewportTransform = transform
+        var t : IViewportTransform = targetTransform
         return t
     }
     

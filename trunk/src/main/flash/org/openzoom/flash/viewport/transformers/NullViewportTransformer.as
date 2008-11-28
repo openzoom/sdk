@@ -21,10 +21,9 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import flash.geom.Rectangle;
-
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportTransformationTarget;
+import org.openzoom.flash.viewport.ITransformerViewport;
+import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;   
 
 public class NullViewportTransformer implements IViewportTransformer
@@ -44,23 +43,59 @@ public class NullViewportTransformer implements IViewportTransformer
     
     //--------------------------------------------------------------------------
     //
+    //  Properties: IViewportTransformer
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  viewport
+    //----------------------------------
+    
+    private var _viewport : ITransformerViewport
+    
+    public function get viewport() : ITransformerViewport
+    {
+    	return _viewport
+    }
+    
+    public function set viewport( value : ITransformerViewport ) : void
+    {
+    	_viewport = value
+    }
+    
+//    //----------------------------------
+//    //  target
+//    //----------------------------------
+//    
+//    private var _target : IViewportTransformationTarget
+//    
+//    public function get target() : IViewportTransformationTarget
+//    {
+//        return _target
+//    }
+//    
+//    public function set target( value : IViewportTransformationTarget ) : void
+//    {
+//        _target = value
+//    }
+    
+    //--------------------------------------------------------------------------
+    //
     //  Methods: IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
     public function stop() : void
     {
+    	// Do nothing
     }
     
-    public function transform( viewport : INormalizedViewport,
-                               target : IViewportTransformationTarget,
-                               bounds : Rectangle,
-                               immediately : Boolean = false ) : void
+    public function transform( sourceTransform : IViewportTransform,
+                               targetTransform : IViewportTransform ) : void
     {
-        target.x      = bounds.x
-        target.y      = bounds.y
-        target.width  = bounds.width
-        target.height = bounds.height
+    	viewport.beginTransform()
+    	viewport.transform = targetTransform
+    	viewport.endTransform()
     }
 }
 

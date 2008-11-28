@@ -23,10 +23,8 @@ package org.openzoom.flash.viewport.transformers
 
 import caurina.transitions.Tweener;
 
-import flash.geom.Rectangle;
-
-import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportTransformationTarget;
+import org.openzoom.flash.viewport.ITransformerViewport;
+import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;
 
 public class TweenerViewportTransformer implements IViewportTransformer
@@ -37,7 +35,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_DURATION : Number = 2.0
+    private static const DEFAULT_DURATION : Number = 1.0
     private static const DEFAULT_EASING : String = "easeOutExpo"
     
     //--------------------------------------------------------------------------
@@ -51,7 +49,45 @@ public class TweenerViewportTransformer implements IViewportTransformer
      */
     public function TweenerViewportTransformer()
     {
-    } 
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: IViewportTransformer
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  viewport
+    //----------------------------------
+    
+    private var _viewport : ITransformerViewport
+    
+    public function get viewport() : ITransformerViewport
+    {
+        return _viewport
+    }
+    
+    public function set viewport( value : ITransformerViewport ) : void
+    {
+        _viewport = value
+    }
+    
+//    //----------------------------------
+//    //  target
+//    //----------------------------------
+//    
+//    private var _target : IViewportTransformationTarget
+//    
+//    public function get target() : IViewportTransformationTarget
+//    {
+//        return _target
+//    }
+//    
+//    public function set target( value : IViewportTransformationTarget ) : void
+//    {
+//        _target = value
+//    }
     
     //--------------------------------------------------------------------------
     //
@@ -59,54 +95,36 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
-    private var target : IViewportTransformationTarget
+    private var target : IViewportTransform
     
     public function stop() : void
     {
-    	if( target )
-            Tweener.removeTweens( target )
+    	if( target && Tweener.removeTweens( target ))
+	        viewport.endTransform()
     }
     
-    public function transform( viewport : INormalizedViewport,
-                               target : IViewportTransformationTarget,
-                               bounds : Rectangle,
-                               immediately : Boolean = false ) : void
+    public function transform( sourceTransform : IViewportTransform,
+                               targetTransform : IViewportTransform ) : void
     {
-    	this.target = target
-    	
-        if( immediately )
-        {
-        	Tweener.removeTweens( target )
-	        viewport.beginTransform()
-	        target.x = bounds.x
-	        target.y = bounds.y
-	        target.width = bounds.width
-	        target.height = bounds.height
-	        viewport.endTransform()
-	        this.target = null
-        }
-        else
-        {
-	        Tweener.addTween( 
-	                          target,
-	                          {
-                                  x: bounds.x,
-	                              y: bounds.y,
-	                              width: bounds.width,
-	                              height: bounds.height,
-	                              time: DEFAULT_DURATION,
-	                              transition: DEFAULT_EASING,
-	                              onStart: viewport.beginTransform,
-	                              onComplete:
-	                              function() : void
-	                              {
-                                      viewport.endTransform()
-                                      this.target = null
-                                  }
-	                          }
-	                        )
-        }
-        
+    	target = sourceTransform
+        Tweener.addTween( 
+                          target,
+                          {
+                              x: targetTransform.x,
+                              y: targetTransform.y,
+                              width: targetTransform.width,
+                              height: targetTransform.height,
+                              time: DEFAULT_DURATION,
+                              transition: DEFAULT_EASING,
+                              onStart: viewport.beginTransform,
+                              onUpdate:
+                              function() : void
+                              {
+                                  viewport.transform = target     
+                              },
+                              onComplete: viewport.endTransform
+                          }
+                        )
     }
 }
 

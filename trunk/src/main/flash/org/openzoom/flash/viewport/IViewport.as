@@ -168,20 +168,6 @@ public interface IViewport extends IEventDispatcher
     
     function get transformer() : IViewportTransformer
     function set transformer( value : IViewportTransformer ) : void
-
-    //----------------------------------
-    //  transform
-    //----------------------------------
-    
-    function get transform() : IViewportTransform
-    function set transform( value : IViewportTransform ) : void
-
-    //----------------------------------
-    //  targetTransform
-    //----------------------------------
-    
-//    function get targetTransform() : IViewportTransform
-//    function set targetTransform( value : IViewportTransform ) : void
         
     //----------------------------------
     //  scene

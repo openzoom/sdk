@@ -33,13 +33,14 @@ import mx.core.UIComponent;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
-import org.openzoom.flash.net.TileLoader;
+import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
+import org.openzoom.flash.viewport.AnimationViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
-import org.openzoom.flash.viewport.NormalizedViewport;
 import org.openzoom.flash.viewport.controllers.KeyboardNavigationController;
 import org.openzoom.flash.viewport.controllers.MouseNavigationController;
 import org.openzoom.flash.viewport.controllers.ViewTransformationController;
@@ -100,7 +101,7 @@ public class MultiScaleImage extends UIComponent
     private var mouseNavigationController : MouseNavigationController
     private var transformationController : ViewTransformationController
     
-    private var loader : TileLoader
+    private var loader : LoadingQueue
     private var image : MultiScaleImageRenderer
     
 	//--------------------------------------------------------------------------
@@ -163,41 +164,13 @@ public class MultiScaleImage extends UIComponent
     //  viewport
     //----------------------------------
     
-    private var _viewport : NormalizedViewport
+    private var _viewport : IViewportContainer
     
     [Bindable(event="viewportChanged")]
     public function get viewport() : INormalizedViewport
     {
         return _viewport
     }
-    
-//    //----------------------------------
-//    //  minZoom
-//    //----------------------------------
-//    
-//    public function get minZoom() : Number
-//    {
-//        return viewport.minZoom
-//    }
-//    
-//    public function set minZoom( value : Number ) : void
-//    {
-//        viewport.minZoom = value
-//    }
-//    
-//    //----------------------------------
-//    //  maxZoom
-//    //----------------------------------
-//    
-//    public function get maxZoom() : Number
-//    {
-//        return viewport.maxZoom
-//    }
-//    
-//    public function set maxZoom( value : Number ) : void
-//    {
-//        viewport.maxZoom = value
-//    }
     
 	//--------------------------------------------------------------------------
     //
@@ -246,9 +219,9 @@ public class MultiScaleImage extends UIComponent
     
     private function createViewport( scene : IMultiScaleScene ) : void
     {
-        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
-                                            DEFAULT_VIEWPORT_HEIGHT,
-                                            scene )
+        _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
+                                           DEFAULT_VIEWPORT_HEIGHT,
+                                           scene )
        dispatchEvent( new Event("viewportChanged" ))
     }
     
@@ -260,11 +233,11 @@ public class MultiScaleImage extends UIComponent
     
     private function createLoader() : void
     {
-    	loader = new TileLoader()
+    	loader = new LoadingQueue()
     }
     
     private function createImage( descriptor : IMultiScaleImageDescriptor,
-                                  loader : TileLoader,
+                                  loader : LoadingQueue,
                                   width : Number, height : Number ) : MultiScaleImageRenderer
     {
         var image : MultiScaleImageRenderer =

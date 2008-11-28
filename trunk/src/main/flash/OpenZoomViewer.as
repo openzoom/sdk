@@ -406,27 +406,27 @@ public class OpenZoomViewer extends Sprite
     {
     	if( viewer && event.keyCode == 82 ) // R
     	{
-    		  CurveModifiers.init()
-    		  var v : INormalizedViewport = viewer.viewport
-              var tr : IViewportTransformer = v.transformer
-              var t : IViewportTransform = v.transform
-              
-              var myPath:Array = new Array();
-                  myPath.push({zoom:2});
-                  myPath.push({zoom:10});
-                  myPath.push({zoom:0.1});
-                  Tweener.addTween(
-                                    t, { x:0, y:0, zoom: 1, _bezier:myPath, time:2, transition:"easeoutquad",
-                                    onStart:    function() : void { v.beginTransform();
-                                                                    v.transformer = null; },
-                                    onUpdate:   function() : void { v.transform = t; },
-                                    onComplete: function() : void { v.endTransform();
-                                                                    v.transformer = tr; }
-                                    }
-                                   );
+//    		  CurveModifiers.init()
+//    		  var v : INormalizedViewport = viewer.viewport
+//              var tr : IViewportTransformer = v.transformer
+//              var t : IViewportTransform = v.transform
+//              
+//              var myPath:Array = new Array();
+//                  myPath.push({zoom:2});
+//                  myPath.push({zoom:10});
+//                  myPath.push({zoom:0.1});
+//                  Tweener.addTween(
+//                                    t, { x:0, y:0, zoom: 1, _bezier:myPath, time:2, transition:"easeoutquad",
+//                                    onStart:    function() : void { v.beginTransform();
+//                                                                    v.transformer = null; },
+//                                    onUpdate:   function() : void { v.transform = t; },
+//                                    onComplete: function() : void { v.endTransform();
+//                                                                    v.transformer = tr; }
+//                                    }
+//                                   );
 
     		  
-//            viewer.shuffle()
+            viewer.shuffle()
     	}
         if( event.keyCode == String("M").charCodeAt() )
             toggleMemoryDisplay()

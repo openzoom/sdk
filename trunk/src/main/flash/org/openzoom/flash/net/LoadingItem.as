@@ -30,12 +30,12 @@ import flash.events.IOErrorEvent;
 import flash.events.SecurityErrorEvent;
 import flash.net.URLRequest;
 
-import org.openzoom.flash.events.TileRequestEvent;
+import org.openzoom.flash.events.LoadingItemEvent;
     
 
-public class TileRequest extends EventDispatcher
+public class LoadingItem extends EventDispatcher
 {
-    public function TileRequest( url : String, context : * = null )
+    public function LoadingItem( url : String, context : * = null )
     {
         this.url = url
         this.context = context
@@ -65,34 +65,37 @@ public class TileRequest extends EventDispatcher
         removeEventListeners()
         loader = null
         
-        var tileEvent : TileRequestEvent = new TileRequestEvent( TileRequestEvent.COMPLETE )
-            tileEvent.request = this
-            tileEvent.data = bitmap
-            tileEvent.context = context
+        var loadingItemEvent : LoadingItemEvent =
+                new LoadingItemEvent( LoadingItemEvent.COMPLETE )
+            loadingItemEvent.item = this
+            loadingItemEvent.data = bitmap
+            loadingItemEvent.context = context
             
-        dispatchEvent( tileEvent )
+        dispatchEvent( loadingItemEvent )
     }
     
     private function contentLoaderInfo_httpStatusHandler( event : HTTPStatusEvent ) : void
     {
-        var tileEvent : TileRequestEvent = new TileRequestEvent( TileRequestEvent.ERROR )
-            tileEvent.request = this
+        var loadingItemEvent : LoadingItemEvent =
+                new LoadingItemEvent( LoadingItemEvent.ERROR )
+            loadingItemEvent.item = this
             
-        dispatchEvent( tileEvent )
+        dispatchEvent( loadingItemEvent )
     }
     
     private function contentLoaderInfo_ioErrorHandler( event : IOErrorEvent ) : void
     {
-        var tileEvent : TileRequestEvent = new TileRequestEvent( TileRequestEvent.ERROR )
-            tileEvent.request = this
+        var loadingItemEvent : LoadingItemEvent =
+                new LoadingItemEvent( LoadingItemEvent.ERROR )
+            loadingItemEvent.item = this
             
-        dispatchEvent( tileEvent )
+        dispatchEvent( loadingItemEvent )
     }
     
     private function contentLoaderInfo_securityErrorHandler( event : SecurityErrorEvent ) : void
     {
-        var tileEvent : TileRequestEvent = new TileRequestEvent( TileRequestEvent.ERROR )
-            tileEvent.request = this
+        var tileEvent : LoadingItemEvent = new LoadingItemEvent( LoadingItemEvent.ERROR )
+            tileEvent.item = this
             
         dispatchEvent( tileEvent )
     }
