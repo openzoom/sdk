@@ -73,21 +73,22 @@ public class TweenerViewportTransformer implements IViewportTransformer
         _viewport = value
     }
     
-//    //----------------------------------
-//    //  target
-//    //----------------------------------
-//    
-//    private var _target : IViewportTransformationTarget
-//    
-//    public function get target() : IViewportTransformationTarget
-//    {
-//        return _target
-//    }
-//    
-//    public function set target( value : IViewportTransformationTarget ) : void
-//    {
-//        _target = value
-//    }
+    //----------------------------------
+    //  transformTarget
+    //----------------------------------
+    
+    private var _transformTarget : IViewportTransform
+    
+    public function get transformTarget() : IViewportTransform
+    {
+        // TODO
+        return null
+    }
+    
+    public function set transformTarget( value : IViewportTransform ) : void
+    {
+    	// TODO
+    }
     
     //--------------------------------------------------------------------------
     //

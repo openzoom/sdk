@@ -279,6 +279,7 @@ public class AnimationViewport extends EventDispatcher
     public function moveTo( x : Number, y : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
+    	// FIXME
         var t : IViewportTransform = getViewportTransform()
         t.moveTo( x, y )
         applyTransform( t )
@@ -365,6 +366,9 @@ public class AnimationViewport extends EventDispatcher
     	{
 //    		var t : IViewportTransformer = transformer
 //    		transformer = null
+            if( transformer )
+                transformer.stop()
+                
     		beginTransform()
     		this.transform = transform
     		_targetTransform = transform

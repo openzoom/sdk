@@ -63,21 +63,18 @@ public class NullViewportTransformer implements IViewportTransformer
     	_viewport = value
     }
     
-//    //----------------------------------
-//    //  target
-//    //----------------------------------
-//    
-//    private var _target : IViewportTransformationTarget
-//    
-//    public function get target() : IViewportTransformationTarget
-//    {
-//        return _target
-//    }
-//    
-//    public function set target( value : IViewportTransformationTarget ) : void
-//    {
-//        _target = value
-//    }
+    //----------------------------------
+    //  transformTarget
+    //----------------------------------
+    
+    public function get transformTarget() : IViewportTransform
+    {
+        return viewport.transform
+    }
+    
+    public function set transformTarget( value : IViewportTransform ) : void
+    {
+    }
     
     //--------------------------------------------------------------------------
     //

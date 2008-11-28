@@ -33,6 +33,7 @@ import mx.core.UIComponent;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
+import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
@@ -222,7 +223,46 @@ public class MultiScaleImage extends UIComponent
         _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
                                            DEFAULT_VIEWPORT_HEIGHT,
                                            scene )
+                                           
+        _viewport.addEventListener( ViewportEvent.TRANSFORM_START,
+                                    viewport_transformStartHandler,
+                                    false, 0, true ) 
+        _viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE,
+                                    viewport_transformUpdateHandler,
+                                    false, 0, true )
+        _viewport.addEventListener( ViewportEvent.TRANSFORM_END,
+                                    viewport_transformEndHandler,
+                                    false, 0, true )
+                                     
        dispatchEvent( new Event("viewportChanged" ))
+    }
+    
+    private function viewport_transformStartHandler( event : ViewportEvent ) : void
+    {
+        trace("ViewportEvent.TRANSFORM_START")
+    }
+    
+    private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
+    {
+        trace("ViewportEvent.TRANSFORM_UPDATE")
+        
+        // FIXME
+        var v : INormalizedViewport = viewport
+        var targetWidth   : Number =  v.viewportWidth / v.width
+        var targetHeight  : Number =  v.viewportHeight / v.height
+        var targetX       : Number = -v.x * targetWidth
+        var targetY       : Number = -v.y * targetHeight
+        
+        var target : DisplayObject = scene.targetCoordinateSpace
+            target.x = targetX
+            target.y = targetY
+            target.width = targetWidth
+            target.height = targetHeight
+    }
+    
+    private function viewport_transformEndHandler( event : ViewportEvent ) : void
+    {
+        trace("ViewportEvent.TRANSFORM_END")
     }
     
     private function createScene() : void

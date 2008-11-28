@@ -324,25 +324,7 @@ public interface IViewport extends IEventDispatcher
      * If the rectangles do not intersect, this method returns an empty Rectangle
      * object; that is, a rectangle with its x, y, width, and height properties set to 0.
      */ 
-    function intersection( toIntersect : Rectangle ) : Rectangle
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Events
-    //
-    //--------------------------------------------------------------------------
-  
-    /**
-     * Dispatch <code>transformStart</code> event to
-     * let all listeners know that a viewport transition has started.
-     */
-    function beginTransform() : void
-        
-    /**
-     * Dispatch <code>transformEnd</code> event to
-     * let all listeners know that a viewport transition has finished.
-     */
-    function endTransform() : void  
+    function intersection( toIntersect : Rectangle ) : Rectangle 
 }
 
 }
