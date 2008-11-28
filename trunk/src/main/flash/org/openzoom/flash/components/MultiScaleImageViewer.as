@@ -41,7 +41,6 @@ import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.controllers.KeyboardNavigationController;
 import org.openzoom.flash.viewport.controllers.MouseNavigationController;
-import org.openzoom.flash.viewport.controllers.ViewTransformationController;
 
 /**
  * Basic multi-scale image viewer.
@@ -321,6 +320,19 @@ public class MultiScaleImageViewer extends Sprite
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
         trace("ViewportEvent.TRANSFORM_UPDATE")
+        
+        // FIXME
+        var v : INormalizedViewport = viewport
+        var targetWidth   : Number =  v.viewportWidth / v.width
+        var targetHeight  : Number =  v.viewportHeight / v.height
+        var targetX       : Number = -v.x * targetWidth
+        var targetY       : Number = -v.y * targetHeight
+        
+        var target : DisplayObject = scene.targetCoordinateSpace
+            target.x = targetX
+            target.y = targetY
+            target.width = targetWidth
+            target.height = targetHeight
     }
     
     private function viewport_transformEndHandler( event : ViewportEvent ) : void

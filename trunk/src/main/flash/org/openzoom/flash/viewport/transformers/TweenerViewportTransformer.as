@@ -35,7 +35,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_DURATION : Number = 1.0
+    private static const DEFAULT_DURATION : Number = 1.5
     private static const DEFAULT_EASING : String = "easeOutExpo"
     
     //--------------------------------------------------------------------------
@@ -99,8 +99,9 @@ public class TweenerViewportTransformer implements IViewportTransformer
     
     public function stop() : void
     {
-    	if( target && Tweener.removeTweens( target ))
-	        viewport.endTransform()
+    	if( target)
+    	    Tweener.removeTweens( target )
+//	        viewport.endTransform()
     }
     
     public function transform( sourceTransform : IViewportTransform,
@@ -116,7 +117,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
                               height: targetTransform.height,
                               time: DEFAULT_DURATION,
                               transition: DEFAULT_EASING,
-                              onStart: viewport.beginTransform,
+//                              onStart: viewport.beginTransform,
                               onUpdate:
                               function() : void
                               {

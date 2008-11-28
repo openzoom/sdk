@@ -205,18 +205,6 @@ public class AnimationViewport extends EventDispatcher
         
         var position : Point = constraint.computePosition( this )
         _transform.moveTo( position.x, position.y )
-        
-        // FIXME
-        var targetWidth   : Number =  viewportWidth / width
-        var targetHeight  : Number =  viewportHeight / height
-        var targetX       : Number = -x * targetWidth
-        var targetY       : Number = -y * targetHeight
-        
-        var target : DisplayObject = scene.targetCoordinateSpace
-            target.x = targetX
-            target.y = targetY
-            target.width = targetWidth
-            target.height = targetHeight
                 
         updateTransform( oldTransform )
     }
