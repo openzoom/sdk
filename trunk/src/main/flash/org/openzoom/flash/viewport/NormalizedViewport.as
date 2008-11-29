@@ -35,7 +35,6 @@ import flash.geom.Rectangle;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.utils.math.clamp;
-import org.openzoom.flash.viewport.constraints.DefaultViewportConstraint;
 import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 
 //------------------------------------------------------------------------------
@@ -55,7 +54,8 @@ import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 public class NormalizedViewport extends EventDispatcher
                                 implements INormalizedViewport,
                                            IReadonlyViewport,
-                                           IViewportContainer
+                                           IViewportContainer,
+                                           ITransformerViewport
 {
     //--------------------------------------------------------------------------
     //
@@ -123,7 +123,8 @@ public class NormalizedViewport extends EventDispatcher
     //  constraint
     //----------------------------------
     
-    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
+    private var _constraint : IViewportConstraint = new NullViewportConstraint()
+//    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
 
     public function get constraint() : IViewportConstraint
     {
@@ -172,17 +173,18 @@ public class NormalizedViewport extends EventDispatcher
 //    //  targetTransform
 //    //----------------------------------
 //
-//    private var _targetTransform : IViewportTransform
-//    
-//    public function get targetTransform() : IViewportTransform
-//    {       
+    private var _targetTransform : IViewportTransform
+    
+    public function get targetTransform() : IViewportTransform
+    {  
+    	return null     
 //        return _targetTransform.clone()
-//    }
-//
-//    public function set targetTransform( value : IViewportTransform ) : void
-//    {
+    }
+
+    public function set targetTransform( value : IViewportTransform ) : void
+    {
 //        _targetTransform = value.clone()
-//    }
+    }
     
     //----------------------------------
     //  scene

@@ -287,9 +287,10 @@ public class AnimationViewport extends EventDispatcher
     {
     	// FIXME
         var t : IViewportTransform = getViewportTransform()
+//        trace( "transform:", transform )
+//        trace( "target:   ", t )
         t.moveTo( x, y )
         applyTransform( t )
-//        applyTransform( t, true )
     }
 
 
@@ -378,7 +379,8 @@ public class AnimationViewport extends EventDispatcher
                 
     		beginTransform()
     		this.transform = transform
-    		transformer.setTargetTransform( transform )
+//    		transformer.targetTransform = transform
+//    		transformer.setTargetTransform( transform )
 //    		_targetTransform = transform
     		endTransform()
 //    		transformer = t

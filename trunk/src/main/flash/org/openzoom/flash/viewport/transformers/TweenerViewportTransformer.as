@@ -49,6 +49,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
      */
     public function TweenerViewportTransformer()
     {
+    	TransformShortcuts.init()
     }
     
     //--------------------------------------------------------------------------
@@ -77,10 +78,10 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //  transformTarget
     //----------------------------------
     
-    public function setTargetTransform( value : IViewportTransform ) : void
-    {
-    	_targetTransform = value.clone()
-    }
+//    public function setTargetTransform( value : IViewportTransform ) : void
+//    {
+//    	_targetTransform = value.clone()
+//    }
     
     private var _targetTransform : IViewportTransform
     
@@ -90,38 +91,43 @@ public class TweenerViewportTransformer implements IViewportTransformer
     }
     
     public function set targetTransform( value : IViewportTransform ) : void
-    {	
-    	if( Tweener.getTweenCount( target ) == 0 )
+    {
+//    	if( !target )
+//    	     target = value.clone()
+    	
+    	if( Tweener.getTweenCount( viewport ) == 0 )
     	   viewport.beginTransform()
     	   
 //    	stop()
-    	
-        if( !initTarget )
-        {
-    	   target = viewport.transform
-           initTarget = true        	
-        }  	   
-        
-    	_targetTransform = value
+    	_targetTransform = value.clone()
     	
         Tweener.addTween( 
-                          target,
+                          viewport,
                           {
-                              x: targetTransform.x,
-                              y: targetTransform.y,
-                              width: targetTransform.width,
-                              height: targetTransform.height,
+                              _transform_x: targetTransform.x,
+                              _transform_y: targetTransform.y,
+                              _transform_width: targetTransform.width,
+                              _transform_height: targetTransform.height,
                               time: DEFAULT_DURATION,
                               transition: DEFAULT_EASING,
-//                              onStart: viewport.beginTransform,
-                              onUpdate:
-                              function() : void
-                              {
-                                  viewport.transform = target     
-                              },
                               onComplete: viewport.endTransform
                           }
                         )
+//        Tweener.addTween( 
+//                          target,
+//                          {
+//                              x: targetTransform.x,
+//                              y: targetTransform.y,
+//                              width: targetTransform.width,
+//                              height: targetTransform.height,
+//                              time: DEFAULT_DURATION,
+//                              transition: DEFAULT_EASING,
+////                              onStart: viewport.beginTransform,
+//                              onUpdate:
+//                              function() : void { viewport.transform = target },
+//                              onComplete: viewport.endTransform
+//                          }
+//                        )
     }
     
     //--------------------------------------------------------------------------

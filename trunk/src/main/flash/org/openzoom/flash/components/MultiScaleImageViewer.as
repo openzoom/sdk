@@ -39,8 +39,10 @@ import org.openzoom.flash.viewport.AnimationViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
+import org.openzoom.flash.viewport.NormalizedViewport;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
+import org.openzoom.flash.viewport.controllers.ViewTransformationController;
 
 /**
  * Basic multi-scale image viewer.
@@ -88,7 +90,7 @@ public class MultiScaleImageViewer extends Sprite
         createScene()
         
         // viewport
-        createViewport( scene )
+        createNormalizedViewport( scene )
         
         // TODO
 //        viewport.constraint = null
@@ -121,7 +123,7 @@ public class MultiScaleImageViewer extends Sprite
         }
         
         // controllers
-        createControllers( _scene )
+        createControllers()
         updateViewport()
     }
    
@@ -136,9 +138,9 @@ public class MultiScaleImageViewer extends Sprite
     private var mouseCatcher : Sprite
     private var controllers : Array = []
     
-    private var keyboardNavigationController : KeyboardController
-    private var mouseNavigationController : MouseController
-//    private var transformationController : ViewTransformationController
+    private var keyboardController : KeyboardController
+    private var mouseController : MouseController
+    private var transformationController : ViewTransformationController
     
     //--------------------------------------------------------------------------
     //
@@ -295,12 +297,22 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
     
-    private function createViewport( scene : IMultiScaleScene ) : void
+    private function createNormalizedViewport( scene : IMultiScaleScene ) : void
+    {
+        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
+                                            DEFAULT_VIEWPORT_HEIGHT,
+                                            scene )
+        
+        transformationController = new ViewTransformationController()
+        transformationController.viewport = viewport
+        transformationController.view = scene.targetCoordinateSpace
+    }
+    
+    private function createAnimationViewport( scene : IMultiScaleScene ) : void
     {
         _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
-                                           DEFAULT_VIEWPORT_HEIGHT,
-                                           scene )
-                                           
+                                            DEFAULT_VIEWPORT_HEIGHT,
+                                            scene )
         _viewport.addEventListener( ViewportEvent.TRANSFORM_START,
                                     viewport_transformStartHandler,
                                     false, 0, true ) 
@@ -321,7 +333,7 @@ public class MultiScaleImageViewer extends Sprite
     {
 //        trace("ViewportEvent.TRANSFORM_UPDATE")
         
-        // FIXME
+//        // FIXME
         var v : INormalizedViewport = viewport
         var targetWidth   : Number =  v.viewportWidth / v.width
         var targetHeight  : Number =  v.viewportHeight / v.height
@@ -382,17 +394,13 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
   
-    private function createControllers( view : DisplayObject ) : void
+    private function createControllers() : void
     {   
-        mouseNavigationController = new MouseController()
-        keyboardNavigationController = new KeyboardController()
+        mouseController = new MouseController()
+        keyboardController = new KeyboardController()
 
-        addController( mouseNavigationController )
-        addController( keyboardNavigationController )
-        
-//        transformationController = new ViewTransformationController()
-//        transformationController.viewport = viewport
-//        transformationController.view = view
+        addController( mouseController )
+        addController( keyboardController )
     }
   
     private function addController( controller : IViewportController ) : Boolean
