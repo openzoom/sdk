@@ -21,7 +21,6 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.ITransformerViewport;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;   
@@ -67,12 +66,17 @@ public class NullViewportTransformer implements IViewportTransformer
     //  transformTarget
     //----------------------------------
     
-    public function get transformTarget() : IViewportTransform
+    public function setTargetTransform( value : IViewportTransform ) : void
+    {
+    	// TODO
+    }
+    
+    public function get targetTransform() : IViewportTransform
     {
         return viewport.transform
     }
     
-    public function set transformTarget( value : IViewportTransform ) : void
+    public function set targetTransform( value : IViewportTransform ) : void
     {
     }
     

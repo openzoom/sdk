@@ -39,8 +39,8 @@ import org.openzoom.flash.viewport.AnimationViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
-import org.openzoom.flash.viewport.controllers.KeyboardNavigationController;
-import org.openzoom.flash.viewport.controllers.MouseNavigationController;
+import org.openzoom.flash.viewport.controllers.KeyboardController;
+import org.openzoom.flash.viewport.controllers.MouseController;
 
 /**
  * Basic multi-scale image viewer.
@@ -59,7 +59,7 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT           : Number = 16000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
-    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0
+    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.5
     
     private static const DEFAULT_VIEWPORT_WIDTH         : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT        : Number = 600
@@ -136,8 +136,8 @@ public class MultiScaleImageViewer extends Sprite
     private var mouseCatcher : Sprite
     private var controllers : Array = []
     
-    private var keyboardNavigationController : KeyboardNavigationController
-    private var mouseNavigationController : MouseNavigationController
+    private var keyboardNavigationController : KeyboardController
+    private var mouseNavigationController : MouseController
 //    private var transformationController : ViewTransformationController
     
     //--------------------------------------------------------------------------
@@ -319,7 +319,7 @@ public class MultiScaleImageViewer extends Sprite
     
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
-        trace("ViewportEvent.TRANSFORM_UPDATE")
+//        trace("ViewportEvent.TRANSFORM_UPDATE")
         
         // FIXME
         var v : INormalizedViewport = viewport
@@ -384,8 +384,8 @@ public class MultiScaleImageViewer extends Sprite
   
     private function createControllers( view : DisplayObject ) : void
     {   
-        mouseNavigationController = new MouseNavigationController()
-        keyboardNavigationController = new KeyboardNavigationController()
+        mouseNavigationController = new MouseController()
+        keyboardNavigationController = new KeyboardController()
 
         addController( mouseNavigationController )
         addController( keyboardNavigationController )

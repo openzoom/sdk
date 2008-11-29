@@ -77,38 +77,33 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //  transformTarget
     //----------------------------------
     
-    private var _transformTarget : IViewportTransform
-    
-    public function get transformTarget() : IViewportTransform
+    public function setTargetTransform( value : IViewportTransform ) : void
     {
-        // TODO
-        return null
+    	_targetTransform = value.clone()
     }
     
-    public function set transformTarget( value : IViewportTransform ) : void
+    private var _targetTransform : IViewportTransform
+    
+    public function get targetTransform() : IViewportTransform
     {
-    	// TODO
+        return _targetTransform.clone()
     }
     
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: IViewportTransformer
-    //
-    //--------------------------------------------------------------------------
-    
-    private var target : IViewportTransform
-    
-    public function stop() : void
-    {
-    	if( target)
-    	    Tweener.removeTweens( target )
-//	        viewport.endTransform()
-    }
-    
-    public function transform( sourceTransform : IViewportTransform,
-                               targetTransform : IViewportTransform ) : void
-    {
-    	target = sourceTransform
+    public function set targetTransform( value : IViewportTransform ) : void
+    {	
+    	if( Tweener.getTweenCount( target ) == 0 )
+    	   viewport.beginTransform()
+    	   
+//    	stop()
+    	
+        if( !initTarget )
+        {
+    	   target = viewport.transform
+           initTarget = true        	
+        }  	   
+        
+    	_targetTransform = value
+    	
         Tweener.addTween( 
                           target,
                           {
@@ -127,6 +122,28 @@ public class TweenerViewportTransformer implements IViewportTransformer
                               onComplete: viewport.endTransform
                           }
                         )
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IViewportTransformer
+    //
+    //--------------------------------------------------------------------------
+    
+    private var initTarget : Boolean = false
+    private var target : IViewportTransform
+    
+    public function stop() : void
+    {
+    	if( target)
+    	    Tweener.removeTweens( target )
+//	        viewport.endTransform()
+    }
+    
+    public function transform( sourceTransform : IViewportTransform,
+                               targetTransform : IViewportTransform ) : void
+    {
+//    	target = transform(
     }
 }
 

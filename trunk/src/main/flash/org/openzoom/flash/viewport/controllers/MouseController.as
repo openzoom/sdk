@@ -31,7 +31,7 @@ import flash.utils.Timer;
 /**
  * Viewport controller for mouse navigation.
  */
-public class MouseNavigationController extends ViewportControllerBase
+public class MouseController extends ViewportControllerBase
 {
     //--------------------------------------------------------------------------
     //
@@ -56,7 +56,7 @@ public class MouseNavigationController extends ViewportControllerBase
     /**
      *  Constructor.
      */
-    public function MouseNavigationController()
+    public function MouseController()
     {
         createClickTimer()
     }

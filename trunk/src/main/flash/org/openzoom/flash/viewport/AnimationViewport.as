@@ -21,7 +21,6 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.display.DisplayObject;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.geom.Point;
@@ -30,6 +29,7 @@ import flash.geom.Rectangle;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+import org.openzoom.flash.viewport.constraints.DefaultViewportConstraint;
 import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
 import org.openzoom.flash.viewport.transformers.TweenerViewportTransformer;
@@ -82,13 +82,16 @@ public class AnimationViewport extends EventDispatcher
         _scene = scene
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
         
+//        constraint = new DefaultViewportConstraint()
+        
         // FIXME: Unsafe cast
         _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
-        _targetTransform = transform
+//        _targetTransform = transform
         
         // FIXME
         _transformer = new TweenerViewportTransformer()
         _transformer.viewport = this
+        _transformer.targetTransform = transform
 //        _transformer = new NullViewportTransformer()
         
         validate()
@@ -100,19 +103,22 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    private var _targetTransform : IViewportTransform
+//    private var _targetTransform : IViewportTransform
     
     public function get targetTransform() : IViewportTransform
     {
-    	return _targetTransform.clone()
+    	return transformer.targetTransform
+//    	return _targetTransform.clone()
     }
     
     public function set targetTransform( value : IViewportTransform ) : void
     {
-    	_targetTransform = value.clone()
+//    	_targetTransform = value.clone()
+        transformer.targetTransform = value
     	
-        transformer.stop()
-        transformer.transform( transform, _targetTransform )
+    	// Fixme
+//        transformer.stop()
+//        transformer.transform( transform, _targetTransform )
     }
     
     //--------------------------------------------------------------------------
@@ -283,6 +289,7 @@ public class AnimationViewport extends EventDispatcher
         var t : IViewportTransform = getViewportTransform()
         t.moveTo( x, y )
         applyTransform( t )
+//        applyTransform( t, true )
     }
 
 
@@ -371,7 +378,8 @@ public class AnimationViewport extends EventDispatcher
                 
     		beginTransform()
     		this.transform = transform
-    		_targetTransform = transform
+    		transformer.setTargetTransform( transform )
+//    		_targetTransform = transform
     		endTransform()
 //    		transformer = t
     	}
@@ -527,6 +535,7 @@ public class AnimationViewport extends EventDispatcher
     {
     	// FIXME
 //    	targetTransform = transform
+
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_END ))
     }
     

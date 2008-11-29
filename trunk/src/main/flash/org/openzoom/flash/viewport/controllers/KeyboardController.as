@@ -30,7 +30,7 @@ import flash.utils.Timer;
 /**
  * Viewport controller for keyboard navigation.
  */
-public class KeyboardNavigationController extends ViewportControllerBase
+public class KeyboardController extends ViewportControllerBase
 {
     //--------------------------------------------------------------------------
     //
@@ -40,10 +40,10 @@ public class KeyboardNavigationController extends ViewportControllerBase
    
     private static const KEYBOARD_REFRESH_DELAY    : Number = 80 // milliseconds
    
-    private static const ZOOM_IN_FACTOR            : Number = 2.0
-    private static const ZOOM_OUT_FACTOR           : Number = 0.3
+    private static const ZOOM_IN_FACTOR            : Number = 1.8
+    private static const ZOOM_OUT_FACTOR           : Number = 0.5
     private static const ACCELERATION_FACTOR       : Number = 15
-    private static const TRANSLATION_FACTOR        : Number = 0.05
+    private static const TRANSLATION_FACTOR        : Number = 0.08
     
     private static const DEFAULT_UP_KEY_CODE       : uint = 87 // W
     private static const DEFAULT_RIGHT_KEY_CODE    : uint = 68 // D
@@ -62,7 +62,7 @@ public class KeyboardNavigationController extends ViewportControllerBase
     /**
      * Constructor.
      */
-    public function KeyboardNavigationController()
+    public function KeyboardController()
     {
     }
    

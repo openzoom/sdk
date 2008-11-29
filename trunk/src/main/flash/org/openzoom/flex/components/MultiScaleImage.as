@@ -42,8 +42,8 @@ import org.openzoom.flash.viewport.AnimationViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
-import org.openzoom.flash.viewport.controllers.KeyboardNavigationController;
-import org.openzoom.flash.viewport.controllers.MouseNavigationController;
+import org.openzoom.flash.viewport.controllers.KeyboardController;
+import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.controllers.ViewTransformationController;
 
 /**
@@ -98,8 +98,8 @@ public class MultiScaleImage extends UIComponent
 
     private var controllers : Array = []
     
-    private var keyboardNavigationController : KeyboardNavigationController
-    private var mouseNavigationController : MouseNavigationController
+    private var keyboardNavigationController : KeyboardController
+    private var mouseNavigationController : MouseController
     private var transformationController : ViewTransformationController
     
     private var loader : LoadingQueue
@@ -294,8 +294,8 @@ public class MultiScaleImage extends UIComponent
   
     private function createControllers( view : DisplayObject ) : void
     {   
-        mouseNavigationController = new MouseNavigationController()
-        keyboardNavigationController = new KeyboardNavigationController()
+        mouseNavigationController = new MouseController()
+        keyboardNavigationController = new KeyboardController()
 
         addController( mouseNavigationController )
         addController( keyboardNavigationController )
