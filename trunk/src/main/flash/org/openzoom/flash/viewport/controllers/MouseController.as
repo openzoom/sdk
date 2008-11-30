@@ -122,6 +122,10 @@ public class MouseController extends ViewportControllerBase
 
     private function view_mouseWheelHandler( event : MouseEvent ) : void
     {
+    	// prevent zooming when panning
+    	if( panning )
+    	   return
+    	
         // TODO: React appropriately to different platforms and/or browsers,
         // as they at times report completely different mouse wheel deltas. 
         var factor : Number = 1 + event.delta / MOUSE_WHEEL_STEP_FACTOR
@@ -162,7 +166,7 @@ public class MouseController extends ViewportControllerBase
          
         // register where we are in the view as well as in the viewport
         viewDragVector.topLeft = new Point( view.mouseX, view.mouseY )
-        viewportDragVector.topLeft = new Point( viewport.x, viewport.y )
+        viewportDragVector.topLeft = new Point( viewport.targetX, viewport.targetY )
         
         beginPanning()
     }

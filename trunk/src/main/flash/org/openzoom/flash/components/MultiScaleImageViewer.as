@@ -90,7 +90,8 @@ public class MultiScaleImageViewer extends Sprite
         createScene()
         
         // viewport
-        createNormalizedViewport( scene )
+//        createNormalizedViewport( scene )
+        createAnimationViewport( scene )
         
         // TODO
 //        viewport.constraint = null
@@ -311,8 +312,8 @@ public class MultiScaleImageViewer extends Sprite
     private function createAnimationViewport( scene : IMultiScaleScene ) : void
     {
         _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
-                                            DEFAULT_VIEWPORT_HEIGHT,
-                                            scene )
+                                           DEFAULT_VIEWPORT_HEIGHT,
+                                           scene )
         _viewport.addEventListener( ViewportEvent.TRANSFORM_START,
                                     viewport_transformStartHandler,
                                     false, 0, true ) 
@@ -326,13 +327,13 @@ public class MultiScaleImageViewer extends Sprite
     
     private function viewport_transformStartHandler( event : ViewportEvent ) : void
     {
-    	trace("ViewportEvent.TRANSFORM_START")
+//    	trace("ViewportEvent.TRANSFORM_START")
     }
     
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
 //        trace("ViewportEvent.TRANSFORM_UPDATE")
-        
+//        trace( viewport.zoom )
 //        // FIXME
         var v : INormalizedViewport = viewport
         var targetWidth   : Number =  v.viewportWidth / v.width
@@ -349,7 +350,7 @@ public class MultiScaleImageViewer extends Sprite
     
     private function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
-        trace("ViewportEvent.TRANSFORM_END")
+//        trace("ViewportEvent.TRANSFORM_END")
     }
     
     private function createScene() : void

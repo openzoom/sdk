@@ -93,7 +93,7 @@ public class ViewportTransform implements IViewportTransform
 
     public function set zoom( value : Number ) : void
     {
-        zoomTo( value )
+       // zoomTo( value )
     }
 
     //----------------------------------
@@ -116,6 +116,7 @@ public class ViewportTransform implements IViewportTransform
                             transformX : Number = 0.5,
                             transformY : Number = 0.5 ) : void
     {
+//    	trace( "@pre:", _zoom, zoom )
         // keep z within min/max range
         _zoom = clamp( zoom, viewport.constraint.minZoom, viewport.constraint.maxZoom )
 
@@ -141,13 +142,14 @@ public class ViewportTransform implements IViewportTransform
 
         // move new origin to old origin
         moveOriginTo( oldOrigin.x, oldOrigin.y, transformX, transformY )
+//    	trace( "@post:", _zoom, zoom )
     }
 
     public function zoomBy( factor : Number,
                             transformX : Number = 0.5,
                             transformY : Number = 0.5 ) : void
     {
-        zoomTo( zoom * factor, transformX, transformY )
+        zoomTo( this.zoom * factor, transformX, transformY )
     }
 
     //--------------------------------------------------------------------------
@@ -529,7 +531,9 @@ public class ViewportTransform implements IViewportTransform
             transform._y = _y
             transform._width = _width	
             transform._height = _height
+            trace( "@pre", transform._zoom, _zoom )
             transform._zoom = _zoom
+            trace( "@post", transform._zoom, _zoom )
             
             if( !equals( transform ))
                 trace( "AAARGH" )

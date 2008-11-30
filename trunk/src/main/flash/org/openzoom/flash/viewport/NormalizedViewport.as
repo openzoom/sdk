@@ -57,6 +57,16 @@ public class NormalizedViewport extends EventDispatcher
                                            IViewportContainer,
                                            ITransformerViewport
 {
+    public function get targetX() : Number
+    {
+        return x
+    }    
+    
+    public function get targetY() : Number
+    {
+        return y
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Class constants
@@ -601,7 +611,7 @@ public class NormalizedViewport extends EventDispatcher
     
     public function endTransform() : void
     {
-    	updateTransform()
+//    	updateTransform()
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_END ))
     }
     
