@@ -23,6 +23,8 @@ package org.openzoom.flash.descriptors.zoomify
 
 import flash.utils.Dictionary;
 
+import mx.core.UIComponent;
+
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
@@ -31,7 +33,7 @@ import org.openzoom.flash.utils.math.clamp;
 
 /**
  * Descriptor for the Zoomify multi-scale image format.
- * &lt;http://www.zoomify.com/&gt;
+ * <a href="http://www.zoomify.com/">http://www.zoomify.com/</a>
  */
 public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
                                implements IMultiScaleImageDescriptor
@@ -81,6 +83,9 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * inheritDoc
+     */
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
     	var path : String = source.substr( 0, source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length ) + DEFAULT_TILE_FOLDER_NAME
@@ -88,6 +93,9 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 
     }
 
+    /**
+     * inheritDoc
+     */ 
     public function getMinLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
     {
         // TODO: Implement a smart(er) algorithm
@@ -105,12 +113,18 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 
         return IMultiScaleImageLevel( levels[ index ] ).clone()
     }
-
+    
+    /**
+     * inheritDoc
+     */ 
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
     {
         return levels[ index ]
     }
     
+    /**
+     * inheritDoc
+     */ 
     public function clone() : IMultiScaleImageDescriptor
     {
         return new ZoomifyDescriptor( source, new XML( data ) )
@@ -122,6 +136,9 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * inheritDoc
+     */ 
     override public function toString() : String
     {
         return "[ZoomifyDescriptor]" + "\n" + super.toString()
@@ -133,9 +150,13 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function parseXML( data : XML ) : void
     {
-        // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290" NUMTILES="169" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
+        // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290" NUMTILES="169"
+        //        NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
         _width = data.@WIDTH
         _height = data.@HEIGHT
         _tileWidth = _tileHeight = data.@TILESIZE
@@ -144,6 +165,9 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
         _tileOverlap = DEFAULT_TILE_OVERLAP
     }
     
+    /**
+     * @private
+     */
     private function computeNumLevels( width : uint, height : uint, tileWidth : uint, tileHeight : uint ) : uint
     {
         var numLevels : uint = 1
@@ -158,6 +182,9 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
         return numLevels
     }
     
+    /**
+     * @private
+     */
     private function computeLevels( originalWidth : uint, originalHeight : uint,
                                     tileWidth : uint, tileHeight : uint,
                                     numLevels : int ) : Dictionary

@@ -77,6 +77,8 @@ public class SceneNavigator extends Sprite
   
     private var oldMouseX : Number
     private var oldMouseY : Number
+    
+    private var panning : Boolean = false
   
     //--------------------------------------------------------------------------
     //
@@ -186,6 +188,9 @@ public class SceneNavigator extends Sprite
        
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
+    	if( panning )
+    	   return
+    	   
         transformWindow()
     }
 
@@ -201,6 +206,7 @@ public class SceneNavigator extends Sprite
     
         stage.addEventListener( MouseEvent.MOUSE_MOVE,
                                 stage_mouseMoveHandler )
+        panning = true
     }
   
     private function stage_mouseMoveHandler( event : MouseEvent ) : void
@@ -238,8 +244,9 @@ public class SceneNavigator extends Sprite
     }
   
     private function stage_mouseUpHandler( event : MouseEvent ) : void
-    {    
+    {   
         stage.removeEventListener( MouseEvent.MOUSE_MOVE, stage_mouseMoveHandler )
+        panning = false
     }
   
     private function background_clickHandler( event : MouseEvent ) : void
@@ -273,7 +280,8 @@ public class SceneNavigator extends Sprite
         var targetHeight : Number = clamp( v.height ) * backgroundHeight
     
         // enable / disable window dragging
-        if( viewport.width >= 1 && viewport.height >= 1 )
+        if( viewport.transformer.target.width >= 1
+            && viewport.transformer.target.height >= 1 )
             window.mouseEnabled = false
         else
             window.mouseEnabled = true

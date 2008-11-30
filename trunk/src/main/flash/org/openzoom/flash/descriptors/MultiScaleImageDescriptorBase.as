@@ -39,14 +39,23 @@ public class MultiScaleImageDescriptorBase
     //  source
     //----------------------------------
     
+    /**
+     * @private
+     */ 
     protected var source : String
   
     //----------------------------------
     //  width
     //----------------------------------
     
+    /**
+     * @private
+     */   
     protected var _width : uint
   
+    /**
+     * @copy IMultiScaleImageDescriptor#width
+     */ 
     public function get width() : uint
     {
         return _width
@@ -56,8 +65,14 @@ public class MultiScaleImageDescriptorBase
     //  height
     //----------------------------------
     
+    /**
+     * @private
+     */ 
     protected var _height : uint
   
+    /**
+     * @copy IMultiScaleImageDescriptor#height
+     */
     public function get height() : uint
     {
         return _height
@@ -67,19 +82,31 @@ public class MultiScaleImageDescriptorBase
     //  numLevels
     //----------------------------------
     
+    /**
+     * @private
+     */ 
     protected var _numLevels : int
   
+    /**
+     * @copy IMultiScaleImageDescriptor#numLevels
+     */
     public function get numLevels() : int
     {
         return _numLevels
     }
-        
+
     //----------------------------------
     //  tileWidth
     //----------------------------------
-    
+
+    /**
+     * @private
+     */     
     protected var _tileWidth : uint
   
+    /**
+     * @copy IMultiScaleImageDescriptor#tileWidth
+     */
     public function get tileWidth() : uint
     {
         return _tileWidth
@@ -89,8 +116,14 @@ public class MultiScaleImageDescriptorBase
     //  tileHeight
     //----------------------------------
     
+    /**
+     * @private
+     */ 
     protected var _tileHeight : uint
   
+    /**
+     * @copy IMultiScaleImageDescriptor#tileHeight
+     */
     public function get tileHeight() : uint
     {
         return _tileHeight
@@ -100,19 +133,31 @@ public class MultiScaleImageDescriptorBase
     //  tileOverlap
     //----------------------------------
     
+    /**
+     * @private
+     */ 
     protected var _tileOverlap : uint = 0
   
+    /**
+     * @copy IMultiScaleImageDescriptor#tileOverlap
+     */
     public function get tileOverlap() : uint
     {
         return _tileOverlap
     }
     
     //----------------------------------
-    //  tileFormat
+    //  type
     //----------------------------------
     
+    /**
+     * @private
+     */ 
     protected var _type : String
   
+    /**
+     * @copy IMultiScaleImageDescriptor#type
+     */
     public function get type() : String
     {
         return _type
@@ -124,6 +169,9 @@ public class MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @copy IMultiScaleImageDescriptor#getTilePosition
+     */
     public function getTilePosition( column : uint, row : uint ) : Point
     {
         var position : Point = new Point()
@@ -137,6 +185,9 @@ public class MultiScaleImageDescriptorBase
         return position
     }
     
+    /**
+     * @copy IMultiScaleImageDescriptor#existsTile
+     */
     public function existsTile( level : int, column : uint, row : uint ) : Boolean
     {
     	// By default all tiles exist
@@ -149,6 +200,9 @@ public class MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     public function toString() : String
     {
         return "source:" + source + "\n" +

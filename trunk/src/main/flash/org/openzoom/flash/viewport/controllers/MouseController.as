@@ -169,8 +169,8 @@ public class MouseController extends ViewportControllerBase
          
         // register where we are in the view as well as in the viewport
         viewDragVector.topLeft = new Point( view.mouseX, view.mouseY )
-        viewportDragVector.topLeft = new Point( viewport.transformer.targetTransform.x,
-                                                viewport.transformer.targetTransform.y )
+        viewportDragVector.topLeft = new Point( viewport.transformer.target.x,
+                                                viewport.transformer.target.y )
         
         beginPanning()
     }

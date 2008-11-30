@@ -81,7 +81,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     
     private var _targetTransform : IViewportTransform
     
-    public function get targetTransform() : IViewportTransform
+    public function get target() : IViewportTransform
     {
         return _targetTransform.clone()
     }

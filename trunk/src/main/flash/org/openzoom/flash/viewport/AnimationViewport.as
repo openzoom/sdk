@@ -21,17 +21,16 @@
 package org.openzoom.flash.viewport
 {
 
-import caurina.transitions.Tweener;
-
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
+import mx.core.UIComponent;
+
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.viewport.constraints.DefaultViewportConstraint;
 import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
 import org.openzoom.flash.viewport.transformers.TransformShortcuts;
@@ -81,7 +80,6 @@ public class AnimationViewport extends EventDispatcher
     {
     	// FIXME
         TransformShortcuts.init()
-        
         
     	_viewportWidth = width
     	_viewportHeight = height
@@ -193,15 +191,22 @@ public class AnimationViewport extends EventDispatcher
         var position : Point = constraint.computePosition( this )
         _transform.moveTo( position.x, position.y )
 
-        updateTransform( oldTransform )
+        dispatchUpdateTransformEvent( oldTransform )
     }
     
     //----------------------------------
     //  scene
     //----------------------------------
-
+    
+    /**
+     * @private
+     * Storage for the scene property.
+     */
     private var _scene : IMultiScaleScene
 
+    /**
+     * @inheritDoc
+     */ 
     public function get scene() : IMultiScaleScene
     {
         return _scene
@@ -211,9 +216,17 @@ public class AnimationViewport extends EventDispatcher
     //  viewportWidth
     //----------------------------------
     
+    /**
+     * @private
+     * Storage for the viewportWidth property.
+     */
     private var _viewportWidth : Number
     
     [Bindable(event="viewportWidthChanged")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get viewportWidth() : Number
     {
         return _viewportWidth
@@ -223,9 +236,17 @@ public class AnimationViewport extends EventDispatcher
     //  viewportHeight
     //----------------------------------
     
+    /**
+     * @private
+     * Storage for the viewportHeight property.
+     */
     private var _viewportHeight : Number
     
     [Bindable(event="viewportHeightChanged")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get viewportHeight() : Number
     {
         return _viewportHeight
@@ -237,6 +258,9 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */
     public function zoomTo( zoom : Number,
                             transformX : Number = 0.5,
                             transformY : Number = 0.5,
@@ -246,7 +270,10 @@ public class AnimationViewport extends EventDispatcher
         t.zoomTo( zoom, transformX, transformY )
         applyTransform( t )
     }
-
+    
+    /**
+     * @inheritDoc
+     */
     public function zoomBy( factor : Number,
                             transformX : Number = 0.5,
                             transformY : Number = 0.5,
@@ -263,6 +290,9 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */
     public function moveTo( x : Number, y : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
@@ -270,8 +300,10 @@ public class AnimationViewport extends EventDispatcher
         t.moveTo( x, y )
         applyTransform( t )
     }
-
-
+    
+    /**
+     * @inheritDoc
+     */
     public function moveBy( dx : Number, dy : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
@@ -280,6 +312,9 @@ public class AnimationViewport extends EventDispatcher
         applyTransform( t )
     }
 
+    /**
+     * @inheritDoc
+     */
     public function moveCenterTo( x : Number, y : Number,
                                   dispatchChangeEvent : Boolean = true ) : void
     {
@@ -288,6 +323,9 @@ public class AnimationViewport extends EventDispatcher
         applyTransform( t )
     }
 
+    /**
+     * @inheritDoc
+     */
     public function showRect( rect : Rectangle, scale : Number = 1.0, 
                               dispatchChangeEvent : Boolean = true ) : void
     {
@@ -296,6 +334,9 @@ public class AnimationViewport extends EventDispatcher
         applyTransform( t )
     }
     
+    /**
+     * @inheritDoc
+     */
     public function showAll() : void
     {
         var t : IViewportTransform = getViewportTransform()
@@ -309,6 +350,9 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */ 
     public function localToScene( point : Point ) : Point
     {
         var p : Point = new Point()
@@ -318,7 +362,10 @@ public class AnimationViewport extends EventDispatcher
               + ( point.y / viewportHeight ) * ( height * scene.sceneHeight )
         return p
     }
-
+    
+    /**
+     * @inheritDoc
+     */
     public function sceneToLocal( point : Point ) : Point
     {
         var p : Point = new Point()
@@ -341,6 +388,9 @@ public class AnimationViewport extends EventDispatcher
         applyTransform( t, true )
     }
     
+    /**
+     * @private
+     */
     private function applyTransform( transform : IViewportTransform,
                                      immediately : Boolean = false ) : void
     {
@@ -353,11 +403,17 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */
     public function contains( x : Number, y : Number ) : Boolean
     {
         return ( x >= left ) && ( x <= right ) && ( y >= top ) && ( y <= bottom )
     }
     
+    /**
+     * @inheritDoc
+     */
     public function intersects( toIntersect : Rectangle ) : Boolean
     {
     	// FIXME
@@ -368,6 +424,9 @@ public class AnimationViewport extends EventDispatcher
         return sceneViewport.intersects( denormalizeRectangle( toIntersect ))
     }
     
+    /**
+     * @inheritDoc
+     */
     public function intersection( toIntersect : Rectangle ) : Rectangle
     {
     	// FIXME
@@ -389,11 +448,18 @@ public class AnimationViewport extends EventDispatcher
     //----------------------------------
     
     [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get x() : Number
     {
         return _transform.x
     }
     
+    /**
+     * @inheritDoc
+     */
     public function set x( value : Number ) : void
     {
     	// TODO
@@ -404,11 +470,18 @@ public class AnimationViewport extends EventDispatcher
     //----------------------------------
     
     [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get y() : Number
     {
        return _transform.y
     }
     
+    /**
+     * @inheritDoc
+     */
     public function set y( value : Number ) : void
     {
     	// TODO
@@ -419,6 +492,10 @@ public class AnimationViewport extends EventDispatcher
     //----------------------------------
     
     [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get width() : Number
     {
         return _transform.width
@@ -428,8 +505,11 @@ public class AnimationViewport extends EventDispatcher
     //  height
     //----------------------------------
     
-    
     [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get height() : Number
     {
         return _transform.height
@@ -440,6 +520,10 @@ public class AnimationViewport extends EventDispatcher
     //----------------------------------
     
     [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get left() : Number
     {
         return _transform.left
@@ -450,6 +534,10 @@ public class AnimationViewport extends EventDispatcher
     //----------------------------------
     
     [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get right() : Number
     {
         return _transform.right
@@ -460,6 +548,10 @@ public class AnimationViewport extends EventDispatcher
     //----------------------------------
     
     [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get top() : Number
     {
         return _transform.top
@@ -470,6 +562,10 @@ public class AnimationViewport extends EventDispatcher
     //----------------------------------
     
     [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get bottom() : Number
     {
         return _transform.bottom
@@ -481,23 +577,29 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    
+    /**
+     * @inheritDoc
+     */
     public function beginTransform() : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_START ))
     }
     
-    private function updateTransform( oldTransform : IViewportTransform = null ) : void
+    /**
+     * @private
+     */
+    private function dispatchUpdateTransformEvent( oldTransform : IViewportTransform
+                                                       = null ) : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_UPDATE,
                            false, false, oldTransform ))
     }
     
+    /**
+     * @inheritDoc
+     */
     public function endTransform() : void
     {
-    	// FIXME
-//    	targetTransform = transform
-
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_END ))
     }
     
@@ -507,9 +609,12 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
     private function getViewportTransform() : IViewportTransform
     {
-        var t : IViewportTransform = transformer.targetTransform
+        var t : IViewportTransform = transformer.target
         return t
     }
     
@@ -519,6 +624,9 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */
     public function setSize( width : Number, height : Number ) : void
     {
         if( _viewportWidth == width && _viewportHeight == height )
@@ -615,6 +723,9 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function scene_resizeHandler( event : Event ) : void
     {
     	validate()
@@ -626,9 +737,12 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */
     override public function toString() : String
     {
-        return "[NormalizedViewport]" + "\n"
+        return "[AnimationViewport]" + "\n"
                + "x=" + x + "\n" 
                + "y=" + y  + "\n"
                + "z=" + zoom + "\n"
@@ -637,44 +751,6 @@ public class AnimationViewport extends EventDispatcher
                + "sW=" + scene.sceneWidth + "\n"
                + "sH=" + scene.sceneHeight
     }
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Debug
-    //
-    //--------------------------------------------------------------------------
-    
-//    private var _tt : IViewportTransform
-//    
-//    private function set tt( value : IViewportTransform ) : void
-//    {
-//        _tt = value.clone()
-//    
-//	    var DEFAULT_DURATION : Number = 2.0
-//	    var DEFAULT_EASING : String = "easeOutExpo"
-//        
-//        if( !Tweener.isTweening( this ))
-//            beginTransform()
-////        Tweener.removeTweens( this )
-//        
-//        Tweener.addTween( 
-//                          this,
-//                          {
-//                              _transform_x: _tt.x,
-//                              _transform_y: _tt.y,
-//                              _transform_width: _tt.width,
-//                              _transform_height: _tt.height,
-//                              time: DEFAULT_DURATION,
-//                              transition: DEFAULT_EASING,
-//                              onComplete: this.endTransform
-//                          }
-//                        )
-//    }
-//    
-//    private function get tt() : IViewportTransform
-//    {
-//    	return _tt.clone()
-//    }
 }
 
 }

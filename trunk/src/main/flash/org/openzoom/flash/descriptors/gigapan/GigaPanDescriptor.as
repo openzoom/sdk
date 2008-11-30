@@ -31,7 +31,7 @@ import org.openzoom.flash.utils.math.clamp;
 
 /**
  * Descriptor for the GigaPan.org project panoramas.
- * Copyright GigaPan, &lt;http://gigapan.org/&gt;
+ * Copyright GigaPan.org, <a href="http://gigapan.org/">http://gigapan.org/</a>
  */
 public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
                                implements IMultiScaleImageDescriptor
@@ -93,6 +93,9 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
     	var url : String = source
@@ -118,13 +121,18 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     	var tileURL : String = url + "/" + name + extension
         return tileURL
     }
-    
+     
+    /**
+     * @inheritDoc
+     */
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
     {
         return IMultiScaleImageLevel( levels[ index ] )
     }
     
-    
+    /**
+     * @inheritDoc
+     */
     public function getMinLevelForSize( width : Number,
                                             height : Number ) : IMultiScaleImageLevel
     {
@@ -133,7 +141,10 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
                                - DEFAULT_BASE_LEVEL ), 0, numLevels - 1 )
         return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
     }
-    
+     
+    /**
+     * @inheritDoc
+     */
     public function clone() : IMultiScaleImageDescriptor
     {
         return new GigaPanDescriptor( source, extension, width, height, numLevels )
@@ -144,7 +155,10 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //  Methods: Debug
     //
     //--------------------------------------------------------------------------
-    
+     
+    /**
+     * @inheritDoc
+     */
     override public function toString() : String
     {
         return "[GigaPanDescriptor]" + "\n" + super.toString()
@@ -156,6 +170,9 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
     private function computeLevels( originalWidth : uint, originalHeight : uint,
                                     tileSize : uint, numLevels : int ) : Dictionary
     {

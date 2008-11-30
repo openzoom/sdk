@@ -70,6 +70,9 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */
     public function getTileURL( column : uint, row : uint ) : String
     {
         if( uris && uris.length > 0 )
@@ -84,14 +87,22 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
         return ""
     }
     
+    /**
+     * @inheritDoc
+     */
     public function getTilePosition( column : uint, row : uint ) : Point
     {
         return descriptor.getTilePosition( column, row )
     }
     
+    /**
+     * @inheritDoc
+     */
     public function clone() : IMultiScaleImageLevel
     {
-        return new MultiScaleImageLevel( descriptor.clone(), this.index, width, height, numColumns, numRows, uris.slice() )
+        return new MultiScaleImageLevel( descriptor.clone(),
+                                         index, width, height,
+                                         numColumns, numRows, uris.slice() )
     }
     
     //--------------------------------------------------------------------------
@@ -99,7 +110,10 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     //  Methods: Debug
     //
     //--------------------------------------------------------------------------
-
+    
+    /**
+     * @inheritDoc
+     */
     override public function toString() : String
     {
         return "[OpenZoomLevel]" + "\n" + super.toString()

@@ -30,7 +30,7 @@ import org.openzoom.flash.utils.math.clamp;
 
 /**
  * OpenZoom Descriptor.
- * &lt;ttp://openzoom.org/&gt;
+ * <a href="http://openzoom.org/">http://openzoom.org/</a>
  */
 public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
                                 implements IMultiScaleImageDescriptor
@@ -77,17 +77,25 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */ 
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
         return IMultiScaleImageLevel( levels[ level ] ).getTileURL( column, row )
     }
     
+    /**
+     * @inheritDoc
+     */
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
     {
         return IMultiScaleImageLevel( levels[ index ] )
     }
     
-    
+    /**
+     * @inheritDoc
+     */
     public function getMinLevelForSize( width : Number,
                                             height : Number ) : IMultiScaleImageLevel
     {
@@ -104,6 +112,9 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
         return getLevelAt( clamp( level.index, 0, numLevels - 1 )).clone()
     }
     
+    /**
+     * @inheritDoc
+     */
     public function clone() : IMultiScaleImageDescriptor
     {
         return new OpenZoomDescriptor( source, data.copy())
@@ -115,6 +126,9 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */
     override public function toString() : String
     {
         return "[OpenZoomDescriptor]" + "\n" + super.toString()
@@ -126,6 +140,9 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
     private function parseXML( data : XML ) : void
     {
         use namespace openzoom

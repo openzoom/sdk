@@ -66,7 +66,7 @@ public class NullViewportTransformer implements IViewportTransformer
     //  transformTarget
     //----------------------------------
     
-    public function get targetTransform() : IViewportTransform
+    public function get target() : IViewportTransform
     {
         return viewport.transform
     }

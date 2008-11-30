@@ -30,8 +30,9 @@ import org.openzoom.flash.descriptors.MultiScaleImageLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
- * Descriptor for the Microsoft Deep Zoom Image (DZI) format.
- * &lt;http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx&gt;
+ * Descriptor for the
+ * <a href="http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx">
+ * Microsoft Deep Zoom Image (DZI) format.</a>
  */
 public class DZIDescriptor extends MultiScaleImageDescriptorBase
                            implements IMultiScaleImageDescriptor
@@ -78,19 +79,27 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     //  Methods: IMultiScaleImageDescriptor
     //
     //--------------------------------------------------------------------------
-
+    
+    /**
+     * @inheritDoc
+     */ 
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
     	var path : String  = source.substring( 0, source.length - 4 ) + "_files"
         return [ path, "/", level, "/", column, "_", row, ".", extension ].join("")
     }
     
+    /**
+     * @inheritDoc
+     */
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
     {
         return IMultiScaleImageLevel( levels[ index ] )
     }
     
-    
+    /**
+     * @inheritDoc
+     */
     public function getMinLevelForSize( width : Number,
                                             height : Number ) : IMultiScaleImageLevel
     {
@@ -98,6 +107,9 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
     }
     
+    /**
+     * @inheritDoc
+     */
     public function clone() : IMultiScaleImageDescriptor
     {
         return new DZIDescriptor( source, new XML( data ) )
@@ -109,6 +121,9 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */
     override public function toString() : String
     {
         return "[DZIDescriptor]" + "\n" + super.toString()
@@ -120,6 +135,9 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function parseXML( data : XML ) : void
     {
         use namespace deepzoom
@@ -144,11 +162,17 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         _tileOverlap = data.@Overlap
     }
 
+    /**
+     * @private
+     */ 
     private function computeNumLevels( width : Number, height : Number ) : int
     {          //Math.ceil(Math.log(Math.max(width,height))/Math.log(2)
         return Math.ceil( Math.log( Math.max( width, height ) ) / Math.LN2 ) + 1
     }
     
+    /**
+     * @private
+     */ 
     private function computeLevels( originalWidth : uint, originalHeight : uint,
                                     tileWidth : uint, tileHeight : uint,
                                     numLevels : int ) : Dictionary

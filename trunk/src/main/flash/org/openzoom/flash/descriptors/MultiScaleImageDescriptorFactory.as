@@ -83,6 +83,10 @@ public class MultiScaleImageDescriptorFactory
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * Returns an instance of IMultiScaleImageDescriptor that is based
+     * on the data and source that are given.
+     */ 
     public function getDescriptor( source : String,
                                    data : XML ) : IMultiScaleImageDescriptor
     {
@@ -107,6 +111,9 @@ public class MultiScaleImageDescriptorFactory
 //
 //------------------------------------------------------------------------------
 
+/**
+ * @private
+ */
 class SingletonLock
 {
     // Workaround for compile-time singleton enforcement.

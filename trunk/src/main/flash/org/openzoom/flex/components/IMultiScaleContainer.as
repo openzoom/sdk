@@ -18,31 +18,47 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.components.flex
+package org.openzoom.flex.components
 {
 
+import org.openzoom.flash.scene.IMultiScaleScene;
+import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
 	
-
 public interface IMultiScaleContainer
 {
+    /**
+     * Multi-scale scene belonging to this container.
+     */
     function get scene() : IMultiScaleScene
     
+    /**
+     * Width of the scene belonging to this container.
+     */
     function get sceneWidth() : Number	
     function set sceneWidth( value : Number ) : void
     	
+    /**
+     * Height of the scene belonging to this container.
+     */
     function get sceneHeight() : Number	
     function set sceneHeight( value : Number ) : void
     
     /**
      * Viewport belonging to this container.
-     */ 
-    function get viewport() : IViewport
+     */
+    function get viewport() : INormalizedViewport
     
+    /**
+     * Viewport constraint.
+     */ 
     function get constraint() : IViewportConstraint
     function set constraint( value : IViewportConstraint ) : void
     
+    /**
+     * Viewport transformer.
+     */
     function get transformer() : IViewportTransformer
     function set transformer( value : IViewportTransformer ) : void
 }
