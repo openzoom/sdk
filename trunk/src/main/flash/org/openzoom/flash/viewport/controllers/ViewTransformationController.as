@@ -28,12 +28,13 @@ import flash.display.DisplayObject;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.ITransformerViewport;
-import org.openzoom.flash.viewport.IViewportTransformer;    
+import org.openzoom.flash.viewport.IViewportController;    
 
 /**
  * Transforms the view in the viewport.
  */
 public class ViewTransformationController extends ViewportControllerBase
+                                          implements IViewportController
 {
     //--------------------------------------------------------------------------
     //

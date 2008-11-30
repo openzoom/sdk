@@ -65,8 +65,6 @@ public interface IViewport extends IEventDispatcher
     function get x() : Number
     function set x( value : Number ) : void
     
-    // FIXME
-    function get targetX() : Number
     //----------------------------------
     //  y
     //----------------------------------
@@ -77,8 +75,6 @@ public interface IViewport extends IEventDispatcher
     function get y() : Number
     function set y( value : Number ) : void
     
-    // FIXME
-    function get targetY() : Number
     //----------------------------------
     //  width
     //----------------------------------
@@ -170,8 +166,8 @@ public interface IViewport extends IEventDispatcher
     //  transformer
     //----------------------------------
     
-//    function get transformer() : IViewportTransformer
-//    function set transformer( value : IViewportTransformer ) : void
+    function get transformer() : IViewportTransformer
+    function set transformer( value : IViewportTransformer ) : void
         
     //----------------------------------
     //  scene

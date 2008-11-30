@@ -27,10 +27,13 @@ import flash.events.TimerEvent;
 import flash.ui.Keyboard;
 import flash.utils.Timer;
 
+import org.openzoom.flash.viewport.IViewportController;
+
 /**
  * Viewport controller for keyboard navigation.
  */
 public class KeyboardController extends ViewportControllerBase
+                                implements IViewportController
 {
     //--------------------------------------------------------------------------
     //

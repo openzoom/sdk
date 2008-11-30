@@ -25,21 +25,15 @@ import flash.geom.Rectangle;
 	
 public interface IViewportTransformer
 {
-//    function setTargetTransform( value : IViewportTransform ) : void
-
 	function get targetTransform() : IViewportTransform
-	function set targetTransform( value : IViewportTransform ) : void
 	
 	function get viewport() : ITransformerViewport
 	function set viewport( value : ITransformerViewport ) : void
 	
-//	function get target() : IViewportTransformationTarget
-//	function set target( value : IViewportTransformationTarget ) : void
-	
 	function stop() : void
 	
-    function transform( sourceTransform : IViewportTransform,
-                        targetTransform : IViewportTransform ) : void		
+    function transform( targetTransform : IViewportTransform,
+                        immediately : Boolean = false ) : void		
 }
 
 }

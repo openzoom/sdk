@@ -31,9 +31,11 @@ import flash.geom.Rectangle;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+import org.openzoom.flash.viewport.constraints.DefaultViewportConstraint;
 import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
 import org.openzoom.flash.viewport.transformers.TransformShortcuts;
+import org.openzoom.flash.viewport.transformers.TweenerViewportTransformer;
 
 //------------------------------------------------------------------------------
 //
@@ -53,8 +55,8 @@ import org.openzoom.flash.viewport.transformers.TransformShortcuts;
 public class AnimationViewport extends EventDispatcher
                                implements INormalizedViewport,
                                           IReadonlyViewport,
-                                          IViewportContainer/*,
-                                          ITransformerViewport*/
+                                          IViewportContainer,
+                                          ITransformerViewport
 {
     //--------------------------------------------------------------------------
     //
@@ -91,52 +93,14 @@ public class AnimationViewport extends EventDispatcher
         
         // FIXME: Unsafe cast
         _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
-//        _targetTransform = transform
-        _tt = transform
         
         // FIXME
-//        _transformer = new TweenerViewportTransformer()
-//        _transformer.viewport = this
-//        _transformer.targetTransform = transform
-//        _transformer = new NullViewportTransformer()
+        _transformer = new TweenerViewportTransformer()
+        _transformer.viewport = this
         
         validate()
     }
 
-    //--------------------------------------------------------------------------
-    //
-    //  Properties
-    //
-    //--------------------------------------------------------------------------
-    
-//    private var _targetTransform : IViewportTransform
-    
-//    public function get targetTransform() : IViewportTransform
-//    {
-//    	return transformer.targetTransform
-////    	return _targetTransform.clone()
-//    }
-//    
-//    public function set targetTransform( value : IViewportTransform ) : void
-//    {
-////    	_targetTransform = value.clone()
-//        transformer.targetTransform = value
-//    	
-//    	// Fixme
-////        transformer.stop()
-////        transformer.transform( transform, _targetTransform )
-//    }
-    
-    public function get targetX() : Number
-    {
-        return _tt.x
-    }    
-    
-    public function get targetY() : Number
-    {
-        return _tt.y
-    }
-    
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -188,26 +152,27 @@ public class AnimationViewport extends EventDispatcher
     }
 
     //----------------------------------
-    //  animator
+    //  transformer
     //----------------------------------
 
-//    private var _transformer : IViewportTransformer
-//
-//    public function get transformer() : IViewportTransformer
-//    {
-//        return _transformer
-//    }
-//
-//    public function set transformer( value : IViewportTransformer ) : void
-//    {
-//        if( value )
-//           _transformer = value
-//        else
-//        {
-//           _transformer.stop()        	
-//           _transformer = NULL_TRANSFORMER
-//        }
-//    }
+    private var _transformer : IViewportTransformer
+
+    public function get transformer() : IViewportTransformer
+    {
+        return _transformer
+    }
+
+    public function set transformer( value : IViewportTransformer ) : void
+    {
+    	_transformer.stop()
+    	
+        if( value )
+           _transformer = value
+        else
+           _transformer = NULL_TRANSFORMER
+           
+        _transformer.viewport = this
+    }
 
     //----------------------------------
     //  transform
@@ -222,10 +187,8 @@ public class AnimationViewport extends EventDispatcher
 
     public function set transform( value : IViewportTransform ) : void
     {
-//    	trace( "@pre", _transform.zoom, value.zoom, zoom )
         var oldTransform : IViewportTransform = _transform.clone()
         _transform = value.clone()
-//    	trace( "@post", _transform.zoom, value.zoom, zoom )
         
         var position : Point = constraint.computePosition( this )
         _transform.moveTo( position.x, position.y )
@@ -303,7 +266,6 @@ public class AnimationViewport extends EventDispatcher
     public function moveTo( x : Number, y : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-    	// FIXME
         var t : IViewportTransform = getViewportTransform()
         t.moveTo( x, y )
         applyTransform( t )
@@ -382,27 +344,7 @@ public class AnimationViewport extends EventDispatcher
     private function applyTransform( transform : IViewportTransform,
                                      immediately : Boolean = false ) : void
     {
-    	if( !immediately )
-    	{
-//            targetTransform = transform
-            tt = transform
-    	}
-    	else
-    	{
-//    		var t : IViewportTransformer = transformer
-//    		transformer = null
-//            if( transformer )
-//                transformer.stop()
-                
-    		beginTransform()
-    		this.transform = transform
-    		_tt = transform
-//    		transformer.targetTransform = transform
-//    		transformer.setTargetTransform( transform )
-//    		_targetTransform = transform
-    		endTransform()
-//    		transformer = t
-    	}
+        transformer.transform( transform, immediately )
     }
 
     //--------------------------------------------------------------------------
@@ -567,7 +509,7 @@ public class AnimationViewport extends EventDispatcher
     
     private function getViewportTransform() : IViewportTransform
     {
-        var t : IViewportTransform = tt
+        var t : IViewportTransform = transformer.targetTransform
         return t
     }
     
@@ -702,37 +644,37 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    private var _tt : IViewportTransform
-    
-    private function set tt( value : IViewportTransform ) : void
-    {
-        _tt = value.clone()
-    
-	    var DEFAULT_DURATION : Number = 2.0
-	    var DEFAULT_EASING : String = "easeOutExpo"
-        
-        if( !Tweener.isTweening( this ))
-            beginTransform()
-//        Tweener.removeTweens( this )
-        
-        Tweener.addTween( 
-                          this,
-                          {
-                              _transform_x: _tt.x,
-                              _transform_y: _tt.y,
-                              _transform_width: _tt.width,
-                              _transform_height: _tt.height,
-                              time: DEFAULT_DURATION,
-                              transition: DEFAULT_EASING,
-                              onComplete: this.endTransform
-                          }
-                        )
-    }
-    
-    private function get tt() : IViewportTransform
-    {
-    	return _tt.clone()
-    } 
+//    private var _tt : IViewportTransform
+//    
+//    private function set tt( value : IViewportTransform ) : void
+//    {
+//        _tt = value.clone()
+//    
+//	    var DEFAULT_DURATION : Number = 2.0
+//	    var DEFAULT_EASING : String = "easeOutExpo"
+//        
+//        if( !Tweener.isTweening( this ))
+//            beginTransform()
+////        Tweener.removeTweens( this )
+//        
+//        Tweener.addTween( 
+//                          this,
+//                          {
+//                              _transform_x: _tt.x,
+//                              _transform_y: _tt.y,
+//                              _transform_width: _tt.width,
+//                              _transform_height: _tt.height,
+//                              time: DEFAULT_DURATION,
+//                              transition: DEFAULT_EASING,
+//                              onComplete: this.endTransform
+//                          }
+//                        )
+//    }
+//    
+//    private function get tt() : IViewportTransform
+//    {
+//    	return _tt.clone()
+//    }
 }
 
 }

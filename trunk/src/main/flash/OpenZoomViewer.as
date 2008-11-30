@@ -20,9 +20,6 @@
 package
 {
 
-import caurina.transitions.Tweener;
-import caurina.transitions.properties.CurveModifiers;
-
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
@@ -44,12 +41,10 @@ import flash.ui.ContextMenuItem;
 import org.hasseg.externalMouseWheel.ExternalMouseWheelSupport;
 import org.openzoom.flash.components.MemoryDisplay;
 import org.openzoom.flash.components.MultiScaleImageViewer;
+import org.openzoom.flash.components.SceneNavigator;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
-import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportTransform;
-import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.viewer.assets.Sad;
 
 /**
@@ -136,7 +131,8 @@ public class OpenZoomViewer extends Sprite
     private var memoryDisplay : MemoryDisplay
     private var sad : Sprite
     private var fullScreenBackground : Shape
-    
+    private var sceneNavigator : SceneNavigator
+        
     // context menu
     private var menu : ContextMenu
 
@@ -287,6 +283,10 @@ public class OpenZoomViewer extends Sprite
         viewer = createMultiScaleImageViewer( descriptor )
         addChildAt( viewer, getChildIndex( fullScreenBackground ) + 1 )
         
+        sceneNavigator = new SceneNavigator()
+        sceneNavigator.viewport = viewer.viewport
+        addChild( sceneNavigator )
+        
         stage.addEventListener( KeyboardEvent.KEY_UP, stage_keyUpHandler )
     }
 
@@ -307,6 +307,12 @@ public class OpenZoomViewer extends Sprite
         {
             memoryDisplay.x = stage.stageWidth  - memoryDisplay.width
             memoryDisplay.y = stage.stageHeight - memoryDisplay.height
+        }
+        
+        if( sceneNavigator )
+        {
+            sceneNavigator.x = stage.stageWidth  - sceneNavigator.width - 10
+            sceneNavigator.y = 10
         }
         
         if( sad )
@@ -384,6 +390,8 @@ public class OpenZoomViewer extends Sprite
         
         if( descriptor )
             createViewer( descriptor )
+            
+       layout()
     }
     
     private function descriptorLoader_ioErrorHandler( event : IOErrorEvent ) : void

@@ -30,7 +30,7 @@ import org.openzoom.flash.viewport.IViewportController;
 /**
  * Base class for viewport controllers.
  */
-public class ViewportControllerBase implements IViewportController
+public class ViewportControllerBase
 {
     //--------------------------------------------------------------------------
     //

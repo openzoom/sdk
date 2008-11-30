@@ -24,41 +24,81 @@ package org.openzoom.flash.net
 import org.openzoom.flash.events.LoadingItemEvent;
 
 /**
- * Basic queue loader for image tiles.
+ * Basic loading queue for image tiles.
  */
 public class LoadingQueue
 {
-	private static const MAX_CONNECTIONS : uint = 20
-	
-    private var queue : Array /* of TileRequests */ = []
-    private var connections : Array /* of TileRequests */ = []
-	
+    //--------------------------------------------------------------------------
+    //
+    //  Class constants
+    //
+    //--------------------------------------------------------------------------
+    
+	private static const MAX_CONNECTIONS : uint = 8
+
+    //--------------------------------------------------------------------------
+    //
+    //  Constructor
+    //
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Constructor.
+     */
     public function LoadingQueue()
     {
     }
     
+    //--------------------------------------------------------------------------
+    //
+    //  Variables
+    //
+    //--------------------------------------------------------------------------
+    
+    private var queue : Array /* of LoadingItem */ = []
+    private var connections : Array /* of LoadingItem */ = []
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+    
     public function addItem( url : String, context : * = null ) : LoadingItem
     {
-    	var request : LoadingItem = new LoadingItem( url, context )
-            request.addEventListener( LoadingItemEvent.COMPLETE, request_completeHandler )
-            request.addEventListener( LoadingItemEvent.ERROR, request_errorHandler )
+    	var item : LoadingItem = new LoadingItem( url, context )
+            item.addEventListener( LoadingItemEvent.COMPLETE, item_completeHandler )
+            item.addEventListener( LoadingItemEvent.ERROR, item_errorHandler )
             	
-    	queue.unshift( request )
+        // add item to front (stack)
+    	queue.unshift( item )
     	processQueue()
-    	return request
+    	return item
     }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Internal
+    //
+    //--------------------------------------------------------------------------
     
     private function processQueue() : void
     {
     	while( queue.length > 0 && connections.length < MAX_CONNECTIONS )
     	{
-	    	var request : LoadingItem = LoadingItem( queue.shift() )
-	    	connections.push( request )
-	    	request.start()
+	    	var item : LoadingItem = LoadingItem( queue.shift() )
+	    	connections.push( item )
+	    	item.load()
     	}
     }
     
-    private function request_completeHandler( event : LoadingItemEvent ) : void
+    //--------------------------------------------------------------------------
+    //
+    //  Event handlers
+    //
+    //--------------------------------------------------------------------------
+    
+    private function item_completeHandler( event : LoadingItemEvent ) : void
     {
         var index : int = connections.indexOf( event.item )
 
@@ -68,10 +108,9 @@ public class LoadingQueue
         processQueue()
     }
     
-    private function request_errorHandler( event : LoadingItemEvent ) : void
+    private function item_errorHandler( event : LoadingItemEvent ) : void
     {
-        request_completeHandler( event )
-//        trace( "TileRequest Error: ", event.data )
+        item_completeHandler( event )
     }
 }
 

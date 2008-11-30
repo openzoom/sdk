@@ -44,7 +44,7 @@ public class GTweenViewportTransformer implements IViewportTransformer
     
     private static function easeOutExpo( t : Number, b : Number, c : Number, d : Number ) : Number
     {
-            return (t==d) ? b+c : c * 1.001 * (-Math.pow(2, -10 * t/d) + 1) + b;
+        return (t==d) ? b+c : c * 1.001 * (-Math.pow(2, -10 * t/d) + 1) + b;
     }
 
     

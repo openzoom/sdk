@@ -28,10 +28,13 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Timer;
 
+import org.openzoom.flash.viewport.IViewportController;
+
 /**
  * Viewport controller for mouse navigation.
  */
 public class MouseController extends ViewportControllerBase
+                             implements IViewportController
 {
     //--------------------------------------------------------------------------
     //
@@ -88,7 +91,7 @@ public class MouseController extends ViewportControllerBase
     }
     //--------------------------------------------------------------------------
     //
-    //  Overridden methods: AbstractViewportController
+    //  Overridden methods: ViewportControllerBase
     //
     //--------------------------------------------------------------------------
       
@@ -166,7 +169,8 @@ public class MouseController extends ViewportControllerBase
          
         // register where we are in the view as well as in the viewport
         viewDragVector.topLeft = new Point( view.mouseX, view.mouseY )
-        viewportDragVector.topLeft = new Point( viewport.targetX, viewport.targetY )
+        viewportDragVector.topLeft = new Point( viewport.transformer.targetTransform.x,
+                                                viewport.transformer.targetTransform.y )
         
         beginPanning()
     }

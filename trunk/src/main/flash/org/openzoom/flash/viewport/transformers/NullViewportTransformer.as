@@ -66,18 +66,9 @@ public class NullViewportTransformer implements IViewportTransformer
     //  transformTarget
     //----------------------------------
     
-    public function setTargetTransform( value : IViewportTransform ) : void
-    {
-    	// TODO
-    }
-    
     public function get targetTransform() : IViewportTransform
     {
         return viewport.transform
-    }
-    
-    public function set targetTransform( value : IViewportTransform ) : void
-    {
     }
     
     //--------------------------------------------------------------------------
@@ -91,8 +82,8 @@ public class NullViewportTransformer implements IViewportTransformer
     	// Do nothing
     }
     
-    public function transform( sourceTransform : IViewportTransform,
-                               targetTransform : IViewportTransform ) : void
+    public function transform( targetTransform : IViewportTransform,
+                               immediately : Boolean = false ) : void
     {
     	viewport.beginTransform()
     	viewport.transform = targetTransform

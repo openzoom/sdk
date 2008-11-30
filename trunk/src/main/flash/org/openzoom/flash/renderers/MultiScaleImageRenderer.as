@@ -36,6 +36,7 @@ import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.events.LoadingItemEvent;
 import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.net.ILoaderClient;
 import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.images.ITileLayer;
 import org.openzoom.flash.renderers.images.RenderingMode;
@@ -47,6 +48,7 @@ import org.openzoom.flash.utils.math.clamp;
  * Generic renderer for multi-scale images.
  */
 public class MultiScaleImageRenderer extends MultiScaleRenderer
+                                     implements ILoaderClient
 {
     //--------------------------------------------------------------------------
     //
@@ -68,7 +70,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     public function MultiScaleImageRenderer( descriptor : IMultiScaleImageDescriptor,
                                              loader : LoadingQueue, width : Number, height : Number )
     {
-    	tileLoader = loader
+    	_loader = loader
     	
         this.descriptor = descriptor
         
@@ -94,13 +96,34 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     private var renderingMode : String = RenderingMode.SMOOTH
     
     private var descriptor : IMultiScaleImageDescriptor
-    private var tileLoader : LoadingQueue
     private var backgroundLoader : Loader
 
     private var layers : Array /* of ITileLayer */ = []
     private var backgroundTile : Bitmap
     private var frame : Shape
     private var debugLayer : Shape
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: IViewportConstraint
+    //
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  loader
+    //----------------------------------
+    
+    private var _loader : LoadingQueue
+    
+    public function get loader() : LoadingQueue
+    {
+    	return _loader
+    }
+    
+    public function set loader( value : LoadingQueue ) : void
+    {
+    	_loader = value
+    }
     
     //--------------------------------------------------------------------------
     //
@@ -182,7 +205,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         
         var url : String = descriptor.getTileURL( level, 0, 0 )
         
-        tileLoader.addItem( url ).addEventListener( Event.COMPLETE, backgroundCompleteHandler )
+        _loader.addItem( url ).addEventListener( Event.COMPLETE, backgroundCompleteHandler )
     } 
     
     private function updateDisplayList() : void
@@ -254,7 +277,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
                    continue
                 
                 var url : String = descriptor.getTileURL( tile.level, tile.column, tile.row )
-                tileLoader.addItem( url, tile )
+                _loader.addItem( url, tile )
                           .addEventListener( Event.COMPLETE, tileCompleteHandler, false, 0, true  )
             }
         }

@@ -36,6 +36,7 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
+import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
 
 //------------------------------------------------------------------------------
 //
@@ -57,16 +58,6 @@ public class NormalizedViewport extends EventDispatcher
                                            IViewportContainer,
                                            ITransformerViewport
 {
-    public function get targetX() : Number
-    {
-        return x
-    }    
-    
-    public function get targetY() : Number
-    {
-        return y
-    }
-    
     //--------------------------------------------------------------------------
     //
     //  Class constants
@@ -74,6 +65,7 @@ public class NormalizedViewport extends EventDispatcher
     //--------------------------------------------------------------------------
 
     private static const NULL_CONSTRAINT : IViewportConstraint = new NullViewportConstraint()
+    private static const NULL_TRANSFORMER : IViewportTransformer = new NullViewportTransformer()
     
     //--------------------------------------------------------------------------
     //
@@ -92,6 +84,9 @@ public class NormalizedViewport extends EventDispatcher
     	
         _scene = scene
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
+        
+        _transformer = NULL_TRANSFORMER
+        _transformer.viewport = this
         
         validate()
     }
@@ -150,19 +145,26 @@ public class NormalizedViewport extends EventDispatcher
     }
 
     //----------------------------------
-    //  animator
+    //  transformer
     //----------------------------------
 
-    private var _animator : IViewportTransformer
+    private var _transformer : IViewportTransformer
 
     public function get transformer() : IViewportTransformer
     {
-        return _animator
+        return _transformer
     }
 
     public function set transformer( value : IViewportTransformer ) : void
     {
-        _animator = value
+        _transformer.stop()
+        
+        if( value )
+           _transformer = value
+        else
+           _transformer = NULL_TRANSFORMER
+           
+        _transformer.viewport = this
     }
 
     //----------------------------------

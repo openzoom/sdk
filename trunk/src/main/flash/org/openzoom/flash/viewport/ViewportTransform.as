@@ -531,9 +531,9 @@ public class ViewportTransform implements IViewportTransform
             transform._y = _y
             transform._width = _width	
             transform._height = _height
-            trace( "@pre", transform._zoom, _zoom )
+//            trace( "@pre", transform._zoom, _zoom )
             transform._zoom = _zoom
-            trace( "@post", transform._zoom, _zoom )
+//            trace( "@post", transform._zoom, _zoom )
             
             if( !equals( transform ))
                 trace( "AAARGH" )

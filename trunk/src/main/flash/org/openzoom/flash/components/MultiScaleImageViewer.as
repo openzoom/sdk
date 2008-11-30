@@ -98,7 +98,7 @@ public class MultiScaleImageViewer extends Sprite
 //        viewport.minZoom = DEFAULT_MIN_ZOOM
 //        viewport.maxZoom = DEFAULT_MAX_ZOOM
         
-        var loader : LoadingQueue = new LoadingQueue()
+        var loadingQueue : LoadingQueue = new LoadingQueue()
         
         for( var i : int = 0; i < 10; i++ )
         {
@@ -107,7 +107,7 @@ public class MultiScaleImageViewer extends Sprite
             	var scale : Number = clamp( Math.random() / 2, 0.025, 0.25 )
 		        var image : MultiScaleImageRenderer =
 		                      createImage( descriptor.clone(),
-		                                   loader,
+		                                   loadingQueue,
 		                                   descriptor.width * scale,
 		                                   descriptor.height * scale )
 		                      
@@ -173,7 +173,7 @@ public class MultiScaleImageViewer extends Sprite
     
     //--------------------------------------------------------------------------
     //
-    //  Overridden Properties: DisplayObject
+    //  Overridden properties: DisplayObject
     //
     //--------------------------------------------------------------------------
 

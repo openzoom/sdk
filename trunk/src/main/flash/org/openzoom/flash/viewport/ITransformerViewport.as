@@ -16,13 +16,6 @@ public interface ITransformerViewport extends IViewport
     function get transform() : IViewportTransform
     function set transform( value : IViewportTransform ) : void
 
-    //----------------------------------
-    //  targetTransform
-    //----------------------------------
-    
-    function get targetTransform() : IViewportTransform
-    function set targetTransform( value : IViewportTransform ) : void
-    
     //--------------------------------------------------------------------------
     //
     //  Methods: Events

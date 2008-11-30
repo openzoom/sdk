@@ -26,35 +26,62 @@ import flash.display.Loader;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.HTTPStatusEvent;
+import flash.events.IEventDispatcher;
 import flash.events.IOErrorEvent;
 import flash.events.SecurityErrorEvent;
 import flash.net.URLRequest;
 
 import org.openzoom.flash.events.LoadingItemEvent;
     
-
+/**
+ * Represents a single item to load.
+ */
 public class LoadingItem extends EventDispatcher
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Constructor
+    //
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Constructor.
+     */
     public function LoadingItem( url : String, context : * = null )
     {
         this.url = url
         this.context = context
     }
     
+    //--------------------------------------------------------------------------
+    //
+    //  Variables
+    //
+    //--------------------------------------------------------------------------
+    
     private var context : *
     private var loader : Loader
     private var url : String
     
-    public function start() : void
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+    
+    public function load() : void
     {
        var request : URLRequest = new URLRequest( url )
        loader = new Loader()
-       loader.contentLoaderInfo.addEventListener( Event.COMPLETE, contentLoaderInfo_completeHandler, false, 0, true )           
-       loader.contentLoaderInfo.addEventListener( HTTPStatusEvent.HTTP_STATUS, contentLoaderInfo_httpStatusHandler, false, 0, true )
-       loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, contentLoaderInfo_ioErrorHandler, false, 0, true )
-       loader.contentLoaderInfo.addEventListener( SecurityErrorEvent.SECURITY_ERROR, contentLoaderInfo_securityErrorHandler, false, 0, true )
+       addEventListeners( loader.contentLoaderInfo )
        loader.load( request )
     }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Event handlers
+    //
+    //--------------------------------------------------------------------------
     
     private function contentLoaderInfo_completeHandler( event : Event ) : void
     {
@@ -62,7 +89,7 @@ public class LoadingItem extends EventDispatcher
         
         // TODO: FP10 (Loader::unloadAndStop)
         loader.unload()
-        removeEventListeners()
+        removeEventListeners( loader.contentLoaderInfo )
         loader = null
         
         var loadingItemEvent : LoadingItemEvent =
@@ -76,36 +103,62 @@ public class LoadingItem extends EventDispatcher
     
     private function contentLoaderInfo_httpStatusHandler( event : HTTPStatusEvent ) : void
     {
-        var loadingItemEvent : LoadingItemEvent =
+        var itemEvent : LoadingItemEvent =
                 new LoadingItemEvent( LoadingItemEvent.ERROR )
-            loadingItemEvent.item = this
+            itemEvent.item = this
             
-        dispatchEvent( loadingItemEvent )
+        dispatchEvent( itemEvent )
     }
     
     private function contentLoaderInfo_ioErrorHandler( event : IOErrorEvent ) : void
     {
-        var loadingItemEvent : LoadingItemEvent =
+        var itemEvent : LoadingItemEvent =
                 new LoadingItemEvent( LoadingItemEvent.ERROR )
-            loadingItemEvent.item = this
+            itemEvent.item = this
             
-        dispatchEvent( loadingItemEvent )
+        dispatchEvent( itemEvent )
     }
     
     private function contentLoaderInfo_securityErrorHandler( event : SecurityErrorEvent ) : void
     {
-        var tileEvent : LoadingItemEvent = new LoadingItemEvent( LoadingItemEvent.ERROR )
-            tileEvent.item = this
+        var itemEvent : LoadingItemEvent = new LoadingItemEvent( LoadingItemEvent.ERROR )
+            itemEvent.item = this
             
-        dispatchEvent( tileEvent )
+        dispatchEvent( itemEvent )
     }
     
-    private function removeEventListeners() : void
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Internal
+    //
+    //--------------------------------------------------------------------------
+    
+    private function addEventListeners( target : IEventDispatcher ) : void
     {
-        loader.contentLoaderInfo.removeEventListener( Event.COMPLETE, contentLoaderInfo_completeHandler )           
-        loader.contentLoaderInfo.removeEventListener( HTTPStatusEvent.HTTP_STATUS, contentLoaderInfo_httpStatusHandler )
-        loader.contentLoaderInfo.removeEventListener( IOErrorEvent.IO_ERROR, contentLoaderInfo_ioErrorHandler )
-        loader.contentLoaderInfo.removeEventListener( SecurityErrorEvent.SECURITY_ERROR, contentLoaderInfo_securityErrorHandler )
+       target.addEventListener( Event.COMPLETE,
+                                contentLoaderInfo_completeHandler,
+                                false, 0, true )           
+       target.addEventListener( HTTPStatusEvent.HTTP_STATUS,
+                                contentLoaderInfo_httpStatusHandler,
+                                false, 0, true )
+       target.addEventListener( IOErrorEvent.IO_ERROR,
+                                contentLoaderInfo_ioErrorHandler,
+                                false, 0, true )
+       target.addEventListener( SecurityErrorEvent.SECURITY_ERROR,
+                                contentLoaderInfo_securityErrorHandler,
+                                false, 0, true )
+    }
+    
+    private function removeEventListeners( target : IEventDispatcher ) : void
+    {
+        target.removeEventListener( Event.COMPLETE,
+                                    contentLoaderInfo_completeHandler )           
+        target.removeEventListener( HTTPStatusEvent.HTTP_STATUS,
+                                    contentLoaderInfo_httpStatusHandler )
+        target.removeEventListener( IOErrorEvent.IO_ERROR,
+                                    contentLoaderInfo_ioErrorHandler )
+        target.removeEventListener( SecurityErrorEvent.SECURITY_ERROR,
+                                    contentLoaderInfo_securityErrorHandler )
     }
 }
 
