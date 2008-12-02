@@ -46,15 +46,13 @@ public class ViewportTransform2 implements IViewportTransform,
         _y = y
         _width = width
         _height = height
-        _aaa = zoom
+        _zoom = zoom
     	
         this.sceneWidth = sceneWidth    
         this.sceneHeight = sceneHeight
         
         _viewportWidth = viewportWidth
         _viewportHeight = viewportHeight
-    	
-//        validate()
     }
 
     //--------------------------------------------------------------------------
@@ -76,11 +74,11 @@ public class ViewportTransform2 implements IViewportTransform,
     //  zoom
     //----------------------------------
 
-    private var _aaa : Number
+    private var _zoom : Number
 
     public function get zoom() : Number
     {
-        return _aaa
+        return _zoom
     }
     
     //----------------------------------
@@ -104,7 +102,7 @@ public class ViewportTransform2 implements IViewportTransform,
                             transformY : Number = 0.5 ) : void
     {
         // keep z within min/max range
-        _aaa = zoom
+        _zoom = zoom
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( transformX, transformY )
@@ -116,13 +114,13 @@ public class ViewportTransform2 implements IViewportTransform,
         if( ratio >= 1 )
         {
             // scene is wider than viewport
-            _width = 1 / _aaa
+            _width = 1 / _zoom
             _height  = _width * ratio
         }
         else
         {
             // scene is taller than viewport
-            _height = 1 / _aaa
+            _height = 1 / _zoom
             _width = _height / ratio
         }
 
@@ -167,8 +165,8 @@ public class ViewportTransform2 implements IViewportTransform,
         var centerX : Number = area.x + area.width  * 0.5
         var centerY : Number = area.y + area.height * 0.5
     
-        var normalizedCenter : Point = new Point( centerX / sceneWidth,
-                                                  centerY / sceneHeight )
+        var center : Point = new Point( centerX / sceneWidth,
+                                        centerY / sceneHeight )
                                                  
         var scaledWidth : Number = area.width / scale
         var scaledHeight : Number = area.height / scale
@@ -192,8 +190,8 @@ public class ViewportTransform2 implements IViewportTransform,
     
         var oldZoom : Number = zoom
     
-        zoomTo( ratio, 0.5, 0.5 )
-        moveCenterTo( normalizedCenter.x, normalizedCenter.y )
+        zoomTo( ratio )
+        moveCenterTo( center.x, center.y )
     }
     
     public function showAll() : void
@@ -277,8 +275,8 @@ public class ViewportTransform2 implements IViewportTransform,
     
     public function set width( value : Number ) : void
     {
-//    	_width = value
-        zoomTo( getZoomForWidth( value ))
+    	_width = value
+//        zoomTo( getZoomForWidth( value ))
     }
     
     //----------------------------------
@@ -292,11 +290,11 @@ public class ViewportTransform2 implements IViewportTransform,
         return _height
     }
     
-//    public function set height( value : Number ) : void
-//    {
-//    	_height = value
-////        width = aspectRatio * value
-//    }
+    public function set height( value : Number ) : void
+    {
+    	_height = value
+//        width = aspectRatio * value
+    }
     
     //----------------------------------
     //  left
@@ -467,6 +465,18 @@ public class ViewportTransform2 implements IViewportTransform,
                + "z=" + zoom + ", "
                + "w=" + width + ", "
                + "h=" + height + ")"
+    }
+    
+    public function copy( other : ViewportTransform2 ) : void
+    {
+    	_x = other._x
+    	_y = other._y
+    	_width = other._width
+    	_height = other._height
+    	_zoom = other._zoom
+    	
+    	sceneWidth = other.sceneWidth
+    	sceneHeight = other.sceneHeight
     }
     
     public function clone() : IViewportTransform

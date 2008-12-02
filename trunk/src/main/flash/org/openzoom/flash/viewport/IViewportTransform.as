@@ -72,7 +72,7 @@ public interface IViewportTransform
      * Vertical dimension of the viewport.
      */
     function get height() : Number
-//  function set height( value : Number ) : void
+//    function set height( value : Number ) : void
     
 //    //----------------------------------
 //    //  top
@@ -232,6 +232,8 @@ public interface IViewportTransform
      * x, y, width, height and zoom properties as the original IViewportTransform object.
      */
     function clone() : IViewportTransform
+    
+    function copy( other : ViewportTransform2 ) : void
     
     /**
      * Determines whether the object specified in the

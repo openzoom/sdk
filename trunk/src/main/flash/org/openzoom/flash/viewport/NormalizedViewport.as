@@ -34,7 +34,6 @@ import flash.geom.Rectangle;
 
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
-import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
 
@@ -755,6 +754,7 @@ import org.openzoom.flash.viewport.ITransformerViewport;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewport;
+import org.openzoom.flash.viewport.ViewportTransform2;
 
 class TransformerProxy implements IViewportTransformer
 {
@@ -879,6 +879,10 @@ class ViewportTransformProxy implements IViewportTransform
     public function clone() : IViewportTransform
     {
         return null
+    }
+    
+    public function copy( other : ViewportTransform2 ) : void
+    {
     }
     
     public function equals( other : IViewportTransform ) : Boolean

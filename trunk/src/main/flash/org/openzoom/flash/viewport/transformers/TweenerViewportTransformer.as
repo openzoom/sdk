@@ -24,10 +24,9 @@ package org.openzoom.flash.viewport.transformers
 import caurina.transitions.Tweener;
 
 import org.openzoom.flash.viewport.ITransformerViewport;
-import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;
-import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
+import org.openzoom.flash.viewport.ViewportTransform2;
 
 public class TweenerViewportTransformer implements IViewportTransformer
 {
@@ -52,8 +51,16 @@ public class TweenerViewportTransformer implements IViewportTransformer
      */
     public function TweenerViewportTransformer()
     {
-    	TransformShortcuts.init()
+//    	TransformShortcuts.init()
     }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Variables
+    //
+    //--------------------------------------------------------------------------
+    
+    private var _transform : IViewportTransform
     
     //--------------------------------------------------------------------------
     //
@@ -75,7 +82,8 @@ public class TweenerViewportTransformer implements IViewportTransformer
     public function set viewport( value : ITransformerViewport ) : void
     {
         _viewport = value
-        _target = _viewport.transform
+        _target    = viewport.transform
+        _transform = viewport.transform
     }
     
     //----------------------------------
@@ -113,9 +121,14 @@ public class TweenerViewportTransformer implements IViewportTransformer
     
     public function stop() : void
     {
-    	if( Tweener.isTweening( viewport ))
+//    	if( Tweener.isTweening( viewport ))
+//    	{
+//    	    Tweener.removeTweens( viewport )
+//	        viewport.endTransform()
+//    	}
+    	if( Tweener.isTweening( _transform ))
     	{
-    	    Tweener.removeTweens( viewport )
+    	    Tweener.removeTweens( _transform )
 	        viewport.endTransform()
     	}
     }
@@ -124,6 +137,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
                                immediately : Boolean = false ) : void
     {
     	var duration : Number = DEFAULT_DURATION
+	    _transform.copy(ViewportTransform2(viewport.transform))
         
         if( immediately )
         {
@@ -134,20 +148,33 @@ public class TweenerViewportTransformer implements IViewportTransformer
         }
     	else
         {
-	        if( !Tweener.isTweening( viewport ))
+//	        if( !Tweener.isTweening( viewport ))
+//	            viewport.beginTransform()
+
+	        if( !Tweener.isTweening( _transform ))
 	            viewport.beginTransform()
-	           
+	        
 	        _target = targetTransform.clone()
 	            
 	        Tweener.addTween( 
-	                          viewport,
+//	                          viewport,
+	                          _transform,
 	                          {
-	                              _transform_x: targetTransform.x,
-	                              _transform_y: targetTransform.y,
-	                              _transform_width: targetTransform.width,
-//	                              _transform_height: targetTransform.height,
+//	                              _transform_x: targetTransform.x,
+//	                              _transform_y: targetTransform.y,
+//	                              _transform_width: targetTransform.width,
+//                                _transform_height: targetTransform.height,
+                                  x: targetTransform.x,
+                                  y: targetTransform.y,
+                                  width: targetTransform.width,
+                                  height: targetTransform.height,
 	                              time: duration,
 	                              transition: DEFAULT_EASING,
+	                              onUpdate:
+		                              function() : void
+		                              {
+	                                      viewport.transform = _transform
+	                                  },
 	                              onComplete: viewport.endTransform
 	                          }
 	                        )

@@ -187,6 +187,7 @@ public class AnimationViewport extends EventDispatcher
     public function set transform( value : IViewportTransform ) : void
     {
         var oldTransform : IViewportTransform = _transform.clone()
+        
         _transform = value.clone()
         
         dispatchUpdateTransformEvent( oldTransform )
