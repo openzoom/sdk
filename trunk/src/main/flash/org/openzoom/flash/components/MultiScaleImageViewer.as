@@ -59,7 +59,7 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_MAX_ZOOM               : Number = 10000
     
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
-    private static const DEFAULT_SCENE_HEIGHT           : Number = 16000
+    private static const DEFAULT_SCENE_HEIGHT           : Number = 15000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
     private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.5
     
@@ -90,8 +90,8 @@ public class MultiScaleImageViewer extends Sprite
         createScene()
         
         // viewport
-        createNormalizedViewport( scene )
-//        createAnimationViewport( scene )
+//        createNormalizedViewport( scene )
+        createAnimationViewport( scene )
         
         // TODO
 //        viewport.constraint = null
@@ -333,7 +333,7 @@ public class MultiScaleImageViewer extends Sprite
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
 //        trace("ViewportEvent.TRANSFORM_UPDATE")
-//        trace( viewport.zoom )
+        trace( viewport.zoom )
 //        // FIXME
         var v : INormalizedViewport = viewport
         var targetWidth   : Number =  v.viewportWidth / v.width

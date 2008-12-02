@@ -16,19 +16,19 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>bin-debug</name>
+			<name>[source path] external-mousewheel</name>
 			<type>2</type>
-			<location>C:/workspace-openzoom/openzoom/target/main/flash/debug</location>
+			<locationURI>OPENZOOM/libs/flash/external-mousewheel</locationURI>
 		</link>
 		<link>
 			<name>[source path] src</name>
 			<type>2</type>
-			<location>C:/Programme/Adobe/Flex Builder 3/sdks/3.2.0/frameworks/projects/framework/src</location>
+			<location>/Applications/Adobe Flex Builder 3 Plug-in/sdks/3.2.0/frameworks/projects/framework/src</location>
 		</link>
 		<link>
-			<name>[source path] external-mousewheel</name>
+			<name>bin-debug</name>
 			<type>2</type>
-			<locationURI>OPENZOOM/libs/flash/external-mousewheel</locationURI>
+			<location>/Users/dani/Documents/workspace/openzoom/target/main/flash/debug</location>
 		</link>
 	</linkedResources>
 </projectDescription>

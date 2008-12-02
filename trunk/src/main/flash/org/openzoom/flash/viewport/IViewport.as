@@ -95,41 +95,41 @@ public interface IViewport extends IEventDispatcher
     function get height() : Number
 //  function set height( value : Number )
     
-    //----------------------------------
-    //  top
-    //----------------------------------
-    
-    /**
-     * Coordinate of the upper boundary of the viewport.
-     */
-    function get top() : Number
-    
-    //----------------------------------
-    //  right
-    //----------------------------------
-    
-    /**
-     * Coordinate of the right boundary of the viewport.
-     */    
-    function get right() : Number
-    
-    //----------------------------------
-    //  bottom
-    //----------------------------------
-    
-    /**
-     * Coordinate of the lower boundary of the viewport.
-     */ 
-    function get bottom() : Number
-    
-    //----------------------------------
-    //  left
-    //----------------------------------
-    
-    /**
-     * Coordinate of the left boundary of the viewport.
-     */ 
-    function get left() : Number
+//    //----------------------------------
+//    //  top
+//    //----------------------------------
+//    
+//    /**
+//     * Coordinate of the upper boundary of the viewport.
+//     */
+//    function get top() : Number
+//    
+//    //----------------------------------
+//    //  right
+//    //----------------------------------
+//    
+//    /**
+//     * Coordinate of the right boundary of the viewport.
+//     */    
+//    function get right() : Number
+//    
+//    //----------------------------------
+//    //  bottom
+//    //----------------------------------
+//    
+//    /**
+//     * Coordinate of the lower boundary of the viewport.
+//     */ 
+//    function get bottom() : Number
+//    
+//    //----------------------------------
+//    //  left
+//    //----------------------------------
+//    
+//    /**
+//     * Coordinate of the left boundary of the viewport.
+//     */ 
+//    function get left() : Number
     
     //----------------------------------
     //  viewportWidth
@@ -155,12 +155,12 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
      
-    //----------------------------------
-    //  constraint
-    //----------------------------------
-    
-    function get constraint() : IViewportConstraint
-    function set constraint( value : IViewportConstraint ) : void
+//    //----------------------------------
+//    //  constraint
+//    //----------------------------------
+//    
+//    function get constraint() : IViewportConstraint
+//    function set constraint( value : IViewportConstraint ) : void
      
     //----------------------------------
     //  transformer

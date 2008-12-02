@@ -28,8 +28,6 @@ import flash.geom.Rectangle;
 
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
 import org.openzoom.flash.viewport.transformers.TransformShortcuts;
 import org.openzoom.flash.viewport.transformers.TweenerViewportTransformer;
@@ -61,7 +59,7 @@ public class AnimationViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    private static const NULL_CONSTRAINT  : IViewportConstraint  = new NullViewportConstraint()
+//    private static const NULL_CONSTRAINT  : IViewportConstraint  = new NullViewportConstraint()
     private static const NULL_TRANSFORMER : IViewportTransformer = new NullViewportTransformer()
 
     //--------------------------------------------------------------------------
@@ -79,8 +77,8 @@ public class AnimationViewport extends EventDispatcher
       	// FIXME
         TransformShortcuts.init()
         
-      	_viewportWidth = width
-        _viewportHeight = height
+//        _viewportWidth = width
+//        _viewportHeight = height
     	
         _scene = scene
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
@@ -88,15 +86,18 @@ public class AnimationViewport extends EventDispatcher
 //      constraint = new DefaultViewportConstraint()
         
         // FIXME: Unsafe cast
-//       _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
-        _transform = new ViewportTransform3( 0, 0, 1, width, height,
-                                             scene.sceneWidth, scene.sceneHeight )
+//        _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
+          _transform = new ViewportTransform2( 0, 0, 1, 1, 1,
+                                               width, height,
+                                               scene.sceneWidth, scene.sceneHeight )
+//        _transform = new ViewportTransform3( 0, 0, 1, width, height,
+//                                             scene.sceneWidth, scene.sceneHeight )
         
         // FIXME
         _transformer = new TweenerViewportTransformer()
         _transformer.viewport = this
         
-        validate()
+//        validate()
     }
 
     //--------------------------------------------------------------------------
@@ -130,24 +131,24 @@ public class AnimationViewport extends EventDispatcher
         return viewportWidth / ( scene.sceneWidth * width ) 
     }
  
-    //----------------------------------
-    //  constraint
-    //----------------------------------
-    
-    private var _constraint : IViewportConstraint = NULL_CONSTRAINT
-
-    public function get constraint() : IViewportConstraint
-    {
-        return _constraint
-    }
-    
-    public function set constraint( value : IViewportConstraint ) : void
-    {
-        if( value )
-           _constraint = value
-        else
-           _constraint = NULL_CONSTRAINT
-    }
+//    //----------------------------------
+//    //  constraint
+//    //----------------------------------
+//    
+//    private var _constraint : IViewportConstraint = NULL_CONSTRAINT
+//
+//    public function get constraint() : IViewportConstraint
+//    {
+//        return _constraint
+//    }
+//    
+//    public function set constraint( value : IViewportConstraint ) : void
+//    {
+//        if( value )
+//           _constraint = value
+//        else
+//           _constraint = NULL_CONSTRAINT
+//    }
 
     //----------------------------------
     //  transformer
@@ -188,9 +189,6 @@ public class AnimationViewport extends EventDispatcher
         var oldTransform : IViewportTransform = _transform.clone()
         _transform = value.clone()
         
-        var position : Point = constraint.computePosition( this )
-        _transform.moveTo( position.x, position.y )
-
         dispatchUpdateTransformEvent( oldTransform )
     }
     
@@ -220,7 +218,7 @@ public class AnimationViewport extends EventDispatcher
      * @private
      * Storage for the viewportWidth property.
      */
-    private var _viewportWidth : Number
+//    private var _viewportWidth : Number
     
     [Bindable(event="viewportWidthChanged")]
     
@@ -229,7 +227,8 @@ public class AnimationViewport extends EventDispatcher
      */
     public function get viewportWidth() : Number
     {
-        return _viewportWidth
+//        return _viewportWidth
+        return _transform.viewportWidth
     }
     
     //----------------------------------
@@ -240,7 +239,7 @@ public class AnimationViewport extends EventDispatcher
      * @private
      * Storage for the viewportHeight property.
      */
-    private var _viewportHeight : Number
+//    private var _viewportHeight : Number
     
     [Bindable(event="viewportHeightChanged")]
     
@@ -249,7 +248,8 @@ public class AnimationViewport extends EventDispatcher
      */
     public function get viewportHeight() : Number
     {
-        return _viewportHeight
+//        return _viewportHeight
+        return _transform.viewportHeight
     }
 
     //--------------------------------------------------------------------------
@@ -376,17 +376,17 @@ public class AnimationViewport extends EventDispatcher
         return p
     }
 
-    /**
-     * @private
-     * 
-     * Validate the viewport.
-     */ 
-    private function validate( dispatchEvent : Boolean = true ) : void
-    {
-        var t : IViewportTransform = getViewportTransform()
-        t.zoomTo( zoom )
-        applyTransform( t, true )
-    }
+//    /**
+//     * @private
+//     * 
+//     * Validate the viewport.
+//     */ 
+//    private function validate( dispatchEvent : Boolean = true ) : void
+//    {
+//        var t : IViewportTransform = getViewportTransform()
+//        t.zoomTo( zoom )
+//        applyTransform( t, true )
+//    }
     
     /**
      * @private
@@ -408,7 +408,9 @@ public class AnimationViewport extends EventDispatcher
      */
     public function contains( x : Number, y : Number ) : Boolean
     {
-        return ( x >= left ) && ( x <= right ) && ( y >= top ) && ( y <= bottom )
+    	// FIXME
+//        return ( x >= left ) && ( x <= right ) && ( y >= top ) && ( y <= bottom )
+        return false
     }
     
     /**
@@ -515,61 +517,61 @@ public class AnimationViewport extends EventDispatcher
         return _transform.height
     }
     
-    //----------------------------------
-    //  left
-    //----------------------------------
-    
-    [Bindable(event="transformUpdate")]
-    
-    /**
-     * @inheritDoc
-     */
-    public function get left() : Number
-    {
-        return _transform.left
-    }
-    
-    //----------------------------------
-    //  right
-    //----------------------------------
-    
-    [Bindable(event="transformUpdate")]
-    
-    /**
-     * @inheritDoc
-     */
-    public function get right() : Number
-    {
-        return _transform.right
-    }
-    
-    //----------------------------------
-    //  top
-    //----------------------------------
-    
-    [Bindable(event="transformUpdate")]
-    
-    /**
-     * @inheritDoc
-     */
-    public function get top() : Number
-    {
-        return _transform.top
-    }
-    
-    //----------------------------------
-    //  bottom
-    //----------------------------------
-    
-    [Bindable(event="transformUpdate")]
-    
-    /**
-     * @inheritDoc
-     */
-    public function get bottom() : Number
-    {
-        return _transform.bottom
-    }
+//    //----------------------------------
+//    //  left
+//    //----------------------------------
+//    
+//    [Bindable(event="transformUpdate")]
+//    
+//    /**
+//     * @inheritDoc
+//     */
+//    public function get left() : Number
+//    {
+//        return _transform.left
+//    }
+//    
+//    //----------------------------------
+//    //  right
+//    //----------------------------------
+//    
+//    [Bindable(event="transformUpdate")]
+//    
+//    /**
+//     * @inheritDoc
+//     */
+//    public function get right() : Number
+//    {
+//        return _transform.right
+//    }
+//    
+//    //----------------------------------
+//    //  top
+//    //----------------------------------
+//    
+//    [Bindable(event="transformUpdate")]
+//    
+//    /**
+//     * @inheritDoc
+//     */
+//    public function get top() : Number
+//    {
+//        return _transform.top
+//    }
+//    
+//    //----------------------------------
+//    //  bottom
+//    //----------------------------------
+//    
+//    [Bindable(event="transformUpdate")]
+//    
+//    /**
+//     * @inheritDoc
+//     */
+//    public function get bottom() : Number
+//    {
+//        return _transform.bottom
+//    }
 
     //--------------------------------------------------------------------------
     //
@@ -629,12 +631,16 @@ public class AnimationViewport extends EventDispatcher
      */
     public function setSize( width : Number, height : Number ) : void
     {
-        if( _viewportWidth == width && _viewportHeight == height )
+        if( viewportWidth == width && viewportHeight == height )
             return
         
-        _viewportWidth = width
-        _viewportHeight = height
-        validate( false )
+//        _viewportWidth = width
+//        _viewportHeight = height
+//        validate( false )
+
+        var t : IViewportTransformContainer = IViewportTransformContainer( transform )
+        t.setSize( width, height )
+        applyTransform( t, true )
         
         dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false ))
     }
@@ -728,7 +734,8 @@ public class AnimationViewport extends EventDispatcher
      */
     private function scene_resizeHandler( event : Event ) : void
     {
-    	validate()
+    	// FIXME
+//    	validate()
     }
     
     //--------------------------------------------------------------------------

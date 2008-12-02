@@ -248,7 +248,8 @@ public class NormalizedViewport extends EventDispatcher
         var oldZoom : Number = this.zoom
 
         // keep z within min/max range
-        _zoom = clamp( zoom, constraint.minZoom, constraint.maxZoom )
+//        _zoom = clamp( zoom, constraint.minZoom, constraint.maxZoom )
+        _zoom = zoom
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( originX, originY )
@@ -303,11 +304,11 @@ public class NormalizedViewport extends EventDispatcher
         _y = y
 
         // compute position
-        var position : Point = constraint.computePosition( this )
+//        var position : Point = constraint.computePosition( this )
             
         // capture new position
-        _x = position.x
-        _y = position.y
+//        _x = position.x
+//        _y = position.y
         
         if( dispatchChangeEvent )
             this.updateTransform()
@@ -850,25 +851,25 @@ class ViewportTransformProxy implements IViewportTransform
 //        viewport.height = value
     }
     
-    public function get bottom() : Number
-    {
-        return viewport.bottom
-    }
-    
-    public function get top() : Number
-    {
-        return viewport.top
-    }
-    
-    public function get left() : Number
-    {
-        return viewport.left
-    }
-    
-    public function get right() : Number
-    {
-        return viewport.right
-    }
+//    public function get bottom() : Number
+//    {
+//        return viewport.bottom
+//    }
+//    
+//    public function get top() : Number
+//    {
+//        return viewport.top
+//    }
+//    
+//    public function get left() : Number
+//    {
+//        return viewport.left
+//    }
+//    
+//    public function get right() : Number
+//    {
+//        return viewport.right
+//    }
     
     public function get scale() : Number
     {

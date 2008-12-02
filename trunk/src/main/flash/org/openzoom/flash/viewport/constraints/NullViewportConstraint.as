@@ -23,8 +23,8 @@ package org.openzoom.flash.viewport.constraints
 
 import flash.geom.Point;
 
-import org.openzoom.flash.viewport.IReadonlyViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
+import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
  * Null Object Pattern applied to IViewportConstraint.
@@ -55,47 +55,19 @@ public class NullViewportConstraint implements IViewportConstraint
     
     //--------------------------------------------------------------------------
     //
-    //  Properties: IViewportConstraint
-    //
-    //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  minZoom
-    //----------------------------------
-
-    public function get minZoom() : Number
-    {
-        return DEFAULT_MIN_ZOOM
-    }
-
-    public function set minZoom( value : Number ) : void
-    {
-    	// Do nothing
-    }
-
-    //----------------------------------
-    //  maxZoom
-    //----------------------------------
-    
-    public function get maxZoom() : Number
-    {
-        return DEFAULT_MAX_ZOOM
-    }
-    
-    public function set maxZoom( value : Number ) : void
-    {
-    	// Do nothing
-    }
-    
-    //--------------------------------------------------------------------------
-    //
     //  Methods: IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-    public function computePosition( viewport : IReadonlyViewport ) : Point
+    public function validate( transform : IViewportTransform ) : IViewportTransform
     {
-        return new Point( viewport.x, viewport.y )
+    	if( transform.zoom < DEFAULT_MIN_ZOOM )
+            transform.zoomTo( DEFAULT_MIN_ZOOM )
+            
+    	if( transform.zoom > DEFAULT_MAX_ZOOM )
+            transform.zoomTo( DEFAULT_MAX_ZOOM )
+    	
+        return transform
     }
 }
 

@@ -21,15 +21,11 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.utils.math.clamp;
-
-public class ViewportTransform implements IViewportTransform
+public class ViewportTransform2 implements IViewportTransform,
+                                           IViewportTransformContainer
 {
     //--------------------------------------------------------------------------
     //
@@ -40,21 +36,25 @@ public class ViewportTransform implements IViewportTransform
     /**
      * Constructor.
      */
-    public function ViewportTransform( viewport : IReadonlyViewport,
-                                       scene : IReadonlyMultiScaleScene )
+    public function ViewportTransform2( x : Number, y : Number,
+                                        width : Number, height : Number,
+                                        zoom : Number,
+                                        viewportWidth : Number, viewportHeight : Number,
+                                        sceneWidth : Number, sceneHeight : Number)
     {
-      	// FIXME: Remove references to viewport and scene
-        this.viewport = viewport
-        this.viewport.addEventListener( ViewportEvent.RESIZE,
-                                        viewport_resizeHandler,
-                                        false, 0, true )
+        _x = x
+        _y = y
+        _width = width
+        _height = height
+        _aaa = zoom
+    	
+        this.sceneWidth = sceneWidth    
+        this.sceneHeight = sceneHeight
         
-        this.scene = scene
-        this.scene.addEventListener( Event.RESIZE,
-                                     scene_resizeHandler,
-                                     false, 0, true )
-        
-        validate()
+        _viewportWidth = viewportWidth
+        _viewportHeight = viewportHeight
+    	
+//        validate()
     }
 
     //--------------------------------------------------------------------------
@@ -63,8 +63,8 @@ public class ViewportTransform implements IViewportTransform
     //
     //--------------------------------------------------------------------------
     
-    private var viewport : IReadonlyViewport
-    private var scene : IReadonlyMultiScaleScene
+    private var sceneWidth : Number
+    private var sceneHeight : Number
     
     //--------------------------------------------------------------------------
     //
@@ -76,25 +76,20 @@ public class ViewportTransform implements IViewportTransform
     //  zoom
     //----------------------------------
 
-    private var _zoom : Number = 1
+    private var _aaa : Number
 
     public function get zoom() : Number
     {
-        return _zoom
+        return _aaa
     }
-
-    public function set zoom( value : Number ) : void
-    {
-       // zoomTo( value )
-    }
-
+    
     //----------------------------------
     //  scale
     //----------------------------------
 
     public function get scale() : Number
     {
-        return viewportWidth / ( scene.sceneWidth * width ) 
+        return viewportWidth / ( sceneWidth * width ) 
     }
 
 
@@ -109,8 +104,7 @@ public class ViewportTransform implements IViewportTransform
                             transformY : Number = 0.5 ) : void
     {
         // keep z within min/max range
-//        _zoom = clamp( zoom, viewport.constraint.minZoom, viewport.constraint.maxZoom )
-        _zoom = zoom
+        _aaa = zoom
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( transformX, transformY )
@@ -121,27 +115,26 @@ public class ViewportTransform implements IViewportTransform
 
         if( ratio >= 1 )
         {
-            // content is wider than viewport
-            _width = 1 / _zoom
+            // scene is wider than viewport
+            _width = 1 / _aaa
             _height  = _width * ratio
         }
         else
         {
-            // content is taller than viewport
-            _height = 1 / _zoom
+            // scene is taller than viewport
+            _height = 1 / _aaa
             _width = _height / ratio
         }
 
         // move new origin to old origin
         moveOriginTo( oldOrigin.x, oldOrigin.y, transformX, transformY )
-//    	trace( "@post:", _zoom, zoom )
     }
 
     public function zoomBy( factor : Number,
                             transformX : Number = 0.5,
                             transformY : Number = 0.5 ) : void
     {
-        zoomTo( this.zoom * factor, transformX, transformY )
+        zoomTo( zoom * factor, transformX, transformY )
     }
 
     //--------------------------------------------------------------------------
@@ -155,7 +148,6 @@ public class ViewportTransform implements IViewportTransform
         _x = x
         _y = y
     }
-
 
     public function moveBy( dx : Number, dy : Number ) : void
     {
@@ -175,8 +167,8 @@ public class ViewportTransform implements IViewportTransform
         var centerX : Number = area.x + area.width  * 0.5
         var centerY : Number = area.y + area.height * 0.5
     
-        var normalizedCenter : Point = new Point( centerX / scene.sceneWidth,
-                                                  centerY / scene.sceneHeight )
+        var normalizedCenter : Point = new Point( centerX / sceneWidth,
+                                                  centerY / sceneHeight )
                                                  
         var scaledWidth : Number = area.width / scale
         var scaledHeight : Number = area.height / scale
@@ -188,13 +180,13 @@ public class ViewportTransform implements IViewportTransform
         if( scaledWidth > ( aspectRatio * scaledHeight ) )
         {
             // Area must fit horizontally in the viewport
-            ratio = ( ratio < 1 ) ? ( scene.sceneWidth / ratio ) : scene.sceneWidth
+            ratio = ( ratio < 1 ) ? ( sceneWidth / ratio ) : sceneWidth
             ratio = ratio / scaledWidth
         }
         else
         {
             // Area must fit vertically in the viewport  
-            ratio = ( ratio > 1 ) ? ( scene.sceneHeight * ratio ) : scene.sceneHeight
+            ratio = ( ratio > 1 ) ? ( sceneHeight * ratio ) : sceneHeight
             ratio = ratio / scaledHeight
         }
     
@@ -206,8 +198,6 @@ public class ViewportTransform implements IViewportTransform
     
     public function showAll() : void
     {
-//    	var area : Rectangle = new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight )
-//        showRect( normalizeRectangle( area ))
         showRect( new Rectangle( 0, 0, 1, 1 ))
     }
 
@@ -235,52 +225,7 @@ public class ViewportTransform implements IViewportTransform
  
         return new Point( viewportOriginX, viewportOriginY )
     }
-
-    /**
-     * @private
-     * 
-     * Validate the viewport.
-     */ 
-    private function validate() : void
-    {
-    	// FIXME
-        zoomTo( zoom )
-    }
-
-
-    //--------------------------------------------------------------------------
-    //
-    //  Properties: Internal
-    //
-    //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  aspectRatio
-    //----------------------------------
     
-    /**
-     * @private 
-     * Returns the aspect ratio of this Viewport object.
-     */
-    private function get aspectRatio() : Number
-    {
-        return viewportWidth / viewportHeight
-    }
- 
-    //----------------------------------
-    //  sceneAspectRatio
-    //----------------------------------
-    
-    /**
-     * @private 
-     * Returns the aspect ratio of scene.
-     */
-    private function get sceneAspectRatio() : Number
-    {
-        return scene.sceneWidth / scene.sceneHeight
-    }
-    
-
     //--------------------------------------------------------------------------
     //
     //  Properties: IViewport
@@ -323,7 +268,7 @@ public class ViewportTransform implements IViewportTransform
     //  width
     //----------------------------------
     
-    private var _width : Number = 1;
+    private var _width : Number = 1
     
     public function get width() : Number
     {
@@ -332,24 +277,26 @@ public class ViewportTransform implements IViewportTransform
     
     public function set width( value : Number ) : void
     {
-    	_width = value
+//    	_width = value
+        zoomTo( getZoomForWidth( value ))
     }
     
     //----------------------------------
     //  height
     //----------------------------------
     
-    private var _height : Number = 1;
+    private var _height : Number = 1
     
     public function get height() : Number
     {
         return _height
     }
     
-    public function set height( value : Number ) : void
-    {
-    	_height = value
-    }
+//    public function set height( value : Number ) : void
+//    {
+//    	_height = value
+////        width = aspectRatio * value
+//    }
     
     //----------------------------------
     //  left
@@ -392,18 +339,22 @@ public class ViewportTransform implements IViewportTransform
     //  viewportWidth
     //----------------------------------
     
+    private var _viewportWidth : Number
+    
     public function get viewportWidth() : Number
     {
-        return viewport.viewportWidth
+        return _viewportWidth
     }
     
     //----------------------------------
     //  viewportHeight
     //----------------------------------
     
+    private var _viewportHeight : Number
+    
     public function get viewportHeight() : Number
     {
-        return viewport.viewportHeight
+        return _viewportHeight
     }    
     //--------------------------------------------------------------------------
     //
@@ -416,7 +367,7 @@ public class ViewportTransform implements IViewportTransform
      */ 
     private function normalizeX( value : Number ) : Number
     {
-        return value / scene.sceneWidth
+        return value / sceneWidth
     }
 
     /**
@@ -424,7 +375,7 @@ public class ViewportTransform implements IViewportTransform
      */
     private function normalizeY( value : Number ) : Number
     {
-        return value / scene.sceneHeight
+        return value / sceneHeight
     }
     
     /**
@@ -452,7 +403,7 @@ public class ViewportTransform implements IViewportTransform
      */ 
     private function denormalizeX( value : Number ) : Number
     {
-        return value * scene.sceneWidth
+        return value * sceneWidth
     }
 
     /**
@@ -460,7 +411,7 @@ public class ViewportTransform implements IViewportTransform
      */
     private function denormalizeY( value : Number ) : Number
     {
-        return value * scene.sceneHeight
+        return value * sceneHeight
     }
     
     /**
@@ -485,18 +436,21 @@ public class ViewportTransform implements IViewportTransform
     
     //--------------------------------------------------------------------------
     //
-    //  Event handlers
+    //  Methods: Internal
     //
     //--------------------------------------------------------------------------
     
-    private function scene_resizeHandler( event : Event ) : void
+    private function getZoomForWidth( width : Number ) : Number
     {
-    	validate()
-    }
-    
-    private function viewport_resizeHandler( event : ViewportEvent ) : void
-    {
-    	validate()
+        var zoom : Number
+        var ratio : Number = sceneAspectRatio / aspectRatio
+
+        if( ratio >= 1 )
+            zoom = 1 / width
+        else
+            zoom = 1 / ( width * ratio )
+            
+        return zoom
     }
     
     //--------------------------------------------------------------------------
@@ -507,7 +461,7 @@ public class ViewportTransform implements IViewportTransform
     
     public function toString() : String
     {
-        return "[ViewportTransform]" + "("
+        return "[ViewportTransform2]" + "("
                + "x=" + x + ", " 
                + "y=" + y  + ", "
                + "z=" + zoom + ", "
@@ -517,27 +471,85 @@ public class ViewportTransform implements IViewportTransform
     
     public function clone() : IViewportTransform
     {
-        var transform : ViewportTransform =
-                new ViewportTransform( viewport, scene )
-            transform._x = _x	
-            transform._y = _y
-            transform._width = _width	
-            transform._height = _height
-//            trace( "@pre", transform._zoom, _zoom )
-            transform._zoom = _zoom
-//            trace( "@post", transform._zoom, _zoom )
+        var copy : ViewportTransform2 =
+			                new ViewportTransform2( x, y, width, height, zoom,
+			                                        viewportWidth, viewportHeight,
+			                                        sceneWidth, sceneHeight )
             
-            if( !equals( transform ))
+            if( !equals( copy ))
+            {
+                trace(
+                       x - copy.x,
+                       y - copy.y,
+                       width - copy.width,
+                       height - copy.height,
+                       zoom - copy.zoom,
+                       viewportWidth - copy.viewportWidth,
+                       viewportHeight - copy.viewportHeight,
+                       sceneWidth - copy.sceneWidth,
+                       sceneHeight - copy.sceneHeight
+                     )            	
                 trace( "AAARGH" )
+            }
             
-        return transform	
+        return copy	
     }
     
     public function equals( other : IViewportTransform ) : Boolean
     {
-    	return x == other.x && y == other.y
-    	       && width == other.width && height == other.height
+    	return x == other.x
+    	       && y == other.y
+    	       && width == other.width
+    	       && height == other.height
     	       && zoom == other.zoom
+    	       && viewportWidth == other.viewportWidth
+    	       && viewportHeight == other.viewportHeight
+    	       && sceneWidth == ViewportTransform2(other).sceneWidth
+    	       && sceneHeight == ViewportTransform2(other).sceneHeight
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IViewportTransformContainer
+    //
+    //--------------------------------------------------------------------------
+    
+    public function setSize( width : Number, height : Number ) : void
+    {
+    	_viewportWidth  = width
+    	_viewportHeight = height
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Internal
+    //
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  aspectRatio
+    //----------------------------------
+    
+    /**
+     * @private 
+     * Returns the aspect ratio of this Viewport object.
+     */
+    private function get aspectRatio() : Number
+    {
+        return viewportWidth / viewportHeight
+    }
+ 
+    //----------------------------------
+    //  sceneAspectRatio
+    //----------------------------------
+    
+    /**
+     * @private 
+     * Returns the aspect ratio of scene.
+     */
+    private function get sceneAspectRatio() : Number
+    {
+        return sceneWidth / sceneHeight
     }
 }
 

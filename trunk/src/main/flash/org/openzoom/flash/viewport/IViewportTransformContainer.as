@@ -21,14 +21,18 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.geom.Point;	
-
-/**
- * Interface for bounds constraint for INormalizedViewport.
- */
-public interface IViewportConstraint
-{
-	function validate( transform : IViewportTransform ) : IViewportTransform
+public interface IViewportTransformContainer extends IViewportTransform
+{   
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Sets viewportWidth and viewportHeight.
+     */
+    function setSize( width : Number, height : Number ) : void
 }
 
 }

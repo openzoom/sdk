@@ -24,8 +24,10 @@ package org.openzoom.flash.viewport.transformers
 import caurina.transitions.Tweener;
 
 import org.openzoom.flash.viewport.ITransformerViewport;
+import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;
+import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 
 public class TweenerViewportTransformer implements IViewportTransformer
 {
@@ -37,6 +39,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     
     private static const DEFAULT_DURATION : Number = 2.0
     private static const DEFAULT_EASING : String = "easeOutExpo"
+//    private static const NULL_CONSTRAINT : IViewportConstraint = new NullViewportConstraint()
     
     //--------------------------------------------------------------------------
     //
@@ -72,18 +75,34 @@ public class TweenerViewportTransformer implements IViewportTransformer
     public function set viewport( value : ITransformerViewport ) : void
     {
         _viewport = value
-        _targetTransform = _viewport.transform
+        _target = _viewport.transform
     }
     
     //----------------------------------
-    //  transformTarget
+    //  constraint
+    //----------------------------------
+//    
+//    private var _constraint : IViewportConstraint
+//    
+//    public function get constraint() : IViewportConstraint
+//    {
+//        return _constraint
+//    }
+//    
+//    public function set constraint( value : IViewportConstraint ) : void
+//    {
+//        _constraint = value
+//    }
+    
+    //----------------------------------
+    //  target
     //----------------------------------
     
-    private var _targetTransform : IViewportTransform
+    private var _target : IViewportTransform
     
     public function get target() : IViewportTransform
     {
-        return _targetTransform.clone()
+        return _target.clone()
     }
     
     //--------------------------------------------------------------------------
@@ -107,25 +126,32 @@ public class TweenerViewportTransformer implements IViewportTransformer
     	var duration : Number = DEFAULT_DURATION
         
         if( immediately )
-            duration = 0
-    	
-        if( !Tweener.isTweening( viewport ))
-            viewport.beginTransform()
-           
-        _targetTransform = targetTransform.clone()
-            
-        Tweener.addTween( 
-                          viewport,
-                          {
-                              _transform_x: targetTransform.x,
-                              _transform_y: targetTransform.y,
-                              _transform_width: targetTransform.width,
-                              _transform_height: targetTransform.height,
-                              time: duration,
-                              transition: DEFAULT_EASING,
-                              onComplete: viewport.endTransform
-                          }
-                        )
+        {
+        	stop()
+        	viewport.beginTransform()
+        	viewport.transform = targetTransform
+        	viewport.endTransform()
+        }
+    	else
+        {
+	        if( !Tweener.isTweening( viewport ))
+	            viewport.beginTransform()
+	           
+	        _target = targetTransform.clone()
+	            
+	        Tweener.addTween( 
+	                          viewport,
+	                          {
+	                              _transform_x: targetTransform.x,
+	                              _transform_y: targetTransform.y,
+	                              _transform_width: targetTransform.width,
+//	                              _transform_height: targetTransform.height,
+	                              time: duration,
+	                              transition: DEFAULT_EASING,
+	                              onComplete: viewport.endTransform
+	                          }
+	                        )
+        }
     }
 }
 

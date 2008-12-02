@@ -127,7 +127,7 @@ public class MouseController extends ViewportControllerBase
     {
     	// prevent zooming when panning
     	if( panning )
-    	   return
+            return
     	
         // TODO: React appropriately to different platforms and/or browsers,
         // as they at times report completely different mouse wheel deltas. 

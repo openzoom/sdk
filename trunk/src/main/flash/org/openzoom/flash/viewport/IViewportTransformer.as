@@ -22,18 +22,39 @@ package org.openzoom.flash.viewport
 {
 
 import flash.geom.Rectangle;
-	
+
+/**
+ * Interface for viewport transformers.
+ */
 public interface IViewportTransformer
 {
+    /**
+     * Target viewport to transform.
+     */
+    function get viewport() : ITransformerViewport
+    function set viewport( value : ITransformerViewport ) : void
+    
+	/**
+	 * Target viewport transform.
+	 */
 	function get target() : IViewportTransform
 	
-	function get viewport() : ITransformerViewport
-	function set viewport( value : ITransformerViewport ) : void
+	/**
+	 * Constraint for target transform.
+	 */
+//	function get constraint() : IViewportConstraint
+//	function set constraint( value : IViewportConstraint ) : void
 	
-	function stop() : void
-	
+    /**
+     * Transform viewport to target transform.
+     */ 	
     function transform( target : IViewportTransform,
-                        immediately : Boolean = false ) : void		
+                        immediately : Boolean = false ) : void
+                        
+    /**
+     * Stop viewport transformation.
+     */ 
+	function stop() : void
 }
 
 }

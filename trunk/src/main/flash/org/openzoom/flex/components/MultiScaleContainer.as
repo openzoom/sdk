@@ -217,31 +217,31 @@ public class MultiScaleContainer extends UIComponent
     //  minZoom
     //----------------------------------
     
-    [Bindable]
-    public function get minZoom() : Number
-    {
-        return viewport.constraint.minZoom
-    }
-    
-    public function set minZoom( value : Number ) : void
-    {
-        viewport.constraint.minZoom = value
-    }
+//    [Bindable]
+//    public function get minZoom() : Number
+//    {
+//        return viewport.constraint.minZoom
+//    }
+//    
+//    public function set minZoom( value : Number ) : void
+//    {
+//        viewport.constraint.minZoom = value
+//    }
     
     //----------------------------------
     //  maxZoom
     //----------------------------------
     
-    [Bindable]
-    public function get maxZoom() : Number
-    {
-        return viewport.constraint.maxZoom
-    }
-    
-    public function set maxZoom( value : Number ) : void
-    {
-        viewport.constraint.maxZoom = value
-    }
+//    [Bindable]
+//    public function get maxZoom() : Number
+//    {
+//        return viewport.constraint.maxZoom
+//    }
+//    
+//    public function set maxZoom( value : Number ) : void
+//    {
+//        viewport.constraint.maxZoom = value
+//    }
     
     //--------------------------------------------------------------------------
     //

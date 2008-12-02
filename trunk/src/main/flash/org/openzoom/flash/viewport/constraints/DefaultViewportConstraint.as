@@ -23,8 +23,8 @@ package org.openzoom.flash.viewport.constraints
 
 import flash.geom.Point;
 
-import org.openzoom.flash.viewport.IReadonlyViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
+import org.openzoom.flash.viewport.IViewportTransform;
 
 public class DefaultViewportConstraint implements IViewportConstraint
 {
@@ -95,54 +95,57 @@ public class DefaultViewportConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-    public function computePosition( viewport : IReadonlyViewport ) : Point
+    public function validate( transform : IViewportTransform ) : IViewportTransform
     {
-    	var x : Number = viewport.x
-    	var y : Number = viewport.y
+    	var x : Number = transform.x
+    	var y : Number = transform.y
     	
     	// content is wider than viewport
-        if( viewport.width < 1 )
+        if( transform.width < 1 )
         {
             // horizontal bounds checking:
             // the viewport sticks out on the left:
             // align it with the left margin
-            if( viewport.x + viewport.width * BOUNDS_TOLERANCE < 0 )
-                x = -viewport.width * BOUNDS_TOLERANCE
+            if( transform.x + transform.width * BOUNDS_TOLERANCE < 0 )
+                x = -transform.width * BOUNDS_TOLERANCE
     
            // the viewport sticks out on the right:
            // align it with the right margin
-           if(( viewport.x + viewport.width * ( 1 - BOUNDS_TOLERANCE )) > 1 )
-               x = 1 - viewport.width * ( 1 - BOUNDS_TOLERANCE )      
+           if(( transform.x + transform.width * ( 1 - BOUNDS_TOLERANCE )) > 1 )
+               x = 1 - transform.width * ( 1 - BOUNDS_TOLERANCE )      
         }
         else
         {
             // viewport is wider than content:
             // center scene horizontally
-            x = ( 1 - viewport.width ) * 0.5
+            x = ( 1 - transform.width ) * 0.5
         }
     
         // scene is taller than viewport
-        if( viewport.height < 1 )
+        if( transform.height < 1 )
         {
             // vertical bounds checking:
             // the viewport sticks out at the top:
             // align it with the top margin
-            if( viewport.y + viewport.height * BOUNDS_TOLERANCE < 0 )
-                y = -viewport.height * BOUNDS_TOLERANCE
+            if( transform.y + transform.height * BOUNDS_TOLERANCE < 0 )
+                y = -transform.height * BOUNDS_TOLERANCE
         
             // the viewport sticks out at the bottom:
             // align it with the bottom margin
-            if( viewport.y + viewport.height * (1 - BOUNDS_TOLERANCE) > 1 )
-                y = 1 - viewport.height * ( 1 - BOUNDS_TOLERANCE )
+            if( transform.y + transform.height * (1 - BOUNDS_TOLERANCE) > 1 )
+                y = 1 - transform.height * ( 1 - BOUNDS_TOLERANCE )
         }
         else
         {
             // viewport is taller than scene
             // center scene vertically
-            y = ( 1 - viewport.height ) * 0.5
+            y = ( 1 - transform.height ) * 0.5
         }
         
-        return new Point( x, y )
+        // validate
+        transform.moveTo( x, y )
+        
+        return transform
     }
 }
 

@@ -31,10 +31,10 @@ public interface IReadonlyViewport extends IEventDispatcher
     function get x() : Number
     function get y() : Number
     
-    function get top() : Number
-    function get right() : Number
-    function get bottom() : Number		
-    function get left() : Number
+//    function get top() : Number
+//    function get right() : Number
+//    function get bottom() : Number		
+//    function get left() : Number
     		
     function get width() : Number
     function get height() : Number
@@ -44,7 +44,7 @@ public interface IReadonlyViewport extends IEventDispatcher
     function get viewportWidth() : Number
     function get viewportHeight() : Number
     
-    function get constraint() : IViewportConstraint
+//    function get constraint() : IViewportConstraint
 }
 
 }

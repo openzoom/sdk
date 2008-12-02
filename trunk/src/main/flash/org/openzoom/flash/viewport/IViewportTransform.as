@@ -24,7 +24,7 @@ package org.openzoom.flash.viewport
 import flash.geom.Rectangle;	
 
 /**
- * Interface for enabling more expressive animation of the viewport.
+ * Defines the interface that classes which represent a viewport transform must implement.
  */
 public interface IViewportTransform
 {  
@@ -72,44 +72,44 @@ public interface IViewportTransform
      * Vertical dimension of the viewport.
      */
     function get height() : Number
-    function set height( value : Number ) : void
+//  function set height( value : Number ) : void
     
-    //----------------------------------
-    //  top
-    //----------------------------------
-    
-    /**
-     * Coordinate of the upper boundary of the viewport.
-     */
-    function get top() : Number
-    
-    //----------------------------------
-    //  right
-    //----------------------------------
-    
-    /**
-     * Coordinate of the right boundary of the viewport.
-     */    
-    function get right() : Number
-    
-    //----------------------------------
-    //  bottom
-    //----------------------------------
-    
-    /**
-     * Coordinate of the lower boundary of the viewport.
-     */ 
-    function get bottom() : Number
-    
-    //----------------------------------
-    //  left
-    //----------------------------------
-    
-    /**
-     * Coordinate of the left boundary of the viewport.
-     */ 
-    function get left() : Number
-    
+//    //----------------------------------
+//    //  top
+//    //----------------------------------
+//    
+//    /**
+//     * Coordinate of the upper boundary of the viewport.
+//     */
+//    function get top() : Number
+//    
+//    //----------------------------------
+//    //  right
+//    //----------------------------------
+//    
+//    /**
+//     * Coordinate of the right boundary of the viewport.
+//     */    
+//    function get right() : Number
+//    
+//    //----------------------------------
+//    //  bottom
+//    //----------------------------------
+//    
+//    /**
+//     * Coordinate of the lower boundary of the viewport.
+//     */ 
+//    function get bottom() : Number
+//    
+//    //----------------------------------
+//    //  left
+//    //----------------------------------
+//    
+//    /**
+//     * Coordinate of the left boundary of the viewport.
+//     */ 
+//    function get left() : Number
+     
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -136,7 +136,6 @@ public interface IViewportTransform
      * Scale of the scene.
      */ 
     function get scale() : Number
-    // TODO
 //  function set scale( value : Number ) : void
       
     //----------------------------------
@@ -148,7 +147,7 @@ public interface IViewportTransform
      * Scene fits exactly into viewport at value 1.
      */
     function get zoom() : Number
-    function set zoom( value : Number ) : void
+//  function set zoom( value : Number ) : void
 
     //--------------------------------------------------------------------------
     //
@@ -228,8 +227,17 @@ public interface IViewportTransform
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * Returns a new IViewportTransform object with the same values for the
+     * x, y, width, height and zoom properties as the original IViewportTransform object.
+     */
     function clone() : IViewportTransform
-    function equals( value : IViewportTransform ) : Boolean
+    
+    /**
+     * Determines whether the object specified in the
+     * other parameter is equal to this Rectangle object.
+     */
+    function equals( other : IViewportTransform ) : Boolean
 }
 
 }
