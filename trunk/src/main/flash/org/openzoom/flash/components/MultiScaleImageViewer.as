@@ -90,8 +90,8 @@ public class MultiScaleImageViewer extends Sprite
         createScene()
         
         // viewport
-//        createNormalizedViewport( scene )
-        createAnimationViewport( scene )
+        createNormalizedViewport( scene )
+//        createAnimationViewport( scene )
         
         // TODO
 //        viewport.constraint = null

@@ -26,8 +26,6 @@ import flash.events.EventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import mx.core.UIComponent;
-
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
@@ -78,19 +76,21 @@ public class AnimationViewport extends EventDispatcher
     public function AnimationViewport( width : Number, height : Number,
                                        scene : IMultiScaleScene )
     {
-    	// FIXME
+      	// FIXME
         TransformShortcuts.init()
         
-    	_viewportWidth = width
-    	_viewportHeight = height
+      	_viewportWidth = width
+        _viewportHeight = height
     	
         _scene = scene
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
         
-//        constraint = new DefaultViewportConstraint()
+//      constraint = new DefaultViewportConstraint()
         
         // FIXME: Unsafe cast
-        _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
+//       _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
+        _transform = new ViewportTransform3( 0, 0, 1, width, height,
+                                             scene.sceneWidth, scene.sceneHeight )
         
         // FIXME
         _transformer = new TweenerViewportTransformer()

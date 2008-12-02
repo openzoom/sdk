@@ -85,8 +85,9 @@ public class NormalizedViewport extends EventDispatcher
         _scene = scene
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
         
-        _transformer = NULL_TRANSFORMER
-        _transformer.viewport = this
+//        _transformer = NULL_TRANSFORMER
+//        _transformer.viewport = this
+        _transformer = new TransformerProxy( this )
         
         validate()
     }
@@ -744,4 +745,185 @@ public class NormalizedViewport extends EventDispatcher
     }
 }
 
+}
+
+import flash.geom.Rectangle;
+
+import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.ITransformerViewport;
+import org.openzoom.flash.viewport.IViewportTransformer;
+import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.IViewport;
+
+class TransformerProxy implements IViewportTransformer
+{
+    public function TransformerProxy( viewport : ITransformerViewport )
+    {
+        _viewport = viewport
+        _target = new ViewportTransformProxy( _viewport )
+    }
+    
+    private var _viewport : ITransformerViewport
+    private var _target : IViewportTransform
+    
+    public function get viewport() : ITransformerViewport
+    {
+        return _viewport
+    }
+    
+    public function set viewport( value : ITransformerViewport ) : void
+    {
+        _viewport = value
+    }
+    
+    public function get target() : IViewportTransform
+    {
+        return _target
+    }
+    
+    public function stop() : void
+    {
+    }
+    
+    public function transform( target : IViewportTransform,
+                               immediately : Boolean = false ) : void
+    {
+    }
+}
+
+class ViewportTransformProxy implements IViewportTransform
+{
+    public function ViewportTransformProxy( viewport : IViewport )
+    {
+        this.viewport = viewport
+    }
+    
+    private var viewport : IViewport
+    
+    public function get zoom() : Number
+    {
+        return viewport.zoom
+    }
+    
+    public function set zoom( value : Number ) : void
+    {
+        viewport.zoom = value
+    }
+    
+    public function get x() : Number
+    {
+        return viewport.x
+    }
+    
+    public function set x( value : Number ) : void
+    {
+        viewport.x = value
+    }
+    
+    public function get y() : Number
+    {
+        return viewport.y
+    }
+    
+    public function set y( value : Number ) : void
+    {
+        viewport.y = value
+    }
+    
+    public function get width() : Number
+    {
+        return viewport.width
+    }
+    
+    public function set width( value : Number ) : void
+    {
+//        viewport.width = value
+    }
+    
+    public function get height() : Number
+    {
+        return viewport.height
+    }
+    
+    public function set height( value : Number ) : void
+    {
+//        viewport.height = value
+    }
+    
+    public function get bottom() : Number
+    {
+        return viewport.bottom
+    }
+    
+    public function get top() : Number
+    {
+        return viewport.top
+    }
+    
+    public function get left() : Number
+    {
+        return viewport.left
+    }
+    
+    public function get right() : Number
+    {
+        return viewport.right
+    }
+    
+    public function get scale() : Number
+    {
+        return viewport.scale
+    }
+    
+    public function clone() : IViewportTransform
+    {
+        return null
+    }
+    
+    public function equals( other : IViewportTransform ) : Boolean
+    {
+        return true
+    }
+    
+    public function get viewportWidth() : Number
+    {
+        return viewport.viewportWidth
+    }
+    
+    public function get viewportHeight() : Number
+    {
+        return viewport.viewportHeight
+    }
+    
+    public function moveBy( dx : Number, dy : Number ) : void
+    {
+    }
+    
+    public function moveTo( x : Number, y : Number ) : void
+    {
+    }
+    
+    public function moveCenterTo( x : Number, y : Number ) : void
+    {
+    }
+    
+    public function zoomTo( z : Number,
+                            transformX : Number = 0.5,
+                            transformY : Number = 0.5 ) : void
+    {
+    }
+    
+    public function zoomBy( factor : Number,
+                            transformX : Number = 0.5,
+                            transformY : Number = 0.5 ) : void
+    {
+    }
+    
+    public function showAll() : void
+    {
+    }
+    
+    public function showRect( rect : Rectangle, scaleTo : Number = 1.0 ) : void
+    {
+    }
 }

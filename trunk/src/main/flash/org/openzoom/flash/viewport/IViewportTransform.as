@@ -115,6 +115,18 @@ public interface IViewportTransform
     //  Properties
     //
     //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  viewportWidth
+    //----------------------------------
+    
+    function get viewportWidth() : Number
+    
+    //----------------------------------
+    //  viewportHeight
+    //----------------------------------
+    
+    function get viewportHeight() : Number
      
     //----------------------------------
     //  scale

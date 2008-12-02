@@ -35,7 +35,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_DURATION : Number = 1.5
+    private static const DEFAULT_DURATION : Number = 2.0
     private static const DEFAULT_EASING : String = "easeOutExpo"
     
     //--------------------------------------------------------------------------
