@@ -34,6 +34,7 @@ import flash.geom.Rectangle;
 
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IMultiScaleScene;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
 
@@ -76,7 +77,7 @@ public class NormalizedViewport extends EventDispatcher
      * Constructor.
      */
     public function NormalizedViewport( width : Number, height : Number,
-                                        scene : IMultiScaleScene )
+                                        scene : IReadonlyMultiScaleScene )
     {
     	_viewportWidth = width
     	_viewportHeight = height
@@ -202,9 +203,9 @@ public class NormalizedViewport extends EventDispatcher
     //  scene
     //----------------------------------
 
-    private var _scene : IMultiScaleScene
+    private var _scene : IReadonlyMultiScaleScene
 
-    public function get scene() : IMultiScaleScene
+    public function get scene() : IReadonlyMultiScaleScene
     {
         return _scene
     }
@@ -593,6 +594,24 @@ public class NormalizedViewport extends EventDispatcher
     {
         return y + height
     }
+    
+    //----------------------------------
+    //  topLeft
+    //----------------------------------
+    
+    public function get topLeft() : Point
+    {
+        return new Point( left, top )
+    }
+    
+    //----------------------------------
+    //  bottomRight
+    //----------------------------------
+    
+    public function get bottomRight() : Point
+    {
+        return new Point( right, bottom )
+    }
 
     //--------------------------------------------------------------------------
     //
@@ -755,6 +774,7 @@ import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewport;
 import org.openzoom.flash.viewport.ViewportTransform2;
+import flash.geom.Point;
 
 class TransformerProxy implements IViewportTransformer
 {
@@ -861,25 +881,35 @@ class ViewportTransformProxy implements IViewportTransform
 //        viewport.height = value
     }
     
-//    public function get bottom() : Number
-//    {
-//        return viewport.bottom
-//    }
-//    
-//    public function get top() : Number
-//    {
-//        return viewport.top
-//    }
-//    
-//    public function get left() : Number
-//    {
-//        return viewport.left
-//    }
-//    
-//    public function get right() : Number
-//    {
-//        return viewport.right
-//    }
+    public function get bottom() : Number
+    {
+        return viewport.bottom
+    }
+    
+    public function get top() : Number
+    {
+        return viewport.top
+    }
+    
+    public function get left() : Number
+    {
+        return viewport.left
+    }
+    
+    public function get right() : Number
+    {
+        return viewport.right
+    }
+    
+    public function get topLeft() : Point
+    {
+        return null
+    }
+    
+    public function get bottomRight() : Point
+    {
+        return null
+    }
     
     public function get scale() : Number
     {

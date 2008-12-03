@@ -33,6 +33,7 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.AnimationViewport;
@@ -90,8 +91,8 @@ public class MultiScaleImageViewer extends Sprite
         createScene()
         
         // viewport
-//        createNormalizedViewport( scene )
-        createAnimationViewport( scene )
+//        createNormalizedViewport( _scene )
+        createAnimationViewport( _scene )
         
         // TODO
 //        viewport.constraint = null
@@ -296,7 +297,7 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
     
-    private function createNormalizedViewport( scene : IMultiScaleScene ) : void
+    private function createNormalizedViewport( scene : IReadonlyMultiScaleScene ) : void
     {
         _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
                                             DEFAULT_VIEWPORT_HEIGHT,
@@ -307,7 +308,7 @@ public class MultiScaleImageViewer extends Sprite
         transformationController.view = scene.targetCoordinateSpace
     }
     
-    private function createAnimationViewport( scene : IMultiScaleScene ) : void
+    private function createAnimationViewport( scene : IReadonlyMultiScaleScene ) : void
     {
         _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
                                            DEFAULT_VIEWPORT_HEIGHT,

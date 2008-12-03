@@ -21,8 +21,12 @@
 package org.openzoom.flash.scene
 {
 
+import flash.display.DisplayObject;
 import flash.events.IEventDispatcher;
 
+/**
+ * Dispatched when sceneWidth or sceneHeight are changed.
+ */
 [Event(name="resize", type="flash.events.Event")]
 
 /**
@@ -30,15 +34,38 @@ import flash.events.IEventDispatcher;
  */
 public interface IReadonlyMultiScaleScene extends IEventDispatcher
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  sceneWidth
+    //----------------------------------
+    
 	/**
 	 * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
 	 */
 	function get sceneWidth() : Number
+  
+    //----------------------------------
+    //  sceneHeight
+    //----------------------------------
 	
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
      */
 	function get sceneHeight() : Number
+    
+    //----------------------------------
+    //  targetCoordinateSpace
+    //----------------------------------
+    
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#targetCoordinateSpace
+     */ 
+    function get targetCoordinateSpace() : DisplayObject
 }
 
 }

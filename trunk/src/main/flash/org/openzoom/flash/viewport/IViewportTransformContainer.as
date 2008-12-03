@@ -21,6 +21,11 @@
 package org.openzoom.flash.viewport
 {
 
+/**
+ * Interface to the viewport for a viewport container.
+ * Allows the container to the set the size (viewportWidth and viewportHeight)
+ * of IViewportTransform.
+ */
 public interface IViewportTransformContainer extends IViewportTransform
 {   
     //--------------------------------------------------------------------------
@@ -31,6 +36,9 @@ public interface IViewportTransformContainer extends IViewportTransform
     
     /**
      * Sets viewportWidth and viewportHeight.
+     * Dispatches ViewportEvent.RESIZE.
+     * 
+     * @see org.openzoom.events.ViewportEvent#RESIZE
      */
     function setSize( width : Number, height : Number ) : void
 }

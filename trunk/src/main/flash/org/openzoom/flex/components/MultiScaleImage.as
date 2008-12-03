@@ -37,6 +37,7 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.viewport.AnimationViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
@@ -81,7 +82,7 @@ public class MultiScaleImage extends UIComponent
 	{
         createMouseCatcher()
         createScene()
-        createViewport( scene )
+        createViewport( _scene )
 	}
 	
 	//--------------------------------------------------------------------------
@@ -218,7 +219,7 @@ public class MultiScaleImage extends UIComponent
         mask = contentMask
     }
     
-    private function createViewport( scene : IMultiScaleScene ) : void
+    private function createViewport( scene : IReadonlyMultiScaleScene ) : void
     {
         _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
                                            DEFAULT_VIEWPORT_HEIGHT,

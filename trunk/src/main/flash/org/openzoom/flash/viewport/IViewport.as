@@ -31,7 +31,7 @@ import flash.events.IEventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import org.openzoom.flash.scene.IMultiScaleScene;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 
 //------------------------------------------------------------------------------
 //
@@ -118,42 +118,6 @@ public interface IViewport extends IEventDispatcher
     function get height() : Number
 //  function set height( value : Number ) : void
     
-//    //----------------------------------
-//    //  top
-//    //----------------------------------
-//    
-//    /**
-//     * Coordinate of the upper boundary of the viewport.
-//     */
-//    function get top() : Number
-//    
-//    //----------------------------------
-//    //  right
-//    //----------------------------------
-//    
-//    /**
-//     * Coordinate of the right boundary of the viewport.
-//     */    
-//    function get right() : Number
-//    
-//    //----------------------------------
-//    //  bottom
-//    //----------------------------------
-//    
-//    /**
-//     * Coordinate of the lower boundary of the viewport.
-//     */ 
-//    function get bottom() : Number
-//    
-//    //----------------------------------
-//    //  left
-//    //----------------------------------
-//    
-//    /**
-//     * Coordinate of the left boundary of the viewport.
-//     */ 
-//    function get left() : Number
-    
     //----------------------------------
     //  viewportWidth
     //----------------------------------
@@ -189,6 +153,9 @@ public interface IViewport extends IEventDispatcher
     //  transformer
     //----------------------------------
     
+    /**
+     * Transforms the IViewport object after its state has been changed.
+     */ 
     function get transformer() : IViewportTransformer
     function set transformer( value : IViewportTransformer ) : void
         
@@ -196,7 +163,10 @@ public interface IViewport extends IEventDispatcher
     //  scene
     //----------------------------------
     
-    function get scene() : IMultiScaleScene
+    /**
+     * Scene this viewport belongs to.
+     */ 
+    function get scene() : IReadonlyMultiScaleScene
 
     //----------------------------------
     //  scale
@@ -206,7 +176,7 @@ public interface IViewport extends IEventDispatcher
      * Scale of the scene.
      */ 
     function get scale() : Number
-//  function set scale( value : Number )
+//  function set scale( value : Number ) : void
       
     //----------------------------------
     //  zoom
@@ -356,7 +326,69 @@ public interface IViewport extends IEventDispatcher
      * If the rectangles do not intersect, this method returns an empty Rectangle
      * object; that is, a rectangle with its x, y, width, and height properties set to 0.
      */ 
-    function intersection( toIntersect : Rectangle ) : Rectangle 
+    function intersection( toIntersect : Rectangle ) : Rectangle
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: flash.geom.Rectangle
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  top
+    //----------------------------------
+    
+    /**
+     * The y coordinate of the top-left corner of the viewport.
+     */
+    function get top() : Number
+    
+    //----------------------------------
+    //  right
+    //----------------------------------
+    
+    /**
+     * The sum of the x and width properties.
+     */    
+    function get right() : Number
+    
+    //----------------------------------
+    //  bottom
+    //----------------------------------
+    
+    /**
+     * The sum of the y and height properties.
+     */ 
+    function get bottom() : Number
+    
+    //----------------------------------
+    //  left
+    //----------------------------------
+    
+    /**
+     * The x coordinate of the top-left corner of the viewport.
+     */ 
+    function get left() : Number
+
+    //----------------------------------
+    //  topLeft
+    //----------------------------------
+    
+    /**
+     * The location of the IViewport object's top-left corner,
+     * determined by the x and y coordinates of the point.
+     */ 
+    function get topLeft() : Point
+
+    //----------------------------------
+    //  bottomRight
+    //----------------------------------
+    
+    /**
+     * The location of the IViewport object's bottom-right corner,
+     * determined by the values of the right and bottom properties.
+     */ 
+    function get bottomRight() : Point
 }
 
 }

@@ -53,8 +53,8 @@ public interface IMultiScaleContainer
     /**
      * Viewport constraint.
      */ 
-    function get constraint() : IViewportConstraint
-    function set constraint( value : IViewportConstraint ) : void
+//    function get constraint() : IViewportConstraint
+//    function set constraint( value : IViewportConstraint ) : void
     
     /**
      * Viewport transformer.

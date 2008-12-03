@@ -25,16 +25,18 @@ import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
-import flash.events.Event;
+import flash.events.Event;	
 
-import org.openzoom.flash.viewport.IViewportTransformationTarget;	
-
-
+/**
+ * @inheritDoc
+ */
 [Event(name="resize", type="flash.events.Event")]
 
+/**
+ * Basic implementation of IMultiScaleScene
+ */
 public class MultiScaleScene extends Sprite implements IMultiScaleScene,
-                                                       IReadonlyMultiScaleScene,
-                                                       IViewportTransformationTarget 
+                                                       IReadonlyMultiScaleScene
 {
     //--------------------------------------------------------------------------
     //
@@ -45,18 +47,18 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     /**
      * Constructor.
      */
-     public function MultiScaleScene( width : Number, height : Number,
+    public function MultiScaleScene( width : Number, height : Number,
                                       backgroundColor : uint = 0x000000,
                                       backgroundAlpha : Number = 0.0 )
-     {
-     	this.backgroundColor = backgroundColor
+    {
+        this.backgroundColor = backgroundColor
      	this.backgroundAlpha = backgroundAlpha
      	
      	frame = createFrame()
-     	drawFrame( width, height )
-     	
      	super.addChildAt( frame, 0 )
-     }
+     	
+     	setFrameSize( width, height )
+    }
      
     //--------------------------------------------------------------------------
     //
@@ -65,8 +67,8 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     //--------------------------------------------------------------------------
     
     private var frame : Shape
-    private var backgroundColor : uint = 0x000000
-    private var backgroundAlpha : Number = 0.0
+    private var backgroundColor : uint   = 0x000000
+    private var backgroundAlpha : Number = 0
     
     //--------------------------------------------------------------------------
     //
@@ -78,6 +80,9 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     //  numChildren
     //----------------------------------
     
+    /**
+     * @inheritDoc
+     */
     override public function get numChildren():int
     {
         return super.numChildren - 1
@@ -89,26 +94,41 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     override public function addChildAt( child : DisplayObject, index : int ) : DisplayObject
     {
     	return super.addChildAt( child, index + 1 )
     }
     
+    /**
+     * @inheritDoc
+     */
     override public function removeChildAt( index : int ) : DisplayObject
     {
     	return super.removeChildAt( index + 1 )
     }
     
+    /**
+     * @inheritDoc
+     */
     override public function setChildIndex( child : DisplayObject, index : int ) : void
     {
     	super.setChildIndex( child, index + 1 )
     }
     
+    /**
+     * @inheritDoc
+     */
     override public function getChildAt( index : int ) : DisplayObject
     {
     	return super.getChildAt( index + 1 )
     }
     
+    /**
+     * @inheritDoc
+     */
     override public function getChildIndex( child : DisplayObject ) : int
     {
         return super.getChildIndex( child ) + 1	
@@ -121,7 +141,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     //--------------------------------------------------------------------------
     
     //----------------------------------
-    //  owner
+    //  targetCoordinateSpace
     //----------------------------------
     
     public function get targetCoordinateSpace() : DisplayObject
@@ -133,6 +153,9 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     //  sceneWidth
     //----------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     public function get sceneWidth() : Number
     {
         return frame.width
@@ -140,13 +163,16 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     
     public function set sceneWidth( value : Number ) : void
     {
-    	drawFrame( value, sceneHeight )
+        setFrameSize( value, sceneHeight )
     }
     
     //----------------------------------
     //  sceneHeight
     //----------------------------------
-    
+
+    /**
+     * @inheritDoc
+     */    
     public function get sceneHeight() : Number
     {
         return frame.height
@@ -154,7 +180,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     
     public function set sceneHeight( value : Number ) : void
     {
-        drawFrame( sceneWidth, value )
+        setFrameSize( sceneWidth, value )
     }
     
     //--------------------------------------------------------------------------
@@ -162,11 +188,13 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     //  Methods: IMultiScaleScene
     //
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @inheritDoc
+     */    
     public function setSize( width : Number, height : Number ) : void
     {
-    	drawFrame( width, height )
-    	dispatchEvent( new Event( Event.RESIZE ))
+    	setFrameSize( width, height )
     }
     
     //--------------------------------------------------------------------------
@@ -175,12 +203,21 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     //
     //--------------------------------------------------------------------------
 
-//    public function clear() : void
-//    {
-//    	while( numChildren > 1 )
-//    	   removeChildAt( numChildren - 1 )
-//    }
+    /**
+     * @private
+     */ 
+    private function setFrameSize( width : Number, height : Number ) : void
+    {
+    	if( width == sceneWidth && height == sceneHeight )
+            return
+            
+        drawFrame( width, height )
+        dispatchEvent( new Event( Event.RESIZE ))
+    }
     
+    /**
+     * @private
+     */
     private function drawFrame( width : Number, height : Number ) : void
     {
         var g : Graphics = frame.graphics
@@ -189,7 +226,10 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
         g.drawRect( 0, 0, width, height )
         g.endFill()
     }
-    
+
+    /**
+     * @private
+     */    
     private function createFrame() : Shape
     {
     	var background : Shape = new Shape()

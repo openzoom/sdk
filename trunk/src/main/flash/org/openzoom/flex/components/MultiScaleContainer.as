@@ -33,10 +33,10 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
 import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.scene.IMultiScaleScene;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.viewport.AnimationViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.IViewportTransformer;
@@ -60,7 +60,7 @@ public class MultiScaleContainer extends UIComponent
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT           : Number = 18000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
-    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0
+    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.5
     
     private static const DEFAULT_VIEWPORT_WIDTH         : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT        : Number = 600
@@ -80,8 +80,8 @@ public class MultiScaleContainer extends UIComponent
         createMouseCatcher()
         createScene()
         
-        createNormalizedViewport( scene )
-//        createAnimationViewport( scene )
+//        createNormalizedViewport( _scene )
+        createAnimationViewport( _scene )
     }
     
     //--------------------------------------------------------------------------
@@ -129,17 +129,17 @@ public class MultiScaleContainer extends UIComponent
     //  constraint
     //----------------------------------
 
-    public function get constraint() : IViewportConstraint
-    {
-    	// FIXME
-        return null//viewport.transformer.constraint
-    }
-    
-    public function set constraint( value : IViewportConstraint ) : void
-    {
-    	// FIXME
+//    public function get constraint() : IViewportConstraint
+//    {
+//    	// FIXME
+//        return viewport.transformer.constraint
+//    }
+//
+//    public function set constraint( value : IViewportConstraint ) : void
+//    {
+//    	// FIXME
 //        viewport.tranformer.constraint = value
-    }
+//    }
     
     //----------------------------------
     //  loader
@@ -354,7 +354,7 @@ public class MultiScaleContainer extends UIComponent
     //
     //--------------------------------------------------------------------------
     
-    private function createNormalizedViewport( scene : IMultiScaleScene ) : void
+    private function createNormalizedViewport( scene : IReadonlyMultiScaleScene ) : void
     {
         _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
                                             DEFAULT_VIEWPORT_HEIGHT,
@@ -365,7 +365,7 @@ public class MultiScaleContainer extends UIComponent
         transformationController.view = scene.targetCoordinateSpace
     }
     
-    private function createAnimationViewport( scene : IMultiScaleScene ) : void
+    private function createAnimationViewport( scene : IReadonlyMultiScaleScene ) : void
     {
         _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
                                            DEFAULT_VIEWPORT_HEIGHT,
@@ -385,12 +385,12 @@ public class MultiScaleContainer extends UIComponent
     
     private function viewport_transformStartHandler( event : ViewportEvent ) : void
     {
-//      trace("ViewportEvent.TRANSFORM_START")
+      trace("ViewportEvent.TRANSFORM_START")
     }
     
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
-//        trace("ViewportEvent.TRANSFORM_UPDATE")
+        trace("ViewportEvent.TRANSFORM_UPDATE")
         var v : INormalizedViewport = viewport
         var targetWidth   : Number =  v.viewportWidth / v.width
         var targetHeight  : Number =  v.viewportHeight / v.height
@@ -406,7 +406,7 @@ public class MultiScaleContainer extends UIComponent
     
     private function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
-//        trace("ViewportEvent.TRANSFORM_END")
+        trace("ViewportEvent.TRANSFORM_END")
     }
     
     private function createScene() : void

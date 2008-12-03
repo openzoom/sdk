@@ -43,6 +43,7 @@ import org.openzoom.flash.renderers.images.RenderingMode;
 import org.openzoom.flash.renderers.images.Tile;
 import org.openzoom.flash.renderers.images.TileLayer;
 import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.viewport.INormalizedViewport;
 
 /**
  * Generic renderer for multi-scale images.
@@ -109,6 +110,16 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //
     //--------------------------------------------------------------------------
 
+    //----------------------------------
+    //  viewport
+    //----------------------------------
+    
+    override public function set viewport( value : INormalizedViewport ) : void
+    {
+    	super.viewport = value
+        updateDisplayList()
+    }
+    
     //----------------------------------
     //  loader
     //----------------------------------

@@ -294,42 +294,6 @@ public class ViewportTransform2 implements IViewportTransform,
     {
     	zoomTo( getZoomForHeight( value ), 0, 0 )
     }
-    
-    //----------------------------------
-    //  left
-    //----------------------------------
-    
-    public function get left() : Number
-    {
-        return x
-    }
-    
-    //----------------------------------
-    //  right
-    //----------------------------------
-    
-    public function get right() : Number
-    {
-        return x + width
-    }
-    
-    //----------------------------------
-    //  top
-    //----------------------------------
-    
-    public function get top() : Number
-    {
-        return y
-    }
-    
-    //----------------------------------
-    //  bottom
-    //----------------------------------
-    
-    public function get bottom() : Number
-    {
-        return y + height
-    }
 
     //----------------------------------
     //  viewportWidth
@@ -353,6 +317,12 @@ public class ViewportTransform2 implements IViewportTransform,
         return _viewportHeight
     }
 
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Scene
+    //
+    //--------------------------------------------------------------------------
+    
     //----------------------------------
     //  sceneWidth
     //----------------------------------
@@ -459,6 +429,9 @@ public class ViewportTransform2 implements IViewportTransform,
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function getWidthAndHeightForZoom( zoom : Number ) : Point
     {
         var ratio : Number = sceneAspectRatio / aspectRatio
@@ -482,6 +455,9 @@ public class ViewportTransform2 implements IViewportTransform,
         return bounds
     }
     
+    /**
+     * @private
+     */
     private function getZoomForWidth( width : Number ) : Number
     {
         var zoom : Number
@@ -495,6 +471,9 @@ public class ViewportTransform2 implements IViewportTransform,
         return zoom
     }
     
+    /**
+     * @private
+     */
     private function getZoomForHeight( height : Number ) : Number
     {
         var ratio : Number = sceneAspectRatio / aspectRatio
@@ -507,6 +486,9 @@ public class ViewportTransform2 implements IViewportTransform,
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     public function toString() : String
     {
         return "[ViewportTransform2]" + "("
@@ -517,6 +499,9 @@ public class ViewportTransform2 implements IViewportTransform,
                + "h=" + height + ")"
     }
     
+    /**
+     * @inheritDoc
+     */
     public function copy( other : IViewportTransform ) : void
     {
     	_x = other.x
@@ -527,46 +512,14 @@ public class ViewportTransform2 implements IViewportTransform,
     	
     	_sceneWidth = other.sceneWidth
     	_sceneHeight = other.sceneHeight
-    	
-//    	if( !equals( other ))
-//        {
-//            trace(
-//                   x - other.x,
-//                   y - other.y,
-//                   width - other.width,
-//                   height - other.height,
-//                   zoom - other.zoom,
-//                   viewportWidth - other.viewportWidth,
-//                   viewportHeight - other.viewportHeight,
-//                   sceneWidth - other.sceneWidth,
-//                   sceneHeight - other.sceneHeight
-//                 )              
-//            trace( "AAARGH" )
-//        }
     }
     
     public function clone() : IViewportTransform
     {
         var copy : ViewportTransform2 =
-			                new ViewportTransform2( _x, _y, _width, _height, _zoom,
-			                                        _viewportWidth, _viewportHeight,
-			                                        _sceneWidth, _sceneHeight )
-            
-            if( !equals( copy ))
-            {
-                trace(
-                       x - copy.x,
-                       y - copy.y,
-                       width - copy.width,
-                       height - copy.height,
-                       zoom - copy.zoom,
-                       viewportWidth - copy.viewportWidth,
-                       viewportHeight - copy.viewportHeight,
-                       _sceneWidth - copy._sceneWidth,
-                       _sceneHeight - copy._sceneHeight
-                     )            	
-                trace( "AAARGH" )
-            }
+		                new ViewportTransform2( _x, _y, _width, _height, _zoom,
+		                                        _viewportWidth, _viewportHeight,
+		                                        _sceneWidth, _sceneHeight )
             
         return copy	
     }
@@ -580,8 +533,8 @@ public class ViewportTransform2 implements IViewportTransform,
     	       && zoom == other.zoom
     	       && viewportWidth == other.viewportWidth
     	       && viewportHeight == other.viewportHeight
-    	       && _sceneWidth == ViewportTransform2(other)._sceneWidth
-    	       && _sceneHeight == ViewportTransform2(other)._sceneHeight
+    	       && sceneWidth == other.sceneWidth
+    	       && sceneHeight == other.sceneHeight
     }
 
     //--------------------------------------------------------------------------
@@ -590,6 +543,9 @@ public class ViewportTransform2 implements IViewportTransform,
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     public function setSize( width : Number, height : Number ) : void
     {
     	_viewportWidth  = width
@@ -626,6 +582,84 @@ public class ViewportTransform2 implements IViewportTransform,
     private function get sceneAspectRatio() : Number
     {
         return _sceneWidth / _sceneHeight
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: flash.geom.Rectangle
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  left
+    //----------------------------------
+    
+    /**
+     * @inheritDoc
+     */ 
+    public function get left() : Number
+    {
+        return x
+    }
+    
+    //----------------------------------
+    //  right
+    //----------------------------------
+    
+    /**
+     * @inheritDoc
+     */
+    public function get right() : Number
+    {
+        return x + width
+    }
+    
+    //----------------------------------
+    //  top
+    //----------------------------------
+    
+    /**
+     * @inheritDoc
+     */
+    public function get top() : Number
+    {
+        return y
+    }
+    
+    //----------------------------------
+    //  bottom
+    //----------------------------------
+    
+    /**
+     * @inheritDoc
+     */
+    public function get bottom() : Number
+    {
+        return y + height
+    }
+    
+    //----------------------------------
+    //  topLeft
+    //----------------------------------
+    
+    /**
+     * @inheritDoc
+     */
+    public function get topLeft() : Point
+    {
+        return new Point( left, top )
+    }
+    
+    //----------------------------------
+    //  bottomRight
+    //----------------------------------
+    
+    /**
+     * @inheritDoc
+     */
+    public function get bottomRight() : Point
+    {
+        return new Point( right, bottom )
     }
 }
 

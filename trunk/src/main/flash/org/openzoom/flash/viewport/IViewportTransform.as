@@ -21,6 +21,7 @@
 package org.openzoom.flash.viewport
 {
 
+import flash.geom.Point;
 import flash.geom.Rectangle;	
 
 /**
@@ -73,42 +74,6 @@ public interface IViewportTransform
      */
     function get height() : Number
     function set height( value : Number ) : void
-    
-//    //----------------------------------
-//    //  top
-//    //----------------------------------
-//    
-//    /**
-//     * Coordinate of the upper boundary of the viewport.
-//     */
-//    function get top() : Number
-//    
-//    //----------------------------------
-//    //  right
-//    //----------------------------------
-//    
-//    /**
-//     * Coordinate of the right boundary of the viewport.
-//     */    
-//    function get right() : Number
-//    
-//    //----------------------------------
-//    //  bottom
-//    //----------------------------------
-//    
-//    /**
-//     * Coordinate of the lower boundary of the viewport.
-//     */ 
-//    function get bottom() : Number
-//    
-//    //----------------------------------
-//    //  left
-//    //----------------------------------
-//    
-//    /**
-//     * Coordinate of the left boundary of the viewport.
-//     */ 
-//    function get left() : Number
      
     //--------------------------------------------------------------------------
     //
@@ -120,12 +85,18 @@ public interface IViewportTransform
     //  viewportWidth
     //----------------------------------
     
+    /**
+     * @copy org.openzoom.flash.viewport.IViewport#viewportWidth
+     */ 
     function get viewportWidth() : Number
     
     //----------------------------------
     //  viewportHeight
     //----------------------------------
     
+    /**
+     * @copy org.openzoom.flash.viewport.IViewport#viewportHeight
+     */
     function get viewportHeight() : Number
     
     //----------------------------------
@@ -261,6 +232,66 @@ public interface IViewportTransform
      * other parameter is equal to this Rectangle object.
      */
     function equals( other : IViewportTransform ) : Boolean
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: flash.geom.Rectangle
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  top
+    //----------------------------------
+    
+    /**
+     * Coordinate of the upper boundary of the viewport transform.
+     */
+    function get top() : Number
+    
+    //----------------------------------
+    //  right
+    //----------------------------------
+    
+    /**
+     * @copy org.openzoom.flash.viewport.IViewport#right
+     */    
+    function get right() : Number
+    
+    //----------------------------------
+    //  bottom
+    //----------------------------------
+    
+    /**
+     * @copy org.openzoom.flash.viewport.IViewport#bottom
+     */ 
+    function get bottom() : Number
+    
+    //----------------------------------
+    //  left
+    //----------------------------------
+    
+    /**
+     * @copy org.openzoom.flash.viewport.IViewport#left
+     */ 
+    function get left() : Number
+
+    //----------------------------------
+    //  topLeft
+    //----------------------------------
+    
+    /**
+     * @copy org.openzoom.flash.viewport.IViewport#topLeft
+     */ 
+    function get topLeft() : Point
+
+    //----------------------------------
+    //  bottomRight
+    //----------------------------------
+    
+    /**
+     * @copy org.openzoom.flash.viewport.IViewport#bottomRight
+     */ 
+    function get bottomRight() : Point
 }
 
 }

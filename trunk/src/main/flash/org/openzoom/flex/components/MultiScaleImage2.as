@@ -119,7 +119,8 @@ public class MultiScaleImage2 extends UIComponent
     		sourceLoader = new URLLoader( new URLRequest( sourceURL ))
     		sourceLoader.addEventListener( Event.COMPLETE, sourceLoader_completeHandler )
     	}
-    	else if( value is IMultiScaleImageDescriptor )
+    	
+    	if( value is IMultiScaleImageDescriptor )
     	{
             _source = IMultiScaleImageDescriptor( value )
             dispatchEvent( new Event( "sourceChanged" ))
@@ -263,8 +264,6 @@ public class MultiScaleImage2 extends UIComponent
         container.sceneHeight = sceneHeight
         
         // create renderer
-        
-        // FIXME: Loader
         image = createImage( descriptor, container.loader, sceneWidth, sceneHeight )
         container.addChild( image )
     }

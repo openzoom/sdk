@@ -24,10 +24,13 @@ package org.openzoom.flash.scene
 import flash.display.DisplayObject;
 import flash.events.IEventDispatcher;
 
+/**
+ * Dispatched when sceneWidth or sceneHeight are changed.
+ */
 [Event(name="resize", type="flash.events.Event")]
 
 /**
- * Interface for the viewport content.
+ * Interface for a multi-scale scene that is viewed with a viewport.
  */
 public interface IMultiScaleScene extends IEventDispatcher
 {
