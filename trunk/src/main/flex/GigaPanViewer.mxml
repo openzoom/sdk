@@ -171,6 +171,8 @@
         <mx:Button label="Show All" click="{ viewer.viewport.showAll() }" />        
         <mx:Button label="-" click="{ viewer.viewport.zoomBy( 0.6 ) }" />
         <mx:Button label="+" click="{ viewer.viewport.zoomBy( 1.3 ) }" />
+        
+        <!--
         <mx:Spacer width="30" />
         
         <mx:Button
@@ -180,6 +182,7 @@
             label="Bounds Checking"
             click="{ viewer.viewport.constraint = ( boundsChecking.selected ? new DefaultViewportConstraint() : null )}"
             />
+        -->
     </mx:HBox>
     	
 </mx:Application>

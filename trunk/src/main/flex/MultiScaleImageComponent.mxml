@@ -26,11 +26,11 @@
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-road.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-satellite.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-terrain.xml"
-          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/openstreetmap.xml"
+            private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/openstreetmap.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/butterfly.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/bluemarble.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/flickr.xml"
-//            private static const DEFAULT_SOURCE      : String = "http://seadragon.com/content/images/CarinaNebula.dzi"
+//          private static const DEFAULT_SOURCE      : String = "http://seadragon.com/content/images/CarinaNebula.dzi"
 
             private function applicationCompleteHandler( event : Event ) : void
             {
@@ -44,15 +44,13 @@
             
             private function show( x : Number, y : Number, width : Number, height : Number ) : void
             {
-                var sceneWidth : Number = image.scene.sceneWidth
-                var sceneHeight : Number = image.scene.sceneHeight
-                
                 var area : Rectangle = new Rectangle( x, y, width, height )
                 image.viewport.showRect( area )
             }
 
         ]]>
     </mx:Script>
+    
     <openzoom:MultiScaleImage
         id="image"
         top="0"
@@ -60,9 +58,8 @@
         bottom="0"
         left="0"
         source="{ DEFAULT_SOURCE }"
-        minZoom="1"
-        maxZoom="1000000000"
         />
+        
     <mx:VBox
         top="12"
         left="12"
