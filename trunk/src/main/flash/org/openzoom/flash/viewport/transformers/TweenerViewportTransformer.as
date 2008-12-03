@@ -60,7 +60,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
-    private var _transform : IViewportTransform
+    private var tweenTransform : IViewportTransform
     
     //--------------------------------------------------------------------------
     //
@@ -82,8 +82,8 @@ public class TweenerViewportTransformer implements IViewportTransformer
     public function set viewport( value : ITransformerViewport ) : void
     {
         _viewport = value
-        _target    = viewport.transform
-        _transform = viewport.transform
+        _targetTransform = viewport.transform
+        tweenTransform   = viewport.transform
     }
     
     //----------------------------------
@@ -106,11 +106,11 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //  target
     //----------------------------------
     
-    private var _target : IViewportTransform
+    private var _targetTransform : IViewportTransform
     
-    public function get target() : IViewportTransform
+    public function get targetTransform() : IViewportTransform
     {
-        return _target.clone()
+        return _targetTransform.clone()
     }
     
     //--------------------------------------------------------------------------
@@ -126,9 +126,9 @@ public class TweenerViewportTransformer implements IViewportTransformer
 //    	    Tweener.removeTweens( viewport )
 //	        viewport.endTransform()
 //    	}
-    	if( Tweener.isTweening( _transform ))
+    	if( Tweener.isTweening( tweenTransform ))
     	{
-    	    Tweener.removeTweens( _transform )
+    	    Tweener.removeTweens( tweenTransform )
 	        viewport.endTransform()
     	}
     }
@@ -137,13 +137,23 @@ public class TweenerViewportTransformer implements IViewportTransformer
                                immediately : Boolean = false ) : void
     {
     	var duration : Number = DEFAULT_DURATION
-	    _transform.copy(ViewportTransform2(viewport.transform))
+    	// FIXME
+        var tweenTransform1 : IViewportTransform = viewport.transform
+	    tweenTransform.copy(ViewportTransform2(viewport.transform))
+        
+        if( !tweenTransform1.equals( tweenTransform ))
+            trace( "DAMN IT, CHLOE!!" )
+
+//      trace( _transform.equals( viewport.transform ) )
+
+        // copy targetTransform
+        _targetTransform = targetTransform.clone()
         
         if( immediately )
         {
         	stop()
         	viewport.beginTransform()
-        	viewport.transform = targetTransform
+        	viewport.transform = _targetTransform
         	viewport.endTransform()
         }
     	else
@@ -151,14 +161,12 @@ public class TweenerViewportTransformer implements IViewportTransformer
 //	        if( !Tweener.isTweening( viewport ))
 //	            viewport.beginTransform()
 
-	        if( !Tweener.isTweening( _transform ))
+	        if( !Tweener.isTweening( tweenTransform ))
 	            viewport.beginTransform()
-	        
-	        _target = targetTransform.clone()
 	            
 	        Tweener.addTween( 
 //	                          viewport,
-	                          _transform,
+	                          tweenTransform,
 	                          {
 //	                              _transform_x: targetTransform.x,
 //	                              _transform_y: targetTransform.y,
@@ -167,13 +175,13 @@ public class TweenerViewportTransformer implements IViewportTransformer
                                   x: targetTransform.x,
                                   y: targetTransform.y,
                                   width: targetTransform.width,
-                                  height: targetTransform.height,
+//                                height: targetTransform.height,
 	                              time: duration,
 	                              transition: DEFAULT_EASING,
 	                              onUpdate:
 		                              function() : void
 		                              {
-	                                      viewport.transform = _transform
+	                                      viewport.transform = tweenTransform
 	                                  },
 	                              onComplete: viewport.endTransform
 	                          }

@@ -61,7 +61,7 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT           : Number = 15000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
-    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.5
+    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.6
     
     private static const DEFAULT_VIEWPORT_WIDTH         : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT        : Number = 600
@@ -95,8 +95,6 @@ public class MultiScaleImageViewer extends Sprite
         
         // TODO
 //        viewport.constraint = null
-//        viewport.minZoom = DEFAULT_MIN_ZOOM
-//        viewport.maxZoom = DEFAULT_MAX_ZOOM
         
         var loadingQueue : LoadingQueue = new LoadingQueue()
         
@@ -104,22 +102,22 @@ public class MultiScaleImageViewer extends Sprite
         {
             for( var j : int = 0; j < 5; j++ )
             {
-            	var scale : Number = clamp( Math.random() / 2, 0.025, 0.25 )
-		        var image : MultiScaleImageRenderer =
-		                      createImage( descriptor.clone(),
-		                                   loadingQueue,
-		                                   descriptor.width * scale,
-		                                   descriptor.height * scale )
-		                      
+                var scale : Number = clamp( Math.random() / 2, 0.025, 0.25 )
+                var image : MultiScaleImageRenderer =
+                              createImage( descriptor.clone(),
+                                           loadingQueue,
+                                           descriptor.width * scale,
+                                           descriptor.height * scale )
+                              
                 // Random layout             
                 image.x = Math.random() * DEFAULT_SCENE_WIDTH  * 0.8
                 image.y = Math.random() * DEFAULT_SCENE_HEIGHT * 0.8
                 
                 // Grid layout
-//		        image.x = i * (image.width * 1.1)
-//		        image.y = j * (image.height * 1.1)
+//              image.x = i * (image.width * 1.1)
+//              image.y = j * (image.height * 1.1)
 
-		        _scene.addChild( image )
+                _scene.addChild( image )
             }
         }
         
@@ -168,7 +166,7 @@ public class MultiScaleImageViewer extends Sprite
     
     public function get scene() : IMultiScaleScene
     {
-    	return _scene
+        return _scene
     }
     
     //--------------------------------------------------------------------------
@@ -274,7 +272,7 @@ public class MultiScaleImageViewer extends Sprite
     
     public function shuffle() : void
     {
-    	for( var i : int = 0; i < _scene.numChildren; i++ )
+        for( var i : int = 0; i < _scene.numChildren; i++ )
         {
             var renderer : DisplayObject = _scene.getChildAt( i )
             var scale : Number = 1
@@ -327,12 +325,12 @@ public class MultiScaleImageViewer extends Sprite
     
     private function viewport_transformStartHandler( event : ViewportEvent ) : void
     {
-    	trace("ViewportEvent.TRANSFORM_START")
+//        trace("ViewportEvent.TRANSFORM_START", viewport.zoom, viewport.width, viewport.height)
     }
     
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
-        trace("ViewportEvent.TRANSFORM_UPDATE", viewport.zoom )
+//        trace("ViewportEvent.TRANSFORM_UPDATE", viewport.zoom, viewport.width, viewport.height )
         // FIXME
         var v : INormalizedViewport = viewport
         var targetWidth   : Number =  v.viewportWidth / v.width
@@ -349,7 +347,7 @@ public class MultiScaleImageViewer extends Sprite
     
     private function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
-        trace("ViewportEvent.TRANSFORM_END")
+//        trace("ViewportEvent.TRANSFORM_END", viewport.zoom, viewport.width, viewport.height)
     }
     
     private function createScene() : void

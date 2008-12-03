@@ -777,7 +777,7 @@ class TransformerProxy implements IViewportTransformer
         _viewport = value
     }
     
-    public function get target() : IViewportTransform
+    public function get targetTransform() : IViewportTransform
     {
         return _target
     }

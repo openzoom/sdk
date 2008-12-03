@@ -40,6 +40,8 @@ import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.IViewportTransformer;
+import org.openzoom.flash.viewport.NormalizedViewport;
+import org.openzoom.flash.viewport.controllers.ViewTransformationController;
 
 [DefaultProperty("children")]
 public class MultiScaleContainer extends UIComponent 
@@ -77,7 +79,9 @@ public class MultiScaleContainer extends UIComponent
     {
         createMouseCatcher()
         createScene()
-        createViewport( scene )
+        
+        createNormalizedViewport( scene )
+//        createAnimationViewport( scene )
     }
     
     //--------------------------------------------------------------------------
@@ -88,6 +92,8 @@ public class MultiScaleContainer extends UIComponent
     
     private var mouseCatcher : Sprite
     private var contentMask : Shape
+    
+    private var transformationController : ViewTransformationController
     
     //--------------------------------------------------------------------------
     //
@@ -125,12 +131,14 @@ public class MultiScaleContainer extends UIComponent
 
     public function get constraint() : IViewportConstraint
     {
-        return viewport.constraint
+    	// FIXME
+        return null//viewport.transformer.constraint
     }
     
     public function set constraint( value : IViewportConstraint ) : void
     {
-        viewport.constraint = value
+    	// FIXME
+//        viewport.tranformer.constraint = value
     }
     
     //----------------------------------
@@ -202,46 +210,13 @@ public class MultiScaleContainer extends UIComponent
     
     public function set children( value : Array ) : void
     {
-        // TODO Remove all children beforehands
+    	// remove all existing children
+        for( var i : int = numChildren - 1; i >= 0; i-- )
+            removeChildAt( i )
+        
         for each( var child : DisplayObject in value )
             addChild( child )
     }
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Properties: Viewport
-    //
-    //--------------------------------------------------------------------------
-    
-    //----------------------------------
-    //  minZoom
-    //----------------------------------
-    
-//    [Bindable]
-//    public function get minZoom() : Number
-//    {
-//        return viewport.constraint.minZoom
-//    }
-//    
-//    public function set minZoom( value : Number ) : void
-//    {
-//        viewport.constraint.minZoom = value
-//    }
-    
-    //----------------------------------
-    //  maxZoom
-    //----------------------------------
-    
-//    [Bindable]
-//    public function get maxZoom() : Number
-//    {
-//        return viewport.constraint.maxZoom
-//    }
-//    
-//    public function set maxZoom( value : Number ) : void
-//    {
-//        viewport.constraint.maxZoom = value
-//    }
     
     //--------------------------------------------------------------------------
     //
@@ -281,17 +256,6 @@ public class MultiScaleContainer extends UIComponent
     
     //--------------------------------------------------------------------------
     //
-    //  Overridden properties: UIComponent
-    //
-    //--------------------------------------------------------------------------
-    
-    override public function get numChildren() : int
-    {
-    	return _scene.numChildren
-    }
-    
-    //--------------------------------------------------------------------------
-    //
     //  Overridden methods: UIComponent
     //
     //--------------------------------------------------------------------------
@@ -305,7 +269,18 @@ public class MultiScaleContainer extends UIComponent
     
     //--------------------------------------------------------------------------
     //
-    //  Overridden methods: Sprite
+    //  Overridden properties: UIComponent
+    //
+    //--------------------------------------------------------------------------
+    
+    override public function get numChildren() : int
+    {
+        return _scene.numChildren
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Overridden methods: UIComponent
     //
     //--------------------------------------------------------------------------
     
@@ -373,7 +348,24 @@ public class MultiScaleContainer extends UIComponent
         mask = contentMask
     }
     
-    private function createViewport( scene : IMultiScaleScene ) : void
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Viewports
+    //
+    //--------------------------------------------------------------------------
+    
+    private function createNormalizedViewport( scene : IMultiScaleScene ) : void
+    {
+        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
+                                            DEFAULT_VIEWPORT_HEIGHT,
+                                            scene )
+        
+        transformationController = new ViewTransformationController()
+        transformationController.viewport = viewport
+        transformationController.view = scene.targetCoordinateSpace
+    }
+    
+    private function createAnimationViewport( scene : IMultiScaleScene ) : void
     {
         _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
                                            DEFAULT_VIEWPORT_HEIGHT,

@@ -24,9 +24,10 @@ package org.openzoom.flash.utils.math
                            minimum : Number = 0,
                            maximum : Number = 1 ) : Number
     {
-        // Equivalent but, according to some article I read once upon a time,
-        // faster than: Math.max( minimum, Math.min( value, maximum ) )
-        // I know, I know, premature optimization… =)
-        return ( value < minimum ) ? minimum : ( value > maximum ? maximum : value )
+        if( value < minimum )
+            return minimum
+        if( value > maximum )
+            return maximum
+        return value
     }
 }

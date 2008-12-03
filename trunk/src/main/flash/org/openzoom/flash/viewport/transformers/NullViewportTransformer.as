@@ -22,7 +22,6 @@ package org.openzoom.flash.viewport.transformers
 {
 
 import org.openzoom.flash.viewport.ITransformerViewport;
-import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;   
 
@@ -61,6 +60,7 @@ public class NullViewportTransformer implements IViewportTransformer
     public function set viewport( value : ITransformerViewport ) : void
     {
         _viewport = value
+        _target   = viewport.transform
     }
     
     //----------------------------------
@@ -82,10 +82,16 @@ public class NullViewportTransformer implements IViewportTransformer
     //----------------------------------
     //  target
     //----------------------------------
+
+    private var _target : IViewportTransform
     
-    public function get target() : IViewportTransform
+    /**
+     * @inheritDoc
+     */
+    public function get targetTransform() : IViewportTransform
     {
-        return viewport.transform
+    	return _target.clone()
+//        return viewport.transform
     }
     
     //--------------------------------------------------------------------------
@@ -94,16 +100,25 @@ public class NullViewportTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */
     public function stop() : void
     {
     	// Do nothing
     }
     
+    /**
+     * @inheritDoc
+     */ 
     public function transform( targetTransform : IViewportTransform,
                                immediately : Boolean = false ) : void
     {
+    	// copy targetTransform
+    	_target = targetTransform.clone()
+    	
     	viewport.beginTransform()
-    	viewport.transform = targetTransform
+    	viewport.transform = _target 
     	viewport.endTransform()
     }
 }

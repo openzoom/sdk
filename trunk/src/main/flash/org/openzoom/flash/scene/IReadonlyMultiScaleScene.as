@@ -30,7 +30,14 @@ import flash.events.IEventDispatcher;
  */
 public interface IReadonlyMultiScaleScene extends IEventDispatcher
 {
+	/**
+	 * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
+	 */
 	function get sceneWidth() : Number
+	
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
+     */
 	function get sceneHeight() : Number
 }
 

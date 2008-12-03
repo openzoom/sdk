@@ -137,6 +137,48 @@ public class MultiScaleImage2 extends UIComponent
     {
         return container.scene
     }
+//    
+//    //----------------------------------
+//    //  viewport
+//    //----------------------------------
+//    
+//    [Bindable(event="viewportChanged")]
+//    public function get viewport() : INormalizedViewport
+//    {
+//        return container.viewport
+//    }
+    
+//    //----------------------------------
+//    //  constraint
+//    //----------------------------------
+//    
+//    public function get constraint() : IViewportConstraint
+//    {
+//        // FIXME
+//        return null//container.viewport.transformer.constraint
+//    }
+//    
+//    public function set constraint( value : IViewportConstraint ) : void
+//    {
+//        // FIXME
+//        //container.viewport.transformer.constraint = value
+//    }
+//    
+//    //----------------------------------
+//    //  transformer
+//    //----------------------------------
+//    
+//    public function get transformer() : IViewportTransformer
+//    {
+//        // FIXME
+//        return null//container.viewport.transformer
+//    }
+//    
+//    public function set transformer( value : IViewportTransformer ) : void
+//    {
+//        // FIXME
+//        //container.viewport.transformer = value
+//    }
     
     //----------------------------------
     //  viewport

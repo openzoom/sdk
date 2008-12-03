@@ -38,10 +38,26 @@ import org.openzoom.flash.viewport.transformers.TweenerViewportTransformer;
 //
 //------------------------------------------------------------------------------
 
+/**
+ * inheritDoc
+ */
 [Event(name="resize", type="org.openzoom.events.ViewportEvent")]
+
+/**
+ * inheritDoc
+ */
 [Event(name="transformStart", type="org.openzoom.events.ViewportEvent")]
+
+/**
+ * inheritDoc
+ */
 [Event(name="transform", type="org.openzoom.events.ViewportEvent")]
+
+/**
+ * inheritDoc
+ */
 [Event(name="transformEnd", type="org.openzoom.events.ViewportEvent")]
+
 
 /**
  * IViewport implementation that is based on a normalized [0, 1] coordinate system.
@@ -87,15 +103,15 @@ public class AnimationViewport extends EventDispatcher
         
         // FIXME: Unsafe cast
 //        _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
-          _transform = new ViewportTransform2( 0, 0, 1, 1, 1,
-                                               width, height,
-                                               scene.sceneWidth, scene.sceneHeight )
+          _transform = ViewportTransform2.fromValues( 0, 0, 1, 1, 1,
+                                                      width, height,
+                                                      scene.sceneWidth, scene.sceneHeight )
 //        _transform = new ViewportTransform3( 0, 0, 1, width, height,
 //                                             scene.sceneWidth, scene.sceneHeight )
         
         // FIXME
-        _transformer = new TweenerViewportTransformer()
-        _transformer.viewport = this
+        transformer = NULL_TRANSFORMER
+//        transformer = new TweenerViewportTransformer()
         
 //        validate()
     }
@@ -163,7 +179,11 @@ public class AnimationViewport extends EventDispatcher
 
     public function set transformer( value : IViewportTransformer ) : void
     {
-    	_transformer.stop()
+    	if( _transformer )
+    	{
+    	   _transformer.stop()
+           _transformer.viewport = null    		
+    	}
     	
         if( value )
            _transformer = value
@@ -377,18 +397,6 @@ public class AnimationViewport extends EventDispatcher
         return p
     }
 
-//    /**
-//     * @private
-//     * 
-//     * Validate the viewport.
-//     */ 
-//    private function validate( dispatchEvent : Boolean = true ) : void
-//    {
-//        var t : IViewportTransform = getViewportTransform()
-//        t.zoomTo( zoom )
-//        applyTransform( t, true )
-//    }
-    
     /**
      * @private
      */
@@ -617,7 +625,7 @@ public class AnimationViewport extends EventDispatcher
      */ 
     private function getViewportTransform() : IViewportTransform
     {
-        var t : IViewportTransform = transformer.target
+        var t : IViewportTransform = transformer.targetTransform
         return t
     }
     
@@ -635,13 +643,17 @@ public class AnimationViewport extends EventDispatcher
         if( viewportWidth == width && viewportHeight == height )
             return
         
+        // FIXME
 //        _viewportWidth = width
 //        _viewportHeight = height
 //        validate( false )
 
-        var t : IViewportTransformContainer = IViewportTransformContainer( transform )
-        t.setSize( width, height )
-        applyTransform( t, true )
+        var t : ViewportTransform2 = ViewportTransform2( transform )
+        var initT : IViewportTransformContainer = ViewportTransform2.fromValues( t.x, t.y,
+                                                                                 t.width, t.height, t.zoom,
+                                                                                 width, height,
+                                                                                 t.sceneWidth, t.sceneHeight ) 
+        applyTransform( initT, true )
         
         dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false ))
     }
@@ -737,6 +749,12 @@ public class AnimationViewport extends EventDispatcher
     {
     	// FIXME
 //    	validate()
+        var t : ViewportTransform2 = ViewportTransform2( transform )
+        var initT : IViewportTransformContainer = ViewportTransform2.fromValues( t.x, t.y,
+                                                                                 t.width, t.height, t.zoom,
+                                                                                 width, height,
+                                                                                 t.sceneWidth, t.sceneHeight ) 
+        applyTransform( initT, true )
     }
     
     //--------------------------------------------------------------------------

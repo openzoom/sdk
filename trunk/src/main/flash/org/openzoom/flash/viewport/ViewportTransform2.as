@@ -54,6 +54,21 @@ public class ViewportTransform2 implements IViewportTransform,
         _viewportWidth = viewportWidth
         _viewportHeight = viewportHeight
     }
+    
+    public static function fromValues(  x : Number, y : Number,
+                                        width : Number, height : Number,
+                                        zoom : Number,
+                                        viewportWidth : Number, viewportHeight : Number,
+                                        sceneWidth : Number, sceneHeight : Number ) : ViewportTransform2
+    {
+    	var instance : ViewportTransform2 = new ViewportTransform2( x, y, width, height, zoom,
+    	                                                            viewportWidth, viewportHeight,
+    	                                                            sceneWidth, sceneHeight )
+        // initialize
+        instance.zoomTo( zoom )
+            
+        return instance
+    }
 
     //--------------------------------------------------------------------------
     //
@@ -61,8 +76,8 @@ public class ViewportTransform2 implements IViewportTransform,
     //
     //--------------------------------------------------------------------------
     
-    private var sceneWidth : Number
-    private var sceneHeight : Number
+    public var sceneWidth : Number
+    public var sceneHeight : Number
     
     //--------------------------------------------------------------------------
     //
@@ -101,7 +116,6 @@ public class ViewportTransform2 implements IViewportTransform,
                             transformX : Number = 0.5,
                             transformY : Number = 0.5 ) : void
     {
-        // keep z within min/max range
         _zoom = zoom
 
         // remember old origin
@@ -275,8 +289,14 @@ public class ViewportTransform2 implements IViewportTransform,
     
     public function set width( value : Number ) : void
     {
-    	_width = value
-//        zoomTo( getZoomForWidth( value ))
+    	var ratio : Number = sceneAspectRatio / aspectRatio
+//    	_width = value
+//    	_height = _width * ratio
+//    	_zoom = getZoomForWidth( value )
+        var oldX : Number = _x
+        var oldY : Number = _y
+        zoomTo( getZoomForWidth( value ), 0, 0 )
+//        trace( _width - value, _height - _width * ratio )
     }
     
     //----------------------------------
@@ -290,11 +310,11 @@ public class ViewportTransform2 implements IViewportTransform,
         return _height
     }
     
-    public function set height( value : Number ) : void
-    {
-    	_height = value
-//        width = aspectRatio * value
-    }
+//    public function set height( value : Number ) : void
+//    {
+//    	_height = value
+////        width = aspectRatio * value
+//    }
     
     //----------------------------------
     //  left
@@ -477,13 +497,29 @@ public class ViewportTransform2 implements IViewportTransform,
     	
     	sceneWidth = other.sceneWidth
     	sceneHeight = other.sceneHeight
+    	
+//    	if( !equals( other ))
+//        {
+//            trace(
+//                   x - other.x,
+//                   y - other.y,
+//                   width - other.width,
+//                   height - other.height,
+//                   zoom - other.zoom,
+//                   viewportWidth - other.viewportWidth,
+//                   viewportHeight - other.viewportHeight,
+//                   sceneWidth - other.sceneWidth,
+//                   sceneHeight - other.sceneHeight
+//                 )              
+//            trace( "AAARGH" )
+//        }
     }
     
     public function clone() : IViewportTransform
     {
         var copy : ViewportTransform2 =
-			                new ViewportTransform2( x, y, width, height, zoom,
-			                                        viewportWidth, viewportHeight,
+			                new ViewportTransform2( _x, _y, _width, _height, _zoom,
+			                                        _viewportWidth, _viewportHeight,
 			                                        sceneWidth, sceneHeight )
             
             if( !equals( copy ))

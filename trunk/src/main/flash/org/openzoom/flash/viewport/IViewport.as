@@ -39,9 +39,32 @@ import org.openzoom.flash.scene.IMultiScaleScene;
 //
 //------------------------------------------------------------------------------
 
+/**
+ *  Dispatched when the viewport container is resized.
+ *
+ *  @eventType org.openzoom.events.ViewportEvent.RESIZE
+ */
 [Event(name="resize", type="org.openzoom.events.ViewportEvent")]
+
+/**
+ *  Dispatched when a viewport transformation begins.
+ *
+ *  @eventType org.openzoom.events.ViewportEvent.TRANSFORM_START
+ */
 [Event(name="transformStart", type="org.openzoom.events.ViewportEvent")]
+
+/**
+ *  Dispatched when the viewport transformation is updated.
+ *
+ *  @eventType org.openzoom.events.ViewportEvent.TRANSFORM_UPDATE
+ */
 [Event(name="transformUpdate", type="org.openzoom.events.ViewportEvent")]
+
+/**
+ *  Dispatched when a viewport transformation ends.
+ *
+ *  @eventType org.openzoom.events.ViewportEvent.TRANSFORM_END
+ */
 [Event(name="transformEnd", type="org.openzoom.events.ViewportEvent")]
 
 /**
@@ -278,7 +301,16 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * Converts the point object from the viewport's
+     * container (local) coordinates to scene coordinates.
+     */  
     function localToScene( point : Point ) : Point
+    
+    /**
+     * Converts the point object from scene coordinates
+     * to the viewport's container (local) coordinates.
+     */
     function sceneToLocal( point : Point ) : Point
     
     //--------------------------------------------------------------------------

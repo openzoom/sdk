@@ -34,7 +34,7 @@ public class LoadingQueue
     //
     //--------------------------------------------------------------------------
     
-	private static const MAX_CONNECTIONS : uint = 8
+    private static const MAX_CONNECTIONS : uint = 8
 
     //--------------------------------------------------------------------------
     //
@@ -66,14 +66,14 @@ public class LoadingQueue
     
     public function addItem( url : String, context : * = null ) : LoadingItem
     {
-    	var item : LoadingItem = new LoadingItem( url, context )
+        var item : LoadingItem = new LoadingItem( url, context )
             item.addEventListener( LoadingItemEvent.COMPLETE, item_completeHandler )
             item.addEventListener( LoadingItemEvent.ERROR, item_errorHandler )
-            	
-        // add item to front (stack)
-    	queue.unshift( item )
-    	processQueue()
-    	return item
+                
+        // add item to front (LIFO)
+        queue.unshift( item )
+        processQueue()
+        return item
     }
     
     //--------------------------------------------------------------------------
@@ -84,12 +84,12 @@ public class LoadingQueue
     
     private function processQueue() : void
     {
-    	while( queue.length > 0 && connections.length < MAX_CONNECTIONS )
-    	{
-	    	var item : LoadingItem = LoadingItem( queue.shift() )
-	    	connections.push( item )
-	    	item.load()
-    	}
+        while( queue.length > 0 && connections.length < MAX_CONNECTIONS )
+        {
+            var item : LoadingItem = LoadingItem( queue.shift() )
+            connections.push( item )
+            item.load()
+        }
     }
     
     //--------------------------------------------------------------------------

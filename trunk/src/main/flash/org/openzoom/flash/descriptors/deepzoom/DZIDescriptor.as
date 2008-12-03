@@ -166,7 +166,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
      * @private
      */ 
     private function computeNumLevels( width : Number, height : Number ) : int
-    {          //Math.ceil(Math.log(Math.max(width,height))/Math.log(2)
+    {
         return Math.ceil( Math.log( Math.max( width, height ) ) / Math.LN2 ) + 1
     }
     
