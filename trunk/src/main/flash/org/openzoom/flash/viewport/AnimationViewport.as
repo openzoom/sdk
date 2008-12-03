@@ -39,22 +39,22 @@ import org.openzoom.flash.viewport.transformers.TweenerViewportTransformer;
 //------------------------------------------------------------------------------
 
 /**
- * inheritDoc
+ * @inheritDoc
  */
 [Event(name="resize", type="org.openzoom.events.ViewportEvent")]
 
 /**
- * inheritDoc
+ * @inheritDoc
  */
 [Event(name="transformStart", type="org.openzoom.events.ViewportEvent")]
 
 /**
- * inheritDoc
+ * @inheritDoc
  */
 [Event(name="transform", type="org.openzoom.events.ViewportEvent")]
 
 /**
- * inheritDoc
+ * @inheritDoc
  */
 [Event(name="transformEnd", type="org.openzoom.events.ViewportEvent")]
 
@@ -90,28 +90,22 @@ public class AnimationViewport extends EventDispatcher
     public function AnimationViewport( width : Number, height : Number,
                                        scene : IMultiScaleScene )
     {
-      	// FIXME
-        TransformShortcuts.init()
-        
-//        _viewportWidth = width
-//        _viewportHeight = height
-    	
         _scene = scene
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
         
+        // FIXME
+        _transform = ViewportTransform2.fromValues( 0, 0, 1, 1, 1,
+                                                    width, height,
+                                                    scene.sceneWidth,
+                                                    scene.sceneHeight )
+        
+        // FIXME
 //      constraint = new DefaultViewportConstraint()
-        
-        // FIXME: Unsafe cast
-//        _transform = new ViewportTransform( this, IReadonlyMultiScaleScene( scene ))
-          _transform = ViewportTransform2.fromValues( 0, 0, 1, 1, 1,
-                                                      width, height,
-                                                      scene.sceneWidth, scene.sceneHeight )
-        
+
         // FIXME
 //        transformer = NULL_TRANSFORMER
         transformer = new TweenerViewportTransformer()
         
-//        validate()
     }
 
     //--------------------------------------------------------------------------
@@ -641,17 +635,7 @@ public class AnimationViewport extends EventDispatcher
         if( viewportWidth == width && viewportHeight == height )
             return
         
-        // FIXME
-//        _viewportWidth = width
-//        _viewportHeight = height
-//        validate( false )
-
-        var t : ViewportTransform2 = ViewportTransform2( transform )
-        var initT : IViewportTransformContainer = ViewportTransform2.fromValues( t.x, t.y,
-                                                                                 t.width, t.height, t.zoom,
-                                                                                 width, height,
-                                                                                 t.sceneWidth, t.sceneHeight ) 
-        applyTransform( initT, true )
+        reinitializeTransform( width, height )
         
         dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false ))
     }
@@ -734,6 +718,18 @@ public class AnimationViewport extends EventDispatcher
                               denormalizeY( value.height ))
     }
     
+    private function reinitializeTransform( viewportWidth : Number,
+                                            viewportHeight : Number ) : void
+    {
+        var old : IViewportTransform = transform
+        var t : IViewportTransformContainer =
+                    ViewportTransform2.fromValues( old.x, old.y,
+                                                   old.width, old.height, old.zoom,
+                                                   viewportWidth, viewportHeight,
+                                                   scene.sceneWidth, scene.sceneHeight ) 
+        applyTransform( t, true )
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Event handlers
@@ -745,14 +741,7 @@ public class AnimationViewport extends EventDispatcher
      */
     private function scene_resizeHandler( event : Event ) : void
     {
-    	// FIXME
-//    	validate()
-        var t : ViewportTransform2 = ViewportTransform2( transform )
-        var initT : IViewportTransformContainer = ViewportTransform2.fromValues( t.x, t.y,
-                                                                                 t.width, t.height, t.zoom,
-                                                                                 width, height,
-                                                                                 t.sceneWidth, t.sceneHeight ) 
-        applyTransform( initT, true )
+    	reinitializeTransform( viewportWidth, viewportHeight )
     }
     
     //--------------------------------------------------------------------------

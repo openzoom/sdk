@@ -59,7 +59,7 @@ public class MultiScaleImageViewer extends Sprite
     private static const DEFAULT_MAX_ZOOM               : Number = 10000
     
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
-    private static const DEFAULT_SCENE_HEIGHT           : Number = 15000
+    private static const DEFAULT_SCENE_HEIGHT           : Number = 36000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
     private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.6
     

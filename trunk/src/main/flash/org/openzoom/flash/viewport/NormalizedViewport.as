@@ -831,6 +831,16 @@ class ViewportTransformProxy implements IViewportTransform
         viewport.y = value
     }
     
+    public function get sceneWidth() : Number
+    {
+        return viewport.scene.sceneWidth
+    }
+    
+    public function get sceneHeight() : Number
+    {
+        return viewport.scene.sceneHeight
+    }
+    
     public function get width() : Number
     {
         return viewport.width
@@ -876,12 +886,17 @@ class ViewportTransformProxy implements IViewportTransform
         return viewport.scale
     }
     
+    public function set scale( value : Number ) : void
+    {
+    	// Not implemented
+    }
+    
     public function clone() : IViewportTransform
     {
         return null
     }
     
-    public function copy( other : ViewportTransform2 ) : void
+    public function copy( other : IViewportTransform ) : void
     {
     }
     

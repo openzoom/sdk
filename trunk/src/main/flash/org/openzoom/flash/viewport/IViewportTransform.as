@@ -72,7 +72,7 @@ public interface IViewportTransform
      * Vertical dimension of the viewport.
      */
     function get height() : Number
-//    function set height( value : Number ) : void
+    function set height( value : Number ) : void
     
 //    //----------------------------------
 //    //  top
@@ -127,6 +127,24 @@ public interface IViewportTransform
     //----------------------------------
     
     function get viewportHeight() : Number
+    
+    //----------------------------------
+    //  sceneWidth
+    //----------------------------------
+    
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
+     */
+    function get sceneWidth() : Number
+    
+    //----------------------------------
+    //  sceneHeight
+    //----------------------------------
+    
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
+     */
+    function get sceneHeight() : Number
      
     //----------------------------------
     //  scale
@@ -136,7 +154,7 @@ public interface IViewportTransform
      * Scale of the scene.
      */ 
     function get scale() : Number
-//  function set scale( value : Number ) : void
+    function set scale( value : Number ) : void
       
     //----------------------------------
     //  zoom
@@ -147,7 +165,7 @@ public interface IViewportTransform
      * Scene fits exactly into viewport at value 1.
      */
     function get zoom() : Number
-//  function set zoom( value : Number ) : void
+    function set zoom( value : Number ) : void
 
     //--------------------------------------------------------------------------
     //
@@ -233,7 +251,10 @@ public interface IViewportTransform
      */
     function clone() : IViewportTransform
     
-    function copy( other : ViewportTransform2 ) : void
+    /**
+     * Copy values from other to this instance of IViewportTransform.
+     */
+    function copy( other : IViewportTransform ) : void
     
     /**
      * Determines whether the object specified in the

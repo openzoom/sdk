@@ -106,7 +106,7 @@ public interface IViewport extends IEventDispatcher
      * Horizontal dimension of the viewport.
      */
     function get width() : Number
-//  function set width( value : Number )
+//  function set width( value : Number ) : void
     
     //----------------------------------
     //  height
@@ -116,7 +116,7 @@ public interface IViewport extends IEventDispatcher
      * Vertical dimension of the viewport.
      */
     function get height() : Number
-//  function set height( value : Number )
+//  function set height( value : Number ) : void
     
 //    //----------------------------------
 //    //  top

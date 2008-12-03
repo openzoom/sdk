@@ -48,16 +48,15 @@ public class ViewportTransform2 implements IViewportTransform,
         _height = height
         _zoom = zoom
     	
-        this.sceneWidth = sceneWidth    
-        this.sceneHeight = sceneHeight
+        _sceneWidth = sceneWidth    
+        _sceneHeight = sceneHeight
         
         _viewportWidth = viewportWidth
         _viewportHeight = viewportHeight
     }
     
     public static function fromValues(  x : Number, y : Number,
-                                        width : Number, height : Number,
-                                        zoom : Number,
+                                        width : Number, height : Number, zoom : Number,
                                         viewportWidth : Number, viewportHeight : Number,
                                         sceneWidth : Number, sceneHeight : Number ) : ViewportTransform2
     {
@@ -70,15 +69,6 @@ public class ViewportTransform2 implements IViewportTransform,
         return instance
     }
 
-    //--------------------------------------------------------------------------
-    //
-    //  Variables
-    //
-    //--------------------------------------------------------------------------
-    
-    public var sceneWidth : Number
-    public var sceneHeight : Number
-    
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -96,14 +86,23 @@ public class ViewportTransform2 implements IViewportTransform,
         return _zoom
     }
     
+    public function set zoom( value : Number ) : void
+    {
+    	zoomTo( value )
+    }
+    
     //----------------------------------
     //  scale
     //----------------------------------
 
     public function get scale() : Number
     {
-    	// var s : Number = viewportWidth / ( sceneWidth * width )
-        return viewportWidth / ( sceneWidth * width ) 
+        return viewportWidth / ( _sceneWidth * width ) 
+    }
+    
+    public function set scale( value : Number ) : void
+    {
+    	width = viewportWidth / ( value * _sceneWidth ) 
     }
 
 
@@ -167,8 +166,8 @@ public class ViewportTransform2 implements IViewportTransform,
         var centerX : Number = area.x + area.width  * 0.5
         var centerY : Number = area.y + area.height * 0.5
     
-        var center : Point = new Point( centerX / sceneWidth,
-                                        centerY / sceneHeight )
+        var center : Point = new Point( centerX / _sceneWidth,
+                                        centerY / _sceneHeight )
                                                  
         var scaledWidth : Number = area.width / scale
         var scaledHeight : Number = area.height / scale
@@ -180,13 +179,13 @@ public class ViewportTransform2 implements IViewportTransform,
         if( scaledWidth > ( aspectRatio * scaledHeight ) )
         {
             // Area must fit horizontally in the viewport
-            ratio = ( ratio < 1 ) ? ( sceneWidth / ratio ) : sceneWidth
+            ratio = ( ratio < 1 ) ? ( _sceneWidth / ratio ) : _sceneWidth
             ratio = ratio / scaledWidth
         }
         else
         {
             // Area must fit vertically in the viewport  
-            ratio = ( ratio > 1 ) ? ( sceneHeight * ratio ) : sceneHeight
+            ratio = ( ratio > 1 ) ? ( _sceneHeight * ratio ) : _sceneHeight
             ratio = ratio / scaledHeight
         }
     
@@ -332,7 +331,6 @@ public class ViewportTransform2 implements IViewportTransform,
         return y + height
     }
 
-    
     //----------------------------------
     //  viewportWidth
     //----------------------------------
@@ -353,7 +351,30 @@ public class ViewportTransform2 implements IViewportTransform,
     public function get viewportHeight() : Number
     {
         return _viewportHeight
-    }    
+    }
+
+    //----------------------------------
+    //  sceneWidth
+    //----------------------------------
+    
+    private var _sceneWidth : Number
+    
+    public function get sceneWidth() : Number
+    {
+        return _sceneWidth
+    }
+    
+    //----------------------------------
+    //  sceneHeight
+    //----------------------------------
+    
+    private var _sceneHeight : Number
+    
+    public function get sceneHeight() : Number
+    {
+        return _sceneHeight
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Methods: Coordinate conversion
@@ -365,7 +386,7 @@ public class ViewportTransform2 implements IViewportTransform,
      */ 
     private function normalizeX( value : Number ) : Number
     {
-        return value / sceneWidth
+        return value / _sceneWidth
     }
 
     /**
@@ -373,7 +394,7 @@ public class ViewportTransform2 implements IViewportTransform,
      */
     private function normalizeY( value : Number ) : Number
     {
-        return value / sceneHeight
+        return value / _sceneHeight
     }
     
     /**
@@ -401,7 +422,7 @@ public class ViewportTransform2 implements IViewportTransform,
      */ 
     private function denormalizeX( value : Number ) : Number
     {
-        return value * sceneWidth
+        return value * _sceneWidth
     }
 
     /**
@@ -409,7 +430,7 @@ public class ViewportTransform2 implements IViewportTransform,
      */
     private function denormalizeY( value : Number ) : Number
     {
-        return value * sceneHeight
+        return value * _sceneHeight
     }
     
     /**
@@ -496,16 +517,16 @@ public class ViewportTransform2 implements IViewportTransform,
                + "h=" + height + ")"
     }
     
-    public function copy( other : ViewportTransform2 ) : void
+    public function copy( other : IViewportTransform ) : void
     {
-    	_x = other._x
-    	_y = other._y
-    	_width = other._width
-    	_height = other._height
-    	_zoom = other._zoom
+    	_x = other.x
+    	_y = other.y
+    	_width = other.width
+    	_height = other.height
+    	_zoom = other.zoom
     	
-    	sceneWidth = other.sceneWidth
-    	sceneHeight = other.sceneHeight
+    	_sceneWidth = other.sceneWidth
+    	_sceneHeight = other.sceneHeight
     	
 //    	if( !equals( other ))
 //        {
@@ -529,7 +550,7 @@ public class ViewportTransform2 implements IViewportTransform,
         var copy : ViewportTransform2 =
 			                new ViewportTransform2( _x, _y, _width, _height, _zoom,
 			                                        _viewportWidth, _viewportHeight,
-			                                        sceneWidth, sceneHeight )
+			                                        _sceneWidth, _sceneHeight )
             
             if( !equals( copy ))
             {
@@ -541,8 +562,8 @@ public class ViewportTransform2 implements IViewportTransform,
                        zoom - copy.zoom,
                        viewportWidth - copy.viewportWidth,
                        viewportHeight - copy.viewportHeight,
-                       sceneWidth - copy.sceneWidth,
-                       sceneHeight - copy.sceneHeight
+                       _sceneWidth - copy._sceneWidth,
+                       _sceneHeight - copy._sceneHeight
                      )            	
                 trace( "AAARGH" )
             }
@@ -559,8 +580,8 @@ public class ViewportTransform2 implements IViewportTransform,
     	       && zoom == other.zoom
     	       && viewportWidth == other.viewportWidth
     	       && viewportHeight == other.viewportHeight
-    	       && sceneWidth == ViewportTransform2(other).sceneWidth
-    	       && sceneHeight == ViewportTransform2(other).sceneHeight
+    	       && _sceneWidth == ViewportTransform2(other)._sceneWidth
+    	       && _sceneHeight == ViewportTransform2(other)._sceneHeight
     }
 
     //--------------------------------------------------------------------------
@@ -604,7 +625,7 @@ public class ViewportTransform2 implements IViewportTransform,
      */
     private function get sceneAspectRatio() : Number
     {
-        return sceneWidth / sceneHeight
+        return _sceneWidth / _sceneHeight
     }
 }
 
