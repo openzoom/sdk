@@ -227,12 +227,6 @@ public class AnimationViewport extends EventDispatcher
     //  viewportWidth
     //----------------------------------
     
-    /**
-     * @private
-     * Storage for the viewportWidth property.
-     */
-//    private var _viewportWidth : Number
-    
     [Bindable(event="viewportWidthChanged")]
     
     /**
@@ -240,19 +234,12 @@ public class AnimationViewport extends EventDispatcher
      */
     public function get viewportWidth() : Number
     {
-//        return _viewportWidth
         return _transform.viewportWidth
     }
     
     //----------------------------------
     //  viewportHeight
     //----------------------------------
-    
-    /**
-     * @private
-     * Storage for the viewportHeight property.
-     */
-//    private var _viewportHeight : Number
     
     [Bindable(event="viewportHeightChanged")]
     
@@ -261,7 +248,6 @@ public class AnimationViewport extends EventDispatcher
      */
     public function get viewportHeight() : Number
     {
-//        return _viewportHeight
         return _transform.viewportHeight
     }
 
@@ -418,7 +404,7 @@ public class AnimationViewport extends EventDispatcher
      */
     public function intersects( toIntersect : Rectangle ) : Boolean
     {
-    	// FIXME
+    	// FIXME: Circumvent normalization / denormalization
     	var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
                                                        y * scene.sceneHeight, 
                                                        width * scene.sceneWidth,
@@ -431,7 +417,7 @@ public class AnimationViewport extends EventDispatcher
      */
     public function intersection( toIntersect : Rectangle ) : Rectangle
     {
-    	// FIXME
+        // FIXME: Circumvent normalization / denormalization
         var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
                                                        y * scene.sceneHeight, 
                                                        width * scene.sceneWidth,
@@ -459,9 +445,6 @@ public class AnimationViewport extends EventDispatcher
         return _transform.x
     }
     
-    /**
-     * @inheritDoc
-     */
     public function set x( value : Number ) : void
     {
     	var t : IViewportTransform = getTargetTransform()
@@ -483,9 +466,6 @@ public class AnimationViewport extends EventDispatcher
        return _transform.y
     }
     
-    /**
-     * @inheritDoc
-     */
     public function set y( value : Number ) : void
     {
         var t : IViewportTransform = getTargetTransform()
@@ -749,6 +729,9 @@ public class AnimationViewport extends EventDispatcher
                               denormalizeY( value.height ))
     }
     
+    /**
+     * @private
+     */
     private function reinitializeTransform( viewportWidth : Number,
                                             viewportHeight : Number ) : void
     {
@@ -772,7 +755,6 @@ public class AnimationViewport extends EventDispatcher
      */
     private function scene_resizeHandler( event : Event ) : void
     {
-//    	trace( "[AnimationViewport] scene_resizeHandler" )
     	reinitializeTransform( viewportWidth, viewportHeight )
     }
     

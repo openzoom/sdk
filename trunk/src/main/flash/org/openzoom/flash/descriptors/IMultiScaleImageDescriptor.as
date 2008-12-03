@@ -24,7 +24,7 @@ package org.openzoom.flash.descriptors
 import flash.geom.Point;
 
 /**
- * Interface describing the common API of a multi-scale image.
+ * Interface of a multi-scale image descriptor.
  */
 public interface IMultiScaleImageDescriptor
 {
@@ -134,6 +134,11 @@ public interface IMultiScaleImageDescriptor
      * Returns the position of the tile specified by its column and row.
      */
     function getTilePosition( column : uint, row : uint ) : Point
+
+//  /**
+//   * Returns the bounds of the tile specified by its column and row.
+//   */
+//  function getTileBounds( level : int, column : uint, row : uint ) : Rectangle
 
     //--------------------------------------------------------------------------
     //

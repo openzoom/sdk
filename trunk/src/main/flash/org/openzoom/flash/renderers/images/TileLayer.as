@@ -138,7 +138,6 @@ public class TileLayer extends Sprite implements ITileLayer
         
         if( tileBitmap.x >= level.width || tileBitmap.y >= level.height )
             trace( "[TileLayer]: Wrong tile positioning" )
-
             
         // Fix for too large tiles
         if( horizontalOverflow || verticalOverflow )

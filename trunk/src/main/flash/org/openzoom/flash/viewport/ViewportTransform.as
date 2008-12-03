@@ -55,6 +55,9 @@ public class ViewportTransform implements IViewportTransform,
         _viewportHeight = viewportHeight
     }
     
+    /**
+     * Constructs and initialized a ViewportTransform object from the parameter values.
+     */ 
     public static function fromValues(  x : Number, y : Number,
                                         width : Number, height : Number, zoom : Number,
                                         viewportWidth : Number, viewportHeight : Number,
@@ -81,6 +84,9 @@ public class ViewportTransform implements IViewportTransform,
 
     private var _zoom : Number
 
+    /**
+     * @inheritDoc
+     */
     public function get zoom() : Number
     {
         return _zoom
@@ -95,11 +101,14 @@ public class ViewportTransform implements IViewportTransform,
     //  scale
     //----------------------------------
 
+    /**
+     * @inheritDoc
+     */
     public function get scale() : Number
     {
         return viewportWidth / ( _sceneWidth * width ) 
     }
-    
+
     public function set scale( value : Number ) : void
     {
     	width = viewportWidth / ( value * _sceneWidth ) 
@@ -112,6 +121,9 @@ public class ViewportTransform implements IViewportTransform,
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */
     public function zoomTo( zoom : Number,
                             transformX : Number = 0.5,
                             transformY : Number = 0.5 ) : void
@@ -129,6 +141,9 @@ public class ViewportTransform implements IViewportTransform,
         moveOriginTo( oldOrigin.x, oldOrigin.y, transformX, transformY )
     }
 
+    /**
+     * @inheritDoc
+     */
     public function zoomBy( factor : Number,
                             transformX : Number = 0.5,
                             transformY : Number = 0.5 ) : void
@@ -142,22 +157,34 @@ public class ViewportTransform implements IViewportTransform,
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */
     public function moveTo( x : Number, y : Number ) : void
     {
         _x = x
         _y = y
     }
 
+    /**
+     * @inheritDoc
+     */
     public function moveBy( dx : Number, dy : Number ) : void
     {
         moveTo( x + dx, y + dy )
     }
 
+    /**
+     * @inheritDoc
+     */
     public function moveCenterTo( x : Number, y : Number ) : void
     {
         moveOriginTo( x, y, 0.5, 0.5 )
     }
 
+    /**
+     * @inheritDoc
+     */
     public function showRect( rect : Rectangle, scale : Number = 1.0 ) : void
     {
     	// TODO: Implement for normalized coordinate system
@@ -195,6 +222,9 @@ public class ViewportTransform implements IViewportTransform,
         moveCenterTo( center.x, center.y )
     }
     
+    /**
+     * @inheritDoc
+     */ 
     public function showAll() : void
     {
         showRect( new Rectangle( 0, 0, 1, 1 ))
@@ -207,6 +237,9 @@ public class ViewportTransform implements IViewportTransform,
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @private
+     */
     private function moveOriginTo( x : Number, y : Number,
                                    transformX : Number, transformY : Number ) : void
     {
@@ -215,7 +248,10 @@ public class ViewportTransform implements IViewportTransform,
 
         moveTo( newX, newY )
     }
-
+    
+    /**
+     * @private
+     */
     private function getViewportOrigin( transformX : Number,
                                         transformY : Number ) : Point
     {
@@ -237,6 +273,9 @@ public class ViewportTransform implements IViewportTransform,
     
     private var _x : Number = 0
     
+    /**
+     * @inheritDoc
+     */    
     public function get x() : Number
     {
         return _x
@@ -253,6 +292,9 @@ public class ViewportTransform implements IViewportTransform,
     
     private var _y : Number = 0
     
+    /**
+     * @inheritDoc
+     */    
     public function get y() : Number
     {
        return _y
@@ -269,6 +311,9 @@ public class ViewportTransform implements IViewportTransform,
     
     private var _width : Number = 1
     
+    /**
+     * @inheritDoc
+     */    
     public function get width() : Number
     {
         return _width
@@ -285,6 +330,9 @@ public class ViewportTransform implements IViewportTransform,
     
     private var _height : Number = 1
     
+    /**
+     * @inheritDoc
+     */    
     public function get height() : Number
     {
         return _height
@@ -301,11 +349,17 @@ public class ViewportTransform implements IViewportTransform,
     
     private var _viewportWidth : Number
     
+    /**
+     * @inheritDoc
+     */    
     public function get viewportWidth() : Number
     {
         return _viewportWidth
     }
     
+    /**
+     * @inheritDoc
+     */    
     //----------------------------------
     //  viewportHeight
     //----------------------------------
@@ -329,6 +383,9 @@ public class ViewportTransform implements IViewportTransform,
     
     private var _sceneWidth : Number
     
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
+     */    
     public function get sceneWidth() : Number
     {
         return _sceneWidth
@@ -340,6 +397,9 @@ public class ViewportTransform implements IViewportTransform,
     
     private var _sceneHeight : Number
     
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
+     */    
     public function get sceneHeight() : Number
     {
         return _sceneHeight
@@ -514,6 +574,9 @@ public class ViewportTransform implements IViewportTransform,
     	_sceneHeight = other.sceneHeight
     }
     
+    /**
+     * @inheritDoc
+     */
     public function clone() : IViewportTransform
     {
         var copy : ViewportTransform =
@@ -524,6 +587,9 @@ public class ViewportTransform implements IViewportTransform,
         return copy	
     }
     
+    /**
+     * @inheritDoc
+     */
     public function equals( other : IViewportTransform ) : Boolean
     {
     	return x == other.x
