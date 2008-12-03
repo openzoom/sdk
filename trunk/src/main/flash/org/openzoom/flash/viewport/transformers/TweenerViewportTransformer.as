@@ -27,6 +27,8 @@ import org.openzoom.flash.viewport.ITransformerViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;
+import org.openzoom.flash.viewport.constraints.DefaultViewportConstraint;
+import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 
 public class TweenerViewportTransformer implements IViewportTransformer
 {
@@ -38,7 +40,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     
     private static const DEFAULT_DURATION : Number = 1.5
     private static const DEFAULT_EASING   : String = "easeOutExpo"
-//    private static const NULL_CONSTRAINT : IViewportConstraint = new NullViewportConstraint()
+    private static const NULL_CONSTRAINT  : IViewportConstraint = new NullViewportConstraint()
     
     //--------------------------------------------------------------------------
     //
@@ -52,6 +54,9 @@ public class TweenerViewportTransformer implements IViewportTransformer
     public function TweenerViewportTransformer()
     {
     	TransformShortcuts.init()
+    	
+    	// FIXME
+    	constraint = new DefaultViewportConstraint()
     }
     
     //--------------------------------------------------------------------------
@@ -90,7 +95,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //  constraint
     //----------------------------------
     
-    private var _constraint : IViewportConstraint
+    private var _constraint : IViewportConstraint = NULL_CONSTRAINT
     
     public function get constraint() : IViewportConstraint
     {
@@ -99,7 +104,10 @@ public class TweenerViewportTransformer implements IViewportTransformer
     
     public function set constraint( value : IViewportConstraint ) : void
     {
-        _constraint = value
+    	if( value )
+            _constraint = value
+        else
+            _constraint = NULL_CONSTRAINT
     }
     
     //----------------------------------
@@ -137,7 +145,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
                                immediately : Boolean = false ) : void
     {
         // copy targetTransform to know where to tween to…
-        _targetTransform = targetTransform.clone()
+        _targetTransform = constraint.validate( targetTransform ).clone()
         
         if( immediately )
         {
@@ -159,10 +167,10 @@ public class TweenerViewportTransformer implements IViewportTransformer
 	        Tweener.addTween( 
 	                          viewport,
 	                          {
-	                              _transform_x: targetTransform.x,
-	                              _transform_y: targetTransform.y,
-	                              _transform_width: targetTransform.width,
-//                                  _transform_height: targetTransform.height,
+	                              _transform_x: _targetTransform.x,
+	                              _transform_y: _targetTransform.y,
+	                              _transform_width: _targetTransform.width,
+//                                  _transform_height: _targetTransform.height,
 	                              time: DEFAULT_DURATION,
 	                              transition: DEFAULT_EASING,
 	                              onComplete: viewport.endTransform

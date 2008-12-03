@@ -53,7 +53,7 @@ public class DefaultViewportConstraint implements IViewportConstraint
     
     //--------------------------------------------------------------------------
     //
-    //  Properties: IViewportConstraint
+    //  Properties
     //
     //--------------------------------------------------------------------------
 
@@ -95,6 +95,9 @@ public class DefaultViewportConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     public function validate( transform : IViewportTransform ) : IViewportTransform
     {
     	var x : Number = transform.x
@@ -142,9 +145,17 @@ public class DefaultViewportConstraint implements IViewportConstraint
             y = ( 1 - transform.height ) * 0.5
         }
         
-        // validate
+        // validate bounds
         transform.moveTo( x, y )
         
+        // validate zoom
+        if( transform.zoom > maxZoom )
+            transform.zoomTo( maxZoom )
+            
+        if( transform.zoom < minZoom )
+            transform.zoomTo( minZoom )
+        
+        // return validated transform
         return transform
     }
 }

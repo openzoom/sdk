@@ -59,6 +59,9 @@ public class NullViewportConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     public function validate( transform : IViewportTransform ) : IViewportTransform
     {
     	if( transform.zoom < DEFAULT_MIN_ZOOM )

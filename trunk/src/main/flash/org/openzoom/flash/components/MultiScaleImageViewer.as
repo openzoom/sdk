@@ -93,12 +93,11 @@ public class MultiScaleImageViewer extends Sprite
         // viewport
 //        createNormalizedViewport( _scene )
         createAnimationViewport( _scene )
-        
-        // TODO
-//        viewport.constraint = null
-        
+
+        // loading queue        
         var loadingQueue : LoadingQueue = new LoadingQueue()
         
+        // create renderers
         for( var i : int = 0; i < 10; i++ )
         {
             for( var j : int = 0; j < 5; j++ )
@@ -326,7 +325,7 @@ public class MultiScaleImageViewer extends Sprite
     
     private function viewport_transformStartHandler( event : ViewportEvent ) : void
     {
-        trace("ViewportEvent.TRANSFORM_START")
+//        trace("ViewportEvent.TRANSFORM_START")
     }
     
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
@@ -348,7 +347,7 @@ public class MultiScaleImageViewer extends Sprite
     
     private function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
-        trace("ViewportEvent.TRANSFORM_END")
+//        trace("ViewportEvent.TRANSFORM_END")
     }
     
     private function createScene() : void
