@@ -33,7 +33,6 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
@@ -773,8 +772,9 @@ import org.openzoom.flash.viewport.ITransformerViewport;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewport;
-import org.openzoom.flash.viewport.ViewportTransform2;
+import org.openzoom.flash.viewport.ViewportTransform;
 import flash.geom.Point;
+import org.openzoom.flash.viewport.IViewportConstraint;
 
 class TransformerProxy implements IViewportTransformer
 {
@@ -795,6 +795,16 @@ class TransformerProxy implements IViewportTransformer
     public function set viewport( value : ITransformerViewport ) : void
     {
         _viewport = value
+    }
+    
+    public function get constraint() : IViewportConstraint
+    {
+    	return null
+    }
+    
+    public function set constraint( value : IViewportConstraint ) : void
+    {
+    	
     }
     
     public function get targetTransform() : IViewportTransform

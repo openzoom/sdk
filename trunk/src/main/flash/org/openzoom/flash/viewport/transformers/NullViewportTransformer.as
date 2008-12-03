@@ -22,6 +22,7 @@ package org.openzoom.flash.viewport.transformers
 {
 
 import org.openzoom.flash.viewport.ITransformerViewport;
+import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;   
 
@@ -67,17 +68,17 @@ public class NullViewportTransformer implements IViewportTransformer
     //  constraint
     //----------------------------------
     
-//    private var _constraint : IViewportConstraint
-//    
-//    public function get constraint() : IViewportConstraint
-//    {
-//        return _constraint
-//    }
-//    
-//    public function set constraint( value : IViewportConstraint ) : void
-//    {
-//        _constraint = value
-//    }
+    private var _constraint : IViewportConstraint
+    
+    public function get constraint() : IViewportConstraint
+    {
+        return _constraint
+    }
+    
+    public function set constraint( value : IViewportConstraint ) : void
+    {
+        _constraint = value
+    }
     
     //----------------------------------
     //  target

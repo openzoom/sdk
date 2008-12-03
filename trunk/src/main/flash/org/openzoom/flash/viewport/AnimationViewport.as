@@ -94,7 +94,7 @@ public class AnimationViewport extends EventDispatcher
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
         
         // FIXME
-        _transform = ViewportTransform2.fromValues( 0, 0, 1, 1, 1,
+        _transform = ViewportTransform.fromValues( 0, 0, 1, 1, 1,
                                                     width, height,
                                                     scene.sceneWidth,
                                                     scene.sceneHeight )
@@ -754,7 +754,7 @@ public class AnimationViewport extends EventDispatcher
     {
         var old : IViewportTransform = transform
         var t : IViewportTransformContainer =
-                    ViewportTransform2.fromValues( old.x, old.y,
+                    ViewportTransform.fromValues( old.x, old.y,
                                                    old.width, old.height, old.zoom,
                                                    viewportWidth, viewportHeight,
                                                    _scene.sceneWidth, _scene.sceneHeight ) 

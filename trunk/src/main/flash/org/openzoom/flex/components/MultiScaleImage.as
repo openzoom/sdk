@@ -21,10 +21,6 @@
 package org.openzoom.flex.components
 {
 
-import flash.display.DisplayObject;
-import flash.display.Graphics;
-import flash.display.Shape;
-import flash.display.Sprite;
 import flash.events.Event;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
@@ -33,25 +29,19 @@ import mx.core.UIComponent;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
-import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
-import org.openzoom.flash.scene.IMultiScaleScene;
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.scene.MultiScaleScene;
-import org.openzoom.flash.viewport.AnimationViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportContainer;
-import org.openzoom.flash.viewport.IViewportController;
+import org.openzoom.flash.viewport.IViewportConstraint;
+import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
-import org.openzoom.flash.viewport.controllers.ViewTransformationController;
 
 /**
  * Component for displaying a single multi-scale image. Inspired by the Microsoft
  * Silverlight Deep Zoom MultiScaleImage component. This implementation has built-in
  * support for Zoomify, Deep Zoom and OpenZoom images. Basic keyboard and mouse navigation
- * is included: «Batteries included» so to speak.
+ * is included: &laquo;Batteries included&raquo; so to speak.
  */
 public class MultiScaleImage extends UIComponent
 {   
@@ -80,9 +70,6 @@ public class MultiScaleImage extends UIComponent
      */
 	public function MultiScaleImage()
 	{
-        createMouseCatcher()
-        createScene()
-        createViewport( _scene )
 	}
 	
 	//--------------------------------------------------------------------------
@@ -91,20 +78,11 @@ public class MultiScaleImage extends UIComponent
     //
     //--------------------------------------------------------------------------
     
-    private var mouseCatcher : Sprite
-    private var contentMask : Shape
-    
     private var sourceURL : String
     private var sourceLoader : URLLoader
-
-    private var controllers : Array = []
     
-    private var keyboardNavigationController : KeyboardController
-    private var mouseNavigationController : MouseController
-    private var transformationController : ViewTransformationController
-    
-    private var loader : LoadingQueue
     private var image : MultiScaleImageRenderer
+    private var container : MultiScaleContainer
     
 	//--------------------------------------------------------------------------
     //
@@ -119,6 +97,10 @@ public class MultiScaleImage extends UIComponent
     private var _source : IMultiScaleImageDescriptor
     
     [Bindable(event="sourceChanged")]
+    
+    /**
+     * Source of this image. Either a URL as String or a IMultiScaleImageDescriptor.
+     */ 
     public function get source() : Object
     {
     	return _source
@@ -129,7 +111,7 @@ public class MultiScaleImage extends UIComponent
     	if( _source )
     	{
     		_source = null
-	        _scene.removeChildAt( 0 )
+	        container.removeChildAt( 0 )
 	        viewport.showAll()
     	}
     	
@@ -142,7 +124,8 @@ public class MultiScaleImage extends UIComponent
     		sourceLoader = new URLLoader( new URLRequest( sourceURL ))
     		sourceLoader.addEventListener( Event.COMPLETE, sourceLoader_completeHandler )
     	}
-    	else if( value is IMultiScaleImageDescriptor )
+    	
+    	if( value is IMultiScaleImageDescriptor )
     	{
             _source = IMultiScaleImageDescriptor( value )
             dispatchEvent( new Event( "sourceChanged" ))
@@ -151,27 +134,78 @@ public class MultiScaleImage extends UIComponent
     	}
     }
     
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Scene
+    //
+    //--------------------------------------------------------------------------
+    
     //----------------------------------
-    //  scene
+    //  sceneWidth
     //----------------------------------
     
-    private var _scene : MultiScaleScene
-    
-    public function get scene() : IMultiScaleScene
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
+     */ 
+    public function get sceneWidth() : Number
     {
-        return _scene
+        return container.scene.sceneWidth
     }
+    
+    //----------------------------------
+    //  sceneHeight
+    //----------------------------------
+    
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
+     */ 
+    public function get sceneHeight() : Number
+    {
+        return container.scene.sceneHeight
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Viewport
+    //
+    //--------------------------------------------------------------------------
     
     //----------------------------------
     //  viewport
     //----------------------------------
     
-    private var _viewport : IViewportContainer
-    
     [Bindable(event="viewportChanged")]
     public function get viewport() : INormalizedViewport
     {
-        return _viewport
+        return container.viewport
+    }
+    
+    //----------------------------------
+    //  constraint
+    //----------------------------------
+    
+    public function get constraint() : IViewportConstraint
+    {
+        return container.viewport.transformer.constraint
+    }
+    
+    public function set constraint( value : IViewportConstraint ) : void
+    {
+        container.viewport.transformer.constraint = value
+    }
+    
+    //----------------------------------
+    //  transformer
+    //----------------------------------
+    
+    public function get transformer() : IViewportTransformer
+    {
+        return container.viewport.transformer
+    }
+    
+    public function set transformer( value : IViewportTransformer ) : void
+    {
+        container.viewport.transformer = value
     }
     
 	//--------------------------------------------------------------------------
@@ -184,10 +218,15 @@ public class MultiScaleImage extends UIComponent
     {
     	super.createChildren()
     	
-        createContentMask()
-        
-        createLoader()
-        createControllers( _scene )
+        createContainer()        
+        createDefaultControllers()
+    }
+    
+    override protected function updateDisplayList( unscaledWidth : Number,
+                                                   unscaledHeight : Number ) : void
+    {
+        container.width  = unscaledWidth
+        container.height = unscaledHeight
     }
     
 	//--------------------------------------------------------------------------
@@ -196,87 +235,20 @@ public class MultiScaleImage extends UIComponent
     //
     //--------------------------------------------------------------------------
     
-    private function createMouseCatcher() : void
+    /**
+     * @private
+     */
+    private function createContainer() : void
     {
-        mouseCatcher = new Sprite()
-        var g : Graphics = mouseCatcher.graphics
-        g.beginFill( 0x000000, 0 )
-        g.drawRect( 0, 0, 100, 100 )
-        g.endFill()
-        
-        addChild( mouseCatcher )
+    	container = new MultiScaleContainer()
+    	addChild( container )
+    	
+    	dispatchEvent( new Event( "viewportChanged" ))
     }
     
-    private function createContentMask() : void
-    {
-        contentMask = new Shape()
-        var g : Graphics = contentMask.graphics
-        g.beginFill( 0xFF0000, 0 )
-        g.drawRect( 0, 0, 100, 100 )
-        g.endFill()
-        
-        addChild( contentMask )
-        mask = contentMask
-    }
-    
-    private function createViewport( scene : IReadonlyMultiScaleScene ) : void
-    {
-        _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
-                                           DEFAULT_VIEWPORT_HEIGHT,
-                                           scene )
-                                           
-        _viewport.addEventListener( ViewportEvent.TRANSFORM_START,
-                                    viewport_transformStartHandler,
-                                    false, 0, true ) 
-        _viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE,
-                                    viewport_transformUpdateHandler,
-                                    false, 0, true )
-        _viewport.addEventListener( ViewportEvent.TRANSFORM_END,
-                                    viewport_transformEndHandler,
-                                    false, 0, true )
-                                     
-       dispatchEvent( new Event("viewportChanged" ))
-    }
-    
-    private function viewport_transformStartHandler( event : ViewportEvent ) : void
-    {
-        trace("ViewportEvent.TRANSFORM_START")
-    }
-    
-    private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
-    {
-        trace("ViewportEvent.TRANSFORM_UPDATE")
-        
-        // FIXME
-        var v : INormalizedViewport = viewport
-        var targetWidth   : Number =  v.viewportWidth / v.width
-        var targetHeight  : Number =  v.viewportHeight / v.height
-        var targetX       : Number = -v.x * targetWidth
-        var targetY       : Number = -v.y * targetHeight
-        
-        var target : DisplayObject = scene.targetCoordinateSpace
-            target.x = targetX
-            target.y = targetY
-            target.width = targetWidth
-            target.height = targetHeight
-    }
-    
-    private function viewport_transformEndHandler( event : ViewportEvent ) : void
-    {
-        trace("ViewportEvent.TRANSFORM_END")
-    }
-    
-    private function createScene() : void
-    {
-        _scene = new MultiScaleScene( DEFAULT_SCENE_DIMENSION, DEFAULT_SCENE_DIMENSION )
-        addChild( _scene )
-    }
-    
-    private function createLoader() : void
-    {
-    	loader = new LoadingQueue()
-    }
-    
+    /**
+     * @private
+     */
     private function createImage( descriptor : IMultiScaleImageDescriptor,
                                   loader : LoadingQueue,
                                   width : Number, height : Number ) : MultiScaleImageRenderer
@@ -292,42 +264,19 @@ public class MultiScaleImage extends UIComponent
     //  Methods: Controllers
     //
     //--------------------------------------------------------------------------
-  
-    private function createControllers( view : DisplayObject ) : void
-    {   
-        mouseNavigationController = new MouseController()
-        keyboardNavigationController = new KeyboardController()
-
-        addController( mouseNavigationController )
-        addController( keyboardNavigationController )
-        
-        transformationController = new ViewTransformationController()
-        transformationController.viewport = viewport
-        transformationController.view = view
-    }
-  
-    private function addController( controller : IViewportController ) : Boolean
+    
+    /**
+     * @private
+     */
+    private function createDefaultControllers() : void
     {
-        if( controllers.indexOf( controller ) != -1 )
-            return false
-       
-        controllers.push( controller )
-        controller.viewport = viewport
-        controller.view = this
-        return true
-    }
-  
-    private function removeController( controller : IViewportController ) : Boolean
-    {
-        if( controllers.indexOf( controller ) == -1 )
-            return false
-       
-        controllers.splice( controllers.indexOf( controller ), 1 )
-        controller.viewport = null
-        controller.view = null
-        return true
+    	container.controllers = [ new MouseController(),
+    	                          new KeyboardController() ]
     }
     
+    /**
+     * @private
+     */
     private function addImage( descriptor : IMultiScaleImageDescriptor ) : void
     {
         var aspectRatio : Number = descriptor.width / descriptor.height 
@@ -345,11 +294,13 @@ public class MultiScaleImage extends UIComponent
             sceneHeight = DEFAULT_SCENE_DIMENSION
         }
         
-        _scene.setSize( sceneWidth, sceneHeight )
+        // resize scene
+        container.sceneWidth  = sceneWidth
+        container.sceneHeight = sceneHeight
         
-        image = createImage( descriptor, loader, sceneWidth, sceneHeight )
-        
-        _scene.addChild( image )
+        // create renderer
+        image = createImage( descriptor, container.loader, sceneWidth, sceneHeight )
+        container.addChild( image )
     }
     
 	//--------------------------------------------------------------------------
@@ -358,6 +309,9 @@ public class MultiScaleImage extends UIComponent
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function sourceLoader_completeHandler( event : Event ) : void
     {
     	if( !sourceLoader.data )
@@ -372,24 +326,6 @@ public class MultiScaleImage extends UIComponent
         dispatchEvent( new Event( "sourceChanged" ))
         
         addImage( descriptor )
-    }
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Overridden methods: UIComponent
-    //
-    //--------------------------------------------------------------------------
-    
-    override protected function updateDisplayList( unscaledWidth : Number,
-                                                   unscaledHeight : Number ) : void
-    {
-        mouseCatcher.width = unscaledWidth
-        mouseCatcher.height = unscaledHeight
-        
-        contentMask.width = unscaledWidth
-        contentMask.height = unscaledHeight
-        
-        _viewport.setSize( unscaledWidth, unscaledHeight )  
     }
 }
 

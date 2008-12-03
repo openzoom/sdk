@@ -24,9 +24,9 @@ package org.openzoom.flash.viewport.transformers
 import caurina.transitions.Tweener;
 
 import org.openzoom.flash.viewport.ITransformerViewport;
+import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;
-import org.openzoom.flash.viewport.ViewportTransform2;
 
 public class TweenerViewportTransformer implements IViewportTransformer
 {
@@ -89,18 +89,18 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //----------------------------------
     //  constraint
     //----------------------------------
-//    
-//    private var _constraint : IViewportConstraint
-//    
-//    public function get constraint() : IViewportConstraint
-//    {
-//        return _constraint
-//    }
-//    
-//    public function set constraint( value : IViewportConstraint ) : void
-//    {
-//        _constraint = value
-//    }
+    
+    private var _constraint : IViewportConstraint
+    
+    public function get constraint() : IViewportConstraint
+    {
+        return _constraint
+    }
+    
+    public function set constraint( value : IViewportConstraint ) : void
+    {
+        _constraint = value
+    }
     
     //----------------------------------
     //  target

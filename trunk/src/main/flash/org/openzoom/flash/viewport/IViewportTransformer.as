@@ -40,8 +40,8 @@ public interface IViewportTransformer
 	/**
 	 * Constraint for target transform.
 	 */
-//	function get constraint() : IViewportConstraint
-//	function set constraint( value : IViewportConstraint ) : void
+	function get constraint() : IViewportConstraint
+	function set constraint( value : IViewportConstraint ) : void
 	
     /**
      * Transform viewport to target transform.
