@@ -102,6 +102,7 @@ public class ViewportTransform2 implements IViewportTransform,
 
     public function get scale() : Number
     {
+    	// var s : Number = viewportWidth / ( sceneWidth * width )
         return viewportWidth / ( sceneWidth * width ) 
     }
 

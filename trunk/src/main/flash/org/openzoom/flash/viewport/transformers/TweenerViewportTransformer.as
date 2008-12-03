@@ -26,6 +26,7 @@ import caurina.transitions.Tweener;
 import org.openzoom.flash.viewport.ITransformerViewport;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;
+import org.openzoom.flash.viewport.ViewportTransform2;
 
 public class TweenerViewportTransformer implements IViewportTransformer
 {
@@ -144,37 +145,59 @@ public class TweenerViewportTransformer implements IViewportTransformer
         	viewport.beginTransform()
         	viewport.transform = _targetTransform
         	viewport.endTransform()
+        	
+        	// update tween transform
+//        	tweenTransform.copy( ViewportTransform2( viewport.transform ))
         }
     	else
-        {
+        {                
+            // BEGIN: TRANSFORMSHORTCUTS
+            
 	        if( !Tweener.isTweening( viewport ))
-	            viewport.beginTransform()
-
-//	        if( !Tweener.isTweening( tweenTransform ))
-//	            viewport.beginTransform()
+                viewport.beginTransform()
 	            
 	        Tweener.addTween( 
 	                          viewport,
-//	                          tweenTransform,
 	                          {
 	                              _transform_x: targetTransform.x,
 	                              _transform_y: targetTransform.y,
-//	                              _transform_width: targetTransform.width,
-                                  _transform_height: targetTransform.height,
-//                                  x: targetTransform.x,
-//                                  y: targetTransform.y,
-//                                  width: targetTransform.width,
-////                                  height: targetTransform.height,
+	                              _transform_width: targetTransform.width,
+//                                  _transform_height: targetTransform.height,
 	                              time: DEFAULT_DURATION,
 	                              transition: DEFAULT_EASING,
-//	                              onUpdate:
-//		                              function() : void
-//		                              {
-//	                                      viewport.transform = tweenTransform
-//	                                  },
 	                              onComplete: viewport.endTransform
 	                          }
 	                        )
+	                        
+            // END: TRANSFORMSHORTCUTS
+            
+                            
+            // BEGIN: THE GOOD WAY.	                        
+//
+//            if( !Tweener.isTweening( tweenTransform ))
+//                viewport.beginTransform()
+//                
+//        	// update tween transform
+//        	tweenTransform.copy( ViewportTransform2( viewport.transform ))
+//            
+//            Tweener.addTween(
+//                                tweenTransform,
+//                                {
+//                                    x: targetTransform.x,
+//                                    y: targetTransform.y,
+//                                    width: targetTransform.width,
+////                                    height: targetTransform.height,
+//                                    time: DEFAULT_DURATION,
+//                                    transition: DEFAULT_EASING,
+//                                    onUpdate:
+//                                    function() : void
+//                                    {
+//                                        viewport.transform = tweenTransform
+//                                    },
+//                                    onComplete: viewport.endTransform
+//                                }
+//                            )
+            // END: THE GOOD WAY.	                        
         }
     }
 }
