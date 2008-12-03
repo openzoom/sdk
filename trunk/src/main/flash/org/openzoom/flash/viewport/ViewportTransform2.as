@@ -120,23 +120,10 @@ public class ViewportTransform2 implements IViewportTransform,
 
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( transformX, transformY )
-
-        // Compute normalized dimensions aspect ratio
-        // This is ratio of the normalized content width and height 
-        var ratio : Number = sceneAspectRatio / aspectRatio
-
-        if( ratio >= 1 )
-        {
-            // scene is wider than viewport
-            _width = 1 / _zoom
-            _height  = _width * ratio
-        }
-        else
-        {
-            // scene is taller than viewport
-            _height = 1 / _zoom
-            _width = _height / ratio
-        }
+        
+        var bounds : Point = getWidthAndHeightForZoom( zoom )
+        _width  = bounds.x
+        _height = bounds.y
 
         // move new origin to old origin
         moveOriginTo( oldOrigin.x, oldOrigin.y, transformX, transformY )
@@ -289,14 +276,7 @@ public class ViewportTransform2 implements IViewportTransform,
     
     public function set width( value : Number ) : void
     {
-    	var ratio : Number = sceneAspectRatio / aspectRatio
-//    	_width = value
-//    	_height = _width * ratio
-//    	_zoom = getZoomForWidth( value )
-        var oldX : Number = _x
-        var oldY : Number = _y
         zoomTo( getZoomForWidth( value ), 0, 0 )
-//        trace( _width - value, _height - _width * ratio )
     }
     
     //----------------------------------
@@ -310,11 +290,10 @@ public class ViewportTransform2 implements IViewportTransform,
         return _height
     }
     
-//    public function set height( value : Number ) : void
-//    {
-//    	_height = value
-////        width = aspectRatio * value
-//    }
+    public function set height( value : Number ) : void
+    {
+    	zoomTo( getZoomForHeight( value ), 0, 0 )
+    }
     
     //----------------------------------
     //  left
@@ -458,6 +437,29 @@ public class ViewportTransform2 implements IViewportTransform,
     //
     //--------------------------------------------------------------------------
     
+    private function getWidthAndHeightForZoom( zoom : Number ) : Point
+    {
+        var ratio : Number = sceneAspectRatio / aspectRatio
+        var width : Number  
+        var height : Number  
+    
+        if( ratio >= 1 )
+        {
+            // scene is wider than viewport
+            width = 1 / _zoom
+            height  = width * ratio
+        }
+        else
+        {
+            // scene is taller than viewport
+            height = 1 / _zoom
+            width = height / ratio
+        }
+        
+        var bounds : Point = new Point( width, height )
+        return bounds
+    }
+    
     private function getZoomForWidth( width : Number ) : Number
     {
         var zoom : Number
@@ -469,6 +471,12 @@ public class ViewportTransform2 implements IViewportTransform,
             zoom = 1 / ( width * ratio )
             
         return zoom
+    }
+    
+    private function getZoomForHeight( height : Number ) : Number
+    {
+        var ratio : Number = sceneAspectRatio / aspectRatio
+        return getZoomForWidth( height / ratio )
     }
     
     //--------------------------------------------------------------------------

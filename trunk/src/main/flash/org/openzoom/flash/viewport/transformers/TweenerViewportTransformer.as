@@ -35,8 +35,8 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_DURATION : Number = 2.0
-    private static const DEFAULT_EASING : String = "easeOutExpo"
+    private static const DEFAULT_DURATION : Number = 1.5
+    private static const DEFAULT_EASING   : String = "easeOutExpo"
 //    private static const NULL_CONSTRAINT : IViewportConstraint = new NullViewportConstraint()
     
     //--------------------------------------------------------------------------
@@ -159,8 +159,8 @@ public class TweenerViewportTransformer implements IViewportTransformer
 	                          {
 	                              _transform_x: targetTransform.x,
 	                              _transform_y: targetTransform.y,
-	                              _transform_width: targetTransform.width,
-//                                  _transform_height: targetTransform.height,
+//	                              _transform_width: targetTransform.width,
+                                  _transform_height: targetTransform.height,
 //                                  x: targetTransform.x,
 //                                  y: targetTransform.y,
 //                                  width: targetTransform.width,
