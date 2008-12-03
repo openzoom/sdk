@@ -106,12 +106,10 @@ public class AnimationViewport extends EventDispatcher
           _transform = ViewportTransform2.fromValues( 0, 0, 1, 1, 1,
                                                       width, height,
                                                       scene.sceneWidth, scene.sceneHeight )
-//        _transform = new ViewportTransform3( 0, 0, 1, width, height,
-//                                             scene.sceneWidth, scene.sceneHeight )
         
         // FIXME
-        transformer = NULL_TRANSFORMER
-//        transformer = new TweenerViewportTransformer()
+//        transformer = NULL_TRANSFORMER
+        transformer = new TweenerViewportTransformer()
         
 //        validate()
     }

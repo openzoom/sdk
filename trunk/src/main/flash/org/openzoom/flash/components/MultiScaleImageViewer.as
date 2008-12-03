@@ -325,12 +325,12 @@ public class MultiScaleImageViewer extends Sprite
     
     private function viewport_transformStartHandler( event : ViewportEvent ) : void
     {
-//        trace("ViewportEvent.TRANSFORM_START", viewport.zoom, viewport.width, viewport.height)
+        trace("ViewportEvent.TRANSFORM_START")
     }
     
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
-//        trace("ViewportEvent.TRANSFORM_UPDATE", viewport.zoom, viewport.width, viewport.height )
+//        trace("ViewportEvent.TRANSFORM_UPDATE")
         // FIXME
         var v : INormalizedViewport = viewport
         var targetWidth   : Number =  v.viewportWidth / v.width
@@ -347,7 +347,7 @@ public class MultiScaleImageViewer extends Sprite
     
     private function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
-//        trace("ViewportEvent.TRANSFORM_END", viewport.zoom, viewport.width, viewport.height)
+        trace("ViewportEvent.TRANSFORM_END")
     }
     
     private function createScene() : void

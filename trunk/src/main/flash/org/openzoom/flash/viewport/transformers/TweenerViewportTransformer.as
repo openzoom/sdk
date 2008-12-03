@@ -26,7 +26,6 @@ import caurina.transitions.Tweener;
 import org.openzoom.flash.viewport.ITransformerViewport;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;
-import org.openzoom.flash.viewport.ViewportTransform2;
 
 public class TweenerViewportTransformer implements IViewportTransformer
 {
@@ -51,7 +50,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
      */
     public function TweenerViewportTransformer()
     {
-//    	TransformShortcuts.init()
+    	TransformShortcuts.init()
     }
     
     //--------------------------------------------------------------------------
@@ -60,7 +59,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
-    private var tweenTransform : IViewportTransform
+//    private var tweenTransform : IViewportTransform
     
     //--------------------------------------------------------------------------
     //
@@ -83,7 +82,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     {
         _viewport = value
         _targetTransform = viewport.transform
-        tweenTransform   = viewport.transform
+//        tweenTransform   = viewport.transform
     }
     
     //----------------------------------
@@ -121,32 +120,22 @@ public class TweenerViewportTransformer implements IViewportTransformer
     
     public function stop() : void
     {
-//    	if( Tweener.isTweening( viewport ))
-//    	{
-//    	    Tweener.removeTweens( viewport )
-//	        viewport.endTransform()
-//    	}
-    	if( Tweener.isTweening( tweenTransform ))
+    	if( Tweener.isTweening( viewport ))
     	{
-    	    Tweener.removeTweens( tweenTransform )
+    	    Tweener.removeTweens( viewport )
 	        viewport.endTransform()
     	}
+//    	if( Tweener.isTweening( tweenTransform ))
+//    	{
+//    	    Tweener.removeTweens( tweenTransform )
+//	        viewport.endTransform()
+//    	}
     }
     
     public function transform( targetTransform : IViewportTransform,
                                immediately : Boolean = false ) : void
     {
-    	var duration : Number = DEFAULT_DURATION
-    	// FIXME
-        var tweenTransform1 : IViewportTransform = viewport.transform
-	    tweenTransform.copy(ViewportTransform2(viewport.transform))
-        
-        if( !tweenTransform1.equals( tweenTransform ))
-            trace( "DAMN IT, CHLOE!!" )
-
-//      trace( _transform.equals( viewport.transform ) )
-
-        // copy targetTransform
+        // copy targetTransform to know where to tween to…
         _targetTransform = targetTransform.clone()
         
         if( immediately )
@@ -158,31 +147,31 @@ public class TweenerViewportTransformer implements IViewportTransformer
         }
     	else
         {
-//	        if( !Tweener.isTweening( viewport ))
-//	            viewport.beginTransform()
-
-	        if( !Tweener.isTweening( tweenTransform ))
+	        if( !Tweener.isTweening( viewport ))
 	            viewport.beginTransform()
+
+//	        if( !Tweener.isTweening( tweenTransform ))
+//	            viewport.beginTransform()
 	            
 	        Tweener.addTween( 
-//	                          viewport,
-	                          tweenTransform,
+	                          viewport,
+//	                          tweenTransform,
 	                          {
-//	                              _transform_x: targetTransform.x,
-//	                              _transform_y: targetTransform.y,
-//	                              _transform_width: targetTransform.width,
-//                                _transform_height: targetTransform.height,
-                                  x: targetTransform.x,
-                                  y: targetTransform.y,
-                                  width: targetTransform.width,
-//                                height: targetTransform.height,
-	                              time: duration,
+	                              _transform_x: targetTransform.x,
+	                              _transform_y: targetTransform.y,
+	                              _transform_width: targetTransform.width,
+//                                  _transform_height: targetTransform.height,
+//                                  x: targetTransform.x,
+//                                  y: targetTransform.y,
+//                                  width: targetTransform.width,
+////                                  height: targetTransform.height,
+	                              time: DEFAULT_DURATION,
 	                              transition: DEFAULT_EASING,
-	                              onUpdate:
-		                              function() : void
-		                              {
-	                                      viewport.transform = tweenTransform
-	                                  },
+//	                              onUpdate:
+//		                              function() : void
+//		                              {
+//	                                      viewport.transform = tweenTransform
+//	                                  },
 	                              onComplete: viewport.endTransform
 	                          }
 	                        )
