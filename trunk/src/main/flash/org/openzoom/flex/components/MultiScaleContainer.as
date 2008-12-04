@@ -385,12 +385,12 @@ public class MultiScaleContainer extends UIComponent
     
     private function viewport_transformStartHandler( event : ViewportEvent ) : void
     {
-      trace("ViewportEvent.TRANSFORM_START")
+//      trace("ViewportEvent.TRANSFORM_START")
     }
     
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
-        trace("ViewportEvent.TRANSFORM_UPDATE")
+//        trace("ViewportEvent.TRANSFORM_UPDATE")
         var v : INormalizedViewport = viewport
         var targetWidth   : Number =  v.viewportWidth / v.width
         var targetHeight  : Number =  v.viewportHeight / v.height
@@ -406,7 +406,7 @@ public class MultiScaleContainer extends UIComponent
     
     private function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
-        trace("ViewportEvent.TRANSFORM_END")
+//        trace("ViewportEvent.TRANSFORM_END")
     }
     
     private function createScene() : void

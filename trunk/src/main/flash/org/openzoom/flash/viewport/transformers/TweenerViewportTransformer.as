@@ -57,6 +57,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     	
     	// FIXME
     	constraint = new DefaultViewportConstraint()
+//    	constraint = new MapViewportConstraint()
     }
     
     //--------------------------------------------------------------------------
@@ -145,7 +146,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
                                immediately : Boolean = false ) : void
     {
         // copy targetTransform to know where to tween to…
-        _targetTransform = constraint.validate( targetTransform ).clone()
+        _targetTransform = constraint.validate( targetTransform.clone())
         
         if( immediately )
         {

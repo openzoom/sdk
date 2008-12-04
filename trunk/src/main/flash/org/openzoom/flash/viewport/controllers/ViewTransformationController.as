@@ -31,7 +31,7 @@ import org.openzoom.flash.viewport.ITransformerViewport;
 import org.openzoom.flash.viewport.IViewportController;    
 
 /**
- * Transforms the view in the viewport.
+ * Transforms the scene in the viewport.
  */
 public class ViewTransformationController extends ViewportControllerBase
                                           implements IViewportController
@@ -42,7 +42,7 @@ public class ViewTransformationController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_TRANSFORMATION_DURATION : Number = 2.0
+    private static const DEFAULT_TRANSFORMATION_DURATION : Number = 1.5
     private static const DEFAULT_TRANSFORMATION_EASING : String = "easeOutExpo"
     
     //--------------------------------------------------------------------------
@@ -142,18 +142,11 @@ public class ViewTransformationController extends ViewportControllerBase
     
     private function transformView( duration : Number ) : void
     {
-        var transition : String = DEFAULT_TRANSFORMATION_EASING
-        var newWidth   : Number = viewport.viewportWidth / viewport.width
-        var newHeight  : Number = viewport.viewportHeight / viewport.height
-        var newX       : Number = -viewport.x * newWidth
-        var newY       : Number = -viewport.y * newHeight
-        
-////        viewport.beginTransform()
-//        view.x = newX
-//        view.y = newY
-//        view.width = newWidth
-//        view.height = newHeight
-////        viewport.endTransform()
+        var transition   : String = DEFAULT_TRANSFORMATION_EASING
+        var targetWidth  : Number = viewport.viewportWidth / viewport.width
+        var targetHeight : Number = viewport.viewportHeight / viewport.height
+        var targetX      : Number = -viewport.x * targetWidth
+        var targetY      : Number = -viewport.y * targetHeight
         
         if( !Tweener.isTweening( view ))
             ITransformerViewport(viewport).beginTransform()
@@ -161,10 +154,10 @@ public class ViewTransformationController extends ViewportControllerBase
         Tweener.addTween(
                             view,
                             {
-                                x: newX,
-                                y: newY,
-                                width: newWidth,
-                                height: newHeight,
+                                x: targetX,
+                                y: targetY,
+                                width: targetWidth,
+                                height: targetHeight,
                                 time: duration,
                                 transition: transition,
                                 onComplete: ITransformerViewport(viewport).endTransform

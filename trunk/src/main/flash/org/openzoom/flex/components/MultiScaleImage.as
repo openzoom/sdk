@@ -54,7 +54,7 @@ public class MultiScaleImage extends UIComponent
     private static const DEFAULT_MIN_ZOOM        : Number = 0.25
     private static const DEFAULT_MAX_ZOOM        : Number = 10000
     
-    private static const DEFAULT_SCENE_DIMENSION : Number = 12000
+    private static const DEFAULT_SCENE_DIMENSION : Number = 16384//12000
     
     private static const DEFAULT_VIEWPORT_WIDTH  : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT : Number = 600
