@@ -94,7 +94,7 @@ public interface IMultiScaleImageDescriptor
     //----------------------------------
       
     /**
-     * Returns the mime-type of the image pyramid tiles, e.g. <image/jpeg> or <image/png>.
+     * Returns the mime-type of the image pyramid tiles, e.g. &lt;image/jpeg&gt; or &lt;image/png&gt;.
      */
     function get type() : String
 

@@ -99,7 +99,8 @@ public class MultiScaleImage extends UIComponent
     [Bindable(event="sourceChanged")]
     
     /**
-     * Source of this image. Either a URL as String or a IMultiScaleImageDescriptor.
+     * Source of this image.
+     * Either a URL as String or an instance of IMultiScaleImageDescriptor.
      */ 
     public function get source() : Object
     {
@@ -175,29 +176,22 @@ public class MultiScaleImage extends UIComponent
     //----------------------------------
     
     [Bindable(event="viewportChanged")]
+    
+    /**
+     * Viewport of this image.
+     */ 
     public function get viewport() : INormalizedViewport
     {
         return container.viewport
     }
     
     //----------------------------------
-    //  constraint
-    //----------------------------------
-    
-    public function get constraint() : IViewportConstraint
-    {
-        return container.viewport.transformer.constraint
-    }
-    
-    public function set constraint( value : IViewportConstraint ) : void
-    {
-        container.viewport.transformer.constraint = value
-    }
-    
-    //----------------------------------
     //  transformer
     //----------------------------------
     
+    /**
+     * Viewport transformer.
+     */ 
     public function get transformer() : IViewportTransformer
     {
         return container.viewport.transformer
@@ -206,6 +200,23 @@ public class MultiScaleImage extends UIComponent
     public function set transformer( value : IViewportTransformer ) : void
     {
         container.viewport.transformer = value
+    }
+    
+    //----------------------------------
+    //  constraint
+    //----------------------------------
+    
+    /**
+     * Transformer constraint.
+     */ 
+    public function get constraint() : IViewportConstraint
+    {
+        return container.viewport.transformer.constraint
+    }
+    
+    public function set constraint( value : IViewportConstraint ) : void
+    {
+        container.viewport.transformer.constraint = value
     }
     
 	//--------------------------------------------------------------------------

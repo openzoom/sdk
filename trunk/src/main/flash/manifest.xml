@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<componentPackage>
+    <component id="MultiScaleImage" class="org.openzoom.flex.components.MultiScaleImage"/>
+</componentPackage>

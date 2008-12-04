@@ -26,6 +26,11 @@ import flash.geom.Point;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 
+/**
+ * Default implementation of the IViewportConstraint interface.
+ * Provides basic bounds checking and imposes limits on the zoom property
+ * of the viewport.
+ */
 public class DefaultViewportConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
@@ -61,8 +66,11 @@ public class DefaultViewportConstraint implements IViewportConstraint
     //  minZoom
     //----------------------------------
 
-    protected var _minZoom : Number = DEFAULT_MIN_ZOOM
+    private var _minZoom : Number = DEFAULT_MIN_ZOOM
 
+    /**
+     * Minimum zoom the viewport can reach.
+     */ 
     public function get minZoom() : Number
     {
         return _minZoom
@@ -77,8 +85,12 @@ public class DefaultViewportConstraint implements IViewportConstraint
     //  maxZoom
     //----------------------------------
     
-    protected var _maxZoom : Number = DEFAULT_MAX_ZOOM
+    private var _maxZoom : Number = DEFAULT_MAX_ZOOM
     
+
+    /**
+     * Maximum zoom the viewport can reach.
+     */
     public function get maxZoom() : Number
     {
         return _maxZoom

@@ -96,6 +96,11 @@ public interface IMultiScaleImageLevel
      */
     function getTilePosition( column : uint, row : uint ) : Point
     
+//  /**
+//   * Returns the bounds of the specified tile.
+//   */
+//  function getTileBounds( column : uint, row : uint ) : Rectangle
+    
     /**
      * Returns a copy of this object.
      */ 

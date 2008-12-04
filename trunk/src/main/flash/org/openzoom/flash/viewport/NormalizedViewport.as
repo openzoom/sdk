@@ -3,12 +3,6 @@
 //  OpenZoom
 //
 //  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
-//  Copyright (c) 2008,      Zoomorama
-//                           Olivier Gambier <viapanda@gmail.com>
-//                           Daniel Gasienica <daniel@gasienica.ch>
-//                           Eric Hubscher <erich@zoomorama.com>
-//                           David Marteau <dhmarteau@gmail.com>
-//  Copyright (c) 2007,      Rick Companje <rick@companje.nl>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,9 +27,10 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
 import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
+import org.openzoom.flash.viewport.transformers.TweenerViewportTransformer;
 
 //------------------------------------------------------------------------------
 //
@@ -43,10 +38,26 @@ import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
 //
 //------------------------------------------------------------------------------
 
+/**
+ * @inheritDoc
+ */
 [Event(name="resize", type="org.openzoom.events.ViewportEvent")]
+
+/**
+ * @inheritDoc
+ */
 [Event(name="transformStart", type="org.openzoom.events.ViewportEvent")]
+
+/**
+ * @inheritDoc
+ */
 [Event(name="transform", type="org.openzoom.events.ViewportEvent")]
-[Event(name="transformComplete", type="org.openzoom.events.ViewportEvent")]
+
+/**
+ * @inheritDoc
+ */
+[Event(name="transformEnd", type="org.openzoom.events.ViewportEvent")]
+
 
 /**
  * IViewport implementation that is based on a normalized [0, 1] coordinate system.
@@ -63,9 +74,9 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    private static const NULL_CONSTRAINT : IViewportConstraint = new NullViewportConstraint()
+//    private static const NULL_CONSTRAINT  : IViewportConstraint  = new NullViewportConstraint()
     private static const NULL_TRANSFORMER : IViewportTransformer = new NullViewportTransformer()
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -76,19 +87,24 @@ public class NormalizedViewport extends EventDispatcher
      * Constructor.
      */
     public function NormalizedViewport( width : Number, height : Number,
-                                        scene : IReadonlyMultiScaleScene )
+                                       scene : IReadonlyMultiScaleScene )
     {
-    	_viewportWidth = width
-    	_viewportHeight = height
-    	
         _scene = scene
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
         
-//        _transformer = NULL_TRANSFORMER
-//        _transformer.viewport = this
-        _transformer = new TransformerProxy( this )
+        // FIXME
+        _transform = ViewportTransform.fromValues( 0, 0, 1, 1, 1,
+                                                    width, height,
+                                                    scene.sceneWidth,
+                                                    scene.sceneHeight )
         
-        validate()
+        // FIXME
+//      constraint = new DefaultViewportConstraint()
+
+        // FIXME
+//        transformer = NULL_TRANSFORMER
+        transformer = new TweenerViewportTransformer()
+        
     }
 
     //--------------------------------------------------------------------------
@@ -98,15 +114,13 @@ public class NormalizedViewport extends EventDispatcher
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  z
+    //  zoom
     //----------------------------------
 
-    private var _zoom : Number = 1;
-
-    [Bindable(event="zoomChanged")]
+    [Bindable(event="transformUpdate")]
     public function get zoom() : Number
     {
-        return _zoom
+        return _transform.zoom
     }
 
     public function set zoom( value : Number ) : void
@@ -118,31 +132,30 @@ public class NormalizedViewport extends EventDispatcher
     //  scale
     //----------------------------------
 
-    [Bindable(event="scaleChanged")]
+    [Bindable(event="transformUpdate")]
     public function get scale() : Number
     {
         return viewportWidth / ( scene.sceneWidth * width ) 
     }
  
-    //----------------------------------
-    //  constraint
-    //----------------------------------
-    
-    private var _constraint : IViewportConstraint = new NullViewportConstraint()
-//    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
-
-    public function get constraint() : IViewportConstraint
-    {
-        return _constraint
-    }
-    
-    public function set constraint( value : IViewportConstraint ) : void
-    {
-    	if( value )
-    	   _constraint = value
-    	else
-    	   _constraint = NULL_CONSTRAINT
-    }
+//    //----------------------------------
+//    //  constraint
+//    //----------------------------------
+//    
+//    private var _constraint : IViewportConstraint = NULL_CONSTRAINT
+//
+//    public function get constraint() : IViewportConstraint
+//    {
+//        return _constraint
+//    }
+//    
+//    public function set constraint( value : IViewportConstraint ) : void
+//    {
+//        if( value )
+//           _constraint = value
+//        else
+//           _constraint = NULL_CONSTRAINT
+//    }
 
     //----------------------------------
     //  transformer
@@ -157,8 +170,12 @@ public class NormalizedViewport extends EventDispatcher
 
     public function set transformer( value : IViewportTransformer ) : void
     {
-        _transformer.stop()
-        
+    	if( _transformer )
+    	{
+    	   _transformer.stop()
+           _transformer.viewport = null    		
+    	}
+    	
         if( value )
            _transformer = value
         else
@@ -171,39 +188,35 @@ public class NormalizedViewport extends EventDispatcher
     //  transform
     //----------------------------------
 
+    private var _transform : IViewportTransform
+
     public function get transform() : IViewportTransform
-    {
-    	return null
+    {   	
+    	return _transform.clone()
     }
 
     public function set transform( value : IViewportTransform ) : void
     {
-    	// TODO
-    }
-//    
-//    //----------------------------------
-//    //  targetTransform
-//    //----------------------------------
-//
-    private var _targetTransform : IViewportTransform
-    
-    public function get targetTransform() : IViewportTransform
-    {  
-    	return null     
-//        return _targetTransform.clone()
-    }
-
-    public function set targetTransform( value : IViewportTransform ) : void
-    {
-//        _targetTransform = value.clone()
+        var oldTransform : IViewportTransform = _transform.clone()
+        
+        _transform = value.clone()
+        
+        dispatchUpdateTransformEvent( oldTransform )
     }
     
     //----------------------------------
     //  scene
     //----------------------------------
-
+    
+    /**
+     * @private
+     * Storage for the scene property.
+     */
     private var _scene : IReadonlyMultiScaleScene
 
+    /**
+     * @inheritDoc
+     */ 
     public function get scene() : IReadonlyMultiScaleScene
     {
         return _scene
@@ -213,24 +226,28 @@ public class NormalizedViewport extends EventDispatcher
     //  viewportWidth
     //----------------------------------
     
-    private var _viewportWidth : Number
-    
     [Bindable(event="viewportWidthChanged")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get viewportWidth() : Number
     {
-        return _viewportWidth
+        return _transform.viewportWidth
     }
     
     //----------------------------------
     //  viewportHeight
     //----------------------------------
     
-    private var _viewportHeight : Number
-    
     [Bindable(event="viewportHeightChanged")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get viewportHeight() : Number
     {
-        return _viewportHeight
+        return _transform.viewportHeight
     }
 
     //--------------------------------------------------------------------------
@@ -239,54 +256,30 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */
     public function zoomTo( zoom : Number,
-                            originX : Number = 0.5,
-                            originY : Number = 0.5,
+                            transformX : Number = 0.5,
+                            transformY : Number = 0.5,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        var oldZoom : Number = this.zoom
-
-        // keep z within min/max range
-//        _zoom = clamp( zoom, constraint.minZoom, constraint.maxZoom )
-        _zoom = zoom
-
-        // remember old origin
-        var oldOrigin : Point = getViewportOrigin( originX, originY )
-
-        // Compute normalized dimensions aspect ratio
-        // This is ratio of the normalized content width and height 
-        var ratio : Number = sceneAspectRatio / aspectRatio
-
-        if( ratio >= 1 )
-        {
-            // content is wider than viewport
-            _width = 1 / _zoom
-            _height  = _width * ratio
-        }
-        else
-        {
-            // content is taller than viewport
-            _height = 1 / _zoom
-            _width  = _height / ratio
-        }
-
-        // move new origin to old origin
-        moveOriginTo( oldOrigin.x, oldOrigin.y, originX, originY, false )
-
-        if( dispatchChangeEvent )
-            this.updateTransform( oldZoom )
-            
-        dispatchEvent( new Event( "zoomChanged" ))
-        dispatchEvent( new Event( "widthChanged" ))
-        dispatchEvent( new Event( "heightChanged" ))
-        dispatchEvent( new Event( "scaleChanged" ))
+    	var t : IViewportTransform = getTargetTransform()
+        t.zoomTo( zoom, transformX, transformY )
+        applyTransform( t )
     }
-
+    
+    /**
+     * @inheritDoc
+     */
     public function zoomBy( factor : Number,
-                            originX : Number = 0.5, originY : Number = 0.5,
+                            transformX : Number = 0.5,
+                            transformY : Number = 0.5,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        zoomTo( zoom * factor, originX, originY, dispatchChangeEvent )
+        var t : IViewportTransform = getTargetTransform()
+    	t.zoomBy( factor, transformX, transformY )
+        applyTransform( t )
     }
 
     //--------------------------------------------------------------------------
@@ -295,82 +288,58 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */
     public function moveTo( x : Number, y : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
-        // store the given (normalized) coordinates
-        _x = x
-        _y = y
-
-        // compute position
-//        var position : Point = constraint.computePosition( this )
-            
-        // capture new position
-//        _x = position.x
-//        _y = position.y
-        
-        if( dispatchChangeEvent )
-            this.updateTransform()
+        var t : IViewportTransform = getTargetTransform()
+        t.moveTo( x, y )
+        applyTransform( t )
     }
-
-
+    
+    /**
+     * @inheritDoc
+     */
     public function moveBy( dx : Number, dy : Number,
-                            dispatchChangeEvent : Boolean = true  ) : void
+                            dispatchChangeEvent : Boolean = true ) : void
     {
-        moveTo( x + dx, y + dy, dispatchChangeEvent )
+        var t : IViewportTransform = getTargetTransform()
+        t.moveBy( dx, dy )
+        applyTransform( t )
     }
 
+    /**
+     * @inheritDoc
+     */
     public function moveCenterTo( x : Number, y : Number,
                                   dispatchChangeEvent : Boolean = true ) : void
     {
-        moveOriginTo( x, y, 0.5, 0.5, dispatchChangeEvent )
+        var t : IViewportTransform = getTargetTransform()
+        t.moveCenterTo( x, y )
+        applyTransform( t )
     }
 
+    /**
+     * @inheritDoc
+     */
     public function showRect( rect : Rectangle, scale : Number = 1.0, 
                               dispatchChangeEvent : Boolean = true ) : void
     {
-    	// TODO: Implement for normalized coordinate system
-    	var area : Rectangle = denormalizeRectangle( rect )
-    	
-        var centerX : Number = area.x + area.width  * 0.5
-        var centerY : Number = area.y + area.height * 0.5
-    
-        var normalizedCenter : Point = new Point( centerX / scene.sceneWidth,
-                                                  centerY / scene.sceneHeight )
-                                                 
-        var scaledWidth : Number = area.width / scale
-        var scaledHeight : Number = area.height / scale
-    
-        var ratio : Number = sceneAspectRatio / aspectRatio
-     
-        // We have be careful here, the way the zoom factor is
-        // interpreted depends on the relative ratio of scene and viewport
-        if( scaledWidth > ( aspectRatio * scaledHeight ) )
-        {
-            // Area must fit horizontally in the viewport
-            ratio = ( ratio < 1 ) ? ( scene.sceneWidth / ratio ) : scene.sceneWidth
-            ratio = ratio / scaledWidth
-        }
-        else
-        {
-            // Area must fit vertically in the viewport  
-            ratio = ( ratio > 1 ) ? ( scene.sceneHeight * ratio ) : scene.sceneHeight
-            ratio = ratio / scaledHeight
-        }
-    
-        var oldZoom : Number = zoom
-    
-        zoomTo( ratio, 0.5, 0.5, false )
-        moveCenterTo( normalizedCenter.x, normalizedCenter.y, false )
-    
-        if( dispatchChangeEvent )
-            this.updateTransform( oldZoom )
+        var t : IViewportTransform = getTargetTransform()
+        t.showRect( rect, scale )
+        applyTransform( t )
     }
     
+    /**
+     * @inheritDoc
+     */
     public function showAll() : void
     {
-    	var area : Rectangle = new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight )
-        showRect( normalizeRectangle( area ))
+        var t : IViewportTransform = getTargetTransform()
+        t.showAll()
+        applyTransform( t )
     }
 
     //--------------------------------------------------------------------------
@@ -379,6 +348,9 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */ 
     public function localToScene( point : Point ) : Point
     {
         var p : Point = new Point()
@@ -388,7 +360,10 @@ public class NormalizedViewport extends EventDispatcher
               + ( point.y / viewportHeight ) * ( height * scene.sceneHeight )
         return p
     }
-
+    
+    /**
+     * @inheritDoc
+     */
     public function sceneToLocal( point : Point ) : Point
     {
         var p : Point = new Point()
@@ -399,72 +374,13 @@ public class NormalizedViewport extends EventDispatcher
         return p
     }
 
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Internal
-    //
-    //--------------------------------------------------------------------------
-
-    private function moveOriginTo( x : Number, y : Number,
-                                   originX : Number, originY : Number,
-                                   dispatchChangeEvent : Boolean = true ) : void
-    {
-        var newX : Number = x - width * originX
-        var newY : Number = y - height * originY
-
-        moveTo( newX, newY, dispatchChangeEvent )
-    }
-
-    private function getViewportOrigin( originX : Number,
-                                        originY : Number ) : Point
-    {
-        var viewportOriginX : Number = x + width * originX
-        var viewportOriginY : Number = y + height * originY
- 
-        return new Point( viewportOriginX, viewportOriginY )
-    }
-
     /**
      * @private
-     * 
-     * Validate the viewport.
-     */ 
-    private function validate( dispatchEvent : Boolean = true ) : void
-    {
-        zoomTo( _zoom, 0.5, 0.5, dispatchEvent )
-    }
-
-
-    //--------------------------------------------------------------------------
-    //
-    //  Properties: Internal
-    //
-    //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  aspectRatio
-    //----------------------------------
-    
-    /**
-     * @private 
-     * Returns the aspect ratio of this Viewport object.
      */
-    private function get aspectRatio() : Number
+    private function applyTransform( transform : IViewportTransform,
+                                     immediately : Boolean = false ) : void
     {
-        return viewportWidth / viewportHeight
-    }
- 
-    //----------------------------------
-    //  sceneAspectRatio
-    //----------------------------------
-    
-    /**
-     * @private 
-     * Returns the aspect ratio of scene.
-     */
-    private function get sceneAspectRatio() : Number
-    {
-        return scene.sceneWidth / scene.sceneHeight
+        transformer.transform( transform, immediately )
     }
 
     //--------------------------------------------------------------------------
@@ -473,13 +389,21 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */
     public function contains( x : Number, y : Number ) : Boolean
     {
+    	// FIXME: Delegate to Rectangle object.
         return ( x >= left ) && ( x <= right ) && ( y >= top ) && ( y <= bottom )
     }
     
+    /**
+     * @inheritDoc
+     */
     public function intersects( toIntersect : Rectangle ) : Boolean
     {
+    	// FIXME: Circumvent normalization / denormalization
     	var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
                                                        y * scene.sceneHeight, 
                                                        width * scene.sceneWidth,
@@ -487,8 +411,12 @@ public class NormalizedViewport extends EventDispatcher
         return sceneViewport.intersects( denormalizeRectangle( toIntersect ))
     }
     
+    /**
+     * @inheritDoc
+     */
     public function intersection( toIntersect : Rectangle ) : Rectangle
     {
+        // FIXME: Circumvent normalization / denormalization
         var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
                                                        y * scene.sceneHeight, 
                                                        width * scene.sceneWidth,
@@ -506,133 +434,185 @@ public class NormalizedViewport extends EventDispatcher
     //  x
     //----------------------------------
     
-    private var _x : Number = 0
+    [Bindable(event="transformUpdate")]
     
+    /**
+     * @inheritDoc
+     */
     public function get x() : Number
     {
-        return _x
+        return _transform.x
     }
     
     public function set x( value : Number ) : void
     {
-        moveTo( value, y )
+    	var t : IViewportTransform = getTargetTransform()
+    	t.x = value
+    	applyTransform( t )
     }
     
     //----------------------------------
     //  y
     //----------------------------------
     
-    private var _y : Number = 0
+    [Bindable(event="transformUpdate")]
     
+    /**
+     * @inheritDoc
+     */
     public function get y() : Number
     {
-       return _y
+       return _transform.y
     }
     
     public function set y( value : Number ) : void
     {
-        moveTo( x, value )
+        var t : IViewportTransform = getTargetTransform()
+        t.y = value
+        applyTransform( t )
     }
     
     //----------------------------------
     //  width
     //----------------------------------
     
-    private var _width : Number = 1;
+    [Bindable(event="transformUpdate")]
     
-    [Bindable(event="widthChanged")]
+    /**
+     * @inheritDoc
+     */
     public function get width() : Number
     {
-        return _width
+        return _transform.width
     }
     
     //----------------------------------
     //  height
     //----------------------------------
     
-    private var _height : Number = 1;
+    [Bindable(event="transformUpdate")]
     
-    [Bindable(event="heightChanged")]
+    /**
+     * @inheritDoc
+     */
     public function get height() : Number
     {
-        return _height
+        return _transform.height
     }
     
     //----------------------------------
     //  left
     //----------------------------------
     
+    [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get left() : Number
     {
-        return x
+        return _transform.left
     }
     
     //----------------------------------
     //  right
     //----------------------------------
     
+    [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get right() : Number
     {
-        return x + width
+        return _transform.right
     }
     
     //----------------------------------
     //  top
     //----------------------------------
     
+    [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get top() : Number
     {
-        return y
+        return _transform.top
     }
     
     //----------------------------------
     //  bottom
     //----------------------------------
     
+    [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get bottom() : Number
     {
-        return y + height
+        return _transform.bottom
     }
     
     //----------------------------------
     //  topLeft
     //----------------------------------
     
+    [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get topLeft() : Point
     {
-        return new Point( left, top )
+        return _transform.topLeft
     }
     
     //----------------------------------
     //  bottomRight
     //----------------------------------
     
+    [Bindable(event="transformUpdate")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get bottomRight() : Point
     {
-        return new Point( right, bottom )
+        return _transform.bottomRight
     }
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: Events
+    //  Methods: Transform Events
     //
     //--------------------------------------------------------------------------
     
-    
+    /**
+     * @inheritDoc
+     */
     public function beginTransform() : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_START ))
     }
     
-    private function updateTransform( oldZoom : Number = NaN ) : void
+    /**
+     * @private
+     */
+    private function dispatchUpdateTransformEvent( oldTransform : IViewportTransform
+                                                       = null ) : void
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_UPDATE,
-                           false, false ))
+                           false, false, oldTransform ))
     }
     
+    /**
+     * @inheritDoc
+     */
     public function endTransform() : void
     {
-//    	updateTransform()
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_END ))
     }
     
@@ -642,16 +622,31 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
+    private function getTargetTransform() : IViewportTransform
+    {
+        var t : IViewportTransform = transformer.targetTransform
+        return t
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IViewportContainer
+    //
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @inheritDoc
+     */
     public function setSize( width : Number, height : Number ) : void
     {
-        if( _viewportWidth == width && _viewportHeight == height )
+        if( viewportWidth == width && viewportHeight == height )
             return
         
-        _viewportWidth = width
-        _viewportHeight = height
-        validate( false )
+        reinitializeTransform( width, height )
         
-        // FIXME: add beginTransform & endTransform
         dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false ))
     }
     
@@ -733,15 +728,33 @@ public class NormalizedViewport extends EventDispatcher
                               denormalizeY( value.height ))
     }
     
+    /**
+     * @private
+     */
+    private function reinitializeTransform( viewportWidth : Number,
+                                            viewportHeight : Number ) : void
+    {
+        var old : IViewportTransform = transform
+        var t : IViewportTransformContainer =
+                    ViewportTransform.fromValues( old.x, old.y,
+                                                   old.width, old.height, old.zoom,
+                                                   viewportWidth, viewportHeight,
+                                                   _scene.sceneWidth, _scene.sceneHeight ) 
+        applyTransform( t, true )
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function scene_resizeHandler( event : Event ) : void
     {
-    	validate()
+    	reinitializeTransform( viewportWidth, viewportHeight )
     }
     
     //--------------------------------------------------------------------------
@@ -750,9 +763,12 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */
     override public function toString() : String
     {
-        return "[NormalizedViewport]" + "\n"
+        return "[AnimationViewport]" + "\n"
                + "x=" + x + "\n" 
                + "y=" + y  + "\n"
                + "z=" + zoom + "\n"
@@ -763,227 +779,4 @@ public class NormalizedViewport extends EventDispatcher
     }
 }
 
-}
-
-import flash.geom.Rectangle;
-
-import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.ITransformerViewport;
-import org.openzoom.flash.viewport.IViewportTransformer;
-import org.openzoom.flash.viewport.IViewportTransform;
-import org.openzoom.flash.viewport.IViewport;
-import org.openzoom.flash.viewport.ViewportTransform;
-import flash.geom.Point;
-import org.openzoom.flash.viewport.IViewportConstraint;
-
-class TransformerProxy implements IViewportTransformer
-{
-    public function TransformerProxy( viewport : ITransformerViewport )
-    {
-        _viewport = viewport
-        _target = new ViewportTransformProxy( _viewport )
-    }
-    
-    private var _viewport : ITransformerViewport
-    private var _target : IViewportTransform
-    
-    public function get viewport() : ITransformerViewport
-    {
-        return _viewport
-    }
-    
-    public function set viewport( value : ITransformerViewport ) : void
-    {
-        _viewport = value
-    }
-    
-    public function get constraint() : IViewportConstraint
-    {
-    	return null
-    }
-    
-    public function set constraint( value : IViewportConstraint ) : void
-    {
-    	
-    }
-    
-    public function get targetTransform() : IViewportTransform
-    {
-        return _target
-    }
-    
-    public function stop() : void
-    {
-    }
-    
-    public function transform( target : IViewportTransform,
-                               immediately : Boolean = false ) : void
-    {
-    }
-}
-
-class ViewportTransformProxy implements IViewportTransform
-{
-    public function ViewportTransformProxy( viewport : IViewport )
-    {
-        this.viewport = viewport
-    }
-    
-    private var viewport : IViewport
-    
-    public function get zoom() : Number
-    {
-        return viewport.zoom
-    }
-    
-    public function set zoom( value : Number ) : void
-    {
-        viewport.zoom = value
-    }
-    
-    public function get x() : Number
-    {
-        return viewport.x
-    }
-    
-    public function set x( value : Number ) : void
-    {
-        viewport.x = value
-    }
-    
-    public function get y() : Number
-    {
-        return viewport.y
-    }
-    
-    public function set y( value : Number ) : void
-    {
-        viewport.y = value
-    }
-    
-    public function get sceneWidth() : Number
-    {
-        return viewport.scene.sceneWidth
-    }
-    
-    public function get sceneHeight() : Number
-    {
-        return viewport.scene.sceneHeight
-    }
-    
-    public function get width() : Number
-    {
-        return viewport.width
-    }
-    
-    public function set width( value : Number ) : void
-    {
-//        viewport.width = value
-    }
-    
-    public function get height() : Number
-    {
-        return viewport.height
-    }
-    
-    public function set height( value : Number ) : void
-    {
-//        viewport.height = value
-    }
-    
-    public function get bottom() : Number
-    {
-        return viewport.bottom
-    }
-    
-    public function get top() : Number
-    {
-        return viewport.top
-    }
-    
-    public function get left() : Number
-    {
-        return viewport.left
-    }
-    
-    public function get right() : Number
-    {
-        return viewport.right
-    }
-    
-    public function get topLeft() : Point
-    {
-        return null
-    }
-    
-    public function get bottomRight() : Point
-    {
-        return null
-    }
-    
-    public function get scale() : Number
-    {
-        return viewport.scale
-    }
-    
-    public function set scale( value : Number ) : void
-    {
-    	// Not implemented
-    }
-    
-    public function clone() : IViewportTransform
-    {
-        return null
-    }
-    
-    public function copy( other : IViewportTransform ) : void
-    {
-    }
-    
-    public function equals( other : IViewportTransform ) : Boolean
-    {
-        return true
-    }
-    
-    public function get viewportWidth() : Number
-    {
-        return viewport.viewportWidth
-    }
-    
-    public function get viewportHeight() : Number
-    {
-        return viewport.viewportHeight
-    }
-    
-    public function moveBy( dx : Number, dy : Number ) : void
-    {
-    }
-    
-    public function moveTo( x : Number, y : Number ) : void
-    {
-    }
-    
-    public function moveCenterTo( x : Number, y : Number ) : void
-    {
-    }
-    
-    public function zoomTo( z : Number,
-                            transformX : Number = 0.5,
-                            transformY : Number = 0.5 ) : void
-    {
-    }
-    
-    public function zoomBy( factor : Number,
-                            transformX : Number = 0.5,
-                            transformY : Number = 0.5 ) : void
-    {
-    }
-    
-    public function showAll() : void
-    {
-    }
-    
-    public function showRect( rect : Rectangle, scaleTo : Number = 1.0 ) : void
-    {
-    }
 }

@@ -24,10 +24,20 @@ package org.openzoom.flash.viewport
 import flash.geom.Point;	
 
 /**
- * Interface for bounds constraint for INormalizedViewport.
+ * Interface for IViewportTransform constraints, e.g. use constraints to
+ * limit maximum and minimum zoom of the viewport or ensure it moves within
+ * certain bounds.
  */
 public interface IViewportConstraint
 {
+	/**
+	 * Validate the viewport transform by performing transformations until
+	 * it validates all constraints.
+	 * 
+	 * @param transform IViewportTransform object to be validated.
+	 * 
+	 * @return Validated IViewportTransform object.
+	 */ 
 	function validate( transform : IViewportTransform ) : IViewportTransform
 }
 

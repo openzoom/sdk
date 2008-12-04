@@ -170,7 +170,7 @@ public class MultiScaleImageDescriptorBase
     //--------------------------------------------------------------------------
     
     /**
-     * @copy IMultiScaleImageDescriptor#getTilePosition
+     * @copy IMultiScaleImageDescriptor#getTilePosition()
      */
     public function getTilePosition( column : uint, row : uint ) : Point
     {
@@ -186,11 +186,11 @@ public class MultiScaleImageDescriptorBase
     }
     
     /**
-     * @copy IMultiScaleImageDescriptor#existsTile
+     * @copy IMultiScaleImageDescriptor#existsTile()
      */
     public function existsTile( level : int, column : uint, row : uint ) : Boolean
     {
-    	// By default all tiles exist
+    	// By default, all tiles exist
     	return true
     }
     

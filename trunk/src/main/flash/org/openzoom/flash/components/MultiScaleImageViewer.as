@@ -36,11 +36,11 @@ import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.utils.math.clamp;
-import org.openzoom.flash.viewport.AnimationViewport;
+import org.openzoom.flash.viewport.NormalizedViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
-import org.openzoom.flash.viewport.NormalizedViewport;
+import org.openzoom.flash.viewport.LegacyViewport;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.controllers.ViewTransformationController;
@@ -91,8 +91,8 @@ public class MultiScaleImageViewer extends Sprite
         createScene()
         
         // viewport
-//        createNormalizedViewport( _scene )
-        createAnimationViewport( _scene )
+        createViewport( _scene )
+//        createLegacyViewport( _scene )
 
         // loading queue        
         var loadingQueue : LoadingQueue = new LoadingQueue()
@@ -296,9 +296,9 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
     
-    private function createNormalizedViewport( scene : IReadonlyMultiScaleScene ) : void
+    private function createLegacyViewport( scene : IReadonlyMultiScaleScene ) : void
     {
-        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
+        _viewport = new LegacyViewport( DEFAULT_VIEWPORT_WIDTH,
                                             DEFAULT_VIEWPORT_HEIGHT,
                                             scene )
         
@@ -307,9 +307,9 @@ public class MultiScaleImageViewer extends Sprite
         transformationController.view = scene.targetCoordinateSpace
     }
     
-    private function createAnimationViewport( scene : IReadonlyMultiScaleScene ) : void
+    private function createViewport( scene : IReadonlyMultiScaleScene ) : void
     {
-        _viewport = new AnimationViewport( DEFAULT_VIEWPORT_WIDTH,
+        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
                                            DEFAULT_VIEWPORT_HEIGHT,
                                            scene )
         _viewport.addEventListener( ViewportEvent.TRANSFORM_START,

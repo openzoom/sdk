@@ -24,6 +24,11 @@ package org.openzoom.flash.viewport.constraints
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 
+/**
+ * Viewport constraint that ensures that the viewport only reaches zoom
+ * values that are powers of two. Very useful for mapping application where
+ * map tiles contain text labels and best look at scales that are power of two.
+ */
 public class MapViewportConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
@@ -61,7 +66,7 @@ public class MapViewportConstraint implements IViewportConstraint
         var validatedTransform : IViewportTransform = DEFAULT_CONSTRAINT.validate( transform )        
         
         // snap to scale that are powers of two
-        // all maps look best that way
+        // most map tiles look best that way
         var exp : Number = Math.round( Math.log( validatedTransform.scale ) / Math.LN2 )
         var scale : Number = Math.pow( 2, exp )
         validatedTransform.scale = scale
