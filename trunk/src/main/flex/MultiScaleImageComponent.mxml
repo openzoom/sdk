@@ -4,7 +4,6 @@
     xmlns:openzoom="org.openzoom.flex.components.*"
     layout="absolute"
     backgroundGradientColors="[ 0x333333, 0x000000 ]"
-    applicationComplete="applicationCompleteHandler( event )"
     >
     <mx:Style>
         Label {
@@ -18,35 +17,15 @@
         
         	import org.openzoom.flash.events.ViewportEvent;
                 
-            private static const DEFAULT_IMAGE_NAME  : String = "morocco"
+            private static const DEFAULT_IMAGE_NAME  : String = "billions"
             private static const DEFAULT_SOURCE_PATH : String = "../../../../src/main/resources/images"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
-//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
+            private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/" + DEFAULT_IMAGE_NAME + ".ozi/meta.xml"
-//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-road.xml"
-//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-satellite.xml"
-//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-terrain.xml"
-            private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/openstreetmap.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/butterfly.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/bluemarble.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/flickr.xml"
 //          private static const DEFAULT_SOURCE      : String = "http://seadragon.com/content/images/CarinaNebula.dzi"
-
-            private function applicationCompleteHandler( event : Event ) : void
-            {
-                image.viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE, viewport_changeHandler )
-            }
-
-            private function viewport_changeHandler( event : ViewportEvent ) : void
-            {
-                trace( "show( " + image.viewport.x + ", " + image.viewport.y + ", " + image.viewport.width + ", " + image.viewport.height + " )" )
-            }
-            
-            private function show( x : Number, y : Number, width : Number, height : Number ) : void
-            {
-                var area : Rectangle = new Rectangle( x, y, width, height )
-                image.viewport.showRect( area )
-            }
 
         ]]>
     </mx:Script>
@@ -60,21 +39,4 @@
         source="{ DEFAULT_SOURCE }"
         />
         
-    <mx:VBox
-        top="12"
-        left="12"
-        >
-        <mx:Label text="{ image.viewport.width }" />
-        <mx:Label text="{ image.viewport.height }" />
-        <mx:Label text="{ 'Scale: ' + image.viewport.scale }" />
-    </mx:VBox>
-    
-    <mx:HBox
-        left="12"
-        bottom="12"
-        >
-        <mx:Button label="New York" click="show( 0.2940529765543793, 0.3756995523702938, 0.0008536032246029341, 0.0005123415461714613 )" focusEnabled="false"/>
-        <mx:Button label="Dallas"   click="show( 0.23106636945910183, 0.40349788488762667, 0.00009783149740140344, 0.00005871948371120533 )" focusEnabled="false"/>
-        <mx:Button label="Zürich"   click="show( 0.5236880073327143, 0.3502011390261523, 0.00008156161479865066, 0.00004895413071291973 )" focusEnabled="false"/>
-    </mx:HBox>
 </mx:Application>
