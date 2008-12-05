@@ -158,7 +158,7 @@ public class DefaultViewportConstraint implements IViewportConstraint
         }
         
         // validate bounds
-        transform.moveTo( x, y )
+        transform.panTo( x, y )
         
         // validate zoom
         if( transform.zoom > maxZoom )

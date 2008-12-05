@@ -88,7 +88,7 @@ public class TweenerViewportTransformer implements IViewportTransformer
     public function set viewport( value : ITransformerViewport ) : void
     {
         _viewport = value
-        _targetTransform = viewport.transform
+        _target = viewport.transform
 //        tweenTransform   = viewport.transform
     }
     
@@ -115,11 +115,11 @@ public class TweenerViewportTransformer implements IViewportTransformer
     //  target
     //----------------------------------
     
-    private var _targetTransform : IViewportTransform
+    private var _target : IViewportTransform
     
-    public function get targetTransform() : IViewportTransform
+    public function get target() : IViewportTransform
     {
-        return _targetTransform.clone()
+        return _target.clone()
     }
     
     //--------------------------------------------------------------------------
@@ -142,17 +142,17 @@ public class TweenerViewportTransformer implements IViewportTransformer
 //    	}
     }
     
-    public function transform( targetTransform : IViewportTransform,
+    public function transform( target : IViewportTransform,
                                immediately : Boolean = false ) : void
     {
         // copy targetTransform to know where to tween to…
-        _targetTransform = constraint.validate( targetTransform.clone())
+        _target = constraint.validate( target.clone())
         
         if( immediately )
         {
         	stop()
         	viewport.beginTransform()
-        	viewport.transform = _targetTransform
+        	viewport.transform = _target
         	viewport.endTransform()
         	
         	// update tween transform
@@ -168,9 +168,9 @@ public class TweenerViewportTransformer implements IViewportTransformer
 	        Tweener.addTween( 
 	                          viewport,
 	                          {
-	                              _transform_x: _targetTransform.x,
-	                              _transform_y: _targetTransform.y,
-	                              _transform_width: _targetTransform.width,
+	                              _transform_x: _target.x,
+	                              _transform_y: _target.y,
+	                              _transform_width: _target.width,
 //                                  _transform_height: _targetTransform.height,
 	                              time: DEFAULT_DURATION,
 	                              transition: DEFAULT_EASING,

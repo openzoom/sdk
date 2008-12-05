@@ -25,7 +25,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 public class ViewportTransform implements IViewportTransform,
-                                           IViewportTransformContainer
+                                          IViewportTransformContainer
 {
     //--------------------------------------------------------------------------
     //
@@ -160,7 +160,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function moveTo( x : Number, y : Number ) : void
+    public function panTo( x : Number, y : Number ) : void
     {
         _x = x
         _y = y
@@ -169,15 +169,15 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function moveBy( dx : Number, dy : Number ) : void
+    public function panBy( dx : Number, dy : Number ) : void
     {
-        moveTo( x + dx, y + dy )
+        panTo( x + dx, y + dy )
     }
 
     /**
      * @inheritDoc
      */
-    public function moveCenterTo( x : Number, y : Number ) : void
+    public function panCenterTo( x : Number, y : Number ) : void
     {
         moveOriginTo( x, y, 0.5, 0.5 )
     }
@@ -219,7 +219,7 @@ public class ViewportTransform implements IViewportTransform,
         var oldZoom : Number = zoom
     
         zoomTo( ratio )
-        moveCenterTo( center.x, center.y )
+        panCenterTo( center.x, center.y )
     }
     
     /**
@@ -246,7 +246,7 @@ public class ViewportTransform implements IViewportTransform,
         var newX : Number = x - width  * transformX
         var newY : Number = y - height * transformY
 
-        moveTo( newX, newY )
+        panTo( newX, newY )
     }
     
     /**
@@ -283,7 +283,7 @@ public class ViewportTransform implements IViewportTransform,
     
     public function set x( value : Number ) : void
     {
-        moveTo( value, y )
+        panTo( value, y )
     }
     
     //----------------------------------
@@ -302,7 +302,7 @@ public class ViewportTransform implements IViewportTransform,
     
     public function set y( value : Number ) : void
     {
-        moveTo( x, value )
+        panTo( x, value )
     }
     
     //----------------------------------

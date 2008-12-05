@@ -89,7 +89,7 @@ public class NullViewportTransformer implements IViewportTransformer
     /**
      * @inheritDoc
      */
-    public function get targetTransform() : IViewportTransform
+    public function get target() : IViewportTransform
     {
     	return _target.clone()
 //        return viewport.transform

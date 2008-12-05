@@ -295,7 +295,7 @@ public class NormalizedViewport extends EventDispatcher
                             dispatchChangeEvent : Boolean = true ) : void
     {
         var t : IViewportTransform = getTargetTransform()
-        t.moveTo( x, y )
+        t.panTo( x, y )
         applyTransform( t )
     }
     
@@ -306,7 +306,7 @@ public class NormalizedViewport extends EventDispatcher
                             dispatchChangeEvent : Boolean = true ) : void
     {
         var t : IViewportTransform = getTargetTransform()
-        t.moveBy( dx, dy )
+        t.panBy( dx, dy )
         applyTransform( t )
     }
 
@@ -317,7 +317,7 @@ public class NormalizedViewport extends EventDispatcher
                                   dispatchChangeEvent : Boolean = true ) : void
     {
         var t : IViewportTransform = getTargetTransform()
-        t.moveCenterTo( x, y )
+        t.panCenterTo( x, y )
         applyTransform( t )
     }
 
@@ -627,7 +627,7 @@ public class NormalizedViewport extends EventDispatcher
      */ 
     private function getTargetTransform() : IViewportTransform
     {
-        var t : IViewportTransform = transformer.targetTransform
+        var t : IViewportTransform = transformer.target
         return t
     }
     

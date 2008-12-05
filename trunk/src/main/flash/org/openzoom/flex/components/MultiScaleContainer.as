@@ -35,12 +35,12 @@ import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
-import org.openzoom.flash.viewport.NormalizedViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.LegacyViewport;
+import org.openzoom.flash.viewport.NormalizedViewport;
 import org.openzoom.flash.viewport.controllers.ViewTransformationController;
 
 [DefaultProperty("children")]
@@ -60,7 +60,7 @@ public class MultiScaleContainer extends UIComponent
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT           : Number = 18000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
-    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.5
+    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0
     
     private static const DEFAULT_VIEWPORT_WIDTH         : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT        : Number = 600

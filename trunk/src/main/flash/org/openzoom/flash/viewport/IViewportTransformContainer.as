@@ -36,9 +36,6 @@ public interface IViewportTransformContainer extends IViewportTransform
     
     /**
      * Sets viewportWidth and viewportHeight.
-     * Dispatches ViewportEvent.RESIZE.
-     * 
-     * @see org.openzoom.events.ViewportEvent#RESIZE
      */
     function setSize( width : Number, height : Number ) : void
 }

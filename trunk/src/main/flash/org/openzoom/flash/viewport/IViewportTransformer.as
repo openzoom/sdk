@@ -35,7 +35,7 @@ public interface IViewportTransformer
 	/**
 	 * Target viewport transform.
 	 */
-	function get targetTransform() : IViewportTransform
+	function get target() : IViewportTransform
 	
 	/**
 	 * Constraint for target transform.
@@ -46,7 +46,7 @@ public interface IViewportTransformer
     /**
      * Transform viewport to target transform.
      */ 	
-    function transform( targetTransform : IViewportTransform,
+    function transform( target : IViewportTransform,
                         immediately : Boolean = false ) : void
                         
     /**

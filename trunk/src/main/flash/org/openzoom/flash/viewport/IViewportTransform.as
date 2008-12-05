@@ -20,9 +20,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.viewport
 {
-
-import flash.geom.Point;
-import flash.geom.Rectangle;	
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	
 
 /**
  * Defines the interface that classes which represent a viewport transform must implement.
@@ -175,21 +175,21 @@ public interface IViewportTransform
      * @param x Horizontal coordinate
      * @param y Vertical coordinate
      */
-    function moveTo( x : Number, y : Number ) : void
+    function panTo( x : Number, y : Number ) : void
     
     /**
      * Move the viewport.
      * @param dx Horizontal translation delta
      * @param dy Vertical translation delta
      */
-    function moveBy( dx : Number, dy : Number ) : void
+    function panBy( deltaX : Number, deltaY : Number ) : void
     
     /**
      * Move the viewport center.
      * @param x Horizontal coordinate
      * @param y Vertical coordinate
      */                 
-    function moveCenterTo( x : Number, y : Number ) : void
+    function panCenterTo( centerX : Number, centerY : Number ) : void
     
     //--------------------------------------------------------------------------
     //

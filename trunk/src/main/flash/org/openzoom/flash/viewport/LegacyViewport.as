@@ -833,7 +833,7 @@ class TransformerProxy implements IViewportTransformer
     	
     }
     
-    public function get targetTransform() : IViewportTransform
+    public function get target() : IViewportTransform
     {
         return _target
     }
@@ -985,15 +985,15 @@ class ViewportTransformProxy implements IViewportTransform
         return viewport.viewportHeight
     }
     
-    public function moveBy( dx : Number, dy : Number ) : void
+    public function panBy( dx : Number, dy : Number ) : void
     {
     }
     
-    public function moveTo( x : Number, y : Number ) : void
+    public function panTo( x : Number, y : Number ) : void
     {
     }
     
-    public function moveCenterTo( x : Number, y : Number ) : void
+    public function panCenterTo( x : Number, y : Number ) : void
     {
     }
     

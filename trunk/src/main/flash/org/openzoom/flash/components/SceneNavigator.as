@@ -280,8 +280,8 @@ public class SceneNavigator extends Sprite
         var targetHeight : Number = clamp( v.height ) * backgroundHeight
     
         // enable / disable window dragging
-        if( viewport.transformer.targetTransform.width >= 1
-            && viewport.transformer.targetTransform.height >= 1 )
+        if( viewport.transformer.target.width >= 1
+            && viewport.transformer.target.height >= 1 )
             window.mouseEnabled = false
         else
             window.mouseEnabled = true

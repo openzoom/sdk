@@ -231,18 +231,18 @@ public interface IViewport extends IEventDispatcher
     
     /**
      * Move the viewport.
-     * @param dx Horizontal translation delta
-     * @param dy Vertical translation delta
+     * @param deltaX Horizontal translation delta
+     * @param deltaY Vertical translation delta
      */
-    function panBy( dx : Number, dy : Number,
+    function panBy( deltaX : Number, deltaY : Number,
                     dispatchChangeEvent : Boolean = true ) : void
     
     /**
      * Move the viewport center.
-     * @param x Horizontal coordinate
-     * @param y Vertical coordinate
+     * @param centerX Horizontal coordinate of the new center
+     * @param centerY Vertical coordinate of the new center
      */                 
-    function panCenterTo( x : Number, y : Number,
+    function panCenterTo( centerX : Number, centerY : Number,
                           dispatchChangeEvent : Boolean = true ) : void
     
     //--------------------------------------------------------------------------
