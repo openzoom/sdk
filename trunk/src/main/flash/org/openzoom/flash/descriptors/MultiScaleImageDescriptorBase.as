@@ -22,6 +22,7 @@ package org.openzoom.flash.descriptors
 {
 
 import flash.geom.Point;
+import flash.geom.Rectangle;
 
 /**
  * Base class for classes implementing IMultiScaleImageDescriptor.
@@ -170,19 +171,19 @@ public class MultiScaleImageDescriptorBase
     //--------------------------------------------------------------------------
     
     /**
-     * @copy IMultiScaleImageDescriptor#getTilePosition()
+     * @copy IMultiScaleImageDescriptor#getTileBounds()
      */
-    public function getTilePosition( column : uint, row : uint ) : Point
+    public function getTileBounds( level : int, column : uint, row : uint ) : Rectangle
     {
-        var position : Point = new Point()
+        var bounds : Rectangle = new Rectangle()
 
         var offsetX : uint = ( column == 0 ) ? 0 : tileOverlap
         var offsetY : uint = ( row    == 0 ) ? 0 : tileOverlap
 
-        position.x = ( column * tileWidth )  - offsetX 
-        position.y = ( row    * tileHeight ) - offsetY
+        bounds.x = ( column * tileWidth )  - offsetX 
+        bounds.y = ( row    * tileHeight ) - offsetY
 
-        return position
+        return bounds
     }
     
     /**

@@ -317,29 +317,29 @@ public class KeyboardController extends ViewportControllerBase
          
         // panning
         if( upActivated )
-            viewport.moveBy( 0, -dy )
+            viewport.panBy( 0, -dy )
          
         if( downActivated )
-            viewport.moveBy( 0, dy )
+            viewport.panBy( 0, dy )
          
         if( leftActivated )
-            viewport.moveBy( -dx, 0 )
+            viewport.panBy( -dx, 0 )
          
         if( rightActivated )
-            viewport.moveBy( dx, 0 )
+            viewport.panBy( dx, 0 )
          
         // quick navigation
         if( pageUpActivated )
-            viewport.moveTo( viewport.x, 0 )
+            viewport.panTo( viewport.x, 0 )
          
         if( pageDownActivated )
-            viewport.moveTo( viewport.x, 1 )
+            viewport.panTo( viewport.x, 1 )
          
         if( homeActivated )
-            viewport.moveTo( 0, viewport.y )
+            viewport.panTo( 0, viewport.y )
          
         if( endActivated )
-            viewport.moveTo( 1, viewport.y )
+            viewport.panTo( 1, viewport.y )
          
         if( spaceActivated )
             viewport.showAll()

@@ -27,7 +27,6 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
 import org.openzoom.flash.viewport.transformers.TweenerViewportTransformer;
@@ -86,17 +85,18 @@ public class NormalizedViewport extends EventDispatcher
     /**
      * Constructor.
      */
-    public function NormalizedViewport( width : Number, height : Number,
-                                       scene : IReadonlyMultiScaleScene )
+    public function NormalizedViewport( viewportWidth : Number,
+                                        viewportHeight : Number,
+                                        scene : IReadonlyMultiScaleScene )
     {
         _scene = scene
         _scene.addEventListener( Event.RESIZE, scene_resizeHandler, false, 0, true )
         
-        // FIXME
         _transform = ViewportTransform.fromValues( 0, 0, 1, 1, 1,
-                                                    width, height,
-                                                    scene.sceneWidth,
-                                                    scene.sceneHeight )
+                                                   viewportWidth,
+                                                   viewportHeight,
+                                                   scene.sceneWidth,
+                                                   scene.sceneHeight )
         
         // FIXME
 //      constraint = new DefaultViewportConstraint()
@@ -291,7 +291,7 @@ public class NormalizedViewport extends EventDispatcher
     /**
      * @inheritDoc
      */
-    public function moveTo( x : Number, y : Number,
+    public function panTo( x : Number, y : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
         var t : IViewportTransform = getTargetTransform()
@@ -302,7 +302,7 @@ public class NormalizedViewport extends EventDispatcher
     /**
      * @inheritDoc
      */
-    public function moveBy( dx : Number, dy : Number,
+    public function panBy( dx : Number, dy : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
         var t : IViewportTransform = getTargetTransform()
@@ -313,7 +313,7 @@ public class NormalizedViewport extends EventDispatcher
     /**
      * @inheritDoc
      */
-    public function moveCenterTo( x : Number, y : Number,
+    public function panCenterTo( x : Number, y : Number,
                                   dispatchChangeEvent : Boolean = true ) : void
     {
         var t : IViewportTransform = getTargetTransform()

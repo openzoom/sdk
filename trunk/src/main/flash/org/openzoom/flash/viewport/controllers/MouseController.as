@@ -183,7 +183,7 @@ public class MouseController extends ViewportControllerBase
         // update view drag vector
         viewDragVector.bottomRight = new Point( view.mouseX, view.mouseY )
         
-        viewport.moveTo(
+        viewport.panTo(
             viewportDragVector.x - ( viewDragVector.width / viewport.viewportWidth )
               * viewport.width,
           viewportDragVector.y - ( viewDragVector.height / viewport.viewportHeight )

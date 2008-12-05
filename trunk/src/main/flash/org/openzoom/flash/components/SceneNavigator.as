@@ -239,7 +239,7 @@ public class SceneNavigator extends Sprite
         oldMouseX = stage.mouseX
         oldMouseY = stage.mouseY
     
-        viewport.moveTo( clamp( window.x, 0, backgroundWidth ) / backgroundWidth,
+        viewport.panTo( clamp( window.x, 0, backgroundWidth ) / backgroundWidth,
                          clamp( window.y, 0, backgroundHeight ) / backgroundHeight )
     }
   
@@ -256,7 +256,7 @@ public class SceneNavigator extends Sprite
         var transformY : Number = ( background.scaleY * background.mouseY )
                                     / backgroundHeight
     
-        viewport.moveCenterTo( transformX, transformY )
+        viewport.panCenterTo( transformX, transformY )
     }
   
     private function stage_mouseLeaveHandler( event : Event ) : void

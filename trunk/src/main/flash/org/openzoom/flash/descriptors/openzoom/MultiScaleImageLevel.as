@@ -21,7 +21,7 @@
 package org.openzoom.flash.descriptors.openzoom
 {
 
-import flash.geom.Point;
+import flash.geom.Rectangle;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
@@ -90,9 +90,9 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTilePosition( column : uint, row : uint ) : Point
+    public function getTileBounds( column : uint, row : uint ) : Rectangle
     {
-        return descriptor.getTilePosition( column, row )
+        return descriptor.getTileBounds( index, column, row )
     }
     
     /**

@@ -21,7 +21,7 @@
 package org.openzoom.flash.descriptors
 {
 
-import flash.geom.Point;	
+import flash.geom.Rectangle;	
 
 /**
  * The IMultiScaleImageLevel interface defines a set of properties
@@ -91,15 +91,15 @@ public interface IMultiScaleImageLevel
      */ 
     function getTileURL( column : uint, row : uint ) : String
     
-    /**
-     * Returns the position of the specified tile.
-     */
-    function getTilePosition( column : uint, row : uint ) : Point
+//    /**
+//     * Returns the position of the specified tile.
+//     */
+//    function getTilePosition( column : uint, row : uint ) : Point
     
-//  /**
-//   * Returns the bounds of the specified tile.
-//   */
-//  function getTileBounds( column : uint, row : uint ) : Rectangle
+    /**
+     * Returns the bounds of the specified tile.
+     */
+    function getTileBounds( column : uint, row : uint ) : Rectangle
     
     /**
      * Returns a copy of this object.

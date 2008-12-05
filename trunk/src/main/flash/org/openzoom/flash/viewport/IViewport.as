@@ -226,24 +226,24 @@ public interface IViewport extends IEventDispatcher
      * @param x Horizontal coordinate
      * @param y Vertical coordinate
      */
-    function moveTo( x : Number, y : Number,
-                     dispatchChangeEvent : Boolean = true ) : void
+    function panTo( x : Number, y : Number,
+                    dispatchChangeEvent : Boolean = true ) : void
     
     /**
      * Move the viewport.
      * @param dx Horizontal translation delta
      * @param dy Vertical translation delta
      */
-    function moveBy( dx : Number, dy : Number,
-                     dispatchChangeEvent : Boolean = true ) : void
+    function panBy( dx : Number, dy : Number,
+                    dispatchChangeEvent : Boolean = true ) : void
     
     /**
      * Move the viewport center.
      * @param x Horizontal coordinate
      * @param y Vertical coordinate
      */                 
-    function moveCenterTo( x : Number, y : Number,
-                           dispatchChangeEvent : Boolean = true ) : void
+    function panCenterTo( x : Number, y : Number,
+                          dispatchChangeEvent : Boolean = true ) : void
     
     //--------------------------------------------------------------------------
     //

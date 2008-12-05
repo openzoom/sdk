@@ -32,8 +32,6 @@ import flash.events.EventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import mx.skins.halo.DataGridColumnResizeSkin;
-
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
@@ -312,7 +310,7 @@ public class LegacyViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    public function moveTo( x : Number, y : Number,
+    public function panTo( x : Number, y : Number,
                             dispatchChangeEvent : Boolean = true ) : void
     {
         // store the given (normalized) coordinates
@@ -331,13 +329,13 @@ public class LegacyViewport extends EventDispatcher
     }
 
 
-    public function moveBy( dx : Number, dy : Number,
+    public function panBy( dx : Number, dy : Number,
                             dispatchChangeEvent : Boolean = true  ) : void
     {
-        moveTo( x + dx, y + dy, dispatchChangeEvent )
+        panTo( x + dx, y + dy, dispatchChangeEvent )
     }
 
-    public function moveCenterTo( x : Number, y : Number,
+    public function panCenterTo( x : Number, y : Number,
                                   dispatchChangeEvent : Boolean = true ) : void
     {
         moveOriginTo( x, y, 0.5, 0.5, dispatchChangeEvent )
@@ -378,7 +376,7 @@ public class LegacyViewport extends EventDispatcher
         var oldZoom : Number = zoom
     
         zoomTo( ratio, 0.5, 0.5, false )
-        moveCenterTo( normalizedCenter.x, normalizedCenter.y, false )
+        panCenterTo( normalizedCenter.x, normalizedCenter.y, false )
     
         if( dispatchChangeEvent )
             this.updateTransform( oldZoom )
@@ -429,7 +427,7 @@ public class LegacyViewport extends EventDispatcher
         var newX : Number = x - width * originX
         var newY : Number = y - height * originY
 
-        moveTo( newX, newY, dispatchChangeEvent )
+        panTo( newX, newY, dispatchChangeEvent )
     }
 
     private function getViewportOrigin( originX : Number,
@@ -532,7 +530,7 @@ public class LegacyViewport extends EventDispatcher
     
     public function set x( value : Number ) : void
     {
-        moveTo( value, y )
+        panTo( value, y )
     }
     
     //----------------------------------
@@ -548,7 +546,7 @@ public class LegacyViewport extends EventDispatcher
     
     public function set y( value : Number ) : void
     {
-        moveTo( x, value )
+        panTo( x, value )
     }
     
     //----------------------------------

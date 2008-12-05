@@ -21,7 +21,7 @@
 package org.openzoom.flash.descriptors
 {
 
-import flash.geom.Point;
+import flash.geom.Rectangle;
 
 /**
  * The MultiScaleImageLevel class represents a single level of a
@@ -67,9 +67,9 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
         return descriptor.getTileURL( index, column, row )
     }
     
-    public function getTilePosition( column : uint, row : uint ) : Point
+    public function getTileBounds( column : uint, row : uint ) : Rectangle
     {
-        return descriptor.getTilePosition( column, row )
+        return descriptor.getTileBounds( index, column, row )
     }
     
     public function clone() : IMultiScaleImageLevel

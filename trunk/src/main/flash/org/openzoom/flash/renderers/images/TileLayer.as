@@ -29,6 +29,7 @@ import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.geom.Point;
+import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
@@ -123,13 +124,13 @@ public class TileLayer extends Sprite implements ITileLayer
         // add tile
         var tileBitmap : Bitmap = tile.bitmap 
 
-        var position : Point = level.getTilePosition( tile.column, tile.row )
+        var bounds : Rectangle = level.getTileBounds( tile.column, tile.row )
         
         tileBitmap.scaleX = scaleXFactor
         tileBitmap.scaleY = scaleYFactor
         
-        tileBitmap.x = position.x * scaleXFactor
-        tileBitmap.y = position.y * scaleYFactor
+        tileBitmap.x = bounds.x * scaleXFactor
+        tileBitmap.y = bounds.y * scaleYFactor
         
         var tileBitmapRight : Number = tileBitmap.x + tileBitmap.width
         var tileBitmapBottom : Number = tileBitmap.y + tileBitmap.height
@@ -142,6 +143,7 @@ public class TileLayer extends Sprite implements ITileLayer
         // Fix for too large tiles
         if( horizontalOverflow || verticalOverflow )
         {
+        	// TODO: Check bounds with new descriptor API
         	var cropBitmapData : BitmapData =
         	       new BitmapData( Math.min( level.width  - tileBitmap.x, tileBitmap.width ),
         	                       Math.min( level.height - tileBitmap.y, tileBitmap.height ))

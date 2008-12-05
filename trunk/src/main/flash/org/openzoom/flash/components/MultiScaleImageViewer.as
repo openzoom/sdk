@@ -239,25 +239,25 @@ public class MultiScaleImageViewer extends Sprite
     public function moveUp() : void
     {
         var dy : Number = viewport.height * TRANSLATION_FACTOR
-        viewport.moveBy( 0, -dy )
+        viewport.panBy( 0, -dy )
     }
     
     public function moveDown() : void
     {
         var dy : Number = viewport.height * TRANSLATION_FACTOR
-        viewport.moveBy( 0, dy )
+        viewport.panBy( 0, dy )
     }
     
     public function moveLeft() : void
     {
         var dx : Number = viewport.width * TRANSLATION_FACTOR
-        viewport.moveBy( -dx, 0 )
+        viewport.panBy( -dx, 0 )
     }
     
     public function moveRight() : void
     {
         var dx : Number = viewport.width * TRANSLATION_FACTOR
-        viewport.moveBy( dx, 0 )
+        viewport.panBy( dx, 0 )
     }
     
     public function setSize( width : Number, height : Number ) : void
