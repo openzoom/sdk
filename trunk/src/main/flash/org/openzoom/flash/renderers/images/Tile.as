@@ -24,6 +24,8 @@ package org.openzoom.flash.renderers.images
 import flash.display.Bitmap;  
 
 /**
+ * @private
+ * 
  * Multi-scale image tile.
  */
 public class Tile

@@ -54,6 +54,9 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
     private var descriptor : IMultiScaleImageDescriptor
     
     //--------------------------------------------------------------------------
@@ -62,16 +65,25 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     public function getTileURL( column : uint, row : uint ) : String
     {
         return descriptor.getTileURL( index, column, row )
     }
     
+    /**
+     * @inheritDoc
+     */ 
     public function getTileBounds( column : uint, row : uint ) : Rectangle
     {
         return descriptor.getTileBounds( index, column, row )
     }
     
+    /**
+     * @inheritDoc
+     */ 
     public function clone() : IMultiScaleImageLevel
     {
         return new MultiScaleImageLevel( descriptor, index, width, height, numColumns, numRows )
@@ -83,6 +95,9 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */ 
     override public function toString() : String
     {
         return "[MultiScaleImageLevel]" + "\n" + super.toString()

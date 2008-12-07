@@ -1,6 +1,9 @@
 package org.openzoom.flash.viewport
 {
 
+/**
+ * Represents a viewport that can be animated / transformed.
+ */
 public interface ITransformerViewport extends IViewport
 {   
     //--------------------------------------------------------------------------
@@ -13,6 +16,9 @@ public interface ITransformerViewport extends IViewport
     //  transform
     //----------------------------------
     
+    /**
+     * Transformation that is currently applied to the viewport
+     */ 
     function get transform() : IViewportTransform
     function set transform( value : IViewportTransform ) : void
 

@@ -74,7 +74,6 @@ import org.openzoom.flash.viewport.transformers.NullTransformer;
  */
 public class LegacyViewport extends EventDispatcher
                             implements INormalizedViewport,
-                                       IReadonlyViewport,
                                        INormalizedViewportContainer,
                                        ITransformerViewport
 {

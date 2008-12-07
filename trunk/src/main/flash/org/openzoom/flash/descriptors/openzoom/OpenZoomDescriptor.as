@@ -30,7 +30,7 @@ import org.openzoom.flash.utils.math.clamp;
 
 /**
  * OpenZoom Descriptor.
- * <a href="http://openzoom.org/">http://openzoom.org/</a>
+ * <a href="http://openzoom.org/specs/">http://openzoom.org/specs/</a>
  */
 public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
                                 implements IMultiScaleImageDescriptor

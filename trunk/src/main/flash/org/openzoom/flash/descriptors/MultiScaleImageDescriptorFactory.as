@@ -69,6 +69,9 @@ public class MultiScaleImageDescriptorFactory
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * Returns an instance of this MultiScaleImageDescriptorFactory.
+     */ 
     public static function getInstance() : MultiScaleImageDescriptorFactory
     {
         if( !instance )

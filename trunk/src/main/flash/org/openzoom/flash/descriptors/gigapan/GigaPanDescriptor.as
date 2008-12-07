@@ -30,6 +30,8 @@ import org.openzoom.flash.descriptors.MultiScaleImageLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
+ * @private
+ * 
  * Descriptor for the GigaPan.org project panoramas.
  * Copyright GigaPan.org, <a href="http://gigapan.org/">http://gigapan.org/</a>
  */

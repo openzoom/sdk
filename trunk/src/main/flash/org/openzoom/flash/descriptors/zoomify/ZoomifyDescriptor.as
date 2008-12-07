@@ -23,8 +23,6 @@ package org.openzoom.flash.descriptors.zoomify
 
 import flash.utils.Dictionary;
 
-import mx.core.UIComponent;
-
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
@@ -84,7 +82,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     //--------------------------------------------------------------------------
     
     /**
-     * inheritDoc
+     * @inheritDoc
      */
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
@@ -94,7 +92,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     }
 
     /**
-     * inheritDoc
+     * @inheritDoc
      */ 
     public function getMinLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
     {
@@ -115,7 +113,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     }
     
     /**
-     * inheritDoc
+     * @inheritDoc
      */ 
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
     {
@@ -123,7 +121,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     }
     
     /**
-     * inheritDoc
+     * @inheritDoc
      */ 
     public function clone() : IMultiScaleImageDescriptor
     {
@@ -137,7 +135,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     //--------------------------------------------------------------------------
     
     /**
-     * inheritDoc
+     * @inheritDoc
      */ 
     override public function toString() : String
     {

@@ -24,6 +24,8 @@ package org.openzoom.flash.net
 import org.openzoom.flash.events.LoadingItemEvent;
 
 /**
+ * @private
+ * 
  * Basic loading queue for image tiles.
  */
 public class LoadingQueue

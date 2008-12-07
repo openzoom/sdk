@@ -65,7 +65,11 @@ public class NullTransformer implements IViewportTransformer
     public function set viewport( value : ITransformerViewport ) : void
     {
         _viewport = value
-        _target   = viewport.transform
+        
+        if( value )
+            _target = viewport.transform
+        else
+            _target = null
     }
     
     //----------------------------------

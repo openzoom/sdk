@@ -36,12 +36,13 @@ import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.INormalizedViewportContainer;
+import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.NormalizedViewport;
 
+[ExcludeClass]
 [DefaultProperty("children")]
 /**
  * @private
@@ -118,6 +119,10 @@ public final class MultiScaleContainer extends UIComponent
     private var _scene : MultiScaleScene
     
    ;[Bindable(event="sceneChanged")]
+   
+    /**
+     * @inheritDoc
+     */
     public function get scene() : IMultiScaleScene
     {
         return _scene
@@ -130,6 +135,10 @@ public final class MultiScaleContainer extends UIComponent
     private var _viewport : INormalizedViewportContainer
     
    ;[Bindable(event="viewportChanged")]
+   
+    /**
+     * @inheritDoc
+     */
     public function get viewport() : INormalizedViewport
     {
         return _viewport
@@ -146,6 +155,9 @@ public final class MultiScaleContainer extends UIComponent
 
     /**
      * @inheritDoc
+     * 
+     * @see org.openzoom.flash.viewport.constraints.DefaultConstraint
+     * @see org.openzoom.flash.viewport.constraints.NullConstraint
      */ 
     public function get constraint() : IViewportConstraint
     {
@@ -217,6 +229,15 @@ public final class MultiScaleContainer extends UIComponent
     private var _controllers : Array = []
     
    ;[ArrayElementType("org.openzoom.flash.viewport.IViewportController")]
+   
+    /**
+     * Controllers of type IViewportController applied to this MultiScaleImage.
+     * For example, viewport controllers are used to navigate the MultiScaleImage
+     * by mouse or keyboard.
+     * 
+     * @see org.openzoom.flash.viewport.controllers.MouseController
+     * @see org.openzoom.flash.viewport.controllers.KeyboardController
+     */
     public function get controllers() : Array
     {
     	return _controllers.slice()

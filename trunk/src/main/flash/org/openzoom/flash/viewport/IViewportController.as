@@ -25,6 +25,9 @@ import flash.display.DisplayObject;
 
 import org.openzoom.flash.viewport.INormalizedViewport;
 
+/**
+ * Interface for a viewport controller.
+ */
 public interface IViewportController
 {
     //--------------------------------------------------------------------------
@@ -37,6 +40,9 @@ public interface IViewportController
     //  view
     //----------------------------------
     
+    /**
+     * Indicates the display object the controller receives events from.
+     */ 
     function get view() : DisplayObject
     function set view( value : DisplayObject ) : void
     
@@ -44,6 +50,9 @@ public interface IViewportController
     //  viewport
     //----------------------------------
     
+    /**
+     * Indicates the viewport this controller acts upon.
+     */ 
     function get viewport() : INormalizedViewport
     function set viewport( value : INormalizedViewport ) : void
 }

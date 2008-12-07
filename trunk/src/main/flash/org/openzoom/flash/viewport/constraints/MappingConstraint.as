@@ -25,6 +25,8 @@ import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
+ * @private
+ * 
  * Viewport constraint that ensures that the viewport only reaches zoom
  * values that are powers of two. Very useful for mapping application where
  * map tiles contain text labels and best look at scales that are power of two.
@@ -37,7 +39,7 @@ public class MappingConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_CONSTRAINT : IViewportConstraint = new DefaultConstraint()
+    private static const DEFAULT_CONSTRAINT : IViewportConstraint = new VisibilityConstraint()
    
     //--------------------------------------------------------------------------
     //

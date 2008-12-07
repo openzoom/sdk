@@ -21,15 +21,13 @@
 package org.openzoom.flash.viewport.constraints
 {
 
-import flash.geom.Point;
-
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
- * Null Object Pattern applied to IViewportConstraint.
+ * Provides a way to limit the minimum and maximum zoom the viewport can reach.
  */
-public class NullConstraint implements IViewportConstraint
+public class ZoomConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
     //
@@ -37,8 +35,8 @@ public class NullConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_MIN_ZOOM : Number = 0.001
-    private static const DEFAULT_MAX_ZOOM : Number = 1000000
+    private static const DEFAULT_MIN_ZOOM : Number = 0.25
+    private static const DEFAULT_MAX_ZOOM : Number = 8000
 	
     //--------------------------------------------------------------------------
     //
@@ -49,10 +47,55 @@ public class NullConstraint implements IViewportConstraint
 	/**
 	 * Constructor.
 	 */
-    public function NullConstraint()
+    public function ZoomConstraint()
     {
     }
     
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  minZoom
+    //----------------------------------
+
+    private var _minZoom : Number = DEFAULT_MIN_ZOOM
+
+    /**
+     * Minimum zoom the viewport can reach.
+     */ 
+    public function get minZoom() : Number
+    {
+        return _minZoom
+    }
+
+    public function set minZoom( value : Number ) : void
+    {
+        _minZoom = value
+    }
+
+    //----------------------------------
+    //  maxZoom
+    //----------------------------------
+    
+    private var _maxZoom : Number = DEFAULT_MAX_ZOOM
+    
+
+    /**
+     * Maximum zoom the viewport can reach.
+     */
+    public function get maxZoom() : Number
+    {
+        return _maxZoom
+    }
+    
+    public function set maxZoom( value : Number ) : void
+    {
+       _maxZoom = value
+    }
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IViewportConstraint
@@ -64,12 +107,14 @@ public class NullConstraint implements IViewportConstraint
      */ 
     public function validate( transform : IViewportTransform ) : IViewportTransform
     {
-    	if( transform.zoom < DEFAULT_MIN_ZOOM )
-            transform.zoomTo( DEFAULT_MIN_ZOOM )
+        // validate zoom
+        if( transform.zoom > maxZoom )
+            transform.zoomTo( maxZoom )
             
-    	if( transform.zoom > DEFAULT_MAX_ZOOM )
-            transform.zoomTo( DEFAULT_MAX_ZOOM )
-    	
+        if( transform.zoom < minZoom )
+            transform.zoomTo( minZoom )
+        
+        // return validated transform
         return transform
     }
 }

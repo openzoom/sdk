@@ -63,7 +63,6 @@ import org.openzoom.flash.viewport.transformers.TweenerTransformer;
  */
 public class NormalizedViewport extends EventDispatcher
                                 implements INormalizedViewport,
-                                           IReadonlyViewport,
                                            INormalizedViewportContainer,
                                            ITransformerViewport
 {
@@ -73,7 +72,6 @@ public class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-//    private static const NULL_CONSTRAINT  : IViewportConstraint  = new NullViewportConstraint()
     private static const NULL_TRANSFORMER : IViewportTransformer = new NullTransformer()
 
     //--------------------------------------------------------------------------
@@ -99,13 +97,7 @@ public class NormalizedViewport extends EventDispatcher
                                                    viewportHeight,
                                                    scene.sceneWidth,
                                                    scene.sceneHeight )
-        
-        // FIXME
-        NULL_TRANSFORMER.viewport = this
-        
-        // FIXME
-//      transformer = NULL_TRANSFORMER
-        transformer = new TweenerTransformer()
+        transformer = NULL_TRANSFORMER        
     }
 
     //--------------------------------------------------------------------------

@@ -22,13 +22,15 @@ package org.openzoom.flash.renderers.images
 {
 
 /**
+ * @private
+ * 
  * Enumeration of rendering modes.
  * Smooth rendering is comparable to the Microsoft Deep Zoom rendering.
  * Fast rendering is comparable to the Google Maps rendering.
  */
 public class RenderingMode
 {
-    public static const FAST : String = "fast"
+    public static const FAST   : String = "fast"
     public static const SMOOTH : String = "smooth"
 }
 

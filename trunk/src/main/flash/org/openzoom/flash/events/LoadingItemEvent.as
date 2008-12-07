@@ -25,7 +25,9 @@ import flash.events.Event;
 
 import org.openzoom.flash.net.LoadingItem;
 
-	
+/**
+ * @private
+ */	
 public class LoadingItemEvent extends Event
 {
     public static const COMPLETE : String = "complete"

@@ -24,6 +24,8 @@ package org.openzoom.flash.renderers.images
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 	
 /**
+ * @private
+ * 
  * Tile layer interface.
  */
 public interface ITileLayer

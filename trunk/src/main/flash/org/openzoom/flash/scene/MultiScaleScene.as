@@ -32,6 +32,7 @@ import flash.events.Event;
  */
 [Event(name="resize", type="flash.events.Event")]
 
+[ExcludeClass]
 /**
  * Basic implementation of IMultiScaleScene
  */
@@ -144,6 +145,9 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     //  targetCoordinateSpace
     //----------------------------------
     
+    /**
+     * @inheritDoc
+     */
     public function get targetCoordinateSpace() : DisplayObject
     {
     	return this

@@ -35,6 +35,8 @@ import flash.utils.Dictionary;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 
 /**
+ * @private
+ * 
  * Layer for holding tiles.
  */
 public class TileLayer extends Sprite implements ITileLayer

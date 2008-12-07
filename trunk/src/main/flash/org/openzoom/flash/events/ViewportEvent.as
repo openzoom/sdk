@@ -71,7 +71,10 @@ public class ViewportEvent extends Event
     //----------------------------------
   
     private var _oldTransform : IViewportTransform
-  
+    
+    /**
+     * The transform that was previously applied to the viewport.
+     */ 
     public function get oldTransform() : IViewportTransform
     {
         return _oldTransform
@@ -82,7 +85,10 @@ public class ViewportEvent extends Event
     //  Overriden methods: Event
     //
     //--------------------------------------------------------------------------
-  
+
+    /**
+     * @inheritDoc
+     */ 
     override public function clone() : Event
     {
         return new ViewportEvent( type, bubbles, cancelable, oldTransform )

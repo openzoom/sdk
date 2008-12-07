@@ -21,17 +21,14 @@
 package org.openzoom.flash.viewport.constraints
 {
 
-import flash.geom.Point;
-
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
- * Default implementation of the IViewportConstraint interface.
- * Provides basic bounds checking and imposes limits on the zoom property
- * of the viewport.
+ * Provides basic bounds checking by ensuring that a certain ratio of the scene
+ * is always visible.
  */
-public class DefaultConstraint implements IViewportConstraint
+public class VisibilityConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
     //
@@ -39,9 +36,7 @@ public class DefaultConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_MIN_ZOOM : Number = 0.25
-    private static const DEFAULT_MAX_ZOOM : Number = 10000
-	private static const BOUNDS_TOLERANCE : Number = 0.5
+	private static const DEFAULT_VISIBILITY_RATIO : Number = 0.2
 	
     //--------------------------------------------------------------------------
     //
@@ -52,7 +47,7 @@ public class DefaultConstraint implements IViewportConstraint
 	/**
 	 * Constructor.
 	 */
-    public function DefaultConstraint()
+    public function VisibilityConstraint()
     {
     }
     
@@ -63,42 +58,23 @@ public class DefaultConstraint implements IViewportConstraint
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  minZoom
-    //----------------------------------
-
-    private var _minZoom : Number = DEFAULT_MIN_ZOOM
-
-    /**
-     * Minimum zoom the viewport can reach.
-     */ 
-    public function get minZoom() : Number
-    {
-        return _minZoom
-    }
-
-    public function set minZoom( value : Number ) : void
-    {
-        _minZoom = value
-    }
-
-    //----------------------------------
-    //  maxZoom
+    //  visibilityRatio
     //----------------------------------
     
-    private var _maxZoom : Number = DEFAULT_MAX_ZOOM
+    private var _visibilityRatio : Number = 1 - DEFAULT_VISIBILITY_RATIO
     
 
     /**
-     * Maximum zoom the viewport can reach.
+     * Indicates the minimal ratio that has to visible of the scene.
      */
-    public function get maxZoom() : Number
+    public function get visibilityRatio() : Number
     {
-        return _maxZoom
+        return _visibilityRatio
     }
     
-    public function set maxZoom( value : Number ) : void
+    public function set visibilityRatio( value : Number ) : void
     {
-       _maxZoom = value
+       _visibilityRatio = 1 - value
     }
     
     //--------------------------------------------------------------------------
@@ -121,13 +97,13 @@ public class DefaultConstraint implements IViewportConstraint
             // horizontal bounds checking:
             // the viewport sticks out on the left:
             // align it with the left margin
-            if( transform.x + transform.width * BOUNDS_TOLERANCE < 0 )
-                x = -transform.width * BOUNDS_TOLERANCE
+            if( transform.x + transform.width * ( 1 - visibilityRatio ) < 0 )
+                x = -transform.width * ( 1 - visibilityRatio )
     
            // the viewport sticks out on the right:
            // align it with the right margin
-           if(( transform.x + transform.width * ( 1 - BOUNDS_TOLERANCE )) > 1 )
-               x = 1 - transform.width * ( 1 - BOUNDS_TOLERANCE )      
+           if( transform.x + transform.width * visibilityRatio > 1 )
+               x = 1 - transform.width * visibilityRatio      
         }
         else
         {
@@ -142,13 +118,13 @@ public class DefaultConstraint implements IViewportConstraint
             // vertical bounds checking:
             // the viewport sticks out at the top:
             // align it with the top margin
-            if( transform.y + transform.height * BOUNDS_TOLERANCE < 0 )
-                y = -transform.height * BOUNDS_TOLERANCE
+            if( transform.y + transform.height * ( 1 - visibilityRatio ) < 0 )
+                y = -transform.height * ( 1 - visibilityRatio )
         
             // the viewport sticks out at the bottom:
             // align it with the bottom margin
-            if( transform.y + transform.height * (1 - BOUNDS_TOLERANCE) > 1 )
-                y = 1 - transform.height * ( 1 - BOUNDS_TOLERANCE )
+            if( transform.y + transform.height * visibilityRatio > 1 )
+                y = 1 - transform.height * visibilityRatio
         }
         else
         {
@@ -159,14 +135,7 @@ public class DefaultConstraint implements IViewportConstraint
         
         // validate bounds
         transform.panTo( x, y )
-        
-        // validate zoom
-        if( transform.zoom > maxZoom )
-            transform.zoomTo( maxZoom )
-            
-        if( transform.zoom < minZoom )
-            transform.zoomTo( minZoom )
-        
+
         // return validated transform
         return transform
     }

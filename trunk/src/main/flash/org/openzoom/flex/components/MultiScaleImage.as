@@ -23,6 +23,7 @@ package org.openzoom.flex.components
 
 import flash.events.Event;
 import flash.geom.Point;
+import flash.geom.Rectangle;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
@@ -45,14 +46,6 @@ import org.openzoom.flash.viewport.IViewportTransformer;
  */
 public final class MultiScaleImage extends UIComponent implements IMultiScaleImage
 {
-    //--------------------------------------------------------------------------
-    //
-    //  Includes
-    //
-    //--------------------------------------------------------------------------
-    
-    include "ViewportContainer.inc"
-    
     //--------------------------------------------------------------------------
     //
     //  Class constants
@@ -113,6 +106,8 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     /**
      * Source of this image. Either a URL as String or an
      * instance of IMultiScaleImageDescriptor.
+     * 
+     * @see org.openzoom.flash.descriptors.IMultiScaleImageDescriptor
      */ 
     public function get source() : Object
     {
@@ -213,7 +208,11 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
    ;[Bindable(event="transformerChanged")]
     
     /**
-     * Viewport transformer.
+     * Viewport transformer. Transformers are used to create the transitions
+     * between transformations of the viewport.
+     * 
+     * @see org.openzoom.flash.viewport.transformers.NullTransformer
+     * @see org.openzoom.flash.viewport.transformers.TweenerTransformer
      */ 
     public function get transformer() : IViewportTransformer
     {
@@ -242,7 +241,13 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
    ;[Bindable(event="constraintChanged")]
     
     /**
-     * Transformer constraint.
+     * Viewport transformer constraint. Constraints are used to control
+     * the positions and zoom levels the viewport can reach.
+     * 
+     * @see org.openzoom.flash.viewport.constraints.NullConstraint 
+     * @see org.openzoom.flash.viewport.constraints.VisibilityConstraint
+     * @see org.openzoom.flash.viewport.constraints.ZoomConstraint
+     * @see org.openzoom.flash.viewport.constraints.CompositeConstraint
      */ 
     public function get constraint() : IViewportConstraint
     {
@@ -270,6 +275,14 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     
    ;[Bindable(event="controllersChanged")]
     
+    /**
+     * Controllers of type IViewportController applied to this MultiScaleImage.
+     * For example, viewport controllers are used to navigate the MultiScaleImage
+     * by mouse or keyboard.
+     * 
+     * @see org.openzoom.flash.viewport.controllers.MouseController
+     * @see org.openzoom.flash.viewport.controllers.KeyboardController
+     */
     public function get controllers() : Array
     {
     	return _controllers
@@ -417,13 +430,214 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     	
         var data : XML = new XML( sourceLoader.data )
         var factory : MultiScaleImageDescriptorFactory =
-                        MultiScaleImageDescriptorFactory.getInstance()
-        var descriptor : IMultiScaleImageDescriptor = factory.getDescriptor( sourceURL, data )
+                          MultiScaleImageDescriptorFactory.getInstance()
+        var descriptor : IMultiScaleImageDescriptor =
+                             factory.getDescriptor( sourceURL, data )
         
         _source = descriptor
         dispatchEvent( new Event( "sourceChanged" ))
         
         addImage( descriptor )
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: IMultiScaleImage
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  zoom
+    //----------------------------------
+    
+    [Bindable]
+    
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#zoom
+     */
+    public function get zoom() : Number
+    {
+        return viewport.zoom    
+    }
+    
+    public function set zoom( value : Number ) : void
+    {
+        viewport.zoom = value
+    }
+    
+    //----------------------------------
+    //  scale
+    //----------------------------------
+    
+    [Bindable]
+    
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#scale
+     */
+    public function get scale() : Number
+    {
+        return viewport.zoom    
+    }
+    
+    public function set scale( value : Number ) : void
+    {
+        viewport.scale = value
+    }
+    
+    //----------------------------------
+    //  viewportX
+    //----------------------------------
+    
+    [Bindable]
+    
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#viewportX
+     */
+    public function get viewportX() : Number
+    {
+        return viewport.x    
+    }
+    
+    public function set viewportX( value : Number ) : void
+    {
+        viewport.x = value
+    }
+    
+    //----------------------------------
+    //  viewportY
+    //----------------------------------
+    
+    [Bindable]
+    
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#viewportY
+     */
+    public function get viewportY() : Number
+    {
+        return viewport.y
+    }
+    
+    public function set viewportY( value : Number ) : void
+    {
+        viewport.y = value
+    }
+    
+    //----------------------------------
+    //  viewportWidth
+    //----------------------------------
+    
+    [Bindable]
+    
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#viewportWidth
+     */
+    public function get viewportWidth() : Number
+    {
+        return viewport.width   
+    }
+    
+    public function set viewportWidth( value : Number ) : void
+    {
+        viewport.width = value
+    }
+    
+    //----------------------------------
+    //  viewportHeight
+    //----------------------------------
+    
+    [Bindable]
+    
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#viewportHeight
+     */
+    public function get viewportHeight() : Number
+    {
+        return viewport.height
+    }
+    
+    public function set viewportHeight( value : Number ) : void
+    {
+        viewport.height = value
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IMultiScaleImage
+    //
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#zoomTo()
+     */
+    public function zoomTo( zoom : Number,
+                            transformX : Number = 0.5,
+                            transformY : Number = 0.5,
+                            immediately : Boolean = false ) : void
+    {
+        viewport.zoomTo( zoom, transformX, transformY, immediately )
+    }
+
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#zoomBy()
+     */
+    public function zoomBy( factor : Number,
+                            transformX : Number = 0.5,
+                            transformY : Number = 0.5,
+                            immediately : Boolean = false ) : void
+    {
+        viewport.zoomBy( factor, transformX, transformY, immediately )
+    }
+
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#panTo()
+     */
+    public function panTo( x : Number, y : Number,
+                           immediately : Boolean = false ) : void
+    {
+        viewport.panTo( x, y, immediately )
+    }
+                    
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#panBy()
+     */
+    public function panBy( deltaX : Number, deltaY : Number,
+                           immediately : Boolean = false ) : void
+    {
+        viewport.panBy( deltaX, deltaY, immediately )
+    }
+
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#showRect()
+     */
+    public function showRect( rect : Rectangle,
+                              scale : Number = 1.0,
+                              immediately : Boolean = false ) : void
+    {
+        viewport.showRect( rect, scale, immediately )
+    }
+
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#showAll()
+     */
+    public function showAll( immediately : Boolean = false ) : void
+    {
+        viewport.showAll( immediately )
+    }
+                    
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#localToScene()
+     */
+    public function localToScene( point : Point ) : Point
+    {
+        return viewport.localToScene( point )
+    }
+                    
+    /**
+     * @copy org.openzoom.flex.components.IMultiScaleImage#sceneToLocal()
+     */
+    public function sceneToLocal( point : Point ) : Point
+    {
+        return viewport.sceneToLocal( point )
     }
 }
 

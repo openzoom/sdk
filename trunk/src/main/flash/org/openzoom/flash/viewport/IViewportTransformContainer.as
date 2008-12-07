@@ -36,6 +36,9 @@ public interface IViewportTransformContainer extends IViewportTransform
     
     /**
      * Sets viewportWidth and viewportHeight.
+     * Dispatches ViewportEvent.RESIZE
+     * 
+     * @see org.openzoom.flash.events.ViewportEvent#resize
      */
     function setSize( width : Number, height : Number ) : void
 }

@@ -20,9 +20,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.viewport
 {
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	
+
+import flash.geom.Point;
+import flash.geom.Rectangle;
 
 /**
  * Defines the interface that classes which represent a viewport transform must implement.
@@ -40,7 +40,7 @@ public interface IViewportTransform
     //----------------------------------
     
     /**
-     * Horizontal coordinate of the viewport.
+     * @copy org.openzoom.flash.viewport.IViewport#x
      */
     function get x() : Number
     function set x( value : Number ) : void
@@ -50,7 +50,7 @@ public interface IViewportTransform
     //----------------------------------
     
     /**
-     * Vertical coordinate of the viewport.
+     * @copy org.openzoom.flash.viewport.IViewport#y
      */
     function get y() : Number
     function set y( value : Number ) : void
@@ -60,7 +60,7 @@ public interface IViewportTransform
     //----------------------------------
     
     /**
-     * Horizontal dimension of the viewport.
+     * @copy org.openzoom.flash.viewport.IViewport#width
      */
     function get width() : Number
     function set width( value : Number ) : void
@@ -70,7 +70,7 @@ public interface IViewportTransform
     //----------------------------------
     
     /**
-     * Vertical dimension of the viewport.
+     * @copy org.openzoom.flash.viewport.IViewport#height
      */
     function get height() : Number
     function set height( value : Number ) : void

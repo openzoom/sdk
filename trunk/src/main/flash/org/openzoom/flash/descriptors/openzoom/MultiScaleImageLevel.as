@@ -29,6 +29,8 @@ import org.openzoom.flash.descriptors.MultiScaleImageLevelBase;
 	
 
 /**
+ * @private
+ * 
  * Represents a single level of a multi-scale
  * image pyramid described by an OpenZoom descriptor.
  */

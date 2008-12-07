@@ -26,23 +26,47 @@ package org.openzoom.flash.viewport
  */
 public interface IViewportTransformer
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  viewport
+    //----------------------------------
+    
     /**
      * Target viewport to transform.
      */
     function get viewport() : ITransformerViewport
     function set viewport( value : ITransformerViewport ) : void
     
+    //----------------------------------
+    //  target
+    //----------------------------------
+    
 	/**
 	 * Target viewport transform.
 	 */
 	function get target() : IViewportTransform
+	
+    //----------------------------------
+    //  constraint
+    //----------------------------------
 	
 	/**
 	 * Constraint for target transform.
 	 */
 	function get constraint() : IViewportConstraint
 	function set constraint( value : IViewportConstraint ) : void
-	
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+    
     /**
      * Transform viewport to target transform.
      */ 	

@@ -27,6 +27,8 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewport;
 
 /**
+ * @private
+ * 
  * Interface for a renderer that is multi-scalar.
  */
 public interface IMultiScaleRenderer

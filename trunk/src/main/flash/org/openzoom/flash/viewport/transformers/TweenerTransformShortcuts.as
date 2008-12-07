@@ -5,6 +5,9 @@ import caurina.transitions.Tweener;
 
 import org.openzoom.flash.viewport.IViewportTransform;
 
+/**
+ * @private
+ */
 public class TweenerTransformShortcuts
 {
 

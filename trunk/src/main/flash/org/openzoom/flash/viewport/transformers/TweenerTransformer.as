@@ -29,6 +29,11 @@ import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.constraints.NullConstraint;
 
+/**
+ * TweenerTransformer is an implementation of IViewportTransformer based on the
+ * fantastic animation library <a href="http://tweener.googlecode.com/">Tweener</a>.
+ * It let's you specify the duration and easing of the animation.
+ */
 public class TweenerTransformer implements IViewportTransformer
 {
     //--------------------------------------------------------------------------
@@ -128,6 +133,9 @@ public class TweenerTransformer implements IViewportTransformer
     
     private var _viewport : ITransformerViewport
     
+    /**
+     * @inheritDoc
+     */ 
     public function get viewport() : ITransformerViewport
     {
         return _viewport
@@ -150,6 +158,9 @@ public class TweenerTransformer implements IViewportTransformer
     
     private var _constraint : IViewportConstraint = NULL_CONSTRAINT
     
+    /**
+     * @inheritDoc
+     */ 
     public function get constraint() : IViewportConstraint
     {
         return _constraint
@@ -169,6 +180,9 @@ public class TweenerTransformer implements IViewportTransformer
     
     private var _target : IViewportTransform
     
+    /**
+     * @inheritDoc
+     */ 
     public function get target() : IViewportTransform
     {
         return _target.clone()
@@ -180,6 +194,9 @@ public class TweenerTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     public function stop() : void
     {
     	if( Tweener.isTweening( viewport ))
@@ -194,6 +211,9 @@ public class TweenerTransformer implements IViewportTransformer
 //    	}
     }
     
+    /**
+     * @inheritDoc
+     */ 
     public function transform( target : IViewportTransform,
                                immediately : Boolean = false ) : void
     {

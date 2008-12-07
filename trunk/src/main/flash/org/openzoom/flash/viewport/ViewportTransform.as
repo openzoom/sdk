@@ -24,6 +24,9 @@ package org.openzoom.flash.viewport
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
+/**
+ * The ViewportTransform stores the position and bounds of a viewport.
+ */
 public class ViewportTransform implements IViewportTransform,
                                           IViewportTransformContainer
 {
@@ -56,7 +59,8 @@ public class ViewportTransform implements IViewportTransform,
     }
     
     /**
-     * Constructs and initialized a ViewportTransform object from the parameter values.
+     * Constructs and initializes a ViewportTransform object
+     * from the given parameter values.
      */ 
     public static function fromValues(  x : Number, y : Number,
                                         width : Number, height : Number, zoom : Number,
@@ -355,17 +359,16 @@ public class ViewportTransform implements IViewportTransform,
     public function get viewportWidth() : Number
     {
         return _viewportWidth
-    }
-    
-    /**
-     * @inheritDoc
-     */    
+    }  
     //----------------------------------
     //  viewportHeight
     //----------------------------------
     
     private var _viewportHeight : Number
     
+    /**
+     * @inheritDoc
+     */  
     public function get viewportHeight() : Number
     {
         return _viewportHeight
@@ -629,7 +632,8 @@ public class ViewportTransform implements IViewportTransform,
     //----------------------------------
     
     /**
-     * @private 
+     * @private
+     * 
      * Returns the aspect ratio of this Viewport object.
      */
     private function get aspectRatio() : Number
@@ -642,7 +646,8 @@ public class ViewportTransform implements IViewportTransform,
     //----------------------------------
     
     /**
-     * @private 
+     * @private
+     * 
      * Returns the aspect ratio of scene.
      */
     private function get sceneAspectRatio() : Number

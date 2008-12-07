@@ -59,7 +59,10 @@ public class MultiScaleImageLevelBase
     //----------------------------------
 
     private var _index : int
-
+    
+    /**
+     * @copy org.openzoom.flash.descriptors.IMultiScaleImageLevel#index
+     */ 
     public function get index() : int
     {
         return _index
@@ -71,6 +74,9 @@ public class MultiScaleImageLevelBase
 
     private var _width : uint
 
+    /**
+     * @copy org.openzoom.flash.descriptors.IMultiScaleImageLevel#width
+     */
     public function get width() : uint
     {
         return _width
@@ -82,6 +88,9 @@ public class MultiScaleImageLevelBase
 
     private var _height : uint
     
+    /**
+     * @copy org.openzoom.flash.descriptors.IMultiScaleImageLevel#height
+     */
     public function get height() : uint
     {
         return _height
@@ -93,6 +102,9 @@ public class MultiScaleImageLevelBase
 
     private var _numColumns : uint
 
+    /**
+     * @copy org.openzoom.flash.descriptors.IMultiScaleImageLevel#numColumns
+     */
     public function get numColumns() : uint
     {
         return _numColumns
@@ -104,6 +116,9 @@ public class MultiScaleImageLevelBase
 
     private var _numRows : uint
     
+    /**
+     * @copy org.openzoom.flash.descriptors.IMultiScaleImageLevel#numRows
+     */
     public function get numRows() : uint
     {
         return _numRows
@@ -115,6 +130,9 @@ public class MultiScaleImageLevelBase
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @inheritDoc
+     */
     public function toString() : String
     {
         return "index:" + index + "\n" +

@@ -45,7 +45,10 @@ import org.openzoom.flash.renderers.images.TileLayer;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.INormalizedViewport;
 
+[ExcludeClass]
 /**
+ * @private
+ * 
  * Generic renderer for multi-scale images.
  */
 public class MultiScaleImageRenderer extends MultiScaleRenderer
@@ -114,6 +117,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //  viewport
     //----------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     override public function set viewport( value : INormalizedViewport ) : void
     {
     	super.viewport = value
@@ -126,6 +132,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     
     private var _loader : LoadingQueue
     
+    /**
+     * @private
+     */ 
     public function get loader() : LoadingQueue
     {
     	return _loader
@@ -142,11 +151,17 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
     override protected function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
         updateDisplayList()
     }
     
+    /**
+     * @private
+     */ 
     override protected function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
 //        updateDisplayList()
@@ -158,6 +173,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
     private function createFrame( width : Number, height : Number ) : void
     {
         frame = new Shape()
@@ -169,12 +187,18 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         addChildAt( frame, 0 )
     }
     
+    /**
+     * @private
+     */
     private function createDebugLayer() : void
     {
     	debugLayer = new Shape()
     	addChild( debugLayer )
     }
     
+    /**
+     * @private
+     */
     private function drawVisibleRegion( region : Rectangle ) : void
     {
     	var g : Graphics = debugLayer.graphics
@@ -190,6 +214,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     	    g.endFill()	
     }
     
+    /**
+     * @private
+     */
     private function createLayers( descriptor : IMultiScaleImageDescriptor, width : Number, height : Number  ) : void
     {
         for( var i : int = 0; i < descriptor.numLevels; i++ )
@@ -207,6 +234,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         }	
     }
     
+    /**
+     * @private
+     */
     private function loadBackground() : void
     {
         var level : int = getHighestSingleTileLevel()
@@ -219,6 +249,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         _loader.addItem( url ).addEventListener( Event.COMPLETE, backgroundCompleteHandler )
     } 
     
+    /**
+     * @private
+     */
     private function updateDisplayList() : void
     {
 //    	debugLayer.graphics.clear()
@@ -268,6 +301,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         }
     }
     
+    /**
+     * @private
+     */
     private function loadTiles( level : IMultiScaleImageLevel, area : Rectangle ) : void
     {
     	// FIXME
@@ -300,6 +336,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function tileCompleteHandler( event : LoadingItemEvent ) : void
     {
         var tile : Tile = event.context as Tile
@@ -309,6 +348,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         layer.addTile( tile )
     }
     
+    /**
+     * @private
+     */
     private function backgroundCompleteHandler( event : LoadingItemEvent ) : void
     {
         backgroundTile = event.data as Bitmap
@@ -344,11 +386,17 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function get unscaledWidth() : Number
     {
         return width / Math.abs( scaleX )
     }
     
+    /**
+     * @private
+     */
     private function get unscaledHeight() : Number
     {
         return height / Math.abs( scaleY )
@@ -361,29 +409,46 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function getLayer( index : int ) : ITileLayer
     {
     	return ITileLayer( layers[ index ] )
     }
     
+    /**
+     * @private
+     */
     private function getHighestSingleTileLevel() : int
     {
-    	if( !descriptor.getLevelAt( 0 ))
-    	   return 0;
-    	
-        var i : int = 0
         var level : IMultiScaleImageLevel
-
-        do        
-        {
-            level = descriptor.getLevelAt( i )
-            i++
-        }
-        while( level.numColumns == 1 && level.numRows == 1 )
         
-        var index : int = clamp( level.index - 1, 0, descriptor.numLevels - 1 ) 
-        return index
+        for( var i : int = 0; i < descriptor.numLevels; i++ )
+    	{
+            level = descriptor.getLevelAt( i )
+    	   
+            if( level.numColumns != 1 || level.numRows != 1 )
+                break
+    	}
+    	
+    	var index : int = clamp( i - 1, 0, descriptor.numLevels - 1 )
+    	return index
     }
 }
 
 }
+
+/*
+//      if( !descriptor.getLevelAt( 0 ))
+//         return 0
+//      
+//        var i : int = 0
+//        var level : IMultiScaleImageLevel
+//
+//        while( i < descriptor.numLevels && level.numColumns == 1 && level.numRows == 1 )
+//            level = descriptor.getLevelAt( ++i )
+//        
+//        var index : int = clamp( level.index - 1, 0, descriptor.numLevels - 1 ) 
+//        return index
+*/

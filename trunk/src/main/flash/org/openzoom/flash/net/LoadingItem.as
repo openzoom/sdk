@@ -34,6 +34,8 @@ import flash.net.URLRequest;
 import org.openzoom.flash.events.LoadingItemEvent;
     
 /**
+ * @private
+ * 
  * Represents a single item to load.
  */
 public class LoadingItem extends EventDispatcher
