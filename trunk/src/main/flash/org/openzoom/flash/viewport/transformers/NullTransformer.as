@@ -57,6 +57,9 @@ public class NullTransformer implements IViewportTransformer
     
     private var _viewport : ITransformerViewport
     
+    /**
+     * @inheritDoc
+     */ 
     public function get viewport() : ITransformerViewport
     {
         return _viewport
@@ -78,6 +81,9 @@ public class NullTransformer implements IViewportTransformer
     
     private var _constraint : IViewportConstraint
     
+    /**
+     * @inheritDoc
+     */
     public function get constraint() : IViewportConstraint
     {
         return _constraint

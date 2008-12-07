@@ -36,7 +36,7 @@ public class VisibilityConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-	private static const DEFAULT_VISIBILITY_RATIO : Number = 0.2
+	private static const DEFAULT_VISIBILITY_RATIO : Number = 0.5
 	
     //--------------------------------------------------------------------------
     //
@@ -61,7 +61,7 @@ public class VisibilityConstraint implements IViewportConstraint
     //  visibilityRatio
     //----------------------------------
     
-    private var _visibilityRatio : Number = 1 - DEFAULT_VISIBILITY_RATIO
+    private var _visibilityRatio : Number = DEFAULT_VISIBILITY_RATIO
     
 
     /**
@@ -74,7 +74,7 @@ public class VisibilityConstraint implements IViewportConstraint
     
     public function set visibilityRatio( value : Number ) : void
     {
-       _visibilityRatio = 1 - value
+       _visibilityRatio = value
     }
     
     //--------------------------------------------------------------------------
@@ -107,9 +107,11 @@ public class VisibilityConstraint implements IViewportConstraint
         }
         else
         {
-            // viewport is wider than content:
-            // center scene horizontally
-            x = ( 1 - transform.width ) * 0.5
+            if( transform.x > ( 1 - visibilityRatio ))
+                x = 1 - visibilityRatio
+                
+            if( transform.x + transform.width * ( 1 - visibilityRatio ) < 0 )
+                x = -transform.width * ( 1 - visibilityRatio )
         }
     
         // scene is taller than viewport
@@ -126,11 +128,12 @@ public class VisibilityConstraint implements IViewportConstraint
             if( transform.y + transform.height * visibilityRatio > 1 )
                 y = 1 - transform.height * visibilityRatio
         }
-        else
         {
-            // viewport is taller than scene
-            // center scene vertically
-            y = ( 1 - transform.height ) * 0.5
+        	if( transform.y > ( 1 - visibilityRatio ))
+                y = 1 - visibilityRatio
+                
+            if( transform.y + transform.height * ( 1 - visibilityRatio ) < 0 )
+                y = -transform.height * ( 1 - visibilityRatio )
         }
         
         // validate bounds

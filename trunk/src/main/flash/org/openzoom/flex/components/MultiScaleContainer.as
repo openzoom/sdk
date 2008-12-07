@@ -225,7 +225,6 @@ public final class MultiScaleContainer extends UIComponent
     //  controllers
     //----------------------------------
     
-   ;[ArrayElementType("org.openzoom.flash.viewport.IViewportController")]
     private var _controllers : Array = []
     
    ;[ArrayElementType("org.openzoom.flash.viewport.IViewportController")]

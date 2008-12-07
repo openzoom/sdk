@@ -438,17 +438,3 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
 }
 
 }
-
-/*
-//      if( !descriptor.getLevelAt( 0 ))
-//         return 0
-//      
-//        var i : int = 0
-//        var level : IMultiScaleImageLevel
-//
-//        while( i < descriptor.numLevels && level.numColumns == 1 && level.numRows == 1 )
-//            level = descriptor.getLevelAt( ++i )
-//        
-//        var index : int = clamp( level.index - 1, 0, descriptor.numLevels - 1 ) 
-//        return index
-*/

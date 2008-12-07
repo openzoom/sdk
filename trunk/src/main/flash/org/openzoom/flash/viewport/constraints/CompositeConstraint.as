@@ -37,6 +37,7 @@ public class CompositeConstraint implements IViewportConstraint
     
     private var _constraints : Array /* of IViewportConstraint */ = []
     
+   ;[ArrayElementType("org.openzoom.flash.viewport.IViewportConstraint")]
     /**
      * An array of constraints that are applied succe
      */

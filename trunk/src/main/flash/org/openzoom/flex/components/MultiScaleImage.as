@@ -40,9 +40,12 @@ import org.openzoom.flash.viewport.IViewportTransformer;
 /**
  * Component for displaying a single multi-scale image. Inspired by the Microsoft
  * Silverlight Deep Zoom MultiScaleImage component. This implementation has built-in
- * support for Zoomify, Deep Zoom and OpenZoom images. Basic keyboard and mouse navigation
- * can be added by specifying viewport controllers. The animation can be customized
- * by adding a viewport transformer.
+ * support for Zoomify, Deep Zoom and OpenZoom images.
+ * Basic keyboard and mouse navigation can be added by specifying viewport controllers.
+ * The animation can be customized by adding a viewport transformer through the
+ * <code>transformer</code> property. 
+ * Zoom, visibility or custom constraints can be added through
+ * the <code>constraint</code> property.
  */
 public final class MultiScaleImage extends UIComponent implements IMultiScaleImage
 {
@@ -450,10 +453,10 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     //  zoom
     //----------------------------------
     
-    [Bindable]
+   ;[Bindable(event="transformUpdate")]
     
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#zoom
+     * @copy org.openzoom.flash.viewport.IViewport#zoom
      */
     public function get zoom() : Number
     {
@@ -469,10 +472,10 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     //  scale
     //----------------------------------
     
-    [Bindable]
+   ;[Bindable(event="transformUpdate")]
     
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#scale
+     * @copy org.openzoom.flash.viewport.IViewport#scale
      */
     public function get scale() : Number
     {
@@ -488,11 +491,12 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     //  viewportX
     //----------------------------------
     
-    [Bindable]
-    
+   ;[Bindable(event="transformUpdate")]
+       
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#viewportX
+     * @copy org.openzoom.flash.viewport.IViewport#x
      */
+
     public function get viewportX() : Number
     {
         return viewport.x    
@@ -507,10 +511,10 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     //  viewportY
     //----------------------------------
     
-    [Bindable]
+   ;[Bindable(event="transformUpdate")]
     
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#viewportY
+     * @copy org.openzoom.flash.viewport.IViewport#y
      */
     public function get viewportY() : Number
     {
@@ -526,10 +530,10 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     //  viewportWidth
     //----------------------------------
     
-    [Bindable]
+   ;[Bindable(event="transformUpdate")]
     
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#viewportWidth
+     * @copy org.openzoom.flash.viewport.IViewport#width
      */
     public function get viewportWidth() : Number
     {
@@ -545,10 +549,10 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     //  viewportHeight
     //----------------------------------
     
-    [Bindable]
+   ;[Bindable(event="transformUpdate")]
     
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#viewportHeight
+     * @copy org.openzoom.flash.viewport.IViewport#height
      */
     public function get viewportHeight() : Number
     {
@@ -567,7 +571,7 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     //--------------------------------------------------------------------------
     
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#zoomTo()
+     * @copy org.openzoom.flash.viewport.IViewport#zoomTo()
      */
     public function zoomTo( zoom : Number,
                             transformX : Number = 0.5,
@@ -578,7 +582,7 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     }
 
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#zoomBy()
+     * @copy org.openzoom.flash.viewport.IViewport#zoomBy()
      */
     public function zoomBy( factor : Number,
                             transformX : Number = 0.5,
@@ -589,7 +593,7 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     }
 
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#panTo()
+     * @copy org.openzoom.flash.viewport.IViewport#panTo()
      */
     public function panTo( x : Number, y : Number,
                            immediately : Boolean = false ) : void
@@ -598,7 +602,7 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     }
                     
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#panBy()
+     * @copy org.openzoom.flash.viewport.IViewport#panBy()
      */
     public function panBy( deltaX : Number, deltaY : Number,
                            immediately : Boolean = false ) : void
@@ -607,7 +611,7 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     }
 
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#showRect()
+     * @copy org.openzoom.flash.viewport.IViewport#showRect()
      */
     public function showRect( rect : Rectangle,
                               scale : Number = 1.0,
@@ -617,7 +621,7 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     }
 
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#showAll()
+     * @copy org.openzoom.flash.viewport.IViewport#showAll()
      */
     public function showAll( immediately : Boolean = false ) : void
     {
@@ -625,7 +629,7 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     }
                     
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#localToScene()
+     * @copy org.openzoom.flash.viewport.IViewport#localToScene()
      */
     public function localToScene( point : Point ) : Point
     {
@@ -633,7 +637,7 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     }
                     
     /**
-     * @copy org.openzoom.flex.components.IMultiScaleImage#sceneToLocal()
+     * @copy org.openzoom.flash.viewport.IViewport#sceneToLocal()
      */
     public function sceneToLocal( point : Point ) : Point
     {

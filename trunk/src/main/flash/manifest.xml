@@ -30,6 +30,7 @@
     <!-- Constraints -->
     <component id="VisibilityConstraint" class="org.openzoom.flash.viewport.constraints.VisibilityConstraint"/>
     <component id="ZoomConstraint" class="org.openzoom.flash.viewport.constraints.ZoomConstraint"/>
+    <component id="CenterConstraint" class="org.openzoom.flash.viewport.constraints.CenterConstraint"/>
     <component id="CompositeConstraint" class="org.openzoom.flash.viewport.constraints.CompositeConstraint"/>
     <component id="NullConstraint" class="org.openzoom.flash.viewport.constraints.NullConstraint"/>
     

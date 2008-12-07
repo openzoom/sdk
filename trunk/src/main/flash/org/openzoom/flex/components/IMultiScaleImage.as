@@ -29,6 +29,8 @@ import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
 
 /**
+ * @private
+ * 
  * Interface of a multi-scale image.
  */
 public interface IMultiScaleImage
