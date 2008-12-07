@@ -41,7 +41,7 @@ public interface IMultiScaleContainer
     //
     //--------------------------------------------------------------------------
     
-    include "IViewportContainer.as"
+    include "IViewportContainer.inc"
     
     //--------------------------------------------------------------------------
     //

@@ -58,7 +58,7 @@ public final class MultiScaleContainer extends UIComponent
     //
     //--------------------------------------------------------------------------
     
-    include "ViewportContainer.as"
+    include "ViewportContainer.inc"
     
     //--------------------------------------------------------------------------
     //

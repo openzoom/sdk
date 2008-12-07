@@ -51,7 +51,7 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     //
     //--------------------------------------------------------------------------
     
-    include "ViewportContainer.as"
+    include "ViewportContainer.inc"
     
     //--------------------------------------------------------------------------
     //

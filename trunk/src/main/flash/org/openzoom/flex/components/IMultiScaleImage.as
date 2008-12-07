@@ -38,7 +38,7 @@ public interface IMultiScaleImage
     //
     //--------------------------------------------------------------------------
     
-    include "IViewportContainer.as"
+    include "IViewportContainer.inc"
     
     //--------------------------------------------------------------------------
     //

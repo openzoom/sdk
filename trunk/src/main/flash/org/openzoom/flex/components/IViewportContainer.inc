@@ -18,9 +18,11 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-    
-import flash.geom.Point;
 
+/**
+ * @private
+ */
+import flash.geom.Point;
 
     //--------------------------------------------------------------------------
     //
