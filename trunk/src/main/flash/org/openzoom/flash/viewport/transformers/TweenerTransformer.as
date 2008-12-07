@@ -85,6 +85,7 @@ public class TweenerTransformer implements IViewportTransformer
      * 
      * @default 1.5
      */ 
+   ;[Bindable]
     public function get duration() : Number
     {
         return _duration
@@ -104,7 +105,7 @@ public class TweenerTransformer implements IViewportTransformer
    ;[Inspectable(defaultValue="easeOutExpo",
                  type="String",
                  enumeration="linear,easeInSine,easeOutSine,easeInOutSine,easeInCubic,easeOutCubic,easeInOutCubic,easeInQuint,easeOutQuint,easeInOutQuint,easeInCirc,easeOutCirc,easeInOutCirc,easeInBack,easeOutBack,easeInOutBack,easeInQuad,easeOutQuad,easeInOutQuad,easeInQuart,easeOutQuart,easeInOutQuart,easeInExpo,easeOutExpo,easeInOutExpo,easeInElastic,easeOutElastic,easeInOutElastic,easeInBounce,easeOutBounce,easeInOutBounce")]
-
+   ;[Bindable]
     /**
      * Easing for the transformation.
      * 
