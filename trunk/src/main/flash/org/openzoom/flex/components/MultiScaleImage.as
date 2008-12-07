@@ -293,6 +293,9 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
     override protected function createChildren() : void
     {
     	super.createChildren()
@@ -307,6 +310,9 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
     	}
     }
     
+    /**
+     * @private
+     */
     override protected function updateDisplayList( unscaledWidth : Number,
                                                    unscaledHeight : Number ) : void
     {
@@ -314,6 +320,9 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
         container.height = unscaledHeight
     }
     
+    /**
+     * @private
+     */
     override protected function commitProperties() : void
     {
     	super.commitProperties()

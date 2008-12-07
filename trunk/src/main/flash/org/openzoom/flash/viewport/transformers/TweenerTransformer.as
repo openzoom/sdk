@@ -53,10 +53,6 @@ public class TweenerTransformer implements IViewportTransformer
     public function TweenerTransformer()
     {
     	TweenerTransformShortcuts.init()
-    	
-    	// FIXME
-//    	constraint = new DefaultViewportConstraint()
-//    	constraint = new MapViewportConstraint()
     }
     
     //--------------------------------------------------------------------------

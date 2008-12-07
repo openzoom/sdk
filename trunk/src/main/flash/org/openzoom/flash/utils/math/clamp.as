@@ -20,6 +20,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.utils.math
 {
+	/**
+	 * Utility function to clamp a value between a minimum and maximum.
+	 */
     public function clamp( value : Number,
                            minimum : Number = 0,
                            maximum : Number = 1 ) : Number

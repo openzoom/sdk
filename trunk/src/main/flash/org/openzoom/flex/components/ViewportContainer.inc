@@ -24,6 +24,7 @@
  */
 
 import flash.geom.Point;
+import flash.geom.Rectangle;
 
 
     //--------------------------------------------------------------------------
@@ -156,8 +157,8 @@ import flash.geom.Point;
      * @inheritDoc
      */
     public function zoomTo( zoom : Number,
-                            transformX : Number,
-                            transformY : Number,
+                            transformX : Number = 0.5,
+                            transformY : Number = 0.5,
                             immediately : Boolean = false ) : void
     {
         viewport.zoomTo( zoom, transformX, transformY, immediately )
@@ -167,8 +168,8 @@ import flash.geom.Point;
      * @inheritDoc
      */
     public function zoomBy( factor : Number,
-                            transformX : Number,
-                            transformY : Number,
+                            transformX : Number = 0.5,
+                            transformY : Number = 0.5,
                             immediately : Boolean = false ) : void
     {
         viewport.zoomBy( factor, transformX, transformY, immediately )
@@ -190,6 +191,24 @@ import flash.geom.Point;
                            immediately : Boolean = false ) : void
     {
         viewport.panBy( deltaX, deltaY, immediately )
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function showRect( rect : Rectangle,
+                              scale : Number = 1.0,
+                              immediately : Boolean = false ) : void
+    {
+        viewport.showRect( rect, scale, immediately )
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function showAll( immediately : Boolean = false ) : void
+    {
+        viewport.showAll( immediately )
     }
                     
     /**

@@ -23,6 +23,7 @@
  * @private
  */
 import flash.geom.Point;
+import flash.geom.Rectangle;
 
     //--------------------------------------------------------------------------
     //
@@ -129,16 +130,16 @@ import flash.geom.Point;
      * @copy org.openzoom.flash.viewport.IViewport#zoomTo()
      */
     function zoomTo( zoom : Number,
-                     transformX : Number,
-                     transformY : Number,
+                     transformX : Number = 0.5,
+                     transformY : Number = 0.5,
                      immediately : Boolean = false ) : void
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomBy()
      */
     function zoomBy( factor : Number,
-                     transformX : Number,
-                     transformY : Number,
+                     transformX : Number = 0.5,
+                     transformY : Number = 0.5,
                      immediately : Boolean = false ) : void
 
     /**
@@ -146,6 +147,18 @@ import flash.geom.Point;
      */
     function panTo( x : Number, y : Number,
                     immediately : Boolean = false ) : void
+                    
+    /**
+     * @copy org.openzoom.flash.viewport.IViewport#showRect()
+     */
+    function showRect( rect : Rectangle,
+                       scale : Number = 1.0,
+                       immediately : Boolean = false ) : void
+
+    /**
+     * @copy org.openzoom.flash.viewport.IViewport#showAll()
+     */
+    function showAll( immediately : Boolean = false ) : void
                     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#panBy()

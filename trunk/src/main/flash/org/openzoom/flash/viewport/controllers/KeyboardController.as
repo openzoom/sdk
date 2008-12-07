@@ -55,6 +55,8 @@ public class KeyboardController extends ViewportControllerBase
     
     private static const DEFAULT_ZOOM_IN_KEY_CODE    : uint   = 73 // I
     private static const DEFAULT_ZOOM_OUT_KEY_CODE   : uint   = 79 // 0
+    
+    private static const DEFAULT_SHOW_ALL_KEY_CODE   : uint   = 72 // H
                
     //--------------------------------------------------------------------------
     //
@@ -88,10 +90,10 @@ public class KeyboardController extends ViewportControllerBase
     private var pageDownActivated : Boolean
     private var homeActivated : Boolean
     private var endActivated : Boolean
-    private var spaceActivated : Boolean
    
     private var zoomInActivated : Boolean
     private var zoomOutActivated : Boolean
+    private var showAllActivated : Boolean
     
     //--------------------------------------------------------------------------
     //
@@ -108,10 +110,16 @@ public class KeyboardController extends ViewportControllerBase
             keyboardTimer = new Timer( KEYBOARD_REFRESH_DELAY )
      
         keyboardTimer.start()
-        keyboardTimer.addEventListener( TimerEvent.TIMER, keyboardTimerHandler, false, 0, true )
+        keyboardTimer.addEventListener( TimerEvent.TIMER,
+                                        keyboardTimerHandler,
+                                        false, 0, true )
      
-        view.stage.addEventListener( KeyboardEvent.KEY_DOWN, keyDownHandler, false, 0, true )
-        view.stage.addEventListener( KeyboardEvent.KEY_UP, keyUpHandler, false, 0, true )
+        view.stage.addEventListener( KeyboardEvent.KEY_DOWN,
+                                     keyDownHandler,
+                                     false, 0, true )
+        view.stage.addEventListener( KeyboardEvent.KEY_UP,
+                                     keyUpHandler,
+                                     false, 0, true )
     }
    
     /**
@@ -260,6 +268,27 @@ public class KeyboardController extends ViewportControllerBase
     }
   
     //----------------------------------
+    //  showAllKey
+    //----------------------------------
+    
+    private var showAllKeyCode : uint = DEFAULT_SHOW_ALL_KEY_CODE
+   
+    /**
+     * Key for fitting the entire scene into the viewport.
+     * 
+     * @default H
+     */
+    public function get showAllKey() : String
+    {
+        return String.fromCharCode( showAllKeyCode )
+    }
+    
+    public function set showAllKey( value : String ) : void
+    {
+        showAllKeyCode = value.toUpperCase().charCodeAt( 0 )
+    }
+  
+    //----------------------------------
     //  zoomInFactor
     //----------------------------------
     
@@ -396,8 +425,8 @@ public class KeyboardController extends ViewportControllerBase
                 endActivated = value
                 break
                
-            case Keyboard.SPACE:
-                spaceActivated = value
+            case showAllKeyCode:
+                showAllActivated = value
                 break
                
             // zooming
@@ -453,7 +482,7 @@ public class KeyboardController extends ViewportControllerBase
         if( endActivated )
             viewport.panTo( 1, viewport.y )
          
-        if( spaceActivated )
+        if( showAllActivated )
             viewport.showAll()
          
         // zooming

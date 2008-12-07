@@ -186,8 +186,10 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
             levels[ index ] = new MultiScaleImageLevel( this, index, width, height,
                                                         Math.ceil( width / tileWidth ),
                                                         Math.ceil( height / tileHeight ) )
-            width = ( width + 1 ) >> 1
-            height = ( height + 1 ) >> 1
+            width >>= 1
+            height >>= 1
+//            width = ( width + 1 ) >> 1
+//            height = ( height + 1 ) >> 1
         }
         
         return levels
