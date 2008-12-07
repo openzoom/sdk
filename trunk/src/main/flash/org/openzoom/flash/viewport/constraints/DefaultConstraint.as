@@ -31,7 +31,7 @@ import org.openzoom.flash.viewport.IViewportTransform;
  * Provides basic bounds checking and imposes limits on the zoom property
  * of the viewport.
  */
-public class DefaultViewportConstraint implements IViewportConstraint
+public class DefaultConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
     //
@@ -52,7 +52,7 @@ public class DefaultViewportConstraint implements IViewportConstraint
 	/**
 	 * Constructor.
 	 */
-    public function DefaultViewportConstraint()
+    public function DefaultConstraint()
     {
     }
     

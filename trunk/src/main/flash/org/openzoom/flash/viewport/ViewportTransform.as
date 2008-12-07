@@ -37,10 +37,10 @@ public class ViewportTransform implements IViewportTransform,
      * Constructor.
      */
     public function ViewportTransform( x : Number, y : Number,
-                                        width : Number, height : Number,
-                                        zoom : Number,
-                                        viewportWidth : Number, viewportHeight : Number,
-                                        sceneWidth : Number, sceneHeight : Number)
+                                       width : Number, height : Number,
+                                       zoom : Number,
+                                       viewportWidth : Number, viewportHeight : Number,
+                                       sceneWidth : Number, sceneHeight : Number)
     {
         _x = x
         _y = y
@@ -133,12 +133,12 @@ public class ViewportTransform implements IViewportTransform,
         // remember old origin
         var oldOrigin : Point = getViewportOrigin( transformX, transformY )
         
-        var bounds : Point = getWidthAndHeightForZoom( zoom )
+        var bounds : Point = getBoundsForZoom( zoom )
         _width  = bounds.x
         _height = bounds.y
 
         // move new origin to old origin
-        moveOriginTo( oldOrigin.x, oldOrigin.y, transformX, transformY )
+        panOriginTo( oldOrigin.x, oldOrigin.y, transformX, transformY )
     }
 
     /**
@@ -179,7 +179,7 @@ public class ViewportTransform implements IViewportTransform,
      */
     public function panCenterTo( x : Number, y : Number ) : void
     {
-        moveOriginTo( x, y, 0.5, 0.5 )
+        panOriginTo( x, y, 0.5, 0.5 )
     }
 
     /**
@@ -240,8 +240,8 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @private
      */
-    private function moveOriginTo( x : Number, y : Number,
-                                   transformX : Number, transformY : Number ) : void
+    private function panOriginTo( x : Number, y : Number,
+                                  transformX : Number, transformY : Number ) : void
     {
         var newX : Number = x - width  * transformX
         var newY : Number = y - height * transformY
@@ -492,7 +492,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @private
      */
-    private function getWidthAndHeightForZoom( zoom : Number ) : Point
+    private function getBoundsForZoom( zoom : Number ) : Point
     {
         var ratio : Number = sceneAspectRatio / aspectRatio
         var width : Number  
@@ -551,7 +551,7 @@ public class ViewportTransform implements IViewportTransform,
      */ 
     public function toString() : String
     {
-        return "[ViewportTransform2]" + "("
+        return "[ViewportTransform] ("
                + "x=" + x + ", " 
                + "y=" + y  + ", "
                + "z=" + zoom + ", "

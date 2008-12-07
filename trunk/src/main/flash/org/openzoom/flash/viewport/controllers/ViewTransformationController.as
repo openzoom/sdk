@@ -30,7 +30,11 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.ITransformerViewport;
 import org.openzoom.flash.viewport.IViewportController;    
 
+[ExcludeClass]
+
 /**
+ * @private
+ * 
  * Transforms the scene in the viewport.
  */
 public class ViewTransformationController extends ViewportControllerBase

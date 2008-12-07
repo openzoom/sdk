@@ -5,10 +5,10 @@ import caurina.transitions.Tweener;
 
 import org.openzoom.flash.viewport.IViewportTransform;
 
-public class TransformShortcuts
+public class TweenerTransformShortcuts
 {
 
-    public function TransformShortcuts()
+    public function TweenerTransformShortcuts()
     {
     }
 

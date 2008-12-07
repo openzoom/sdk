@@ -110,7 +110,8 @@ public interface IMultiScaleImageDescriptor
     function getLevelAt( index : int ) : IMultiScaleImageLevel
 
     /**
-     * Returns the minimum level that has a greater or equal size as specified by width and height.
+     * Returns the minimum pyramid level that has a greater or equal size
+     * than specified by the arguments width and height.
      */
     function getMinLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
 
@@ -136,7 +137,7 @@ public interface IMultiScaleImageDescriptor
 //    function getTilePosition( column : uint, row : uint ) : Point
 
     /**
-     * Returns the bounds of the tile specified by its column and row.
+     * Returns the bounds of the tile specified by the level, column and row.
      */
     function getTileBounds( level : int, column : uint, row : uint ) : Rectangle
 

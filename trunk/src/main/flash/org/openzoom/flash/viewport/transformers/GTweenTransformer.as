@@ -28,8 +28,11 @@ import flash.events.Event;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.IViewportTransform;
-	
-public class GTweenViewportTransformer// implements IViewportTransformer
+
+/**
+ * @private
+ */
+public class GTweenTransformer// implements IViewportTransformer
 {
 //    //--------------------------------------------------------------------------
 //    //

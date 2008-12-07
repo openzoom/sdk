@@ -34,8 +34,8 @@ import flash.geom.Rectangle;
 
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.viewport.constraints.NullViewportConstraint;
-import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
+import org.openzoom.flash.viewport.constraints.NullConstraint;
+import org.openzoom.flash.viewport.transformers.NullTransformer;
 
 //------------------------------------------------------------------------------
 //
@@ -64,14 +64,18 @@ import org.openzoom.flash.viewport.transformers.NullViewportTransformer;
 [Event(name="transformComplete", type="org.openzoom.events.ViewportEvent")]
 
 
+[ExcludeClass]
+
 /**
- * Legacy IViewport implementation that is based on a normalized [0, 1] coordinate system.
- * Only used for testing purposes.
+ * @private
+ * 
+ * Legacy IViewport implementation that is based on a normalized [0, 1]
+ * coordinate system. Only used for testing purposes.
  */
 public class LegacyViewport extends EventDispatcher
                             implements INormalizedViewport,
                                        IReadonlyViewport,
-                                       IViewportContainer,
+                                       INormalizedViewportContainer,
                                        ITransformerViewport
 {
     //--------------------------------------------------------------------------
@@ -80,8 +84,8 @@ public class LegacyViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    private static const NULL_CONSTRAINT  : IViewportConstraint  = new NullViewportConstraint()
-    private static const NULL_TRANSFORMER : IViewportTransformer = new NullViewportTransformer()
+    private static const NULL_CONSTRAINT  : IViewportConstraint  = new NullConstraint()
+    private static const NULL_TRANSFORMER : IViewportTransformer = new NullTransformer()
     
     //--------------------------------------------------------------------------
     //
@@ -138,12 +142,17 @@ public class LegacyViewport extends EventDispatcher
     {
         return viewportWidth / ( scene.sceneWidth * width ) 
     }
+    
+    public function set scale( value : Number ) : void
+    {
+    	// TODO
+    }
  
     //----------------------------------
     //  constraint
     //----------------------------------
     
-    private var _constraint : IViewportConstraint = new NullViewportConstraint()
+    private var _constraint : IViewportConstraint = new NullConstraint()
 //    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
 
     public function get constraint() : IViewportConstraint
@@ -194,23 +203,6 @@ public class LegacyViewport extends EventDispatcher
     public function set transform( value : IViewportTransform ) : void
     {
     	// TODO
-    }
-//    
-//    //----------------------------------
-//    //  targetTransform
-//    //----------------------------------
-//
-    private var _targetTransform : IViewportTransform
-    
-    public function get targetTransform() : IViewportTransform
-    {  
-    	return null     
-//        return _targetTransform.clone()
-    }
-
-    public function set targetTransform( value : IViewportTransform ) : void
-    {
-//        _targetTransform = value.clone()
     }
     
     //----------------------------------
@@ -382,7 +374,7 @@ public class LegacyViewport extends EventDispatcher
             this.updateTransform( oldZoom )
     }
     
-    public function showAll() : void
+    public function showAll( immediately : Boolean = false ) : void
     {
     	var area : Rectangle = new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight )
         showRect( normalizeRectangle( area ))
@@ -561,6 +553,11 @@ public class LegacyViewport extends EventDispatcher
         return _width
     }
     
+    public function set width( value : Number ) : void
+    {
+    	// TODO
+    }
+    
     //----------------------------------
     //  height
     //----------------------------------
@@ -571,6 +568,11 @@ public class LegacyViewport extends EventDispatcher
     public function get height() : Number
     {
         return _height
+    }
+    
+    public function set height( value : Number ) : void
+    {
+        // TODO
     }
     
     //----------------------------------
@@ -767,7 +769,7 @@ public class LegacyViewport extends EventDispatcher
     
     override public function toString() : String
     {
-        return "[NormalizedViewport]" + "\n"
+        return "[LegacyViewport]" + "\n"
                + "x=" + x + "\n" 
                + "y=" + y  + "\n"
                + "z=" + zoom + "\n"

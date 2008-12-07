@@ -41,20 +41,20 @@ public class KeyboardController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
    
-    private static const KEYBOARD_REFRESH_DELAY    : Number = 80 // milliseconds
+    private static const KEYBOARD_REFRESH_DELAY      : Number = 80 // milliseconds
    
-    private static const ZOOM_IN_FACTOR            : Number = 2.0
-    private static const ZOOM_OUT_FACTOR           : Number = 0.7
-    private static const ACCELERATION_FACTOR       : Number = 15
-    private static const TRANSLATION_FACTOR        : Number = 0.1
+    private static const DEFAULT_ZOOM_IN_FACTOR      : Number = 2.0
+    private static const DEFAULT_ZOOM_OUT_FACTOR     : Number = 0.7
+    private static const DEFAULT_PAN_FACTOR          : Number = 0.1
+    private static const DEFAULT_ACCELERATION_FACTOR : Number = 15
     
-    private static const DEFAULT_UP_KEY_CODE       : uint = 87 // W
-    private static const DEFAULT_RIGHT_KEY_CODE    : uint = 68 // D
-    private static const DEFAULT_DOWN_KEY_CODE     : uint = 83 // S
-    private static const DEFAULT_LEFT_KEY_CODE     : uint = 65 // A
+    private static const DEFAULT_UP_KEY_CODE         : uint   = 87 // W
+    private static const DEFAULT_RIGHT_KEY_CODE      : uint   = 68 // D
+    private static const DEFAULT_DOWN_KEY_CODE       : uint   = 83 // S
+    private static const DEFAULT_LEFT_KEY_CODE       : uint   = 65 // A
     
-    private static const DEFAULT_ZOOM_IN_KEY_CODE  : uint = 73 // I
-    private static const DEFAULT_ZOOM_OUT_KEY_CODE : uint = 79 // 0
+    private static const DEFAULT_ZOOM_IN_KEY_CODE    : uint   = 73 // I
+    private static const DEFAULT_ZOOM_OUT_KEY_CODE   : uint   = 79 // 0
                
     //--------------------------------------------------------------------------
     //
@@ -95,10 +95,13 @@ public class KeyboardController extends ViewportControllerBase
     
     //--------------------------------------------------------------------------
     //
-    //  Overridden methods: AbstractViewportController
+    //  Overridden methods: ViewportControllerBase
     //
     //--------------------------------------------------------------------------
-   
+    
+    /**
+     * @private
+     */ 
     override protected function view_addedToStageHandler( event : Event ) : void
     {
         if( !keyboardTimer )
@@ -111,6 +114,9 @@ public class KeyboardController extends ViewportControllerBase
         view.stage.addEventListener( KeyboardEvent.KEY_UP, keyUpHandler, false, 0, true )
     }
    
+    /**
+     * @private
+     */  
     override protected function view_removedFromStageHandler( event : Event ) : void
     {
         keyboardTimer.removeEventListener( TimerEvent.TIMER, keyboardTimerHandler )
@@ -132,7 +138,12 @@ public class KeyboardController extends ViewportControllerBase
     //----------------------------------
     
     private var upKeyCode : uint = DEFAULT_UP_KEY_CODE
-   
+    
+    /**
+     * Key for panning the viewport up.
+     * 
+     * @default W
+     */ 
     public function get upKey() : String
     {
         return String.fromCharCode( upKeyCode )
@@ -149,6 +160,11 @@ public class KeyboardController extends ViewportControllerBase
     
     private var rightKeyCode : uint = DEFAULT_RIGHT_KEY_CODE 
    
+    /**
+     * Key for panning the viewport to the right.
+     * 
+     * @default D
+     */
     public function get rightKey() : String
     {
         return String.fromCharCode( rightKeyCode )
@@ -165,6 +181,11 @@ public class KeyboardController extends ViewportControllerBase
     
     private var downKeyCode : uint = DEFAULT_DOWN_KEY_CODE
    
+    /**
+     * Key for panning the viewport down.
+     * 
+     * @default S
+     */
     public function get downKey() : String
     {
         return String.fromCharCode( downKeyCode )
@@ -181,6 +202,11 @@ public class KeyboardController extends ViewportControllerBase
     
     private var leftKeyCode : uint = DEFAULT_LEFT_KEY_CODE
    
+    /**
+     * Key for panning the viewport to the left.
+     * 
+     * @default A
+     */
     public function get leftKey() : String
     {
         return String.fromCharCode( leftKeyCode )
@@ -197,6 +223,11 @@ public class KeyboardController extends ViewportControllerBase
     
     private var zoomInKeyCode : uint = DEFAULT_ZOOM_IN_KEY_CODE
    
+    /**
+     * Key for zooming into the scene.
+     * 
+     * @default I
+     */
     public function get zoomInKey() : String
     {
         return String.fromCharCode( zoomInKeyCode )
@@ -213,6 +244,11 @@ public class KeyboardController extends ViewportControllerBase
     
     private var zoomOutKeyCode : uint = DEFAULT_ZOOM_OUT_KEY_CODE
    
+    /**
+     * Key for zooming out of the scene.
+     * 
+     * @default 0
+     */
     public function get zoomOutKey() : String
     {
         return String.fromCharCode( zoomOutKeyCode )
@@ -222,23 +258,96 @@ public class KeyboardController extends ViewportControllerBase
     {
         zoomOutKeyCode = value.toUpperCase().charCodeAt( 0 )
     }
+  
+    //----------------------------------
+    //  zoomInFactor
+    //----------------------------------
+    
+    private var _zoomInFactor : Number = DEFAULT_ZOOM_IN_FACTOR
+   
+    /**
+     * Factor for zooming into the scene.
+     * 
+     * @default 2.0
+     */
+    public function get zoomInFactor() : Number
+    {
+        return _zoomInFactor
+    }
+    
+    public function set zoomInFactor( value : Number ) : void
+    {
+        _zoomInFactor = value
+    }
+  
+    //----------------------------------
+    //  zoomOutFactor
+    //----------------------------------
+    
+    private var _zoomOutFactor : Number = DEFAULT_ZOOM_OUT_FACTOR
+    
+    /**
+     * Factor for zooming out of the scene.
+     * 
+     * @default 0.7
+     */
+    public function get zoomOutFactor() : Number
+    {
+        return _zoomOutFactor
+    }
+    
+    public function set zoomOutFactor( value : Number ) : void
+    {
+        _zoomOutFactor = value
+    }
+  
+    //----------------------------------
+    //  panFactor
+    //----------------------------------
+    
+    private var _panFactor : Number = DEFAULT_PAN_FACTOR
+
+    /**
+     * Factor for panning within the scene, e.g. a factor of 0.15 means the
+     * viewport is panned by 15 percent upon each key stroke.
+     * 
+     * @default 0.1
+     */   
+    public function get panFactor() : Number
+    {
+        return _panFactor
+    }
+    
+    public function set panFactor( value : Number ) : void
+    {
+        _panFactor = value
+    }
    
     //--------------------------------------------------------------------------
     //
     //  Event handlers: Keyboard
     //
     //--------------------------------------------------------------------------
-   
+    
+    /**
+     * @private
+     */ 
     private function keyDownHandler( event : KeyboardEvent ) : void
     {
         updateFlags( event, true )
     }
    
+    /**
+     * @private
+     */ 
     private function keyUpHandler( event : KeyboardEvent ) : void
     {
         updateFlags( event, false )
     }
    
+    /**
+     * @private
+     */ 
     private function updateFlags( event : KeyboardEvent,
                                   value : Boolean ) : void
     {
@@ -303,30 +412,33 @@ public class KeyboardController extends ViewportControllerBase
                 break
         }
     }
-       
+
+    /**
+     * @private
+     */ 
     private function keyboardTimerHandler( event : TimerEvent ) : void
     {
-        var dx : Number = viewport.width * TRANSLATION_FACTOR
-        var dy : Number = viewport.height * TRANSLATION_FACTOR
+        var deltaX : Number = viewport.width  * panFactor
+        var deltaY : Number = viewport.height * panFactor
          
         if( accelerationActivated )
         {
-            dx *= ACCELERATION_FACTOR
-            dy *= ACCELERATION_FACTOR
+            deltaX *= DEFAULT_ACCELERATION_FACTOR
+            deltaY *= DEFAULT_ACCELERATION_FACTOR
         }
          
         // panning
         if( upActivated )
-            viewport.panBy( 0, -dy )
+            viewport.panBy( 0, -deltaY )
          
         if( downActivated )
-            viewport.panBy( 0, dy )
+            viewport.panBy( 0,  deltaY )
          
         if( leftActivated )
-            viewport.panBy( -dx, 0 )
+            viewport.panBy( -deltaX, 0 )
          
         if( rightActivated )
-            viewport.panBy( dx, 0 )
+            viewport.panBy(  deltaX, 0 )
          
         // quick navigation
         if( pageUpActivated )
@@ -346,10 +458,10 @@ public class KeyboardController extends ViewportControllerBase
          
         // zooming
         if( zoomInActivated )
-            viewport.zoomBy( ZOOM_IN_FACTOR )
+            viewport.zoomBy( zoomInFactor )
          
         if( zoomOutActivated )
-            viewport.zoomBy( ZOOM_OUT_FACTOR )
+            viewport.zoomBy( zoomOutFactor )
     }    
 }
 

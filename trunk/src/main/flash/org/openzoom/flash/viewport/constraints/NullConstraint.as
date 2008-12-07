@@ -21,15 +21,15 @@
 package org.openzoom.flash.viewport.constraints
 {
 
+import flash.geom.Point;
+
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
- * Viewport constraint that ensures that the viewport only reaches zoom
- * values that are powers of two. Very useful for mapping application where
- * map tiles contain text labels and best look at scales that are power of two.
+ * Null Object Pattern applied to IViewportConstraint.
  */
-public class MapViewportConstraint implements IViewportConstraint
+public class NullConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
     //
@@ -37,8 +37,9 @@ public class MapViewportConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_CONSTRAINT : IViewportConstraint = new DefaultViewportConstraint()
-   
+    private static const DEFAULT_MIN_ZOOM : Number = 0.001
+    private static const DEFAULT_MAX_ZOOM : Number = Number.MAX_VALUE
+	
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -48,7 +49,7 @@ public class MapViewportConstraint implements IViewportConstraint
 	/**
 	 * Constructor.
 	 */
-    public function MapViewportConstraint()
+    public function NullConstraint()
     {
     }
     
@@ -63,15 +64,13 @@ public class MapViewportConstraint implements IViewportConstraint
      */ 
     public function validate( transform : IViewportTransform ) : IViewportTransform
     {
-        var validatedTransform : IViewportTransform = DEFAULT_CONSTRAINT.validate( transform )        
-        
-        // snap to scale that are powers of two
-        // most map tiles look best that way
-        var exp : Number = Math.round( Math.log( validatedTransform.scale ) / Math.LN2 )
-        var scale : Number = Math.pow( 2, exp )
-        validatedTransform.scale = scale
-        
-        return validatedTransform
+    	if( transform.zoom < DEFAULT_MIN_ZOOM )
+            transform.zoomTo( DEFAULT_MIN_ZOOM )
+            
+    	if( transform.zoom > DEFAULT_MAX_ZOOM )
+            transform.zoomTo( DEFAULT_MAX_ZOOM )
+    	
+        return transform
     }
 }
 

@@ -21,15 +21,15 @@
 package org.openzoom.flash.viewport.constraints
 {
 
-import flash.geom.Point;
-
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
- * Null Object Pattern applied to IViewportConstraint.
+ * Viewport constraint that ensures that the viewport only reaches zoom
+ * values that are powers of two. Very useful for mapping application where
+ * map tiles contain text labels and best look at scales that are power of two.
  */
-public class NullViewportConstraint implements IViewportConstraint
+public class MappingConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
     //
@@ -37,9 +37,8 @@ public class NullViewportConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_MIN_ZOOM : Number = 0.001
-    private static const DEFAULT_MAX_ZOOM : Number = Number.MAX_VALUE
-	
+    private static const DEFAULT_CONSTRAINT : IViewportConstraint = new DefaultConstraint()
+   
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -49,7 +48,7 @@ public class NullViewportConstraint implements IViewportConstraint
 	/**
 	 * Constructor.
 	 */
-    public function NullViewportConstraint()
+    public function MappingConstraint()
     {
     }
     
@@ -64,13 +63,15 @@ public class NullViewportConstraint implements IViewportConstraint
      */ 
     public function validate( transform : IViewportTransform ) : IViewportTransform
     {
-    	if( transform.zoom < DEFAULT_MIN_ZOOM )
-            transform.zoomTo( DEFAULT_MIN_ZOOM )
-            
-    	if( transform.zoom > DEFAULT_MAX_ZOOM )
-            transform.zoomTo( DEFAULT_MAX_ZOOM )
-    	
-        return transform
+        var validatedTransform : IViewportTransform = DEFAULT_CONSTRAINT.validate( transform )        
+        
+        // snap to scale that are powers of two
+        // most map tiles look best that way
+        var exp : Number = Math.round( Math.log( validatedTransform.scale ) / Math.LN2 )
+        var scale : Number = Math.pow( 2, exp )
+        validatedTransform.scale = scale
+        
+        return validatedTransform
     }
 }
 

@@ -201,3 +201,69 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 }
 
 }
+
+//------------------------------------------------------------------------------
+//
+//  Internal classes
+//
+//------------------------------------------------------------------------------
+
+import flash.geom.Rectangle;
+
+/**
+ * @private
+ */
+class DisplayRect extends Rectangle
+{
+    //--------------------------------------------------------------------------
+    //
+    //  Constructor
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * Constructor.
+     */
+    public function DisplayRect( x : Number, y : Number,
+                                 width : Number, height : Number,
+                                 minLevel : int, maxLevel : int )
+    {
+    	super( x, y, width, height )
+    	_minLevel = minLevel
+    	_maxLevel = maxLevel
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  minLevel
+    //----------------------------------
+    
+    /**
+     * @private
+     */
+    private var _minLevel : int
+     
+    public function get minLevel() : int
+    {
+        return _minLevel    
+    }
+    
+    //----------------------------------
+    //  maxLevel
+    //----------------------------------
+    
+    /**
+     * @private
+     */    
+    private var _maxLevel : int
+    
+    public function get maxLevel() : int
+    {
+        return _maxLevel    
+    }
+}

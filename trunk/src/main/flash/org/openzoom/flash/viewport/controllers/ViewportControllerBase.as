@@ -28,7 +28,10 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportController;
 
 /**
- * Base class for viewport controllers.
+ * Base class for viewport controllers. For your own controller, extend
+ * this class and implement org.openzoom.flash.viewport.IViewportController.
+ * 
+ * @see org.openzoom.flash.viewport.IViewportController
  */
 public class ViewportControllerBase
 {
@@ -50,6 +53,25 @@ public class ViewportControllerBase
     //  Properties
     //
     //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  viewport
+    //----------------------------------
+
+    private var _viewport : INormalizedViewport
+
+    /**
+     * Indicates which viewport is controlled by this controller.
+     */ 
+    public function get viewport() : INormalizedViewport
+    {
+        return _viewport
+    }
+    
+    public function set viewport( value : INormalizedViewport ) : void
+    {
+        _viewport = value
+    }
   
     //----------------------------------
     //  view
@@ -57,6 +79,9 @@ public class ViewportControllerBase
   
     private var _view : DisplayObject
     
+    /**
+     * Indicates the display object this controller receives its events from.
+     */ 
     public function get view() : DisplayObject
     {
         return _view
@@ -74,28 +99,16 @@ public class ViewportControllerBase
         
         if( value )
         {
-            view.addEventListener( Event.ADDED_TO_STAGE, view_addedToStageHandler, false, 0, true )
-            view.addEventListener( Event.REMOVED_FROM_STAGE, view_removedFromStageHandler, false, 0, true )
+            view.addEventListener( Event.ADDED_TO_STAGE,
+                                   view_addedToStageHandler,
+                                   false, 0, true )
+            view.addEventListener( Event.REMOVED_FROM_STAGE,
+                                   view_removedFromStageHandler,
+                                   false, 0, true )
       
             if( view.stage )
                 view_addedToStageHandler( null )
         }
-    }
-    
-    //----------------------------------
-    //  viewport
-    //----------------------------------
-
-    private var _viewport : INormalizedViewport
-        
-    public function get viewport() : INormalizedViewport
-    {
-        return _viewport
-    }
-    
-    public function set viewport( value : INormalizedViewport ) : void
-    {
-        _viewport = value
     }
   
     //--------------------------------------------------------------------------
@@ -103,11 +116,21 @@ public class ViewportControllerBase
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-      
+    
+    /**
+     * @private
+     * 
+     * Documentation not available.
+     */
     protected function view_addedToStageHandler( event : Event ) : void
     {
     }
-      
+    
+    /**
+     * @private
+     * 
+     * Documentation not available.
+     */  
     protected function view_removedFromStageHandler( event : Event ) : void
     {
     }

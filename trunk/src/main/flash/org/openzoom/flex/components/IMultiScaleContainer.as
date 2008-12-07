@@ -21,46 +21,62 @@
 package org.openzoom.flex.components
 {
 
+import flash.geom.Point;
+
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
-	
+
+/**
+ * @private
+ * 
+ * Interface of a generic MultiScaleContainer.
+ */
 public interface IMultiScaleContainer
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Includes
+    //
+    //--------------------------------------------------------------------------
+    
+    include "IViewportContainer.as"
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Scene
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  scene
+    //----------------------------------
+    
     /**
-     * Multi-scale scene belonging to this container.
+     * Scene belonging to this container.
      */
     function get scene() : IMultiScaleScene
+    
+    //----------------------------------
+    //  sceneWidth
+    //----------------------------------
     
     /**
      * Width of the scene belonging to this container.
      */
     function get sceneWidth() : Number	
     function set sceneWidth( value : Number ) : void
+    
+    //----------------------------------
+    //  sceneHeight
+    //----------------------------------
     	
     /**
      * Height of the scene belonging to this container.
      */
     function get sceneHeight() : Number	
     function set sceneHeight( value : Number ) : void
-    
-    /**
-     * Viewport belonging to this container.
-     */
-    function get viewport() : INormalizedViewport
-    
-    /**
-     * Viewport constraint.
-     */ 
-//    function get constraint() : IViewportConstraint
-//    function set constraint( value : IViewportConstraint ) : void
-    
-    /**
-     * Viewport transformer.
-     */
-    function get transformer() : IViewportTransformer
-    function set transformer( value : IViewportTransformer ) : void
 }
 
 }

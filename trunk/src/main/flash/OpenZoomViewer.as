@@ -47,8 +47,12 @@ import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
 import org.openzoom.viewer.assets.Sad;
+    
+[ExcludeClass]
 
 /**
+ * @private
+ * 
  * Bootstrapper.
  */
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#111111")]

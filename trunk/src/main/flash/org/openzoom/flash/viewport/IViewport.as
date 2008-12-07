@@ -106,7 +106,7 @@ public interface IViewport extends IEventDispatcher
      * Horizontal dimension of the viewport.
      */
     function get width() : Number
-//  function set width( value : Number ) : void
+    function set width( value : Number ) : void
     
     //----------------------------------
     //  height
@@ -116,7 +116,7 @@ public interface IViewport extends IEventDispatcher
      * Vertical dimension of the viewport.
      */
     function get height() : Number
-//  function set height( value : Number ) : void
+    function set height( value : Number ) : void
     
     //----------------------------------
     //  viewportWidth
@@ -176,7 +176,7 @@ public interface IViewport extends IEventDispatcher
      * Scale of the scene.
      */ 
     function get scale() : Number
-//  function set scale( value : Number ) : void
+    function set scale( value : Number ) : void
       
     //----------------------------------
     //  zoom
@@ -203,7 +203,7 @@ public interface IViewport extends IEventDispatcher
      */
     function zoomTo( zoom : Number,
                      transformX : Number = 0.5, transformY : Number = 0.5,
-                     dispatchChangeEvent : Boolean = true ) : void
+                     immediately : Boolean = false ) : void
     
     /**
      * Zoom the viewport by a factor.
@@ -213,7 +213,7 @@ public interface IViewport extends IEventDispatcher
      */
     function zoomBy( factor : Number,
                      transformX : Number = 0.5, transformY : Number = 0.5,
-                     dispatchChangeEvent : Boolean = true ) : void
+                     immediately : Boolean = false ) : void
     
     //--------------------------------------------------------------------------
     //
@@ -227,7 +227,7 @@ public interface IViewport extends IEventDispatcher
      * @param y Vertical coordinate
      */
     function panTo( x : Number, y : Number,
-                    dispatchChangeEvent : Boolean = true ) : void
+                    immediately : Boolean = false ) : void
     
     /**
      * Move the viewport.
@@ -235,7 +235,7 @@ public interface IViewport extends IEventDispatcher
      * @param deltaY Vertical translation delta
      */
     function panBy( deltaX : Number, deltaY : Number,
-                    dispatchChangeEvent : Boolean = true ) : void
+                    immediately : Boolean = false ) : void
     
     /**
      * Move the viewport center.
@@ -243,7 +243,7 @@ public interface IViewport extends IEventDispatcher
      * @param centerY Vertical coordinate of the new center
      */                 
     function panCenterTo( centerX : Number, centerY : Number,
-                          dispatchChangeEvent : Boolean = true ) : void
+                          immediately : Boolean = false ) : void
     
     //--------------------------------------------------------------------------
     //
@@ -258,12 +258,12 @@ public interface IViewport extends IEventDispatcher
      * @param scale Scale at which the area is beeing displayed.
      */             
     function showRect( rect : Rectangle, scale : Number = 1.0,
-                       dispatchChangeEvent : Boolean = true ) : void
+                       immediately : Boolean = false ) : void
                      
     /**
      * Fit entire scene into the viewport.
      */ 
-    function showAll() : void
+    function showAll( immediately : Boolean = false ) : void
     
     //--------------------------------------------------------------------------
     //

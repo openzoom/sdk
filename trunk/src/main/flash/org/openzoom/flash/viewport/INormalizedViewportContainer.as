@@ -18,26 +18,24 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.renderers
+package org.openzoom.flash.viewport
 {
 
-import flash.geom.Rectangle;
-
-import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewport;
-
-/**
- * Interface for a renderer that is multi-scalar.
- */
-public interface IMultiScaleRenderer
-{
+public interface INormalizedViewportContainer extends INormalizedViewport
+{   
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+	
 	/**
-	 * Indicates the viewport this renderer is viewed in.
+	 * Sets viewportWidth and viewportHeight.
+	 * Dispatches Event.RESIZE.
+     * 
+     * @see org.openzoom.events.ViewportEvent#resize
 	 */
-    function get viewport() : INormalizedViewport
-    function set viewport( value : INormalizedViewport ) : void
-    
-//  function getBounds( targetViewport : IViewport ) : Rectangle
+	function setSize( width : Number, height : Number ) : void
 }
 
 }

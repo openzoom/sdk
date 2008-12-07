@@ -36,18 +36,30 @@ import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportContainer;
+import org.openzoom.flash.viewport.IViewportConstraint;
+import org.openzoom.flash.viewport.INormalizedViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.IViewportTransformer;
-import org.openzoom.flash.viewport.LegacyViewport;
 import org.openzoom.flash.viewport.NormalizedViewport;
-import org.openzoom.flash.viewport.controllers.ViewTransformationController;
 
 [DefaultProperty("children")]
-public class MultiScaleContainer extends UIComponent 
-                                 implements IMultiScaleContainer,
-                                            ILoaderClient
-{   
+/**
+ * @private
+ * 
+ * Generic container for multi-scale content.
+ */
+public final class MultiScaleContainer extends UIComponent 
+                                       implements IMultiScaleContainer,
+                                                  ILoaderClient
+{
+    //--------------------------------------------------------------------------
+    //
+    //  Includes
+    //
+    //--------------------------------------------------------------------------
+    
+    include "ViewportContainer.as"
+    
     //--------------------------------------------------------------------------
     //
     //  Class constants
@@ -77,11 +89,11 @@ public class MultiScaleContainer extends UIComponent
      */
     public function MultiScaleContainer()
     {
-        createMouseCatcher()
-        createScene()
+        if( !_scene )
+            createScene()
         
-//        createNormalizedViewport( _scene )
-        createAnimationViewport( _scene )
+        if( !_viewport )
+            createNormalizedViewport( _scene )
     }
     
     //--------------------------------------------------------------------------
@@ -92,8 +104,6 @@ public class MultiScaleContainer extends UIComponent
     
     private var mouseCatcher : Sprite
     private var contentMask : Shape
-    
-    private var transformationController : ViewTransformationController
     
     //--------------------------------------------------------------------------
     //
@@ -117,7 +127,7 @@ public class MultiScaleContainer extends UIComponent
     //  viewport
     //----------------------------------
     
-    private var _viewport : IViewportContainer
+    private var _viewport : INormalizedViewportContainer
     
    ;[Bindable(event="viewportChanged")]
     public function get viewport() : INormalizedViewport
@@ -129,17 +139,30 @@ public class MultiScaleContainer extends UIComponent
     //  constraint
     //----------------------------------
 
-//    public function get constraint() : IViewportConstraint
-//    {
-//    	// FIXME
-//        return viewport.transformer.constraint
-//    }
-//
-//    public function set constraint( value : IViewportConstraint ) : void
-//    {
-//    	// FIXME
-//        viewport.tranformer.constraint = value
-//    }
+    private var _constraint : IViewportConstraint
+    private var constraintChanged : Boolean = false
+
+   ;[Bindable(event="constraintChanged")]
+
+    /**
+     * @inheritDoc
+     */ 
+    public function get constraint() : IViewportConstraint
+    {
+        return _constraint
+    }
+
+    public function set constraint( value : IViewportConstraint ) : void
+    {
+    	if( _constraint !== value )
+    	{
+    		_constraint = value
+    		constraintChanged = true
+    		invalidateProperties()
+    		
+            dispatchEvent( new Event( "constraintChanged" ))	
+    	}
+    }
     
     //----------------------------------
     //  loader
@@ -161,14 +184,29 @@ public class MultiScaleContainer extends UIComponent
     //  transformer
     //----------------------------------
     
+    private var _transformer : IViewportTransformer
+    private var transformChanged : Boolean = false
+    
+   ;[Bindable(event="transformerChanged")]
+    
+    /**
+     * @inheritDoc
+     */ 
     public function get transformer() : IViewportTransformer
     {
-    	return viewport.transformer
+    	return _transformer
     }
     
     public function set transformer( value : IViewportTransformer ) : void
     {
-    	viewport.transformer = value
+    	if( _transformer !== value )
+        {
+	        _transformer = value
+	        transformChanged = true
+	        invalidateProperties()
+	        
+	        dispatchEvent( new Event( "transformerChanged" ))
+        }
     }
     
     //----------------------------------
@@ -263,8 +301,32 @@ public class MultiScaleContainer extends UIComponent
     override protected function createChildren() : void
     {
         super.createChildren()
-        createContentMask()
-        createLoader()
+        
+        if( !mouseCatcher )
+            createMouseCatcher()
+        
+        if( !contentMask )
+            createContentMask()
+            
+        if( !loader )
+            createLoader()
+    }
+    
+    override protected function commitProperties() : void
+    {
+    	super.commitProperties()
+    	
+    	if( transformChanged )
+    	{
+    		viewport.transformer = _transformer
+    		transformChanged = false
+    	}
+    	
+    	if( constraintChanged )
+    	{
+    		viewport.transformer.constraint = _constraint
+    		constraintChanged = false
+    	}
     }
     
     //--------------------------------------------------------------------------
@@ -275,6 +337,9 @@ public class MultiScaleContainer extends UIComponent
     
     override public function get numChildren() : int
     {
+    	if( !_scene )
+    	   return 0
+    	   
         return _scene.numChildren
     }
     
@@ -294,7 +359,8 @@ public class MultiScaleContainer extends UIComponent
         return _scene.removeChild( child )
     }
     
-    override public function addChildAt( child : DisplayObject, index : int ) : DisplayObject
+    override public function addChildAt( child : DisplayObject,
+                                         index : int ) : DisplayObject
     {
     	return _scene.addChild( child )
     }
@@ -304,17 +370,20 @@ public class MultiScaleContainer extends UIComponent
     	return _scene.removeChildAt( index )
     }
     
-    override public function swapChildren( child1 : DisplayObject, child2 : DisplayObject ) : void
+    override public function swapChildren( child1 : DisplayObject,
+                                           child2 : DisplayObject ) : void
     {
     	_scene.swapChildren( child1, child2 )
     }
     
-    override public function swapChildrenAt( index1 : int, index2 : int ) : void
+    override public function swapChildrenAt( index1 : int,
+                                             index2 : int ) : void
     {
     	_scene.swapChildrenAt( index1, index2 )
     }
     
-    override public function setChildIndex( child : DisplayObject, index : int ) : void
+    override public function setChildIndex( child : DisplayObject,
+                                            index : int ) : void
     {
     	_scene.setChildIndex( child, index )
     }
@@ -354,22 +423,25 @@ public class MultiScaleContainer extends UIComponent
     //
     //--------------------------------------------------------------------------
     
+//    private function createLegacyViewport( scene : IReadonlyMultiScaleScene ) : void
+//    {
+//        _viewport = new LegacyViewport( DEFAULT_VIEWPORT_WIDTH,
+//                                        DEFAULT_VIEWPORT_HEIGHT,
+//                                        scene )
+//
+//        var transformationController : ViewTransformationController
+//        transformationController = new ViewTransformationController()
+//        transformationController.viewport = viewport
+//        transformationController.view = scene.targetCoordinateSpace
+//                                    
+//        dispatchEvent( new Event("viewportChanged" ))
+//    }
+    
     private function createNormalizedViewport( scene : IReadonlyMultiScaleScene ) : void
     {
-        _viewport = new LegacyViewport( DEFAULT_VIEWPORT_WIDTH,
+        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
                                             DEFAULT_VIEWPORT_HEIGHT,
                                             scene )
-        
-        transformationController = new ViewTransformationController()
-        transformationController.viewport = viewport
-        transformationController.view = scene.targetCoordinateSpace
-    }
-    
-    private function createAnimationViewport( scene : IReadonlyMultiScaleScene ) : void
-    {
-        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
-                                           DEFAULT_VIEWPORT_HEIGHT,
-                                           scene )
         _viewport.addEventListener( ViewportEvent.TRANSFORM_START,
                                     viewport_transformStartHandler,
                                     false, 0, true ) 
@@ -380,7 +452,7 @@ public class MultiScaleContainer extends UIComponent
                                     viewport_transformEndHandler,
                                     false, 0, true )
                                     
-       dispatchEvent( new Event("viewportChanged" ))
+        dispatchEvent( new Event("viewportChanged" ))
     }
     
     private function viewport_transformStartHandler( event : ViewportEvent ) : void

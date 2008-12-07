@@ -21,7 +21,11 @@
 package
 {
 
+[ExcludeClass]
+
 /**
+ * @private
+ * 
  * Describes all valid parameters of the OpenZoom Viewer.
  */
 public class OpenZoomViewerParameters

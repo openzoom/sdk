@@ -33,6 +33,8 @@ import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.INormalizedViewport;
 
 /**
+ * @private
+ * 
  * Component for quickly navigating a multi-scale scene.
  */
 public class SceneNavigator extends Sprite

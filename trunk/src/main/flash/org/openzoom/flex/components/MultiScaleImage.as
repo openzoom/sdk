@@ -22,6 +22,7 @@ package org.openzoom.flex.components
 {
 
 import flash.events.Event;
+import flash.geom.Point;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
@@ -34,17 +35,24 @@ import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
-import org.openzoom.flash.viewport.controllers.KeyboardController;
-import org.openzoom.flash.viewport.controllers.MouseController;
 
 /**
  * Component for displaying a single multi-scale image. Inspired by the Microsoft
  * Silverlight Deep Zoom MultiScaleImage component. This implementation has built-in
  * support for Zoomify, Deep Zoom and OpenZoom images. Basic keyboard and mouse navigation
- * is included: &laquo;Batteries included&raquo; so to speak.
+ * can be added by specifying viewport controllers. The animation can be customized
+ * by adding a viewport transformer.
  */
-public class MultiScaleImage extends UIComponent
-{   
+public final class MultiScaleImage extends UIComponent implements IMultiScaleImage
+{
+    //--------------------------------------------------------------------------
+    //
+    //  Includes
+    //
+    //--------------------------------------------------------------------------
+    
+    include "ViewportContainer.as"
+    
     //--------------------------------------------------------------------------
     //
     //  Class constants
@@ -53,8 +61,10 @@ public class MultiScaleImage extends UIComponent
    
     private static const DEFAULT_MIN_ZOOM        : Number = 0.25
     private static const DEFAULT_MAX_ZOOM        : Number = 10000
+    private static const DEFAULT_MIN_SCALE       : Number = 0
+    private static const DEFAULT_MAX_SCALE       : Number = 4
     
-    private static const DEFAULT_SCENE_DIMENSION : Number = 16384//12000
+    private static const DEFAULT_SCENE_DIMENSION : Number = 16384 // 2^14
     
     private static const DEFAULT_VIEWPORT_WIDTH  : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT : Number = 600
@@ -82,6 +92,8 @@ public class MultiScaleImage extends UIComponent
     private var sourceLoader : URLLoader
     
     private var image : MultiScaleImageRenderer
+    
+   ;[Bindable(event="containerChanged")]
     private var container : MultiScaleContainer
     
 	//--------------------------------------------------------------------------
@@ -99,8 +111,8 @@ public class MultiScaleImage extends UIComponent
     [Bindable(event="sourceChanged")]
     
     /**
-     * Source of this image.
-     * Either a URL as String or an instance of IMultiScaleImageDescriptor.
+     * Source of this image. Either a URL as String or an
+     * instance of IMultiScaleImageDescriptor.
      */ 
     public function get source() : Object
     {
@@ -113,7 +125,7 @@ public class MultiScaleImage extends UIComponent
     	{
     		_source = null
 	        container.removeChildAt( 0 )
-	        viewport.showAll()
+	        viewport.showAll( true )
     	}
     	
     	if( value is String )
@@ -150,7 +162,10 @@ public class MultiScaleImage extends UIComponent
      */ 
     public function get sceneWidth() : Number
     {
-        return container.scene.sceneWidth
+    	if( container )
+            return container.scene.sceneWidth
+        else
+            return NaN
     }
     
     //----------------------------------
@@ -162,7 +177,10 @@ public class MultiScaleImage extends UIComponent
      */ 
     public function get sceneHeight() : Number
     {
-        return container.scene.sceneHeight
+    	if( container )
+            return container.scene.sceneHeight
+        else
+            return NaN
     }
     
     //--------------------------------------------------------------------------
@@ -175,7 +193,7 @@ public class MultiScaleImage extends UIComponent
     //  viewport
     //----------------------------------
     
-    [Bindable(event="viewportChanged")]
+   ;[Bindable(event="viewportChanged")]
     
     /**
      * Viewport of this image.
@@ -189,34 +207,84 @@ public class MultiScaleImage extends UIComponent
     //  transformer
     //----------------------------------
     
+    private var _transformer : IViewportTransformer
+    private var transformerChanged : Boolean = false
+    
+   ;[Bindable(event="transformerChanged")]
+    
     /**
      * Viewport transformer.
      */ 
     public function get transformer() : IViewportTransformer
     {
-        return container.viewport.transformer
+    	return _transformer
     }
     
     public function set transformer( value : IViewportTransformer ) : void
     {
-        container.viewport.transformer = value
+    	if( _transformer !== value )
+        {
+	        _transformer = value    
+	        transformerChanged = true
+	        invalidateProperties()
+	        
+	        dispatchEvent( new Event( "transformerChanged" ))
+        }
     }
     
     //----------------------------------
     //  constraint
     //----------------------------------
     
+    private var _constraint : IViewportConstraint
+    private var constraintChanged : Boolean = false
+    
+   ;[Bindable(event="constraintChanged")]
+    
     /**
      * Transformer constraint.
      */ 
     public function get constraint() : IViewportConstraint
     {
-        return container.viewport.transformer.constraint
+    	return _constraint
     }
     
     public function set constraint( value : IViewportConstraint ) : void
     {
-        container.viewport.transformer.constraint = value
+        if( _constraint !== value )
+        {
+            _constraint = value    
+            constraintChanged = true
+            invalidateProperties()
+            
+            dispatchEvent( new Event( "constraintChanged" ))
+        }
+    }
+    
+    //----------------------------------
+    //  controllers
+    //----------------------------------
+    
+    private var _controllers : Array /* of IViewportController */ = []
+    private var controllersChanged : Boolean = false
+    
+   ;[Bindable(event="controllersChanged")]
+    
+    public function get controllers() : Array
+    {
+    	return _controllers
+    }
+    
+    public function set controllers( value : Array ) : void
+    {
+        if( _controllers !== value )
+        {
+            _controllers = value    
+            controllersChanged = true
+            invalidateProperties()
+            
+            dispatchEvent( new Event( "controllersChanged" ))
+        }
     }
     
 	//--------------------------------------------------------------------------
@@ -229,8 +297,14 @@ public class MultiScaleImage extends UIComponent
     {
     	super.createChildren()
     	
-        createContainer()        
-        createDefaultControllers()
+    	if( !container )
+    	{
+	        container = new MultiScaleContainer()
+	        addChild( container )
+	        
+	        dispatchEvent( new Event( "containerChanged" ))
+	        dispatchEvent( new Event( "viewportChanged" ))
+    	}
     }
     
     override protected function updateDisplayList( unscaledWidth : Number,
@@ -238,6 +312,29 @@ public class MultiScaleImage extends UIComponent
     {
         container.width  = unscaledWidth
         container.height = unscaledHeight
+    }
+    
+    override protected function commitProperties() : void
+    {
+    	super.commitProperties()
+    	
+    	if( controllersChanged )
+    	{
+    		container.controllers = _controllers
+    		controllersChanged = false
+    	}
+    	
+    	if( transformerChanged )
+    	{
+    		container.transformer = _transformer
+    		transformerChanged = false
+    	}
+        
+        if( constraintChanged )
+        {
+            container.constraint = _constraint
+            constraintChanged = false
+        }
     }
     
 	//--------------------------------------------------------------------------
@@ -249,20 +346,10 @@ public class MultiScaleImage extends UIComponent
     /**
      * @private
      */
-    private function createContainer() : void
-    {
-    	container = new MultiScaleContainer()
-    	addChild( container )
-    	
-    	dispatchEvent( new Event( "viewportChanged" ))
-    }
-    
-    /**
-     * @private
-     */
     private function createImage( descriptor : IMultiScaleImageDescriptor,
                                   loader : LoadingQueue,
-                                  width : Number, height : Number ) : MultiScaleImageRenderer
+                                  width : Number,
+                                  height : Number ) : MultiScaleImageRenderer
     {
         var image : MultiScaleImageRenderer =
                         new MultiScaleImageRenderer( descriptor, loader, width, height )
@@ -275,15 +362,6 @@ public class MultiScaleImage extends UIComponent
     //  Methods: Controllers
     //
     //--------------------------------------------------------------------------
-    
-    /**
-     * @private
-     */
-    private function createDefaultControllers() : void
-    {
-    	container.controllers = [ new MouseController(),
-    	                          new KeyboardController() ]
-    }
     
     /**
      * @private

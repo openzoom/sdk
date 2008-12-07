@@ -18,24 +18,51 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.viewport
+package org.openzoom.flex.components
 {
 
-public interface IViewportContainer extends INormalizedViewport
-{   
+import flash.geom.Point;
+
+import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.IViewportConstraint;
+import org.openzoom.flash.viewport.IViewportTransformer;
+
+/**
+ * Interface of a multi-scale image.
+ */
+public interface IMultiScaleImage
+{
     //--------------------------------------------------------------------------
     //
-    //  Methods
+    //  Includes
     //
     //--------------------------------------------------------------------------
-	
-	/**
-	 * Sets viewportWidth and viewportHeight.
-	 * Dispatches Event.RESIZE.
-     * 
-     * @see org.openzoom.events.ViewportEvent#resize
-	 */
-	function setSize( width : Number, height : Number ) : void
+    
+    include "IViewportContainer.as"
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Scene
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  sceneWidth
+    //----------------------------------
+    
+    /**
+     * Width of the scene belonging to this container.
+     */
+    function get sceneWidth() : Number
+    
+    //----------------------------------
+    //  sceneHeight
+    //----------------------------------
+    	
+    /**
+     * Height of the scene belonging to this container.
+     */
+    function get sceneHeight() : Number
 }
 
 }

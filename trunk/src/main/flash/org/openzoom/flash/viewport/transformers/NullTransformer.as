@@ -26,7 +26,11 @@ import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;   
 
-public class NullViewportTransformer implements IViewportTransformer
+/**
+ * Null Object Pattern applied to IViewportTransformer.
+ * The NullTransformer transforms the given viewport without any kind of animation.
+ */
+public class NullTransformer implements IViewportTransformer
 {    
     //--------------------------------------------------------------------------
     //
@@ -37,7 +41,7 @@ public class NullViewportTransformer implements IViewportTransformer
     /**
      * Constructor.
      */
-    public function NullViewportTransformer()
+    public function NullTransformer()
     {
     }
     

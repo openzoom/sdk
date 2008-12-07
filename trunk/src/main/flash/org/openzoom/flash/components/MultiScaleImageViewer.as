@@ -38,14 +38,18 @@ import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.NormalizedViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportContainer;
+import org.openzoom.flash.viewport.INormalizedViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.LegacyViewport;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.controllers.ViewTransformationController;
 
+[ExcludeClass]
+
 /**
+ * @private
+ * 
  * Basic multi-scale image viewer.
  */
 public class MultiScaleImageViewer extends Sprite
@@ -151,7 +155,7 @@ public class MultiScaleImageViewer extends Sprite
     //  viewport
     //----------------------------------
     
-    private var _viewport : IViewportContainer
+    private var _viewport : INormalizedViewportContainer
     
     public function get viewport() : INormalizedViewport
     {
