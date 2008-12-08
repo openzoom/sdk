@@ -345,7 +345,8 @@ public class MouseController extends ViewportControllerBase
     private function stopPanning() : void
     {    
         // unregister from mouse move events
-        if( view.hasEventListener( MouseEvent.MOUSE_MOVE ) )
+        // FIXME
+        if( view && view.hasEventListener( MouseEvent.MOUSE_MOVE ) )
             view.removeEventListener( MouseEvent.MOUSE_MOVE,
                                       view_mouseMoveHandler )
       

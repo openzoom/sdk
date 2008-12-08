@@ -288,6 +288,7 @@ public final class MultiScaleImage extends UIComponent implements IMultiScaleIma
      */
     public function get controllers() : Array
     {
+    	// TODO: Return copy? Encapsulation!!
     	return _controllers
     }
     
