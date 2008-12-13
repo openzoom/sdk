@@ -49,8 +49,8 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
      * Constructor.
      */
     public function MultiScaleScene( width : Number, height : Number,
-                                      backgroundColor : uint = 0x000000,
-                                      backgroundAlpha : Number = 0.0 )
+                                     backgroundColor : uint = 0x000000,
+                                     backgroundAlpha : Number = 0 )
     {
         this.backgroundColor = backgroundColor
      	this.backgroundAlpha = backgroundAlpha

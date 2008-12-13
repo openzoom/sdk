@@ -36,9 +36,10 @@ import org.openzoom.flash.events.LoadingItemEvent;
 /**
  * @private
  * 
- * Represents a single item to load.
+ * Represents a single DisplayObject item to load.
  */
-public class LoadingItem extends EventDispatcher
+public class DisplayObjectLoadingItem extends EventDispatcher
+                                      implements ILoadingItem
 {
     //--------------------------------------------------------------------------
     //
@@ -49,7 +50,7 @@ public class LoadingItem extends EventDispatcher
     /**
      * Constructor.
      */
-    public function LoadingItem( url : String, context : * = null )
+    public function DisplayObjectLoadingItem( url : String, context : * = null )
     {
         this.url = url
         this.context = context
@@ -71,6 +72,9 @@ public class LoadingItem extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     public function load() : void
     {
        var request : URLRequest = new URLRequest( url )
@@ -85,14 +89,14 @@ public class LoadingItem extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function contentLoaderInfo_completeHandler( event : Event ) : void
     {
         var bitmap : Bitmap = loader.content as Bitmap
         
-        // TODO: FP10 (Loader::unloadAndStop)
-        loader.unload()
-        removeEventListeners( loader.contentLoaderInfo )
-        loader = null
+        cleanUp()
         
         var loadingItemEvent : LoadingItemEvent =
                 new LoadingItemEvent( LoadingItemEvent.COMPLETE )
@@ -103,8 +107,15 @@ public class LoadingItem extends EventDispatcher
         dispatchEvent( loadingItemEvent )
     }
     
-    private function contentLoaderInfo_httpStatusHandler( event : HTTPStatusEvent ) : void
+    /**
+     * @private
+     */
+    private function contentLoaderInfo_httpStatusHandler(
+                                                event : HTTPStatusEvent ) : void
     {
+        // FIXME
+//        cleanUp()
+        
         var itemEvent : LoadingItemEvent =
                 new LoadingItemEvent( LoadingItemEvent.ERROR )
             itemEvent.item = this
@@ -112,8 +123,15 @@ public class LoadingItem extends EventDispatcher
         dispatchEvent( itemEvent )
     }
     
-    private function contentLoaderInfo_ioErrorHandler( event : IOErrorEvent ) : void
+    /**
+     * @private
+     */
+    private function contentLoaderInfo_ioErrorHandler(
+                                                   event : IOErrorEvent ) : void
     {
+        // FIXME
+//        cleanUp()
+        
         var itemEvent : LoadingItemEvent =
                 new LoadingItemEvent( LoadingItemEvent.ERROR )
             itemEvent.item = this
@@ -121,9 +139,17 @@ public class LoadingItem extends EventDispatcher
         dispatchEvent( itemEvent )
     }
     
-    private function contentLoaderInfo_securityErrorHandler( event : SecurityErrorEvent ) : void
+    /**
+     * @private
+     */
+    private function contentLoaderInfo_securityErrorHandler(
+                                             event : SecurityErrorEvent ) : void
     {
-        var itemEvent : LoadingItemEvent = new LoadingItemEvent( LoadingItemEvent.ERROR )
+        // FIXME
+//        cleanUp()
+        
+        var itemEvent : LoadingItemEvent =
+                new LoadingItemEvent( LoadingItemEvent.ERROR )
             itemEvent.item = this
             
         dispatchEvent( itemEvent )
@@ -135,6 +161,20 @@ public class LoadingItem extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
+    private function cleanUp() : void
+    {
+        // TODO: FP10 (Loader::unloadAndStop)
+        loader.unload()
+        removeEventListeners( loader.contentLoaderInfo )
+        loader = null
+    }
+    
+    /**
+     * @private
+     */ 
     private function addEventListeners( target : IEventDispatcher ) : void
     {
        target.addEventListener( Event.COMPLETE,
@@ -151,6 +191,9 @@ public class LoadingItem extends EventDispatcher
                                 false, 0, true )
     }
     
+    /**
+     * @private
+     */ 
     private function removeEventListeners( target : IEventDispatcher ) : void
     {
         target.removeEventListener( Event.COMPLETE,

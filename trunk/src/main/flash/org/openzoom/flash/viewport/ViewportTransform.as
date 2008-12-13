@@ -115,7 +115,9 @@ public class ViewportTransform implements IViewportTransform,
 
     public function set scale( value : Number ) : void
     {
-    	width = viewportWidth / ( value * _sceneWidth ) 
+//    	width = viewportWidth / ( value * _sceneWidth )
+        var targetWidth : Number = viewportWidth / ( value * _sceneWidth )
+        zoomTo( getZoomForWidth( targetWidth ))
     }
 
 
@@ -501,6 +503,7 @@ public class ViewportTransform implements IViewportTransform,
         var width : Number  
         var height : Number  
     
+        // sceneAspectRatio > aspectRatio
         if( ratio >= 1 )
         {
             // scene is wider than viewport

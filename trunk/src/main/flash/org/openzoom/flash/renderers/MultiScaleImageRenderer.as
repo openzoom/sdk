@@ -37,7 +37,7 @@ import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.events.LoadingItemEvent;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
-import org.openzoom.flash.net.LoadingQueue;
+import org.openzoom.flash.net.ILoadingQueue;
 import org.openzoom.flash.renderers.images.ITileLayer;
 import org.openzoom.flash.renderers.images.RenderingMode;
 import org.openzoom.flash.renderers.images.Tile;
@@ -72,7 +72,8 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
      * Constructor.
      */
     public function MultiScaleImageRenderer( descriptor : IMultiScaleImageDescriptor,
-                                             loader : LoadingQueue, width : Number, height : Number )
+                                             loader : ILoadingQueue,
+                                             width : Number, height : Number )
     {
     	_loader = loader
     	
@@ -130,17 +131,17 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //  loader
     //----------------------------------
     
-    private var _loader : LoadingQueue
+    private var _loader : ILoadingQueue
     
     /**
      * @private
      */ 
-    public function get loader() : LoadingQueue
+    public function get loader() : ILoadingQueue
     {
     	return _loader
     }
     
-    public function set loader( value : LoadingQueue ) : void
+    public function set loader( value : ILoadingQueue ) : void
     {
     	_loader = value
     }
@@ -227,6 +228,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         	layers[ i ] = layer
         	
         	// FIXME: Very large layer dimensions cause problems…
+        	// Actually, they don't as long as their dimensions are powers of two.
         	layer.width = width
         	layer.height = height
         	
@@ -246,7 +248,8 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         
         var url : String = descriptor.getTileURL( level, 0, 0 )
         
-        _loader.addItem( url ).addEventListener( Event.COMPLETE, backgroundCompleteHandler )
+        loader.addItem( url ).addEventListener( Event.COMPLETE,
+                                                backgroundCompleteHandler )
     } 
     
     /**
@@ -278,13 +281,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         var scale : Number = viewport.scale
         var level : IMultiScaleImageLevel = descriptor.getMinLevelForSize( width * scale, height * scale )
         
-        // remove all tiles from loading queue
-//        tileLoader.removeAll()
-        
+        // TODO: remove all tiles from loading queue
         
         var firstLevel : int = level.index + 1
-//        if( !viewport.intersects( normalizedBounds ))
-//            firstLevel = Math.max( 1, Math.ceil( level.index / 4 ))
 //            
         for( var i : int = firstLevel; i < descriptor.numLevels; i++ )
             getLayer( i ).removeAllTiles()
@@ -293,6 +292,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         {
 	        for( var l : int = 0; l <= level.index; l++ )
 	            loadTiles( descriptor.getLevelAt( l ), visibleRegion )
+	            // TODO: Phase loading of layers
 //	            setTimeout( loadTiles, i * 100, descriptor.getLevelAt( l ), visibleRegion )
         }
         else
@@ -307,9 +307,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     private function loadTiles( level : IMultiScaleImageLevel, area : Rectangle ) : void
     {
     	// FIXME
-        var minColumn : int = Math.max( 0, Math.floor( area.left * level.numColumns / unscaledWidth ) - 1)
+        var minColumn : int = Math.max( 0, Math.floor( area.left * level.numColumns / unscaledWidth ) - 1 )
         var maxColumn : int = Math.min( level.numColumns, Math.ceil( area.right * level.numColumns / unscaledWidth ))
-        var minRow    : int = Math.max( 0, Math.floor( area.top * level.numRows / unscaledHeight ) - 1)
+        var minRow    : int = Math.max( 0, Math.floor( area.top * level.numRows / unscaledHeight ) - 1 )
         var maxRow    : int = Math.min( level.numRows, Math.ceil( area.bottom * level.numRows / unscaledHeight ))
 
         var layer : ITileLayer = getLayer( level.index )
@@ -318,14 +318,22 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         {
             for( var row : int = minRow; row < maxRow; row++ ) 
             {
-                var tile : Tile = new Tile( null, level.index, row, column, descriptor.tileOverlap )
+                var tile : Tile = new Tile( null,
+                                            level.index,
+                                            row,
+                                            column,
+                                            descriptor.tileOverlap )
                 
-                if( layer.containsTile( tile ) || !descriptor.existsTile( tile.level, tile.column, tile.row ))
-                   continue
+                if( layer.containsTile( tile )
+                    || !descriptor.existsTile( tile.level, tile.column, tile.row ))
+                    continue
                 
-                var url : String = descriptor.getTileURL( tile.level, tile.column, tile.row )
-                _loader.addItem( url, tile )
-                          .addEventListener( Event.COMPLETE, tileCompleteHandler, false, 0, true  )
+                var url : String = descriptor.getTileURL( tile.level,
+                                                          tile.column,
+                                                          tile.row )
+                loader.addItem( url, tile ).addEventListener( Event.COMPLETE,
+                                                              tileCompleteHandler,
+                                                              false, 0, true  )
             }
         }
     }

@@ -107,6 +107,7 @@ public class VisibilityConstraint implements IViewportConstraint
         }
         else
         {
+        	// FIXME
             if( transform.x > ( 1 - visibilityRatio ))
                 x = 1 - visibilityRatio
                 
@@ -128,7 +129,9 @@ public class VisibilityConstraint implements IViewportConstraint
             if( transform.y + transform.height * visibilityRatio > 1 )
                 y = 1 - transform.height * visibilityRatio
         }
+        else
         {
+        	// FIXME
         	if( transform.y > ( 1 - visibilityRatio ))
                 y = 1 - visibilityRatio
                 

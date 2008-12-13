@@ -39,7 +39,7 @@ public class MappingConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_CONSTRAINT : IViewportConstraint = new VisibilityConstraint()
+    private static const LOG2_3 : Number = 1.5849625007211563 
    
     //--------------------------------------------------------------------------
     //
@@ -65,15 +65,33 @@ public class MappingConstraint implements IViewportConstraint
      */ 
     public function validate( transform : IViewportTransform ) : IViewportTransform
     {
-        var validatedTransform : IViewportTransform = DEFAULT_CONSTRAINT.validate( transform )        
-        
+        transform.scale = roundToPowerOf2( transform.scale )
+        return transform
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Internal
+    //
+    //--------------------------------------------------------------------------
+    
+    private function roundToPowerOf2( value : Number ) : Number
+    {        
         // snap to scale that are powers of two
         // most map tiles look best that way
-        var exp : Number = Math.round( Math.log( validatedTransform.scale ) / Math.LN2 )
-        var scale : Number = Math.pow( 2, exp )
-        validatedTransform.scale = scale
+        var exp : Number = Math.log( value ) / Math.LN2
+        var r : Number = exp - Math.floor( exp )
         
-        return validatedTransform
+        var n : Number
+        if( r < LOG2_3 - 1 )
+            n = Math.floor( exp )
+        else
+            n = Math.ceil( exp )
+        
+        if( n == 0 )
+            n = 1
+        
+        return Math.pow( 2, n )
     }
 }
 

@@ -21,6 +21,8 @@
 package org.openzoom.flash.net
 {
 
+import flash.events.EventDispatcher;
+
 import org.openzoom.flash.events.LoadingItemEvent;
 
 /**
@@ -28,7 +30,8 @@ import org.openzoom.flash.events.LoadingItemEvent;
  * 
  * Basic loading queue for image tiles.
  */
-public class LoadingQueue
+public class LoadingQueue extends EventDispatcher
+                          implements ILoadingQueue
 {
     //--------------------------------------------------------------------------
     //
@@ -66,11 +69,13 @@ public class LoadingQueue
     //
     //--------------------------------------------------------------------------
     
-    public function addItem( url : String, context : * = null ) : LoadingItem
+    public function addItem( url : String, context : * = null ) : ILoadingItem
     {
-        var item : LoadingItem = new LoadingItem( url, context )
-            item.addEventListener( LoadingItemEvent.COMPLETE, item_completeHandler )
-            item.addEventListener( LoadingItemEvent.ERROR, item_errorHandler )
+        var item : ILoadingItem = new DisplayObjectLoadingItem( url, context )
+            item.addEventListener( LoadingItemEvent.COMPLETE,
+                                   item_completeHandler )
+            item.addEventListener( LoadingItemEvent.ERROR,
+                                   item_errorHandler )
                 
         // add item to front (LIFO)
         queue.unshift( item )
@@ -84,11 +89,14 @@ public class LoadingQueue
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
     private function processQueue() : void
     {
         while( queue.length > 0 && connections.length < MAX_CONNECTIONS )
         {
-            var item : LoadingItem = LoadingItem( queue.shift() )
+            var item : ILoadingItem = ILoadingItem( queue.shift() )
             connections.push( item )
             item.load()
         }
@@ -100,6 +108,9 @@ public class LoadingQueue
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */
     private function item_completeHandler( event : LoadingItemEvent ) : void
     {
         var index : int = connections.indexOf( event.item )
@@ -110,6 +121,9 @@ public class LoadingQueue
         processQueue()
     }
     
+    /**
+     * @private
+     */
     private function item_errorHandler( event : LoadingItemEvent ) : void
     {
         item_completeHandler( event )

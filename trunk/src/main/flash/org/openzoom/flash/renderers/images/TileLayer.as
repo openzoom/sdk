@@ -161,11 +161,13 @@ public class TileLayer extends Sprite implements ITileLayer
         if( tileBitmap.x + tileBitmap.width > level.width || tileBitmap.y + tileBitmap.height > level.height )
             trace( "[TileLayer]: Bad cropping" )
         
+        // TODO: Refactor
         tileBitmap.smoothing = true
         tileBitmap.alpha = 0
     
         addChild( tileBitmap )
         
+        // TODO: Remove dependency on Tweener
 //        tileBitmap.alpha = 1
         Tweener.addTween( tileBitmap, { alpha: 1, time: DEFAULT_TILE_SHOW_DURATION } )
         

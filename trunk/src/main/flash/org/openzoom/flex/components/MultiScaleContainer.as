@@ -31,6 +31,7 @@ import mx.core.UIComponent;
 
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
+import org.openzoom.flash.net.ILoadingQueue;
 import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
@@ -42,7 +43,6 @@ import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.NormalizedViewport;
 
-[ExcludeClass]
 [DefaultProperty("children")]
 /**
  * @private
@@ -70,14 +70,13 @@ public final class MultiScaleContainer extends UIComponent
     private static const DEFAULT_MIN_ZOOM               : Number = 0.25
     private static const DEFAULT_MAX_ZOOM               : Number = 10000
     
+    private static const DEFAULT_VIEWPORT_WIDTH         : Number = 800
+    private static const DEFAULT_VIEWPORT_HEIGHT        : Number = 600
+    
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT           : Number = 18000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
     private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0
-    
-    private static const DEFAULT_VIEWPORT_WIDTH         : Number = 800
-    private static const DEFAULT_VIEWPORT_HEIGHT        : Number = 600
-    
     
     //--------------------------------------------------------------------------
     //
@@ -180,14 +179,14 @@ public final class MultiScaleContainer extends UIComponent
     //  loader
     //----------------------------------
     
-    private var _loader : LoadingQueue
+    private var _loader : ILoadingQueue
     
-    public function get loader() : LoadingQueue
+    public function get loader() : ILoadingQueue
     {
         return _loader 
     }
     
-    public function set loader( value : LoadingQueue ) : void
+    public function set loader( value : ILoadingQueue ) : void
     {
     	_loader = value
     }
@@ -228,6 +227,7 @@ public final class MultiScaleContainer extends UIComponent
     private var _controllers : Array = []
     
    ;[ArrayElementType("org.openzoom.flash.viewport.IViewportController")]
+   ;[Inspectable(arrayType="org.openzoom.flash.viewport.IViewportController")]
    
     /**
      * Controllers of type IViewportController applied to this MultiScaleImage.
@@ -239,7 +239,7 @@ public final class MultiScaleContainer extends UIComponent
      */
     public function get controllers() : Array
     {
-    	return _controllers.slice()
+    	return _controllers.slice( 0 )
     }
     
     public function set controllers( value : Array ) : void

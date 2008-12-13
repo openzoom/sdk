@@ -23,25 +23,57 @@ package org.openzoom.flash.events
 
 import flash.events.Event;
 
-import org.openzoom.flash.net.LoadingItem;
+import org.openzoom.flash.net.ILoadingItem;
 
 /**
  * @private
  */	
 public class LoadingItemEvent extends Event
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Class constants
+    //
+    //--------------------------------------------------------------------------
+    
     public static const COMPLETE : String = "complete"
-    public static const ERROR : String = "error"
+    public static const ERROR    : String = "error"
     
-    public var data : * = null
-    public var context : * = null
-    public var item : LoadingItem
+    //--------------------------------------------------------------------------
+    //
+    //  Constructor
+    //
+    //--------------------------------------------------------------------------
     
-    public function LoadingItemEvent( type : String, bubbles : Boolean = false, cancelable : Boolean = false )
+    /**
+     * Constructor.
+     */
+    public function LoadingItemEvent( type : String,
+                                      bubbles : Boolean = false,
+                                      cancelable : Boolean = false )
     {
         super( type, bubbles, cancelable )
     }
     
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+    
+    public var data : * = null
+    public var context : * = null
+    public var item : ILoadingItem
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Event
+    //
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @inheritDoc
+     */ 
     override public function clone() : Event
     {
         return new LoadingItemEvent( type, bubbles, cancelable )
