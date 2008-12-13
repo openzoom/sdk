@@ -28,6 +28,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Timer;
 
+import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.IViewportController;
 
 /**
@@ -195,8 +196,8 @@ public class MouseController extends ViewportControllerBase
                                   view_mouseDownHandler )
         view.removeEventListener( MouseEvent.ROLL_OUT,
                                   view_rollOutHandler )
-        view.removeEventListener( Event.MOUSE_LEAVE,
-                                  stage_mouseLeaveHandler )
+        view.stage.removeEventListener( Event.MOUSE_LEAVE,
+                                        stage_mouseLeaveHandler )
       
         // zooming listeners
         view.removeEventListener( MouseEvent.MOUSE_WHEEL,
@@ -220,8 +221,8 @@ public class MouseController extends ViewportControllerBase
     	
         // TODO: React appropriately to different platforms and/or browsers,
         // as they at times report completely different mouse wheel deltas. 
-        var factor : Number = 1 + ( event.delta * mouseWheelZoomFactor )
-    
+        var factor : Number = clamp( 1 + ( event.delta * mouseWheelZoomFactor ), 0.2, 5 )
+        
         // compute normalized origin of mouse relative to viewport.
         var originX : Number = view.mouseX / view.width
         var originY : Number = view.mouseY / view.height

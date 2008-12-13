@@ -41,7 +41,6 @@ import org.openzoom.flash.renderers.MultiScaleImageRenderer;
  * the <code>constraint</code> property.
  */
 public final class MultiScaleImage extends MultiScaleImageBase
-                                   implements IMultiScaleImage
 {
 	//--------------------------------------------------------------------------
     //
@@ -54,6 +53,10 @@ public final class MultiScaleImage extends MultiScaleImageBase
      */
 	public function MultiScaleImage()
 	{
+		super()
+		
+//		tabEnabled = false
+//		tabChildren = true
 	}
 	
 	//--------------------------------------------------------------------------
@@ -62,8 +65,8 @@ public final class MultiScaleImage extends MultiScaleImageBase
     //
     //--------------------------------------------------------------------------
     
-    private var sourceURL : String
-    private var sourceLoader : URLLoader
+    private var url : String
+    private var urlLoader : URLLoader
     
     private var image : MultiScaleImageRenderer
     
@@ -103,12 +106,12 @@ public final class MultiScaleImage extends MultiScaleImageBase
     	
     	if( value is String )
     	{
-    		if( sourceURL == String( value ))
+    		if( url == String( value ))
                 return
     		  
-    		sourceURL = String( value )
-    		sourceLoader = new URLLoader( new URLRequest( sourceURL ))
-    		sourceLoader.addEventListener( Event.COMPLETE, sourceLoader_completeHandler )
+    		url = String( value )
+    		urlLoader = new URLLoader( new URLRequest( url ))
+    		urlLoader.addEventListener( Event.COMPLETE, urlLoader_completeHandler )
     	}
     	
     	if( value is IMultiScaleImageDescriptor )
@@ -209,16 +212,16 @@ public final class MultiScaleImage extends MultiScaleImageBase
     /**
      * @private
      */
-    private function sourceLoader_completeHandler( event : Event ) : void
+    private function urlLoader_completeHandler( event : Event ) : void
     {
-    	if( !sourceLoader.data )
-    	   return
+        if( !urlLoader || !urlLoader.data )
+            return
     	
-        var data : XML = new XML( sourceLoader.data )
+        var data : XML = new XML( urlLoader.data )
         var factory : MultiScaleImageDescriptorFactory =
                           MultiScaleImageDescriptorFactory.getInstance()
         var descriptor : IMultiScaleImageDescriptor =
-                             factory.getDescriptor( sourceURL, data )
+                             factory.getDescriptor( url, data )
         
         _source = descriptor
         dispatchEvent( new Event( "sourceChanged" ))

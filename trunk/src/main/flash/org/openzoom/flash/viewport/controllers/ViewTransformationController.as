@@ -34,7 +34,7 @@ import org.openzoom.flash.viewport.IViewportController;
 
 /**
  * @private
- * 
+ * Deprecated.
  * Transforms the scene in the viewport.
  */
 public class ViewTransformationController extends ViewportControllerBase

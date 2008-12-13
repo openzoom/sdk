@@ -87,10 +87,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      */ 
     public function get sceneWidth() : Number
     {
-    	if( container )
-            return container.scene.sceneWidth
-        else
-            return NaN
+    	return container ? container.scene.sceneWidth : NaN
     }
     
     //----------------------------------
@@ -102,10 +99,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      */ 
     public function get sceneHeight() : Number
     {
-    	if( container )
-            return container.scene.sceneHeight
-        else
-            return NaN
+    	return container ? container.scene.sceneHeight : NaN
     }
     
     //--------------------------------------------------------------------------
@@ -305,7 +299,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      */
     public function get zoom() : Number
     {
-        return viewport.zoom    
+        return viewport.zoom
     }
     
     public function set zoom( value : Number ) : void
@@ -495,9 +489,28 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @inheritDoc
+     */ 
     override public function addChild( child : DisplayObject ) : DisplayObject
     {
     	return container.addChild( child )
+    }
+    
+    /**
+     * @inheritDoc
+     */ 
+    override public function removeChild( child : DisplayObject ) : DisplayObject
+    {
+    	return container.removeChild( child )
+    }
+    
+    /**
+     * @inheritDoc
+     */ 
+    override public function get numChildren():int
+    {
+    	return container ? container.numChildren : 0
     }
 }
 

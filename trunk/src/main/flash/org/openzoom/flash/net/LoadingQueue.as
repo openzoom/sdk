@@ -69,13 +69,29 @@ public class LoadingQueue extends EventDispatcher
     //
     //--------------------------------------------------------------------------
     
-    public function addItem( url : String, context : * = null ) : ILoadingItem
+    public function addItem( url : String,
+                             type : String,
+                             context : * = null ) : ILoadingItem
     {
-        var item : ILoadingItem = new DisplayObjectLoadingItem( url, context )
-            item.addEventListener( LoadingItemEvent.COMPLETE,
-                                   item_completeHandler )
-            item.addEventListener( LoadingItemEvent.ERROR,
-                                   item_errorHandler )
+        var item : ILoadingItem
+    	
+    	switch( type )
+    	{
+            case LoadingItemType.IMAGE:	
+            case LoadingItemType.SWF:
+                item = new DisplayObjectLoadingItem( url, context )
+                break
+            
+            case LoadingItemType.TEXT:	
+            case LoadingItemType.XML:
+                item = new TextLoadingItem( url, context )
+                break	
+    	}
+    	
+        item.addEventListener( LoadingItemEvent.COMPLETE,
+                               item_completeHandler )
+        item.addEventListener( LoadingItemEvent.ERROR,
+                               item_errorHandler )
                 
         // add item to front (LIFO)
         queue.unshift( item )

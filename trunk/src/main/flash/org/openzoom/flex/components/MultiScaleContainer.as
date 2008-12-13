@@ -33,6 +33,7 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
 import org.openzoom.flash.net.ILoadingQueue;
 import org.openzoom.flash.net.LoadingQueue;
+import org.openzoom.flash.renderers.IMultiScaleRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
@@ -371,7 +372,13 @@ public final class MultiScaleContainer extends UIComponent
     
     override public function addChild( child : DisplayObject ) : DisplayObject
     {
-        return _scene.addChild( child )
+        child = _scene.addChild( child )
+        
+    	// FIXME
+    	if( child is IMultiScaleRenderer )
+            IMultiScaleRenderer( child ).viewport = viewport
+    	
+    	return child
     }
     
     override public function removeChild( child : DisplayObject ) : DisplayObject
@@ -382,6 +389,10 @@ public final class MultiScaleContainer extends UIComponent
     override public function addChildAt( child : DisplayObject,
                                          index : int ) : DisplayObject
     {
+    	// FIXME
+        if( child is IMultiScaleRenderer )
+            IMultiScaleRenderer( child ).viewport = viewport
+            
     	return _scene.addChild( child )
     }
     

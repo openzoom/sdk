@@ -21,14 +21,13 @@
 package org.openzoom.flash.net
 {
 
-import flash.display.Bitmap;
-import flash.display.Loader;
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.HTTPStatusEvent;
 import flash.events.IEventDispatcher;
 import flash.events.IOErrorEvent;
 import flash.events.SecurityErrorEvent;
+import flash.net.URLLoader;
 import flash.net.URLRequest;
 
 import org.openzoom.flash.events.LoadingItemEvent;
@@ -36,10 +35,10 @@ import org.openzoom.flash.events.LoadingItemEvent;
 /**
  * @private
  * 
- * Represents a single DisplayObject item to load.
+ * Represents a single textu item to load.
  */
-internal class DisplayObjectLoadingItem extends EventDispatcher
-                                        implements ILoadingItem
+internal class TextLoadingItem extends EventDispatcher
+                              implements ILoadingItem
 {
     //--------------------------------------------------------------------------
     //
@@ -50,7 +49,7 @@ internal class DisplayObjectLoadingItem extends EventDispatcher
     /**
      * Constructor.
      */
-    public function DisplayObjectLoadingItem( url : String, context : * = null )
+    public function TextLoadingItem( url : String, context : * = null )
     {
         this.url = url
         this.context = context
@@ -63,7 +62,7 @@ internal class DisplayObjectLoadingItem extends EventDispatcher
     //--------------------------------------------------------------------------
     
     private var context : *
-    private var loader : Loader
+    private var loader : URLLoader
     private var url : String
     
     //--------------------------------------------------------------------------
@@ -78,8 +77,8 @@ internal class DisplayObjectLoadingItem extends EventDispatcher
     public function load() : void
     {
        var request : URLRequest = new URLRequest( url )
-       loader = new Loader()
-       addEventListeners( loader.contentLoaderInfo )
+       loader = new URLLoader()
+       addEventListeners( loader )
        loader.load( request )
     }
     
@@ -94,14 +93,14 @@ internal class DisplayObjectLoadingItem extends EventDispatcher
      */
     private function contentLoaderInfo_completeHandler( event : Event ) : void
     {
-        var bitmap : Bitmap = loader.content as Bitmap
+        var data : String = loader.data
         
         cleanUp()
         
         var loadingItemEvent : LoadingItemEvent =
-                new LoadingItemEvent( LoadingItemEvent.COMPLETE )
+                               new LoadingItemEvent( LoadingItemEvent.COMPLETE )
             loadingItemEvent.item = this
-            loadingItemEvent.data = bitmap
+            loadingItemEvent.data = data
             loadingItemEvent.context = context
             
         dispatchEvent( loadingItemEvent )
@@ -166,17 +165,7 @@ internal class DisplayObjectLoadingItem extends EventDispatcher
      */ 
     private function cleanUp() : void
     {
-        // Use Flash Player 10 API for unloading
-        // @see mx.controls.SWFLoader#load() (1315)
-        var useUnloadAndStop : Boolean = true
-        var unloadAndStopGC : Boolean = true
-        
-        if( useUnloadAndStop && "unloadAndStop" in loader )
-            loader["unloadAndStop"](unloadAndStopGC)
-        else
-            loader.unload()
-        
-        removeEventListeners( loader.contentLoaderInfo )
+        removeEventListeners( loader )
         loader = null
     }
     

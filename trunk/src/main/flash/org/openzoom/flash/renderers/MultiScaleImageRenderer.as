@@ -37,7 +37,9 @@ import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.events.LoadingItemEvent;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
+import org.openzoom.flash.net.ILoadingItem;
 import org.openzoom.flash.net.ILoadingQueue;
+import org.openzoom.flash.net.LoadingItemType;
 import org.openzoom.flash.renderers.images.ITileLayer;
 import org.openzoom.flash.renderers.images.RenderingMode;
 import org.openzoom.flash.renderers.images.Tile;
@@ -45,7 +47,6 @@ import org.openzoom.flash.renderers.images.TileLayer;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.INormalizedViewport;
 
-[ExcludeClass]
 /**
  * @private
  * 
@@ -248,8 +249,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         
         var url : String = descriptor.getTileURL( level, 0, 0 )
         
-        loader.addItem( url ).addEventListener( Event.COMPLETE,
-                                                backgroundCompleteHandler )
+        var item : ILoadingItem = loader.addItem( url, LoadingItemType.IMAGE )
+            item.addEventListener( Event.COMPLETE,
+                                   backgroundCompleteHandler )
     } 
     
     /**
@@ -331,9 +333,12 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
                 var url : String = descriptor.getTileURL( tile.level,
                                                           tile.column,
                                                           tile.row )
-                loader.addItem( url, tile ).addEventListener( Event.COMPLETE,
-                                                              tileCompleteHandler,
-                                                              false, 0, true  )
+                var item : ILoadingItem = loader.addItem( url,
+                                                          LoadingItemType.IMAGE,
+                                                          tile )
+                    item.addEventListener( Event.COMPLETE,
+                                           tileCompleteHandler,
+                                           false, 0, true  )
             }
         }
     }

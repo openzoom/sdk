@@ -25,7 +25,6 @@ import flash.display.Sprite;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.viewport.INormalizedViewport;
 
-[ExcludeClass]
 /**
  * @private
  * 
