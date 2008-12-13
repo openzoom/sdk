@@ -40,5 +40,6 @@
 	
 	<!-- Flex Components -->
     <component id="MultiScaleImage" class="org.openzoom.flex.components.MultiScaleImage"/>
+    <component id="DeepZoomContainer" class="org.openzoom.flex.components.DeepZoomContainer"/>
 
 </componentPackage>

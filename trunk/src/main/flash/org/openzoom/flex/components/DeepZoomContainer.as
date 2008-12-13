@@ -22,7 +22,6 @@ package org.openzoom.flex.components
 {
 
 import flash.events.Event;
-import flash.geom.Rectangle;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
@@ -35,8 +34,6 @@ import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;    
 
 /**
- * @private
- * 
  * Component for displaying single Deep Zoom images as well
  * as Deep Zoom collections created by Microsoft Deep Zoom Composer.
  */
@@ -72,8 +69,8 @@ public class DeepZoomContainer extends MultiScaleImageBase
     {
         super()
         
-//        tabEnabled = false
-//        tabChildren = true
+//      tabEnabled = false
+//      tabChildren = true
         
         itemLoadingQueue = new LoadingQueue()
     }
@@ -119,6 +116,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
             _source = value
             
             numItemsToDownload = 0
+            items = []
             sourceChanged = true
 
             invalidateProperties()
@@ -157,10 +155,6 @@ public class DeepZoomContainer extends MultiScaleImageBase
         // remove all children
         while( container.numChildren > 0 )
             container.removeChildAt( 0 )
-            
-        // Silverlight MultiScaleImage default behavior, I think
-        viewport.width = 1
-//      viewport.showAll( true )
         
         if( classOrString is String )
         {
@@ -172,15 +166,13 @@ public class DeepZoomContainer extends MultiScaleImageBase
         
         if( classOrString is DZIDescriptor )
         {
-            // TODO
-        }
-        
-        if( classOrString is XML )
-        {
-            // TODO: Handle case where source is XML
+            createImage( DZIDescriptor( classOrString ))
         }
     }
     
+    /**
+     * @private
+     */ 
     private function loadItems() : void
     {
         for each( var item : ItemInfo in items )
@@ -194,6 +186,9 @@ public class DeepZoomContainer extends MultiScaleImageBase
         }
     }
     
+    /**
+     * @private
+     */ 
     private function itemsLoaded() : void
     {
         var maxX : Number = 0
@@ -250,9 +245,37 @@ public class DeepZoomContainer extends MultiScaleImageBase
             
             addChild( renderer )
     	}
-    	
+            
+        // Silverlight MultiScaleImage default behavior, I think
         viewport.width = 1
     	viewport.panTo( 0, 0, true )
+    }
+    
+    /**
+     * @private
+     */ 
+    private function createImage( descriptor : DZIDescriptor ) : void
+    {                                   
+        var aspectRatio : Number = descriptor.width / descriptor.height
+    
+        if( aspectRatio > 1 )
+        {
+            container.sceneWidth  = DEFAULT_SCENE_DIMENSION
+            container.sceneHeight = DEFAULT_SCENE_DIMENSION / aspectRatio
+        }
+        else
+        {
+            container.sceneWidth  = DEFAULT_SCENE_DIMENSION * aspectRatio
+            container.sceneHeight = DEFAULT_SCENE_DIMENSION
+        }
+        
+        var renderer : MultiScaleImageRenderer =
+                              new MultiScaleImageRenderer( descriptor,
+                                                           container.loader,
+                                                           sceneWidth,
+                                                           sceneHeight )
+        
+        addChild( renderer )
     }
     
     //--------------------------------------------------------------------------
@@ -271,6 +294,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         
         var data : XML = new XML( urlLoader.data )
         
+        // FIXME: Microsoft Photozoom does not use this namespace?!
         if( data.namespace() != deepzoom )
             return
         
@@ -286,20 +310,17 @@ public class DeepZoomContainer extends MultiScaleImageBase
                 item = ItemInfo.fromXML( source.toString(), itemXML )
                 items.push( item )
             }
+        
+	        numItemsToDownload = items.length   
+	        loadItems()
         }
         
         if( data.localName() == TYPE_IMAGE )
         {
-            item = new ItemInfo()
-            item.width = data.Size.@Width
-            item.height = data.Size.@height
-            item.data = new XML( data )
-            item.source = source.toString()
-            items = [ item ]
+            var descriptor : DZIDescriptor =
+                          new DZIDescriptor( source.toString(), new XML( data ))
+            createImage( descriptor )
         }
-        
-        numItemsToDownload = items.length   
-        loadItems()
     }
     
     private function loadingItem_completeHandler( event : LoadingItemEvent ) : void
@@ -321,7 +342,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
 //
 //------------------------------------------------------------------------------
 
-import org.openzoom.flash.utils.URLUtil;
+import mx.utils.LoaderUtil;
 
 /**
  * @private
@@ -361,7 +382,7 @@ class ItemInfo
         use namespace deepzoom
         
         itemInfo.id = data.@Id
-        itemInfo.source = URLUtil.createAbsoluteURL( source, data.@Source )
+        itemInfo.source = LoaderUtil.createAbsoluteURL( source, data.@Source )
         itemInfo.width = data.Size.@Width
         itemInfo.height = data.Size.@Height
         
@@ -392,7 +413,7 @@ class ItemInfo
     
     public var data : XML
     
-    // FIXME
+    // FIXME: This probably doesn't belong here
     public var targetX : Number
     public var targetY : Number
     public var targetWidth : Number
