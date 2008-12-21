@@ -33,29 +33,28 @@ import flash.events.FullScreenEvent;
 import flash.events.IOErrorEvent;
 import flash.events.KeyboardEvent;
 import flash.events.SecurityErrorEvent;
-import flash.net.URLLoader;
 import flash.net.URLRequest;
 import flash.net.navigateToURL;
 import flash.ui.ContextMenu;
 import flash.ui.ContextMenuItem;
 
-import org.hasseg.externalMouseWheel.ExternalMouseWheelSupport;
-import org.openzoom.flash.components.MemoryDisplay;
-import org.openzoom.flash.components.MultiScaleImageViewer;
-import org.openzoom.flash.components.SceneNavigator;
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
+import org.openzoom.flash.components.MemoryMonitor;
+import org.openzoom.flash.components.MultiScaleImage;
+import org.openzoom.flash.viewport.constraints.CenterConstraint;
+import org.openzoom.flash.viewport.constraints.CompositeConstraint;
+import org.openzoom.flash.viewport.constraints.ScaleConstraint;
+import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
+import org.openzoom.flash.viewport.constraints.ZoomConstraint;
+import org.openzoom.flash.viewport.controllers.ContextMenuController;
+import org.openzoom.flash.viewport.controllers.KeyboardController;
+import org.openzoom.flash.viewport.controllers.MouseController;
+import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 import org.openzoom.viewer.assets.Sad;
     
-[ExcludeClass]
-
 /**
- * @private
- * 
- * Bootstrapper.
+ * OpenZoom based viewer for Adobe Photoshop Zoomify export feature.
  */
-[SWF(width="960", height="600", frameRate="60", backgroundColor="#111111")]
+[SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class OpenZoomViewer extends Sprite
 {
     //--------------------------------------------------------------------------
@@ -64,39 +63,17 @@ public class OpenZoomViewer extends Sprite
     //
     //--------------------------------------------------------------------------
     
-    private static const FULL_SCREEN_KEY_CODE            : uint = 70 // F
-    private static const FULL_SCREEN_BACKGROUND_COLOR    : uint = 0x111111
-    private static const FULL_SCREEN_MENU_NORMAL_CAPTION : String = "Fullscreen	F"
-    private static const FULL_SCREEN_MENU_EXIT_CAPTION   : String = "Exit Fullscreen	F"
+    private static const FULL_SCREEN_BACKGROUND_COLOR : uint   = 0x111111
+    private static const FULL_SCREEN_KEY_CODE         : uint   = 70 // F
     
-    private static const SHOW_ALL_MENU_CAPTION           : String = "Show All	Space"
+    private static const DEBUG_MENU_DISABLED_CAPTION  : String = "Show Memory Consumption    M"
+    private static const DEBUG_MENU_ENABLED_CAPTION   : String = "Hide Memory Consumption    M"
+    private static const DEBUG_MENU_KEY_CODE          : uint   = 77 // M
     
-    private static const ZOOM_IN_MENU_CAPTION            : String = "Zoom In 	I / +"
-    private static const ZOOM_OUT_MENU_CAPTION           : String = "Zoom Out	O / -"
+    private static const ABOUT_MENU_CAPTION           : String = "Powered by OpenZoom.org"
+    private static const ABOUT_MENU_URL               : String = "http://openzoom.org/"
     
-    private static const MOVE_UP_MENU_CAPTION            : String = "Move Up	W / Up"
-    private static const MOVE_DOWN_MENU_CAPTION          : String = "Move Down	S / Down"
-    private static const MOVE_LEFT_MENU_CAPTION          : String = "Move Left	A / Left"
-    private static const MOVE_RIGHT_MENU_CAPTION         : String = "Move Right	D / Right"
-    
-    private static const DEBUG_MENU_DISABLED_CAPTION     : String = "Show Memory Consumption    M"
-    private static const DEBUG_MENU_ENABLED_CAPTION      : String = "Hide Memory Consumption    M"
-    
-    private static const ABOUT_MENU_CAPTION              : String = "Powered by OpenZoom.org"
-    private static const ABOUT_MENU_URL                  : String = "http://openzoom.org/"
-    
-    private static const DEFAULT_IMAGE_NAME              : String = "billions"
-    private static const DEFAULT_SOURCE_PATH             : String = "../../../../src/main/resources/images"
-//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
-    private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
-//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/" + DEFAULT_IMAGE_NAME + ".ozi/meta.xml"
-//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-road.xml"
-//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-satellite.xml"
-//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/google-maps-terrain.xml"
-//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/openstreetmap.xml"
-//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/butterfly.xml"
-//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/bluemarble.xml"
-//  private static const DEFAULT_SOURCE                  : String = DEFAULT_SOURCE_PATH + "/openzoom/flickr.xml"
+    private static const DEFAULT_SOURCE               : String = "ImageProperties.xml"
     
     //--------------------------------------------------------------------------
     //
@@ -110,14 +87,11 @@ public class OpenZoomViewer extends Sprite
     public function OpenZoomViewer()
     {
         initializeStage()
-        initializeContextMenu()
         initializeKeyboardShortcuts()
+        initializeContextMenu()
         
         createChildren()
-        
-        source = getParameter( OpenZoomViewerParameters.SOURCE, DEFAULT_SOURCE )
-        loadDescriptor( source )
-
+        loadSource()
         layout()
     }
     
@@ -127,41 +101,20 @@ public class OpenZoomViewer extends Sprite
     //
     //--------------------------------------------------------------------------
     
-    private var source : String
-    private var descriptor : IMultiScaleImageDescriptor
-    private var descriptorLoader : URLLoader
-    
     // UI
-    private var viewer : MultiScaleImageViewer
-    private var memoryDisplay : MemoryDisplay
+    private var image : MultiScaleImage
+    private var memoryMonitor : MemoryMonitor
     private var sad : Sprite
     private var fullScreenBackground : Shape
-    private var sceneNavigator : SceneNavigator
-        
-    // context menu
-    private var menu : ContextMenu
-
-    // display mode    
-    private var fullScreenMenu : ContextMenuItem
-    private var showAllMenu : ContextMenuItem
+//    private var sceneNavigator : SceneNavigator
     
-    // zooming
-    private var zoomInMenu : ContextMenuItem
-    private var zoomOutMenu : ContextMenuItem
-    
-    // panning
-    private var moveDownMenu : ContextMenuItem
-    private var moveUpMenu : ContextMenuItem
-    private var moveLeftMenu : ContextMenuItem
-    private var moveRightMenu : ContextMenuItem
-    
-    // extra
+    // Context menu
     private var debugMenu : ContextMenuItem
     private var aboutMenu : ContextMenuItem
     
     //--------------------------------------------------------------------------
     //
-    //  Methods
+    //  Methods: Initialization
     //
     //--------------------------------------------------------------------------
 
@@ -171,155 +124,149 @@ public class OpenZoomViewer extends Sprite
         {
             stage.align = StageAlign.TOP_LEFT
             stage.scaleMode = StageScaleMode.NO_SCALE
-            stage.addEventListener( Event.RESIZE, stage_resizeHandler )
-            stage.addEventListener( FullScreenEvent.FULL_SCREEN, stage_fullScreenHandler )
+            stage.addEventListener( Event.RESIZE,
+                                    stage_resizeHandler,
+                                    false, 0, true )
+            stage.addEventListener( FullScreenEvent.FULL_SCREEN,
+                                    stage_fullScreenHandler,
+                                    false, 0, true )
+            // FIXME
+            var contextMenu : ContextMenu = new ContextMenu()
+                contextMenu.hideBuiltInItems()
+            this.contextMenu = contextMenu
         }
         
         // Enable Mac OS X mouse wheel support
-        ExternalMouseWheelSupport.getInstance( stage )
-    }
-    
-    private function initializeContextMenu() : void
-    {
-        menu = new ContextMenu()
-        menu.hideBuiltInItems()
-        
-        // display state    
-        fullScreenMenu = new ContextMenuItem( FULL_SCREEN_MENU_NORMAL_CAPTION )
-        fullScreenMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                         fullScreenMenu_menuItemSelectHandler )
-        menu.customItems.push( fullScreenMenu )
-        
-        showAllMenu = new ContextMenuItem( SHOW_ALL_MENU_CAPTION )
-        showAllMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                      showAllMenu_menuItemSelectHandler )
-        menu.customItems.push( showAllMenu )
-        
-        // zooming
-        zoomInMenu = new ContextMenuItem( ZOOM_IN_MENU_CAPTION )
-        zoomInMenu.separatorBefore = true
-        zoomInMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                     zoomInMenu_menuItemSelectHandler )
-        menu.customItems.push( zoomInMenu )
-        
-        zoomOutMenu = new ContextMenuItem( ZOOM_OUT_MENU_CAPTION )
-        zoomOutMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                      zoomOutMenu_menuItemSelectHandler )
-        menu.customItems.push( zoomOutMenu )
-        
-        // panning
-        moveUpMenu = new ContextMenuItem( MOVE_UP_MENU_CAPTION )
-        moveUpMenu.separatorBefore = true
-        moveUpMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                     moveUpMenu_menuItemSelectHandler )
-        menu.customItems.push( moveUpMenu )
-        
-        moveDownMenu = new ContextMenuItem( MOVE_DOWN_MENU_CAPTION )
-        moveDownMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                       moveDownMenu_menuItemSelectHandler )
-        menu.customItems.push( moveDownMenu )
-        
-        
-        moveLeftMenu = new ContextMenuItem( MOVE_LEFT_MENU_CAPTION )
-        moveLeftMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                       moveLeftMenu_menuItemSelectHandler )
-        menu.customItems.push( moveLeftMenu )
-        
-        moveRightMenu = new ContextMenuItem( MOVE_RIGHT_MENU_CAPTION )
-        moveRightMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                        moveRightMenu_menuItemSelectHandler )
-        menu.customItems.push( moveRightMenu )
-        
-        // extra
-        debugMenu = new ContextMenuItem( DEBUG_MENU_DISABLED_CAPTION )
-        debugMenu.separatorBefore = true
-        debugMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                    debugMenu_menuItemSelectHandler )
-        menu.customItems.push( debugMenu )
-        
-        aboutMenu = new ContextMenuItem( ABOUT_MENU_CAPTION )
-        aboutMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                    aboutMenu_menuItemSelectHandler )
-        menu.customItems.push( aboutMenu )
-        
-        contextMenu = menu
+        // FIXME
+//        ExternalMouseWheelSupport.getInstance( stage )
     }
     
     private function initializeKeyboardShortcuts() : void
     {
-        stage.addEventListener( KeyboardEvent.KEY_DOWN, stage_keyDownHandler, false, 0, true )
+        stage.addEventListener( KeyboardEvent.KEY_DOWN,
+                                stage_keyDownHandler,
+                                false, 0, true )
     }
     
-    private function loadDescriptor( url : String ) : void
+    private function initializeContextMenu() : void
     {
-        descriptorLoader = new URLLoader()
-        descriptorLoader.addEventListener( Event.COMPLETE,
-                                           descriptorLoader_completeHandler )
-        descriptorLoader.addEventListener( IOErrorEvent.IO_ERROR,
-                                           descriptorLoader_ioErrorHandler )
-        descriptorLoader.addEventListener( SecurityErrorEvent.SECURITY_ERROR,
-                                           descriptorLoader_securityErrorHandler )
-        descriptorLoader.load( new URLRequest( url ) )
+    	// TODO
     }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Children
+    //
+    //--------------------------------------------------------------------------
     
     private function createChildren() : void
     {
-    	fullScreenBackground = new Shape()
-    	var g : Graphics = fullScreenBackground.graphics
-    	g.beginFill( 0x000000 )
-    	g.drawRect( 0, 0, 100, 100 )
-    	g.endFill()
-    	fullScreenBackground.visible = false
-    	addChildAt( fullScreenBackground, 0 )
-    	
-        memoryDisplay = new MemoryDisplay()
-        memoryDisplay.visible = false
-        addChild( memoryDisplay )
+    	if( !fullScreenBackground )
+            createFullScreenBackground()
+            
+        if( !sad )
+            createSad()
+            
+        if( !image )
+            createImage()
         
-        sad = new Sad()
-        sad.visible = false
-        addChildAt( sad, 0 )
+        if( !memoryMonitor )
+            createMemoryMonitor()
     }
     
-    private function createViewer( descriptor : IMultiScaleImageDescriptor ) : void
+    private function createFullScreenBackground() : void
     {
-//        debugDescriptor( descriptor )
-
-        viewer = createMultiScaleImageViewer( descriptor )
-        addChildAt( viewer, getChildIndex( fullScreenBackground ) + 1 )
-        
-        sceneNavigator = new SceneNavigator()
-        sceneNavigator.viewport = viewer.viewport
-        addChild( sceneNavigator )
-        
-        stage.addEventListener( KeyboardEvent.KEY_UP, stage_keyUpHandler )
+        fullScreenBackground = new Shape()
+        var g : Graphics = fullScreenBackground.graphics
+        g.beginFill( 0x000000 )
+        g.drawRect( 0, 0, 100, 100 )
+        g.endFill()
+        fullScreenBackground.visible = false
+        addChild( fullScreenBackground )
     }
-
-    private function createMultiScaleImageViewer( descriptor : IMultiScaleImageDescriptor ) : MultiScaleImageViewer
+    
+    private function createSad() : void
     {
-        var viewer : MultiScaleImageViewer = new MultiScaleImageViewer( descriptor )
-        viewer.setSize( stage.stageWidth, stage.stageHeight )
-            
-        return viewer
+        sad = new Sad()
+        sad.visible = false
+        addChild( sad )
     }
+    
+    private function createImage() : void
+    {
+        image = new MultiScaleImage()
+        
+        // Transformer
+        image.transformer = new TweenerTransformer()
+        
+        // Controllers
+        var keyboardController : KeyboardController = new KeyboardController() 
+        var mouseController : MouseController = new MouseController() 
+        var contextMenuController : ContextMenuController = new ContextMenuController()
+         
+        image.controllers = [ mouseController,
+                              keyboardController,
+                              contextMenuController ]
+        
+        // Constraints
+        var zoomConstraint : ZoomConstraint = new ZoomConstraint()
+            zoomConstraint.minZoom = 1
+        
+        var centerConstraint : CenterConstraint = new CenterConstraint()
+        
+        var scaleConstraint : ScaleConstraint = new ScaleConstraint()
+//            scaleConstraint.maxScale = 1
+
+        var visibilityConstraint : VisibilityConstraint = new VisibilityConstraint()
+            visibilityConstraint.visibilityRatio = 0.5
+        
+        var compositeContraint : CompositeConstraint = new CompositeConstraint()
+            compositeContraint.constraints = [ zoomConstraint,
+                                               centerConstraint,
+                                               scaleConstraint,
+                                               visibilityConstraint ]
+
+        image.constraint = compositeContraint
+        
+        // Event listeners
+        image.addEventListener( IOErrorEvent.IO_ERROR,
+                                image_ioErrorHandler,
+                                false, 0, true )
+        image.addEventListener( SecurityErrorEvent.SECURITY_ERROR,
+                                image_securityErrorHandler,
+                                false, 0, true )
+        addChild( image )
+    }
+    
+    private function createMemoryMonitor() : void
+    {
+        memoryMonitor = new MemoryMonitor()
+        memoryMonitor.visible = false
+        addChild( memoryMonitor )
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+    
+    private function loadSource() : void
+    {
+        var defaultSource : String = "../../../../src/main/resources/images/zoomify/billions"
+        var source : String = getParameter( OpenZoomViewerParameters.SOURCE,
+                                            defaultSource ) + "/" + DEFAULT_SOURCE
+        image.source = source
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Layout
+    //
+    //--------------------------------------------------------------------------
     
     private function layout() : void
     {
-        if( viewer )
-            viewer.setSize( stage.stageWidth, stage.stageHeight )
-        
-        if( memoryDisplay )
-        {
-            memoryDisplay.x = stage.stageWidth  - memoryDisplay.width
-            memoryDisplay.y = stage.stageHeight - memoryDisplay.height
-        }
-        
-        if( sceneNavigator )
-        {
-            sceneNavigator.x = stage.stageWidth  - sceneNavigator.width - 10
-            sceneNavigator.y = 10
-        }
-        
         if( sad )
         {
             sad.width = stage.stageWidth / 2
@@ -328,16 +275,37 @@ public class OpenZoomViewer extends Sprite
             var scale : Number = Math.min( sad.scaleX, sad.scaleY )
             sad.scaleX = sad.scaleY = scale
             
-            sad.x = ( stage.stageWidth  - sad.width ) / 2
+            sad.x = ( stage.stageWidth  - sad.width )  / 2
             sad.y = ( stage.stageHeight - sad.height ) / 2
         }
         
         if( fullScreenBackground )
-       	{
-       		fullScreenBackground.width = stage.stageWidth
-       		fullScreenBackground.height = stage.stageHeight
-       	}
+        {
+            fullScreenBackground.width = stage.stageWidth
+            fullScreenBackground.height = stage.stageHeight
+        }
+        
+        if( image )
+            image.setActualSize( stage.stageWidth, stage.stageHeight )
+        
+        if( memoryMonitor )
+        {
+            memoryMonitor.x = stage.stageWidth  - memoryMonitor.width
+            memoryMonitor.y = stage.stageHeight - memoryMonitor.height
+        }
+        
+//        if( sceneNavigator )
+//        {
+//            sceneNavigator.x = stage.stageWidth  - sceneNavigator.width - 10
+//            sceneNavigator.y = 10
+//        }
     }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Internal
+    //
+    //--------------------------------------------------------------------------
     
     private function toggleFullScreen() : void
     {
@@ -345,6 +313,24 @@ public class OpenZoomViewer extends Sprite
             stage.displayState = StageDisplayState.FULL_SCREEN
         else
             stage.displayState = StageDisplayState.NORMAL
+    }
+    
+    private function toggleMemoryDisplay() : void
+    {
+        memoryMonitor.visible = !memoryMonitor.visible
+        
+        if( debugMenu )
+        {
+	        if( memoryMonitor.visible )
+	            debugMenu.caption = DEBUG_MENU_ENABLED_CAPTION
+	        else
+	            debugMenu.caption = DEBUG_MENU_DISABLED_CAPTION
+        }
+    }
+    
+    private function showSad() : void
+    {
+        sad.visible = true
     }
     
     //--------------------------------------------------------------------------
@@ -362,87 +348,33 @@ public class OpenZoomViewer extends Sprite
     {
         if( event.keyCode == FULL_SCREEN_KEY_CODE )
             toggleFullScreen()
+            
+        if( event.keyCode == DEBUG_MENU_KEY_CODE )
+            toggleMemoryDisplay()
     }
     
     private function stage_fullScreenHandler( event : FullScreenEvent ) : void
     {
     	if( event.fullScreen )
-    	{
             fullScreenBackground.visible = true
-                       
-            if( fullScreenMenu )
-                fullScreenMenu.caption = FULL_SCREEN_MENU_EXIT_CAPTION
-    	}
     	else
-    	{
             fullScreenBackground.visible = false
-           
-            if( fullScreenMenu )
-                fullScreenMenu.caption = FULL_SCREEN_MENU_NORMAL_CAPTION
-    	}
     }
     
     //--------------------------------------------------------------------------
     //
-    //  Event handlers: Descriptor Loader
+    //  Event handlers: Image
     //
     //--------------------------------------------------------------------------
     
-    private function descriptorLoader_completeHandler( event : Event ) : void
+    private function image_ioErrorHandler( event : IOErrorEvent ) : void
     {
-        var factory : MultiScaleImageDescriptorFactory = MultiScaleImageDescriptorFactory.getInstance()
-        descriptor = factory.getDescriptor( source, new XML( descriptorLoader.data ) )
-        
-        if( descriptor )
-            createViewer( descriptor )
-            
-       layout()
+        showSad()
     }
     
-    private function descriptorLoader_ioErrorHandler( event : IOErrorEvent ) : void
+    private function image_securityErrorHandler( event : SecurityErrorEvent ) : void
     {
-        sad.visible = true    
-    }
-    
-    private function descriptorLoader_securityErrorHandler( event : SecurityErrorEvent ) : void
-    {
-        sad.visible = true    
-    }
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Event handlers
-    //
-    //--------------------------------------------------------------------------
-    
-    private function stage_keyUpHandler( event : KeyboardEvent ) : void
-    {
-    	if( viewer && event.keyCode == 82 ) // R
-    	{
-//    		  CurveModifiers.init()
-//    		  var v : INormalizedViewport = viewer.viewport
-//              var tr : IViewportTransformer = v.transformer
-//              var t : IViewportTransform = v.transform
-//              
-//              var myPath:Array = new Array();
-//                  myPath.push({zoom:2});
-//                  myPath.push({zoom:10});
-//                  myPath.push({zoom:0.1});
-//                  Tweener.addTween(
-//                                    t, { x:0, y:0, zoom: 1, _bezier:myPath, time:2, transition:"easeoutquad",
-//                                    onStart:    function() : void { v.beginTransform();
-//                                                                    v.transformer = null; },
-//                                    onUpdate:   function() : void { v.transform = t; },
-//                                    onComplete: function() : void { v.endTransform();
-//                                                                    v.transformer = tr; }
-//                                    }
-//                                   );
-
-    		  
-            viewer.shuffle()
-    	}
-        if( event.keyCode == String("M").charCodeAt() )
-            toggleMemoryDisplay()
+        showSad()
     }
     
     //--------------------------------------------------------------------------
@@ -450,56 +382,6 @@ public class OpenZoomViewer extends Sprite
     //  Event handlers: Context menu
     //
     //--------------------------------------------------------------------------
-    
-    // display state    
-    private function fullScreenMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
-    {
-        toggleFullScreen()      
-    }
-    
-    private function showAllMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
-    {
-        if( viewer )
-            viewer.showAll()
-    }
-    
-    // zooming
-    private function zoomInMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
-    {
-        if( viewer )
-            viewer.zoomIn()
-    }
-    
-    private function zoomOutMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
-    {
-        if( viewer )
-            viewer.zoomOut()
-    }
-    
-    // panning
-    private function moveUpMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
-    {
-        if( viewer )
-            viewer.moveUp()
-    }
-    
-    private function moveDownMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
-    {
-        if( viewer )
-            viewer.moveDown()
-    }
-    
-    private function moveLeftMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
-    {
-        if( viewer )
-            viewer.moveLeft()
-    }
-    
-    private function moveRightMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
-    {
-        if( viewer )
-            viewer.moveRight()
-    }
     
     private function debugMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
     {
@@ -509,16 +391,6 @@ public class OpenZoomViewer extends Sprite
     private function aboutMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
     {
         navigateToURL( new URLRequest( ABOUT_MENU_URL ), "_blank" )
-    }
-    
-    private function toggleMemoryDisplay() : void
-    {
-        memoryDisplay.visible = !memoryDisplay.visible
-        
-        if( memoryDisplay.visible )
-            debugMenu.caption = DEBUG_MENU_ENABLED_CAPTION
-        else
-            debugMenu.caption = DEBUG_MENU_DISABLED_CAPTION
     }
     
     //--------------------------------------------------------------------------
@@ -536,21 +408,6 @@ public class OpenZoomViewer extends Sprite
         }
         
         return defaultValue
-    }
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Debug
-    //
-    //--------------------------------------------------------------------------
-    
-    private function debugDescriptor( descriptor : IMultiScaleImageDescriptor ) : void
-    {
-        for( var i : int = 0; i < descriptor.numLevels; i++ )
-        {
-            var level : IMultiScaleImageLevel = descriptor.getLevelAt( i )
-            trace( level.index, level.width, level.height, level.numColumns, level.numRows )
-        }
     }
 }
 

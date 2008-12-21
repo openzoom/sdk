@@ -62,6 +62,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //--------------------------------------------------------------------------
     
     private static const DEFAULT_BACKGROUND_SHOW_DURATION : Number = 2.5
+    private static const DEFAULT_RENDERING_MODE           : String = RenderingMode.SMOOTH
     
     //--------------------------------------------------------------------------
     //
@@ -81,6 +82,8 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         this.descriptor = descriptor
         
         createFrame( width, height )
+        
+        // FIXME: Phase instantiation of layers
         createLayers( descriptor, frame.width, frame.height )
         
         // TODO: Debug
@@ -99,8 +102,6 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //
     //--------------------------------------------------------------------------
     
-    private var renderingMode : String = RenderingMode.SMOOTH
-    
     private var descriptor : IMultiScaleImageDescriptor
     private var backgroundLoader : Loader
 
@@ -111,7 +112,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     
     //--------------------------------------------------------------------------
     //
-    //  Properties: IViewportConstraint
+    //  Properties
     //
     //--------------------------------------------------------------------------
 
@@ -125,7 +126,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     override public function set viewport( value : INormalizedViewport ) : void
     {
     	super.viewport = value
-        updateDisplayList()
+//        updateDisplayList()
     }
     
     //----------------------------------
@@ -139,12 +140,31 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
      */ 
     public function get loader() : ILoadingQueue
     {
-    	return _loader
+        return _loader
     }
     
     public function set loader( value : ILoadingQueue ) : void
     {
-    	_loader = value
+        _loader = value
+    }
+    
+    //----------------------------------
+    //  renderingMode
+    //----------------------------------
+    
+    private var _renderingMode : String = DEFAULT_RENDERING_MODE
+    
+    /**
+     * @private
+     */ 
+    public function get renderingMode() : String
+    {
+        return _renderingMode
+    }
+    
+    public function set renderingMode( value : String ) : void
+    {
+        _renderingMode = value
     }
     
     //--------------------------------------------------------------------------

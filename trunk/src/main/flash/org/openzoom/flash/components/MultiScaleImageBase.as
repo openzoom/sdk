@@ -18,17 +18,15 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flex.components
+package org.openzoom.flash.components
 {
 
 import flash.display.DisplayObject;
+import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import mx.core.UIComponent;
-
-import org.openzoom.flash.components.IMultiScaleImage;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
@@ -38,7 +36,7 @@ import org.openzoom.flash.viewport.IViewportTransformer;
  * 
  * Base class for MultiScaleImage and DeepZoomContainer.
  */
-public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
+public class MultiScaleImageBase extends Sprite implements IMultiScaleImage
 {
     //--------------------------------------------------------------------------
     //
@@ -46,10 +44,10 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //
     //--------------------------------------------------------------------------
    
-    protected static const DEFAULT_SCENE_DIMENSION : Number = 16384 // 2^14
+    public static const DEFAULT_SCENE_DIMENSION  : Number = 16384 // 2^14
     
-    private static const DEFAULT_VIEWPORT_WIDTH    : Number = 800
-    private static const DEFAULT_VIEWPORT_HEIGHT   : Number = 600
+    private static const DEFAULT_VIEWPORT_WIDTH  : Number = 800
+    private static const DEFAULT_VIEWPORT_HEIGHT : Number = 600
     
 	//--------------------------------------------------------------------------
     //
@@ -62,6 +60,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      */
 	public function MultiScaleImageBase()
 	{
+		createChildren()
 	}
 	
 	//--------------------------------------------------------------------------
@@ -70,7 +69,6 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //
     //--------------------------------------------------------------------------
     
-   ;[Bindable(event="containerChanged")]
     protected var container : MultiScaleContainer
     
     //--------------------------------------------------------------------------
@@ -113,8 +111,6 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //  viewport
     //----------------------------------
     
-   ;[Bindable(event="viewportChanged")]
-    
     /**
      * Viewport of this image.
      */ 
@@ -127,78 +123,52 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //  transformer
     //----------------------------------
     
-    private var _transformer : IViewportTransformer
-    private var transformerChanged : Boolean = false
-    
-   ;[Bindable(event="transformerChanged")]
-    
     /**
      * Viewport transformer. Transformers are used to create the transitions
      * between transformations of the viewport.
      * 
-     * @see org.openzoom.flash.viewport.transformers.NullTransformer
      * @see org.openzoom.flash.viewport.transformers.TweenerTransformer
+     * @see org.openzoom.flash.viewport.transformers.NullTransformer
      */ 
     public function get transformer() : IViewportTransformer
     {
-    	return _transformer
+    	return viewport.transformer
     }
     
     public function set transformer( value : IViewportTransformer ) : void
     {
-    	if( _transformer !== value )
-        {
-	        _transformer = value    
-	        transformerChanged = true
-	        invalidateProperties()
-	        
-	        dispatchEvent( new Event( "transformerChanged" ))
-        }
+    	if( transformer !== value )
+	        viewport.transformer = value
     }
     
     //----------------------------------
     //  constraint
     //----------------------------------
     
-    private var _constraint : IViewportConstraint
-    private var constraintChanged : Boolean = false
-    
-   ;[Bindable(event="constraintChanged")]
-    
     /**
      * Viewport transformer constraint. Constraints are used to control
      * the positions and zoom levels the viewport can reach.
      * 
-     * @see org.openzoom.flash.viewport.constraints.NullConstraint 
      * @see org.openzoom.flash.viewport.constraints.VisibilityConstraint
      * @see org.openzoom.flash.viewport.constraints.ZoomConstraint
+     * @see org.openzoom.flash.viewport.constraints.ScaleConstraint
      * @see org.openzoom.flash.viewport.constraints.CompositeConstraint
+     * @see org.openzoom.flash.viewport.constraints.NullConstraint 
      */ 
     public function get constraint() : IViewportConstraint
     {
-    	return _constraint
+    	return viewport.transformer.constraint
     }
     
     public function set constraint( value : IViewportConstraint ) : void
     {
-        if( _constraint !== value )
-        {
-            _constraint = value    
-            constraintChanged = true
-            invalidateProperties()
-            
-            dispatchEvent( new Event( "constraintChanged" ))
-        }
+        if( constraint !== value )
+            viewport.transformer.constraint = value
     }
     
     //----------------------------------
     //  controllers
     //----------------------------------
-    
-    private var _controllers : Array /* of IViewportController */ = []
-    private var controllersChanged : Boolean = false
-    
-   ;[Bindable(event="controllersChanged")]
     
     /**
      * Controllers of type IViewportController applied to this MultiScaleImage.
@@ -207,80 +177,91 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      * 
      * @see org.openzoom.flash.viewport.controllers.MouseController
      * @see org.openzoom.flash.viewport.controllers.KeyboardController
+     * @see org.openzoom.flash.viewport.controllers.ContextMenuController
      */
     public function get controllers() : Array
     {
-    	return _controllers.slice( 0 )
+    	return container.controllers
     }
     
     public function set controllers( value : Array ) : void
     {
-        if( _controllers !== value )
-        {
-            _controllers = value.slice( 0 )
-            controllersChanged = true
-            invalidateProperties()
-            
-            dispatchEvent( new Event( "controllersChanged" ))
-        }
+    	container.controllers = value
     }
     
 	//--------------------------------------------------------------------------
     //
-    //  Overridden methods: UIComponent
+    //  Methods: Internal
     //
     //--------------------------------------------------------------------------
     
     /**
      * @private
-     */ 
-    override protected function createChildren() : void
+     */
+    private function createChildren() : void
     {
-    	super.createChildren()
-    	
     	if( !container )
-    	{
-	        container = new MultiScaleContainer()
-	        super.addChild( container )
-	        
-	        dispatchEvent( new Event( "containerChanged" ))
-	        dispatchEvent( new Event( "viewportChanged" ))
-    	}
+            createContainer()    
     }
     
     /**
      * @private
      */
-    override protected function updateDisplayList( unscaledWidth : Number,
-                                                   unscaledHeight : Number ) : void
+    private function createContainer() : void
     {
-        container.setActualSize( unscaledWidth, unscaledHeight )
+        container = new MultiScaleContainer()
+        super.addChild( container )
     }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Overridden properties: DisplayObject
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  width
+    //----------------------------------
+    
+    override public function get width() : Number
+    {
+        return container.width
+    }
+  
+    override public function set width( value : Number ) : void
+    {
+        setActualSize( value, height )
+    }
+  
+    //----------------------------------
+    //  height
+    //----------------------------------    
+  
+    override public function get height() : Number
+    {
+        return container.height
+    }
+  
+    override public function set height( value : Number ) : void
+    {
+        setActualSize( width, value )
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
     
     /**
      * @private
      */
-    override protected function commitProperties() : void
+    public function setActualSize( width : Number, height : Number ) : void
     {
-    	super.commitProperties()
-    	
-    	if( controllersChanged )
-    	{
-    		container.controllers = _controllers
-    		controllersChanged = false
-    	}
-    	
-    	if( transformerChanged )
-    	{
-    		container.transformer = _transformer
-    		transformerChanged = false
-    	}
+    	if( this.width == width && this.height == height )
+            return
         
-        if( constraintChanged )
-        {
-            container.constraint = _constraint
-            constraintChanged = false
-        }
+        container.setActualSize( width, height )
     }
     
     //--------------------------------------------------------------------------
@@ -292,8 +273,6 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //----------------------------------
     //  zoom
     //----------------------------------
-    
-   ;[Bindable(event="transformUpdate")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoom
@@ -312,8 +291,6 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //  scale
     //----------------------------------
     
-   ;[Bindable(event="transformUpdate")]
-    
     /**
      * @copy org.openzoom.flash.viewport.IViewport#scale
      */
@@ -331,8 +308,6 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //  viewportX
     //----------------------------------
     
-   ;[Bindable(event="transformUpdate")]
-       
     /**
      * @copy org.openzoom.flash.viewport.IViewport#x
      */
@@ -351,8 +326,6 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //  viewportY
     //----------------------------------
     
-   ;[Bindable(event="transformUpdate")]
-    
     /**
      * @copy org.openzoom.flash.viewport.IViewport#y
      */
@@ -370,8 +343,6 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //  viewportWidth
     //----------------------------------
     
-   ;[Bindable(event="transformUpdate")]
-    
     /**
      * @copy org.openzoom.flash.viewport.IViewport#width
      */
@@ -388,8 +359,6 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //----------------------------------
     //  viewportHeight
     //----------------------------------
-    
-   ;[Bindable(event="transformUpdate")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#height

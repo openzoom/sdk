@@ -191,7 +191,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function showRect( rect : Rectangle, scale : Number = 1.0 ) : void
+    public function zoomToBounds( rect : Rectangle, scale : Number = 1.0 ) : void
     {
     	// TODO: Implement for normalized coordinate system
     	var area : Rectangle = denormalizeRectangle( rect )
@@ -233,7 +233,7 @@ public class ViewportTransform implements IViewportTransform,
      */ 
     public function showAll() : void
     {
-        showRect( new Rectangle( 0, 0, 1, 1 ))
+        zoomToBounds( new Rectangle( 0, 0, 1, 1 ))
     }
 
 

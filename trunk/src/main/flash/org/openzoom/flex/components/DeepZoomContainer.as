@@ -34,7 +34,7 @@ import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;    
 
 /**
- * Component for displaying single Deep Zoom images as well
+ * Flex component for displaying single Deep Zoom images as well
  * as Deep Zoom collections created by Microsoft Deep Zoom Composer.
  */
 public class DeepZoomContainer extends MultiScaleImageBase
@@ -152,10 +152,11 @@ public class DeepZoomContainer extends MultiScaleImageBase
     
     private function load( classOrString : Object ) : void
     {
-        // remove all children
+        // Remove all children
         while( container.numChildren > 0 )
             container.removeChildAt( 0 )
         
+        // URL
         if( classOrString is String )
         {
             urlLoader = new URLLoader( new URLRequest( String( classOrString )))
@@ -164,6 +165,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
                                         false, 0, true )
         }
         
+        // Descriptor
         if( classOrString is DZIDescriptor )
         {
             createImage( DZIDescriptor( classOrString ))
@@ -233,6 +235,9 @@ public class DeepZoomContainer extends MultiScaleImageBase
     		var targetWidth  : Number = item.targetWidth  * container.sceneWidth
     		var targetHeight : Number = item.targetHeight * container.sceneWidth
             
+//            if( !item.source || !item.data )
+//                continue
+            
             var descriptor : DZIDescriptor =
                                      new DZIDescriptor( item.source, item.data )
             var renderer : MultiScaleImageRenderer =
@@ -295,10 +300,12 @@ public class DeepZoomContainer extends MultiScaleImageBase
         var data : XML = new XML( urlLoader.data )
         
         // FIXME: Microsoft Photozoom does not use this namespace?!
-        if( data.namespace() != deepzoom )
-            return
+        //*
+//        if( data.namespace() != deepzoom || data.localName() != TYPE_COLLECTION )
+//            return
         
         use namespace deepzoom
+        //*/
         
         var item : ItemInfo
         

@@ -254,11 +254,13 @@ public interface IViewport extends IEventDispatcher
     /**
      * Show a rectangular area of the scene inside the viewport.
      * 
-     * @param rect Rectangle to be shown in the viewport.
-     * @param scale Scale at which the area is beeing displayed.
+     * @param bounds Rectangle to be shown in the viewport.
+     * @param scale Scale at which the rectangle is beeing displayed, e.g. useful
+     *              for showing creating some space around the rectangle.
      */             
-    function showRect( rect : Rectangle, scale : Number = 1.0,
-                       immediately : Boolean = false ) : void
+    function zoomToBounds( bounds : Rectangle,
+                           scale : Number = 1.0,
+                           immediately : Boolean = false ) : void
                      
     /**
      * Fit entire scene into the viewport.

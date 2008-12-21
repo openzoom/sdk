@@ -193,9 +193,6 @@ public class TileLayer extends Sprite implements ITileLayer
     {
         frame = new Shape()
         var g : Graphics = frame.graphics
-        // DEBUG
-//        g.lineStyle( 0, 0xFF0000 )
-//        g.beginFill( Math.random() * 0xFFFFFF, 0.05 )
         g.beginFill( 0x000000, 0 )
         g.drawRect( 0, 0, width, height )
         g.endFill()

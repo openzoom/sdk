@@ -349,11 +349,11 @@ public class NormalizedViewport extends EventDispatcher
     /**
      * @inheritDoc
      */
-    public function showRect( rect : Rectangle, scale : Number = 1.0, 
+    public function zoomToBounds( rect : Rectangle, scale : Number = 1.0, 
                               immediately : Boolean = false ) : void
     {
         var t : IViewportTransform = getTargetTransform()
-        t.showRect( rect, scale )
+        t.zoomToBounds( rect, scale )
         applyTransform( t, immediately )
     }
     

@@ -35,15 +35,13 @@ import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
-import org.openzoom.flash.utils.math.clamp;
-import org.openzoom.flash.viewport.NormalizedViewport;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.INormalizedViewportContainer;
 import org.openzoom.flash.viewport.IViewportController;
-import org.openzoom.flash.viewport.LegacyViewport;
+import org.openzoom.flash.viewport.NormalizedViewport;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
-import org.openzoom.flash.viewport.controllers.ViewTransformationController;
+import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 [ExcludeClass]
 
@@ -104,9 +102,9 @@ public class MultiScaleImageViewer extends Sprite
         // create renderers
         for( var i : int = 0; i < 10; i++ )
         {
-            for( var j : int = 0; j < 5; j++ )
+            for( var j : int = 0; j < 20; j++ )
             {
-                var scale : Number = clamp( Math.random() / 2, 0.025, 0.25 )
+                var scale : Number = 0.5//clamp( Math.random() / 2, 0.025, 0.25 )
                 var image : MultiScaleImageRenderer =
                               createImage( descriptor.clone(),
                                            loadingQueue,
@@ -114,12 +112,12 @@ public class MultiScaleImageViewer extends Sprite
                                            descriptor.height * scale )
                               
                 // Random layout             
-                image.x = Math.random() * DEFAULT_SCENE_WIDTH  * 0.8
-                image.y = Math.random() * DEFAULT_SCENE_HEIGHT * 0.8
+//                image.x = Math.random() * DEFAULT_SCENE_WIDTH  * 0.8
+//                image.y = Math.random() * DEFAULT_SCENE_HEIGHT * 0.8
                 
                 // Grid layout
-//              image.x = i * (image.width * 1.1)
-//              image.y = j * (image.height * 1.1)
+              image.x = i * (image.width * 1.1)
+              image.y = j * (image.height * 1.1)
 
                 _scene.addChild( image )
             }
@@ -143,7 +141,6 @@ public class MultiScaleImageViewer extends Sprite
     
     private var keyboardController : KeyboardController
     private var mouseController : MouseController
-    private var transformationController : ViewTransformationController
     
     //--------------------------------------------------------------------------
     //
@@ -300,22 +297,26 @@ public class MultiScaleImageViewer extends Sprite
     //
     //--------------------------------------------------------------------------
     
-    private function createLegacyViewport( scene : IReadonlyMultiScaleScene ) : void
-    {
-        _viewport = new LegacyViewport( DEFAULT_VIEWPORT_WIDTH,
-                                            DEFAULT_VIEWPORT_HEIGHT,
-                                            scene )
-        
-        transformationController = new ViewTransformationController()
-        transformationController.viewport = viewport
-        transformationController.view = scene.targetCoordinateSpace
-    }
+//    private function createLegacyViewport( scene : IReadonlyMultiScaleScene ) : void
+//    {
+//        _viewport = new LegacyViewport( DEFAULT_VIEWPORT_WIDTH,
+//                                            DEFAULT_VIEWPORT_HEIGHT,
+//                                            scene )
+//        
+//        var transformationController : ViewTransformationController =
+//                                              new ViewTransformationController()
+//        transformationController.viewport = viewport
+//        transformationController.view = scene.targetCoordinateSpace
+//    }
     
     private function createViewport( scene : IReadonlyMultiScaleScene ) : void
     {
         _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
-                                           DEFAULT_VIEWPORT_HEIGHT,
-                                           scene )
+                                            DEFAULT_VIEWPORT_HEIGHT,
+                                            scene )
+
+        _viewport.transformer = new TweenerTransformer()                                            
+                                            
         _viewport.addEventListener( ViewportEvent.TRANSFORM_START,
                                     viewport_transformStartHandler,
                                     false, 0, true ) 

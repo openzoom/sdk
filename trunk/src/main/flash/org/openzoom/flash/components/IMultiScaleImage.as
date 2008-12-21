@@ -18,7 +18,7 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flex.components
+package org.openzoom.flash.components
 {
 
 import flash.geom.Point;
@@ -183,11 +183,11 @@ public interface IMultiScaleImage
                     immediately : Boolean = false ) : void
                     
     /**
-     * @copy org.openzoom.flash.viewport.IViewport#showRect()
+     * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
      */
-    function showRect( rect : Rectangle,
-                       scale : Number = 1.0,
-                       immediately : Boolean = false ) : void
+    function zoomToBounds( bounds : Rectangle,
+                           scale : Number = 1.0,
+                           immediately : Boolean = false ) : void
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#showAll()

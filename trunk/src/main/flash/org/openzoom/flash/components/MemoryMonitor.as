@@ -33,11 +33,9 @@ import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
 
 /**
- * @private
- * 
  * Displays the total memory consumption of all running Flash Player instances.
  */
-public class MemoryDisplay extends Sprite
+public class MemoryMonitor extends Sprite
 {
     //--------------------------------------------------------------------------
     //
@@ -48,13 +46,15 @@ public class MemoryDisplay extends Sprite
     /**
      *  Constructor.
      */
-    public function MemoryDisplay() : void
+    public function MemoryMonitor() : void
     {
         createBackground()
         createLabel()
         layout()
     
-        addEventListener( Event.ENTER_FRAME, enterFrameHandler, false, 0, true )
+        addEventListener( Event.ENTER_FRAME,
+                          enterFrameHandler,
+                          false, 0, true )
     }
   
     //--------------------------------------------------------------------------

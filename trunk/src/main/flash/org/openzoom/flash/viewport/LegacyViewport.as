@@ -152,7 +152,6 @@ public class LegacyViewport extends EventDispatcher
     //----------------------------------
     
     private var _constraint : IViewportConstraint = new NullConstraint()
-//    private var _constraint : IViewportConstraint = new DefaultViewportConstraint()
 
     public function get constraint() : IViewportConstraint
     {
@@ -332,7 +331,7 @@ public class LegacyViewport extends EventDispatcher
         moveOriginTo( x, y, 0.5, 0.5, dispatchChangeEvent )
     }
 
-    public function showRect( rect : Rectangle, scale : Number = 1.0, 
+    public function zoomToBounds( rect : Rectangle, scale : Number = 1.0, 
                               dispatchChangeEvent : Boolean = true ) : void
     {
     	// TODO: Implement for normalized coordinate system
@@ -376,7 +375,7 @@ public class LegacyViewport extends EventDispatcher
     public function showAll( immediately : Boolean = false ) : void
     {
     	var area : Rectangle = new Rectangle( 0, 0, scene.sceneWidth, scene.sceneHeight )
-        showRect( normalizeRectangle( area ))
+        zoomToBounds( normalizeRectangle( area ))
     }
 
     //--------------------------------------------------------------------------
@@ -1014,7 +1013,7 @@ class ViewportTransformProxy implements IViewportTransform
     {
     }
     
-    public function showRect( rect : Rectangle, scaleTo : Number = 1.0 ) : void
+    public function zoomToBounds( rect : Rectangle, scaleTo : Number = 1.0 ) : void
     {
     }
 }

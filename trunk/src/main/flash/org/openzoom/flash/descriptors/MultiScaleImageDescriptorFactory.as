@@ -27,8 +27,7 @@ import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 	
 
 /**
- * The MultiScaleImageDescriptorFactory
- * creates MultiScaleImageDescriptor objects.
+ * The MultiScaleImageDescriptorFactory creates MultiScaleImageDescriptor objects.
  */
 public class MultiScaleImageDescriptorFactory
 {
@@ -91,6 +90,9 @@ public class MultiScaleImageDescriptorFactory
     /**
      * Returns an instance of IMultiScaleImageDescriptor that is based
      * on the data and source that are given.
+     * 
+     * @return An object of type IMultiScaleImageDescriptor or <code>null</code>
+     *         if the factory couldn't create a descriptor from the given data.
      */ 
     public function getDescriptor( source : String,
                                    data : XML ) : IMultiScaleImageDescriptor

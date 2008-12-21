@@ -220,7 +220,7 @@ public class MouseController extends ViewportControllerBase
             return
     	
         // TODO: React appropriately to different platforms and/or browsers,
-        // as they at times report completely different mouse wheel deltas. 
+        // as they at times report completely different mouse wheel deltas.
         var factor : Number = clamp( 1 + ( event.delta * mouseWheelZoomFactor ), 0.2, 5 )
         
         // compute normalized origin of mouse relative to viewport.

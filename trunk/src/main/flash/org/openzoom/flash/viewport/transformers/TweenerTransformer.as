@@ -218,8 +218,8 @@ public class TweenerTransformer implements IViewportTransformer
     public function transform( target : IViewportTransform,
                                immediately : Boolean = false ) : void
     {
-        // copy targetTransform to know where to tween to…
-        _target = constraint.validate( target.clone())
+        // copy target and validate to know where to tween to…
+        _target = constraint.validate( target.clone() )
         
         if( immediately )
         {

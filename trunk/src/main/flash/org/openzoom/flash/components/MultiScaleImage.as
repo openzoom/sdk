@@ -18,10 +18,12 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flex.components
+package org.openzoom.flash.components
 {
 
 import flash.events.Event;
+import flash.events.IOErrorEvent;
+import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
@@ -31,7 +33,7 @@ import org.openzoom.flash.net.ILoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 
 /**
- * Flex component for displaying a single multi-scale image.
+ * Flash component for displaying a single multi-scale image.
  * Inspired by the <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.multiscaleimage(VS.95).aspx">
  * Microsoft Silverlight Deep Zoom MultiScaleImage control.</a>
  * This implementation has built-in support for Zoomify, Deep Zoom and OpenZoom images.
@@ -81,8 +83,6 @@ public final class MultiScaleImage extends MultiScaleImageBase
     
     private var _source : IMultiScaleImageDescriptor
     
-    [Bindable(event="sourceChanged")]
-    
     /**
      * Source of this image. Either a URL as String or an
      * instance of IMultiScaleImageDescriptor.
@@ -110,14 +110,21 @@ public final class MultiScaleImage extends MultiScaleImageBase
     		  
     		url = String( value )
     		urlLoader = new URLLoader( new URLRequest( url ))
-    		urlLoader.addEventListener( Event.COMPLETE, urlLoader_completeHandler )
+    		
+            urlLoader.addEventListener( Event.COMPLETE,
+                                        urlLoader_completeHandler,
+                                        false, 0, true )
+            urlLoader.addEventListener( IOErrorEvent.IO_ERROR,
+                                        urlLoader_ioErrorHandler,
+                                        false, 0, true )
+            urlLoader.addEventListener( SecurityErrorEvent.SECURITY_ERROR,
+                                        urlLoader_securityErrorHandler,
+                                        false, 0, true )
     	}
     	
     	if( value is IMultiScaleImageDescriptor )
     	{
             _source = IMultiScaleImageDescriptor( value )
-            dispatchEvent( new Event( "sourceChanged" ))
-            
             addImage( _source )
     	}
     }
@@ -153,7 +160,10 @@ public final class MultiScaleImage extends MultiScaleImageBase
         container.sceneHeight = sceneHeight
         
         // create renderer
-        image = createImage( descriptor, container.loader, sceneWidth, sceneHeight )
+        image = createImage( descriptor,
+                             container.loader,
+                             sceneWidth,
+                             sceneHeight )
         container.addChild( image )
     }
     
@@ -187,14 +197,30 @@ public final class MultiScaleImage extends MultiScaleImageBase
     	
         var data : XML = new XML( urlLoader.data )
         var factory : MultiScaleImageDescriptorFactory =
-                          MultiScaleImageDescriptorFactory.getInstance()
+                                  MultiScaleImageDescriptorFactory.getInstance()
         var descriptor : IMultiScaleImageDescriptor =
-                             factory.getDescriptor( url, data )
+                                              factory.getDescriptor( url, data )
         
         _source = descriptor
-        dispatchEvent( new Event( "sourceChanged" ))
-        
         addImage( descriptor )
+        
+        dispatchEvent( event )
+    }
+    
+    /**
+     * @private
+     */
+    private function urlLoader_ioErrorHandler( event : IOErrorEvent ) : void
+    {
+        dispatchEvent( event )
+    }
+    
+    /**
+     * @private
+     */
+    private function urlLoader_securityErrorHandler( event : IOErrorEvent ) : void
+    {
+        dispatchEvent( event )
     }
 }
 

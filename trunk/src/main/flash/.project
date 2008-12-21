@@ -23,7 +23,7 @@
 		<link>
 			<name>[source path] src</name>
 			<type>2</type>
-			<location>/Applications/Adobe Flex Builder 3 Plug-in/sdks/3.2.0/frameworks/projects/framework/src</location>
+			<location>/Users/dani/Documents/workspace/openzoom/tools/sdk/flex_sdk_4.0.0.4021_mpl/frameworks/projects/framework/src</location>
 		</link>
 		<link>
 			<name>bin-debug</name>
