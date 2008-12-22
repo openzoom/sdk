@@ -65,7 +65,7 @@ internal class DisplayObjectLoadingItem extends EventDispatcher
     private var context : *
     private var loader : Loader
     private var url : String
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods

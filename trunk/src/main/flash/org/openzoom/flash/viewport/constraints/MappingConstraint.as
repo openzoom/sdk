@@ -63,7 +63,8 @@ public class MappingConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */ 
-    public function validate( transform : IViewportTransform ) : IViewportTransform
+    public function validate( transform : IViewportTransform,
+                              target : IViewportTransform ) : IViewportTransform
     {
         transform.scale = roundToPowerOf2( transform.scale )
         return transform

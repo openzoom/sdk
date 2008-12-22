@@ -22,6 +22,8 @@ package org.openzoom.flex.components
 {
 
 import flash.events.Event;
+import flash.events.IOErrorEvent;
+import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
@@ -32,6 +34,27 @@ import org.openzoom.flash.net.ILoadingQueue;
 import org.openzoom.flash.net.LoadingItemType;
 import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;    
+
+/**
+ *  Dispatched when the image has successfully loaded.
+ *
+ *  @eventType flash.events.Event.COMPLETE
+ */
+[Event(name="complete", type="flash.events.Event")]
+
+/**
+ *  Dispatched when an IO error has occured while loading the image.
+ *
+ *  @eventType flash.events.IOErrorEvent.IO_ERROR
+ */
+[Event(name="ioError", type="flash.events.IOErrorEvent")]
+
+/**
+ *  Dispatched when an security error has occured while loading the image.
+ *
+ *  @eventType flash.events.SecurityErrorEvent.SECURITY_ERROR
+ */
+[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
 
 /**
  * Flex component for displaying single Deep Zoom images as well
@@ -160,8 +183,15 @@ public class DeepZoomContainer extends MultiScaleImageBase
         if( classOrString is String )
         {
             urlLoader = new URLLoader( new URLRequest( String( classOrString )))
-            urlLoader.addEventListener( Event.COMPLETE, 
+            
+            urlLoader.addEventListener( Event.COMPLETE,
                                         urlLoader_completeHandler,
+                                        false, 0, true )
+            urlLoader.addEventListener( IOErrorEvent.IO_ERROR,
+                                        urlLoader_ioErrorHandler,
+                                        false, 0, true )
+            urlLoader.addEventListener( SecurityErrorEvent.SECURITY_ERROR,
+                                        urlLoader_securityErrorHandler,
                                         false, 0, true )
         }
         
@@ -330,6 +360,25 @@ public class DeepZoomContainer extends MultiScaleImageBase
         }
     }
     
+    /**
+     * @private
+     */
+    private function urlLoader_ioErrorHandler( event : IOErrorEvent ) : void
+    {
+        dispatchEvent( event )
+    }
+    
+    /**
+     * @private
+     */
+    private function urlLoader_securityErrorHandler( event : SecurityErrorEvent ) : void
+    {
+        dispatchEvent( event )
+    }
+    
+    /**
+     * @private
+     */
     private function loadingItem_completeHandler( event : LoadingItemEvent ) : void
     {
     	numItemsToDownload--

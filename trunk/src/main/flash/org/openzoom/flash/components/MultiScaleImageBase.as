@@ -32,27 +32,6 @@ import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
 
 /**
- *  Dispatched when the image has successfully loaded.
- *
- *  @eventType flash.events.Event.COMPLETE
- */
-[Event(name="complete", type="flash.events.Event")]
-
-/**
- *  Dispatched when an IO error has occured while loading the image.
- *
- *  @eventType flash.events.IOErrorEvent.IO_ERROR
- */
-[Event(name="ioError", type="flash.events.IOErrorEvent")]
-
-/**
- *  Dispatched when an security error has occured while loading the image.
- *
- *  @eventType flash.events.SecurityErrorEvent.SECURITY_ERROR
- */
-[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
-
-/**
  * @private
  * 
  * Base class for MultiScaleImage and DeepZoomContainer.

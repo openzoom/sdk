@@ -397,7 +397,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
             var cropBitmapData : BitmapData =
                    new BitmapData( Math.min( level.width, backgroundTile.width ),
                                    Math.min( level.height, backgroundTile.height ))
-            cropBitmapData.copyPixels( backgroundTile.bitmapData, cropBitmapData.rect, new Point( 0, 0 ))
+            cropBitmapData.copyPixels( backgroundTile.bitmapData,
+                                       cropBitmapData.rect,
+                                       new Point( 0, 0 ))
             var croppedTileBitmap : Bitmap = new Bitmap( cropBitmapData )
             backgroundTile = croppedTileBitmap
         }

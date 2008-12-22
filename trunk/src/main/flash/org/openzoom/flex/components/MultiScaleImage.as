@@ -22,6 +22,8 @@ package org.openzoom.flex.components
 {
 
 import flash.events.Event;
+import flash.events.IOErrorEvent;
+import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
@@ -110,7 +112,16 @@ public final class MultiScaleImage extends MultiScaleImageBase
     		  
     		url = String( value )
     		urlLoader = new URLLoader( new URLRequest( url ))
-    		urlLoader.addEventListener( Event.COMPLETE, urlLoader_completeHandler )
+            
+            urlLoader.addEventListener( Event.COMPLETE,
+                                        urlLoader_completeHandler,
+                                        false, 0, true )
+            urlLoader.addEventListener( IOErrorEvent.IO_ERROR,
+                                        urlLoader_ioErrorHandler,
+                                        false, 0, true )
+            urlLoader.addEventListener( SecurityErrorEvent.SECURITY_ERROR,
+                                        urlLoader_securityErrorHandler,
+                                        false, 0, true )
     	}
     	
     	if( value is IMultiScaleImageDescriptor )
@@ -195,6 +206,24 @@ public final class MultiScaleImage extends MultiScaleImageBase
         dispatchEvent( new Event( "sourceChanged" ))
         
         addImage( descriptor )
+        
+        dispatchEvent( event )
+    }
+    
+    /**
+     * @private
+     */
+    private function urlLoader_ioErrorHandler( event : IOErrorEvent ) : void
+    {
+        dispatchEvent( event )
+    }
+    
+    /**
+     * @private
+     */
+    private function urlLoader_securityErrorHandler( event : SecurityErrorEvent ) : void
+    {
+        dispatchEvent( event )
     }
 }
 

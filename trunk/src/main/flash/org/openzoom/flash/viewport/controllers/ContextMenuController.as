@@ -45,23 +45,23 @@ public class ContextMenuController extends ViewportControllerBase
     //--------------------------------------------------------------------------
     
     // Context Menu
-    private static const FULL_SCREEN_MENU_NORMAL_CAPTION : String = "Fullscreen	F"
-    private static const FULL_SCREEN_MENU_EXIT_CAPTION   : String = "Exit Fullscreen	F"
+    private static const FULL_SCREEN_MENU_NORMAL_CAPTION : String = "Fullscreen\t\t\tF"
+    private static const FULL_SCREEN_MENU_EXIT_CAPTION   : String = "Exit Fullscreen\t\t\tF"
     
-    private static const SHOW_ALL_MENU_CAPTION           : String = "Show All	H"
+    private static const SHOW_ALL_MENU_CAPTION           : String = "Show All\t\t\tH"
     
-    private static const ZOOM_IN_MENU_CAPTION            : String = "Zoom In	I / +"
-    private static const ZOOM_OUT_MENU_CAPTION           : String = "Zoom Out	O / -"
+    private static const ZOOM_IN_MENU_CAPTION            : String = "Zoom In\t\t\t\tI / +"
+    private static const ZOOM_OUT_MENU_CAPTION           : String = "Zoom Out\t\t\tO / -"
     
-    private static const PAN_UP_MENU_CAPTION             : String = "Pan Up	W / Up"
-    private static const PAN_DOWN_MENU_CAPTION           : String = "Pan Down	S / Down"
-    private static const PAN_LEFT_MENU_CAPTION           : String = "Pan Left	A / Left"
-    private static const PAN_RIGHT_MENU_CAPTION          : String = "Pan Right	D / Right"
+    private static const PAN_UP_MENU_CAPTION             : String = "Pan Up\t\t\t\tW / Up"
+    private static const PAN_DOWN_MENU_CAPTION           : String = "Pan Down\t\t\tS / Down"
+    private static const PAN_LEFT_MENU_CAPTION           : String = "Pan Left\t\t\t\tA / Left"
+    private static const PAN_RIGHT_MENU_CAPTION          : String = "Pan Right\t\t\tD / Right"
     
     // Parameters
     private static const ZOOM_IN_FACTOR                  : Number = 2.0
     private static const ZOOM_OUT_FACTOR                 : Number = 0.3
-    private static const TRANSLATION_FACTOR              : Number = 0.1
+    private static const PAN_FACTOR                      : Number = 0.1
     
     //--------------------------------------------------------------------------
     //
@@ -218,25 +218,25 @@ public class ContextMenuController extends ViewportControllerBase
     // Panning
     private function panUpMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
     {
-        var dy : Number = viewport.height * TRANSLATION_FACTOR
+        var dy : Number = viewport.height * PAN_FACTOR
         viewport.panBy( 0, -dy )
     }
     
     private function panDownMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
     {
-        var dy : Number = viewport.height * TRANSLATION_FACTOR
+        var dy : Number = viewport.height * PAN_FACTOR
         viewport.panBy( 0, dy )
     }
     
     private function panLeftMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
     {
-        var dx : Number = viewport.width * TRANSLATION_FACTOR
+        var dx : Number = viewport.width * PAN_FACTOR
         viewport.panBy( -dx, 0 )
     }
     
     private function panRightMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
     {
-        var dx : Number = viewport.width * TRANSLATION_FACTOR
+        var dx : Number = viewport.width * PAN_FACTOR
         viewport.panBy( dx, 0 )
     }
     

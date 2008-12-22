@@ -33,6 +33,27 @@ import org.openzoom.flash.net.ILoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 
 /**
+ *  Dispatched when the image has successfully loaded.
+ *
+ *  @eventType flash.events.Event.COMPLETE
+ */
+[Event(name="complete", type="flash.events.Event")]
+
+/**
+ *  Dispatched when an IO error has occured while loading the image.
+ *
+ *  @eventType flash.events.IOErrorEvent.IO_ERROR
+ */
+[Event(name="ioError", type="flash.events.IOErrorEvent")]
+
+/**
+ *  Dispatched when an security error has occured while loading the image.
+ *
+ *  @eventType flash.events.SecurityErrorEvent.SECURITY_ERROR
+ */
+[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
+
+/**
  * Flash component for displaying a single multi-scale image.
  * Inspired by the <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.multiscaleimage(VS.95).aspx">
  * Microsoft Silverlight Deep Zoom MultiScaleImage control.</a>
@@ -218,7 +239,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
     /**
      * @private
      */
-    private function urlLoader_securityErrorHandler( event : IOErrorEvent ) : void
+    private function urlLoader_securityErrorHandler( event : SecurityErrorEvent ) : void
     {
         dispatchEvent( event )
     }

@@ -66,20 +66,20 @@ public class OpenZoomViewer extends Sprite
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_MAX_SCALE_FACTOR     : Number = 4.0
+    private static const DEFAULT_MAX_SCALE_FACTOR     : Number = 2.0
     private static const DEFAULT_VISIBILITY_RATIO     : Number = 0.5
     
     private static const FULL_SCREEN_BACKGROUND_COLOR : uint   = 0x111111
     private static const FULL_SCREEN_KEY_CODE         : uint   = 70 // F
     
-    private static const DEBUG_MENU_DISABLED_CAPTION  : String = "Show Memory Consumption    M"
-    private static const DEBUG_MENU_ENABLED_CAPTION   : String = "Hide Memory Consumption    M"
+    private static const DEBUG_MENU_DISABLED_CAPTION  : String = "Show Memory Consumption\tM"
+    private static const DEBUG_MENU_ENABLED_CAPTION   : String = "Hide Memory Consumption\tM"
     private static const DEBUG_MENU_KEY_CODE          : uint   = 77 // M
     
     private static const ABOUT_MENU_CAPTION           : String = "Powered by OpenZoom.org"
     private static const ABOUT_MENU_URL               : String = "http://openzoom.org/"
     
-    private static const DEFAULT_SOURE                : String = "../../../../src/main/resources/images/zoomify/billions"
+    private static const DEFAULT_SOURE                : String = ""
     private static const DEFAULT_DESCRIPTOR_NAME      : String = "ImageProperties.xml"
     
     //--------------------------------------------------------------------------
@@ -186,9 +186,10 @@ public class OpenZoomViewer extends Sprite
     {
         fullScreenBackground = new Shape()
         var g : Graphics = fullScreenBackground.graphics
-        g.beginFill( 0x000000 )
-        g.drawRect( 0, 0, 100, 100 )
-        g.endFill()
+	        g.beginFill( 0x000000 )
+	        g.drawRect( 0, 0, 100, 100 )
+	        g.endFill()
+	        
         fullScreenBackground.visible = false
         addChild( fullScreenBackground )
     }
@@ -280,10 +281,6 @@ public class OpenZoomViewer extends Sprite
         var imageHeight : Number
         var defaultDimension : Number = MultiScaleImageBase.DEFAULT_SCENE_DIMENSION
          
-//      imageWidth  = getParameter( OpenZoomViewerParameters.IMAGE_WIDTH,
-//                                  defaultDimension )
-//      imageHeight = getParameter( OpenZoomViewerParameters.IMAGE_HEIGHT,
-//                                  defaultDimension )
         if( image.source && image.source is IMultiScaleImageDescriptor )
         {
         	var descriptor : IMultiScaleImageDescriptor =
@@ -295,12 +292,6 @@ public class OpenZoomViewer extends Sprite
             scaleConstraint.maxScale = DEFAULT_MAX_SCALE_FACTOR * maxScale
         }
         
-        // Stupid bug by Zoomify Exporter in Photoshop
-        // Numbers with more than four digits get truncated
-//        if( imageWidth < 10000 && imageHeight < 10000 )
-//            scaleConstraint.maxScale = DEFAULT_MAX_SCALE_FACTOR * maxScale
-
-
         // Prevent image from disappearing from the viewport
         var visibilityConstraint : VisibilityConstraint = new VisibilityConstraint()
             visibilityConstraint.visibilityRatio = DEFAULT_VISIBILITY_RATIO
@@ -372,11 +363,10 @@ public class OpenZoomViewer extends Sprite
      */
     private function loadSource() : void
     {
-        var source : String = getParameter( OpenZoomViewerParameters.SOURCE,
-                                            DEFAULT_SOURE )
-            source += "/" + DEFAULT_DESCRIPTOR_NAME
+        var path : String = getParameter( OpenZoomViewerParameters.SOURCE,
+                                          DEFAULT_SOURE )
         
-        image.source = source
+        image.source = path + "/" + DEFAULT_DESCRIPTOR_NAME
     }
     
     //--------------------------------------------------------------------------

@@ -46,6 +46,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     private static const DEFAULT_TILE_FOLDER_NAME : String = "TileGroup"
     private static const DEFAULT_TILE_FORMAT : String = "jpg"
     private static const DEFAULT_TILE_OVERLAP : uint = 0
+    private static const DEFAULT_NUM_TILES_IN_FOLDER : uint = 256
     
     //--------------------------------------------------------------------------
     //
@@ -74,6 +75,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     
     private var data : XML
     private var levels : Dictionary
+    private var numTiles : uint
     
     //--------------------------------------------------------------------------
     //
@@ -88,12 +90,11 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     {
     	var length : Number = source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length
     	
-    	// TODO: Compute the correct folder
-    	var folder : Number = 0
-    	
-    	var path : String = source.substr( 0, length ) + DEFAULT_TILE_FOLDER_NAME + folder 
-        return [ path, "/", level, "-", column, "-", row, ".", type ].join("")
-
+    	var folder : uint = getFolder( level, column, row )
+    	var path : String = source.substr( 0, length ) + DEFAULT_TILE_FOLDER_NAME + folder
+    	var url : String =  [ path, "/", level, "-", column, "-", row, ".", type ].join("")
+    	 
+        return url 
     }
 
     /**
@@ -166,6 +167,8 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
         
         _type = DEFAULT_TILE_FORMAT
         _tileOverlap = DEFAULT_TILE_OVERLAP
+        
+        numTiles = data.@NUMTILES
     }
     
     /**
@@ -210,6 +213,42 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 
         return levels 
     }
+    
+    /**
+     * @private
+     * 
+     * Calculates the folder this tile resides in.
+     * There's probably a more efficient way to do this.
+     * Correctness has a higher priority for now, so I didn't bother.
+     */
+    private function getFolder( level : int, column : uint, row : uint ) : uint
+    {
+    	// Return early if we know there's only one TileGroup folder
+    	if( numTiles <= DEFAULT_NUM_TILES_IN_FOLDER )
+            return 0
+    	
+    	// Compute the rank of the requested tile
+    	// and determine in which TileGroup folder it resides.
+    	var tileNumber : int = 0
+    	
+        for( var l : int = 0; l < numLevels; l++ )
+        {
+            var currentLevel : IMultiScaleImageLevel = getLevelAt( l )
+                
+            for( var r : int = 0; r < currentLevel.numRows; r++ )
+            {
+                for( var c : int = 0; c < currentLevel.numColumns; c++ )
+                {
+                    tileNumber++
+                    
+                    if( l == level && column == c && row == r )
+                        return Math.floor( tileNumber / DEFAULT_NUM_TILES_IN_FOLDER )
+                }
+            }
+        }
+        
+        return 0
+    } 
 }
 
 }
