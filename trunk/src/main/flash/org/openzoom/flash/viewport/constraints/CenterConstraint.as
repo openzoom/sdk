@@ -51,7 +51,8 @@ public class CenterConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */ 
-    public function validate( transform : IViewportTransform ) : IViewportTransform
+    public function validate( transform : IViewportTransform,
+                              target : IViewportTransform ) : IViewportTransform
     {
     	var x : Number = transform.x
     	var y : Number = transform.y

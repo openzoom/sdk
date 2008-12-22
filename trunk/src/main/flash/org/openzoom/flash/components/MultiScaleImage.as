@@ -164,6 +164,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
                              container.loader,
                              sceneWidth,
                              sceneHeight )
+                             
         container.addChild( image )
     }
     
@@ -176,8 +177,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
                                   height : Number ) : MultiScaleImageRenderer
     {
         var image : MultiScaleImageRenderer =
-                        new MultiScaleImageRenderer( descriptor, loader, width, height )
-        image.viewport = viewport
+                new MultiScaleImageRenderer( descriptor, loader, width, height )
         return image
     }
     

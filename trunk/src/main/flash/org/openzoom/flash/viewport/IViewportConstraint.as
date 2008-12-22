@@ -35,10 +35,12 @@ public interface IViewportConstraint
 	 * it validates all constraints.
 	 * 
 	 * @param transform IViewportTransform object to be validated.
+	 * @param target IViewportTransform object that represents the last validated transform.
 	 * 
 	 * @return Validated IViewportTransform object.
 	 */ 
-	function validate( transform : IViewportTransform ) : IViewportTransform
+	function validate( transform : IViewportTransform,
+	                   target : IViewportTransform ) : IViewportTransform
 }
 
 }

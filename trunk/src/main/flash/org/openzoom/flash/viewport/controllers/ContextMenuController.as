@@ -45,18 +45,18 @@ public class ContextMenuController extends ViewportControllerBase
     //--------------------------------------------------------------------------
     
     // Context Menu
-    private static const FULL_SCREEN_MENU_NORMAL_CAPTION : String = "Fullscreen"// F"
-    private static const FULL_SCREEN_MENU_EXIT_CAPTION   : String = "Exit Fullscreen"//    F"
+    private static const FULL_SCREEN_MENU_NORMAL_CAPTION : String = "Fullscreen	F"
+    private static const FULL_SCREEN_MENU_EXIT_CAPTION   : String = "Exit Fullscreen	F"
     
-    private static const SHOW_ALL_MENU_CAPTION           : String = "Show All"//   Space"
+    private static const SHOW_ALL_MENU_CAPTION           : String = "Show All	H"
     
-    private static const ZOOM_IN_MENU_CAPTION            : String = "Zoom In    +"//    I / +"
-    private static const ZOOM_OUT_MENU_CAPTION           : String = "Zoom Out   -"//   O / -"
+    private static const ZOOM_IN_MENU_CAPTION            : String = "Zoom In	I / +"
+    private static const ZOOM_OUT_MENU_CAPTION           : String = "Zoom Out	O / -"
     
-    private static const PAN_UP_MENU_CAPTION             : String = "Pan Up"//    W / Up"
-    private static const PAN_DOWN_MENU_CAPTION           : String = "Pan Down"//  S / Down"
-    private static const PAN_LEFT_MENU_CAPTION           : String = "Pan Left"//  A / Left"
-    private static const PAN_RIGHT_MENU_CAPTION          : String = "Pan Right"// D / Right"
+    private static const PAN_UP_MENU_CAPTION             : String = "Pan Up	W / Up"
+    private static const PAN_DOWN_MENU_CAPTION           : String = "Pan Down	S / Down"
+    private static const PAN_LEFT_MENU_CAPTION           : String = "Pan Left	A / Left"
+    private static const PAN_RIGHT_MENU_CAPTION          : String = "Pan Right	D / Right"
     
     // Parameters
     private static const ZOOM_IN_FACTOR                  : Number = 2.0
@@ -149,27 +149,27 @@ public class ContextMenuController extends ViewportControllerBase
         panUpMenu = new ContextMenuItem( PAN_UP_MENU_CAPTION )
         panUpMenu.separatorBefore = true
         panUpMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                     panUpMenu_menuItemSelectHandler,
-                                     false, 0, true )
+                                    panUpMenu_menuItemSelectHandler,
+                                    false, 0, true )
         menu.customItems.push( panUpMenu )
         
         panDownMenu = new ContextMenuItem( PAN_DOWN_MENU_CAPTION )
         panDownMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                       panDownMenu_menuItemSelectHandler,
-                                       false, 0, true )
+                                      panDownMenu_menuItemSelectHandler,
+                                      false, 0, true )
         menu.customItems.push( panDownMenu )
         
         
         panLeftMenu = new ContextMenuItem( PAN_LEFT_MENU_CAPTION )
         panLeftMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                       panLeftMenu_menuItemSelectHandler,
-                                       false, 0, true )
+                                      panLeftMenu_menuItemSelectHandler,
+                                      false, 0, true )
         menu.customItems.push( panLeftMenu )
         
         panRightMenu = new ContextMenuItem( PAN_RIGHT_MENU_CAPTION )
         panRightMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                        panRightMenu_menuItemSelectHandler,
-                                        false, 0, true )
+                                       panRightMenu_menuItemSelectHandler,
+                                       false, 0, true )
         menu.customItems.push( panRightMenu )
         
         if( view is DisplayObjectContainer )

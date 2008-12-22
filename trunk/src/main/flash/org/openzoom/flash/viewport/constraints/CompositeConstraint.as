@@ -80,10 +80,11 @@ public class CompositeConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform : IViewportTransform ) : IViewportTransform
+    public function validate( transform : IViewportTransform,
+                              target : IViewportTransform ) : IViewportTransform
     {    	
     	for each( var constraint : IViewportConstraint in constraints )
-    		transform = constraint.validate( transform )
+    		transform = constraint.validate( transform, target )
 
         return transform
     }

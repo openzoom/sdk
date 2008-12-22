@@ -21,8 +21,6 @@
 package
 {
 
-[ExcludeClass]
-
 /**
  * @private
  * 

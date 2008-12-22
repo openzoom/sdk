@@ -104,8 +104,17 @@ public class ScaleConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */ 
-    public function validate( transform : IViewportTransform ) : IViewportTransform
+    public function validate( transform : IViewportTransform,
+                              target : IViewportTransform ) : IViewportTransform
     {
+    	// FIXME
+    	// Prevent from moving when the scale limist are reached
+//    	if( transform.scale == minScale || transform.scale == maxScale )
+//    	{
+////    		target.panTo( transform.x, transform.y )
+//            return target
+//    	}
+    	
         // validate zoom
         if( transform.scale > maxScale )
             transform.scale = maxScale

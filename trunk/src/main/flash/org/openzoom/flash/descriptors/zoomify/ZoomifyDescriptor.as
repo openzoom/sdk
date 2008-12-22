@@ -43,7 +43,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     //--------------------------------------------------------------------------
     
     private static const DEFAULT_DESCRIPTOR_FILE_NAME : String = "ImageProperties.xml"
-    private static const DEFAULT_TILE_FOLDER_NAME : String = "TileGroup0"
+    private static const DEFAULT_TILE_FOLDER_NAME : String = "TileGroup"
     private static const DEFAULT_TILE_FORMAT : String = "jpg"
     private static const DEFAULT_TILE_OVERLAP : uint = 0
     
@@ -86,7 +86,12 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
      */
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-    	var path : String = source.substr( 0, source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length ) + DEFAULT_TILE_FOLDER_NAME
+    	var length : Number = source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length
+    	
+    	// TODO: Compute the correct folder
+    	var folder : Number = 0
+    	
+    	var path : String = source.substr( 0, length ) + DEFAULT_TILE_FOLDER_NAME + folder 
         return [ path, "/", level, "-", column, "-", row, ".", type ].join("")
 
     }

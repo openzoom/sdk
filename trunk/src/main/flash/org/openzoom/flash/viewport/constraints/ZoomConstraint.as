@@ -105,8 +105,17 @@ public class ZoomConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */ 
-    public function validate( transform : IViewportTransform ) : IViewportTransform
+    public function validate( transform : IViewportTransform,
+                              target : IViewportTransform ) : IViewportTransform
     {
+    	// FIXME
+        // Prevent from moving when the zoom limit are reached
+//        if( transform.zoom == minZoom || transform.zoom == maxZoom )
+//        {
+////          target.panTo( transform.x, transform.y )
+//            return target
+//        }
+        
         // validate zoom
         if( transform.zoom > maxZoom )
             transform.zoomTo( maxZoom )

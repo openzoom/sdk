@@ -23,13 +23,34 @@ package org.openzoom.flash.components
 
 import flash.display.DisplayObject;
 import flash.display.Sprite;
-import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import flash.ui.ContextMenu;
 
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
+
+/**
+ *  Dispatched when the image has successfully loaded.
+ *
+ *  @eventType flash.events.Event.COMPLETE
+ */
+[Event(name="complete", type="flash.events.Event")]
+
+/**
+ *  Dispatched when an IO error has occured while loading the image.
+ *
+ *  @eventType flash.events.IOErrorEvent.IO_ERROR
+ */
+[Event(name="ioError", type="flash.events.IOErrorEvent")]
+
+/**
+ *  Dispatched when an security error has occured while loading the image.
+ *
+ *  @eventType flash.events.SecurityErrorEvent.SECURITY_ERROR
+ */
+[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
 
 /**
  * @private
@@ -247,6 +268,20 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleImage
         setActualSize( width, value )
     }
     
+    //----------------------------------
+    //  contextMenu
+    //----------------------------------
+    
+    override public function get contextMenu() : ContextMenu
+    {
+        return container.contextMenu
+    }
+  
+    override public function set contextMenu( value : ContextMenu ) : void
+    {
+    	container.contextMenu = value
+    }
+  
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -480,7 +515,7 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleImage
      */ 
     override public function get numChildren():int
     {
-    	return container ? container.numChildren : 0
+        return container ? container.numChildren : 0
     }
 }
 
