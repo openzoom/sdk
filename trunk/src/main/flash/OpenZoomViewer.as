@@ -351,7 +351,7 @@ public class OpenZoomViewer extends Sprite
             
         menu.hideBuiltInItems()    
         
-        debugMenu = new ContextMenuItem( DEBUG_MENU_ENABLED_CAPTION, true )
+        debugMenu = new ContextMenuItem( DEBUG_MENU_DISABLED_CAPTION, true )
         debugMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
                                     debugMenu_menuItemSelectHandler,
                                     false, 0, true )
