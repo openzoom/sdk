@@ -16,14 +16,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[source path] external-mousewheel</name>
-			<type>2</type>
-			<locationURI>OPENZOOM/libs/flash/external-mousewheel</locationURI>
-		</link>
-		<link>
 			<name>[source path] src</name>
 			<type>2</type>
-			<location>/Users/dani/Documents/workspace/openzoom/tools/sdk/flex_sdk_4.0.0.4021_mpl/frameworks/projects/framework/src</location>
+			<location>/Applications/Adobe Flex Builder 3 Plug-in/sdks/3.2.0/frameworks/projects/framework/src</location>
+		</link>
+		<link>
+			<name>[source path] swfwheel</name>
+			<type>2</type>
+			<locationURI>OPENZOOM/libs/flash/swfwheel</locationURI>
 		</link>
 		<link>
 			<name>bin-debug</name>

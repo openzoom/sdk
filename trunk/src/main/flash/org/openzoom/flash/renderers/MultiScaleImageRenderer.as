@@ -92,7 +92,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         // Load highest single tile level as background to prevent
         // artifacts between tiles in case we have a format that doesn't
         // feature tile overlap.
-        if( descriptor.tileOverlap == 0 ) 
+        if( descriptor.tileOverlap == 0 && renderingMode != RenderingMode.SMOOTH ) 
             loadBackground()
     }
     
@@ -181,11 +181,18 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         updateDisplayList()
     }
     
+    private var counter : int = 0
+    
     /**
      * @private
-     */ 
+     */
     override protected function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
+    	// FIXME: This is where we could trigger refreshes of the
+    	// MultiScaleImageRenderer in between transformStart and transformEnd.
+    	// Unfortunately the Flash Player does not like to handle network
+    	// and rendering at the same time.
+    	
 //        updateDisplayList()
     }
        

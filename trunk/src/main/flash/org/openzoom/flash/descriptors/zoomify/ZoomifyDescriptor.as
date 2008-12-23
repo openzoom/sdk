@@ -207,8 +207,8 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
                                                         Math.ceil( height / tileHeight ))
             width >>= 1
             height >>= 1
-//            width = Math.floor( width * 0.5 )
-//            height = Math.floor( height * 0.5 )
+//          width = Math.floor( width * 0.5 )
+//          height = Math.floor( height * 0.5 )
         }
 
         return levels 

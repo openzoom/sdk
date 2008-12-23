@@ -91,10 +91,10 @@ public interface IMultiScaleImageLevel
      */ 
     function getTileURL( column : uint, row : uint ) : String
     
-//    /**
-//     * Returns the position of the specified tile.
-//     */
-//    function getTilePosition( column : uint, row : uint ) : Point
+//  /**
+//   * Returns the position of the specified tile.
+//   */
+//  function getTilePosition( column : uint, row : uint ) : Point
     
     /**
      * Returns the bounds of the specified tile.

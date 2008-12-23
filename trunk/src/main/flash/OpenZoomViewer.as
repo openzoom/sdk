@@ -38,7 +38,7 @@ import flash.net.navigateToURL;
 import flash.ui.ContextMenu;
 import flash.ui.ContextMenuItem;
 
-import org.hasseg.externalMouseWheel.ExternalMouseWheelSupport;
+import org.libspark.ui.SWFWheel;
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleImage;
 import org.openzoom.flash.components.MultiScaleImageBase;
@@ -80,7 +80,6 @@ public class OpenZoomViewer extends Sprite
     private static const ABOUT_MENU_URL               : String = "http://openzoom.org/"
     
     private static const DEFAULT_SOURE                : String = ""
-    private static const DEFAULT_DESCRIPTOR_NAME      : String = "ImageProperties.xml"
     
     //--------------------------------------------------------------------------
     //
@@ -130,7 +129,11 @@ public class OpenZoomViewer extends Sprite
     private function initializeStage() : void
     {
     	if( stage )
-        {
+        {      
+            // Enable Mac OS X mouse wheel support
+            SWFWheel.initialize( stage )
+            
+            // Configure stage
             stage.align = StageAlign.TOP_LEFT
             stage.scaleMode = StageScaleMode.NO_SCALE
             stage.addEventListener( Event.RESIZE,
@@ -140,9 +143,6 @@ public class OpenZoomViewer extends Sprite
                                     stage_fullScreenHandler,
                                     false, 0, true )
         }
-        
-        // Enable Mac OS X mouse wheel support
-        ExternalMouseWheelSupport.getInstance( stage )
     }
     
     /**
@@ -157,6 +157,20 @@ public class OpenZoomViewer extends Sprite
     
     //--------------------------------------------------------------------------
     //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+    
+    /**
+     * @private
+     */
+    private function loadSource() : void
+    {
+        image.source = getParameter( OpenZoomViewerParameters.SOURCE, DEFAULT_SOURE )
+    }
+    
+    //--------------------------------------------------------------------------
+    //
     //  Methods: Children
     //
     //--------------------------------------------------------------------------
@@ -166,8 +180,8 @@ public class OpenZoomViewer extends Sprite
      */
     private function createChildren() : void
     {
-    	if( !fullScreenBackground )
-            createFullScreenBackground()
+//    	if( !fullScreenBackground )
+//            createFullScreenBackground()
             
         if( !sad )
             createSad()
@@ -354,23 +368,6 @@ public class OpenZoomViewer extends Sprite
     
     //--------------------------------------------------------------------------
     //
-    //  Methods
-    //
-    //--------------------------------------------------------------------------
-    
-    /**
-     * @private
-     */
-    private function loadSource() : void
-    {
-        var path : String = getParameter( OpenZoomViewerParameters.SOURCE,
-                                          DEFAULT_SOURE )
-        
-        image.source = path + "/" + DEFAULT_DESCRIPTOR_NAME
-    }
-    
-    //--------------------------------------------------------------------------
-    //
     //  Methods: Layout
     //
     //--------------------------------------------------------------------------
@@ -486,6 +483,9 @@ public class OpenZoomViewer extends Sprite
      */
     private function stage_fullScreenHandler( event : FullScreenEvent ) : void
     {
+    	if( !fullScreenBackground )
+            return
+    	
     	if( event.fullScreen )
             fullScreenBackground.visible = true
     	else

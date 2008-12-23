@@ -22,6 +22,8 @@ package org.openzoom.flash.descriptors
 {
 
 /**
+ * @private
+ * 
  * Base class for MultiScaleImageLevel.
  */
 public class MultiScaleImageLevelBase

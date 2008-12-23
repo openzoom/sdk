@@ -225,6 +225,8 @@ public final class MultiScaleImage extends MultiScaleImageBase
         _source = descriptor
         addImage( descriptor )
         
+        viewport.showAll( true )
+        
         dispatchEvent( event )
     }
     

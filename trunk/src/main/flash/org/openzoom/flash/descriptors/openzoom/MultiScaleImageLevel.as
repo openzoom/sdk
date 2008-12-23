@@ -35,7 +35,7 @@ import org.openzoom.flash.descriptors.MultiScaleImageLevelBase;
  * image pyramid described by an OpenZoom descriptor.
  */
 internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
-                                  implements IMultiScaleImageLevel
+                                    implements IMultiScaleImageLevel
 {
     //--------------------------------------------------------------------------
     //
@@ -47,8 +47,8 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
      * Constructor.
      */ 
     public function MultiScaleImageLevel( descriptor : IMultiScaleImageDescriptor,
-                                   index : int, width : uint, height : uint,
-                                   numColumns : uint, numRows : uint, uris : Array )
+                                          index : int, width : uint, height : uint,
+                                          numColumns : uint, numRows : uint, uris : Array )
     {
     	this.descriptor = descriptor
     	this.uris = uris
