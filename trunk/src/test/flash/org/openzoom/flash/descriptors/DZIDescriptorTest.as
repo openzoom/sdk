@@ -17,15 +17,17 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.descriptors
+package org.openzoom.flash.descriptors
 {
 
 import flexunit.framework.TestCase;
 
+import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+
 /**
- * Tests the ZoomifyDescriptor implementation for correctness.
+ * Tests the DZIDescriptor implementation for correctness.
  */
-public class ZoomifyDescriptorTest extends TestCase
+public class DZIDescriptorTest extends TestCase
 {
     //--------------------------------------------------------------------------
     //
@@ -34,15 +36,26 @@ public class ZoomifyDescriptorTest extends TestCase
     //--------------------------------------------------------------------------
     	
 	private static const DESCRIPTOR_XML : XML =
-        <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290" NUMTILES="169" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />;
+		<Image xmlns="http://schemas.microsoft.com/deepzoom/2008"
+		       TileSize="100" Overlap="0" Format="jpg">
+			<Size Width="2592" Height="3872"/>
+		</Image>;
 		
     private static const LEVELS : Array =
         [// width, height, columns, rows
-            [   137,  205,       1,    1 ],
-            [   275,  411,       2,    2 ],
-            [   550,  822,       3,    4 ],
-            [  1101, 1645,       5,    7 ],
-            [  2203, 3290,       9,   13 ],
+            [   1,      1,       1,    1 ],
+            [   2,      2,       1,    1 ],
+            [   3,      4,       1,    1 ],
+            [   6,      8,       1,    1 ],
+            [   11,    16,       1,    1 ],
+            [   21,    31,       1,    1 ],
+            [   41,    61,       1,    1 ],
+            [   81,   121,       1,    2 ],
+            [  162,   242,       2,    3 ],
+            [  324,   484,       4,    5 ],
+            [  648,   968,       7,   10 ],
+            [ 1296,  1936,      13,   20 ],
+            [ 2592,  3872,      26,   39 ],
         ]
 
     //--------------------------------------------------------------------------
@@ -61,7 +74,7 @@ public class ZoomifyDescriptorTest extends TestCase
     
 	override public function setUp() : void
 	{
-		descriptor = new ZoomifyDescriptor( "test.xml", DESCRIPTOR_XML ) 
+		descriptor = new DZIDescriptor( "test.xml", DESCRIPTOR_XML ) 
 	}
 	
 	override public function tearDown() : void
@@ -77,7 +90,7 @@ public class ZoomifyDescriptorTest extends TestCase
 	
 	public function testMaxLevel() : void
 	{
-		assertEquals( "Maximum level correctly computed", 4, descriptor.numLevels - 1 )
+		assertEquals( "Maximum level correctly computed", 12, descriptor.numLevels - 1 )
 	}
 	
 	public function testOverlap() : void
@@ -101,10 +114,10 @@ public class ZoomifyDescriptorTest extends TestCase
 	public function testGetMinimumLevelForSize() : void
 	{
 	   assertEquals( "Level computation for given size", descriptor.numLevels - 1,
-	       descriptor.getMinimumLevelForSize( descriptor.width, descriptor.height ).index )
+	       descriptor.getMinLevelForSize( descriptor.width, descriptor.height ).index )
 	       	
 	   assertEquals( "Level computation for given size", descriptor.numLevels - 2,
-	       descriptor.getMinimumLevelForSize( descriptor.width / 3, descriptor.height / 3 ).index )	
+	       descriptor.getMinLevelForSize( descriptor.width / 3, descriptor.height / 3 ).index )	
 	}
 }
 

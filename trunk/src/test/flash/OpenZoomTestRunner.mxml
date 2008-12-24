@@ -29,11 +29,11 @@
     
     <mx:Script>
         <![CDATA[
-        
+
             import flexunit.framework.TestSuite;
             
-        	import org.openzoom.descriptors.DZIDescriptorTest;
-        	import org.openzoom.descriptors.ZoomifyDescriptorTest;
+        	import org.openzoom.flash.descriptors.DZIDescriptorTest;
+        	import org.openzoom.flash.descriptors.ZoomifyDescriptorTest;
             
             private function creationCompleteHandler( event : Event ):void
             {
