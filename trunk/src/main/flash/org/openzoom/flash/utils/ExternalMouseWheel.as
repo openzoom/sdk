@@ -157,7 +157,8 @@ public final class ExternalMouseWheel extends EventDispatcher
 		    };
 		    
 		    ExternalMouseWheel.force = function(id) {
-		        if( ExternalMouseWheel.browser.safari || ExternalMouseWheel.browser.stainless )
+		        if( ExternalMouseWheel.browser.safari
+		            || ExternalMouseWheel.browser.stainless )
 		            return true;
 		        var el = doc.getElementById(id),
 		        name = el.nodeName.toLowerCase();
