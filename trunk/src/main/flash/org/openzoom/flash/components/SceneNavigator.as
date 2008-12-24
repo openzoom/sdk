@@ -46,7 +46,7 @@ public class SceneNavigator extends Sprite
     //--------------------------------------------------------------------------
 
     private static const DEFAULT_DIMENSION    : Number = 150
-    private static const DEFAULT_WINDOW_COLOR : uint   = 0x0088FF
+    private static const DEFAULT_WINDOW_COLOR : uint   = 0x666666
   
     //--------------------------------------------------------------------------
     //

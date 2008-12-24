@@ -38,11 +38,11 @@ import flash.net.navigateToURL;
 import flash.ui.ContextMenu;
 import flash.ui.ContextMenuItem;
 
-import org.libspark.ui.SWFWheel;
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleImage;
 import org.openzoom.flash.components.MultiScaleImageBase;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.flash.utils.ExternalMouseWheel;
 import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
@@ -130,8 +130,8 @@ public class OpenZoomViewer extends Sprite
     {
     	if( stage )
         {      
-            // Enable Mac OS X mouse wheel support
-            SWFWheel.initialize( stage )
+            // Enable mouse wheel support for Mac OS and Safari
+            ExternalMouseWheel.initialize( stage )
             
             // Configure stage
             stage.align = StageAlign.TOP_LEFT
@@ -191,6 +191,9 @@ public class OpenZoomViewer extends Sprite
         
         if( !memoryMonitor )
             createMemoryMonitor()
+        
+//      if( !sceneNavigator )
+//          createSceneNavigator()
     }
     
     /**
@@ -244,6 +247,16 @@ public class OpenZoomViewer extends Sprite
         memoryMonitor.visible = false
         addChild( memoryMonitor )
     }
+    
+    /**
+     * @private
+     */
+//  private function createSceneNavigator() : void
+//  {
+//      sceneNavigator = new SceneNavigator()
+//      sceneNavigator.viewport = image.viewport
+//      addChild( sceneNavigator )
+//  }
     
     //--------------------------------------------------------------------------
     //

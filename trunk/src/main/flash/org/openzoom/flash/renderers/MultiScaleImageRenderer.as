@@ -181,8 +181,6 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         updateDisplayList()
     }
     
-    private var counter : int = 0
-    
     /**
      * @private
      */
@@ -193,8 +191,16 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     	// Unfortunately the Flash Player does not like to handle network
     	// and rendering at the same time.
     	
-//        updateDisplayList()
+//	    updateDisplayList()
+    	
+//    	if( ++counter > 100 )
+//    	{
+//    		counter = 0
+//	        updateDisplayList()
+//    	}
     }
+    
+//    private var counter : int = 0
        
     //--------------------------------------------------------------------------
     //
