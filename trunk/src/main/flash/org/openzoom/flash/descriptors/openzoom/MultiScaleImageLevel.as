@@ -47,11 +47,17 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
      * Constructor.
      */ 
     public function MultiScaleImageLevel( descriptor : IMultiScaleImageDescriptor,
-                                          index : int, width : uint, height : uint,
-                                          numColumns : uint, numRows : uint, uris : Array )
+                                          index : int,
+                                          width : uint,
+                                          height : uint,
+                                          numColumns : uint,
+                                          numRows : uint,
+                                          uris : Array,
+                                          pyramidOrigin : String = PyramidOrigin.TOP_LEFT )
     {
     	this.descriptor = descriptor
     	this.uris = uris
+    	this.pyramidOrigin = pyramidOrigin
     	
         super( index, width, height, numColumns, numRows )
     }
@@ -64,7 +70,9 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     
     private var uris : Array /* of String */
     private var descriptor : IMultiScaleImageDescriptor
-    private static var  uriIndex : uint = 0
+    private var pyramidOrigin : String = PyramidOrigin.TOP_LEFT
+    
+    private static var uriIndex : uint = 0
     
     //--------------------------------------------------------------------------
     //
@@ -83,7 +91,35 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
                 uriIndex = 0
                 
         	var uri : String =  String( uris[ uriIndex ] )
-        	return uri.replace( /{column}/, column ).replace( /{row}/, row )
+        	
+        	var computedColumn : uint
+        	var computedRow : uint
+        	
+        	switch( pyramidOrigin )
+        	{
+        		case PyramidOrigin.TOP_LEFT:
+                    computedColumn = column
+                    computedRow    = row
+                    break
+                    
+                case PyramidOrigin.TOP_RIGHT:
+                    computedColumn = numColumns - column
+                    computedRow    = row
+                    break
+                    
+                case PyramidOrigin.BOTTOM_RIGHT:
+                    computedColumn = numColumns - column
+                    computedRow    = numRows - row
+                    break
+                    
+                case PyramidOrigin.BOTTOM_LEFT:
+                    computedColumn = column
+                    computedRow    = numRows - row
+                    break
+        	}
+        	
+        	return uri.replace( /{column}/, computedColumn )
+        	          .replace( /{row}/, computedRow )
         }
         
         return ""

@@ -70,6 +70,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
 
     private var data : XML
     private var levels : Dictionary = new Dictionary()
+    private var origin : String = PyramidOrigin.TOP_LEFT 
 
     //--------------------------------------------------------------------------
     //
@@ -146,33 +147,39 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     private function parseXML( data : XML ) : void
     {
         use namespace openzoom
-
-        _width = data.pyramid.@width
-        _height = data.pyramid.@height
-        _tileWidth = data.pyramid.@tileWidth
-        _tileHeight = data.pyramid.@tileHeight
-
-        _type = data.pyramid.@type
-        _tileOverlap = data.pyramid.@overlap
         
-        _numLevels = data.pyramid.level.length()
+        // Grrrrh, E4X
+        var pyramid : XML = data.pyramid[ 0 ]
+
+        _width       = pyramid.@width
+        _height      = pyramid.@height
+        _tileWidth   = pyramid.@tileWidth
+        _tileHeight  = pyramid.@tileHeight
+
+        _type        = pyramid.@type
+        _tileOverlap = pyramid.@overlap
         
-        for each( var level : XML in data.pyramid.level )
+        _numLevels   = data.pyramid.level.length()
+        
+        if( PyramidOrigin.isValid( pyramid.@origin ))
+            origin = pyramid.@origin
+        
+        for( var index : int = 0; index < numLevels; index++ )
         {
+        	var level : XML = data.pyramid.level[ index ]
             var uris : Array = []
-            for each( var uri : XML in level.uri )
-            {
-                uris.push( uri.@template.toString() )
-            }
             
-            var index : int = int(level.@index.toString())
+            for each( var uri : XML in level.uri )
+                uris.push( uri.@template.toString() )
+            
             levels[ index ] = new MultiScaleImageLevel( this,
-                                                        level.@index,
+                                                        index,
 				                                        level.@width,
 				                                        level.@height,
 				                                        level.@columns,
 				                                        level.@rows,
-				                                        uris )
+				                                        uris,
+				                                        origin )
         }
     }
 }
