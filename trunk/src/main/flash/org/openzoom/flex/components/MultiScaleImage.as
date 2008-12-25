@@ -102,7 +102,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
     	{
     		_source = null
 	        container.removeChildAt( 0 )
-	        viewport.showAll( true )
+	        container.showAll( true )
     	}
     	
     	if( value is String )
@@ -164,23 +164,10 @@ public final class MultiScaleImage extends MultiScaleImageBase
         container.sceneHeight = sceneHeight
         
         // create renderer
-        image = createImage( descriptor, container.loader, sceneWidth, sceneHeight )
+        image = new MultiScaleImageRenderer( descriptor, container.loader, sceneWidth, sceneHeight )
         container.addChild( image )
     }
     
-    /**
-     * @private
-     */
-    private function createImage( descriptor : IMultiScaleImageDescriptor,
-                                  loader : ILoadingQueue,
-                                  width : Number,
-                                  height : Number ) : MultiScaleImageRenderer
-    {
-        var image : MultiScaleImageRenderer =
-                        new MultiScaleImageRenderer( descriptor, loader, width, height )
-        image.viewport = viewport
-        return image
-    }
     
 	//--------------------------------------------------------------------------
     //

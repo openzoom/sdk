@@ -31,9 +31,9 @@ import org.openzoom.flash.viewport.IViewportTransformer;
 /**
  * @private
  * 
- * Interface of a multi-scale image.
+ * Interface of a multi-scale container.
  */
-public interface IMultiScaleImage
+public interface IMultiScaleContainer
 {
     //--------------------------------------------------------------------------
     //

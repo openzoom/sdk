@@ -30,9 +30,9 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import mx.core.UIComponent;
-// import mx.core.mx_internal;
 import mx.core.mx_internal;
 
+import org.openzoom.flash.components.IMultiScaleContainer;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
 import org.openzoom.flash.net.ILoadingQueue;
@@ -40,22 +40,24 @@ import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.IMultiScaleRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.INormalizedViewportContainer;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.NormalizedViewport;
-import org.openzoom.flash.scene.MultiScaleScene;
 
 [DefaultProperty("children")]
+//import mx.core.mx_internal;
 /**
  * @private
  * 
  * Generic container for multi-scale content.
  */
 public final class MultiScaleContainer extends UIComponent 
-                                       implements ILoaderClient
+                                       implements IMultiScaleContainer,
+                                                  ILoaderClient
 {
     //--------------------------------------------------------------------------
     //
@@ -63,9 +65,6 @@ public final class MultiScaleContainer extends UIComponent
     //
     //--------------------------------------------------------------------------
    
-    private static const DEFAULT_MIN_ZOOM               : Number = 0.25
-    private static const DEFAULT_MAX_ZOOM               : Number = 10000
-    
     private static const DEFAULT_VIEWPORT_WIDTH         : Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT        : Number = 600
     
@@ -85,11 +84,10 @@ public final class MultiScaleContainer extends UIComponent
      */
     public function MultiScaleContainer()
     {
-        if( !_scene )
-            createScene()
-        
-        if( !_viewport )
-            createNormalizedViewport( _scene )
+    	super()
+    	
+    	tabEnabled = false
+    	tabChildren = true
     }
     
     //--------------------------------------------------------------------------
@@ -107,10 +105,10 @@ public final class MultiScaleContainer extends UIComponent
     //
     //--------------------------------------------------------------------------
     
-    //----------------------------------
-    //  scene
-    //----------------------------------
-    
+//    //----------------------------------
+//    //  scene
+//    //----------------------------------
+//    
     private var _scene : MultiScaleScene
     
    ;[Bindable(event="sceneChanged")]
@@ -192,7 +190,7 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
     
     private var _transformer : IViewportTransformer
-    private var transformChanged : Boolean = false
+    private var transformerChanged : Boolean = false
     
    ;[Bindable(event="transformerChanged")]
     
@@ -209,7 +207,7 @@ public final class MultiScaleContainer extends UIComponent
     	if( _transformer !== value )
         {
 	        _transformer = value
-	        transformChanged = true
+	        transformerChanged = true
 	        invalidateProperties()
 	        
 	        dispatchEvent( new Event( "transformerChanged" ))
@@ -221,9 +219,13 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
     
     private var _controllers : Array = []
+    private var _controllersHolder : Array = []
+    private var controllersChanged : Boolean = false
     
    ;[ArrayElementType("org.openzoom.flash.viewport.IViewportController")]
    ;[Inspectable(arrayType="org.openzoom.flash.viewport.IViewportController")]
+   
+   ;[Bindable(event="controllersChanged")]
    
     /**
      * Controllers of type IViewportController applied to this MultiScaleImage.
@@ -241,15 +243,18 @@ public final class MultiScaleContainer extends UIComponent
     
     public function set controllers( value : Array ) : void
     {
-        // remove old controllers
-        for each( var oldController : IViewportController in _controllers )
-            removeController( oldController )
-        
-        _controllers = []
-        
-        // add new controllers
-    	for each( var controller : IViewportController in value )
-    		addController( controller )
+    	if( _controllers != value )
+    	{
+		    // remove old controllers
+		    for each( var oldController : IViewportController in _controllers )
+		        removeController( oldController )
+    		
+    		_controllersHolder = value.slice( 0 )
+    		controllersChanged = true
+    		invalidateProperties()
+    		
+    		dispatchEvent( new Event( "controllersChanged" )) 
+    	}
     }
     
     //----------------------------------
@@ -266,8 +271,8 @@ public final class MultiScaleContainer extends UIComponent
     public function set children( value : Array ) : void
     {
     	// remove all existing children
-        for( var i : int = numChildren - 1; i >= 0; i-- )
-            removeChildAt( i )
+        while( numChildren > 0 )
+            removeChildAt( 0 )
         
         for each( var child : DisplayObject in value )
             addChild( child )
@@ -283,30 +288,56 @@ public final class MultiScaleContainer extends UIComponent
     //  sceneWidth
     //----------------------------------
     
-    [Bindable]
+    private var _sceneWidth : Number
+    private var sceneWidthChanged : Boolean = false
+    
+   ;[Bindable(event="sceneResize")]
+    
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
+     */
     public function get sceneWidth() : Number
     {
-        return scene.sceneWidth
+        return _sceneWidth
     }
     
     public function set sceneWidth( value : Number ) : void
     {
-        scene.sceneWidth = value
+    	if( _sceneWidth != value )
+    	{
+    		_sceneWidth = value
+    		sceneWidthChanged = true
+    		
+    		invalidateProperties()
+    	}
     }    
     
     //----------------------------------
     //  sceneHeight
     //----------------------------------
     
-    [Bindable]
+    private var _sceneHeight : Number
+    private var sceneHeightChanged : Boolean = false
+    
+   ;[Bindable(event="sceneHeightChanged")]
+   
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
+     */
     public function get sceneHeight() : Number
     {
-        return scene.sceneHeight
+        return _sceneHeight
     }
     
     public function set sceneHeight( value : Number ) : void
     {
-        scene.sceneHeight = value
+    	if( _sceneHeight != value )
+    	{
+    		_sceneHeight = value
+    		sceneHeightChanged = true
+    		
+    		invalidateProperties()
+    	}
     }
     
     //--------------------------------------------------------------------------
@@ -318,6 +349,12 @@ public final class MultiScaleContainer extends UIComponent
     override protected function createChildren() : void
     {
         super.createChildren()
+
+        if( !scene )
+            createScene()
+        
+        if( !viewport )
+            createNormalizedViewport( _scene )
         
         if( !mouseCatcher )
             createMouseCatcher()
@@ -333,17 +370,71 @@ public final class MultiScaleContainer extends UIComponent
     {
     	super.commitProperties()
     	
-    	if( transformChanged )
+    	if( sceneWidthChanged || sceneHeightChanged )
+    	{
+    	   _scene.setSize( sceneWidth, sceneHeight )
+    	   sceneWidthChanged = sceneHeightChanged = false
+    	   
+    	   dispatchEvent( new Event( "sceneResize" ))
+    	}
+    	
+    	if( transformerChanged )
     	{
     		viewport.transformer = _transformer
-    		transformChanged = false
+    		transformerChanged = false
     	}
     	
     	if( constraintChanged )
     	{
-    		viewport.transformer.constraint = _constraint
+    		_viewport.transformer.constraint = _constraint
     		constraintChanged = false
     	}
+    	
+    	if( controllersChanged )
+    	{
+            for each( var controller : IViewportController in _controllersHolder )
+                addController( controller )
+            
+            _controllersHolder = []
+            controllersChanged = false
+    	}
+        
+        if( zoomChanged || scaleChanged
+            || viewportXChanged || viewportYChanged
+            || viewportWidthChanged || viewportHeightChanged )
+        {
+            if( zoomChanged )
+            {
+                viewport.zoom = zoom
+                zoomChanged = false
+            }
+            
+            if( scaleChanged )
+            {
+                viewport.scale = scale
+                scaleChanged = false
+            }
+            
+            if( viewportXChanged || viewportYChanged )
+            {
+                viewport.panTo( viewportX, viewportY )
+                viewportXChanged = viewportYChanged = false
+            }
+            
+            if( viewportWidthChanged )
+            {
+                viewport.width = viewportWidth
+                viewportWidthChanged = false
+            }
+            
+            if( viewportHeightChanged )
+            {
+                viewport.height = viewportHeight
+                viewportHeightChanged = false
+            }
+            
+            dispatchEvent( new Event( "transformUpdate" ))
+        }
     }
     
     //--------------------------------------------------------------------------
@@ -354,7 +445,7 @@ public final class MultiScaleContainer extends UIComponent
     
     override public function get numChildren() : int
     {
-    	return scene ? _scene.numChildren : 0
+    	return _scene ? _scene.numChildren : 0
     }
     
     //--------------------------------------------------------------------------
@@ -365,33 +456,52 @@ public final class MultiScaleContainer extends UIComponent
     
     override public function addChild( child : DisplayObject ) : DisplayObject
     {
-        child = _scene.addChild( child )
-        
-    	// FIXME
-    	if( child is IMultiScaleRenderer )
-            IMultiScaleRenderer( child ).viewport = viewport
-    	
-    	return child
+        return addChildAt( child, numChildren - 1 )
     }
     
     override public function removeChild( child : DisplayObject ) : DisplayObject
     {
-        return _scene.removeChild( child )
+        return _scene.removeChildAt( getChildIndex( child ))
     }
     
     override public function addChildAt( child : DisplayObject,
                                          index : int ) : DisplayObject
     {
-    	// FIXME
         if( child is IMultiScaleRenderer )
-            IMultiScaleRenderer( child ).viewport = viewport
+            IMultiScaleRenderer( child ).viewport = _viewport
             
-    	return _scene.addChild( child )
+    	return _scene.addChildAt( child, index )
     }
     
     override public function removeChildAt( index : int ) : DisplayObject
     {
-    	return _scene.removeChildAt( index )
+    	var child : DisplayObject = _scene.removeChildAt( index )
+    	
+        if( child is IMultiScaleRenderer )
+            IMultiScaleRenderer( child ).viewport = null
+    	
+    	return child 
+    }
+    
+    override public function getChildAt( index : int ) : DisplayObject
+    {
+    	return _scene.getChildAt( index )
+    }
+    
+    override public function getChildByName( name : String ) : DisplayObject
+    {
+    	return _scene.getChildByName( name )
+    }
+    
+    override public function getChildIndex( child : DisplayObject ) : int
+    {
+    	return _scene.getChildIndex( child )
+    }
+    
+    override public function setChildIndex( child : DisplayObject,
+                                            index : int ) : void
+    {
+        _scene.setChildIndex( child, index )
     }
     
     override public function swapChildren( child1 : DisplayObject,
@@ -406,18 +516,15 @@ public final class MultiScaleContainer extends UIComponent
     	_scene.swapChildrenAt( index1, index2 )
     }
     
-    override public function setChildIndex( child : DisplayObject,
-                                            index : int ) : void
-    {
-    	_scene.setChildIndex( child, index )
-    }
-    
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * @private
+     */ 
     private function createMouseCatcher() : void
     {
         mouseCatcher = new Sprite()
@@ -429,6 +536,9 @@ public final class MultiScaleContainer extends UIComponent
         mx_internal::$addChild( mouseCatcher )
     }
     
+    /**
+     * @private
+     */ 
     private function createContentMask() : void
     {
         contentMask = new Shape()
@@ -449,7 +559,7 @@ public final class MultiScaleContainer extends UIComponent
     
 //    private function createLegacyViewport( scene : IReadonlyMultiScaleScene ) : void
 //    {
-//        _viewport = new LegacyViewport( DEFAULT_VIEWPORT_WIDTH,
+//        viewport = new LegacyViewport( DEFAULT_VIEWPORT_WIDTH,
 //                                        DEFAULT_VIEWPORT_HEIGHT,
 //                                        scene )
 //
@@ -466,6 +576,7 @@ public final class MultiScaleContainer extends UIComponent
         _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
                                             DEFAULT_VIEWPORT_HEIGHT,
                                             scene )
+                                            
         _viewport.addEventListener( ViewportEvent.TRANSFORM_START,
                                     viewport_transformStartHandler,
                                     false, 0, true ) 
@@ -485,9 +596,10 @@ public final class MultiScaleContainer extends UIComponent
                                       DEFAULT_SCENE_HEIGHT,
                                       DEFAULT_SCENE_BACKGROUND_COLOR,
                                       DEFAULT_SCENE_BACKGROUND_ALPHA )
-//        _scene = new MultiScaleScene()
-//        _scene.sceneWidth = DEFAULT_SCENE_WIDTH
-//        _scene.sceneHeight = DEFAULT_SCENE_HEIGHT
+                                      
+//        scene = new MultiScaleScene()
+//        scene.sceneWidth = DEFAULT_SCENE_WIDTH
+//        scene.sceneHeight = DEFAULT_SCENE_HEIGHT
         
         mx_internal::$addChild( _scene )
         dispatchEvent( new Event("sceneChanged" ))
@@ -512,13 +624,13 @@ public final class MultiScaleContainer extends UIComponent
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
 //        trace("ViewportEvent.TRANSFORM_UPDATE")
-        var v : INormalizedViewport = viewport
+        var v : INormalizedViewport = _viewport
         var targetWidth   : Number =  v.viewportWidth / v.width
         var targetHeight  : Number =  v.viewportHeight / v.height
         var targetX       : Number = -v.x * targetWidth
         var targetY       : Number = -v.y * targetHeight
         
-        var target : DisplayObject = scene.targetCoordinateSpace
+        var target : DisplayObject = _scene.targetCoordinateSpace
             target.x = targetX
             target.y = targetY
             target.width = targetWidth
@@ -545,7 +657,7 @@ public final class MultiScaleContainer extends UIComponent
             return false
        
         _controllers.push( controller )
-        controller.viewport = viewport
+        controller.viewport = _viewport
         controller.view = this
         return true
     }
@@ -584,10 +696,10 @@ public final class MultiScaleContainer extends UIComponent
         contentMask.width = unscaledWidth
         contentMask.height = unscaledHeight
     }
-
+    
     //--------------------------------------------------------------------------
     //
-    //  Properties
+    //  Properties: IMultiScaleContainer
     //
     //--------------------------------------------------------------------------
     
@@ -595,119 +707,167 @@ public final class MultiScaleContainer extends UIComponent
     //  zoom
     //----------------------------------
     
-    [Bindable]
+    private var _zoom : Number
+    private var zoomChanged : Boolean = false
+    
+   ;[Bindable(event="transformUpdate")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoom
      */
     public function get zoom() : Number
     {
-        return viewport.zoom    
+        return _zoom
     }
     
     public function set zoom( value : Number ) : void
     {
-        viewport.zoom = value
+        if( _zoom != value )
+        {
+            _zoom = value
+            zoomChanged = true
+            invalidateProperties()
+        }
     }
     
     //----------------------------------
     //  scale
     //----------------------------------
     
-    [Bindable]
+    private var _scale : Number
+    private var scaleChanged : Boolean = false
+    
+   ;[Bindable(event="transformUpdate")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#scale
      */
     public function get scale() : Number
     {
-        return viewport.zoom    
+        return _scale 
     }
     
     public function set scale( value : Number ) : void
     {
-        viewport.scale = value
+        if( _scale != value )
+        {
+            _scale = value
+            scaleChanged = true
+            invalidateProperties()
+        }
     }
     
     //----------------------------------
     //  viewportX
     //----------------------------------
     
-    [Bindable]
+    private var _viewportX : Number
+    private var viewportXChanged : Boolean = false
     
+   ;[Bindable(event="transformUpdate")]
+       
     /**
      * @copy org.openzoom.flash.viewport.IViewport#x
      */
+
     public function get viewportX() : Number
     {
-        return viewport.x    
+        return _viewportX
     }
     
     public function set viewportX( value : Number ) : void
     {
-        viewport.x = value
+        if( _viewportX != value )
+        {
+            _viewportX = value
+            viewportXChanged = true
+            invalidateProperties()
+        }
     }
-    
     //----------------------------------
     //  viewportY
     //----------------------------------
     
-    [Bindable]
+    private var _viewportY : Number
+    private var viewportYChanged : Boolean = false
+    
+   ;[Bindable(event="transformUpdate")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#y
      */
     public function get viewportY() : Number
     {
-        return viewport.y
+        return _viewportY
     }
     
     public function set viewportY( value : Number ) : void
     {
-        viewport.y = value
+        if( _viewportY != value )
+        {
+            _viewportY = value
+            viewportYChanged = true
+            invalidateProperties()
+        }
     }
     
     //----------------------------------
     //  viewportWidth
     //----------------------------------
     
-    [Bindable]
+    private var _viewportWidth : Number
+    private var viewportWidthChanged : Boolean = false
+   
+   ;[Bindable(event="transformUpdate")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#width
      */
     public function get viewportWidth() : Number
     {
-        return viewport.width   
+        return _viewportWidth   
     }
     
     public function set viewportWidth( value : Number ) : void
     {
-        viewport.width = value
+        if( _viewportWidth != value )
+        {
+            _viewportWidth = value
+            viewportWidthChanged = true
+            invalidateProperties()
+        }
     }
     
     //----------------------------------
     //  viewportHeight
     //----------------------------------
     
-    [Bindable]
+    private var _viewportHeight : Number
+    private var viewportHeightChanged : Boolean = false
+    
+   ;[Bindable(event="transformUpdate")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#height
      */
     public function get viewportHeight() : Number
     {
-        return viewport.height
+        return _viewportHeight
     }
     
     public function set viewportHeight( value : Number ) : void
     {
-        viewport.height = value
+        if( _viewportHeight != value )
+        {
+            _viewportHeight = value
+            viewportHeightChanged = true
+            invalidateProperties()
+        }
     }
     
     //--------------------------------------------------------------------------
     //
-    //  Methods
+    //  Methods: IMultiScaleImage
     //
     //--------------------------------------------------------------------------
     

@@ -27,8 +27,9 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import mx.core.UIComponent;
+import mx.core.mx_internal;
 
-import org.openzoom.flash.components.IMultiScaleImage;
+import org.openzoom.flash.components.IMultiScaleContainer;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
@@ -38,7 +39,7 @@ import org.openzoom.flash.viewport.IViewportTransformer;
  * 
  * Base class for MultiScaleImage and DeepZoomContainer.
  */
-public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
+public class MultiScaleImageBase extends UIComponent implements IMultiScaleContainer
 {
     //--------------------------------------------------------------------------
     //
@@ -88,7 +89,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      */ 
     public function get sceneWidth() : Number
     {
-    	return container ? container.scene.sceneWidth : NaN
+    	return container ? container.sceneWidth : NaN
     }
     
     //----------------------------------
@@ -100,7 +101,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      */ 
     public function get sceneHeight() : Number
     {
-    	return container ? container.scene.sceneHeight : NaN
+    	return container ? container.sceneHeight : NaN
     }
     
     //--------------------------------------------------------------------------
@@ -120,7 +121,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      */ 
     public function get viewport() : INormalizedViewport
     {
-        return container.viewport
+        return container ? container.viewport : null
     }
     
     //----------------------------------
@@ -169,10 +170,11 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      * Viewport transformer constraint. Constraints are used to control
      * the positions and zoom levels the viewport can reach.
      * 
-     * @see org.openzoom.flash.viewport.constraints.NullConstraint 
-     * @see org.openzoom.flash.viewport.constraints.VisibilityConstraint
      * @see org.openzoom.flash.viewport.constraints.ZoomConstraint
+     * @see org.openzoom.flash.viewport.constraints.ScaleConstraint
+     * @see org.openzoom.flash.viewport.constraints.VisibilityConstraint
      * @see org.openzoom.flash.viewport.constraints.CompositeConstraint
+     * @see org.openzoom.flash.viewport.constraints.NullConstraint 
      */ 
     public function get constraint() : IViewportConstraint
     {
@@ -281,11 +283,48 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
             container.constraint = _constraint
             constraintChanged = false
         }
+        
+        if( zoomChanged || scaleChanged
+            || viewportXChanged || viewportYChanged
+            || viewportWidthChanged || viewportHeightChanged )
+        {
+        	if( zoomChanged )
+        	{
+        		container.zoom = zoom
+        		zoomChanged = false
+        	}
+        	
+        	if( scaleChanged )
+        	{
+        		container.scale = scale
+        		scaleChanged = false
+        	}
+        	
+        	if( viewportXChanged || viewportYChanged )
+        	{
+        		container.panTo( viewportX, viewportY )
+        		viewportXChanged = viewportYChanged = false
+        	}
+        	
+        	if( viewportWidthChanged )
+        	{
+        		container.viewportWidth = viewportWidth
+        		viewportWidthChanged = false
+        	}
+        	
+        	if( viewportHeightChanged )
+        	{
+        		container.viewportHeight = viewportHeight
+        		viewportHeightChanged = false
+        	}
+        	
+        	dispatchEvent( new Event( "viewportChanged" ))
+        }         
     }
     
     //--------------------------------------------------------------------------
     //
-    //  Properties: IMultiScaleImage
+    //  Properties: IMultiScaleContainer
     //
     //--------------------------------------------------------------------------
     
@@ -293,45 +332,64 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     //  zoom
     //----------------------------------
     
-   ;[Bindable(event="transformUpdate")]
+    private var _zoom : Number
+    private var zoomChanged : Boolean = false
+    
+   ;[Bindable(event="viewportChanged")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoom
      */
     public function get zoom() : Number
     {
-        return viewport.zoom
+        return _zoom
     }
     
     public function set zoom( value : Number ) : void
     {
-        viewport.zoom = value
+    	if( _zoom != value )
+    	{
+    		_zoom = value
+    		zoomChanged = true
+    		invalidateProperties()
+    	}
     }
     
     //----------------------------------
     //  scale
     //----------------------------------
     
-   ;[Bindable(event="transformUpdate")]
+    private var _scale : Number
+    private var scaleChanged : Boolean = false
+    
+   ;[Bindable(event="viewportChanged")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#scale
      */
     public function get scale() : Number
     {
-        return viewport.zoom    
+        return _scale 
     }
     
     public function set scale( value : Number ) : void
     {
-        viewport.scale = value
+    	if( _scale != value )
+    	{
+    		_scale = value
+    		scaleChanged = true
+    		invalidateProperties()
+    	}
     }
     
     //----------------------------------
     //  viewportX
     //----------------------------------
     
-   ;[Bindable(event="transformUpdate")]
+    private var _viewportX : Number
+    private var viewportXChanged : Boolean = false
+    
+   ;[Bindable(event="viewportChanged")]
        
     /**
      * @copy org.openzoom.flash.viewport.IViewport#x
@@ -339,69 +397,97 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
 
     public function get viewportX() : Number
     {
-        return viewport.x    
+        return _viewportX
     }
     
     public function set viewportX( value : Number ) : void
     {
-        viewport.x = value
+    	if( _viewportX != value )
+    	{
+    		_viewportX = value
+    		viewportXChanged = true
+    		invalidateProperties()
+    	}
     }
-    
     //----------------------------------
     //  viewportY
     //----------------------------------
     
-   ;[Bindable(event="transformUpdate")]
+    private var _viewportY : Number
+    private var viewportYChanged : Boolean = false
+    
+   ;[Bindable(event="viewportChanged")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#y
      */
     public function get viewportY() : Number
     {
-        return viewport.y
+        return _viewportY
     }
     
     public function set viewportY( value : Number ) : void
     {
-        viewport.y = value
+        if( _viewportY != value )
+        {
+            _viewportY = value
+            viewportYChanged = true
+            invalidateProperties()
+        }
     }
     
     //----------------------------------
     //  viewportWidth
     //----------------------------------
     
-   ;[Bindable(event="transformUpdate")]
+    private var _viewportWidth : Number
+    private var viewportWidthChanged : Boolean = false
+   
+   ;[Bindable(event="viewportChanged")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#width
      */
     public function get viewportWidth() : Number
     {
-        return viewport.width   
+        return _viewportWidth   
     }
     
     public function set viewportWidth( value : Number ) : void
     {
-        viewport.width = value
+        if( _viewportWidth != value )
+        {
+            _viewportWidth = value
+            viewportWidthChanged = true
+            invalidateProperties()
+        }
     }
     
     //----------------------------------
     //  viewportHeight
     //----------------------------------
     
-   ;[Bindable(event="transformUpdate")]
+    private var _viewportHeight : Number
+    private var viewportHeightChanged : Boolean = false
+    
+   ;[Bindable(event="viewportChanged")]
     
     /**
      * @copy org.openzoom.flash.viewport.IViewport#height
      */
     public function get viewportHeight() : Number
     {
-        return viewport.height
+        return _viewportHeight
     }
     
     public function set viewportHeight( value : Number ) : void
     {
-        viewport.height = value
+    	if( _viewportHeight != value )
+    	{
+    		_viewportHeight = value
+    		viewportHeightChanged = true
+    		invalidateProperties()
+    	}
     }
     
     //--------------------------------------------------------------------------
@@ -418,7 +504,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
                             transformY : Number = 0.5,
                             immediately : Boolean = false ) : void
     {
-        viewport.zoomTo( zoom, transformX, transformY, immediately )
+        container.zoomTo( zoom, transformX, transformY, immediately )
     }
 
     /**
@@ -429,7 +515,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
                             transformY : Number = 0.5,
                             immediately : Boolean = false ) : void
     {
-        viewport.zoomBy( factor, transformX, transformY, immediately )
+        container.zoomBy( factor, transformX, transformY, immediately )
     }
 
     /**
@@ -438,7 +524,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     public function panTo( x : Number, y : Number,
                            immediately : Boolean = false ) : void
     {
-        viewport.panTo( x, y, immediately )
+        container.panTo( x, y, immediately )
     }
                     
     /**
@@ -447,7 +533,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     public function panBy( deltaX : Number, deltaY : Number,
                            immediately : Boolean = false ) : void
     {
-        viewport.panBy( deltaX, deltaY, immediately )
+        container.panBy( deltaX, deltaY, immediately )
     }
 
     /**
@@ -457,7 +543,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
                                   scale : Number = 1.0,
                                   immediately : Boolean = false ) : void
     {
-        viewport.zoomToBounds( bounds, scale, immediately )
+        container.zoomToBounds( bounds, scale, immediately )
     }
 
     /**
@@ -465,7 +551,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      */
     public function showAll( immediately : Boolean = false ) : void
     {
-        viewport.showAll( immediately )
+        container.showAll( immediately )
     }
                     
     /**
@@ -473,7 +559,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      */
     public function localToScene( point : Point ) : Point
     {
-        return viewport.localToScene( point )
+        return container.localToScene( point )
     }
                     
     /**
@@ -481,7 +567,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
      */
     public function sceneToLocal( point : Point ) : Point
     {
-        return viewport.sceneToLocal( point )
+        return container.sceneToLocal( point )
     }
     
     //--------------------------------------------------------------------------
@@ -505,6 +591,8 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleImage
     {
     	return container.removeChild( child )
     }
+    
+    // TODO: Implement rest of child management methods
     
     /**
      * @inheritDoc

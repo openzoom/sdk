@@ -304,10 +304,10 @@ public class DeepZoomContainer extends MultiScaleImageBase
         }
         
         var renderer : MultiScaleImageRenderer =
-                              new MultiScaleImageRenderer( descriptor,
-                                                           container.loader,
-                                                           sceneWidth,
-                                                           sceneHeight )
+	                              new MultiScaleImageRenderer( descriptor,
+	                                                           container.loader,
+	                                                           sceneWidth,
+	                                                           sceneHeight )
         
         addChild( renderer )
     }
@@ -328,16 +328,10 @@ public class DeepZoomContainer extends MultiScaleImageBase
         
         var data : XML = new XML( urlLoader.data )
         
-        // FIXME: Microsoft Photozoom does not use this namespace?!
-        //*
-//        if( data.namespace() != deepzoom || data.localName() != TYPE_COLLECTION )
-//            return
-        
-        use namespace deepzoom
-        //*/
-        
         var item : ItemInfo
+        use namespace deepzoom
         
+        // Collection
         if( data.localName() == TYPE_COLLECTION )
         {
             items = []
@@ -351,6 +345,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
 	        loadItems()
         }
         
+        // Single image
         if( data.localName() == TYPE_IMAGE )
         {
             var descriptor : DZIDescriptor =
