@@ -174,7 +174,8 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    private function computeNumLevels( width : uint, height : uint, tileWidth : uint, tileHeight : uint ) : uint
+    private function computeNumLevels( width : uint, height : uint,
+                                       tileWidth : uint, tileHeight : uint ) : uint
     {
         var numLevels : uint = 1
     

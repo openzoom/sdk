@@ -30,6 +30,8 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import mx.core.UIComponent;
+// import mx.core.mx_internal;
+import mx.core.mx_internal;
 
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
@@ -38,13 +40,13 @@ import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.IMultiScaleRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.INormalizedViewportContainer;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.NormalizedViewport;
+import org.openzoom.flash.scene.MultiScaleScene;
 
 [DefaultProperty("children")]
 /**
@@ -424,7 +426,7 @@ public final class MultiScaleContainer extends UIComponent
         g.drawRect( 0, 0, 100, 100 )
         g.endFill()
         
-        super.addChild( mouseCatcher )
+        mx_internal::$addChild( mouseCatcher )
     }
     
     private function createContentMask() : void
@@ -435,7 +437,7 @@ public final class MultiScaleContainer extends UIComponent
         g.drawRect( 0, 0, 100, 100 )
         g.endFill()
         
-        super.addChild( contentMask )
+        mx_internal::$addChild( contentMask )
         mask = contentMask
     }
     
@@ -483,7 +485,11 @@ public final class MultiScaleContainer extends UIComponent
                                       DEFAULT_SCENE_HEIGHT,
                                       DEFAULT_SCENE_BACKGROUND_COLOR,
                                       DEFAULT_SCENE_BACKGROUND_ALPHA )
-        super.addChild( _scene )
+//        _scene = new MultiScaleScene()
+//        _scene.sceneWidth = DEFAULT_SCENE_WIDTH
+//        _scene.sceneHeight = DEFAULT_SCENE_HEIGHT
+        
+        mx_internal::$addChild( _scene )
         dispatchEvent( new Event("sceneChanged" ))
     }
     

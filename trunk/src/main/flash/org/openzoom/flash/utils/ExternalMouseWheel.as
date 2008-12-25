@@ -188,6 +188,7 @@ public final class ExternalMouseWheel extends EventDispatcher
     //  Constructor
     //
     //--------------------------------------------------------------------------
+    
     /**
      * Constructor.
      */ 

@@ -35,9 +35,9 @@ import org.openzoom.flash.events.LoadingItemEvent;
 /**
  * @private
  * 
- * Represents a single textu item to load.
+ * Represents a single item to load from a URL.
  */
-internal class TextLoadingItem extends EventDispatcher
+internal class URLLoadingItem extends EventDispatcher
                               implements ILoadingItem
 {
     //--------------------------------------------------------------------------
@@ -49,7 +49,7 @@ internal class TextLoadingItem extends EventDispatcher
     /**
      * Constructor.
      */
-    public function TextLoadingItem( url : String, context : * = null )
+    public function URLLoadingItem( url : String, context : * = null )
     {
         this.url = url
         this.context = context
@@ -116,7 +116,7 @@ internal class TextLoadingItem extends EventDispatcher
 //        cleanUp()
         
         var itemEvent : LoadingItemEvent =
-                new LoadingItemEvent( LoadingItemEvent.ERROR )
+                                  new LoadingItemEvent( LoadingItemEvent.ERROR )
             itemEvent.item = this
             
         dispatchEvent( itemEvent )

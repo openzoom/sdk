@@ -39,7 +39,6 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
 import org.openzoom.flash.net.ILoadingItem;
 import org.openzoom.flash.net.ILoadingQueue;
-import org.openzoom.flash.net.LoadingItemType;
 import org.openzoom.flash.renderers.images.ITileLayer;
 import org.openzoom.flash.renderers.images.RenderingMode;
 import org.openzoom.flash.renderers.images.Tile;
@@ -282,7 +281,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         
         var url : String = descriptor.getTileURL( level, 0, 0 )
         
-        var item : ILoadingItem = loader.addItem( url, LoadingItemType.IMAGE )
+        var item : ILoadingItem = loader.addItem( url, Bitmap )
             item.addEventListener( Event.COMPLETE,
                                    backgroundCompleteHandler )
     } 
@@ -366,9 +365,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
                 var url : String = descriptor.getTileURL( tile.level,
                                                           tile.column,
                                                           tile.row )
-                var item : ILoadingItem = loader.addItem( url,
-                                                          LoadingItemType.IMAGE,
-                                                          tile )
+                var item : ILoadingItem = loader.addItem( url, Bitmap, tile )
                     item.addEventListener( Event.COMPLETE,
                                            tileCompleteHandler,
                                            false, 0, true  )

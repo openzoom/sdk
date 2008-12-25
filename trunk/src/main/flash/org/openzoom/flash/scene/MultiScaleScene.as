@@ -32,7 +32,9 @@ import flash.events.Event;
  */
 [Event(name="resize", type="flash.events.Event")]
 
+
 [ExcludeClass]
+
 /**
  * Basic implementation of IMultiScaleScene
  */
@@ -55,8 +57,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
         this.backgroundColor = backgroundColor
      	this.backgroundAlpha = backgroundAlpha
      	
-     	frame = createFrame()
-     	super.addChildAt( frame, 0 )
+     	createFrame()
      	
      	setFrameSize( width, height )
     }
@@ -215,29 +216,23 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     	if( width == sceneWidth && height == sceneHeight )
             return
             
-        drawFrame( width, height )
+        frame.width = width
+        frame.height = height
+        
         dispatchEvent( new Event( Event.RESIZE ))
-    }
-    
-    /**
-     * @private
-     */
-    private function drawFrame( width : Number, height : Number ) : void
-    {
-        var g : Graphics = frame.graphics
-        g.clear()
-        g.beginFill( backgroundColor, backgroundAlpha )
-        g.drawRect( 0, 0, width, height )
-        g.endFill()
     }
 
     /**
      * @private
      */    
-    private function createFrame() : Shape
+    private function createFrame() : void
     {
-    	var background : Shape = new Shape()
-    	return background
+    	frame = new Shape()
+        var g : Graphics = frame.graphics
+	        g.beginFill( backgroundColor, backgroundAlpha )
+	        g.drawRect( 0, 0, 100, 100 )
+	        g.endFill()
+        addChild( frame )
     }
 }
 

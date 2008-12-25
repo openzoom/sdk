@@ -97,7 +97,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
      * @inheritDoc
      */
     public function getMinLevelForSize( width : Number,
-                                            height : Number ) : IMultiScaleImageLevel
+                                        height : Number ) : IMultiScaleImageLevel
     {
     	// TODO
     	var level : IMultiScaleImageLevel
@@ -166,10 +166,13 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
             }
             
             var index : int = int(level.@index.toString())
-            levels[ index ] = new MultiScaleImageLevel( this, level.@index,
-				                                 level.@width, level.@height,
-				                                 level.@columns, level.@rows,
-				                                 uris )
+            levels[ index ] = new MultiScaleImageLevel( this,
+                                                        level.@index,
+				                                        level.@width,
+				                                        level.@height,
+				                                        level.@columns,
+				                                        level.@rows,
+				                                        uris )
         }
     }
 }

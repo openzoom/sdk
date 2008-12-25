@@ -31,7 +31,6 @@ import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
 import org.openzoom.flash.events.LoadingItemEvent;
 import org.openzoom.flash.net.ILoadingItem;
 import org.openzoom.flash.net.ILoadingQueue;
-import org.openzoom.flash.net.LoadingItemType;
 import org.openzoom.flash.net.LoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;    
 
@@ -92,8 +91,8 @@ public class DeepZoomContainer extends MultiScaleImageBase
     {
         super()
         
-//      tabEnabled = false
-//      tabChildren = true
+        tabEnabled = false
+        tabChildren = true
         
         itemLoadingQueue = new LoadingQueue()
     }
@@ -163,7 +162,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         if( sourceChanged )
         {
             sourceChanged = false
-            load(_source)
+            load( _source )
         }
     }
     
@@ -211,7 +210,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         {
             var loadingItem : ILoadingItem = 
                                  itemLoadingQueue.addItem( item.source,
-                                                           LoadingItemType.TEXT,
+                                                           String,
                                                            item )
             loadingItem.addEventListener( LoadingItemEvent.COMPLETE,
                                           loadingItem_completeHandler )

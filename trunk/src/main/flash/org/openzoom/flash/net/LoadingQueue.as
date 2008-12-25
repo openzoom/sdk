@@ -21,6 +21,8 @@
 package org.openzoom.flash.net
 {
 
+import flash.display.Bitmap;
+import flash.display.DisplayObject;
 import flash.events.EventDispatcher;
 
 import org.openzoom.flash.events.LoadingItemEvent;
@@ -70,30 +72,32 @@ public class LoadingQueue extends EventDispatcher
     //--------------------------------------------------------------------------
     
     public function addItem( url : String,
-                             type : String,
+                             type : Class,
                              context : * = null ) : ILoadingItem
     {
         var item : ILoadingItem
-    	
-    	switch( type )
-    	{
-            case LoadingItemType.IMAGE:	
-            case LoadingItemType.SWF:
-                item = new DisplayObjectLoadingItem( url, context )
-                break
+        
+        // TODO    	
+//    	if( type is URLVariables )
+
+        // TODO    	
+//      if( type is Sound )
+
+        // TODO    	
+//      if( type is Video )
+
+        if( type == DisplayObject || type == Bitmap )
+            item = new DisplayObjectLoadingItem( url, context )
             
-            case LoadingItemType.TEXT:	
-            case LoadingItemType.XML:
-                item = new TextLoadingItem( url, context )
-                break	
-    	}
+        if( type == String || type == XML )
+            item = new URLLoadingItem( url, context )
     	
         item.addEventListener( LoadingItemEvent.COMPLETE,
                                item_completeHandler )
         item.addEventListener( LoadingItemEvent.ERROR,
                                item_errorHandler )
                 
-        // add item to front (LIFO)
+        // Add item to front (LIFO)
         queue.unshift( item )
         processQueue()
         return item
