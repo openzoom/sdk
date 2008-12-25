@@ -94,6 +94,11 @@ public class MultiScaleScene extends UIComponent
     private var _sceneWidth : Number = DEFAULT_SCENE_WIDTH
     private var sceneWidthChanged : Boolean = false
     
+   ;[Bindable(event="resize")]
+    
+    /**
+     * @inheritDoc
+     */ 
     public function get sceneWidth() : Number
     {
     	return _sceneWidth
@@ -106,9 +111,8 @@ public class MultiScaleScene extends UIComponent
         	_sceneWidth = value
         	sceneWidthChanged = true
         	
+        	invalidateProperties()
         	invalidateDisplayList()
-        	
-        	dispatchEvent( new Event( Event.RESIZE ))
         }
     }
     
@@ -119,6 +123,11 @@ public class MultiScaleScene extends UIComponent
     private var _sceneHeight : Number = DEFAULT_SCENE_HEIGHT
     private var sceneHeightChanged : Boolean = false
     
+   ;[Bindable(event="resize")]
+    
+    /**
+     * @inheritDoc
+     */
     public function get sceneHeight() : Number
     {
         return _sceneHeight
@@ -131,9 +140,8 @@ public class MultiScaleScene extends UIComponent
             _sceneHeight = value
             sceneHeightChanged = true
             
+            invalidateProperties()
             invalidateDisplayList()
-            
-            dispatchEvent( new Event( Event.RESIZE ))
         }
     }
     
@@ -144,7 +152,7 @@ public class MultiScaleScene extends UIComponent
     //--------------------------------------------------------------------------
     
     /**
-     * @inheritDoc
+     * @private
      */ 
     override protected function createChildren() : void
     {
@@ -152,15 +160,31 @@ public class MultiScaleScene extends UIComponent
             createFrame()
     }
     
-    override protected function updateDisplayList( unscaledWidth : Number,
-                                                   unscaledHeight : Number ) : void
-    {
-    	super.updateDisplayList( unscaledWidth, unscaledHeight )
-    	
-    	frame.width = sceneWidth
-    	frame.height = sceneHeight
-    }
+    /**
+     * @private
+     */ 
+//    override protected function updateDisplayList( unscaledWidth : Number,
+//                                                   unscaledHeight : Number ) : void
+//    {
+//    	super.updateDisplayList( unscaledWidth, unscaledHeight )
+//    }
     
+    /**
+     * @private
+     */
+    override protected function commitProperties() : void
+    {
+    	super.commitProperties()
+    	
+    	if( sceneWidthChanged || sceneHeightChanged )
+    	{
+            frame.width = sceneWidth
+            frame.height = sceneHeight
+            
+    		sceneWidthChanged = sceneHeightChanged = false
+            dispatchEvent( new Event( Event.RESIZE ))
+    	}
+    } 
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal

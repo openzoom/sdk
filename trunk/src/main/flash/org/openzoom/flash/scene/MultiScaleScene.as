@@ -197,7 +197,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     /**
      * @inheritDoc
      */    
-    public function setSize( width : Number, height : Number ) : void
+    public function setActualSize( width : Number, height : Number ) : void
     {
     	setFrameSize( width, height )
     }

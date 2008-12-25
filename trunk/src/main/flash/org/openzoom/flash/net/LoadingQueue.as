@@ -78,19 +78,22 @@ public class LoadingQueue extends EventDispatcher
         var item : ILoadingItem
         
         // TODO    	
-//    	if( type is URLVariables )
+//    	if( type == URLVariables )
 
         // TODO    	
-//      if( type is Sound )
+//      if( type == Sound )
 
         // TODO    	
-//      if( type is Video )
+//      if( type == Video || type == NetStream )
 
         if( type == DisplayObject || type == Bitmap )
             item = new DisplayObjectLoadingItem( url, context )
             
         if( type == String || type == XML )
             item = new URLLoadingItem( url, context )
+            
+        if( !item )
+            throw new ArgumentError( "Type " + type.toString() + " not supported." )
     	
         item.addEventListener( LoadingItemEvent.COMPLETE,
                                item_completeHandler )

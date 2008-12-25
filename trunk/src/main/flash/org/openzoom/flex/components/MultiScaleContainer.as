@@ -30,7 +30,6 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import mx.core.UIComponent;
-import mx.core.mx_internal;
 
 import org.openzoom.flash.components.IMultiScaleContainer;
 import org.openzoom.flash.events.ViewportEvent;
@@ -49,10 +48,8 @@ import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.NormalizedViewport;
 
 [DefaultProperty("children")]
-//import mx.core.mx_internal;
+
 /**
- * @private
- * 
  * Generic container for multi-scale content.
  */
 public final class MultiScaleContainer extends UIComponent 
@@ -372,7 +369,9 @@ public final class MultiScaleContainer extends UIComponent
     	
     	if( sceneWidthChanged || sceneHeightChanged )
     	{
-    	   _scene.setSize( sceneWidth, sceneHeight )
+    	   _scene.sceneWidth = sceneWidth
+    	   _scene.sceneHeight = sceneHeight
+    	   
     	   sceneWidthChanged = sceneHeightChanged = false
     	   
     	   dispatchEvent( new Event( "sceneResize" ))
@@ -456,7 +455,7 @@ public final class MultiScaleContainer extends UIComponent
     
     override public function addChild( child : DisplayObject ) : DisplayObject
     {
-        return addChildAt( child, numChildren - 1 )
+        return addChildAt( child, numChildren )
     }
     
     override public function removeChild( child : DisplayObject ) : DisplayObject
@@ -518,9 +517,27 @@ public final class MultiScaleContainer extends UIComponent
     
     //--------------------------------------------------------------------------
     //
-    //  Methods
+    //  Methods: Children
     //
     //--------------------------------------------------------------------------
+    
+    /**
+     * @private
+     */ 
+    private function createScene() : void
+    {
+        _scene = new MultiScaleScene( DEFAULT_SCENE_WIDTH,
+                                      DEFAULT_SCENE_HEIGHT,
+                                      DEFAULT_SCENE_BACKGROUND_COLOR,
+                                      DEFAULT_SCENE_BACKGROUND_ALPHA )
+                                      
+//        _scene = new MultiScaleScene()
+//        scene.sceneWidth = DEFAULT_SCENE_WIDTH
+//        scene.sceneHeight = DEFAULT_SCENE_HEIGHT
+        
+        super.addChild( _scene )
+        dispatchEvent( new Event("sceneChanged" ))
+    }
     
     /**
      * @private
@@ -533,7 +550,7 @@ public final class MultiScaleContainer extends UIComponent
         g.drawRect( 0, 0, 100, 100 )
         g.endFill()
         
-        mx_internal::$addChild( mouseCatcher )
+        super.addChild( mouseCatcher )
     }
     
     /**
@@ -547,29 +564,9 @@ public final class MultiScaleContainer extends UIComponent
         g.drawRect( 0, 0, 100, 100 )
         g.endFill()
         
-        mx_internal::$addChild( contentMask )
+        super.addChild( contentMask )
         mask = contentMask
     }
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Viewports
-    //
-    //--------------------------------------------------------------------------
-    
-//    private function createLegacyViewport( scene : IReadonlyMultiScaleScene ) : void
-//    {
-//        viewport = new LegacyViewport( DEFAULT_VIEWPORT_WIDTH,
-//                                        DEFAULT_VIEWPORT_HEIGHT,
-//                                        scene )
-//
-//        var transformationController : ViewTransformationController
-//        transformationController = new ViewTransformationController()
-//        transformationController.viewport = viewport
-//        transformationController.view = scene.targetCoordinateSpace
-//                                    
-//        dispatchEvent( new Event("viewportChanged" ))
-//    }
     
     private function createNormalizedViewport( scene : IReadonlyMultiScaleScene ) : void
     {
@@ -590,20 +587,19 @@ public final class MultiScaleContainer extends UIComponent
         dispatchEvent( new Event("viewportChanged" ))
     }
     
-    private function createScene() : void
-    {
-        _scene = new MultiScaleScene( DEFAULT_SCENE_WIDTH,
-                                      DEFAULT_SCENE_HEIGHT,
-                                      DEFAULT_SCENE_BACKGROUND_COLOR,
-                                      DEFAULT_SCENE_BACKGROUND_ALPHA )
-                                      
-//        scene = new MultiScaleScene()
-//        scene.sceneWidth = DEFAULT_SCENE_WIDTH
-//        scene.sceneHeight = DEFAULT_SCENE_HEIGHT
-        
-        mx_internal::$addChild( _scene )
-        dispatchEvent( new Event("sceneChanged" ))
-    }
+//    private function createLegacyViewport( scene : IReadonlyMultiScaleScene ) : void
+//    {
+//        viewport = new LegacyViewport( DEFAULT_VIEWPORT_WIDTH,
+//                                        DEFAULT_VIEWPORT_HEIGHT,
+//                                        scene )
+//
+//        var transformationController : ViewTransformationController
+//        transformationController = new ViewTransformationController()
+//        transformationController.viewport = viewport
+//        transformationController.view = scene.targetCoordinateSpace
+//                                    
+//        dispatchEvent( new Event("viewportChanged" ))
+//    }
     
     private function createLoader() : void
     {
