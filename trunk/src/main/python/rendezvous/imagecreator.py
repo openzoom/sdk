@@ -31,6 +31,11 @@
 # 
 ################################################################################
 
+# TODO
+# Support for image quality setting
+# http://www.pythonware.com/library/pil/handbook/format-jpeg.htm
+# http://www.pythonware.com/library/pil/handbook/format-png.htm
+
 
 import math
 import os
@@ -42,12 +47,12 @@ from PIL import Image
 
 dzi_template = """\
 <?xml version="1.0" encoding="UTF-8"?>
-<Image TileSize="%(tile_size)s" Overlap="%(overlap)s" Format="%(format)s" xmlns="http://schemas.microsoft.com/deepzoom/2008">
+<Image TileSize="%(tile_size)s" Overlap="%(tile_overlap)s" Format="%(tile_format)s" xmlns="http://schemas.microsoft.com/deepzoom/2008">
     <Size Width="%(width)s" Height="%(height)s"/>
 </Image>"""
 
 
-filter_map = {
+resize_filter_map = {
     "cubic"     : Image.CUBIC,
     "bilinear"  : Image.BILINEAR,
     "bicubic"   : Image.BICUBIC,
@@ -55,17 +60,22 @@ filter_map = {
     "antialias" : Image.ANTIALIAS,
     }
 
+image_format_map = {
+    "jpg" : "jpg",
+    "png" : "png",
+    }
+
 
 class ImageCreator( object ):
-    
-    def __init__(self, image, tile_size=256.0, overlap=1, format="jpg", filter=None):
+
+    def __init__(self, image, tile_size=256.0, tile_overlap=1, tile_format="jpg", resize_filter=None):
         self.image = image
         self.tile_size = tile_size
-        self.overlap = overlap
-        self.format = format
+        self.tile_overlap = tile_overlap
+        self.tile_format = tile_format
         self.width, self.height = self.image.size
         self._levels = None
-        self.filter = filter
+        self.resize_filter = resize_filter
 
     @property
     def levels( self ):
@@ -97,18 +107,18 @@ class ImageCreator( object ):
         if not column:
             px = 0
         else:
-            px = self.tile_size * column - self.overlap
+            px = self.tile_size * column - self.tile_overlap
         if not row:
             py = 0
         else:
-            py = self.tile_size * row - self.overlap
+            py = self.tile_size * row - self.tile_overlap
 
         # scaled dimensions for this level
         dsw, dsh = self.get_level_dimensions( level )
         
         # find the dimension of the tile, adjust for no overlap data on top and left edges
-        sx = self.tile_size + ( column == 0 and 1 or 2 ) * self.overlap
-        sy = self.tile_size + ( row    == 0 and 1 or 2 ) * self.overlap
+        sx = self.tile_size + ( column == 0 and 1 or 2 ) * self.tile_overlap
+        sy = self.tile_size + ( row    == 0 and 1 or 2 ) * self.tile_overlap
         
         # adjust size for single-tile levels where the image size is smaller
         # than the regular tile size, and for tiles on the bottom and right
@@ -127,9 +137,9 @@ class ImageCreator( object ):
         if self.width == w and self.height == h: 
             return self.image
         
-        if not self.filter:
+        if not self.resize_filter:
             return self.image.resize(( w, h )) 
-        return self.image.resize(( w, h ), self.filter )
+        return self.image.resize(( w, h ), self.resize_filter )
     
     
     def iter_tiles( self, level ):
@@ -150,7 +160,7 @@ class ImageCreator( object ):
             level_image = self.get_level_image( n )
             for ( col, row ), box in self.iter_tiles( n ):
                 tile = level_image.crop( map( int, box ))
-                tile_path = os.path.join( level_dir, "%s_%s.%s"%( col, row, self.format ))
+                tile_path = os.path.join( level_dir, "%s_%s.%s"%( col, row, self.tile_format ))
                 tile_file = open( tile_path, "wb+" )
                 tile.save( tile_file )
 
@@ -177,32 +187,36 @@ def main():
     
     parser.add_option("-s", "--tile_size", dest="size", type="int",
                       default=256, help="Size of the tiles")
-    parser.add_option("-f", "--tile_format", dest="format",
+    parser.add_option("-f", "--tile_format", dest="tile_format",
                       default="jpg", help="Image format of the tiles (jpg or png)")
-    parser.add_option("-r", "--resize_filter", dest="filter", default="antialias",
+    parser.add_option("-o", "--tile_overlap", dest="tile_overlap", type="int",
+                      default="1", help="Overlap of the tiles in pixels (0-10)")
+    parser.add_option("-q", "--image_quality", dest="image_quality", type="float",
+                      default="0.95", help="Quality of the image output (0-1)")
+    
+    parser.add_option("-r", "--resize_filter", dest="resize_filter", default="antialias",
                       help="Type of filter for resizing (bicubic, nearest, antialias, bilinear")
 
     ( options, args ) = parser.parse_args()
 
     if not args:
         parser.print_help()
-        sys.exit(1)
-    image_path = expand( args[0] )
+        sys.exit( 1 )
+    image_path = expand( args[ 0 ] )
     
     if not os.path.exists( image_path ):
         print "Invalid File", image_path
-        sys.exit(1)
+        sys.exit( 1 )
         
     if not options.name:
         options.name = os.path.splitext( os.path.basename( image_path ))[ 0 ]
     if not options.path:
         options.path = os.path.dirname( image_path )
-    if options.filter and options.filter in filter_map:
-        options.filter = filter_map[ options.filter ]
+    if options.resize_filter and options.resize_filter in resize_filter_map:
+        options.resize_filter = resize_filter_map[ options.resize_filter ]
 
     img = Image.open( image_path )
-    creator = ImageCreator( img, tile_size=options.size, format=options.format, filter=options.filter )
-
+    creator = ImageCreator( img, tile_size=options.size, tile_format=options.tile_format, resize_filter=options.resize_filter )
     creator.create( options.path, options.name )
     
 if __name__ == "__main__":
