@@ -27,12 +27,28 @@ import os
 import os.path
 import urllib
 from ftplib import FTP
+import shutil
 import zipfile
 
 #tag_template = u"openzoom:source=http://static.gasi.ch/images/%(photo_id)s/image.xml"
 tag_template = u"rendezvous:source=http://static.gasi.ch/rendezvous/%(photo_id)s/image.dzi"
 
+def upload(ftp, file):
+    ext = os.path.splitext(file)[1]
+    if ext in (".txt", ".htm", ".html", ".dzi", ".xml"):
+        ftp.storlines("STOR " + file, open(file))
+    else:
+        ftp.storbinary("STOR " + file, open(file, "rb"), 1024)
+
 def main():
+    path = config.WORKING_DIR
+    
+    # Prepare working directory
+    if os.path.exists(path):
+        shutil.rmtree(path)
+    
+    os.mkdir(path)
+    
     # Prepare Deep Zoom Tools
     image_creator = deepzoom.ImageCreator()
 
@@ -60,48 +76,62 @@ def main():
         response = flickr.people_getPublicPhotos(user_id=user_id, per_page=page_size, page=page)
         for photo in response.getiterator("photo"):
             photo_id = photo.attrib["id"]
+            photo_title = photo.attrib["title"]
+            
+            # Begin operation
+            print "############################################################"
+            print "Hello,", photo_title, "(%s)"%photo_id
+            print "############################################################"
             
             # Get URL of largest image available
             response = flickr.photos_getSizes(photo_id=photo_id)
             photo_url = response.findall("sizes/size")[-1].attrib["source"]
             
             # Download image
-            path = "rendezvous"
             local_file = path + "/" + photo_id + os.path.splitext( photo_url )[1]
             urllib.urlretrieve(photo_url, local_file)
-            print photo_id + " ...downloaded."
+            print "Download from Flickr. OK."
             
             # Create pyramid
             dzi_file = path + "/" + photo_id + "/image.dzi"
             image_creator.create(local_file, dzi_file)
-            print photo_id + " ...image pyramid created."
+            print "Image pyramid generated. OK."
             
             # Delete original
             os.remove(local_file)
-            print photo_id + " ...deleted original."
+            print "Original deleted. OK."
             
             # ZIP
             zip_name = path + "/" + photo_id + ".zip"
             zip_file = zipfile.ZipFile(zip_name, "w")
             os.chdir(path)
             for root, dirs, files in os.walk(photo_id):
-                 for file_name in files:
-                     part_name = os.path.join(root,file_name)
-                     zip_file.write(part_name)
+                for file_name in files:
+                    part_name = os.path.join(root,file_name)
+                    zip_file.write(part_name)
             zip_file.close()
             os.chdir("..")
-            print photo_id + " ...created ZIP."
+            print "ZIP archive created. OK."
+            
+            # Delete pyramid
+            shutil.rmtree(path + "/" + photo_id)
+            print "Pyramid deleted. OK."
             
             # TODO: Create OpenZoom descriptor
 
             # Upload
             ftp.cwd(config.FTP_PATH)
             ftp.storbinary("STOR " + zip_name, open(zip_name, "rb"), 1024)
-            print photo_id + " ...uploaded ZIP."
+            print "ZIP uploaded. OK."
+            
+            # Delete ZIP
+            os.remove(zip_name)
+            print "ZIP deleted. OK."
             
             # Set machine tag
 #            tag = tag_template % {"photo_id": photo_id}
 #            flickr.photos_addTags(photo_id=photo_id,tags=tag)
+            
     ftp.close()
     print "Done."
 
