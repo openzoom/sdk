@@ -141,7 +141,7 @@ class ImageCreator( object ):
     def __len__( self ):
         return self.levels
     
-    def save( self, parent_directory, name ):
+    def create( self, parent_directory, name ):
         dir_path = ensure( os.path.join( ensure( expand( parent_directory )), "%s_files"%name ))
 
         # store images
@@ -194,7 +194,7 @@ def main():
         sys.exit(1)
         
     if not options.name:
-        options.name = os.path.splitext( os.path.basename( image_path ) )[ 0 ]
+        options.name = os.path.splitext( os.path.basename( image_path ))[ 0 ]
     if not options.path:
         options.path = os.path.dirname( image_path )
     if options.filter and options.filter in filter_map:
@@ -203,7 +203,7 @@ def main():
     img = Image.open( image_path )
     creator = ImageCreator( img, tile_size=options.size, format=options.format, filter=options.filter )
 
-    creator.save( options.path, options.name )
+    creator.create( options.path, options.name )
     
 if __name__ == "__main__":
     main()

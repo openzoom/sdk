@@ -19,16 +19,32 @@
 #
 ################################################################################
 
-import flickr
+import flickrapi
 import config
+import urllib
+import os.path
+import os
+
+tag_template = u"openzoom:source=http://static.gasi.ch/images/%(photo_id)s/image.xml"
 
 def main():
-    flickr.API_KEY = config.API_KEY
-    flickr.API_SECRET = config.API_SECRET
-    photos = flickr.people_getPublicPhotos(user_id=config.USER_ID, per_page="20")
+    flickr = flickrapi.FlickrAPI(config.API_KEY, config.API_SECRET)
+
+    # Authentication
+    (token, frob) = flickr.get_token_part_one(perms="write")
+    if not token: raw_input("Press ENTER after you authorized this program")
+    flickr.get_token_part_two((token, frob))
+
+    # Get it rollin'
+    user_id = config.USER_ID
+    response = flickr.people_getPublicPhotos(user_id=user_id, per_page="10")
     
-    for photo in photos:
-        print photo.title, photo.getURL(urlType="source")
+    for photo in response.getiterator("photo"):
+        photo_id = photo.attrib["id"]
+        tag = tag_template % {"photo_id": photo_id}
+        flickr.photos_addTags(photo_id=photo_id,tags=tag)
+    
+    print "Done."
 
 if __name__ == "__main__":
     main()
