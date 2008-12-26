@@ -23,10 +23,11 @@ import config
 import deepzoom
 import flickrapi
 import math
-import os.path
 import os
+import os.path
 import urllib
 from ftplib import FTP
+import zipfile
 
 #tag_template = u"openzoom:source=http://static.gasi.ch/images/%(photo_id)s/image.xml"
 tag_template = u"rendezvous:source=http://static.gasi.ch/rendezvous/%(photo_id)s/image.dzi"
@@ -67,12 +68,12 @@ def main():
             # Download image
             path = "rendezvous"
             local_file = path + "/" + photo_id + os.path.splitext( photo_url )[1]
-            pyramid_file = path + "/" + photo_id + "/image.dzi"
             urllib.urlretrieve(photo_url, local_file)
             print photo_id + " ...downloaded."
             
             # Create pyramid
-            image_creator.create(local_file, pyramid_file)
+            dzi_file = path + "/" + photo_id + "/image.dzi"
+            image_creator.create(local_file, dzi_file)
             print photo_id + " ...image pyramid created."
             
             # Delete original
@@ -80,14 +81,28 @@ def main():
             print photo_id + " ...deleted original."
             
             # ZIP
+            zip_name = path + "/" + photo_id + ".zip"
+            zip_file = zipfile.ZipFile(zip_name, "w")
+            os.chdir(path)
+            for root, dirs, files in os.walk(photo_id):
+                 for file_name in files:
+                     part_name = os.path.join(root,file_name)
+                     zip_file.write(part_name)
+            zip_file.close()
+            os.chdir("..")
+            print photo_id + " ...created ZIP."
             
-            # Create OpenZoom descriptor
-            
+            # TODO: Create OpenZoom descriptor
+
             # Upload
+#            ftp.cwd(config.FTP_PATH)
+#            ftp.storlines("STOR " + zip_name, zip_file)
+#            print photo_id + " ...uploaded ZIP."
             
             # Set machine tag
 #            tag = tag_template % {"photo_id": photo_id}
 #            flickr.photos_addTags(photo_id=photo_id,tags=tag)
+    ftp.close()
     print "Done."
 
 if __name__ == "__main__":
