@@ -136,7 +136,7 @@ class ImageCreator( object ):
             return self.image
         
         if not self.resize_filter:
-            return self.image.resize(( w, h )) 
+            return self.image.resize(( w, h ), Image.ANTIALIAS ) 
         return self.image.resize(( w, h ), self.resize_filter )
     
     
