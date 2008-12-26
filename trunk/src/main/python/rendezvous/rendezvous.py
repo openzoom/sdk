@@ -20,15 +20,15 @@
 ################################################################################
 
 import flickr
-import credentials
+import config
 
 def main():
-    flickr.API_KEY = credentials.API_KEY
-    flickr.API_SECRET = credentials.API_SECRET
-    photos = flickr.people_getPublicPhotos(user_id="33636394@N08", per_page="10")
+    flickr.API_KEY = config.API_KEY
+    flickr.API_SECRET = config.API_SECRET
+    photos = flickr.people_getPublicPhotos(user_id=config.USER_ID, per_page="20")
     
     for photo in photos:
-        print photo.getURL(urlType="source")
+        print photo.title, photo.getURL(urlType="source")
 
 if __name__ == "__main__":
     main()
