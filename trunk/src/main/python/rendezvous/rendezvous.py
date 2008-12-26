@@ -95,9 +95,9 @@ def main():
             # TODO: Create OpenZoom descriptor
 
             # Upload
-#            ftp.cwd(config.FTP_PATH)
-#            ftp.storlines("STOR " + zip_name, zip_file)
-#            print photo_id + " ...uploaded ZIP."
+            ftp.cwd(config.FTP_PATH)
+            ftp.storbinary("STOR " + zip_name, open(zip_name, "rb"), 1024)
+            print photo_id + " ...uploaded ZIP."
             
             # Set machine tag
 #            tag = tag_template % {"photo_id": photo_id}
