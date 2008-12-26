@@ -55,6 +55,7 @@ def main():
     # FTP
     ftp = FTP(config.FTP_HOST)    
     ftp.login(config.FTP_USER, config.FTP_PASSWORD)
+    ftp.cwd(config.FTP_PATH)
 
     # Flickr
     flickr = flickrapi.FlickrAPI(config.API_KEY, config.API_SECRET)
@@ -93,9 +94,13 @@ def main():
             print "Download from Flickr. OK."
             
             # Create pyramid
-            dzi_file = path + "/" + photo_id + "/image.dzi"
+            base_name = path + "/" + photo_id + "/image"
+            dzi_file = base_name + ".dzi"
             image_creator.create(local_file, dzi_file)
             print "Image pyramid generated. OK."
+            
+            # TODO: Create OpenZoom descriptor
+#            openzoom_file = base_name + ".xml"
             
             # Delete original
             os.remove(local_file)
@@ -116,12 +121,9 @@ def main():
             # Delete pyramid
             shutil.rmtree(path + "/" + photo_id)
             print "Pyramid deleted. OK."
-            
-            # TODO: Create OpenZoom descriptor
 
             # Upload
-            ftp.cwd(config.FTP_PATH)
-            ftp.storbinary("STOR " + zip_name, open(zip_name, "rb"), 1024)
+            upload(ftp, zip_name)
             print "ZIP uploaded. OK."
             
             # Delete ZIP
