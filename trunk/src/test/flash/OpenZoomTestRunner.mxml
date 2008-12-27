@@ -34,6 +34,7 @@
             
         	import org.openzoom.flash.descriptors.DZIDescriptorTest;
         	import org.openzoom.flash.descriptors.ZoomifyDescriptorTest;
+        	import org.openzoom.flash.utils.Base16Test;
             
             private function creationCompleteHandler( event : Event ):void
             {
@@ -46,6 +47,7 @@
                 var testSuite : TestSuite = new TestSuite()
                 testSuite.addTestSuite( DZIDescriptorTest )
                 testSuite.addTestSuite( ZoomifyDescriptorTest )
+                testSuite.addTestSuite( Base16Test )
 
                 return testSuite
             }   
