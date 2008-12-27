@@ -191,7 +191,9 @@ public class NormalizedViewport extends EventDispatcher
     	if( _transformer )
     	{
     	   _transformer.stop()
-           _transformer.viewport = null    		
+    	   
+    	   // FIXME: Something goes wrong here…
+//           _transformer.viewport = null
     	}
     	
         if( value )
@@ -681,9 +683,9 @@ public class NormalizedViewport extends EventDispatcher
         var old : IViewportTransform = transform
         var t : IViewportTransformContainer =
             ViewportTransform.fromValues( old.x, old.y,
-                                           old.width, old.height, old.zoom,
-                                           viewportWidth, viewportHeight,
-                                           _scene.sceneWidth, _scene.sceneHeight ) 
+                                          old.width, old.height, old.zoom,
+                                          viewportWidth, viewportHeight,
+                                          _scene.sceneWidth, _scene.sceneHeight ) 
         applyTransform( t, true )
     }
     

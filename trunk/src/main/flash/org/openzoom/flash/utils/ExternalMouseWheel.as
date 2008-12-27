@@ -37,6 +37,8 @@ import flash.system.Capabilities;
 /**
  * The ExternalMouseWheel class provices support for the mouse wheel on systems
  * where the Flash Player does not natively support this capability.
+ * 
+ * @see http://www.actionscript.org/resources/articles/745/1/JavaScript-and-VBScript-Injection-in-ActionScript-3/Page1.html
  */
 public final class ExternalMouseWheel extends EventDispatcher
 {
@@ -250,12 +252,13 @@ public final class ExternalMouseWheel extends EventDispatcher
     
     /**
      * Initialize this class once in your application.
-     * Make sure that your embedded Flash movie has an <code>id</code> and <code>name</code>.
+     * Make sure that your embedded Flash movie has an
+     * <code>id</code> and <code>name</code>.
      */ 
     public static function initialize( stage : Stage ) : void
     {
     	if( !instance )
-            instance = new ExternalMouseWheel( stage, new SingletonEnforcer()  )
+            instance = new ExternalMouseWheel( stage, new SingletonEnforcer())
     }
     
     //--------------------------------------------------------------------------
