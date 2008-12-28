@@ -33,13 +33,6 @@ import zipfile
 #tag_template = u"openzoom:source=http://static.gasi.ch/images/%(photo_id)s/image.xml"
 tag_template = u"rendezvous:source=http://static.gasi.ch/rendezvous/%(photo_id)s/image.dzi"
 
-def upload(ftp, file):
-    ext = os.path.splitext(file)[1]
-    if ext in (".txt", ".htm", ".html", ".dzi", ".xml"):
-        ftp.storlines("STOR " + file, open(file))
-    else:
-        ftp.storbinary("STOR " + file, open(file, "rb"), 1024)
-
 
 # FLICKR ITERATORS
 
@@ -106,14 +99,22 @@ def connect_flickr(key, secret):
     flickr.get_token_part_two((token, frob))
     return flickr
 
-def connect_ftp(host, user, password, path=""):
+# FTP
+
+def connect_ftp(host, user, password):
     ftp = FTP(host)    
     ftp.login(user, password)
-    if not path == "":
-        ftp.cwd(path)
     return ftp
-    
-    
+
+def upload(ftp, file):
+    ext = os.path.splitext(file)[1]
+    name = os.path.basename(file)
+    if ext in (".txt", ".htm", ".html", ".xml", ".dzi"):
+        ftp.storlines("STOR " + name, open(file))
+    else:
+        ftp.storbinary("STOR " + name, open(file, "rb"), 1024)
+
+
 def main():
     path = config.WORKING_DIR
     reset_working_dir(path)
@@ -121,7 +122,7 @@ def main():
     # Prepare Deep Zoom Tools
     image_creator = deepzoom.ImageCreator()
 
-    ftp = connect_ftp(config.FTP_HOST, config.FTP_USER, config.FTP_PASSWORD, config.FTP_PATH)
+    ftp = connect_ftp(config.FTP_HOST, config.FTP_USER, config.FTP_PASSWORD)
     flickr = connect_flickr(config.API_KEY, config.API_SECRET)
 
     # Rendez-vous
@@ -132,7 +133,8 @@ def main():
         photo_title = photo.attrib["title"]
         
         print "#################################################################"
-        print "Hello,", photo_title, "(%s)"%photo_id
+#        print "Hello,", photo_title, "(%s)"%photo_id
+        print "Hello,", "(%s)"%photo_id
         print "#################################################################"
             
         photo_url = largest_photo_url(flickr, photo_id)
@@ -141,24 +143,44 @@ def main():
         print photo_url
             
         # Download image
-        local_file = path + "/" + photo_id + os.path.splitext( photo_url )[1]
-#        urllib.urlretrieve(photo_url, local_file)
+        image_path = path + "/" + photo_id
+        local_file = image_path + os.path.splitext( photo_url )[1]
+        urllib.urlretrieve(photo_url, local_file)
 #        print "Download from Flickr. OK."
             
         # Create pyramid
-#        base_name = path + "/" + photo_id + "/image"
-#        dzi_file = base_name + ".dzi"
-#        image_creator.create(local_file, dzi_file)
-#        print "Image pyramid generated. OK."
-            
+        base_name = image_path + "/image"
+        dzi_file = base_name + ".dzi"
+        image_creator.create(local_file, dzi_file)
+        print "Image pyramid generated. OK."
+
         # TODO: Create OpenZoom descriptor
 #        openzoom_file = base_name + ".xml"
-            
+        
+        os.chdir(path)
+        ftp.cwd("/")
+        try:
+            ftp.mkd(photo_id)
+        except:
+            pass
+        for dirpath, dirs, files in os.walk(photo_id):
+            ftp.cwd("/" + dirpath)
+            for dir in dirs:
+                try:
+                    ftp.mkd(dir)
+                except:
+                    pass
+            for file in files:
+                upload(ftp, os.path.join(dirpath,file))
+        os.chdir("..")
+        print "Image pyramid uploaded. OK."
+        
+        
         # Delete original
-        if os.path.exists(local_file):
-            os.remove(local_file)
-            print "Original deleted. OK."
-            
+#        if os.path.exists(local_file):
+#            os.remove(local_file)
+#            print "Original deleted. OK."
+
             # ZIP
 #            zip_name = path + "/" + photo_id + ".zip"
 #            zip_file = zipfile.ZipFile(zip_name, "w")
@@ -173,7 +195,7 @@ def main():
             
         # Delete pyramid
 #        shutil.rmtree(path + "/" + photo_id)
-#        print "Pyramid deleted. OK."
+#        print "Image pyramid deleted. OK."
 
         # Upload
 #        upload(ftp, zip_name)
