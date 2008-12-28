@@ -19,6 +19,7 @@
 #
 ################################################################################
 
+import base64
 import config
 import deepzoom
 import flickrapi
@@ -31,9 +32,6 @@ import urllib
 from ftplib import FTP
 import shutil
 import zipfile
-
-#tag_template = u"openzoom:source=http://static.gasi.ch/images/%(photo_id)s/image.xml"
-tag_template = u"rendezvous:source=http://static.gasi.ch/rendezvous/%(photo_id)s/image.dzi"
 
 
 # FLICKR ITERATORS
@@ -91,7 +89,7 @@ def reset_flickr(flickr, user_id, namespace):
         tag_id = tag.attrib["id"]
         flickr.photos_removeTag(tag_id=tag_id)
 
-def reset_working_dir(path):
+def reset_dir(path):
     if os.path.exists(path):
         shutil.rmtree(path)
     os.mkdir(path)
@@ -121,11 +119,19 @@ def upload(ftp, file):
 
 
 LOG_FILENAME = "log/rendezvous.log"
+PRODUCTION = False
+
+SOURCE_TAG = u"rendezvous:source="
+SOURE_BASE16_TAG = u"rendezvous:base16source="
+URI_TEMPLATE = u"http://static.gasi.ch/rendezvous/%(photo_id)s/image.dzi" 
 
 
 def main():
     path = config.WORKING_DIR
-#    reset_working_dir(path)
+    
+    if not PRODUCTION:
+        reset_dir(path)
+        reset_dir(config.LOG_DIR)
     
     # Prepare Deep Zoom Tools
     image_creator = deepzoom.ImageCreator()
@@ -156,20 +162,29 @@ def main():
         photo_url = largest_photo_url(flickr, photo_id)
         msg = "FLICKR URL >>> %s"%photo_id
         if photo_url is None:
-            logger.warn(msg)
+            logger.warning(msg)
             continue
-#        logger.info(msg)
+        logger.info(msg)
             
         # Download image
         image_path = path + "/" + photo_id
         local_file = image_path + os.path.splitext( photo_url )[1]
         if not os.path.exists(local_file):
             msg = "DOWNLOAD >>> %s"%photo_id
-            try:
-                urllib.urlretrieve(photo_url, local_file)
-                logger.info(msg)
-            except:
-                logger.error(msg)
+            for attempt in xrange(1, config.DOWNLOAD_RETRIES+1):
+                try:
+                    urllib.urlretrieve(photo_url, local_file)
+                    logger.info(msg)
+                except:
+                    logger.warning("DOWNLOAD ATTEMPT %s >>> %s"%(attempt, photo_id))
+                    if os.path.exists(local_file):
+                        try:
+                            os.remove(local_file)
+                        except:
+                            pass
+                    continue
+            if attempt == config.DOWNLOAD_RETRIES:
+                logger.error("DOWNLOAD >>> %s"%photo_id)
                 continue
             
         # Create pyramid
@@ -177,11 +192,20 @@ def main():
         dzi_file = base_name + ".dzi"
         if not os.path.exists(dzi_file):
             msg = "PYRAMID >>> %s >>> %s"%(photo_id,local_file)
-            try:
-                image_creator.create(local_file, dzi_file)
-                logger.info(msg)
-            except:
-                logger.error(msg)
+            for attempt in xrange(1, config.PYRAMID_RETRIES+1):
+                try:
+                    image_creator.create(local_file, dzi_file)
+                    logger.info(msg)
+                except:
+                    logger.warning("PYRAMID ATTEMPT %s >>> %s >>> %s"%(attempt, photo_id, local_file))
+                    if os.path.exists(image_path):
+                        try:
+                            shutil.rmtree(image_path)
+                        except:
+                            pass
+                    continue
+            if attempt == config.PYRAMID_RETRIES:
+                logger.error("PYRAMID >>> %s >>> %s"%(photo_id, local_file))
                 continue
 
         # TODO: Create OpenZoom descriptor
@@ -203,14 +227,14 @@ def main():
                 except:
                     pass
             for file in files:
-                for retry in xrange(config.FTP_RETRIES):
+                for attempt in xrange(1,config.FTP_RETRIES+1):
                     try:
                         upload(ftp, os.path.join(dirpath,file))
                         break
                     except:
                         f = os.path.join(dirpath,file)
-                        logger.info("UPLOAD ATTEMPT %s >>> %s >>> %s"%(retry, photo_id, f))
-                        if retry == config.FTP_RETRIES:
+                        logger.info("UPLOAD ATTEMPT %s >>> %s >>> %s"%(attempt, photo_id, f))
+                        if attempt == config.FTP_RETRIES:
                             logger.error("UPLOAD ERROR >>> %s >>> %s"%(photo_id,f))
                         continue
                     
@@ -221,10 +245,13 @@ def main():
 #        shutil.rmtree(path + "/" + photo_id)
 #        print "Image pyramid deleted. OK."
 
-        # Set machine tag
-#        tag = tag_template % {"photo_id": photo_id}
-#        flickr.photos_addTags(photo_id=photo_id,tags=tag)
-#        print "Flickr machine tag added. OK."
+        # Set machine tags
+        tag = SOURCE_TAG + URI_TEMPLATE%{"photo_id": photo_id}
+        flickr.photos_addTags(photo_id=photo_id,tags=tag)
+        
+        tag = SOURE_BASE16_TAG + base64.b16encode(URI_TEMPLATE%{"photo_id": photo_id})
+        flickr.photos_addTags(photo_id=photo_id,tags=tag)
+        logger.info("MACHINE TAG >>> %s"%photo_id)
             
     # Clean up
     ftp.close()

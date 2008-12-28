@@ -45,7 +45,7 @@ import sys
 from PIL import Image
 
 
-dzi_template = """\
+DZI_TEMPLATE = """\
 <?xml version="1.0" encoding="UTF-8"?>
 <Image TileSize="%(tile_size)s" Overlap="%(tile_overlap)s" Format="%(tile_format)s" xmlns="http://schemas.microsoft.com/deepzoom/2008">
     <Size Width="%(width)s" Height="%(height)s"/>
@@ -53,48 +53,48 @@ dzi_template = """\
 
 
 resize_filter_map = {
-    "cubic"     : Image.CUBIC,
-    "bilinear"  : Image.BILINEAR,
-    "bicubic"   : Image.BICUBIC,
-    "nearest"   : Image.NEAREST,
-    "antialias" : Image.ANTIALIAS,
+    "cubic": Image.CUBIC,
+    "bilinear": Image.BILINEAR,
+    "bicubic": Image.BICUBIC,
+    "nearest": Image.NEAREST,
+    "antialias": Image.ANTIALIAS,
     }
 
 image_format_map = {
-    "jpg" : "jpg",
-    "png" : "png",
+    "jpg": "jpg",
+    "png": "png",
     }
 
 
-class ImageCreator( object ):
+class ImageCreator:
 
-    def __init__(self, tile_size=256.0, tile_overlap=1, tile_format="jpg", resize_filter=None):
-        self.tile_size = tile_size
-        self.tile_overlap = tile_overlap
+    def __init__(self, tile_size=256, tile_overlap=1, tile_format="jpg", resize_filter=None):
+        self.tile_size = int(tile_size)
+        self.tile_overlap = int(tile_overlap)
         self.tile_format = tile_format
         self.resize_filter = resize_filter
         self._levels = None
 
     @property
-    def levels( self ):
+    def levels(self):
         """Number of levels in the image pyramid"""
         if self._levels is not None:
             return self._levels
-        self._levels = int( math.ceil( math.log( max(( self.width, self.height )), 2 )))
+        self._levels = int(math.ceil(math.log(max((self.width, self.height)), 2)))
         return self._levels
 
-    def get_level_dimensions( self, level ):
+    def get_level_dimensions(self, level):
         assert 0 <= level and level <= self.levels, "Invalid pyramid level"
-        scale = self.get_level_scale( level )
-        return math.ceil( self.width * scale ), math.ceil( self.height * scale )
+        scale = self.get_level_scale(level)
+        return int(math.ceil(self.width * scale)), int(math.ceil(self.height * scale))
 
-    def get_level_scale( self, level ):
+    def get_level_scale(self, level):
         #print math.pow( 0.5, self.levels - level )
         return 1.0 / ( 1 << ( self.levels - level ))
 
-    def get_level_rows_columns( self, level ):
+    def get_level_rows_columns(self, level):
         w, h = self.get_level_dimensions( level )
-        return ( math.ceil( w / self.tile_size ),  math.ceil( h / self.tile_size ))
+        return (math.ceil(float(w) / self.tile_size), math.ceil(float(h) / self.tile_size))
     
     def get_tile_bounds( self, level, column, row ):
         """Bounding box of the tile (x1, y1, x2, y2)"""
@@ -112,71 +112,69 @@ class ImageCreator( object ):
             py = self.tile_size * row - self.tile_overlap
 
         # scaled dimensions for this level
-        dsw, dsh = self.get_level_dimensions( level )
+        dsw, dsh = self.get_level_dimensions(level)
         
         # find the dimension of the tile, adjust for no overlap data on top and left edges
-        sx = self.tile_size + ( column == 0 and 1 or 2 ) * self.tile_overlap
-        sy = self.tile_size + ( row    == 0 and 1 or 2 ) * self.tile_overlap
+        sx = self.tile_size + (column == 0 and 1 or 2) * self.tile_overlap
+        sy = self.tile_size + (row    == 0 and 1 or 2) * self.tile_overlap
         
         # adjust size for single-tile levels where the image size is smaller
         # than the regular tile size, and for tiles on the bottom and right
         # edges that would exceed the image bounds        
-        sx = min( sx, dsw - px )
-        sy = min( sy, dsh - py )
+        sx = min(sx, dsw - px)
+        sy = min(sy, dsh - py)
         
         return px, py, px+sx, py+sy
 
-    def get_level_image( self, level ):
-
-        w, h = self.get_level_dimensions( level )
-        w, h = int( w ), int( h )
+    def get_level_image(self, level):
+        w, h = self.get_level_dimensions(level)
 
         # don't transform to what we already have
         if self.width == w and self.height == h: 
             return self.image
         
         if not self.resize_filter:
-            return self.image.resize(( w, h ), Image.ANTIALIAS ) 
-        return self.image.resize(( w, h ), self.resize_filter )
+            return self.image.resize((w, h), Image.ANTIALIAS) 
+        return self.image.resize((w, h), self.resize_filter)
     
     
-    def iter_tiles( self, level ):
-        col, row = self.get_level_rows_columns( level )
-        for w in range( 0, int( col ) ):
-            for h in range( 0, int( row ) ):
-                yield ( w, h ),( self.get_tile_bounds( level, w, h ))
+    def iter_tiles(self, level):
+        col, row = self.get_level_rows_columns(level)
+        for w in range( 0, int(col)):
+            for h in range(0, int(row)):
+                yield (w, h), (self.get_tile_bounds(level, w, h))
 
-    def __len__( self ):
+    def __len__(self):
         return self.levels
     
-    def create( self, source, destination ):
-        self.image = Image.open( source )
+    def create(self, source, destination):
+        self.image = Image.open(source)
         self.width, self.height = self.image.size
-        destination = expand( destination )
-        image_name = os.path.splitext( os.path.basename( destination ))[ 0 ]
-        image_files = ensure( os.path.join( ensure( os.path.dirname( destination )), "%s_files"%image_name ))
+        destination = expand(destination)
+        image_name = os.path.splitext(os.path.basename(destination))[0]
+        image_files = ensure(os.path.join(ensure(os.path.dirname(destination)), "%s_files"%image_name))
         
         # store images
-        for n in range( self.levels + 1 ):
-            level_dir = ensure( os.path.join( image_files, str( n )))
-            level_image = self.get_level_image( n )
-            for ( col, row ), box in self.iter_tiles( n ):
-                tile = level_image.crop( map( int, box ))
-                tile_path = os.path.join( level_dir, "%s_%s.%s"%( col, row, self.tile_format ))
-                tile_file = open( tile_path, "wb+" )
-                tile.save( tile_file )
+        for n in range(self.levels + 1):
+            level_dir = ensure(os.path.join(image_files, str(n)))
+            level_image = self.get_level_image(n)
+            for (col, row), box in self.iter_tiles(n):
+                tile = level_image.crop(map(int, box))
+                tile_path = os.path.join(level_dir, "%s_%s.%s"%(col, row, self.tile_format))
+                tile_file = open(tile_path, "wb+")
+                tile.save(tile_file)
 
         # store dzi file
-        fh = open( destination, "w+" )
-        fh.write( dzi_template%( self.__dict__ ) )
+        fh = open(destination, "w+")
+        fh.write(DZI_TEMPLATE%(self.__dict__))
         fh.close()
         
-def expand( d ):
-    return os.path.abspath( os.path.expanduser( os.path.expandvars( d )))
+def expand(d):
+    return os.path.abspath(os.path.expanduser(os.path.expandvars(d)))
 
-def ensure( d ):
-    if not os.path.exists( d ):
-        os.mkdir( d )
+def ensure(d):
+    if not os.path.exists(d):
+        os.mkdir(d)
     return d
 
 def main():
@@ -197,24 +195,24 @@ def main():
     parser.add_option("-r", "--resize_filter", dest="resize_filter", default="antialias",
                       help="Type of filter for resizing (bicubic, nearest, antialias, bilinear")
 
-    ( options, args ) = parser.parse_args()
+    (options, args) = parser.parse_args()
 
     if not args:
         parser.print_help()
-        sys.exit( 1 )
-    source = expand( args[ 0 ] )
+        sys.exit(1)
+    source = expand(args[0])
     
-    if not os.path.exists( source ):
+    if not os.path.exists(source):
         print "Invalid File", source
-        sys.exit( 1 )
+        sys.exit(1)
         
     if not options.destination:
-        options.destination = os.path.splitext( source )[ 0 ] + ".dzi"
+        options.destination = os.path.splitext(source)[0] + ".dzi"
     if options.resize_filter and options.resize_filter in resize_filter_map:
         options.resize_filter = resize_filter_map[ options.resize_filter ]
 
-    creator = ImageCreator( tile_size=options.tile_size, tile_format=options.tile_format, resize_filter=options.resize_filter )
-    creator.create( source, options.destination )
+    creator = ImageCreator(tile_size=options.tile_size, tile_format=options.tile_format, resize_filter=options.resize_filter)
+    creator.create(source, options.destination)
     
 if __name__ == "__main__":
     main()
