@@ -135,7 +135,7 @@ def main():
         print "#################################################################"
 #        print "Hello,", photo_title, "(%s)"%photo_id
         print "Hello,", "(%s)"%photo_id
-        print "#################################################################"
+#        print "#################################################################"
             
         photo_url = largest_photo_url(flickr, photo_id)
         if photo_url is None:
@@ -146,15 +146,24 @@ def main():
         image_path = path + "/" + photo_id
         local_file = image_path + os.path.splitext( photo_url )[1]
         if not os.path.exists(local_file):
-            urllib.urlretrieve(photo_url, local_file)
-            print "Download from Flickr. OK."
+            try:
+                urllib.urlretrieve(photo_url, local_file)
+                print "Download from Flickr. OK."
+            except:
+                print "Download ERROR:", local_file
+                continue
+                
             
         # Create pyramid
         base_name = image_path + "/image"
         dzi_file = base_name + ".dzi"
         if not os.path.exists(dzi_file):
-            image_creator.create(local_file, dzi_file)
-            print "Image pyramid generated. OK."
+            try:
+                image_creator.create(local_file, dzi_file)
+                print "Image pyramid generated. OK."
+            except:
+                print "Image ERROR:", local_file
+                continue
 
         # TODO: Create OpenZoom descriptor
 #        openzoom_file = base_name + ".xml"
@@ -177,7 +186,7 @@ def main():
                 try:
                     upload(ftp, os.path.join(dirpath,file))
                 except:
-                    print "AAAH", os.path.join(dirpath,file)
+                    print "FTP ERROR:", os.path.join(dirpath,file)
                     continue
         os.chdir("..")
         print "Image pyramid uploaded. OK."
