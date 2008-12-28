@@ -47,9 +47,28 @@ def photo_iter(flickr, user_id):
     num_pages = int(math.ceil(float(photo_count)/page_size))
     for page in range(1,num_pages+1):
         response = flickr.people_getPublicPhotos(user_id=user_id, per_page=page_size, page=page)
-        for photo in response.getiterator("photo"):
+        photos = response.getiterator("photo")
+        for photo in photos:
             yield photo
-    
+
+def tag_iter(flickr, photo_id):
+    response = flickr.photos_getInfo(photo_id=photo_id)
+    tags = response.getiterator("tag")
+    for tag in tags:
+        yield tag
+
+def machine_tag_iter(flickr, photo_id):
+    for tag in tag_iter(flickr, photo_id):
+        if int(tag.attrib["machine_tag"]) == 1:
+            yield tag
+
+def machine_tag_namespace_iter(flickr, user_id, namespace):
+    for photo in photo_iter(flickr, user_id):
+        photo_id = photo.attrib["id"]
+        for tag in machine_tag_iter(flickr, photo_id):
+            tag_namespace = tag.text.partition(":")[0]
+            if tag_namespace == namespace:
+                yield tag
 
 def main():
     path = config.WORKING_DIR
@@ -79,12 +98,12 @@ def main():
     # Rendez-vous
     user_id = config.USER_ID
     
-    for photo in photo_iter(flickr, user_id):
-        photo_id = photo.attrib["id"]
-        print photo_id
-        flickr.photos_setMeta(photo_id=photo_id, title="Generator Love", description="Love will tear us apart.")
-        
-    print "Done"
+    for tag in machine_tag_namespace_iter(flickr, user_id, "openzoom"):
+        tag_id = tag.attrib["id"]
+        flickr.photos_removeTag(tag_id=tag_id)
+        print "tag removed."
+    
+    print "Done."
     
 #    response = flickr.people_getInfo(user_id=user_id)
 #    photo_count = int(response.find("person").find("photos").find("count").text)
