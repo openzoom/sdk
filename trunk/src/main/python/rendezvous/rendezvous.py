@@ -22,6 +22,8 @@
 import config
 import deepzoom
 import flickrapi
+import logging
+import logging.handlers
 import math
 import os
 import os.path
@@ -82,6 +84,8 @@ def largest_photo_url(flickr, photo_id):
             photo_url = size.attrib["source"]
     return photo_url
 
+# SETUP
+
 def reset_flickr(flickr, user_id, namespace):    
     for tag in machine_tag_namespace_iter(flickr, user_id, namespace):
         tag_id = tag.attrib["id"]
@@ -99,6 +103,7 @@ def connect_flickr(key, secret):
     flickr.get_token_part_two((token, frob))
     return flickr
 
+
 # FTP
 
 def connect_ftp(host, user, password):
@@ -115,6 +120,9 @@ def upload(ftp, file):
         ftp.storbinary("STOR " + name, open(file, "rb"), 1024)
 
 
+LOG_FILENAME = "log/rendezvous.log"
+
+
 def main():
     path = config.WORKING_DIR
 #    reset_working_dir(path)
@@ -122,8 +130,18 @@ def main():
     # Prepare Deep Zoom Tools
     image_creator = deepzoom.ImageCreator()
 
+    # Connect
     ftp = connect_ftp(config.FTP_HOST, config.FTP_USER, config.FTP_PASSWORD)
     flickr = connect_flickr(config.API_KEY, config.API_SECRET)
+
+    # Logging
+    logger = logging.getLogger("rendezvous")
+    logger.setLevel(logging.DEBUG)
+
+    handler = logging.handlers.RotatingFileHandler(LOG_FILENAME, maxBytes=1024*250, backupCount=1000)
+    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
 
     # Rendez-vous
     user_id = config.USER_ID
@@ -132,37 +150,38 @@ def main():
         photo_id = photo.attrib["id"]
         photo_title = photo.attrib["title"]
         
-        print "#################################################################"
-#        print "Hello,", photo_title, "(%s)"%photo_id
-        print "Hello,", "(%s)"%photo_id
-#        print "#################################################################"
+        print "--------------------------------------------"
+        logger.info("BEGIN >>> %s"%photo_id)
             
         photo_url = largest_photo_url(flickr, photo_id)
+        msg = "FLICKR URL >>> %s"%photo_id
         if photo_url is None:
+            logger.warn(msg)
             continue
-        print photo_url
+#        logger.info(msg)
             
         # Download image
         image_path = path + "/" + photo_id
         local_file = image_path + os.path.splitext( photo_url )[1]
         if not os.path.exists(local_file):
+            msg = "DOWNLOAD >>> %s"%photo_id
             try:
                 urllib.urlretrieve(photo_url, local_file)
-                print "Download from Flickr. OK."
+                logger.info(msg)
             except:
-                print "Download ERROR:", local_file
+                logger.error(msg)
                 continue
-                
             
         # Create pyramid
         base_name = image_path + "/image"
         dzi_file = base_name + ".dzi"
         if not os.path.exists(dzi_file):
+            msg = "PYRAMID >>> %s >>> %s"%(photo_id,local_file)
             try:
                 image_creator.create(local_file, dzi_file)
-                print "Image pyramid generated. OK."
+                logger.info(msg)
             except:
-                print "Image ERROR:", local_file
+                logger.error(msg)
                 continue
 
         # TODO: Create OpenZoom descriptor
@@ -172,6 +191,7 @@ def main():
         try:
             ftp.mkd(photo_id)
         except:
+            logger.info("UPLOAD SKIP >>> %s"%photo_id)
             continue
         
         os.chdir(path)
@@ -183,53 +203,32 @@ def main():
                 except:
                     pass
             for file in files:
-                try:
-                    upload(ftp, os.path.join(dirpath,file))
-                except:
-                    print "FTP ERROR:", os.path.join(dirpath,file)
-                    continue
+                for retry in xrange(config.FTP_RETRIES):
+                    try:
+                        upload(ftp, os.path.join(dirpath,file))
+                        break
+                    except:
+                        f = os.path.join(dirpath,file)
+                        logger.info("UPLOAD ATTEMPT %s >>> %s >>> %s"%(retry, photo_id, f))
+                        if retry == config.FTP_RETRIES:
+                            logger.error("UPLOAD ERROR >>> %s >>> %s"%(photo_id,f))
+                        continue
+                    
         os.chdir("..")
-        print "Image pyramid uploaded. OK."
+        logger.info("UPLOAD >>> %s"%photo_id)
         
-        
-        # Delete original
-#        if os.path.exists(local_file):
-#            os.remove(local_file)
-#            print "Original deleted. OK."
-
-            # ZIP
-#            zip_name = path + "/" + photo_id + ".zip"
-#            zip_file = zipfile.ZipFile(zip_name, "w")
-#            os.chdir(path)
-#            for root, dirs, files in os.walk(photo_id):
-#                for file_name in files:
-#                    part_name = os.path.join(root,file_name)
-#                    zip_file.write(part_name)
-#            zip_file.close()
-#            os.chdir("..")
-#            print "ZIP archive created. OK."
-            
         # Delete pyramid
 #        shutil.rmtree(path + "/" + photo_id)
 #        print "Image pyramid deleted. OK."
 
-        # Upload
-#        upload(ftp, zip_name)
-#        print "ZIP uploaded. OK."
-
-        # Delete ZIP
-#        if os.path.exists(zip_name):
-#            os.remove(zip_name)
-#            print "ZIP deleted. OK."
-            
-            # Set machine tag
+        # Set machine tag
 #        tag = tag_template % {"photo_id": photo_id}
 #        flickr.photos_addTags(photo_id=photo_id,tags=tag)
 #        print "Flickr machine tag added. OK."
             
     # Clean up
     ftp.close()
-    print "Done."
+    print logger.info("DONE")
 
 
 if __name__ == "__main__":
