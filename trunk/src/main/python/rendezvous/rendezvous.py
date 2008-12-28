@@ -117,7 +117,7 @@ def upload(ftp, file):
 
 def main():
     path = config.WORKING_DIR
-    reset_working_dir(path)
+#    reset_working_dir(path)
     
     # Prepare Deep Zoom Tools
     image_creator = deepzoom.ImageCreator()
@@ -145,24 +145,27 @@ def main():
         # Download image
         image_path = path + "/" + photo_id
         local_file = image_path + os.path.splitext( photo_url )[1]
-        urllib.urlretrieve(photo_url, local_file)
-#        print "Download from Flickr. OK."
+        if not os.path.exists(local_file):
+            urllib.urlretrieve(photo_url, local_file)
+            print "Download from Flickr. OK."
             
         # Create pyramid
         base_name = image_path + "/image"
         dzi_file = base_name + ".dzi"
-        image_creator.create(local_file, dzi_file)
-        print "Image pyramid generated. OK."
+        if not os.path.exists(dzi_file):
+            image_creator.create(local_file, dzi_file)
+            print "Image pyramid generated. OK."
 
         # TODO: Create OpenZoom descriptor
 #        openzoom_file = base_name + ".xml"
         
-        os.chdir(path)
         ftp.cwd("/")
         try:
             ftp.mkd(photo_id)
         except:
-            pass
+            continue
+        
+        os.chdir(path)
         for dirpath, dirs, files in os.walk(photo_id):
             ftp.cwd("/" + dirpath)
             for dir in dirs:
@@ -171,7 +174,11 @@ def main():
                 except:
                     pass
             for file in files:
-                upload(ftp, os.path.join(dirpath,file))
+                try:
+                    upload(ftp, os.path.join(dirpath,file))
+                except:
+                    print "AAAH", os.path.join(dirpath,file)
+                    continue
         os.chdir("..")
         print "Image pyramid uploaded. OK."
         
