@@ -40,6 +40,17 @@ def upload(ftp, file):
     else:
         ftp.storbinary("STOR " + file, open(file, "rb"), 1024)
 
+def photo_iter(flickr, user_id):
+    response = flickr.people_getInfo(user_id=user_id)
+    photo_count = int(response.find("person").find("photos").find("count").text)
+    page_size = 500
+    num_pages = int(math.ceil(float(photo_count)/page_size))
+    for page in range(1,num_pages+1):
+        response = flickr.people_getPublicPhotos(user_id=user_id, per_page=page_size, page=page)
+        for photo in response.getiterator("photo"):
+            yield photo
+    
+
 def main():
     path = config.WORKING_DIR
     
@@ -68,74 +79,88 @@ def main():
     # Rendez-vous
     user_id = config.USER_ID
     
-    response = flickr.people_getInfo(user_id=user_id)
-    photo_count = int(response.find("person").find("photos").find("count").text)
+    for photo in photo_iter(flickr, user_id):
+        photo_id = photo.attrib["id"]
+        print photo_id
+        flickr.photos_setMeta(photo_id=photo_id, title="Generator Love", description="Love will tear us apart.")
+        
+    print "Done"
     
-    page_size = 5
-    num_pages = int(math.ceil(float(photo_count)/page_size))
-    for page in range(1,num_pages+1):
-        response = flickr.people_getPublicPhotos(user_id=user_id, per_page=page_size, page=page)
-        for photo in response.getiterator("photo"):
-            photo_id = photo.attrib["id"]
-            photo_title = photo.attrib["title"]
-            
-            # Begin operation
-            print "############################################################"
-            print "Hello,", photo_title, "(%s)"%photo_id
-            print "############################################################"
+#    response = flickr.people_getInfo(user_id=user_id)
+#    photo_count = int(response.find("person").find("photos").find("count").text)
+#    
+#    page_size = 500
+#    num_pages = int(math.ceil(float(photo_count)/page_size))
+#    for page in range(1,num_pages+1):
+#        response = flickr.people_getPublicPhotos(user_id=user_id, per_page=page_size, page=page)
+#        for photo in response.getiterator("photo"):
+#            photo_id = photo.attrib["id"]
+#            photo_title = photo.attrib["title"]
+#            
+#            # Begin operation
+#            print "############################################################"
+#            print "Hello,", photo_title, "(%s)"%photo_id
+#            print "############################################################"
             
             # Get URL of largest image available
-            response = flickr.photos_getSizes(photo_id=photo_id)
-            photo_url = response.findall("sizes/size")[-1].attrib["source"]
+#            response = flickr.photos_getSizes(photo_id=photo_id)
+#            photo_url = response.findall("sizes/size")[-1].attrib["source"]
             
             # Download image
-            local_file = path + "/" + photo_id + os.path.splitext( photo_url )[1]
-            urllib.urlretrieve(photo_url, local_file)
-            print "Download from Flickr. OK."
+#            local_file = path + "/" + photo_id + os.path.splitext( photo_url )[1]
+#            urllib.urlretrieve(photo_url, local_file)
+#            print "Download from Flickr. OK."
             
             # Create pyramid
-            base_name = path + "/" + photo_id + "/image"
-            dzi_file = base_name + ".dzi"
-            image_creator.create(local_file, dzi_file)
-            print "Image pyramid generated. OK."
+#            base_name = path + "/" + photo_id + "/image"
+#            dzi_file = base_name + ".dzi"
+#            image_creator.create(local_file, dzi_file)
+#            print "Image pyramid generated. OK."
             
             # TODO: Create OpenZoom descriptor
 #            openzoom_file = base_name + ".xml"
             
             # Delete original
-            os.remove(local_file)
-            print "Original deleted. OK."
+#            if os.path.exists(local_file):
+#                os.remove(local_file)
+#                print "Original deleted. OK."
             
             # ZIP
-            zip_name = path + "/" + photo_id + ".zip"
-            zip_file = zipfile.ZipFile(zip_name, "w")
-            os.chdir(path)
-            for root, dirs, files in os.walk(photo_id):
-                for file_name in files:
-                    part_name = os.path.join(root,file_name)
-                    zip_file.write(part_name)
-            zip_file.close()
-            os.chdir("..")
-            print "ZIP archive created. OK."
+#            zip_name = path + "/" + photo_id + ".zip"
+#            zip_file = zipfile.ZipFile(zip_name, "w")
+#            os.chdir(path)
+#            for root, dirs, files in os.walk(photo_id):
+#                for file_name in files:
+#                    part_name = os.path.join(root,file_name)
+#                    zip_file.write(part_name)
+#            zip_file.close()
+#            os.chdir("..")
+#            print "ZIP archive created. OK."
             
             # Delete pyramid
-            shutil.rmtree(path + "/" + photo_id)
-            print "Pyramid deleted. OK."
+#            shutil.rmtree(path + "/" + photo_id)
+#            print "Pyramid deleted. OK."
 
             # Upload
-            upload(ftp, zip_name)
-            print "ZIP uploaded. OK."
-            
+#            upload(ftp, zip_name)
+#            print "ZIP uploaded. OK."
+
             # Delete ZIP
-            os.remove(zip_name)
-            print "ZIP deleted. OK."
+#            if os.path.exists(zip_name):
+#                os.remove(zip_name)
+#                print "ZIP deleted. OK."
             
             # Set machine tag
 #            tag = tag_template % {"photo_id": photo_id}
 #            flickr.photos_addTags(photo_id=photo_id,tags=tag)
+#            print "Flickr machine tag added. OK."
+
+#            flickr.photos_setMeta(photo_id=photo_id, title="", description="")
+#            print "Photo metadata reset."
             
-    ftp.close()
-    print "Done."
+    # Clean up
+#    ftp.close()
+#    print "Done."
 
 if __name__ == "__main__":
     main()
