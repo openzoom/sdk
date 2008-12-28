@@ -36,7 +36,6 @@
 # http://www.pythonware.com/library/pil/handbook/format-jpeg.htm
 # http://www.pythonware.com/library/pil/handbook/format-png.htm
 
-
 import math
 import os
 import optparse
@@ -44,13 +43,11 @@ import sys
 
 from PIL import Image
 
-
 DZI_TEMPLATE = """\
 <?xml version="1.0" encoding="UTF-8"?>
 <Image TileSize="%(tile_size)s" Overlap="%(tile_overlap)s" Format="%(tile_format)s" xmlns="http://schemas.microsoft.com/deepzoom/2008">
     <Size Width="%(width)s" Height="%(height)s"/>
 </Image>"""
-
 
 resize_filter_map = {
     "cubic": Image.CUBIC,
@@ -65,9 +62,8 @@ image_format_map = {
     "png": "png",
     }
 
-
-class ImageCreator:
-
+class ImageCreator(object):
+    """Creates Deep Zoom images."""
     def __init__(self, tile_size=256, tile_overlap=1, tile_format="jpg", resize_filter=None):
         self.tile_size = int(tile_size)
         self.tile_overlap = int(tile_overlap)
@@ -84,19 +80,21 @@ class ImageCreator:
         return self._levels
 
     def get_level_dimensions(self, level):
+        """Dimensions of level (width, height)"""
         assert 0 <= level and level <= self.levels, "Invalid pyramid level"
         scale = self.get_level_scale(level)
         return int(math.ceil(self.width * scale)), int(math.ceil(self.height * scale))
 
     def get_level_scale(self, level):
-        #print math.pow( 0.5, self.levels - level )
-        return 1.0 / ( 1 << ( self.levels - level ))
+        #print math.pow(0.5, self.levels - level)
+        return 1.0 / (1 << (self.levels - level))
 
-    def get_level_rows_columns(self, level):
+    def get_tiles(self, level):
+        """Number of tiles (columns, rows)"""
         w, h = self.get_level_dimensions( level )
-        return (math.ceil(float(w) / self.tile_size), math.ceil(float(h) / self.tile_size))
+        return (int(math.ceil(float(w) / self.tile_size)), int(math.ceil(float(h) / self.tile_size)))
     
-    def get_tile_bounds( self, level, column, row ):
+    def get_tile_bounds(self, level, column, row):
         """Bounding box of the tile (x1, y1, x2, y2)"""
         # find start position for current tile
         
@@ -137,11 +135,10 @@ class ImageCreator:
             return self.image.resize((w, h), Image.ANTIALIAS) 
         return self.image.resize((w, h), self.resize_filter)
     
-    
     def iter_tiles(self, level):
-        col, row = self.get_level_rows_columns(level)
-        for w in range( 0, int(col)):
-            for h in range(0, int(row)):
+        col, row = self.get_tiles(level)
+        for w in xrange(int(col)):
+            for h in xrange(int(row)):
                 yield (w, h), (self.get_tile_bounds(level, w, h))
 
     def __len__(self):
