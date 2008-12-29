@@ -35,7 +35,10 @@ LEVEL_TEMPLATE_HEADER = """\
 """
 
 URI_TEMPLATE = """\
-            <uri template="http://t0.gasi.ch/images/2442317595/image_files/11/{column}_{row}.jpg"/>\
+            <uri template="http://t0.gasi.ch/rendezvous/%(photo_id)s/image_files/%(level)s/{column}_{row}.jpg"/>
+            <uri template="http://t1.gasi.ch/rendezvous/%(photo_id)s/image_files/%(level)s/{column}_{row}.jpg"/>
+            <uri template="http://t2.gasi.ch/rendezvous/%(photo_id)s/image_files/%(level)s/{column}_{row}.jpg"/>
+            <uri template="http://t3.gasi.ch/rendezvous/%(photo_id)s/image_files/%(level)s/{column}_{row}.jpg"/>\
 """
             
 LEVEL_TEMPLATE_FOOTER = """\
@@ -87,21 +90,24 @@ class DZIDescriptor(MultiScaleImageDescriptor):
     
 
 class OpenZoomDescriptor(MultiScaleImageDescriptor):
-    def __init__(self, uris=None):
+    def __init__(self, photo_id, uris=None):
+        self.photo_id = photo_id
         if uris is None:
             self.uris = []
         self.uris = uris
     
-    def save(self, destination):
+    def __str__(self):
         dzi = self.provider
-        print DESCRIPTOR_TEMPLATE_HEADER%(dzi.__dict__)
+        out = ""
+        out += DESCRIPTOR_TEMPLATE_HEADER%(dzi.__dict__) + "\n"
         for level in xrange(dzi.levels + 1):
             w, h = dzi.get_level_dimensions(level)
             c, r = dzi.get_level_tiles(level)
-            print LEVEL_TEMPLATE_HEADER%{"width": w, "height": h, "columns": c, "rows": r}
-            print URI_TEMPLATE
-            print LEVEL_TEMPLATE_FOOTER
-        print DESCRIPTOR_TEMPLATE_FOOTER
+            out += LEVEL_TEMPLATE_HEADER%{"width": w, "height": h, "columns": c, "rows": r} + "\n"
+            out += URI_TEMPLATE%{"level": level, "photo_id": self.photo_id} + "\n"
+            out += LEVEL_TEMPLATE_FOOTER + "\n"
+        out += DESCRIPTOR_TEMPLATE_FOOTER
+        return out
     
     def load(self, source):
         self.provider = DZIDescriptor()

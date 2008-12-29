@@ -26,6 +26,7 @@ import flickrapi
 import logging
 import logging.handlers
 import math
+import openzoom
 import os
 import os.path
 import urllib
@@ -119,7 +120,7 @@ def upload(ftp, file):
 
 
 LOG_FILENAME = "log/rendezvous.log"
-PRODUCTION = False
+PRODUCTION = True
 
 SOURCE_TAG = u"rendezvous:source="
 SOURE_BASE16_TAG = u"rendezvous:base16source="
@@ -171,10 +172,13 @@ def main():
         local_file = image_path + os.path.splitext( photo_url )[1]
         if not os.path.exists(local_file):
             msg = "DOWNLOAD >>> %s"%photo_id
+            attempt = 1
             for attempt in xrange(1, config.DOWNLOAD_RETRIES+1):
                 try:
                     urllib.urlretrieve(photo_url, local_file)
+#                    raise Exception
                     logger.info(msg)
+                    break
                 except:
                     logger.warning("DOWNLOAD ATTEMPT %s >>> %s"%(attempt, photo_id))
                     if os.path.exists(local_file):
@@ -192,10 +196,13 @@ def main():
         dzi_file = base_name + ".dzi"
         if not os.path.exists(dzi_file):
             msg = "PYRAMID >>> %s >>> %s"%(photo_id,local_file)
+            attempt = 1
             for attempt in xrange(1, config.PYRAMID_RETRIES+1):
                 try:
                     image_creator.create(local_file, dzi_file)
+#                    raise Exception
                     logger.info(msg)
+                    break
                 except:
                     logger.warning("PYRAMID ATTEMPT %s >>> %s >>> %s"%(attempt, photo_id, local_file))
                     if os.path.exists(image_path):
@@ -208,8 +215,17 @@ def main():
                 logger.error("PYRAMID >>> %s >>> %s"%(photo_id, local_file))
                 continue
 
-        # TODO: Create OpenZoom descriptor
-#        openzoom_file = base_name + ".xml"
+        # Create OpenZoom descriptor
+        try:
+            descriptor = openzoom.OpenZoomDescriptor(photo_id=photo_id)
+            descriptor.load(dzi_file)
+            f = open(base_name + ".xml", "w+")
+            f.write(str(descriptor))
+            f.close()
+            logger.info("DESCRIPTOR >>> %s"%(photo_id))
+        except:
+            logger.error("DESCRIPTOR >>> %s"%(photo_id))
+            continue
         
         ftp.cwd("/")
         try:
@@ -227,16 +243,18 @@ def main():
                 except:
                     pass
             for file in files:
-                for attempt in xrange(1,config.FTP_RETRIES+1):
+                attempt = 1
+                for attempt in xrange(1, config.FTP_RETRIES+1):
                     try:
                         upload(ftp, os.path.join(dirpath,file))
+#                        raise Exception
                         break
                     except:
                         f = os.path.join(dirpath,file)
-                        logger.info("UPLOAD ATTEMPT %s >>> %s >>> %s"%(attempt, photo_id, f))
-                        if attempt == config.FTP_RETRIES:
-                            logger.error("UPLOAD ERROR >>> %s >>> %s"%(photo_id,f))
+                        logger.warning("UPLOAD ATTEMPT %s >>> %s >>> %s"%(attempt, photo_id, f))
                         continue
+                if attempt == config.FTP_RETRIES:
+                    logger.error("UPLOAD >>> %s >>> %s"%(photo_id,f))
                     
         os.chdir("..")
         logger.info("UPLOAD >>> %s"%photo_id)

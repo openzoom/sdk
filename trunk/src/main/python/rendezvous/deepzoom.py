@@ -122,7 +122,7 @@ class ImageCreator(object):
         sx = min(sx, dsw - px)
         sy = min(sy, dsh - py)
         
-        return px, py, px+sx, py+sy
+        return int(px), int(py), int(px + sx), int(py + sy)
 
     def get_level_image(self, level):
         w, h = self.get_level_dimensions(level)
@@ -156,7 +156,7 @@ class ImageCreator(object):
             level_dir = ensure(os.path.join(image_files, str(n)))
             level_image = self.get_level_image(n)
             for (col, row), box in self.iter_tiles(n):
-                tile = level_image.crop(map(int, box))
+                tile = level_image.crop(box)
                 tile_path = os.path.join(level_dir, "%s_%s.%s"%(col, row, self.tile_format))
                 tile_file = open(tile_path, "wb+")
                 tile.save(tile_file)
