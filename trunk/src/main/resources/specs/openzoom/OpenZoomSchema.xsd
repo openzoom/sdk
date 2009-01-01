@@ -14,12 +14,13 @@
   <xs:element name="source">
     <xs:complexType>
       <xs:attribute name="height" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="type" use="required" type="xs:string"/>
       <xs:attribute name="uri" use="required" type="xs:anyURI"/>
       <xs:attribute name="width" use="required" type="xs:unsignedLong"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="pyramid">
-    <xs:complexType mixed="true">
+    <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="openzoom:level"/>
       </xs:sequence>
