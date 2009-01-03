@@ -2,34 +2,30 @@
 <mx:Application
     xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:openzoom="org.openzoom.flex.components.*"
+    xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
+    xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
+    xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
     layout="absolute"
-    backgroundGradientColors="[ 0x333333, 0x000000 ]"
+    backgroundGradientColors="[ 0, 0 ]"
     >
-    <mx:Style>
-        Label {
-            font-size: 12;
-            font-weight: bold;
-        }       
-    </mx:Style>
 
     <mx:Script>
         <![CDATA[
-        
-        	import org.openzoom.flash.events.ViewportEvent;
-                
+
+            import org.openzoom.flash.events.ViewportEvent;
+
             private static const DEFAULT_IMAGE_NAME  : String = "billions"
             private static const DEFAULT_SOURCE_PATH : String = "../../../../src/main/resources/images"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/deepzoom/" + DEFAULT_IMAGE_NAME + ".xml"
-            private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/deepzoom/" + DEFAULT_IMAGE_NAME + ".dzi"
+//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/zoomify/" + DEFAULT_IMAGE_NAME + "/ImageProperties.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/" + DEFAULT_IMAGE_NAME + ".ozi/meta.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/butterfly.xml"
 //          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/bluemarble.xml"
-//          private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/flickr.xml"
-//          private static const DEFAULT_SOURCE      : String = "http://seadragon.com/content/images/CarinaNebula.dzi"
-
+            private static const DEFAULT_SOURCE      : String = DEFAULT_SOURCE_PATH + "/openzoom/flickr.xml"
         ]]>
     </mx:Script>
-    
+
     <openzoom:MultiScaleImage
         id="image"
         top="0"
@@ -37,6 +33,20 @@
         bottom="0"
         left="0"
         source="{ DEFAULT_SOURCE }"
-        />
-        
+        >
+        <openzoom:controllers>
+            <controllers:MouseController/>
+            <controllers:KeyboardController/>
+        </openzoom:controllers>
+        <openzoom:transformer>
+            <transformers:TweenerTransformer/>
+        </openzoom:transformer>
+        <openzoom:constraint>
+            <constraints:CompositeConstraint>
+                <constraints:VisibilityConstraint visibilityRatio="0.1"/>
+                <constraints:CenterConstraint/>
+            </constraints:CompositeConstraint>
+        </openzoom:constraint>
+    </openzoom:MultiScaleImage>
+
 </mx:Application>
