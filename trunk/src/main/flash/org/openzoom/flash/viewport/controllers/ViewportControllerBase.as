@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ import org.openzoom.flash.viewport.IViewportController;
 /**
  * Base class for viewport controllers. For your own controller, extend
  * this class and implement org.openzoom.flash.viewport.IViewportController.
- * 
+ *
  * @see org.openzoom.flash.viewport.IViewportController
  */
 public class ViewportControllerBase
@@ -40,20 +40,20 @@ public class ViewportControllerBase
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
     * Constructor.
     */
     public function ViewportControllerBase() : void
     {
     }
-        
+
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  viewport
     //----------------------------------
@@ -62,26 +62,26 @@ public class ViewportControllerBase
 
     /**
      * Indicates which viewport is controlled by this controller.
-     */ 
+     */
     public function get viewport() : INormalizedViewport
     {
         return _viewport
     }
-    
+
     public function set viewport( value : INormalizedViewport ) : void
     {
         _viewport = value
     }
-  
+
     //----------------------------------
     //  view
     //----------------------------------
-  
+
     private var _view : DisplayObject
-    
+
     /**
      * Indicates the display object this controller receives its events from.
-     */ 
+     */
     public function get view() : DisplayObject
     {
         return _view
@@ -94,9 +94,9 @@ public class ViewportControllerBase
 
         if( !value )
             view_removedFromStageHandler( null )
-  
+
         _view = value
-        
+
         if( value )
         {
             view.addEventListener( Event.ADDED_TO_STAGE,
@@ -105,32 +105,32 @@ public class ViewportControllerBase
             view.addEventListener( Event.REMOVED_FROM_STAGE,
                                    view_removedFromStageHandler,
                                    false, 0, true )
-      
+
             if( view.stage )
                 view_addedToStageHandler( null )
         }
     }
-  
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
-     * 
+     *
      * Documentation not available.
      */
     protected function view_addedToStageHandler( event : Event ) : void
     {
     }
-    
+
     /**
      * @private
-     * 
+     *
      * Documentation not available.
-     */  
+     */
     protected function view_removedFromStageHandler( event : Event ) : void
     {
     }

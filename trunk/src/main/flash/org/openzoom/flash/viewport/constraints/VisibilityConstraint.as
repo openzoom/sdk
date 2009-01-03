@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -35,22 +35,22 @@ public class VisibilityConstraint implements IViewportConstraint
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
-	private static const DEFAULT_VISIBILITY_RATIO : Number = 0.5
-	
+
+    private static const DEFAULT_VISIBILITY_RATIO : Number = 0.5
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-	
-	/**
-	 * Constructor.
-	 */
+
+    /**
+     * Constructor.
+     */
     public function VisibilityConstraint()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -60,9 +60,9 @@ public class VisibilityConstraint implements IViewportConstraint
     //----------------------------------
     //  visibilityRatio
     //----------------------------------
-    
+
     private var _visibilityRatio : Number = DEFAULT_VISIBILITY_RATIO
-    
+
 
     /**
      * Indicates the minimal ratio that has to visible of the scene.
@@ -71,28 +71,28 @@ public class VisibilityConstraint implements IViewportConstraint
     {
         return _visibilityRatio
     }
-    
+
     public function set visibilityRatio( value : Number ) : void
     {
        _visibilityRatio = value
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IViewportConstraint
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function validate( transform : IViewportTransform,
                               target : IViewportTransform ) : IViewportTransform
     {
-    	var x : Number = transform.x
-    	var y : Number = transform.y
-    	
-    	// content is wider than viewport
+        var x : Number = transform.x
+        var y : Number = transform.y
+
+        // content is wider than viewport
         if( transform.width < 1 )
         {
             // horizontal bounds checking:
@@ -100,22 +100,22 @@ public class VisibilityConstraint implements IViewportConstraint
             // align it with the left margin
             if( transform.x + transform.width * ( 1 - visibilityRatio ) < 0 )
                 x = -transform.width * ( 1 - visibilityRatio )
-    
+
            // the viewport sticks out on the right:
            // align it with the right margin
            if( transform.x + transform.width * visibilityRatio > 1 )
-               x = 1 - transform.width * visibilityRatio      
+               x = 1 - transform.width * visibilityRatio
         }
         else
         {
-        	// FIXME
+            // FIXME
             if( transform.x > ( 1 - visibilityRatio ))
                 x = 1 - visibilityRatio
-                
+
             if( transform.x + transform.width * ( 1 - visibilityRatio ) < 0 )
                 x = -transform.width * ( 1 - visibilityRatio )
         }
-    
+
         // scene is taller than viewport
         if( transform.height < 1 )
         {
@@ -124,7 +124,7 @@ public class VisibilityConstraint implements IViewportConstraint
             // align it with the top margin
             if( transform.y + transform.height * ( 1 - visibilityRatio ) < 0 )
                 y = -transform.height * ( 1 - visibilityRatio )
-        
+
             // the viewport sticks out at the bottom:
             // align it with the bottom margin
             if( transform.y + transform.height * visibilityRatio > 1 )
@@ -132,14 +132,14 @@ public class VisibilityConstraint implements IViewportConstraint
         }
         else
         {
-        	// FIXME
-        	if( transform.y > ( 1 - visibilityRatio ))
+            // FIXME
+            if( transform.y > ( 1 - visibilityRatio ))
                 y = 1 - visibilityRatio
-                
+
             if( transform.y + transform.height * ( 1 - visibilityRatio ) < 0 )
                 y = -transform.height * ( 1 - visibilityRatio )
         }
-        
+
         // validate bounds
         transform.panTo( x, y )
 

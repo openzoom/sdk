@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -43,88 +43,88 @@ public class MultiScaleScene extends UIComponent
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_SCENE_WIDTH  : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT : Number = 16000
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
-     */ 
+     */
     public function MultiScaleScene()
     {
-    	super()
-    	
-    	tabEnabled = false
-    	tabChildren = true
+        super()
+
+        tabEnabled = false
+        tabChildren = true
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var frame : Shape
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-  
+
     //----------------------------------
     //  targetCoordinateSpace
     //----------------------------------
-    
+
     public function get targetCoordinateSpace() : DisplayObject
     {
-    	return this
+        return this
     }
-  
+
     //----------------------------------
     //  sceneWidth
     //----------------------------------
-    
+
     private var _sceneWidth : Number = DEFAULT_SCENE_WIDTH
     private var sceneWidthChanged : Boolean = false
-    
+
    ;[Bindable(event="resize")]
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function get sceneWidth() : Number
     {
-    	return _sceneWidth
+        return _sceneWidth
     }
-    
+
     public function set sceneWidth( value : Number ) : void
     {
-    	if( _sceneWidth != value )
+        if( _sceneWidth != value )
         {
-        	_sceneWidth = value
-        	sceneWidthChanged = true
-        	
-        	invalidateProperties()
-        	invalidateDisplayList()
+            _sceneWidth = value
+            sceneWidthChanged = true
+
+            invalidateProperties()
+            invalidateDisplayList()
         }
     }
-    
+
     //----------------------------------
     //  sceneHeight
     //----------------------------------
-    
+
     private var _sceneHeight : Number = DEFAULT_SCENE_HEIGHT
     private var sceneHeightChanged : Boolean = false
-    
+
    ;[Bindable(event="resize")]
-    
+
     /**
      * @inheritDoc
      */
@@ -132,59 +132,59 @@ public class MultiScaleScene extends UIComponent
     {
         return _sceneHeight
     }
-    
+
     public function set sceneHeight( value : Number ) : void
     {
         if( _sceneHeight != value )
         {
             _sceneHeight = value
             sceneHeightChanged = true
-            
+
             invalidateProperties()
             invalidateDisplayList()
         }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Overridden methods: UIComponent
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     override protected function createChildren() : void
     {
-    	if( !frame )
+        if( !frame )
             createFrame()
     }
-    
+
     /**
      * @private
-     */ 
+     */
 //    override protected function updateDisplayList( unscaledWidth : Number,
 //                                                   unscaledHeight : Number ) : void
 //    {
-//    	super.updateDisplayList( unscaledWidth, unscaledHeight )
+//        super.updateDisplayList( unscaledWidth, unscaledHeight )
 //    }
-    
+
     /**
      * @private
      */
     override protected function commitProperties() : void
     {
-    	super.commitProperties()
-    	
-    	if( sceneWidthChanged || sceneHeightChanged )
-    	{
+        super.commitProperties()
+
+        if( sceneWidthChanged || sceneHeightChanged )
+        {
             frame.width = sceneWidth
             frame.height = sceneHeight
-            
-    		sceneWidthChanged = sceneHeightChanged = false
+
+            sceneWidthChanged = sceneHeightChanged = false
             dispatchEvent( new Event( Event.RESIZE ))
-    	}
-    } 
+        }
+    }
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
@@ -193,14 +193,14 @@ public class MultiScaleScene extends UIComponent
 
     /**
      * @private
-     */    
+     */
     private function createFrame() : void
     {
         frame = new Shape()
         var g : Graphics = frame.graphics
-	        g.beginFill( 0xFF6600, 0.5 )
-	        g.drawRect( 0, 0, 100, 100 )
-	        g.endFill()
+            g.beginFill( 0xFF6600, 0.5 )
+            g.drawRect( 0, 0, 100, 100 )
+            g.endFill()
         addChild( frame )
     }
 }

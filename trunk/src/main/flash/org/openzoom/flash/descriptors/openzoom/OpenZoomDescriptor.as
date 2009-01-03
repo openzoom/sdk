@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -54,8 +54,8 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
      */
     public function OpenZoomDescriptor( source : String, data : XML )
     {
-    	use namespace openzoom
-    	
+        use namespace openzoom
+
         this.data = data
 
         this.source = source
@@ -70,7 +70,6 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
 
     private var data : XML
     private var levels : Dictionary = new Dictionary()
-    private var origin : String = PyramidOrigin.TOP_LEFT 
 
     //--------------------------------------------------------------------------
     //
@@ -80,12 +79,12 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
 
     /**
      * @inheritDoc
-     */ 
+     */
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
         return IMultiScaleImageLevel( levels[ level ] ).getTileURL( column, row )
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -93,26 +92,26 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     {
         return IMultiScaleImageLevel( levels[ index ] )
     }
-    
+
     /**
      * @inheritDoc
      */
     public function getMinLevelForSize( width : Number,
                                         height : Number ) : IMultiScaleImageLevel
     {
-    	// TODO
-    	var level : IMultiScaleImageLevel
-    	
-    	for( var i : int = numLevels - 1; i >= 0; i-- )
-    	{
-        	level = getLevelAt( i )
-    		if( level.width < width || level.height < height )
-                break 
-    	}  
-    	
+        // TODO
+        var level : IMultiScaleImageLevel
+
+        for( var i : int = numLevels - 1; i >= 0; i-- )
+        {
+            level = getLevelAt( i )
+            if( level.width < width || level.height < height )
+                break
+        }
+
         return getLevelAt( clamp( level.index, 0, numLevels - 1 )).clone()
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -126,7 +125,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     //  Methods: Debug
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
      */
@@ -134,20 +133,20 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     {
         return "[OpenZoomDescriptor]" + "\n" + super.toString()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     private function parseXML( data : XML ) : void
     {
         use namespace openzoom
-        
+
         // Grrrrh, E4X
         var pyramid : XML = data.pyramid[ 0 ]
 
@@ -158,28 +157,28 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
 
         _type        = pyramid.@type
         _tileOverlap = pyramid.@overlap
-        
+
         _numLevels   = data.pyramid.level.length()
-        
+
         if( PyramidOrigin.isValid( pyramid.@origin ))
-            origin = pyramid.@origin
-        
+            _origin = pyramid.@origin
+
         for( var index : int = 0; index < numLevels; index++ )
         {
-        	var level : XML = data.pyramid.level[ index ]
+            var level : XML = data.pyramid.level[ index ]
             var uris : Array = []
-            
+
             for each( var uri : XML in level.uri )
                 uris.push( uri.@template.toString() )
-            
+
             levels[ index ] = new MultiScaleImageLevel( this,
                                                         index,
-				                                        level.@width,
-				                                        level.@height,
-				                                        level.@columns,
-				                                        level.@rows,
-				                                        uris,
-				                                        origin )
+                                                        level.@width,
+                                                        level.@height,
+                                                        level.@columns,
+                                                        level.@rows,
+                                                        uris,
+                                                        origin )
         }
     }
 }

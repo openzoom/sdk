@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,52 +31,52 @@ public interface IViewportTransformer
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  viewport
     //----------------------------------
-    
+
     /**
      * Target viewport to transform.
      */
     function get viewport() : ITransformerViewport
     function set viewport( value : ITransformerViewport ) : void
-    
+
     //----------------------------------
     //  target
     //----------------------------------
-    
-	/**
-	 * Target viewport transform.
-	 */
-	function get target() : IViewportTransform
-	
+
+    /**
+     * Target viewport transform.
+     */
+    function get target() : IViewportTransform
+
     //----------------------------------
     //  constraint
     //----------------------------------
-	
-	/**
-	 * Constraint for target transform.
-	 */
-	function get constraint() : IViewportConstraint
-	function set constraint( value : IViewportConstraint ) : void
+
+    /**
+     * Constraint for target transform.
+     */
+    function get constraint() : IViewportConstraint
+    function set constraint( value : IViewportConstraint ) : void
 
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Transform viewport to target transform.
-     */ 	
+     */
     function transform( target : IViewportTransform,
                         immediately : Boolean = false ) : void
-                        
+
     /**
      * Stop viewport transformation.
-     */ 
-	function stop() : void
+     */
+    function stop() : void
 }
 
 }

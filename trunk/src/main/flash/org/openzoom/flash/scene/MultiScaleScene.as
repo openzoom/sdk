@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
-import flash.events.Event;	
+import flash.events.Event;
 
 /**
  * @inheritDoc
@@ -55,33 +55,33 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
                                      backgroundAlpha : Number = 0 )
     {
         this.backgroundColor = backgroundColor
-     	this.backgroundAlpha = backgroundAlpha
-     	
-     	createFrame()
-     	
-     	setFrameSize( width, height )
+         this.backgroundAlpha = backgroundAlpha
+
+         createFrame()
+
+         setFrameSize( width, height )
     }
-     
+
     //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var frame : Shape
     private var backgroundColor : uint   = 0x000000
     private var backgroundAlpha : Number = 0
-    
+
     //--------------------------------------------------------------------------
     //
     //  Overridden properties: DisplayObject
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  numChildren
     //----------------------------------
-    
+
     /**
      * @inheritDoc
      */
@@ -89,105 +89,105 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     {
         return super.numChildren - 1
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Overridden methods: DisplayObject
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     override public function addChildAt( child : DisplayObject, index : int ) : DisplayObject
     {
-    	return super.addChildAt( child, index + 1 )
+        return super.addChildAt( child, index + 1 )
     }
-    
+
     /**
      * @inheritDoc
      */
     override public function removeChildAt( index : int ) : DisplayObject
     {
-    	return super.removeChildAt( index + 1 )
+        return super.removeChildAt( index + 1 )
     }
-    
+
     /**
      * @inheritDoc
      */
     override public function setChildIndex( child : DisplayObject, index : int ) : void
     {
-    	super.setChildIndex( child, index + 1 )
+        super.setChildIndex( child, index + 1 )
     }
-    
+
     /**
      * @inheritDoc
      */
     override public function getChildAt( index : int ) : DisplayObject
     {
-    	return super.getChildAt( index + 1 )
+        return super.getChildAt( index + 1 )
     }
-    
+
     /**
      * @inheritDoc
      */
     override public function getChildIndex( child : DisplayObject ) : int
     {
-        return super.getChildIndex( child ) + 1	
+        return super.getChildIndex( child ) + 1
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: IMultiScaleScene
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  targetCoordinateSpace
     //----------------------------------
-    
+
     /**
      * @inheritDoc
      */
     public function get targetCoordinateSpace() : DisplayObject
     {
-    	return this
+        return this
     }
-    
+
     //----------------------------------
     //  sceneWidth
     //----------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function get sceneWidth() : Number
     {
         return frame.width
     }
-    
+
     public function set sceneWidth( value : Number ) : void
     {
         setFrameSize( value, sceneHeight )
     }
-    
+
     //----------------------------------
     //  sceneHeight
     //----------------------------------
 
     /**
      * @inheritDoc
-     */    
+     */
     public function get sceneHeight() : Number
     {
         return frame.height
     }
-    
+
     public function set sceneHeight( value : Number ) : void
     {
         setFrameSize( sceneWidth, value )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleScene
@@ -196,12 +196,12 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
 
     /**
      * @inheritDoc
-     */    
+     */
     public function setActualSize( width : Number, height : Number ) : void
     {
-    	setFrameSize( width, height )
+        setFrameSize( width, height )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
@@ -210,28 +210,28 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
 
     /**
      * @private
-     */ 
+     */
     private function setFrameSize( width : Number, height : Number ) : void
     {
-    	if( width == sceneWidth && height == sceneHeight )
+        if( width == sceneWidth && height == sceneHeight )
             return
-            
+
         frame.width = width
         frame.height = height
-        
+
         dispatchEvent( new Event( Event.RESIZE ))
     }
 
     /**
      * @private
-     */    
+     */
     private function createFrame() : void
     {
-    	frame = new Shape()
+        frame = new Shape()
         var g : Graphics = frame.graphics
-	        g.beginFill( backgroundColor, backgroundAlpha )
-	        g.drawRect( 0, 0, 100, 100 )
-	        g.endFill()
+            g.beginFill( backgroundColor, backgroundAlpha )
+            g.drawRect( 0, 0, 100, 100 )
+            g.endFill()
         addChild( frame )
     }
 }

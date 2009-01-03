@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,41 +36,41 @@ public class NullConstraint implements IViewportConstraint
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_MIN_ZOOM : Number = 0.001
     private static const DEFAULT_MAX_ZOOM : Number = 1000000
-	
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-	
-	/**
-	 * Constructor.
-	 */
+
+    /**
+     * Constructor.
+     */
     public function NullConstraint()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IViewportConstraint
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function validate( transform : IViewportTransform,
                               target : IViewportTransform ) : IViewportTransform
     {
-    	if( transform.zoom < DEFAULT_MIN_ZOOM )
+        if( transform.zoom < DEFAULT_MIN_ZOOM )
             transform.zoomTo( DEFAULT_MIN_ZOOM )
-            
-    	if( transform.zoom > DEFAULT_MAX_ZOOM )
+
+        if( transform.zoom > DEFAULT_MAX_ZOOM )
             transform.zoomTo( DEFAULT_MAX_ZOOM )
-    	
+
         return transform
     }
 }

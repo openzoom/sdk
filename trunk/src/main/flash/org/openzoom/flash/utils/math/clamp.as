@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,12 +20,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.utils.math
 {
-	/**
-	 * Utility function to clamp a value between a minimum and maximum.
-	 */
+    /**
+     * Utility function to clamp a value between a minimum and maximum.
+     */
     public function clamp( value : Number,
-                           minimum : Number = 0,
-                           maximum : Number = 1 ) : Number
+                           minimum : Number,
+                           maximum : Number ) : Number
     {
         if( value < minimum )
             return minimum

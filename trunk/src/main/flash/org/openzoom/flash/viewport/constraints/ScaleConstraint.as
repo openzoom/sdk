@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -34,23 +34,23 @@ public class ScaleConstraint implements IViewportConstraint
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_MIN_SCALE : Number = 0.00001
     private static const DEFAULT_MAX_SCALE : Number = 1000000
-	
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-	
-	/**
-	 * Constructor.
-	 */
+
+    /**
+     * Constructor.
+     */
     public function ScaleConstraint()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -65,7 +65,7 @@ public class ScaleConstraint implements IViewportConstraint
 
     /**
      * Minimum scale the scene can reach.
-     */ 
+     */
     public function get minScale() : Number
     {
         return _minScale
@@ -79,7 +79,7 @@ public class ScaleConstraint implements IViewportConstraint
     //----------------------------------
     //  maxScale
     //----------------------------------
-    
+
     private var _maxScale : Number = DEFAULT_MAX_SCALE
 
     /**
@@ -89,7 +89,7 @@ public class ScaleConstraint implements IViewportConstraint
     {
         return _maxScale
     }
-    
+
     public function set maxScale( value : Number ) : void
     {
        _maxScale = value
@@ -100,28 +100,28 @@ public class ScaleConstraint implements IViewportConstraint
     //  Methods: IViewportConstraint
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function validate( transform : IViewportTransform,
                               target : IViewportTransform ) : IViewportTransform
     {
-    	// FIXME
-    	// Prevent from moving when the scale limist are reached
-//    	if( transform.scale == minScale || transform.scale == maxScale )
-//    	{
-////    		target.panTo( transform.x, transform.y )
+        // FIXME
+        // Prevent from moving when the scale limist are reached
+//        if( transform.scale == minScale || transform.scale == maxScale )
+//        {
+////            target.panTo( transform.x, transform.y )
 //            return target
-//    	}
-    	
+//        }
+
         // validate zoom
         if( transform.scale > maxScale )
             transform.scale = maxScale
-            
+
         if( transform.scale < minScale )
             transform.scale = minScale
-        
+
         // return validated transform
         return transform
     }

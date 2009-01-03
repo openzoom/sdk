@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import flash.display.DisplayObject;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.ITransformerViewport;
-import org.openzoom.flash.viewport.IViewportController;    
+import org.openzoom.flash.viewport.IViewportController;
 
 [ExcludeClass]
 
@@ -45,23 +45,23 @@ public class ViewTransformationController extends ViewportControllerBase
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_TRANSFORMATION_DURATION : Number = 1.5
     private static const DEFAULT_TRANSFORMATION_EASING : String = "easeOutExpo"
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
-     */ 
+     */
     public function ViewTransformationController()
     {
     }
-      
+
     //--------------------------------------------------------------------------
     //
     //  Overridden properties: ViewportControllerBase
@@ -72,13 +72,13 @@ public class ViewTransformationController extends ViewportControllerBase
     {
         if( viewport === value )
             return
-    
+
         // remove old event listeners
-        if( viewport ) 
+        if( viewport )
         {
             viewport.removeEventListener( ViewportEvent.RESIZE,
                                           viewport_resizeHandler )
-                                          
+
             viewport.removeEventListener( ViewportEvent.TRANSFORM_START,
                                           viewport_transformStartHandler )
             viewport.removeEventListener( ViewportEvent.TRANSFORM_UPDATE,
@@ -86,16 +86,16 @@ public class ViewTransformationController extends ViewportControllerBase
             viewport.removeEventListener( ViewportEvent.TRANSFORM_END,
                                           viewport_transformEndHandler )
         }
-        
+
         // set new viewport
-        super.viewport = value  
-        
+        super.viewport = value
+
         // register new event listeners
         if( viewport )
         {
             viewport.addEventListener( ViewportEvent.RESIZE,
                                        viewport_resizeHandler, false, 0, true )
-                                       
+
             viewport.addEventListener( ViewportEvent.TRANSFORM_START,
                                        viewport_transformStartHandler, false, 0, true )
             viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE,
@@ -104,22 +104,22 @@ public class ViewTransformationController extends ViewportControllerBase
                                        viewport_transformEndHandler, false, 0, true )
         }
     }
-    
+
     override public function set view( value : DisplayObject ) : void
     {
         super.view = value
         transformView( 0 )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     private function viewport_transformStartHandler( event : ViewportEvent ) : void
     {
-//    	trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_START" )
+//        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_START" )
     }
 
     private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
@@ -127,12 +127,12 @@ public class ViewTransformationController extends ViewportControllerBase
 //        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_UPDATE" )
         transformView( DEFAULT_TRANSFORMATION_DURATION )
     }
-    
+
     private function viewport_transformEndHandler( event : ViewportEvent ) : void
     {
 //        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_END" )
     }
-    
+
     private function viewport_resizeHandler( event : ViewportEvent ) : void
     {
         transformView( 0 )
@@ -143,7 +143,7 @@ public class ViewTransformationController extends ViewportControllerBase
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     private function transformView( duration : Number ) : void
     {
         var transition   : String = DEFAULT_TRANSFORMATION_EASING
@@ -151,10 +151,10 @@ public class ViewTransformationController extends ViewportControllerBase
         var targetHeight : Number = viewport.viewportHeight / viewport.height
         var targetX      : Number = -viewport.x * targetWidth
         var targetY      : Number = -viewport.y * targetHeight
-        
+
         if( !Tweener.isTweening( view ))
             ITransformerViewport(viewport).beginTransform()
-        
+
         Tweener.addTween(
                             view,
                             {

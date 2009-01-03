@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,20 +22,20 @@ package org.openzoom.flash.viewport
 {
 
 public interface INormalizedViewportContainer extends INormalizedViewport
-{   
+{
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
-	
-	/**
-	 * Sets viewportWidth and viewportHeight.
-	 * Dispatches Event.RESIZE.
-     * 
+
+    /**
+     * Sets viewportWidth and viewportHeight.
+     * Dispatches Event.RESIZE.
+     *
      * @see org.openzoom.events.ViewportEvent#RESIZE
-	 */
-	function setSize( width : Number, height : Number ) : void
+     */
+    function setSize( width : Number, height : Number ) : void
 }
 
 }

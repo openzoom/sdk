@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
- * Centers the scene once it is all visible. 
+ * Centers the scene once it is all visible.
  */
 public class CenterConstraint implements IViewportConstraint
 {
@@ -34,43 +34,43 @@ public class CenterConstraint implements IViewportConstraint
     //  Constructor
     //
     //--------------------------------------------------------------------------
-	
-	/**
-	 * Constructor.
-	 */
+
+    /**
+     * Constructor.
+     */
     public function CenterConstraint()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IViewportConstraint
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function validate( transform : IViewportTransform,
                               target : IViewportTransform ) : IViewportTransform
     {
-    	var x : Number = transform.x
-    	var y : Number = transform.y
-    	
+        var x : Number = transform.x
+        var y : Number = transform.y
+
         if( transform.width >= 1 )
         {
             // viewport is wider than scene,
             // center scene horizontally
             x = ( 1 - transform.width ) * 0.5
         }
-    
+
         if( transform.height >= 1 )
         {
             // viewport is taller than scene,
             // center scene vertically
             y = ( 1 - transform.height ) * 0.5
         }
-        
+
         // validate bounds
         transform.panTo( x, y )
 

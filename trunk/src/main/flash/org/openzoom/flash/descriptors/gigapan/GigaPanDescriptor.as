@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import org.openzoom.flash.utils.math.clamp;
 
 /**
  * @private
- * 
+ *
  * Descriptor for the GigaPan.org project panoramas.
  * Copyright GigaPan.org, <a href="http://gigapan.org/">http://gigapan.org/</a>
  */
@@ -43,10 +43,10 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_BASE_LEVEL : uint = 8
     private static const DEFAULT_TILE_SIZE : uint = 256
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -68,10 +68,10 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
         _numLevels = numLevels
         _width = width
         _height = height
-        
+
         _tileWidth = DEFAULT_TILE_SIZE
         _tileHeight = DEFAULT_TILE_SIZE
-        
+
         if( extension == ".png" )
             _type = "image/png"
         else
@@ -87,43 +87,43 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //--------------------------------------------------------------------------
 
     private var extension : String
-    private var levels : Dictionary 
+    private var levels : Dictionary
 
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleImageDescriptor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
      */
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-    	var url : String = source
-    	var name : String = "r"
-    	var z : int = level
-    	var bit : int = (1 << z) >> 1
-    	var x : int = column
-    	var y : int = row
-    	
-    	while( bit > 0 )
-    	{
-    		name += String(( x & bit ? 1 : 0 ) + ( y & bit ? 2 : 0 ))
-    		bit = bit >> 1
-    	}
-    	
-    	var i : int = 0
-    	while( i < name.length - 3 )
-    	{
-    		url = url + ("/" + name.substr( i, 3 ))
-    		i = i + 3
-    	} 
-    	
-    	var tileURL : String = url + "/" + name + extension
+        var url : String = source
+        var name : String = "r"
+        var z : int = level
+        var bit : int = (1 << z) >> 1
+        var x : int = column
+        var y : int = row
+
+        while( bit > 0 )
+        {
+            name += String(( x & bit ? 1 : 0 ) + ( y & bit ? 2 : 0 ))
+            bit = bit >> 1
+        }
+
+        var i : int = 0
+        while( i < name.length - 3 )
+        {
+            url = url + ("/" + name.substr( i, 3 ))
+            i = i + 3
+        }
+
+        var tileURL : String = url + "/" + name + extension
         return tileURL
     }
-     
+
     /**
      * @inheritDoc
      */
@@ -131,7 +131,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     {
         return IMultiScaleImageLevel( levels[ index ] )
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -143,7 +143,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
                                - DEFAULT_BASE_LEVEL ), 0, numLevels - 1 )
         return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
     }
-     
+
     /**
      * @inheritDoc
      */
@@ -157,7 +157,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //  Methods: Debug
     //
     //--------------------------------------------------------------------------
-     
+
     /**
      * @inheritDoc
      */
@@ -165,16 +165,16 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     {
         return "[GigaPanDescriptor]" + "\n" + super.toString()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     private function computeLevels( originalWidth : uint, originalHeight : uint,
                                     tileSize : uint, numLevels : int ) : Dictionary
     {
@@ -193,7 +193,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
 //            width = ( width + 1 ) >> 1
 //            height = ( height + 1 ) >> 1
         }
-        
+
         return levels
     }
 }

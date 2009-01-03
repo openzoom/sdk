@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.geom.Point;	
+import flash.geom.Point;
 
 /**
  * Interface for IViewportTransform constraints, e.g. use constraints to
@@ -30,17 +30,17 @@ import flash.geom.Point;
  */
 public interface IViewportConstraint
 {
-	/**
-	 * Validate the viewport transform by performing transformations until
-	 * it validates all constraints.
-	 * 
-	 * @param transform IViewportTransform object to be validated.
-	 * @param target IViewportTransform object that represents the last validated transform.
-	 * 
-	 * @return Validated IViewportTransform object.
-	 */ 
-	function validate( transform : IViewportTransform,
-	                   target : IViewportTransform ) : IViewportTransform
+    /**
+     * Validate the viewport transform by performing transformations until
+     * it validates all constraints.
+     *
+     * @param transform IViewportTransform object to be validated.
+     * @param target IViewportTransform object that represents the last validated transform.
+     *
+     * @return Validated IViewportTransform object.
+     */
+    function validate( transform : IViewportTransform,
+                       target : IViewportTransform ) : IViewportTransform
 }
 
 }

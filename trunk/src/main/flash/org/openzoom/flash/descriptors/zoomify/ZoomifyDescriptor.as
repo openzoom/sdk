@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,65 +41,65 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_DESCRIPTOR_FILE_NAME : String = "ImageProperties.xml"
     private static const DEFAULT_TILE_FOLDER_NAME : String = "TileGroup"
     private static const DEFAULT_TILE_FORMAT : String = "jpg"
     private static const DEFAULT_TILE_OVERLAP : uint = 0
     private static const DEFAULT_NUM_TILES_IN_FOLDER : uint = 256
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
      */
     public function ZoomifyDescriptor( source : String, data : XML )
     {
         this.data = data
-        
+
         this.source = source
         parseXML( data )
         _numLevels = computeNumLevels( width, height, tileWidth, tileHeight )
         levels = computeLevels( width, height, tileWidth, tileHeight, numLevels )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var data : XML
     private var levels : Dictionary
     private var numTiles : uint
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleImageDescriptor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
      */
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-    	var length : Number = source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length
-    	
-    	var folder : uint = getFolder( level, column, row )
-    	var path : String = source.substr( 0, length ) + DEFAULT_TILE_FOLDER_NAME + folder
-    	var url : String =  [ path, "/", level, "-", column, "-", row, ".", type ].join("")
-    	 
-        return url 
+        var length : Number = source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length
+
+        var folder : uint = getFolder( level, column, row )
+        var path : String = source.substr( 0, length ) + DEFAULT_TILE_FOLDER_NAME + folder
+        var url : String =  [ path, "/", level, "-", column, "-", row, ".", type ].join("")
+
+        return url
     }
 
     /**
      * @inheritDoc
-     */ 
+     */
     public function getMinLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
     {
         // TODO: Implement a smart(er) algorithm
@@ -117,43 +117,43 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 
         return IMultiScaleImageLevel( levels[ index ] ).clone()
     }
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function getLevelAt( index : int ) : IMultiScaleImageLevel
     {
         return levels[ index ]
     }
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function clone() : IMultiScaleImageDescriptor
     {
         return new ZoomifyDescriptor( source, new XML( data ) )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Debug
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     override public function toString() : String
     {
         return "[ZoomifyDescriptor]" + "\n" + super.toString()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -164,13 +164,13 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
         _width = data.@WIDTH
         _height = data.@HEIGHT
         _tileWidth = _tileHeight = data.@TILESIZE
-        
+
         _type = DEFAULT_TILE_FORMAT
         _tileOverlap = DEFAULT_TILE_OVERLAP
-        
+
         numTiles = data.@NUMTILES
     }
-    
+
     /**
      * @private
      */
@@ -178,7 +178,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
                                        tileWidth : uint, tileHeight : uint ) : uint
     {
         var numLevels : uint = 1
-    
+
         while( width > tileWidth || height > tileHeight )
         {
             width  = Math.floor( width  * 0.5 )
@@ -188,7 +188,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 
         return numLevels
     }
-    
+
     /**
      * @private
      */
@@ -212,44 +212,44 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 //          height = Math.floor( height * 0.5 )
         }
 
-        return levels 
+        return levels
     }
-    
+
     /**
      * @private
-     * 
+     *
      * Calculates the folder this tile resides in.
      * There's probably a more efficient way to do this.
      * Correctness has a higher priority for now, so I didn't bother.
      */
     private function getFolder( level : int, column : uint, row : uint ) : uint
     {
-    	// Return early if we know there's only one TileGroup folder
-    	if( numTiles <= DEFAULT_NUM_TILES_IN_FOLDER )
+        // Return early if we know there's only one TileGroup folder
+        if( numTiles <= DEFAULT_NUM_TILES_IN_FOLDER )
             return 0
-    	
-    	// Compute the rank of the requested tile
-    	// and determine in which TileGroup folder it resides.
-    	var tileNumber : int = 0
-    	
+
+        // Compute the rank of the requested tile
+        // and determine in which TileGroup folder it resides.
+        var tileNumber : int = 0
+
         for( var l : int = 0; l < numLevels; l++ )
         {
             var currentLevel : IMultiScaleImageLevel = getLevelAt( l )
-                
+
             for( var r : int = 0; r < currentLevel.numRows; r++ )
             {
                 for( var c : int = 0; c < currentLevel.numColumns; c++ )
                 {
                     tileNumber++
-                    
+
                     if( l == level && column == c && row == r )
                         return Math.floor( tileNumber / DEFAULT_NUM_TILES_IN_FOLDER )
                 }
             }
         }
-        
+
         return 0
-    } 
+    }
 }
 
 }

@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,17 +28,17 @@ import org.openzoom.flash.viewport.IViewport;
 
 /**
  * @private
- * 
+ *
  * Interface for a renderer that is multi-scalar.
  */
 public interface IMultiScaleRenderer
 {
-	/**
-	 * Indicates the viewport this renderer is viewed in.
-	 */
+    /**
+     * Indicates the viewport this renderer is viewed in.
+     */
     function get viewport() : INormalizedViewport
     function set viewport( value : INormalizedViewport ) : void
-    
+
 //  function getBounds( targetViewport : IViewport ) : Rectangle
 }
 

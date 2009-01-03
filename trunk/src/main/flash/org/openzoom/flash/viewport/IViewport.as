@@ -2,13 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
-//  Copyright (c) 2008,      Zoomorama
-//                           Olivier Gambier <viapanda@gmail.com>
-//                           Daniel Gasienica <daniel@gasienica.ch>
-//                           Eric Hubscher <erich@zoomorama.com>
-//                           David Marteau <dhmarteau@gmail.com>
-//  Copyright (c) 2007,      Rick Companje <rick@companje.nl>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -71,130 +65,130 @@ import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
  * Interface a viewport implementation has to provide.
  */
 public interface IViewport extends IEventDispatcher
-{   
+{
     //--------------------------------------------------------------------------
     //
     //  Properties: Coordinates
     //
     //--------------------------------------------------------------------------
-     
+
     //----------------------------------
     //  x
     //----------------------------------
-    
+
     /**
      * Horizontal coordinate of the viewport.
      */
     function get x() : Number
     function set x( value : Number ) : void
-    
+
     //----------------------------------
     //  y
     //----------------------------------
-    
+
     /**
      * Vertical coordinate of the viewport.
      */
     function get y() : Number
     function set y( value : Number ) : void
-    
+
     //----------------------------------
     //  width
     //----------------------------------
-    
+
     /**
      * Horizontal dimension of the viewport.
      */
     function get width() : Number
     function set width( value : Number ) : void
-    
+
     //----------------------------------
     //  height
     //----------------------------------
-    
+
     /**
      * Vertical dimension of the viewport.
      */
     function get height() : Number
     function set height( value : Number ) : void
-    
+
     //----------------------------------
     //  viewportWidth
     //----------------------------------
-    
+
     /**
      * Width of the viewport container.
-     */ 
+     */
     function get viewportWidth() : Number
-    
+
     //----------------------------------
     //  viewportHeight
     //----------------------------------
-    
+
     /**
      * Height of the viewport container.
-     */ 
+     */
     function get viewportHeight() : Number
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-     
+
 //    //----------------------------------
 //    //  constraint
 //    //----------------------------------
-//    
+//
 //    function get constraint() : IViewportConstraint
 //    function set constraint( value : IViewportConstraint ) : void
-     
+
     //----------------------------------
     //  transformer
     //----------------------------------
-    
+
     /**
      * Transforms the IViewport object after its state has been changed.
-     */ 
+     */
     function get transformer() : IViewportTransformer
     function set transformer( value : IViewportTransformer ) : void
-        
+
     //----------------------------------
     //  scene
     //----------------------------------
-    
+
     /**
      * Scene this viewport belongs to.
-     */ 
+     */
     function get scene() : IReadonlyMultiScaleScene
 
     //----------------------------------
     //  scale
     //----------------------------------
-    
+
     /**
      * Scale of the scene.
-     */ 
+     */
     function get scale() : Number
     function set scale( value : Number ) : void
-      
+
     //----------------------------------
     //  zoom
     //----------------------------------
-    
+
     /**
      * Zoom level of the viewport.
      * Scene fits exactly into viewport at value 1.
      */
     function get zoom() : Number
     function set zoom( value : Number ) : void
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Zooming
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Zoom the viewport to a zoom level z.
      * @param zoom Target value for the viewport's zoom property
@@ -204,7 +198,7 @@ public interface IViewport extends IEventDispatcher
     function zoomTo( zoom : Number,
                      transformX : Number = 0.5, transformY : Number = 0.5,
                      immediately : Boolean = false ) : void
-    
+
     /**
      * Zoom the viewport by a factor.
      * @param factor Multiplier for the zoom.
@@ -214,13 +208,13 @@ public interface IViewport extends IEventDispatcher
     function zoomBy( factor : Number,
                      transformX : Number = 0.5, transformY : Number = 0.5,
                      immediately : Boolean = false ) : void
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Panning
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Move the viewport.
      * @param x Horizontal coordinate
@@ -228,7 +222,7 @@ public interface IViewport extends IEventDispatcher
      */
     function panTo( x : Number, y : Number,
                     immediately : Boolean = false ) : void
-    
+
     /**
      * Move the viewport.
      * @param deltaX Horizontal translation delta
@@ -236,37 +230,42 @@ public interface IViewport extends IEventDispatcher
      */
     function panBy( deltaX : Number, deltaY : Number,
                     immediately : Boolean = false ) : void
-    
+
     /**
      * Move the viewport center.
      * @param centerX Horizontal coordinate of the new center
      * @param centerY Vertical coordinate of the new center
-     */                 
+     */
     function panCenterTo( centerX : Number, centerY : Number,
                           immediately : Boolean = false ) : void
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Navigation
     //
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * Fit entire scene into the viewport.
+     */
+    function showAll( immediately : Boolean = false ) : void
+
     /**
      * Show a rectangular area of the scene inside the viewport.
-     * 
+     *
      * @param bounds Rectangle to be shown in the viewport.
      * @param scale Scale at which the rectangle is beeing displayed, e.g. useful
-     *              for showing creating some space around the rectangle.
-     */             
+     *              for displaying some space around the rectangle.
+     */
     function zoomToBounds( bounds : Rectangle,
                            scale : Number = 1.0,
                            immediately : Boolean = false ) : void
-                     
+
     /**
-     * Fit entire scene into the viewport.
+     * Returns a Rectangle object with the bounds of the viewport.
      */ 
-    function showAll( immediately : Boolean = false ) : void
-    
+    function getBounds() : Rectangle
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Coordinate transformations
@@ -276,120 +275,120 @@ public interface IViewport extends IEventDispatcher
     /**
      * Converts the point object from the viewport's
      * container (local) coordinates to scene coordinates.
-     */  
+     */
     function localToScene( point : Point ) : Point
-    
+
     /**
      * Converts the point object from scene coordinates
      * to the viewport's container (local) coordinates.
      */
     function sceneToLocal( point : Point ) : Point
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: flash.geom.Rectangle
     //
     //--------------------------------------------------------------------------
-    
+
     /**
-     * Determines whether the specified point is contained within this Viewport object. 
-     * 
+     * Determines whether the specified point is contained within this Viewport object.
+     *
      * @param x The x coordinate (horizontal position) of the point.
      * @param y The y coordinate (vertical position) of the point.
-     * 
+     *
      * @return true if this Viewport object contains the specified
-     * point; otherwise false. 
-     */ 
+     * point; otherwise false.
+     */
     function contains( x : Number, y : Number ) : Boolean
-        
+
     /**
      * Determines whether the object specified in the toIntersect parameter
      * intersects with this Viewport object. This method checks the x, y, width,
      * and height properties of the specified Rectangle object to see if it
      * intersects with this Viewport object.
-     * 
+     *
      * @param toIntersect The Rectangle object to compare against this Viewport object.
-     * 
+     *
      * @return true if the specified object intersects with this Viewport
-     * object; otherwise false. 
+     * object; otherwise false.
      */
     function intersects( toIntersect : Rectangle ) : Boolean
-    
+
     /**
      * If the Rectangle object specified in the toIntersect parameter intersects
      * with this Viewport object, returns the area of intersection as a Rectangle
      * object. If the objects do not intersect, this method returns an empty
-     * Rectangle object with its properties set to 0. 
+     * Rectangle object with its properties set to 0.
      *
      * @param toIntersect The Rectangle object to compare against to see if it
      * intersects with this Viewport object.
-     * 
+     *
      * @return A Rectangle object that equals the area of intersection.
      * If the rectangles do not intersect, this method returns an empty Rectangle
      * object; that is, a rectangle with its x, y, width, and height properties set to 0.
-     */ 
+     */
     function intersection( toIntersect : Rectangle ) : Rectangle
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: flash.geom.Rectangle
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  top
     //----------------------------------
-    
+
     /**
      * The y coordinate of the top-left corner of the viewport.
      */
     function get top() : Number
-    
+
     //----------------------------------
     //  right
     //----------------------------------
-    
+
     /**
      * The sum of the x and width properties.
-     */    
+     */
     function get right() : Number
-    
+
     //----------------------------------
     //  bottom
     //----------------------------------
-    
+
     /**
      * The sum of the y and height properties.
-     */ 
+     */
     function get bottom() : Number
-    
+
     //----------------------------------
     //  left
     //----------------------------------
-    
+
     /**
      * The x coordinate of the top-left corner of the viewport.
-     */ 
+     */
     function get left() : Number
 
     //----------------------------------
     //  topLeft
     //----------------------------------
-    
+
     /**
      * The location of the IViewport object's top-left corner,
      * determined by the x and y coordinates of the point.
-     */ 
+     */
     function get topLeft() : Point
 
     //----------------------------------
     //  bottomRight
     //----------------------------------
-    
+
     /**
      * The location of the IViewport object's bottom-right corner,
      * determined by the values of the right and bottom properties.
-     */ 
+     */
     function get bottomRight() : Point
 }
 

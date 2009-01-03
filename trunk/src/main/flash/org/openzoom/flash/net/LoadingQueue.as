@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import org.openzoom.flash.events.LoadingItemEvent;
 
 /**
  * @private
- * 
+ *
  * Basic loading queue for image tiles.
  */
 public class LoadingQueue extends EventDispatcher
@@ -40,7 +40,7 @@ public class LoadingQueue extends EventDispatcher
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const MAX_CONNECTIONS : uint = 8
 
     //--------------------------------------------------------------------------
@@ -48,73 +48,73 @@ public class LoadingQueue extends EventDispatcher
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
      */
     public function LoadingQueue()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var queue : Array /* of LoadingItem */ = []
     private var connections : Array /* of LoadingItem */ = []
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     public function addItem( url : String,
                              type : Class,
                              context : * = null ) : ILoadingItem
     {
         var item : ILoadingItem
-        
-        // TODO    	
-//    	if( type == URLVariables )
 
-        // TODO    	
+        // TODO
+//        if( type == URLVariables )
+
+        // TODO
 //      if( type == Sound )
 
-        // TODO    	
+        // TODO
 //      if( type == Video || type == NetStream )
 
         if( type == DisplayObject || type == Bitmap )
             item = new DisplayObjectLoadingItem( url, context )
-            
+
         if( type == String || type == XML )
             item = new URLLoadingItem( url, context )
-            
+
         if( !item )
             throw new ArgumentError( "Type " + type.toString() + " not supported." )
-    	
+
         item.addEventListener( LoadingItemEvent.COMPLETE,
                                item_completeHandler )
         item.addEventListener( LoadingItemEvent.ERROR,
                                item_errorHandler )
-                
+
         // Add item to front (LIFO)
         queue.unshift( item )
         processQueue()
         return item
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     private function processQueue() : void
     {
         while( queue.length > 0 && connections.length < MAX_CONNECTIONS )
@@ -124,13 +124,13 @@ public class LoadingQueue extends EventDispatcher
             item.load()
         }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -139,11 +139,11 @@ public class LoadingQueue extends EventDispatcher
         var index : int = connections.indexOf( event.item )
 
         if( index > 0 )
-           connections.splice( index, 1 )   
-        
+           connections.splice( index, 1 )
+
         processQueue()
     }
-    
+
     /**
      * @private
      */

@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,17 +27,17 @@ package org.openzoom.flash.viewport
  * of IViewportTransform.
  */
 public interface IViewportTransformContainer extends IViewportTransform
-{   
+{
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Sets viewportWidth and viewportHeight.
      * Dispatches ViewportEvent.RESIZE
-     * 
+     *
      * @see org.openzoom.flash.events.ViewportEvent#resize
      */
     function setSize( width : Number, height : Number ) : void

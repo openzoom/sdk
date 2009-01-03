@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -38,13 +38,13 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
 
     /**
      * Constructor.
-     */ 
+     */
     public function MultiScaleImageLevel( descriptor : IMultiScaleImageDescriptor,
                                           index : int, width : uint, height : uint,
                                           numColumns : uint, numRows : uint )
     {
-    	this.descriptor = descriptor
-    	
+        this.descriptor = descriptor
+
         super( index, width, height, numColumns, numRows )
     }
 
@@ -53,42 +53,42 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     private var descriptor : IMultiScaleImageDescriptor
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleImageLevel
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function getTileURL( column : uint, row : uint ) : String
     {
         return descriptor.getTileURL( index, column, row )
     }
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function getTileBounds( column : uint, row : uint ) : Rectangle
     {
         return descriptor.getTileBounds( index, column, row )
     }
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function clone() : IMultiScaleImageLevel
     {
         return new MultiScaleImageLevel( descriptor, index, width, height, numColumns, numRows )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Debug
@@ -97,7 +97,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
 
     /**
      * @inheritDoc
-     */ 
+     */
     override public function toString() : String
     {
         return "[MultiScaleImageLevel]" + "\n" + super.toString()

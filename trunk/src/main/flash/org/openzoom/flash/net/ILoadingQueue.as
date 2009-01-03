@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,16 +28,16 @@ import flash.events.IEventDispatcher;
  */
 public interface ILoadingQueue extends IEventDispatcher
 {
-	/**
-	 * Add item to loading queue.
-	 * 
-	 * @param url URL of the item to load
-	 * @param type Content type of the item to load
-	 * @param context Arbitrary data attached to the item for later identification.
-	 */
-	function addItem( url : String,
-	                  type : Class,
-	                  context : * = null ) : ILoadingItem
+    /**
+     * Add item to loading queue.
+     *
+     * @param url URL of the item to load
+     * @param type Content type of the item to load
+     * @param context Arbitrary data attached to the item for later identification.
+     */
+    function addItem( url : String,
+                      type : Class,
+                      context : * = null ) : ILoadingItem
 }
 
 }

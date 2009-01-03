@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ package org.openzoom.flash.descriptors
 
 /**
  * @private
- * 
+ *
  * Base class for MultiScaleImageLevel.
  */
 public class MultiScaleImageLevelBase
@@ -36,7 +36,7 @@ public class MultiScaleImageLevelBase
 
     /**
      * Constructor.
-     */ 
+     */
     public function MultiScaleImageLevelBase( index : int, width : uint, height : uint,
                                               numColumns : uint, numRows : uint )
     {
@@ -49,22 +49,22 @@ public class MultiScaleImageLevelBase
         _numRows = numRows
     }
 
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  index
     //----------------------------------
 
     private var _index : int
-    
+
     /**
      * @copy org.openzoom.flash.descriptors.IMultiScaleImageLevel#index
-     */ 
+     */
     public function get index() : int
     {
         return _index
@@ -89,7 +89,7 @@ public class MultiScaleImageLevelBase
     //----------------------------------
 
     private var _height : uint
-    
+
     /**
      * @copy org.openzoom.flash.descriptors.IMultiScaleImageLevel#height
      */
@@ -97,7 +97,7 @@ public class MultiScaleImageLevelBase
     {
         return _height
     }
-    
+
     //----------------------------------
     //  numColumns
     //----------------------------------
@@ -117,7 +117,7 @@ public class MultiScaleImageLevelBase
     //----------------------------------
 
     private var _numRows : uint
-    
+
     /**
      * @copy org.openzoom.flash.descriptors.IMultiScaleImageLevel#numRows
      */

@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ import org.openzoom.flash.viewport.IViewportTransformer;
 
 /**
  * @private
- * 
+ *
  * Interface of a multi-scale container.
  */
 public interface IMultiScaleContainer
@@ -40,20 +40,20 @@ public interface IMultiScaleContainer
     //  Properties: Scene
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  sceneWidth
     //----------------------------------
-    
+
     /**
      * Width of the scene belonging to this container.
      */
     function get sceneWidth() : Number
-    
+
     //----------------------------------
     //  sceneHeight
     //----------------------------------
-    	
+
     /**
      * Height of the scene belonging to this container.
      */
@@ -64,102 +64,102 @@ public interface IMultiScaleContainer
     //  Properties: Viewport
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  viewport
     //----------------------------------
-    
+
     /**
      * Viewport belonging to this container.
      */
     function get viewport() : INormalizedViewport
-    
+
     //----------------------------------
     //  constraint
     //----------------------------------
-    
+
     /**
      * Viewport constraint.
-     */ 
+     */
     function get constraint() : IViewportConstraint
     function set constraint( value : IViewportConstraint ) : void
-    
+
     //----------------------------------
     //  transformer
     //----------------------------------
-    
+
     /**
      * Viewport transformer.
      */
     function get transformer() : IViewportTransformer
     function set transformer( value : IViewportTransformer ) : void
-    
+
     //----------------------------------
     //  zoom
     //----------------------------------
-    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoom
-     */ 
+     */
     function get zoom() : Number
     function set zoom( value : Number ) : void
-    
+
     //----------------------------------
     //  scale
     //----------------------------------
-    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#scale
-     */ 
+     */
     function get scale() : Number
     function set scale( value : Number ) : void
-    
+
     //----------------------------------
     //  viewportX
     //----------------------------------
-    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#x
-     */ 
+     */
     function get viewportX() : Number
     function set viewportX( value : Number ) : void
-    
+
     //----------------------------------
     //  viewportY
     //----------------------------------
-    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#y
-     */ 
+     */
     function get viewportY() : Number
     function set viewportY( value : Number ) : void
-    
+
     //----------------------------------
     //  viewportWidth
     //----------------------------------
-    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#width
-     */ 
+     */
     function get viewportWidth() : Number
     function set viewportWidth( value : Number ) : void
-    
+
     //----------------------------------
     //  viewportHeight
     //----------------------------------
-    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#height
-     */ 
+     */
     function get viewportHeight() : Number
     function set viewportHeight( value : Number ) : void
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Viewport
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomTo()
      */
@@ -181,7 +181,7 @@ public interface IMultiScaleContainer
      */
     function panTo( x : Number, y : Number,
                     immediately : Boolean = false ) : void
-                    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
      */
@@ -193,18 +193,18 @@ public interface IMultiScaleContainer
      * @copy org.openzoom.flash.viewport.IViewport#showAll()
      */
     function showAll( immediately : Boolean = false ) : void
-                    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#panBy()
      */
     function panBy( deltaX : Number, deltaY : Number,
                     immediately : Boolean = false ) : void
-                    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#localToScene()
      */
     function localToScene( point : Point ) : Point
-                    
+
     /**
      * @copy org.openzoom.flash.viewport.IViewport#sceneToLocal()
      */

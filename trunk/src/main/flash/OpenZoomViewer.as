@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 import org.openzoom.viewer.assets.Sad;
-    
+
 /**
  * OpenZoom based viewer for Adobe Photoshop Zoomify export feature.
  */
@@ -65,28 +65,28 @@ public class OpenZoomViewer extends Sprite
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
-    private static const DEFAULT_MAX_SCALE_FACTOR     : Number = 2.0
+
+    private static const DEFAULT_MAX_SCALE_FACTOR     : Number = 4.0
     private static const DEFAULT_VISIBILITY_RATIO     : Number = 0.5
-    
+
     private static const FULL_SCREEN_BACKGROUND_COLOR : uint   = 0x111111
     private static const FULL_SCREEN_KEY_CODE         : uint   = 70 // F
-    
+
     private static const DEBUG_MENU_DISABLED_CAPTION  : String = "Show Memory Consumption\tM"
     private static const DEBUG_MENU_ENABLED_CAPTION   : String = "Hide Memory Consumption\tM"
     private static const DEBUG_MENU_KEY_CODE          : uint   = 77 // M
-    
+
     private static const ABOUT_MENU_CAPTION           : String = "Powered by OpenZoom.org"
     private static const ABOUT_MENU_URL               : String = "http://openzoom.org/"
-    
+
     private static const DEFAULT_SOURE                : String = ""
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
      */
@@ -94,29 +94,29 @@ public class OpenZoomViewer extends Sprite
     {
         initializeStage()
         initializeKeyboardShortcuts()
-        
+
         createChildren()
         loadSource()
         layout()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     // UI
     private var image : MultiScaleImage
     private var memoryMonitor : MemoryMonitor
     private var sad : Sprite
     private var fullScreenBackground : Shape
 //  private var sceneNavigator : SceneNavigator
-    
+
     // Context menu
     private var debugMenu : ContextMenuItem
     private var aboutMenu : ContextMenuItem
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Initialization
@@ -128,11 +128,11 @@ public class OpenZoomViewer extends Sprite
      */
     private function initializeStage() : void
     {
-    	if( stage )
-        {      
+        if( stage )
+        {
             // Enable mouse wheel support for Mac OS and Safari
             ExternalMouseWheel.initialize( stage )
-            
+
             // Configure stage
             stage.align = StageAlign.TOP_LEFT
             stage.scaleMode = StageScaleMode.NO_SCALE
@@ -144,7 +144,7 @@ public class OpenZoomViewer extends Sprite
                                     false, 0, true )
         }
     }
-    
+
     /**
      * @private
      */
@@ -154,13 +154,13 @@ public class OpenZoomViewer extends Sprite
                                 stage_keyDownHandler,
                                 false, 0, true )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -168,34 +168,34 @@ public class OpenZoomViewer extends Sprite
     {
         image.source = getParameter( OpenZoomViewerParameters.SOURCE, DEFAULT_SOURE )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Children
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
     private function createChildren() : void
     {
-//    	if( !fullScreenBackground )
+//        if( !fullScreenBackground )
 //            createFullScreenBackground()
-            
+
         if( !sad )
             createSad()
-            
+
         if( !image )
             createImage()
-        
+
         if( !memoryMonitor )
             createMemoryMonitor()
-        
+
 //      if( !sceneNavigator )
 //          createSceneNavigator()
     }
-    
+
     /**
      * @private
      */
@@ -203,14 +203,14 @@ public class OpenZoomViewer extends Sprite
     {
         fullScreenBackground = new Shape()
         var g : Graphics = fullScreenBackground.graphics
-	        g.beginFill( 0x000000 )
-	        g.drawRect( 0, 0, 100, 100 )
-	        g.endFill()
-	        
+            g.beginFill( 0x000000 )
+            g.drawRect( 0, 0, 100, 100 )
+            g.endFill()
+
         fullScreenBackground.visible = false
         addChild( fullScreenBackground )
     }
-    
+
     /**
      * @private
      */
@@ -220,24 +220,24 @@ public class OpenZoomViewer extends Sprite
         sad.visible = false
         addChild( sad )
     }
-    
+
     /**
      * @private
      */
     private function createImage() : void
     {
         image = new MultiScaleImage()
-        
-        configureTransformer( image )        
+
+        configureTransformer( image )
         configureControllers( image )
         configureListeners( image )
-        
+
         addChild( image )
-        
+
         // Important that this happens after attachment
         configureContextMenu( image )
     }
-    
+
     /**
      * @private
      */
@@ -247,7 +247,7 @@ public class OpenZoomViewer extends Sprite
         memoryMonitor.visible = false
         addChild( memoryMonitor )
     }
-    
+
     /**
      * @private
      */
@@ -257,13 +257,13 @@ public class OpenZoomViewer extends Sprite
 //      sceneNavigator.viewport = image.viewport
 //      addChild( sceneNavigator )
 //  }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Image configuration
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -271,59 +271,59 @@ public class OpenZoomViewer extends Sprite
     {
         image.transformer = new TweenerTransformer()
     }
-    
+
     /**
      * @private
      */
     private function configureControllers( image : MultiScaleImage ) : void
     {
-        var keyboardController : KeyboardController = new KeyboardController() 
-        var mouseController : MouseController = new MouseController() 
+        var keyboardController : KeyboardController = new KeyboardController()
+        var mouseController : MouseController = new MouseController()
         var contextMenuController : ContextMenuController =
                                                      new ContextMenuController()
-         
+
         image.controllers = [ mouseController,
                               keyboardController,
                               contextMenuController ]
     }
-    
+
     /**
      * @private
      */
     private function configureConstraints( image : MultiScaleImage ) : void
     {
-    	// Prevent image from zooming out
+        // Prevent image from zooming out
         var zoomConstraint : ZoomConstraint = new ZoomConstraint()
             zoomConstraint.minZoom = 1
-        
-        
+
+
         // Center at minimum zoom level
         var centerConstraint : CenterConstraint = new CenterConstraint()
-        
-        
+
+
         // Prevent from zooming in more than the original size of the image
         var scaleConstraint : ScaleConstraint = new ScaleConstraint()
-        
+
         var imageWidth : Number
         var imageHeight : Number
         var defaultDimension : Number = MultiScaleImageBase.DEFAULT_SCENE_DIMENSION
-         
+
         if( image.source && image.source is IMultiScaleImageDescriptor )
         {
-        	var descriptor : IMultiScaleImageDescriptor =
-        	                          IMultiScaleImageDescriptor( image.source )
+            var descriptor : IMultiScaleImageDescriptor =
+                                      IMultiScaleImageDescriptor( image.source )
             imageWidth  = descriptor.width
             imageHeight = descriptor.height
             var maxScale : Number = Math.max( imageWidth / defaultDimension,
                                               imageHeight / defaultDimension )
             scaleConstraint.maxScale = DEFAULT_MAX_SCALE_FACTOR * maxScale
         }
-        
+
         // Prevent image from disappearing from the viewport
         var visibilityConstraint : VisibilityConstraint = new VisibilityConstraint()
             visibilityConstraint.visibilityRatio = DEFAULT_VISIBILITY_RATIO
-        
-        
+
+
         // Chain all constraints together
         var compositeContraint : CompositeConstraint = new CompositeConstraint()
             compositeContraint.constraints = [ centerConstraint,
@@ -333,15 +333,15 @@ public class OpenZoomViewer extends Sprite
         // Apply constraints
         image.constraint = compositeContraint
     }
-    
+
     /**
      * @private
      */
     private function configureListeners( image : MultiScaleImage ) : void
     {
-    	image.addEventListener( Event.COMPLETE,
-    	                        image_completeHandler,
-    	                        false, 0, true )
+        image.addEventListener( Event.COMPLETE,
+                                image_completeHandler,
+                                false, 0, true )
         image.addEventListener( IOErrorEvent.IO_ERROR,
                                 image_ioErrorHandler,
                                 false, 0, true )
@@ -349,42 +349,42 @@ public class OpenZoomViewer extends Sprite
                                 image_securityErrorHandler,
                                 false, 0, true )
     }
-    
+
     /**
      * @private
-     */ 
+     */
     private function configureContextMenu( image : MultiScaleImage ) : void
-    {    
+    {
         var menu : ContextMenu
-        
+
         if( image.contextMenu && image.contextMenu.customItems )
             menu = image.contextMenu
         else
             menu = new ContextMenu()
-            
-        menu.hideBuiltInItems()    
-        
+
+        menu.hideBuiltInItems()
+
         debugMenu = new ContextMenuItem( DEBUG_MENU_DISABLED_CAPTION, true )
         debugMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
                                     debugMenu_menuItemSelectHandler,
                                     false, 0, true )
         menu.customItems.push( debugMenu )
-        
+
         aboutMenu = new ContextMenuItem( ABOUT_MENU_CAPTION )
         aboutMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
                                     aboutMenu_menuItemSelectHandler,
                                     false, 0, true )
         menu.customItems.push( aboutMenu )
-        
+
         image.contextMenu = menu
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Layout
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -394,42 +394,42 @@ public class OpenZoomViewer extends Sprite
         {
             sad.width = stage.stageWidth / 2
             sad.height = stage.stageHeight / 2
-            
+
             var scale : Number = Math.min( sad.scaleX, sad.scaleY )
             sad.scaleX = sad.scaleY = scale
-            
+
             sad.x = ( stage.stageWidth  - sad.width )  / 2
             sad.y = ( stage.stageHeight - sad.height ) / 2
         }
-        
+
         if( fullScreenBackground )
         {
             fullScreenBackground.width = stage.stageWidth
             fullScreenBackground.height = stage.stageHeight
         }
-        
+
         if( image )
             image.setActualSize( stage.stageWidth, stage.stageHeight )
-        
+
         if( memoryMonitor )
         {
             memoryMonitor.x = stage.stageWidth  - memoryMonitor.width
             memoryMonitor.y = stage.stageHeight - memoryMonitor.height
         }
-        
+
 //      if( sceneNavigator )
 //      {
 //          sceneNavigator.x = stage.stageWidth  - sceneNavigator.width - 10
 //          sceneNavigator.y = 10
 //      }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -440,23 +440,23 @@ public class OpenZoomViewer extends Sprite
         else
             stage.displayState = StageDisplayState.NORMAL
     }
-    
+
     /**
      * @private
      */
     private function toggleMemoryDisplay() : void
     {
         memoryMonitor.visible = !memoryMonitor.visible
-        
+
         if( debugMenu )
         {
-	        if( memoryMonitor.visible )
-	            debugMenu.caption = DEBUG_MENU_ENABLED_CAPTION
-	        else
-	            debugMenu.caption = DEBUG_MENU_DISABLED_CAPTION
+            if( memoryMonitor.visible )
+                debugMenu.caption = DEBUG_MENU_ENABLED_CAPTION
+            else
+                debugMenu.caption = DEBUG_MENU_DISABLED_CAPTION
         }
     }
-    
+
     /**
      * @private
      */
@@ -464,13 +464,13 @@ public class OpenZoomViewer extends Sprite
     {
         sad.visible = true
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -478,7 +478,7 @@ public class OpenZoomViewer extends Sprite
     {
         layout()
     }
-    
+
     /**
      * @private
      */
@@ -486,31 +486,31 @@ public class OpenZoomViewer extends Sprite
     {
         if( event.keyCode == FULL_SCREEN_KEY_CODE )
             toggleFullScreen()
-            
+
         if( event.keyCode == DEBUG_MENU_KEY_CODE )
             toggleMemoryDisplay()
     }
-    
+
     /**
      * @private
      */
     private function stage_fullScreenHandler( event : FullScreenEvent ) : void
     {
-    	if( !fullScreenBackground )
+        if( !fullScreenBackground )
             return
-    	
-    	if( event.fullScreen )
+
+        if( event.fullScreen )
             fullScreenBackground.visible = true
-    	else
+        else
             fullScreenBackground.visible = false
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers: Image
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -518,7 +518,7 @@ public class OpenZoomViewer extends Sprite
     {
         configureConstraints( image )
     }
-    
+
     /**
      * @private
      */
@@ -526,7 +526,7 @@ public class OpenZoomViewer extends Sprite
     {
         showSad()
     }
-    
+
     /**
      * @private
      */
@@ -534,21 +534,21 @@ public class OpenZoomViewer extends Sprite
     {
         showSad()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers: Context menu
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
     private function debugMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
     {
-    	toggleMemoryDisplay()
+        toggleMemoryDisplay()
     }
-    
+
     /**
      * @private
      */
@@ -556,13 +556,13 @@ public class OpenZoomViewer extends Sprite
     {
         navigateToURL( new URLRequest( ABOUT_MENU_URL ), "_blank" )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Parameters
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -573,7 +573,7 @@ public class OpenZoomViewer extends Sprite
             var value : * = loaderInfo.parameters[ name ]
             return value
         }
-        
+
         return defaultValue
     }
 }

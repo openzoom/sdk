@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,10 +22,10 @@ package org.openzoom.flash.renderers.images
 {
 
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-	
+
 /**
  * @private
- * 
+ *
  * Tile layer interface.
  */
 public interface ITileLayer
@@ -35,7 +35,7 @@ public interface ITileLayer
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     function containsTile( tile : Tile ) : Boolean
     function addTile( tile : Tile ) : Tile
     function removeAllTiles() : void
@@ -45,38 +45,38 @@ public interface ITileLayer
     //  Properties
     //
     //--------------------------------------------------------------------------
-     
+
     //----------------------------------
     //  level
     //----------------------------------
-    
+
     function get level() : IMultiScaleImageLevel
-        
+
     //----------------------------------
     //  width
     //----------------------------------
-    
+
     function get width() : Number
     function set width( value : Number ) : void
-    
+
     //----------------------------------
     //  height
     //----------------------------------
-    
+
     function get height() : Number
     function set height( value : Number ) : void
-        
+
     //----------------------------------
     //  visible
     //----------------------------------
-    
+
     function get visible() : Boolean
     function set visible( value : Boolean ) : void
-    
+
     //----------------------------------
     //  alpha
     //----------------------------------
-    
+
     function get alpha() : Number
     function set alpha( value : Number ) : void
 }

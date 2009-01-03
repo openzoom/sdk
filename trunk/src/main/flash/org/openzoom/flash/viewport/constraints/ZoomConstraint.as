@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -34,23 +34,23 @@ public class ZoomConstraint implements IViewportConstraint
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_MIN_ZOOM : Number = 0.25
     private static const DEFAULT_MAX_ZOOM : Number = 8000
-	
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-	
-	/**
-	 * Constructor.
-	 */
+
+    /**
+     * Constructor.
+     */
     public function ZoomConstraint()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -65,7 +65,7 @@ public class ZoomConstraint implements IViewportConstraint
 
     /**
      * Minimum zoom the viewport can reach.
-     */ 
+     */
     public function get minZoom() : Number
     {
         return _minZoom
@@ -79,9 +79,9 @@ public class ZoomConstraint implements IViewportConstraint
     //----------------------------------
     //  maxZoom
     //----------------------------------
-    
+
     private var _maxZoom : Number = DEFAULT_MAX_ZOOM
-    
+
 
     /**
      * Maximum zoom the viewport can reach.
@@ -90,7 +90,7 @@ public class ZoomConstraint implements IViewportConstraint
     {
         return _maxZoom
     }
-    
+
     public function set maxZoom( value : Number ) : void
     {
        _maxZoom = value
@@ -101,28 +101,28 @@ public class ZoomConstraint implements IViewportConstraint
     //  Methods: IViewportConstraint
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function validate( transform : IViewportTransform,
                               target : IViewportTransform ) : IViewportTransform
     {
-    	// FIXME
+        // FIXME
         // Prevent from moving when the zoom limit are reached
 //        if( transform.zoom == minZoom || transform.zoom == maxZoom )
 //        {
 ////          target.panTo( transform.x, transform.y )
 //            return target
 //        }
-        
+
         // validate zoom
         if( transform.zoom > maxZoom )
             transform.zoomTo( maxZoom )
-            
+
         if( transform.zoom < minZoom )
             transform.zoomTo( minZoom )
-        
+
         // return validated transform
         return transform
     }

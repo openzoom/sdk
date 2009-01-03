@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,14 +37,14 @@ public class CompositeConstraint implements IViewportConstraint
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
-	/**
-	 * Constructor.
-	 */
+
+    /**
+     * Constructor.
+     */
     public function CompositeConstraint()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -54,37 +54,37 @@ public class CompositeConstraint implements IViewportConstraint
     //----------------------------------
     //  constraints
     //----------------------------------
-    
+
     private var _constraints : Array /* of IViewportConstraint */ = []
-    
+
    ;[ArrayElementType("org.openzoom.flash.viewport.IViewportConstraint")]
     /**
-     * An array of constraints that are applied succe
+     * An array of constraints that are applied successively.
      */
     public function get constraints() : Array
     {
-    	return _constraints.slice( 0 )
+        return _constraints.slice( 0 )
     }
-    
+
     public function set constraints( value : Array ) : void
     {
-    	_constraints = value.slice( 0 )
+        _constraints = value.slice( 0 )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IViewportConstraint
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
      */
     public function validate( transform : IViewportTransform,
                               target : IViewportTransform ) : IViewportTransform
-    {    	
-    	for each( var constraint : IViewportConstraint in constraints )
-    		transform = constraint.validate( transform, target )
+    {
+        for each( var constraint : IViewportConstraint in constraints )
+            transform = constraint.validate( transform, target )
 
         return transform
     }

@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     {
         this.data = data
 
-        this.source = source        
+        this.source = source
         parseXML( data )
         _numLevels = computeNumLevels( width, height )
         levels = computeLevels( width, height, tileWidth, tileHeight, numLevels )
@@ -72,23 +72,23 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
     private var extension : String
     private var data : XML
-    private var levels : Dictionary 
+    private var levels : Dictionary
 
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleImageDescriptor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function getTileURL( level : int, column : uint, row : uint ) : String
     {
-    	var path : String  = source.substring( 0, source.length - 4 ) + "_files"
+        var path : String  = source.substring( 0, source.length - 4 ) + "_files"
         return [ path, "/", level, "/", column, "_", row, ".", extension ].join("")
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -96,7 +96,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     {
         return IMultiScaleImageLevel( levels[ index ] )
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -106,7 +106,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         var index : int = clamp( Math.ceil( Math.log( Math.max( width, height )) / Math.LN2 ), 0, numLevels - 1 )
         return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -120,7 +120,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     //  Methods: Debug
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
      */
@@ -128,13 +128,13 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     {
         return "[DZIDescriptor]" + "\n" + super.toString()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -147,32 +147,36 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         _tileWidth = _tileHeight = data.@TileSize
 
         extension = data.@Format
-        
+
         switch( extension )
         {
-        	case "jpg":
-        	   _type = "image/jpeg"
-        	   break
-        	   
-        	case "png":
-        	   _type = "image/png"
-        	   break
+            case "jpg":
+               _type = "image/jpeg"
+               break
+
+            case "png":
+               _type = "image/png"
+               break
+
+            default:
+               throw new ArgumentError( "Unknown extension: " + extension )
+               break
         }
-        
+
         _tileOverlap = data.@Overlap
     }
 
     /**
      * @private
-     */ 
+     */
     private function computeNumLevels( width : Number, height : Number ) : int
     {
         return Math.ceil( Math.log( Math.max( width, height ) ) / Math.LN2 ) + 1
     }
-    
+
     /**
      * @private
-     */ 
+     */
     private function computeLevels( originalWidth : uint, originalHeight : uint,
                                     tileWidth : uint, tileHeight : uint,
                                     numLevels : int ) : Dictionary
@@ -192,11 +196,11 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 //            width = Math.ceil( width * 0.5 )
 //            height = Math.ceil( height * 0.5 )
         }
-        
+
 //        Twitter on 17.09.2008
 //        for(var i:int=max;i>=0;i--){levels[i]=new Level(w,h,Math.ceil(w/tileWidth),Math.ceil(h/tileHeight));w=Math.ceil(w/2);h=Math.ceil(h/2)}
-        
-        return levels 
+
+        return levels
     }
 }
 
@@ -228,42 +232,42 @@ class DisplayRect extends Rectangle
                                  width : Number, height : Number,
                                  minLevel : int, maxLevel : int )
     {
-    	super( x, y, width, height )
-    	_minLevel = minLevel
-    	_maxLevel = maxLevel
+        super( x, y, width, height )
+        _minLevel = minLevel
+        _maxLevel = maxLevel
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  minLevel
     //----------------------------------
-    
+
     /**
      * @private
      */
     private var _minLevel : int
-     
+
     public function get minLevel() : int
     {
-        return _minLevel    
+        return _minLevel
     }
-    
+
     //----------------------------------
     //  maxLevel
     //----------------------------------
-    
+
     /**
      * @private
-     */    
+     */
     private var _maxLevel : int
-    
+
     public function get maxLevel() : int
     {
-        return _maxLevel    
+        return _maxLevel
     }
 }

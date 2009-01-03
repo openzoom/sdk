@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,228 +41,228 @@ public class TweenerTransformer implements IViewportTransformer
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_DURATION : Number = 1.5
     private static const DEFAULT_EASING   : String = "easeOutExpo"
     private static const NULL_CONSTRAINT  : IViewportConstraint = new NullConstraint()
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
      */
     public function TweenerTransformer()
     {
-    	TweenerTransformShortcuts.init()
+        TweenerTransformShortcuts.init()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
 //    private var tweenTransform : IViewportTransform
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  duration
     //----------------------------------
-    
+
     private var _duration : Number = DEFAULT_DURATION
-    
+
+//   ;[Bindable]
     /**
      * Duration of the transformation in seconds
-     * 
+     *
      * @default 1.5
-     */ 
-   ;[Bindable]
+     */
     public function get duration() : Number
     {
         return _duration
     }
-    
+
     public function set duration( value : Number ) : void
     {
         _duration = value
     }
-    
+
     //----------------------------------
     //  easing
     //----------------------------------
-    
+
     private var _easing : String = DEFAULT_EASING
-    
-   ;[Inspectable(defaultValue="easeOutExpo",
-                 type="String",
-                 enumeration="linear,easeInSine,easeOutSine,easeInOutSine,easeInCubic,easeOutCubic,easeInOutCubic,easeInQuint,easeOutQuint,easeInOutQuint,easeInCirc,easeOutCirc,easeInOutCirc,easeInBack,easeOutBack,easeInOutBack,easeInQuad,easeOutQuad,easeInOutQuad,easeInQuart,easeOutQuart,easeInOutQuart,easeInExpo,easeOutExpo,easeInOutExpo,easeInElastic,easeOutElastic,easeInOutElastic,easeInBounce,easeOutBounce,easeInOutBounce")]
-   ;[Bindable]
+
+//   ;[Inspectable(defaultValue="easeOutExpo",
+//                 type="String",
+//                 enumeration="linear,easeInSine,easeOutSine,easeInOutSine,easeInCubic,easeOutCubic,easeInOutCubic,easeInQuint,easeOutQuint,easeInOutQuint,easeInCirc,easeOutCirc,easeInOutCirc,easeInBack,easeOutBack,easeInOutBack,easeInQuad,easeOutQuad,easeInOutQuad,easeInQuart,easeOutQuart,easeInOutQuart,easeInExpo,easeOutExpo,easeInOutExpo,easeInElastic,easeOutElastic,easeInOutElastic,easeInBounce,easeOutBounce,easeInOutBounce")]
+//   ;[Bindable]
     /**
      * Easing for the transformation.
-     * 
+     *
      * @default easeOutExpo
      * @see http://hosted.zeh.com.br/tweener/docs/en-us/misc/transitions.html
-     */ 
+     */
     public function get easing() : String
     {
         return _easing
     }
-    
+
     public function set easing( value : String ) : void
     {
         _easing = value
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: IViewportTransformer
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  viewport
     //----------------------------------
-    
+
     private var _viewport : ITransformerViewport
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function get viewport() : ITransformerViewport
     {
         return _viewport
     }
-    
+
     public function set viewport( value : ITransformerViewport ) : void
     {
         _viewport = value
-        
+
         if( value )
             _target = viewport.transform
         else
             _target = null
 //        tweenTransform   = viewport.transform
     }
-    
+
     //----------------------------------
     //  constraint
     //----------------------------------
-    
+
     private var _constraint : IViewportConstraint = NULL_CONSTRAINT
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function get constraint() : IViewportConstraint
     {
         return _constraint
     }
-    
+
     public function set constraint( value : IViewportConstraint ) : void
     {
-    	if( value )
+        if( value )
             _constraint = value
         else
             _constraint = NULL_CONSTRAINT
     }
-    
+
     //----------------------------------
     //  target
     //----------------------------------
-    
+
     private var _target : IViewportTransform
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function get target() : IViewportTransform
     {
         return _target.clone()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IViewportTransformer
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function stop() : void
     {
-    	if( Tweener.isTweening( viewport ))
-    	{
-    	    Tweener.removeTweens( viewport )
-	        viewport.endTransform()
-    	}
-//    	if( Tweener.isTweening( tweenTransform ))
-//    	{
-//    	    Tweener.removeTweens( tweenTransform )
-//	        viewport.endTransform()
-//    	}
+        if( Tweener.isTweening( viewport ))
+        {
+            Tweener.removeTweens( viewport )
+            viewport.endTransform()
+        }
+//        if( Tweener.isTweening( tweenTransform ))
+//        {
+//            Tweener.removeTweens( tweenTransform )
+//            viewport.endTransform()
+//        }
     }
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function transform( target : IViewportTransform,
                                immediately : Boolean = false ) : void
     {
-        // Copy target and validate to know where to tween to…
+        // Copy target and validate to know where to tween to...
         var previousTarget : IViewportTransform = this.target
         _target = constraint.validate( target.clone(), previousTarget )
-        
+
         if( immediately )
         {
-        	stop()
-        	viewport.beginTransform()
-        	viewport.transform = _target
-        	viewport.endTransform()
-        	
-        	// update tween transform
-//        	tweenTransform.copy( ViewportTransform2( viewport.transform ))
+            stop()
+            viewport.beginTransform()
+            viewport.transform = _target
+            viewport.endTransform()
+
+            // update tween transform
+//            tweenTransform.copy( ViewportTransform2( viewport.transform ))
         }
-    	else
-        {                
+        else
+        {
             // BEGIN: TRANSFORMSHORTCUTS
-            
-	        if( !Tweener.isTweening( viewport ))
+
+            if( !Tweener.isTweening( viewport ))
                 viewport.beginTransform()
-	            
-	        Tweener.addTween( 
-	                          viewport,
-	                          {
-	                              _transform_x: _target.x,
-	                              _transform_y: _target.y,
-	                              _transform_width: _target.width,
+
+            Tweener.addTween(
+                              viewport,
+                              {
+                                  _transform_x: _target.x,
+                                  _transform_y: _target.y,
+                                  _transform_width: _target.width,
 //                                  _transform_height: _targetTransform.height,
-	                              time: duration,
-	                              transition: easing,
-	                              onComplete: viewport.endTransform
-	                          }
-	                        )
-	                        
+                                  time: duration,
+                                  transition: easing,
+                                  onComplete: viewport.endTransform
+                              }
+                            )
+
             // END: TRANSFORMSHORTCUTS
-            
-                            
-            // BEGIN: THE GOOD WAY.	                        
+
+
+            // BEGIN: THE GOOD WAY.
 //
 //            if( !Tweener.isTweening( tweenTransform ))
 //                viewport.beginTransform()
-//                
-//        	// update tween transform
-//        	tweenTransform.copy( ViewportTransform2( viewport.transform ))
-//            
+//
+//            // update tween transform
+//            tweenTransform.copy( ViewportTransform2( viewport.transform ))
+//
 //            Tweener.addTween(
 //                                tweenTransform,
 //                                {
@@ -280,7 +280,7 @@ public class TweenerTransformer implements IViewportTransformer
 //                                    onComplete: viewport.endTransform
 //                                }
 //                            )
-            // END: THE GOOD WAY.	                        
+            // END: THE GOOD WAY.
         }
     }
 }

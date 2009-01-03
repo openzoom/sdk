@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ package org.openzoom.flash.descriptors.openzoom
  * Represents the coordinate system origin of the image pyramid.
  * Added due to great feedback from Klokan Petr Pridal to support the
  * Tile Map Service Specification (TMS).
- * 
+ *
  * @see http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification
  */
 internal class PyramidOrigin
@@ -34,17 +34,17 @@ internal class PyramidOrigin
     public static const TOP_RIGHT    : String = "topRight"
     public static const BOTTOM_RIGHT : String = "bottomRight"
     public static const BOTTOM_LEFT  : String = "bottomLeft"
-    
+
     /**
      * Returns <code>true</code> if <code>value</code> is one of the
      * values in the enumeration, otherwise <code>false</code>.
-     */ 
+     */
     public static function isValid( value : String ) : Boolean
     {
-    	return value == PyramidOrigin.TOP_LEFT
-            || value == PyramidOrigin.TOP_RIGHT
-            || value == PyramidOrigin.BOTTOM_RIGHT
-            || value == PyramidOrigin.BOTTOM_LEFT
+        return value == PyramidOrigin.TOP_LEFT ||
+               value == PyramidOrigin.TOP_RIGHT ||
+               value == PyramidOrigin.BOTTOM_RIGHT ||
+               value == PyramidOrigin.BOTTOM_LEFT
     }
 }
 

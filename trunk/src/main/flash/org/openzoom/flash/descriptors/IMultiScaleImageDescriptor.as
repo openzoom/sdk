@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,12 +37,12 @@ public interface IMultiScaleImageDescriptor
     //----------------------------------
     //  width
     //----------------------------------
-    
+
     /**
      * Returns the intrinsic width of the image in pixels.
-     */ 
+     */
     function get width() : uint
-    
+
     //----------------------------------
     //  height
     //----------------------------------
@@ -51,52 +51,63 @@ public interface IMultiScaleImageDescriptor
      * Returns the intrinsic height of the image in pixels.
      */
     function get height() : uint
-      
+
     //----------------------------------
     //  numLevels
     //----------------------------------
-    
+
     /**
-     * Returns the number of levels of this object. 
-     */ 
+     * Returns the number of levels of this object.
+     */
     function get numLevels() : int
-    
+
     //----------------------------------
     //  tileWidth
     //----------------------------------
-    
+
     /**
      * Returns the width of a single tile of the image pyramid in pixels.
-     */ 
+     */
     function get tileWidth() : uint
-    
+
     //----------------------------------
     //  tileHeight
     //----------------------------------
-    
+
     /**
      * Returns the height of a single tile of the image pyramid in pixels.
-     */ 
+     */
     function get tileHeight() : uint
-    
+
     //----------------------------------
     //  tileOverlap
     //----------------------------------
-    
+
     /**
      * Returns the tile overlap in pixels.
      * @default 0
      */
     function get tileOverlap() : uint
-      
+
     //----------------------------------
     //  type
     //----------------------------------
-      
+
     /**
      * Returns the mime-type of the image pyramid tiles, e.g. &lt;image/jpeg&gt; or &lt;image/png&gt;.
      */
     function get type() : String
+
+    //----------------------------------
+    //  origin
+    //----------------------------------
+
+    /**
+     * Returns the origin of the coordinate system for addressing tiles.
+     *
+     * @default topLeft
+     */
+    function get origin() : String
 
     //--------------------------------------------------------------------------
     //
@@ -146,10 +157,10 @@ public interface IMultiScaleImageDescriptor
     //  Methods: Utility
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Returns a copy of this object.
-     */ 
+     */
     function clone() : IMultiScaleImageDescriptor
 }
 

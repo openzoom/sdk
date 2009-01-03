@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -59,12 +59,12 @@ import org.openzoom.flash.renderers.MultiScaleImageRenderer;
  * Microsoft Silverlight Deep Zoom MultiScaleImage control.</a>
  * This implementation has built-in support for Zoomify, Deep Zoom and OpenZoom images.
  * Basic keyboard and mouse navigation can be added by specifying viewport controllers through the <code>controllers</code> property.
- * The animation can be customized by adding a viewport transformer through the <code>transformer</code> property. 
+ * The animation can be customized by adding a viewport transformer through the <code>transformer</code> property.
  * Zoom, visibility or custom constraints can be added through the <code>constraint</code> property.
  */
 public final class MultiScaleImage extends MultiScaleImageBase
 {
-	//--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     //
     //  Constructor
     //
@@ -73,65 +73,65 @@ public final class MultiScaleImage extends MultiScaleImageBase
     /**
      * Constructor.
      */
-	public function MultiScaleImage()
-	{
-		super()
-		
-//		tabEnabled = false
-//		tabChildren = true
-	}
-	
-	//--------------------------------------------------------------------------
+    public function MultiScaleImage()
+    {
+        super()
+
+//        tabEnabled = false
+//        tabChildren = true
+    }
+
+    //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var url : String
     private var urlLoader : URLLoader
-    
+
     private var image : MultiScaleImageRenderer
-    
-	//--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  source
     //----------------------------------
-    
+
     private var _source : IMultiScaleImageDescriptor
-    
+
     /**
      * Source of this image. Either a URL as String or an
      * instance of IMultiScaleImageDescriptor.
-     * 
+     *
      * @see org.openzoom.flash.descriptors.IMultiScaleImageDescriptor
-     */ 
+     */
     public function get source() : Object
     {
-    	return _source
+        return _source
     }
-    
+
     public function set source( value : Object ) : void
-    {    	
-    	if( _source )
-    	{
-    		_source = null
-	        container.removeChildAt( 0 )
-	        viewport.showAll( true )
-    	}
-    	
-    	if( value is String )
-    	{
-    		if( url == String( value ))
+    {
+        if( _source )
+        {
+            _source = null
+            container.removeChildAt( 0 )
+            viewport.showAll( true )
+        }
+
+        if( value is String )
+        {
+            if( url == String( value ))
                 return
-    		  
-    		url = String( value )
-    		urlLoader = new URLLoader( new URLRequest( url ))
-    		
+
+            url = String( value )
+            urlLoader = new URLLoader( new URLRequest( url ))
+
             urlLoader.addEventListener( Event.COMPLETE,
                                         urlLoader_completeHandler,
                                         false, 0, true )
@@ -141,30 +141,30 @@ public final class MultiScaleImage extends MultiScaleImageBase
             urlLoader.addEventListener( SecurityErrorEvent.SECURITY_ERROR,
                                         urlLoader_securityErrorHandler,
                                         false, 0, true )
-    	}
-    	
-    	if( value is IMultiScaleImageDescriptor )
-    	{
+        }
+
+        if( value is IMultiScaleImageDescriptor )
+        {
             _source = IMultiScaleImageDescriptor( value )
             addImage( _source )
-    	}
+        }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
     private function addImage( descriptor : IMultiScaleImageDescriptor ) : void
     {
-        var aspectRatio : Number = descriptor.width / descriptor.height 
+        var aspectRatio : Number = descriptor.width / descriptor.height
         var sceneWidth : Number
         var sceneHeight : Number
-        
+
         if( aspectRatio > 1 )
         {
             sceneWidth  = DEFAULT_SCENE_DIMENSION
@@ -175,20 +175,20 @@ public final class MultiScaleImage extends MultiScaleImageBase
             sceneWidth  = DEFAULT_SCENE_DIMENSION * aspectRatio
             sceneHeight = DEFAULT_SCENE_DIMENSION
         }
-        
+
         // resize scene
         container.sceneWidth  = sceneWidth
         container.sceneHeight = sceneHeight
-        
+
         // create renderer
         image = createImage( descriptor,
                              container.loader,
                              sceneWidth,
                              sceneHeight )
-                             
+
         container.addChild( image )
     }
-    
+
     /**
      * @private
      */
@@ -201,13 +201,13 @@ public final class MultiScaleImage extends MultiScaleImageBase
                 new MultiScaleImageRenderer( descriptor, loader, width, height )
         return image
     }
-    
-	//--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -215,21 +215,21 @@ public final class MultiScaleImage extends MultiScaleImageBase
     {
         if( !urlLoader || !urlLoader.data )
             return
-    	
+
         var data : XML = new XML( urlLoader.data )
         var factory : MultiScaleImageDescriptorFactory =
                                   MultiScaleImageDescriptorFactory.getInstance()
         var descriptor : IMultiScaleImageDescriptor =
                                               factory.getDescriptor( url, data )
-        
+
         _source = descriptor
         addImage( descriptor )
-        
+
         viewport.showAll( true )
-        
+
         dispatchEvent( event )
     }
-    
+
     /**
      * @private
      */
@@ -237,7 +237,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
     {
         dispatchEvent( event )
     }
-    
+
     /**
      * @private
      */

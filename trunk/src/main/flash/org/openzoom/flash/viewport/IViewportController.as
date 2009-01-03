@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -35,24 +35,24 @@ public interface IViewportController
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  view
     //----------------------------------
-    
+
     /**
      * Indicates the display object the controller receives events from.
-     */ 
+     */
     function get view() : DisplayObject
     function set view( value : DisplayObject ) : void
-    
+
     //----------------------------------
     //  viewport
     //----------------------------------
-    
+
     /**
      * Indicates the viewport this controller acts upon.
-     */ 
+     */
     function get viewport() : INormalizedViewport
     function set viewport( value : INormalizedViewport ) : void
 }

@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ package org.openzoom.flash.utils
 
 /**
  * Simple Base16 encoder / decoder.
- * 
+ *
  * @see http://tools.ietf.org/html/rfc3548
  */
 public class Base16
@@ -33,41 +33,41 @@ public class Base16
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
-	/**
-	 * Returns the decoded value of the Base16 encoded String <code>value</code>.
-	 */
-	public static function decode( value : String,
-	                               ignoreCase : Boolean = false ) : String
-	{
-		var result : String = ""
+
+    /**
+     * Returns the decoded value of the Base16 encoded String <code>value</code>.
+     */
+    public static function decode( value : String,
+                                   ignoreCase : Boolean = false ) : String
+    {
+        var result : String = ""
         var l : int = value.length
-        
-        if (l % 2 != 0)
-            throw new ArgumentError("Argument is not a valid Base16 encoded String.")
-        
-        for (var i:int = 0; i < l; i += 2)
+
+//        if (l % 2 != 0)
+//            throw new ArgumentError("Argument is not a valid Base16 encoded String.")
+
+        for( var i : int = 0; i < l; i += 2 )
         {
-            var s : int = parseInt(value.substr(i, 2), 16)
-            result += String.fromCharCode(s)
+            var s : int = parseInt( value.substr( i, 2 ), 16 )
+            result += String.fromCharCode( s )
         }
-        
+
         return result
-	}
-	
-	/**
-	 * Returns the Base16 encoded String of <code>value</code>.
-	 */
-	public static function encode( value : String ) : String
-	{
+    }
+
+    /**
+     * Returns the Base16 encoded String of <code>value</code>.
+     */
+    public static function encode( value : String ) : String
+    {
         var result:String = ""
         var l:int = value.length
-        
-        for (var i:int = 0; i < l; i++)
-            result += value.charCodeAt(i).toString(16)
-        
+
+        for( var i : int = 0; i < l; i++ )
+            result += value.charCodeAt( i ).toString( 16 )
+
         return result.toUpperCase()
-	}
+    }
 }
 
 }

@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ public class ViewportEvent extends Event
     //  Constructor
     //
     //--------------------------------------------------------------------------
-  
+
     /**
      * Constructor.
      */
@@ -56,30 +56,30 @@ public class ViewportEvent extends Event
                                    oldTransform : IViewportTransform = null )
     {
         super( type, bubbles, cancelable )
-        
-        _oldTransform = oldTransform    
+
+        _oldTransform = oldTransform
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-  
+
     //----------------------------------
     //  oldTransform
     //----------------------------------
-  
+
     private var _oldTransform : IViewportTransform
-    
+
     /**
      * The transform that was previously applied to the viewport.
-     */ 
+     */
     public function get oldTransform() : IViewportTransform
     {
         return _oldTransform
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Overriden methods: Event
@@ -88,7 +88,7 @@ public class ViewportEvent extends Event
 
     /**
      * @inheritDoc
-     */ 
+     */
     override public function clone() : Event
     {
         return new ViewportEvent( type, bubbles, cancelable, oldTransform )

@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import org.openzoom.flash.net.ILoadingItem;
 
 /**
  * @private
- */	
+ */
 public class LoadingItemEvent extends Event
 {
     //--------------------------------------------------------------------------
@@ -35,16 +35,16 @@ public class LoadingItemEvent extends Event
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     public static const COMPLETE : String = "complete"
     public static const ERROR    : String = "error"
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
      */
@@ -54,26 +54,26 @@ public class LoadingItemEvent extends Event
     {
         super( type, bubbles, cancelable )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     public var data : * = null
     public var context : * = null
     public var item : ILoadingItem
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Event
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     override public function clone() : Event
     {
         return new LoadingItemEvent( type, bubbles, cancelable )

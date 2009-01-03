@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ public class MemoryMonitor extends Sprite
     //  Constructor
     //
     //--------------------------------------------------------------------------
-  
+
     /**
      *  Constructor.
      */
@@ -51,18 +51,18 @@ public class MemoryMonitor extends Sprite
         createBackground()
         createLabel()
         layout()
-    
+
         addEventListener( Event.ENTER_FRAME,
                           enterFrameHandler,
                           false, 0, true )
     }
-  
+
     //--------------------------------------------------------------------------
     //
     //  Children
     //
-    //--------------------------------------------------------------------------        
-      
+    //--------------------------------------------------------------------------
+
     private var label : TextField
     private var background : Shape
 
@@ -71,55 +71,55 @@ public class MemoryMonitor extends Sprite
     //  Methods
     //
     //--------------------------------------------------------------------------
-  
+
     private function createBackground() : void
     {
         background = new Shape()
-    
+
         var g : Graphics = background.graphics
         g.beginFill( 0x000000 )
         g.drawRoundRect( 0, 0, 70, 24, 0 )
         g.endFill()
-    
+
         addChildAt( background, 0 )
     }
-  
+
     private function createLabel() : void
     {
         label = new TextField()
-    
+
         var textFormat : TextFormat = new TextFormat()
         textFormat.size = 11
         textFormat.font = "Arial"
         textFormat.bold = true
         textFormat.align = TextFormatAlign.CENTER
         textFormat.color = 0xFFFFFF
-    
+
         label.defaultTextFormat = textFormat
         label.antiAliasType = AntiAliasType.ADVANCED
         label.autoSize = TextFieldAutoSize.LEFT
         label.selectable = false
-        
+
         addChild( label )
     }
-  
+
     private function layout() : void
     {
         // center label
         label.x = ( background.width - label.width ) / 2
         label.y = ( background.height - label.height ) / 2
     }
-  
+
     //--------------------------------------------------------------------------
     //
     //  Event Handlers
     //
     //--------------------------------------------------------------------------
-      
+
     private function enterFrameHandler( event : Event ) : void
     {
         var memoryConsumption : Number = System.totalMemory / 1024 / 1024
-    
+
         label.text = memoryConsumption.toFixed( 2 ).toString() + "MiB"
         layout()
     }

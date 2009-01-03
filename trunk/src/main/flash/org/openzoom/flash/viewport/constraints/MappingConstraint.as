@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
  * @private
- * 
+ *
  * Viewport constraint that ensures that the viewport only reaches zoom
  * values that are powers of two. Very useful for mapping application where
  * map tiles contain text labels and best look at scales that are power of two.
@@ -38,60 +38,60 @@ public class MappingConstraint implements IViewportConstraint
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
-    private static const LOG2_3 : Number = 1.5849625007211563 
-   
+
+    private static const LOG2_3 : Number = 1.5849625007211563
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-	
-	/**
-	 * Constructor.
-	 */
+
+    /**
+     * Constructor.
+     */
     public function MappingConstraint()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IViewportConstraint
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function validate( transform : IViewportTransform,
                               target : IViewportTransform ) : IViewportTransform
     {
         transform.scale = roundToPowerOf2( transform.scale )
         return transform
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     private function roundToPowerOf2( value : Number ) : Number
-    {        
+    {
         // snap to scale that are powers of two
         // most map tiles look best that way
         var exp : Number = Math.log( value ) / Math.LN2
         var r : Number = exp - Math.floor( exp )
-        
+
         var n : Number
         if( r < LOG2_3 - 1 )
             n = Math.floor( exp )
         else
             n = Math.ceil( exp )
-        
+
         if( n == 0 )
             n = 1
-        
+
         return Math.pow( 2, n )
     }
 }

@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,10 +31,10 @@ import flash.net.URLLoader;
 import flash.net.URLRequest;
 
 import org.openzoom.flash.events.LoadingItemEvent;
-    
+
 /**
  * @private
- * 
+ *
  * Represents a single item to load from a URL.
  */
 internal class URLLoadingItem extends EventDispatcher
@@ -45,7 +45,7 @@ internal class URLLoadingItem extends EventDispatcher
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
      */
@@ -54,26 +54,26 @@ internal class URLLoadingItem extends EventDispatcher
         this.url = url
         this.context = context
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var context : *
     private var loader : URLLoader
     private var url : String
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function load() : void
     {
        var request : URLRequest = new URLRequest( url )
@@ -81,31 +81,31 @@ internal class URLLoadingItem extends EventDispatcher
        addEventListeners( loader )
        loader.load( request )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
     private function contentLoaderInfo_completeHandler( event : Event ) : void
     {
         var data : String = loader.data
-        
+
         cleanUp()
-        
+
         var loadingItemEvent : LoadingItemEvent =
                                new LoadingItemEvent( LoadingItemEvent.COMPLETE )
             loadingItemEvent.item = this
             loadingItemEvent.data = data
             loadingItemEvent.context = context
-            
+
         dispatchEvent( loadingItemEvent )
     }
-    
+
     /**
      * @private
      */
@@ -114,14 +114,14 @@ internal class URLLoadingItem extends EventDispatcher
     {
         // FIXME
 //        cleanUp()
-        
+
         var itemEvent : LoadingItemEvent =
                                   new LoadingItemEvent( LoadingItemEvent.ERROR )
             itemEvent.item = this
-            
+
         dispatchEvent( itemEvent )
     }
-    
+
     /**
      * @private
      */
@@ -130,14 +130,14 @@ internal class URLLoadingItem extends EventDispatcher
     {
         // FIXME
 //        cleanUp()
-        
+
         var itemEvent : LoadingItemEvent =
                 new LoadingItemEvent( LoadingItemEvent.ERROR )
             itemEvent.item = this
-            
+
         dispatchEvent( itemEvent )
     }
-    
+
     /**
      * @private
      */
@@ -146,37 +146,37 @@ internal class URLLoadingItem extends EventDispatcher
     {
         // FIXME
 //        cleanUp()
-        
+
         var itemEvent : LoadingItemEvent =
                 new LoadingItemEvent( LoadingItemEvent.ERROR )
             itemEvent.item = this
-            
+
         dispatchEvent( itemEvent )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     private function cleanUp() : void
     {
         removeEventListeners( loader )
         loader = null
     }
-    
+
     /**
      * @private
-     */ 
+     */
     private function addEventListeners( target : IEventDispatcher ) : void
     {
        target.addEventListener( Event.COMPLETE,
                                 contentLoaderInfo_completeHandler,
-                                false, 0, true )           
+                                false, 0, true )
        target.addEventListener( HTTPStatusEvent.HTTP_STATUS,
                                 contentLoaderInfo_httpStatusHandler,
                                 false, 0, true )
@@ -187,14 +187,14 @@ internal class URLLoadingItem extends EventDispatcher
                                 contentLoaderInfo_securityErrorHandler,
                                 false, 0, true )
     }
-    
+
     /**
      * @private
-     */ 
+     */
     private function removeEventListeners( target : IEventDispatcher ) : void
     {
         target.removeEventListener( Event.COMPLETE,
-                                    contentLoaderInfo_completeHandler )           
+                                    contentLoaderInfo_completeHandler )
         target.removeEventListener( HTTPStatusEvent.HTTP_STATUS,
                                     contentLoaderInfo_httpStatusHandler )
         target.removeEventListener( IOErrorEvent.IO_ERROR,

@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,48 +29,48 @@ import flash.geom.Rectangle;
  * Provides the basic getter / setter skeletons.
  */
 public class MultiScaleImageDescriptorBase
-{    
+{
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  source
     //----------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     protected var source : String
-  
+
     //----------------------------------
     //  width
     //----------------------------------
-    
+
     /**
      * @private
-     */   
+     */
     protected var _width : uint
-  
+
     /**
      * @copy IMultiScaleImageDescriptor#width
-     */ 
+     */
     public function get width() : uint
     {
         return _width
     }
-    
+
     //----------------------------------
     //  height
     //----------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     protected var _height : uint
-  
+
     /**
      * @copy IMultiScaleImageDescriptor#height
      */
@@ -78,16 +78,16 @@ public class MultiScaleImageDescriptorBase
     {
         return _height
     }
-    
+
     //----------------------------------
     //  numLevels
     //----------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     protected var _numLevels : int
-  
+
     /**
      * @copy IMultiScaleImageDescriptor#numLevels
      */
@@ -102,9 +102,9 @@ public class MultiScaleImageDescriptorBase
 
     /**
      * @private
-     */     
+     */
     protected var _tileWidth : uint
-  
+
     /**
      * @copy IMultiScaleImageDescriptor#tileWidth
      */
@@ -112,16 +112,16 @@ public class MultiScaleImageDescriptorBase
     {
         return _tileWidth
     }
-        
+
     //----------------------------------
     //  tileHeight
     //----------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     protected var _tileHeight : uint
-  
+
     /**
      * @copy IMultiScaleImageDescriptor#tileHeight
      */
@@ -129,16 +129,16 @@ public class MultiScaleImageDescriptorBase
     {
         return _tileHeight
     }
-    
+
     //----------------------------------
     //  tileOverlap
     //----------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     protected var _tileOverlap : uint = 0
-  
+
     /**
      * @copy IMultiScaleImageDescriptor#tileOverlap
      */
@@ -146,16 +146,16 @@ public class MultiScaleImageDescriptorBase
     {
         return _tileOverlap
     }
-    
+
     //----------------------------------
     //  type
     //----------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     protected var _type : String
-  
+
     /**
      * @copy IMultiScaleImageDescriptor#type
      */
@@ -163,13 +163,30 @@ public class MultiScaleImageDescriptorBase
     {
         return _type
     }
-    
+
+    //----------------------------------
+    //  origin
+    //----------------------------------
+
+    /**
+     * @private
+     */
+    protected var _origin : String = "topLeft"
+
+    /**
+     * @copy IMultiScaleImageDescriptor#origin
+     */
+    public function get origin() : String
+    {
+        return _origin
+    }
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleImageDescriptor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @copy IMultiScaleImageDescriptor#getTileBounds()
      */
@@ -180,30 +197,30 @@ public class MultiScaleImageDescriptorBase
         var offsetX : uint = ( column == 0 ) ? 0 : tileOverlap
         var offsetY : uint = ( row    == 0 ) ? 0 : tileOverlap
 
-        bounds.x = ( column * tileWidth )  - offsetX 
+        bounds.x = ( column * tileWidth )  - offsetX
         bounds.y = ( row    * tileHeight ) - offsetY
 
         return bounds
     }
-    
+
     /**
      * @copy IMultiScaleImageDescriptor#existsTile()
      */
     public function existsTile( level : int, column : uint, row : uint ) : Boolean
     {
-    	// By default, all tiles exist
-    	return true
+        // By default, all tiles exist
+        return true
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Debug
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function toString() : String
     {
         return "source:" + source + "\n" +

@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,11 +21,11 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.Bitmap;  
+import flash.display.Bitmap;
 
 /**
  * @private
- * 
+ *
  * Multi-scale image tile.
  */
 public class Tile
@@ -35,7 +35,7 @@ public class Tile
     //  Constructor
     //
     //--------------------------------------------------------------------------
-  
+
     /**
      * Constructor.
      */
@@ -57,61 +57,61 @@ public class Tile
     //  Properties
     //
     //--------------------------------------------------------------------------
-        
+
     //----------------------------------
     //  bitmap
     //----------------------------------
-  
+
     public var bitmap : Bitmap
-        
+
     //----------------------------------
     //  level
     //----------------------------------
-  
-    private var _level : int 
-    
+
+    private var _level : int
+
     public function get level() : int
     {
         return _level
     }
-        
+
     //----------------------------------
     //  column
     //----------------------------------
-    
-    private var _column : uint 
-    
+
+    private var _column : uint
+
     public function get column() : uint
     {
         return _column
     }
-        
+
     //----------------------------------
     //  row
     //----------------------------------
-    
-    private var _row : uint 
-    
+
+    private var _row : uint
+
     public function get row() : uint
     {
         return _row
     }
-        
+
     //----------------------------------
     //  overlap
     //----------------------------------
-    
-    private var _overlap : uint = 0 
-    
+
+    private var _overlap : uint = 0
+
     public function get overlap() : uint
     {
         return _overlap
     }
-    
+
     //----------------------------------
     //  hashCode
-    //---------------------------------- 
-    
+    //----------------------------------
+
     public function get hashCode() : int
     {
         return int( level.toString() + column.toString() + row.toString() )

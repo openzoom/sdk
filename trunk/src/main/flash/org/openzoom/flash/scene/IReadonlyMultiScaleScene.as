@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -39,32 +39,32 @@ public interface IReadonlyMultiScaleScene extends IEventDispatcher
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  sceneWidth
     //----------------------------------
-    
-	/**
-	 * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
-	 */
-	function get sceneWidth() : Number
-  
+
+    /**
+     * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
+     */
+    function get sceneWidth() : Number
+
     //----------------------------------
     //  sceneHeight
     //----------------------------------
-	
+
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
      */
-	function get sceneHeight() : Number
-    
+    function get sceneHeight() : Number
+
     //----------------------------------
     //  targetCoordinateSpace
     //----------------------------------
-    
+
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#targetCoordinateSpace
-     */ 
+     */
     function get targetCoordinateSpace() : DisplayObject
 }
 

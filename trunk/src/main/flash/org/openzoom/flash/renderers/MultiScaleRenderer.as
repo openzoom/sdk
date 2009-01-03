@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 
 /**
  * @private
- * 
+ *
  * Multi-scale renderer base class.
  */
 public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
@@ -37,39 +37,39 @@ public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
-     */ 
+     */
     public function MultiScaleRenderer()
     {
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: IMultiScaleRenderer
     //
     //--------------------------------------------------------------------------
-        
+
     //----------------------------------
     //  viewport
     //----------------------------------
-    
+
     private var _viewport : INormalizedViewport
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function get viewport() : INormalizedViewport
     {
         return _viewport
     }
-    
+
     public function set viewport( value : INormalizedViewport ) : void
     {
         if( viewport === value )
             return
-        
+
         // remove old event listener
         if( viewport )
         {
@@ -80,9 +80,9 @@ public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
             viewport.removeEventListener( ViewportEvent.TRANSFORM_END,
                                           viewport_transformEndHandler )
         }
-        
+
         _viewport = value
-        
+
         // register new event listener
         if( viewport )
         {
@@ -94,27 +94,27 @@ public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
                                        viewport_transformEndHandler, false, 0, true )
         }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
     protected function viewport_transformStartHandler( event : ViewportEvent ) : void
     {
     }
-    
+
     /**
      * @private
      */
     protected function viewport_transformUpdateHandler( event : ViewportEvent ) : void
     {
     }
-    
+
     /**
      * @private
      */

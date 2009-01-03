@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,11 +26,11 @@ import flash.geom.Rectangle;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.MultiScaleImageLevelBase;
-	
+
 
 /**
  * @private
- * 
+ *
  * Represents a single level of a multi-scale
  * image pyramid described by an OpenZoom descriptor.
  */
@@ -45,7 +45,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
 
     /**
      * Constructor.
-     */ 
+     */
     public function MultiScaleImageLevel( descriptor : IMultiScaleImageDescriptor,
                                           index : int,
                                           width : uint,
@@ -55,10 +55,10 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
                                           uris : Array,
                                           pyramidOrigin : String = PyramidOrigin.TOP_LEFT )
     {
-    	this.descriptor = descriptor
-    	this.uris = uris
-    	this.pyramidOrigin = pyramidOrigin
-    	
+        this.descriptor = descriptor
+        this.uris = uris
+        this.pyramidOrigin = pyramidOrigin
+
         super( index, width, height, numColumns, numRows )
     }
 
@@ -67,19 +67,19 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var uris : Array /* of String */
     private var descriptor : IMultiScaleImageDescriptor
     private var pyramidOrigin : String = PyramidOrigin.TOP_LEFT
-    
+
     private static var uriIndex : uint = 0
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleImageLevel
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
      */
@@ -89,42 +89,42 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
         {
             if( ++uriIndex >= uris.length )
                 uriIndex = 0
-                
-        	var uri : String =  String( uris[ uriIndex ] )
-        	
-        	var computedColumn : uint
-        	var computedRow : uint
-        	
-        	switch( pyramidOrigin )
-        	{
-        		case PyramidOrigin.TOP_LEFT:
+
+            var uri : String =  String( uris[ uriIndex ] )
+
+            var computedColumn : uint
+            var computedRow : uint
+
+            switch( pyramidOrigin )
+            {
+                case PyramidOrigin.TOP_LEFT:
                     computedColumn = column
                     computedRow    = row
                     break
-                    
+
                 case PyramidOrigin.TOP_RIGHT:
                     computedColumn = numColumns - column
                     computedRow    = row
                     break
-                    
+
                 case PyramidOrigin.BOTTOM_RIGHT:
                     computedColumn = numColumns - column
                     computedRow    = numRows - row
                     break
-                    
+
                 case PyramidOrigin.BOTTOM_LEFT:
                     computedColumn = column
                     computedRow    = numRows - row
                     break
-        	}
-        	
-        	return uri.replace( /{column}/, computedColumn )
-        	          .replace( /{row}/, computedRow )
+            }
+
+            return uri.replace( /{column}/, computedColumn )
+                      .replace( /{row}/, computedRow )
         }
-        
+
         return ""
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -132,7 +132,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     {
         return descriptor.getTileBounds( index, column, row )
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -142,13 +142,13 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
                                          index, width, height,
                                          numColumns, numRows, uris.slice() )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Debug
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
      */

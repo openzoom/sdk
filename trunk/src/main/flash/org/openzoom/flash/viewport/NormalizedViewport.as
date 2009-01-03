@@ -2,7 +2,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2007–2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ import flash.geom.Rectangle;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.viewport.transformers.NullTransformer;
-import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 //------------------------------------------------------------------------------
 //
@@ -91,13 +90,13 @@ public class NormalizedViewport extends EventDispatcher
         _scene.addEventListener( Event.RESIZE,
                                  scene_resizeHandler,
                                  false, 0, true )
-        
+
         _transform = ViewportTransform.fromValues( 0, 0, 1, 1, 1,
                                                    viewportWidth,
                                                    viewportHeight,
                                                    scene.sceneWidth,
                                                    scene.sceneHeight )
-        transformer = NULL_TRANSFORMER        
+        transformer = NULL_TRANSFORMER
     }
 
     //--------------------------------------------------------------------------
@@ -111,7 +110,7 @@ public class NormalizedViewport extends EventDispatcher
     //----------------------------------
 
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -130,33 +129,33 @@ public class NormalizedViewport extends EventDispatcher
     //----------------------------------
 
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function get scale() : Number
     {
         return _transform.scale
     }
-     
+
     public function set scale( value : Number ) : void
     {
-    	var t : IViewportTransform = getTargetTransform()
+        var t : IViewportTransform = getTargetTransform()
         t.scale = value
-    	applyTransform( t )
+        applyTransform( t )
     }
- 
+
 //    //----------------------------------
 //    //  constraint
 //    //----------------------------------
-//    
+//
 //    private var _constraint : IViewportConstraint = NULL_CONSTRAINT
 //
 //    public function get constraint() : IViewportConstraint
 //    {
 //        return _constraint
 //    }
-//    
+//
 //    public function set constraint( value : IViewportConstraint ) : void
 //    {
 //        if( value )
@@ -177,7 +176,7 @@ public class NormalizedViewport extends EventDispatcher
 
     /**
      * @inheritDoc
-     */ 
+     */
     public function get transformer() : IViewportTransformer
     {
         return _transformer
@@ -188,19 +187,19 @@ public class NormalizedViewport extends EventDispatcher
      */
     public function set transformer( value : IViewportTransformer ) : void
     {
-    	if( _transformer )
-    	{
-    	   _transformer.stop()
-    	   
-    	   // FIXME: Something goes wrong here…
+        if( _transformer )
+        {
+           _transformer.stop()
+
+           // FIXME: Something goes wrong here...
 //           _transformer.viewport = null
-    	}
-    	
+        }
+
         if( value )
            _transformer = value
         else
            _transformer = NULL_TRANSFORMER
-           
+
         _transformer.viewport = this
     }
 
@@ -215,13 +214,13 @@ public class NormalizedViewport extends EventDispatcher
     private var _transform : IViewportTransform
 
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
     public function get transform() : IViewportTransform
-    {   	
-    	return _transform.clone()
+    {
+        return _transform.clone()
     }
 
     public function set transform( value : IViewportTransform ) : void
@@ -230,11 +229,11 @@ public class NormalizedViewport extends EventDispatcher
         _transform = value.clone()
         dispatchUpdateTransformEvent( oldTransform )
     }
-    
+
     //----------------------------------
     //  scene
     //----------------------------------
-    
+
     /**
      * @private
      * Storage for the scene property.
@@ -243,18 +242,18 @@ public class NormalizedViewport extends EventDispatcher
 
     /**
      * @inheritDoc
-     */ 
+     */
     public function get scene() : IReadonlyMultiScaleScene
     {
         return _scene
     }
-    
+
     //----------------------------------
     //  viewportWidth
     //----------------------------------
-    
+
     [Bindable(event="resize")]
-    
+
     /**
      * @inheritDoc
      */
@@ -262,13 +261,13 @@ public class NormalizedViewport extends EventDispatcher
     {
         return _transform.viewportWidth
     }
-    
+
     //----------------------------------
     //  viewportHeight
     //----------------------------------
-    
+
     [Bindable(event="resize")]
-    
+
     /**
      * @inheritDoc
      */
@@ -291,11 +290,11 @@ public class NormalizedViewport extends EventDispatcher
                             transformY : Number = 0.5,
                             immediately : Boolean = false ) : void
     {
-    	var t : IViewportTransform = getTargetTransform()
+        var t : IViewportTransform = getTargetTransform()
         t.zoomTo( zoom, transformX, transformY )
         applyTransform( t, immediately )
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -305,7 +304,7 @@ public class NormalizedViewport extends EventDispatcher
                             immediately : Boolean = false ) : void
     {
         var t : IViewportTransform = getTargetTransform()
-    	t.zoomBy( factor, transformX, transformY )
+        t.zoomBy( factor, transformX, transformY )
         applyTransform( t, immediately )
     }
 
@@ -325,7 +324,7 @@ public class NormalizedViewport extends EventDispatcher
         t.panTo( x, y )
         applyTransform( t, immediately )
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -351,14 +350,14 @@ public class NormalizedViewport extends EventDispatcher
     /**
      * @inheritDoc
      */
-    public function zoomToBounds( rect : Rectangle, scale : Number = 1.0, 
+    public function zoomToBounds( rect : Rectangle, scale : Number = 1.0,
                               immediately : Boolean = false ) : void
     {
         var t : IViewportTransform = getTargetTransform()
         t.zoomToBounds( rect, scale )
         applyTransform( t, immediately )
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -377,17 +376,17 @@ public class NormalizedViewport extends EventDispatcher
 
     /**
      * @inheritDoc
-     */ 
+     */
     public function localToScene( point : Point ) : Point
     {
         var p : Point = new Point()
-        p.x = ( x * scene.sceneWidth ) 
+        p.x = ( x * scene.sceneWidth )
               + ( point.x / viewportWidth )  * ( width  * scene.sceneWidth )
         p.y = ( y * scene.sceneHeight )
               + ( point.y / viewportHeight ) * ( height * scene.sceneHeight )
         return p
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -406,29 +405,37 @@ public class NormalizedViewport extends EventDispatcher
     //  Methods: IViewport / flash.geom.Rectangle
     //
     //--------------------------------------------------------------------------
-    
+
+    /**
+     * @inheritDoc
+     */
+    public function getBounds() : Rectangle
+    {
+    	return new Rectangle( x, y, width, height )
+    }
+
     /**
      * @inheritDoc
      */
     public function contains( x : Number, y : Number ) : Boolean
     {
-    	// FIXME: Delegate to Rectangle object.
+        // FIXME: Delegate to Rectangle object.
         return ( x >= left ) && ( x <= right ) && ( y >= top ) && ( y <= bottom )
     }
-    
+
     /**
      * @inheritDoc
      */
     public function intersects( toIntersect : Rectangle ) : Boolean
     {
-    	// FIXME: Circumvent normalization / denormalization
-    	var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
-                                                       y * scene.sceneHeight, 
+        // FIXME: Circumvent normalization / denormalization
+        var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
+                                                       y * scene.sceneHeight,
                                                        width * scene.sceneWidth,
                                                        height * scene.sceneHeight )
         return sceneViewport.intersects( denormalizeRectangle( toIntersect ))
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -436,7 +443,7 @@ public class NormalizedViewport extends EventDispatcher
     {
         // FIXME: Circumvent normalization / denormalization
         var sceneViewport : Rectangle = new Rectangle( x * scene.sceneWidth,
-                                                       y * scene.sceneHeight, 
+                                                       y * scene.sceneHeight,
                                                        width * scene.sceneWidth,
                                                        height * scene.sceneHeight )
         return sceneViewport.intersection( denormalizeRectangle( toIntersect ))
@@ -447,13 +454,13 @@ public class NormalizedViewport extends EventDispatcher
     //  Properties: IViewport
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  x
     //----------------------------------
-    
+
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -461,20 +468,20 @@ public class NormalizedViewport extends EventDispatcher
     {
         return _transform.x
     }
-    
+
     public function set x( value : Number ) : void
     {
-    	var t : IViewportTransform = getTargetTransform()
-    	t.x = value
-    	applyTransform( t )
+        var t : IViewportTransform = getTargetTransform()
+        t.x = value
+        applyTransform( t )
     }
-    
+
     //----------------------------------
     //  y
     //----------------------------------
-    
+
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -482,20 +489,20 @@ public class NormalizedViewport extends EventDispatcher
     {
        return _transform.y
     }
-    
+
     public function set y( value : Number ) : void
     {
         var t : IViewportTransform = getTargetTransform()
         t.y = value
         applyTransform( t )
     }
-    
+
     //----------------------------------
     //  width
     //----------------------------------
-    
+
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -503,20 +510,20 @@ public class NormalizedViewport extends EventDispatcher
     {
         return _transform.width
     }
-    
+
     public function set width( value : Number ) : void
     {
-    	var t : IViewportTransform = getTargetTransform()
-    	t.width = value
-    	applyTransform( t )
+        var t : IViewportTransform = getTargetTransform()
+        t.width = value
+        applyTransform( t )
     }
-    
+
     //----------------------------------
     //  height
     //----------------------------------
-    
+
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -524,20 +531,20 @@ public class NormalizedViewport extends EventDispatcher
     {
         return _transform.height
     }
-    
+
     public function set height( value : Number ) : void
     {
         var t : IViewportTransform = getTargetTransform()
         t.height = value
         applyTransform( t )
     }
-    
+
     //----------------------------------
     //  left
     //----------------------------------
-    
+
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -545,13 +552,13 @@ public class NormalizedViewport extends EventDispatcher
     {
         return _transform.left
     }
-    
+
     //----------------------------------
     //  right
     //----------------------------------
-    
+
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -559,13 +566,13 @@ public class NormalizedViewport extends EventDispatcher
     {
         return _transform.right
     }
-    
+
     //----------------------------------
     //  top
     //----------------------------------
-    
+
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -573,13 +580,13 @@ public class NormalizedViewport extends EventDispatcher
     {
         return _transform.top
     }
-    
+
     //----------------------------------
     //  bottom
     //----------------------------------
-    
+
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -587,13 +594,13 @@ public class NormalizedViewport extends EventDispatcher
     {
         return _transform.bottom
     }
-    
+
     //----------------------------------
     //  topLeft
     //----------------------------------
-    
+
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -601,13 +608,13 @@ public class NormalizedViewport extends EventDispatcher
     {
         return _transform.topLeft
     }
-    
+
     //----------------------------------
     //  bottomRight
     //----------------------------------
-    
+
     [Bindable(event="transformUpdate")]
-    
+
     /**
      * @inheritDoc
      */
@@ -621,7 +628,7 @@ public class NormalizedViewport extends EventDispatcher
     //  Methods: Transform Events
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
      */
@@ -629,7 +636,7 @@ public class NormalizedViewport extends EventDispatcher
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_START ))
     }
-    
+
     /**
      * @private
      * Dispatches a transformUpdate event along with a copy
@@ -641,7 +648,7 @@ public class NormalizedViewport extends EventDispatcher
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_UPDATE,
                            false, false, oldTransform ))
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -649,16 +656,16 @@ public class NormalizedViewport extends EventDispatcher
     {
         dispatchEvent( new ViewportEvent( ViewportEvent.TRANSFORM_END ))
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     private function getTargetTransform() : IViewportTransform
     {
         var t : IViewportTransform = transformer.target
@@ -673,7 +680,7 @@ public class NormalizedViewport extends EventDispatcher
     {
         transformer.transform( transform, immediately )
     }
-    
+
     /**
      * @private
      */
@@ -685,16 +692,16 @@ public class NormalizedViewport extends EventDispatcher
             ViewportTransform.fromValues( old.x, old.y,
                                           old.width, old.height, old.zoom,
                                           viewportWidth, viewportHeight,
-                                          _scene.sceneWidth, _scene.sceneHeight ) 
+                                          _scene.sceneWidth, _scene.sceneHeight )
         applyTransform( t, true )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IViewportContainer
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
      */
@@ -702,21 +709,21 @@ public class NormalizedViewport extends EventDispatcher
     {
         if( viewportWidth == width && viewportHeight == height )
             return
-        
+
         reinitializeTransform( width, height )
-        
+
         dispatchEvent( new ViewportEvent( ViewportEvent.RESIZE, false, false ))
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Coordinate conversion
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
-     */ 
+     */
     private function normalizeX( value : Number ) : Number
     {
         return value / scene.sceneWidth
@@ -729,7 +736,7 @@ public class NormalizedViewport extends EventDispatcher
     {
         return value / scene.sceneHeight
     }
-    
+
     /**
      * @private
      */
@@ -740,7 +747,7 @@ public class NormalizedViewport extends EventDispatcher
                               normalizeX( value.width ),
                               normalizeY( value.height ))
     }
-    
+
     /**
      * @private
      */
@@ -749,10 +756,10 @@ public class NormalizedViewport extends EventDispatcher
         return new Point( normalizeX( value.x ),
                           normalizeY( value.y ))
     }
-    
+
     /**
      * @private
-     */ 
+     */
     private function denormalizeX( value : Number ) : Number
     {
         return value * scene.sceneWidth
@@ -765,7 +772,7 @@ public class NormalizedViewport extends EventDispatcher
     {
         return value * scene.sceneHeight
     }
-    
+
     /**
      * @private
      */
@@ -774,7 +781,7 @@ public class NormalizedViewport extends EventDispatcher
         return new Point( denormalizeX( value.x ),
                           denormalizeY( value.y ))
     }
-    
+
     /**
      * @private
      */
@@ -785,34 +792,34 @@ public class NormalizedViewport extends EventDispatcher
                               denormalizeX( value.width ),
                               denormalizeY( value.height ))
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
     private function scene_resizeHandler( event : Event ) : void
     {
-    	reinitializeTransform( viewportWidth, viewportHeight )
+        reinitializeTransform( viewportWidth, viewportHeight )
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Debug
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
      */
     override public function toString() : String
     {
         return "[NormalizedViewport]" + "\n"
-               + "x=" + x + "\n" 
+               + "x=" + x + "\n"
                + "y=" + y  + "\n"
                + "z=" + zoom + "\n"
                + "w=" + width + "\n"
