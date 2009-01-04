@@ -22,6 +22,7 @@
 import elementtree.ElementTree as ET
 import deepzoom
 import math
+import os.path
 
 OPENZOOM_NAMESPACE = "http://ns.openzoom.org/openzoom/2008"
 
@@ -44,10 +45,7 @@ LEVEL_TEMPLATE_HEADER = """\
 """
 
 URI_TEMPLATE = """\
-            <uri template="http://t0.gasi.ch/rendezvous/%(photo_id)s/image_files/%(level)s/{column}_{row}.jpg"/>
-            <uri template="http://t1.gasi.ch/rendezvous/%(photo_id)s/image_files/%(level)s/{column}_{row}.jpg"/>
-            <uri template="http://t2.gasi.ch/rendezvous/%(photo_id)s/image_files/%(level)s/{column}_{row}.jpg"/>
-            <uri template="http://t3.gasi.ch/rendezvous/%(photo_id)s/image_files/%(level)s/{column}_{row}.jpg"/>\
+            <uri template="%(uri_template)s"/>\
 """
             
 LEVEL_TEMPLATE_FOOTER = """\
@@ -64,13 +62,25 @@ mime_type_map = { "jpg": "image/jpeg",
 
 
 class OpenZoomDescriptor(object):
-    def __init__(self, photo_id, uris=None):
-        self.photo_id = photo_id
-        if uris is None:
-            self.uris = []
-        self.uris = uris
+    def __init__(self):
+        self.uris = []
     
-    def __str__(self):
+    def open(self, source, type="openzoom"):
+        if type == "dzi":
+            self.source = source
+            self.provider = deepzoom.DZIDescriptor()
+            self.provider.open(source)
+        
+    def save(self, destination):
+        """Save descriptor file."""
+        file = open(destination, "w+")
+        file.write(self.get_xml())
+        file.close()
+        
+    def add_uri(self, uri):
+        self.uris.append(uri)
+    
+    def get_xml(self):
         dzi = self.provider
         out = ""
         out += DESCRIPTOR_TEMPLATE_HEADER%{"width": self.width,
@@ -85,15 +95,13 @@ class OpenZoomDescriptor(object):
             columns, rows = dzi.get_num_tiles(level)
             out += LEVEL_TEMPLATE_HEADER%{"width": width, "height": height,
                                           "columns": columns, "rows": rows} + "\n"
-            out += URI_TEMPLATE%{"level": level, "photo_id": self.photo_id} + "\n"
+            for uri in self.uris:
+                file_name = os.path.splitext(os.path.basename(self.source))[0]
+                uri += "/" + file_name + "_files/%(level)s/{column}_{row}.jpg"%{"level": level}
+                out += URI_TEMPLATE%{"uri_template": uri} + "\n"
             out += LEVEL_TEMPLATE_FOOTER + "\n"
         out += DESCRIPTOR_TEMPLATE_FOOTER
         return out
-    
-    def open(self, source, type="openzoom"):
-        if type == "dzi":
-            self.provider = deepzoom.DZIDescriptor()
-            self.provider.open(source)
        
     @property
     def width(self):
