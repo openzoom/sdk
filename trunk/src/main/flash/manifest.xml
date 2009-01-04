@@ -4,7 +4,7 @@
 //
 //  OpenZoom
 //
-//  Copyright (c) 2008, Daniel Gasienica <daniel@gasienica.ch>
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 //
 //  OpenZoom is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,9 +23,14 @@
 -->
 <componentPackage>	
 
+	<!-- Utils -->
+    <component id="ZOrder" class="org.openzoom.flash.utils.ZOrder"/>
+    <component id="ExternalMouseWheel" class="org.openzoom.flash.utils.ExternalMouseWheel"/>
+	
 	<!-- Controllers -->
     <component id="MouseController" class="org.openzoom.flash.viewport.controllers.MouseController"/>
     <component id="KeyboardController" class="org.openzoom.flash.viewport.controllers.KeyboardController"/>
+    <component id="ContextMenuController" class="org.openzoom.flash.viewport.controllers.ContextMenuController"/>
     
     <!-- Constraints -->
     <component id="VisibilityConstraint" class="org.openzoom.flash.viewport.constraints.VisibilityConstraint"/>
