@@ -2,7 +2,7 @@
 #
 #   OpenZoom Flickr Rendezvous
 #
-#   Copyright (c) 2007-2008, Daniel Gasienica <daniel@gasienica.ch>
+#   Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
 #
 #   OpenZoom is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -41,8 +41,8 @@ def photo_iter(flickr, user_id):
     response = flickr.people_getInfo(user_id=user_id)
     photo_count = int(response.find("person").find("photos").find("count").text)
     page_size = 500
-    num_pages = int(math.ceil(float(photo_count)/page_size))
-    for page in range(1,num_pages+1):
+    num_pages = int(math.ceil(float(photo_count) / page_size))
+    for page in range(1, num_pages + 1):
         response = flickr.people_getPublicPhotos(user_id=user_id, per_page=page_size, page=page)
         photos = response.getiterator("photo")
         for photo in photos:
@@ -78,8 +78,8 @@ def largest_photo_url(flickr, photo_id):
     photo_url = None
     for size in photo_size_iter(flickr, photo_id):
         w, h = int(size.attrib["width"]), int(size.attrib["height"])
-        if w*h > max_size:
-            max_size = w*h
+        if w * h > max_size:
+            max_size = w * h
             photo_url = size.attrib["source"]
     return photo_url
 
@@ -97,8 +97,9 @@ def reset_dir(path):
 
 def connect_flickr(key, secret):
     flickr = flickrapi.FlickrAPI(key, secret)
-    (token, frob) = flickr.get_token_part_one(perms = "write")
-    if not token: raw_input("Press ENTER after you authorized this program")
+    (token, frob) = flickr.get_token_part_one(perms="write")
+    if not token:
+        raw_input("Press ENTER after you authorized this program")
     flickr.get_token_part_two((token, frob))
     return flickr
 
@@ -119,19 +120,25 @@ def upload(ftp, file):
         ftp.storbinary("STOR " + name, open(file, "rb"), 1024)
 
 
-LOG_FILENAME = "log/rendezvous.log"
+LOG_FILENAME = "rendezvous.log"
 PRODUCTION = True
 
-SOURCE_TAG = u"rendezvous:source="
-SOURE_BASE16_TAG = u"rendezvous:base16source="
-URI_TEMPLATE = u"http://static.gasi.ch/rendezvous/%(photo_id)s/image.dzi" 
+OPENZOOM_SOURCE_TAG = u"openzoom:source="
+OPENZOOM_SOURE_BASE16_TAG = u"openzoom:base16source=" 
+SEADRAGON_SOURE_TAG = u"seadragon:source=" 
+SEADRAGON_SOURE_BASE16_TAG = u"seadragon:base16source=" 
 
 
 def main():
-    path = config.WORKING_DIR
+    # Temporary folder for creating image pyramids
+    tmp_dir = config.TMP_DIR
     
+    # Source folder for downloaded Flickr images (Never touch)
+    source_dir = config.SOURCE_DIR
+    
+    # Delete log and temporary folder when debugging
     if not PRODUCTION:
-        reset_dir(path)
+        reset_dir(tmp_dir)
         reset_dir(config.LOG_DIR)
     
     # Prepare Deep Zoom Tools
@@ -145,10 +152,12 @@ def main():
     logger = logging.getLogger("rendezvous")
     logger.setLevel(logging.DEBUG)
 
-    handler = logging.handlers.RotatingFileHandler(LOG_FILENAME, maxBytes=1024*250, backupCount=1000)
+    handler = logging.handlers.RotatingFileHandler(config.LOG_DIR + "/" + config.LOG_FILE,
+                                                   maxBytes=1024*1024, backupCount=100)
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+
 
     # Rendez-vous
     user_id = config.USER_ID
@@ -168,12 +177,12 @@ def main():
         logger.info(msg)
             
         # Download image
-        image_path = path + "/" + photo_id
-        local_file = image_path + os.path.splitext( photo_url )[1]
+        image_path = source_dir + "/" + photo_id
+        local_file = image_path + os.path.splitext(photo_url)[1]
         if not os.path.exists(local_file):
             msg = "DOWNLOAD >>> %s"%photo_id
             attempt = 1
-            for attempt in xrange(1, config.DOWNLOAD_RETRIES+1):
+            for attempt in xrange(1, config.DOWNLOAD_RETRIES + 1):
                 try:
                     urllib.urlretrieve(photo_url, local_file)
 #                    raise Exception
@@ -181,23 +190,24 @@ def main():
                     break
                 except:
                     logger.warning("DOWNLOAD ATTEMPT %s >>> %s"%(attempt, photo_id))
-                    if os.path.exists(local_file):
-                        try:
-                            os.remove(local_file)
-                        except:
-                            pass
+#                    if os.path.exists(local_file):
+#                        try:
+#                            os.remove(local_file)
+#                        except:
+#                            pass
                     continue
             if attempt == config.DOWNLOAD_RETRIES:
                 logger.error("DOWNLOAD >>> %s"%photo_id)
                 continue
             
         # Create pyramid
-        base_name = image_path + "/image"
-        dzi_file = base_name + ".dzi"
+        pyramid_path = tmp_dir + "/" + photo_id
+        descriptor_base_name = pyramid_path + "/image"
+        dzi_file = descriptor_base_name + ".dzi"
         if not os.path.exists(dzi_file):
             msg = "PYRAMID >>> %s >>> %s"%(photo_id,local_file)
             attempt = 1
-            for attempt in xrange(1, config.PYRAMID_RETRIES+1):
+            for attempt in xrange(1, config.PYRAMID_RETRIES + 1):
                 try:
                     image_creator.create(local_file, dzi_file)
 #                    raise Exception
@@ -205,38 +215,52 @@ def main():
                     break
                 except:
                     logger.warning("PYRAMID ATTEMPT %s >>> %s >>> %s"%(attempt, photo_id, local_file))
-                    if os.path.exists(image_path):
+                    if os.path.exists(pyramid_path):
                         try:
-                            shutil.rmtree(image_path)
+                            shutil.rmtree(pyramid_path)
                         except:
                             pass
                     continue
             if attempt == config.PYRAMID_RETRIES:
-                logger.error("PYRAMID >>> %s >>> %s"%(photo_id, local_file))
+                logger.error(msg)
                 continue
 
         # Create OpenZoom descriptor
-        try:
-            descriptor = openzoom.OpenZoomDescriptor(photo_id=photo_id)
-            descriptor.load(dzi_file)
-            f = open(base_name + ".xml", "w+")
-            f.write(str(descriptor))
-            f.close()
-            logger.info("DESCRIPTOR >>> %s"%(photo_id))
-        except:
-            logger.error("DESCRIPTOR >>> %s"%(photo_id))
-            continue
-        
-        ftp.cwd("/")
+        ozi_file = descriptor_base_name + ".xml"
+        if not os.path.exists(ozi_file):
+            msg = "DESCRIPTOR >>> %s"%(photo_id)
+            attempt = 1
+            for attempt in xrange(1, config.DESCRIPTOR_RETRIES + 1):
+                try:
+                    descriptor = openzoom.OpenZoomDescriptor()
+                    descriptor.open(dzi_file, "dzi")
+                    for uri in config.EXTRA_URI:
+                        uri_template = uri + "/%(photo_id)s"%{"photo_id": photo_id}
+                        descriptor.add_uri(uri_template)
+                    descriptor.save(ozi_file)
+                    logger.info(msg)
+                    break
+                except:
+                    logger.warning("DESCRIPTOR ATTEMPT %s >>> %s"%(attempt, photo_id))
+                    continue
+            if attempt == config.DESCRIPTOR_RETRIES:
+                logger.error(msg)
+                continue
+
+        # Upload to FTP
+        root_path = config.FTP_PATH
+        ftp.cwd(root_path)
+            
         try:
             ftp.mkd(photo_id)
         except:
             logger.info("UPLOAD SKIP >>> %s"%photo_id)
             continue
         
-        os.chdir(path)
+        old_path = os.path.abspath(os.curdir)
+        os.chdir(tmp_dir)
         for dirpath, dirs, files in os.walk(photo_id):
-            ftp.cwd("/" + dirpath)
+            ftp.cwd(root_path + "/" + dirpath)
             for dir in dirs:
                 try:
                     ftp.mkd(dir)
@@ -244,31 +268,46 @@ def main():
                     pass
             for file in files:
                 attempt = 1
-                for attempt in xrange(1, config.FTP_RETRIES+1):
+                for attempt in xrange(1, config.FTP_RETRIES + 1):
                     try:
-                        upload(ftp, os.path.join(dirpath,file))
+                        upload(ftp, os.path.join(dirpath, file))
 #                        raise Exception
                         break
                     except:
-                        f = os.path.join(dirpath,file)
+                        f = os.path.join(dirpath, file)
                         logger.warning("UPLOAD ATTEMPT %s >>> %s >>> %s"%(attempt, photo_id, f))
                         continue
                 if attempt == config.FTP_RETRIES:
                     logger.error("UPLOAD >>> %s >>> %s"%(photo_id,f))
                     
-        os.chdir("..")
+        os.chdir(old_path)
         logger.info("UPLOAD >>> %s"%photo_id)
         
         # Delete pyramid
-#        shutil.rmtree(path + "/" + photo_id)
-#        print "Image pyramid deleted. OK."
+        msg = "PYRAMID CLEANUP >>> %s"%photo_id
+        try:
+            shutil.rmtree(pyramid_path)
+            logger.info(msg)
+        except:
+            logger.error(msg)
 
         # Set machine tags
-        tag = SOURCE_TAG + URI_TEMPLATE%{"photo_id": photo_id}
-        flickr.photos_addTags(photo_id=photo_id,tags=tag)
+        descriptor_base_name_uri = config.MAIN_URI + "/" + photo_id + "/image"
+        openzoom_uri = descriptor_base_name_uri + ".xml"
+        dzi_uri = descriptor_base_name_uri + ".dzi"
         
-        tag = SOURE_BASE16_TAG + base64.b16encode(URI_TEMPLATE%{"photo_id": photo_id})
-        flickr.photos_addTags(photo_id=photo_id,tags=tag)
+        tag = OPENZOOM_SOURCE_TAG + openzoom_uri
+        flickr.photos_addTags(photo_id=photo_id, tags=tag)
+        
+        tag = OPENZOOM_SOURE_BASE16_TAG + base64.b16encode(openzoom_uri)
+        flickr.photos_addTags(photo_id=photo_id, tags=tag)
+
+        tag = SEADRAGON_SOURE_TAG + dzi_uri
+        flickr.photos_addTags(photo_id=photo_id, tags=tag)
+        
+        tag = SEADRAGON_SOURE_BASE16_TAG + base64.b16encode(dzi_uri)
+        flickr.photos_addTags(photo_id=photo_id, tags=tag)
+
         logger.info("MACHINE TAG >>> %s"%photo_id)
             
     # Clean up
