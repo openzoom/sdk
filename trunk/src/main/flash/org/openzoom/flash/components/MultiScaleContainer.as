@@ -344,6 +344,11 @@ public final class MultiScaleContainer extends Sprite
     {
         _scene.setChildIndex( child, index )
     }
+    
+    override public function getChildAt( index : int ) : DisplayObject
+    {
+    	return _scene.getChildAt( index )
+    }
 
     //--------------------------------------------------------------------------
     //

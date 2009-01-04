@@ -278,8 +278,8 @@ public class SceneNavigator extends Sprite
         var v : INormalizedViewport = viewport
         var targetX : Number      = clamp( v.x, 0, 1 - v.width ) * backgroundWidth
         var targetY : Number      = clamp( v.y, 0, 1 - v.height ) * backgroundHeight
-        var targetWidth : Number  = clamp( v.width ) * backgroundWidth
-        var targetHeight : Number = clamp( v.height ) * backgroundHeight
+        var targetWidth : Number  = clamp( v.width, 0, 1 ) * backgroundWidth
+        var targetHeight : Number = clamp( v.height, 0, 1 ) * backgroundHeight
 
         // enable / disable window dragging
         if( viewport.transformer.target.width >= 1

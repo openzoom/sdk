@@ -26,7 +26,7 @@ package org.openzoom.flash.utils
  *
  * @see http://tools.ietf.org/html/rfc3548
  */
-public class Base16
+public final class Base16
 {
     //--------------------------------------------------------------------------
     //

@@ -46,7 +46,7 @@ public class ContextMenuController extends ViewportControllerBase
 
     // Context Menu
     private static const FULL_SCREEN_MENU_NORMAL_CAPTION : String = "Fullscreen\t\t\tF"
-    private static const FULL_SCREEN_MENU_EXIT_CAPTION   : String = "Exit Fullscreenf\t\tF"
+    private static const FULL_SCREEN_MENU_EXIT_CAPTION   : String = "Exit Fullscreen\t\tF"
 
     private static const SHOW_ALL_MENU_CAPTION           : String = "Show All\t\t\tH"
 
