@@ -42,7 +42,8 @@ DEEPZOOM_NAMESPACE = "http://schemas.microsoft.com/deepzoom/2008"
 
 DZI_TEMPLATE = """\
 <?xml version="1.0" encoding="UTF-8"?>
-<Image TileSize="%(tile_size)s" Overlap="%(tile_overlap)s" Format="%(tile_format)s" xmlns="http://schemas.microsoft.com/deepzoom/2008">
+<Image TileSize="%(tile_size)s" Overlap="%(tile_overlap)s" \
+Format="%(tile_format)s" xmlns="http://schemas.microsoft.com/deepzoom/2008">
     <Size Width="%(width)s" Height="%(height)s"/>
 </Image>"""
 
@@ -60,7 +61,8 @@ image_format_map = {
     }
 
 class DZIDescriptor(object):
-    def __init__(self, width=None, height=None, tile_size=256, tile_overlap=1, tile_format="jpg"):
+    def __init__(self, width=None, height=None,
+                 tile_size=256, tile_overlap=1, tile_format="jpg"):
         self.width = width
         self.height = height
         self.tile_size = tile_size
@@ -68,7 +70,7 @@ class DZIDescriptor(object):
         self.tile_format = tile_format
         self._num_levels = None
     
-    def load(self, source):
+    def open(self, source):
         """Intialize descriptor from an existing descriptor file."""
         tree = ET.parse(source)
         image = tree.getroot()
@@ -90,7 +92,8 @@ class DZIDescriptor(object):
     def num_levels(self):
         """Number of levels in the pyramid."""
         if self._num_levels is None:
-            self._num_levels = int(math.ceil(math.log(max((self.width, self.height)), 2))) + 1
+            max_dimension = max(self.width, self.height)
+            self._num_levels = int(math.ceil(math.log(max_dimension, 2))) + 1
         return self._num_levels
     
     def get_scale(self, level):
@@ -103,7 +106,9 @@ class DZIDescriptor(object):
         """Dimensions of level (width, height)"""
         assert 0 <= level and level < self.num_levels, "Invalid pyramid level"
         scale = self.get_scale(level)
-        return int(math.ceil(self.width * scale)), int(math.ceil(self.height * scale))
+        width = int(math.ceil(self.width * scale))
+        height = int(math.ceil(self.height * scale))
+        return (width, height) 
 
     def get_num_tiles(self, level):
         """Number of tiles (columns, rows)"""
@@ -127,11 +132,38 @@ class DZIDescriptor(object):
         w = min(w, level_width  - x)
         h = min(h, level_height - y)
         
-        return x, y, x + w, y + h
+        return (x, y, x + w, y + h)
+
+
+class Image(object):
+    """Represents a Deep Zoom image."""
+    def __init__(self, path):
+        self.path = path
+        
+    viewportOrigin = (0.0, 0.0)
+    viewportWidth = 1.0
+    max_viewport_width = None
+    min_viewport_width = None
+
+
+class CollectionCreator(object):
+    """Creates Deep Zoom collections."""
+    def __init__(self, image_quality=0.95, tile_size=256,
+                 max_level=8, tile_format="jpg", copy_metadata=True):
+        self.image_quality = image_quality
+        self.tile_size = tile_size
+        self.max_level = max_level
+        self.tile_format = tile_format
+        self.copy_metadata = copy_metadata
+        
+    def create(self, images, destination):
+        pass
+
 
 class ImageCreator(object):
     """Creates Deep Zoom images."""
-    def __init__(self, tile_size=256, tile_overlap=1, tile_format="jpg", image_quality=0.95, resize_filter=None):
+    def __init__(self, tile_size=256, tile_overlap=1, tile_format="jpg",
+                image_quality=0.95, resize_filter=None):
         self.tile_size = int(tile_size)
         self.tile_format = tile_format
         self.tile_overlap = _clamp(int(tile_overlap), 0, 10)
@@ -140,45 +172,52 @@ class ImageCreator(object):
             self.tile_format = "jpg"            
         self.resize_filter = resize_filter
     
-    def get_level_image(self, level):
+    def get_image(self, level):
         """Returns the bitmap image at the given level."""
         assert 0 <= level and level < self.descriptor.num_levels, "Invalid pyramid level"
-        w, h = self.descriptor.get_dimensions(level)
+        width, height = self.descriptor.get_dimensions(level)
         # don't transform to what we already have
-        if self.descriptor.width == w and self.descriptor.height == h: 
+        if self.descriptor.width == width and self.descriptor.height == height: 
             return self.image
         if self.resize_filter is None:
-            return self.image.resize((w, h), PIL.Image.ANTIALIAS) 
-        return self.image.resize((w, h), self.resize_filter)
+            return self.image.resize((width, height), PIL.Image.ANTIALIAS) 
+        return self.image.resize((width, height), self.resize_filter)
     
     def tiles(self, level):
-        """Iterator for all tiles in the given level. Returns (column, row), bounds of a tile."""
+        """Iterator for all tiles in the given level. Returns (column, row) of a tile."""
         columns, rows = self.descriptor.get_num_tiles(level)
         for column in xrange(columns):
             for row in xrange(rows):
-                yield (column, row), (self.descriptor.get_tile_bounds(level, column, row))
+                yield (column, row)
 
     def create(self, source, destination):
         """Creates Deep Zoom image from source file and saves it to destination."""
         self.image = PIL.Image.open(source)
         width, height = self.image.size
-        self.descriptor = DZIDescriptor(width=width, height=height, tile_size=self.tile_size,
-                                        tile_overlap=self.tile_overlap, tile_format=self.tile_format)
+        self.descriptor = DZIDescriptor(width=width,
+                                        height=height,
+                                        tile_size=self.tile_size,
+                                        tile_overlap=self.tile_overlap,
+                                        tile_format=self.tile_format)
         destination = _expand(destination)
         image_name = os.path.splitext(os.path.basename(destination))[0]
-        image_files = _ensure(os.path.join(_ensure(os.path.dirname(destination)), "%s_files"%image_name))
+        dir_name = os.path.dirname(destination)
+        image_files = _ensure(os.path.join(_ensure(dir_name), "%s_files"%image_name))
         
         # Create tiles
         for level in xrange(self.descriptor.num_levels):
             level_dir = _ensure(os.path.join(image_files, str(level)))
-            level_image = self.get_level_image(level)
-            for (column, row), bounds in self.tiles(level):
+            level_image = self.get_image(level)
+            for (column, row) in self.tiles(level):
+                bounds = self.descriptor.get_tile_bounds(level, column, row)
                 tile = level_image.crop(bounds)
                 format = self.descriptor.tile_format
-                tile_path = os.path.join(level_dir, "%s_%s.%s"%(column, row, format))
+                tile_path = os.path.join(level_dir,
+                                         "%s_%s.%s"%(column, row, format))
                 tile_file = open(tile_path, "wb+")
                 if self.descriptor.tile_format == "jpg":
-                    tile.save(tile_file, "JPEG", quality=int(self.image_quality * 100))
+                    tile.save(tile_file, "JPEG",
+                              quality=int(self.image_quality * 100))
                 tile.save(tile_file)
                 
         # Create descriptor
@@ -204,23 +243,24 @@ def _clamp(val, min, max):
 
 ################################################################################
 
-# Standalone
 def main():
     parser = optparse.OptionParser(usage="Usage: %prog [options] filename")
     
     parser.add_option("-d", "--destination", dest="destination",
-                      help="Set the destination of the output")
+                      help="Set the destination of the output.")
     
     parser.add_option("-s", "--tile_size", dest="tile_size", type="int",
-                      default=256, help="Size of the tiles. Default 256")
+                      default=256, help="Size of the tiles. Default: 256")
     parser.add_option("-f", "--tile_format", dest="tile_format",
-                      default="jpg", help="Image format of the tiles (jpg or png). Default: jpg")
+                      default="jpg", help="Image format of the tiles \
+                                          (jpg or png). Default: jpg")
     parser.add_option("-o", "--tile_overlap", dest="tile_overlap", type="int",
-                      default=1, help="Overlap of the tiles in pixels (0-10). Default 1")
+                      default=1, help="Overlap of the tiles in pixels (0-10). Default: 1")
     parser.add_option("-q", "--image_quality", dest="image_quality", type="float",
-                      default=0.95, help="Quality of the image output (0-1). Default 0.95")
+                      default=0.95, help="Quality of the image output (0-1). Default: 0.95")
     parser.add_option("-r", "--resize_filter", dest="resize_filter", default="antialias",
-                      help="Type of filter for resizing (bicubic, nearest, bilinear, antialias (best). Default: antialias")
+                      help="Type of filter for resizing (bicubic, nearest, \
+                            bilinear, antialias (best). Default: antialias")
 
     (options, args) = parser.parse_args()
 
@@ -236,11 +276,13 @@ def main():
     if not options.destination:
         options.destination = os.path.splitext(source)[0] + ".dzi"
     if options.resize_filter and options.resize_filter in resize_filter_map:
-        options.resize_filter = resize_filter_map[ options.resize_filter ]
+        options.resize_filter = resize_filter_map[options.resize_filter]
 
-    creator = ImageCreator(tile_size=options.tile_size, tile_format=options.tile_format,
-                           image_quality=options.image_quality, resize_filter=options.resize_filter)
+    creator = ImageCreator(tile_size=options.tile_size,
+                           tile_format=options.tile_format,
+                           image_quality=options.image_quality,
+                           resize_filter=options.resize_filter)
     creator.create(source, options.destination)
-    
+
 if __name__ == "__main__":
     main()
