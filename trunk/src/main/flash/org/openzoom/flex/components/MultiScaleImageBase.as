@@ -35,8 +35,6 @@ import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
 
 /**
- * @private
- *
  * Base class for MultiScaleImage and DeepZoomContainer.
  */
 public class MultiScaleImageBase extends UIComponent implements IMultiScaleContainer
@@ -137,8 +135,8 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      * Viewport transformer. Transformers are used to create the transitions
      * between transformations of the viewport.
      *
-     * @see org.openzoom.flash.viewport.transformers.NullTransformer
      * @see org.openzoom.flash.viewport.transformers.TweenerTransformer
+     * @see org.openzoom.flash.viewport.transformers.NullTransformer
      */
     public function get transformer() : IViewportTransformer
     {
@@ -209,6 +207,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      *
      * @see org.openzoom.flash.viewport.controllers.MouseController
      * @see org.openzoom.flash.viewport.controllers.KeyboardController
+     * @see org.openzoom.flash.viewport.controllers.ContextMenuController
      */
     public function get controllers() : Array
     {

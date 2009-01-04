@@ -94,8 +94,7 @@ public final class ExternalMouseWheel extends EventDispatcher
             var win = window;
             var doc = document;
             var nav = navigator;
-            var ExternalMouseWheel = window.ExternalMouseWheel = function( id )
-            {
+            var ExternalMouseWheel = window.ExternalMouseWheel = function( id ) {
                 this.setUp( id );
                 if( ExternalMouseWheel.browser.msie )
                     this.bind4msie();
@@ -103,59 +102,48 @@ public final class ExternalMouseWheel extends EventDispatcher
                     this.bind();
             };
 
-            ExternalMouseWheel.prototype =
-            {
-                setUp: function( id )
-                {
+            ExternalMouseWheel.prototype = {
+                setUp: function(id) {
                     var el = doc.getElementById(id);
-                    if( el.nodeName.toLowerCase() == 'embed' ||
-                        ExternalMouseWheel.browser.safari )
+                    if( el.nodeName.toLowerCase() == 'embed'
+                        || ExternalMouseWheel.browser.safari )
                         el = el.parentNode;
                     this.target = el;
                     this.eventType = ExternalMouseWheel.browser.mozilla
                                        ? 'DOMMouseScroll' : 'mousewheel';
                 },
-                bind: function()
-                {
-                    this.target.addEventListener( this.eventType,
-                    function( evt )
-                    {
+                bind: function() {
+                    this.target.addEventListener(this.eventType,
+                    function(evt) {
                         var target, name, delta = 0;
-                        if( /XPCNativeWrapper/.test(evt.toString()))
-                        {
+                        if (/XPCNativeWrapper/.test(evt.toString())) {
                             if (!evt.target.id)
                                 return;
-                            target = doc.getElementById( evt.target.id );
-                        }
-                        else
-                        {
+                            target = doc.getElementById(evt.target.id);
+                        } else {
                             target = evt.target;
                         }
                         name = target.nodeName.toLowerCase();
-                        if( name != 'object' && name != 'embed' )
-                            return;
+                        if (name != 'object' && name != 'embed') return;
                         evt.preventDefault();
                         evt.returnValue = false;
                         if( !target.externalMouseEvent )
                             return;
-                        switch( true )
-                        {
-                            case ExternalMouseWheel.browser.mozilla:
-                                delta = -evt.detail;
-                                break;
-                            default:
-                                delta = evt.wheelDelta / 80;
-                                break;
+                        switch( true ) {
+                        case ExternalMouseWheel.browser.mozilla:
+                            delta = -evt.detail;
+                            break;
+                        default:
+                            delta = evt.wheelDelta / 80;
+                            break;
                         }
-                        target.externalMouseEvent( delta );
+                        target.externalMouseEvent(delta);
                     },
                     false);
                 },
-                bind4msie: function()
-                {
+                bind4msie: function() {
                     var _wheel, _unload, target = this.target;
-                    _wheel = function()
-                    {
+                    _wheel = function() {
                         var evt = win.event,
                         delta = 0,
                         name = evt.srcElement.nodeName.toLowerCase();
@@ -167,21 +155,17 @@ public final class ExternalMouseWheel extends EventDispatcher
                         delta = evt.wheelDelta / 80;
                         target.externalMouseEvent( delta );
                     };
-                    _unload = function()
-                    {
-                        target.detachEvent( 'onmousewheel', _wheel );
-                        win.detachEvent( 'onunload', _unload );
+                    _unload = function() {
+                        target.detachEvent('onmousewheel', _wheel);
+                        win.detachEvent('onunload', _unload);
                     };
-                    target.attachEvent( 'onmousewheel', _wheel );
-                    win.attachEvent( 'onunload', _unload );
+                    target.attachEvent('onmousewheel', _wheel);
+                    win.attachEvent('onunload', _unload);
                 }
             };
 
-            ExternalMouseWheel.browser = (
-            function( ua )
-            {
-                return
-                {
+            ExternalMouseWheel.browser = (function(ua) {
+                return {
                     chrome:    /chrome/.test(ua),
                     stainless: /stainless/.test(ua),
                     safari:    /webkit/.test(ua) && !/(chrome|stainless)/.test(ua),
@@ -189,33 +173,28 @@ public final class ExternalMouseWheel extends EventDispatcher
                     msie:      /msie/.test(ua) && !/opera/.test(ua),
                     mozilla:   /mozilla/.test(ua) && !/(compatible|webkit)/.test(ua)
                 }
-            })( nav.userAgent.toLowerCase());
+            })(nav.userAgent.toLowerCase());
 
-            ExternalMouseWheel.join = function( id )
-            {
-                var t = setInterval( function()
-                                     {
-                                        if( doc.getElementById( id ))
-                                        {
-                                            clearInterval( t );
-                                            new ExternalMouseWheel( id );
-                                        }
-                                     },
-                                     0 );
+            ExternalMouseWheel.join = function( id ) {
+                var t = setInterval(function() {
+                    if (doc.getElementById( id )) {
+                        clearInterval( t );
+                        new ExternalMouseWheel( id );
+                    }
+                },
+                0);
             };
 
-            ExternalMouseWheel.force = function( id )
-            {
-                if( ExternalMouseWheel.browser.safari ||
-                    ExternalMouseWheel.browser.stainless )
+            ExternalMouseWheel.force = function(id) {
+                if( ExternalMouseWheel.browser.safari
+                    || ExternalMouseWheel.browser.stainless )
                     return true;
-                var el = doc.getElementById( id ),
+                var el = doc.getElementById(id),
                 name = el.nodeName.toLowerCase();
                 if( name == 'object' )
                 {
                     var k, v, param, params = el.getElementsByTagName('param');
-                    for( var i = 0; i < params.length; i++ )
-                    {
+                    for (var i = 0; i < params.length; i++) {
                         param = params[i];
                         k = param.getAttribute( 'name' );
                         v = param.getAttribute( 'value' ) || '';
@@ -225,7 +204,7 @@ public final class ExternalMouseWheel extends EventDispatcher
                 }
                 else if( name == 'embed' )
                 {
-                    return /(opaque|transparent)/i.test( el.getAttribute( 'wmode' ));
+                    return /(opaque|transparent)/i.test(el.getAttribute('wmode'));
                 }
                 return false;
             };

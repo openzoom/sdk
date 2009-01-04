@@ -24,7 +24,7 @@ package org.openzoom.flash.net
 import flash.events.IEventDispatcher;
 
 /**
- * Interface for loading items.
+ * Interface for loading items in a queue.
  */
 public interface ILoadingQueue extends IEventDispatcher
 {

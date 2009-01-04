@@ -30,18 +30,18 @@ import flash.geom.Point;
  * laying out tiles in collections. Creates beautiful fractal layouts.
  *
  * @see http://en.wikipedia.org/wiki/Z-order_(curve)
- * @http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx#Collections
- * @http://graphics.stanford.edu/~seander/bithacks.html#InterleaveTableObvious
+ * @see http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx#Collections
+ * @see http://graphics.stanford.edu/~seander/bithacks.html#InterleaveTableObvious
  */
 public final class ZOrder
 {
-/**
- * Returns the position (column, row) of a given Morton number.
- *
- * @param value Z-order (Morton number)
- *
- * @return Position of the Z-order in space (column, row)
- */
+    /**
+     * Returns the position (column, row) of a given Morton number.
+     *
+     * @param value Z-order (Morton number)
+     *
+     * @return Position of the Z-order in space (column, row)
+     */
     public static function getPosition( value : uint ) : Point
     {
         var column : uint

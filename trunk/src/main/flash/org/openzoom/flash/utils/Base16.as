@@ -22,7 +22,7 @@ package org.openzoom.flash.utils
 {
 
 /**
- * Simple Base16 encoder / decoder.
+ * Simple Base16 encoder/decoder.
  *
  * @see http://tools.ietf.org/html/rfc3548
  */

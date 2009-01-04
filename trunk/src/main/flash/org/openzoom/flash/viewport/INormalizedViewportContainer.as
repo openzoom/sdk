@@ -21,6 +21,9 @@
 package org.openzoom.flash.viewport
 {
 
+/**
+ * Interface for the viewport container (owner).
+ */
 public interface INormalizedViewportContainer extends INormalizedViewport
 {
     //--------------------------------------------------------------------------
