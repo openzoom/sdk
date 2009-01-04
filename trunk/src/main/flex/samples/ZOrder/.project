@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>OpenZoomFlex</name>
+	<name>ZOrder</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -15,16 +15,4 @@
 		<nature>com.adobe.flexbuilder.project.flexnature</nature>
 		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>[source path] flash</name>
-			<type>2</type>
-			<locationURI>OPENZOOM/src/main/flash</locationURI>
-		</link>
-		<link>
-			<name>bin-debug</name>
-			<type>2</type>
-			<location>/Users/dani/Documents/workspace/openzoom/target/main/flex/debug</location>
-		</link>
-	</linkedResources>
 </projectDescription>
