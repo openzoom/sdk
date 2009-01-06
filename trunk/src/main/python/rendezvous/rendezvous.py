@@ -35,6 +35,7 @@ import shutil
 import zipfile
 
 
+
 # FLICKR ITERATORS
 
 def photo_iter(flickr, user_id):
@@ -141,7 +142,7 @@ def main():
         reset_dir(tmp_dir)
         reset_dir(config.LOG_DIR)
     
-    # Prepare Deep Zoom Tools
+    # Prepare Deep Zoom Tools with default parameters
     image_creator = deepzoom.ImageCreator()
 
     # Connect
@@ -168,6 +169,33 @@ def main():
         
         print "--------------------------------------------"
         logger.info("BEGIN >>> %s"%photo_id)
+        
+        # Skip photo if we found openzoom tags
+        logger.info("CHECK MACHINE TAGS >>> %s"%photo_id)
+        openzoom_source_found = False
+        openzoom_source_base16_found = False
+        seadragon_source_found = False
+        seadragon_source_base16_found = False
+
+        for tag in machine_tag_iter(flickr, photo_id):
+            raw_tag = tag.attrib["raw"]
+            prelude = raw_tag.partition("=")[0]
+            namespace, _, predicate = prelude.partition(":")
+            if namespace == "openzoom":
+                if predicate == "source":
+                    openzoom_source_found = True
+                if predicate == "base16source":
+                    openzoom_source_base16_found = True
+            if namespace == "seadragon":
+                if predicate == "source":
+                    seadragon_source_found = True
+                if predicate == "base16source":
+                    seadragon_source_base16_found = True
+        if (openzoom_source_found and openzoom_source_base16_found and
+            seadragon_source_found and seadragon_source_base16_found):
+            logger.info("SKIP >>> %s"%photo_id)
+            continue
+            
             
         photo_url = largest_photo_url(flickr, photo_id)
         msg = "FLICKR URL >>> %s"%photo_id
@@ -249,7 +277,11 @@ def main():
 
         # Upload to FTP
         root_path = config.FTP_PATH
-        ftp.cwd(root_path)
+        try:
+            ftp.cwd(root_path)
+        except:
+            ftp = connect_ftp(config.FTP_HOST, config.FTP_USER, config.FTP_PASSWORD)
+            ftp.cwd(root_path)
             
         try:
             ftp.mkd(photo_id)
