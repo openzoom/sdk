@@ -24,27 +24,29 @@
 <componentPackage>	
 
 	<!-- Utils -->
-    <component id="ZOrder" class="org.openzoom.flash.utils.ZOrder"/>
     <component id="ExternalMouseWheel" class="org.openzoom.flash.utils.ExternalMouseWheel"/>
+    <component id="ZOrder" class="org.openzoom.flash.utils.ZOrder"/>
 	
 	<!-- Controllers -->
-    <component id="MouseController" class="org.openzoom.flash.viewport.controllers.MouseController"/>
-    <component id="KeyboardController" class="org.openzoom.flash.viewport.controllers.KeyboardController"/>
     <component id="ContextMenuController" class="org.openzoom.flash.viewport.controllers.ContextMenuController"/>
+    <component id="KeyboardController" class="org.openzoom.flash.viewport.controllers.KeyboardController"/>
+    <component id="MouseController" class="org.openzoom.flash.viewport.controllers.MouseController"/>
     
     <!-- Constraints -->
-    <component id="VisibilityConstraint" class="org.openzoom.flash.viewport.constraints.VisibilityConstraint"/>
-    <component id="ZoomConstraint" class="org.openzoom.flash.viewport.constraints.ZoomConstraint"/>
     <component id="CenterConstraint" class="org.openzoom.flash.viewport.constraints.CenterConstraint"/>
     <component id="CompositeConstraint" class="org.openzoom.flash.viewport.constraints.CompositeConstraint"/>
     <component id="NullConstraint" class="org.openzoom.flash.viewport.constraints.NullConstraint"/>
+    <component id="ScaleConstraint" class="org.openzoom.flash.viewport.constraints.ScaleConstraint"/>
+    <component id="VisibilityConstraint" class="org.openzoom.flash.viewport.constraints.VisibilityConstraint"/>
+    <component id="ZoomConstraint" class="org.openzoom.flash.viewport.constraints.ZoomConstraint"/>
     
     <!-- Transformers -->
-    <component id="TweenerTransformer" class="org.openzoom.flash.viewport.transformers.TweenerTransformer"/>
     <component id="NullTransformer" class="org.openzoom.flash.viewport.transformers.NullTransformer"/>
+    <component id="TweenerTransformer" class="org.openzoom.flash.viewport.transformers.TweenerTransformer"/>
 	
 	<!-- Flex Components -->
-    <component id="MultiScaleImage" class="org.openzoom.flex.components.MultiScaleImage"/>
     <component id="DeepZoomContainer" class="org.openzoom.flex.components.DeepZoomContainer"/>
+    <component id="MultiScaleContainer" class="org.openzoom.flex.components.MultiScaleContainer"/>
+    <component id="MultiScaleImage" class="org.openzoom.flex.components.MultiScaleImage"/>
 
 </componentPackage>
