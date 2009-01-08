@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Taishet: OpenZoom Inline Image Replacement &mdash OpenZoom.org</title>
+		<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("input.enter").click(function(){ enhanceImages(); });
+			 })
+			function enhanceImages() {
+				$('img').each(function() {
+					var width = $(this).attr('width');
+					var height = $(this).attr('height');
+	                var image = '<img src="' + $(this).attr('src') + '" width="' + width + '" height="' + height + '">';
+					var openzoom = $(this).attr('openzoom:source');
+					var seadragon = $(this).attr('seadragon:source');
+					
+					// Who's the lucky one? :)
+					descriptor = ( Math.random() > 0.5 ) ? openzoom : seadragon;
+                    var viewer = getOpenZoomEmbedHTML( openzoom, width, height, image );
+					   
+					var links = '<a href="' + openzoom + '">OpenZoom Descriptor</a> | <a href="' + seadragon + '">Deep Zoom Descriptor</a>';
+					viewer += '<br/>' + links;
+					$(this).replaceWith( viewer );
+				});
+			}
+			
+			function getOpenZoomEmbedHTML(source, width, height, alternate) {
+				return '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="'+ width +'" height="'+ height +'" id="viewer" name="viewer">' +
+                       '  <param name="movie" value="lib/openzoom/OpenZoomViewer.swf"/>' +
+                       '  <param name="scale" value="noscale" />' +
+                       '  <param name="bgcolor" value="#000000" />' +
+                       '  <param name="allowfullscreen" value="true"/>' +
+                       '  <param name="allowscriptaccess" value="always" />' +
+                       '  <param name="flashvars" value="source=' + source + '"/>' +
+                       '  <!--[if !IE]>-->' +
+                       '  <object type="application/x-shockwave-flash" data="lib/openzoom/OpenZoomViewer.swf" width="'+ width +'" height="'+ height +'" name="viewer">' +
+                       '    <param name="scale" value="noscale" />' +
+                       '    <param name="bgcolor" value="#000000" />' +
+                       '    <param name="allowfullscreen" value="true" />' +
+                       '    <param name="allowscriptaccess" value="always" />' +
+                       '    <param name="flashvars" value="source=' + source + '"/>' +
+                       '  <!--<![endif]-->' +
+                       + alternate +
+                       '  <!--[if !IE]>--> ' +
+                       '  </object>' +
+                       '  <!--<![endif]-->' +
+                       '</object>';
+			}
+		</script>
+        <style type="text/css">
+            body {
+                font-family: Helvetica, Arial, sans-serif;
+            }
+            p.footnote {
+                font-size: 80%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Taishet: OpenZoom Inline Image Replacement</h1>
+        <p><input type="button" value="Enter a World of Zooming&hellip;" class="enter" />
+        <p><img src="images/carina-nebula/small.jpg" width="240" height="116" openzoom:source="images/carina-nebula/image.xml" seadragon:source="images/carina-nebula/image.dzi"/></p>
+        <p><img src="images/carina-nebula/medium.jpg" width="500" height="242" openzoom:source="images/carina-nebula/image.xml" seadragon:source="images/carina-nebula/image.dzi"/></p>
+        <p><img src="images/carina-nebula/large.jpg" width="1024" height="496" openzoom:source="images/carina-nebula/image.xml" seadragon:source="images/carina-nebula/image.dzi"/></p>
+        <p class="footnote">Proof of concept by Daniel Gasienica, January 2009</p>
+    </body>
+</html>
