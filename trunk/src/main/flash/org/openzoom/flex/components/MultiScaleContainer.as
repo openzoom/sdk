@@ -67,7 +67,7 @@ public final class MultiScaleContainer extends UIComponent
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT           : Number = 18000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
-    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0
+    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.0
 
     //--------------------------------------------------------------------------
     //
@@ -257,7 +257,8 @@ public final class MultiScaleContainer extends UIComponent
     //  children
     //----------------------------------
 
-    private var _children : Array = []
+    private var _children : Array
+    private var childrenChanged : Boolean = false
 
     public function get children() : Array
     {
@@ -266,12 +267,12 @@ public final class MultiScaleContainer extends UIComponent
 
     public function set children( value : Array ) : void
     {
-        // remove all existing children
-        while( numChildren > 0 )
-            removeChildAt( 0 )
-
-        for each( var child : DisplayObject in value )
-            addChild( child )
+    	if( _children != value )
+    	{
+    		_children = value
+    		childrenChanged = true
+    		invalidateProperties()
+    	}
     }
 
     //--------------------------------------------------------------------------
@@ -366,6 +367,16 @@ public final class MultiScaleContainer extends UIComponent
     {
         super.commitProperties()
 
+        if( childrenChanged )
+        {
+	        // remove all existing children
+	        while( numChildren > 0 )
+	            removeChildAt( 0 )
+	
+//	        for each( var child : DisplayObject in _children )
+//	            _scene.addItem( child )
+        }
+
         if( sceneWidthChanged || sceneHeightChanged )
         {
            _scene.sceneWidth = sceneWidth
@@ -454,7 +465,7 @@ public final class MultiScaleContainer extends UIComponent
 
     override public function addChild( child : DisplayObject ) : DisplayObject
     {
-        return addChildAt( child, numChildren )
+        return addChildAt( child, Math.max( 0, numChildren - 1 ))
     }
 
     override public function removeChild( child : DisplayObject ) : DisplayObject

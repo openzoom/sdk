@@ -18,7 +18,7 @@
 		<link>
 			<name>[source path] src</name>
 			<type>2</type>
-			<location>/Applications/Adobe Flex Builder 3 Plug-in/sdks/3.2.0/frameworks/projects/framework/src</location>
+			<locationURI>OPENZOOM/tools/sdk/flex_sdk_%2534.0.0.%25340%25321_mpl/frameworks/projects/framework/src</locationURI>
 		</link>
 		<link>
 			<name>bin-debug</name>

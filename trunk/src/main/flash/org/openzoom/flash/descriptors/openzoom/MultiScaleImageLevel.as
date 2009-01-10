@@ -53,7 +53,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
                                           numColumns : uint,
                                           numRows : uint,
                                           uris : Array,
-                                          pyramidOrigin : String = PyramidOrigin.TOP_LEFT )
+                                          pyramidOrigin : String = "topLeft" )
     {
         this.descriptor = descriptor
         this.uris = uris

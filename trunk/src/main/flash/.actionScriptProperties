@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="OpenZoomViewer.as" version="3">
-<compiler additionalCompilerArguments="" copyDependentFiles="false" enableModuleDebug="true" flexSDK="Flex 3.2" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="OPENZOOM/target/main/flash/debug" outputFolderPath="bin-debug" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<actionScriptProperties mainApplicationPath="OpenZoomFramework.as" version="3">
+<compiler additionalCompilerArguments="" copyDependentFiles="false" enableModuleDebug="true" flexSDK="Flex 4.0 MPL" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="OPENZOOM/target/main/flash/debug" outputFolderPath="bin-debug" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath>
-<compilerSourcePathEntry kind="1" linkType="1" path="${PROJECT_FRAMEWORKS}/projects/framework/src"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/tools/sdk/flex_sdk_4.0.0.4021_mpl/frameworks/projects/framework/src"/>
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path="">
@@ -25,7 +25,7 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
-<application path="OpenZoomViewer.as"/>
+<application path="OpenZoomFramework.as"/>
 </applications>
 <modules/>
 <buildCSSFiles/>

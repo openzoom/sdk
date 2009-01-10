@@ -30,7 +30,7 @@ import flash.geom.Point;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.net.LoadingQueue;
+import org.openzoom.flash.net.NetworkQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
@@ -97,7 +97,7 @@ public class MultiScaleImageViewer extends Sprite
 //        createLegacyViewport( _scene )
 
         // loading queue
-        var loadingQueue : LoadingQueue = new LoadingQueue()
+        var loadingQueue : NetworkQueue = new NetworkQueue()
 
         // create renderers
         for( var i : int = 0; i < 10; i++ )
@@ -382,7 +382,7 @@ public class MultiScaleImageViewer extends Sprite
     }
 
     private function createImage( descriptor : IMultiScaleImageDescriptor,
-                                  loader : LoadingQueue,
+                                  loader : NetworkQueue,
                                   width : Number, height : Number ) : MultiScaleImageRenderer
     {
         var image : MultiScaleImageRenderer =

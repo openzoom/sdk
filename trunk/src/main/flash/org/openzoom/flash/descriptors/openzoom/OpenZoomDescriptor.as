@@ -109,7 +109,8 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
                 break
         }
 
-        return getLevelAt( clamp( level.index, 0, numLevels - 1 )).clone()
+        // FIXME
+        return getLevelAt( clamp( level.index + 1, 0, numLevels - 1 )).clone()
     }
 
     /**

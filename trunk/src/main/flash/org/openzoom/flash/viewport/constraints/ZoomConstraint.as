@@ -35,8 +35,8 @@ public class ZoomConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_MIN_ZOOM : Number = 0.25
-    private static const DEFAULT_MAX_ZOOM : Number = 8000
+    private static const DEFAULT_MIN_ZOOM : Number = 0.000001
+    private static const DEFAULT_MAX_ZOOM : Number = 10000000
 
     //--------------------------------------------------------------------------
     //

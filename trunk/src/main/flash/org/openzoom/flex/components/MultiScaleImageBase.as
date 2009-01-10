@@ -449,7 +449,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      */
     public function get viewportWidth() : Number
     {
-        return _viewportWidth
+        return container ? container.viewportWidth : _viewportWidth
     }
 
     public function set viewportWidth( value : Number ) : void
@@ -476,7 +476,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      */
     public function get viewportHeight() : Number
     {
-        return _viewportHeight
+        return container ? container.viewportHeight : _viewportHeight
     }
 
     public function set viewportHeight( value : Number ) : void

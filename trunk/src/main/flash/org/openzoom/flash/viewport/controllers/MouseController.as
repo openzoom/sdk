@@ -80,6 +80,12 @@ public class MouseController extends ViewportControllerBase
     private var panning            : Boolean   = false
 
     //----------------------------------
+    //  smoothPanning
+    //----------------------------------
+    
+    public var smoothPanning : Boolean = true
+    
+    //----------------------------------
     //  clickZoomInFactor
     //----------------------------------
 
@@ -222,6 +228,12 @@ public class MouseController extends ViewportControllerBase
         // TODO: React appropriately to different platforms and/or browsers,
         // as they at times report completely different mouse wheel deltas.
         var factor : Number = clamp( 1 + ( event.delta * mouseWheelZoomFactor ), 0.2, 5 )
+        
+        // FIXME:
+        if( factor < 1 )
+            factor = Math.min( factor, 0.5 )
+        else
+            factor = Math.max( factor, 2.0 )
 
         // compute normalized origin of mouse relative to viewport.
         var originX : Number = view.mouseX / view.width
@@ -290,7 +302,8 @@ public class MouseController extends ViewportControllerBase
         var targetX : Number = viewportDragVector.x - ( distanceX * viewport.width )
         var targetY : Number = viewportDragVector.y - ( distanceY * viewport.height )
 
-        viewport.panTo( targetX, targetY )
+        // FIXME
+        viewport.panTo( targetX, targetY, !smoothPanning )
     }
 
     /**

@@ -83,7 +83,7 @@ public class CompositeConstraint implements IViewportConstraint
     public function validate( transform : IViewportTransform,
                               target : IViewportTransform ) : IViewportTransform
     {
-        for each( var constraint : IViewportConstraint in constraints )
+        for each( var constraint : IViewportConstraint in _constraints )
             transform = constraint.validate( transform, target )
 
         return transform

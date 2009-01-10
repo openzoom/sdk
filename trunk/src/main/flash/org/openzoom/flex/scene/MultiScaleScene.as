@@ -26,7 +26,7 @@ import flash.display.Graphics;
 import flash.display.Shape;
 import flash.events.Event;
 
-import mx.core.UIComponent;
+import mx.components.Group;
 
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
@@ -34,7 +34,7 @@ import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 /**
  * MultiScaleScene class based on the Flex framework.
  */
-public class MultiScaleScene extends UIComponent
+public class MultiScaleScene extends Group
                              implements IMultiScaleScene,
                                         IReadonlyMultiScaleScene
 {
@@ -60,6 +60,10 @@ public class MultiScaleScene extends UIComponent
     {
         super()
 
+        var g : Graphics = graphics
+            g.beginFill( 0xFF6600, 0.5 )
+            g.drawRect( 0, 0, DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
+            g.endFill()
         tabEnabled = false
         tabChildren = true
     }
@@ -135,14 +139,14 @@ public class MultiScaleScene extends UIComponent
 
     public function set sceneHeight( value : Number ) : void
     {
-        if( _sceneHeight != value )
-        {
-            _sceneHeight = value
-            sceneHeightChanged = true
-
-            invalidateProperties()
-            invalidateDisplayList()
-        }
+//        if( _sceneHeight != value )
+//        {
+//            _sceneHeight = value
+//            sceneHeightChanged = true
+//
+//            invalidateProperties()
+//            invalidateDisplayList()
+//        }
     }
 
     //--------------------------------------------------------------------------
@@ -176,14 +180,14 @@ public class MultiScaleScene extends UIComponent
     {
         super.commitProperties()
 
-        if( sceneWidthChanged || sceneHeightChanged )
-        {
-            frame.width = sceneWidth
-            frame.height = sceneHeight
-
-            sceneWidthChanged = sceneHeightChanged = false
-            dispatchEvent( new Event( Event.RESIZE ))
-        }
+//        if( sceneWidthChanged || sceneHeightChanged )
+//        {
+//            frame.width = sceneWidth
+//            frame.height = sceneHeight
+//
+//            sceneWidthChanged = sceneHeightChanged = false
+//            dispatchEvent( new Event( Event.RESIZE ))
+//        }
     }
     //--------------------------------------------------------------------------
     //
@@ -199,9 +203,10 @@ public class MultiScaleScene extends UIComponent
         frame = new Shape()
         var g : Graphics = frame.graphics
             g.beginFill( 0xFF6600, 0.5 )
-            g.drawRect( 0, 0, 100, 100 )
+            g.drawRect( 0, 0, 1, 100 )
             g.endFill()
-        addChild( frame )
+//        addChild( frame )
+        addItem( frame )
     }
 }
 

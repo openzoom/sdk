@@ -29,8 +29,28 @@ import flash.net.URLRequest;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
-import org.openzoom.flash.net.ILoadingQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
+
+/**
+ *  Dispatched when the image has successfully loaded.
+ *
+ *  @eventType flash.events.Event.COMPLETE
+ */
+[Event(name="complete", type="flash.events.Event")]
+
+/**
+ *  Dispatched when an IO error has occured while loading the image.
+ *
+ *  @eventType flash.events.IOErrorEvent.IO_ERROR
+ */
+[Event(name="ioError", type="flash.events.IOErrorEvent")]
+
+/**
+ *  Dispatched when an security error has occured while loading the image.
+ *
+ *  @eventType flash.events.SecurityErrorEvent.SECURITY_ERROR
+ */
+[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
 
 /**
  * Flex component for displaying a single multi-scale image.
@@ -56,8 +76,8 @@ public final class MultiScaleImage extends MultiScaleImageBase
     {
         super()
 
-//        tabEnabled = false
-//        tabChildren = true
+//      tabEnabled = false
+//      tabChildren = true
     }
 
     //--------------------------------------------------------------------------
@@ -101,7 +121,12 @@ public final class MultiScaleImage extends MultiScaleImageBase
         if( _source )
         {
             _source = null
-            container.removeChildAt( 0 )
+            // FIXME
+            try {
+                if( container.numChildren > 0 )
+                    container.removeChildAt( 0 )
+            	
+            } catch( error : Error ) {}
         }
 
         if( value is String )
@@ -114,13 +139,13 @@ public final class MultiScaleImage extends MultiScaleImageBase
 
             urlLoader.addEventListener( Event.COMPLETE,
                                         urlLoader_completeHandler,
-                                        false, 0, true )
+                                        false, 0, true )
             urlLoader.addEventListener( IOErrorEvent.IO_ERROR,
                                         urlLoader_ioErrorHandler,
-                                        false, 0, true )
+                                        false, 0, true )
             urlLoader.addEventListener( SecurityErrorEvent.SECURITY_ERROR,
                                         urlLoader_securityErrorHandler,
-                                        false, 0, true )
+                                        false, 0, true )
         }
 
         if( value is IMultiScaleImageDescriptor )
@@ -189,8 +214,12 @@ public final class MultiScaleImage extends MultiScaleImageBase
         var descriptor : IMultiScaleImageDescriptor =
                              factory.getDescriptor( url, data )
 
-        source = descriptor
-        dispatchEvent( event )
+        _source = descriptor
+        dispatchEvent( new Event( "sourceChanged" ))
+
+        addImage( descriptor )
+
+        dispatchEvent( event.clone() )
     }
 
     /**
