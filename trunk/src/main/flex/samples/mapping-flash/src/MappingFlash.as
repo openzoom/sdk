@@ -26,6 +26,7 @@ import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.system.Security;
+import flash.utils.setTimeout;
 
 import org.openzoom.flash.components.MultiScaleImage;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
@@ -77,14 +78,20 @@ public class MappingFlash extends Sprite
 
         // Controllers handle user input
         var mouseController : MouseController = new MouseController()
+        
+        // Because we always zoom to power of 2 scale we need
+        // the following constraints for the mousewheel zooming.
+        mouseController.minMouseWheelZoomInFactor = 2
+        mouseController.minMouseWheelZoomOutFactor = 0.5
 
         // This is for you, Tom =)
-        mouseController.smoothPanning = false
+//        mouseController.smoothPanning = false
         // Basically it does the following:
         // viewport.panBy( x, y, immediately = true )
         //                            ^
         //                       no animation
 
+        // Navigation through keyboard and context menu
         var keyboardController : KeyboardController = new KeyboardController()
         var contextMenuController : ContextMenuController = new ContextMenuController()
 
@@ -128,13 +135,8 @@ public class MappingFlash extends Sprite
         // loaded image.
         map.addEventListener( Event.COMPLETE, map_completeHandler )
         
-        // Alright, let's load the map...
-        map.source = "openstreetmap.xml"
-
-        // Add the map to the display list
-        // and layout the application
-        addChild( map )
-        layout()
+        // Avoid trouble with OSM
+        setTimeout( initializeMap, 1000 )
     }
 
     //--------------------------------------------------------------------------
@@ -154,6 +156,17 @@ public class MappingFlash extends Sprite
     //  Event handlers
     //
     //--------------------------------------------------------------------------
+
+    private function initializeMap() : void
+    {
+        // Alright, let's load the map...
+        map.source = "openstreetmap.xml"
+
+        // Add the map to the display list
+        // and layout the application
+        addChild( map )
+        layout()
+    }
 
     private function stage_resizeHandler( event : Event ) : void
     {
