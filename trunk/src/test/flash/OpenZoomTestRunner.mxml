@@ -24,16 +24,17 @@
     xmlns="*"
     backgroundColor="#222222"
     creationComplete="creationCompleteHandler( event )"
-    width="960"
-    height="680">
+    >
     
     <mx:Script>
         <![CDATA[
 
             import flexunit.framework.TestSuite;
             
-        	import org.openzoom.flash.descriptors.DZIDescriptorTest;
-        	import org.openzoom.flash.descriptors.ZoomifyDescriptorTest;
+        	import org.openzoom.flash.descriptors.deepzoom.DZIDescriptorTest;
+        	import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptorTest;
+        	import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptorTest;
+        	import org.openzoom.flash.viewport.ViewportTransformTest;
         	import org.openzoom.flash.utils.Base16Test;
             
             private function creationCompleteHandler( event : Event ):void
@@ -45,9 +46,11 @@
             private function createSuite() : TestSuite
             {
                 var testSuite : TestSuite = new TestSuite()
-                testSuite.addTestSuite( DZIDescriptorTest )
-                testSuite.addTestSuite( ZoomifyDescriptorTest )
-                testSuite.addTestSuite( Base16Test )
+//                testSuite.addTestSuite( DZIDescriptorTest )
+                testSuite.addTestSuite( DjatokaDescriptorTest )
+//                testSuite.addTestSuite( ZoomifyDescriptorTest )
+//                testSuite.addTestSuite( Base16Test )
+//                testSuite.addTestSuite( ViewportTransformTest )
 
                 return testSuite
             }   

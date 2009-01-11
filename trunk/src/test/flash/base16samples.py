@@ -25,7 +25,7 @@ import base64
 alphabet = """abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789!@#$%^&*()_{}|'/<>?.,"""
 min = 0
 max = len(alphabet)
-total = 1000
+total = 10000
 string = ""
 file = open("org/openzoom/flash/utils/Base16Samples.as","w")
 file.write("    private static const SAMPLES : Array = [\n")
