@@ -29,8 +29,10 @@ import flash.display.Graphics;
 import flash.display.Loader;
 import flash.display.Shape;
 import flash.events.Event;
+import flash.events.TimerEvent;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import flash.utils.Timer;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
@@ -93,6 +95,13 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         // feature tile overlap.
         if( descriptor.tileOverlap == 0 && renderingMode != RenderingMode.SMOOTH )
             loadBackground()
+
+        updateDisplayListTimer = new Timer( 200 )
+        updateDisplayListTimer.addEventListener( TimerEvent.TIMER,
+                                                 updateDisplayListTimer_timerHandler,
+                                                 false, 0, true )
+        // FIXME
+//        updateDisplayListTimer.start()
     }
 
     //--------------------------------------------------------------------------
@@ -100,6 +109,8 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //  Variables
     //
     //--------------------------------------------------------------------------
+
+    private var updateDisplayListTimer : Timer
 
     private var descriptor : IMultiScaleImageDescriptor
     private var backgroundLoader : Loader
@@ -291,6 +302,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
      */
     private function updateDisplayList() : void
     {
+//        trace( "[MultiScaleImageRender] updateDisplayList()" )
 //        debugLayer.graphics.clear()
 
         var bounds : Rectangle
@@ -310,6 +322,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         var visibleRegion : Rectangle = viewport.intersection( normalizedBounds )
         visibleRegion.offset( -bounds.x, -bounds.y )
 
+        // Check if we're visible at all
+
+
 //        drawVisibleRegion( visibleRegion )
 
         var scale : Number = viewport.scale
@@ -328,6 +343,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
             {
                 var currentLevel : IMultiScaleImageLevel = descriptor.getLevelAt( l )
                 loadTiles( currentLevel, visibleRegion )
+                
                 // TODO: Phase loading of layers
 //                setTimeout( loadTiles, i * 100, descriptor.getLevelAt( l ), visibleRegion )
             }
@@ -353,7 +369,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         var tiles : Array = []
         var center : Point = new Point(( minColumn +  maxColumn ) / 2,
                                        ( minRow + maxRow ) / 2 )
-        
+
         for( var column : int = minColumn; column < maxColumn; column++ )
         {
             for( var row : int = minRow; row < maxRow; row++ )
@@ -364,35 +380,35 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
                                             column,
                                             descriptor.tileOverlap )
 
-                var contained : Boolean = layer.containsTile( tile ) 
+                var contained : Boolean = layer.containsTile( tile )
                 var exists : Boolean =
                       descriptor.existsTile( tile.level, tile.column, tile.row )
-                
+
                 if( contained || !exists )
                     continue
 
                 var url : String = descriptor.getTileURL( tile.level,
                                                           tile.column,
                                                           tile.row )
-                                                          
-            	// Prioritize tiles in the center of the screen
+
+                // Prioritize tiles in the center of the screen
                 var position : Point = new Point( tile.column, tile.row )
                 var dx : Number = Math.abs( position.x - center.x )
                 var dy : Number = Math.abs( position.y - center.y )
-                var distance : Number = dx * dx + dy * dy 
+                var distance : Number = dx * dx + dy * dy
                 tiles.push( { url: url, tile: tile, distance: distance } )
             }
         }
-        
+
         tiles.sort( compareTiles, Array.DESCENDING )
-        
+
         for( var i : int = 0; i < tiles.length; i++ )
         {
-        	var t : Tile = tiles[ i ].tile
-	        var item : ILoadingItem = loader.addItem( tiles[ i ].url, Bitmap, t )
-	            item.addEventListener( Event.COMPLETE,
-	                                   tileCompleteHandler,
-	                                   false, 0, true  )
+            var t : Tile = tiles[ i ].tile
+            var item : ILoadingItem = loader.addItem( tiles[ i ].url, Bitmap, t )
+                item.addEventListener( Event.COMPLETE,
+                                       tileCompleteHandler,
+                                       false, 0, true  )
         }
     }
 
@@ -401,22 +417,27 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //  Comparator
     //
     //--------------------------------------------------------------------------
-    
+
     private function compareTiles( tile1 : Object, tile2 : Object ) : int
     {
-    	if( tile1.distance < tile2.distance )
-    	   return -1
-    	if( tile1.distance > tile2.distance )
-    	   return 1
-    	else
-    	   return 0
+        if( tile1.distance < tile2.distance )
+           return -1
+        if( tile1.distance > tile2.distance )
+           return 1
+        else
+           return 0
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
+
+    private function updateDisplayListTimer_timerHandler( event : TimerEvent ) : void
+    {
+        updateDisplayList()
+    }
 
     /**
      * @private

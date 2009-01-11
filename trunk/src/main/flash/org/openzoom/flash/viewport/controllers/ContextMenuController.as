@@ -116,7 +116,7 @@ public class ContextMenuController extends ViewportControllerBase
 
         // Context Menu
         menu = new ContextMenu()
-//        menu.hideBuiltInItems()
+        menu.hideBuiltInItems()
 
         // Display state
         fullScreenMenu = new ContextMenuItem( FULL_SCREEN_MENU_NORMAL_CAPTION )

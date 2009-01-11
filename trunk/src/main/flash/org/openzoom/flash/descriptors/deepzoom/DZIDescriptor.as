@@ -101,7 +101,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
      * @inheritDoc
      */
     public function getMinLevelForSize( width : Number,
-                                            height : Number ) : IMultiScaleImageLevel
+                                        height : Number ) : IMultiScaleImageLevel
     {
         var index : int = clamp( Math.ceil( Math.log( Math.max( width, height )) / Math.LN2 ), 0, numLevels - 1 )
         return IMultiScaleImageLevel( getLevelAt( index ) ).clone()

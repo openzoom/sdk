@@ -67,7 +67,7 @@ public final class MultiScaleContainer extends UIComponent
     private static const DEFAULT_SCENE_WIDTH            : Number = 24000
     private static const DEFAULT_SCENE_HEIGHT           : Number = 18000
     private static const DEFAULT_SCENE_BACKGROUND_COLOR : uint   = 0x333333
-    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0.0
+    private static const DEFAULT_SCENE_BACKGROUND_ALPHA : Number = 0
 
     //--------------------------------------------------------------------------
     //
@@ -295,7 +295,7 @@ public final class MultiScaleContainer extends UIComponent
      */
     public function get sceneWidth() : Number
     {
-        return _sceneWidth
+        return scene ? scene.sceneWidth : _sceneWidth
     }
 
     public function set sceneWidth( value : Number ) : void
@@ -323,7 +323,7 @@ public final class MultiScaleContainer extends UIComponent
      */
     public function get sceneHeight() : Number
     {
-        return _sceneHeight
+        return scene ? scene.sceneHeight : _sceneHeight
     }
 
     public function set sceneHeight( value : Number ) : void
@@ -379,8 +379,8 @@ public final class MultiScaleContainer extends UIComponent
 
         if( sceneWidthChanged || sceneHeightChanged )
         {
-           _scene.sceneWidth = sceneWidth
-           _scene.sceneHeight = sceneHeight
+           _scene.sceneWidth = _sceneWidth
+           _scene.sceneHeight = _sceneHeight
 
            sceneWidthChanged = sceneHeightChanged = false
 
