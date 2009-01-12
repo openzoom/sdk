@@ -19,6 +19,7 @@
 #
 ################################################################################
 
+
 import base64
 import config
 import deepzoom
@@ -32,6 +33,7 @@ import os.path
 import urllib
 from ftplib import FTP
 import shutil
+import time
 import zipfile
 
 
@@ -193,6 +195,7 @@ def main():
                     seadragon_source_base16_found = True
         if (openzoom_source_found and openzoom_source_base16_found and
             seadragon_source_found and seadragon_source_base16_found):
+#            time.sleep(1)
             logger.info("SKIP >>> %s"%photo_id)
             continue
             
@@ -286,8 +289,9 @@ def main():
         try:
             ftp.mkd(photo_id)
         except:
-            logger.info("UPLOAD SKIP >>> %s"%photo_id)
-            continue
+            pass
+#            logger.info("UPLOAD SKIP >>> %s"%photo_id)
+#            continue
         
         old_path = os.path.abspath(os.curdir)
         os.chdir(tmp_dir)
@@ -328,19 +332,30 @@ def main():
         openzoom_uri = descriptor_base_name_uri + ".xml"
         dzi_uri = descriptor_base_name_uri + ".dzi"
         
-        tag = OPENZOOM_SOURCE_TAG + openzoom_uri
-        flickr.photos_addTags(photo_id=photo_id, tags=tag)
+        attempt = 1
+        for attempt in xrange(1, config.MACHINE_TAG_RETRIES + 1):
+            try:
+                tag = OPENZOOM_SOURCE_TAG + openzoom_uri
+                flickr.photos_addTags(photo_id=photo_id, tags=tag)
+                
+                tag = OPENZOOM_SOURE_BASE16_TAG + base64.b16encode(openzoom_uri)
+                flickr.photos_addTags(photo_id=photo_id, tags=tag)
         
-        tag = OPENZOOM_SOURE_BASE16_TAG + base64.b16encode(openzoom_uri)
-        flickr.photos_addTags(photo_id=photo_id, tags=tag)
-
-        tag = SEADRAGON_SOURE_TAG + dzi_uri
-        flickr.photos_addTags(photo_id=photo_id, tags=tag)
-        
-        tag = SEADRAGON_SOURE_BASE16_TAG + base64.b16encode(dzi_uri)
-        flickr.photos_addTags(photo_id=photo_id, tags=tag)
-
-        logger.info("MACHINE TAG >>> %s"%photo_id)
+                tag = SEADRAGON_SOURE_TAG + dzi_uri
+                flickr.photos_addTags(photo_id=photo_id, tags=tag)
+                
+                tag = SEADRAGON_SOURE_BASE16_TAG + base64.b16encode(dzi_uri)
+                flickr.photos_addTags(photo_id=photo_id, tags=tag)
+    
+                logger.info("MACHINE TAG >>> %s"%photo_id)
+                break
+            except:
+                logger.warning("MACHINE TAG ATTEMPT %s >>> %s"%(attempt, photo_id))
+                time.sleep(attempt * 12) # Wait for 12, 24, 36, 48 and 60 seconds...
+                continue
+            
+        if attempt == config.MACHINE_TAG_RETRIES:
+            logger.error("MACHINE TAG >>> %s"%photo_id)
             
     # Clean up
     ftp.close()
