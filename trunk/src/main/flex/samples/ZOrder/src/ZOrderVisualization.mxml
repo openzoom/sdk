@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+
+    OpenZoom Visualization: Z-Order
+    Developed by Daniel Gasienica
+    
+    Blog: http://gasi.ch/blog/openzoom-visualization-z-order/
+    License: GPL3
+
+////////////////////////////////////////////////////////////////////////////////
+-->
 <mx:Application
     xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:openzoom="org.openzoom.flex.components.*"
     xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
     xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
     backgroundGradientColors="[ 0, 0 ]"
+    viewSourceURL="source/index.html"
     layout="absolute"
     applicationComplete="applicationCompleteHandler( event )"
-     viewSourceURL="source/index.html">
+    >
     
     <mx:Style>
         global {
@@ -42,7 +54,7 @@
 	        private function applicationCompleteHandler( event : FlexEvent ) : void
 	        {
 	        	// Mouse wheel support on Mac OS
-	        	ExternalMouseWheel.initialize( systemManager.stage )
+	        	ExternalMouseWheel.initialize( stage )
 	        	
 	        	canvas = new Sprite()
 		        container.addChild( canvas )
