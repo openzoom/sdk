@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <image xmlns="http://ns.openzoom.org/openzoom/2008">
-	<pyramid width="67108864" height="67108864" tileWidth="256" tileHeight="256" tileOverlap="0" type="image/png">
+	<pyramid width="67108864" height="67108864" tileWidth="256" tileHeight="256" tileOverlap="0" type="image/png" origin="topLeft">
 		<level index="0" width="256" height="256" columns="1" rows="1">
 		    <uri template="http://tile.openstreetmap.org/0/{column}/{row}.png"/>
 		</level>
