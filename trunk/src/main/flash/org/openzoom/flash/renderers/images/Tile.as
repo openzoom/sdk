@@ -114,7 +114,7 @@ public class Tile
 
     public function get hashCode() : int
     {
-        return int( level.toString() + column.toString() + row.toString() )
+        return int(level.toString() + column.toString() + row.toString())
     }
 
     //--------------------------------------------------------------------------

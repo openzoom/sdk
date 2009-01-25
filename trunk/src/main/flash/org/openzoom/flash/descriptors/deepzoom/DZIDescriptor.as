@@ -54,14 +54,14 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * Constructor.
      */
-    public function DZIDescriptor( source : String, data : XML )
+    public function DZIDescriptor(source:String, data:XML)
     {
         this.data = data
 
         this.source = source
-        parseXML( data )
-        _numLevels = computeNumLevels( width, height )
-        levels = computeLevels( width, height, tileWidth, tileHeight, numLevels )
+        parseXML(data)
+        _numLevels = computeNumLevels(width, height)
+        levels = computeLevels(width, height, tileWidth, tileHeight, numLevels)
     }
 
     //--------------------------------------------------------------------------
@@ -70,9 +70,9 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private var extension : String
-    private var data : XML
-    private var levels : Dictionary
+    private var extension:String
+    private var data:XML
+    private var levels:Dictionary
 
     //--------------------------------------------------------------------------
     //
@@ -83,36 +83,35 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL( level : int, column : uint, row : uint ) : String
+    public function getTileURL(level:int, column:uint, row:uint):String
     {
-        var path : String  = source.substring( 0, source.length - 4 ) + "_files"
+        var path:String  = source.substring(0, source.length - 4) + "_files"
         return [ path, "/", level, "/", column, "_", row, ".", extension ].join("")
     }
 
     /**
      * @inheritDoc
      */
-    public function getLevelAt( index : int ) : IMultiScaleImageLevel
+    public function getLevelAt(index:int):IMultiScaleImageLevel
     {
-        return IMultiScaleImageLevel( levels[ index ] )
+        return IMultiScaleImageLevel(levels[index])
     }
 
     /**
      * @inheritDoc
      */
-    public function getMinLevelForSize( width : Number,
-                                        height : Number ) : IMultiScaleImageLevel
+    public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
-        var index : int = clamp( Math.ceil( Math.log( Math.max( width, height )) / Math.LN2 ), 0, numLevels - 1 )
-        return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
+        var index:int = clamp(Math.ceil(Math.log(Math.max(width, height)) / Math.LN2), 0, numLevels - 1)
+        return IMultiScaleImageLevel(getLevelAt(index)).clone()
     }
 
     /**
      * @inheritDoc
      */
-    public function clone() : IMultiScaleImageDescriptor
+    public function clone():IMultiScaleImageDescriptor
     {
-        return new DZIDescriptor( source, new XML( data ) )
+        return new DZIDescriptor(source, new XML(data))
     }
 
     //--------------------------------------------------------------------------
@@ -124,7 +123,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    override public function toString() : String
+    override public function toString():String
     {
         return "[DZIDescriptor]" + "\n" + super.toString()
     }
@@ -138,7 +137,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    private function parseXML( data : XML ) : void
+    private function parseXML(data:XML):void
     {
         use namespace deepzoom
 
@@ -148,7 +147,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
         extension = data.@Format
 
-        switch( extension )
+        switch(extension)
         {
             case "jpg":
                _type = "image/jpeg"
@@ -159,7 +158,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
                break
 
             default:
-               throw new ArgumentError( "Unknown extension: " + extension )
+               throw new ArgumentError("Unknown extension: " + extension)
                break
         }
 
@@ -169,32 +168,34 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    private function computeNumLevels( width : Number, height : Number ) : int
+    private function computeNumLevels(width:Number, height:Number):int
     {
-        return Math.ceil( Math.log( Math.max( width, height ) ) / Math.LN2 ) + 1
+        return Math.ceil(Math.log(Math.max(width, height)) / Math.LN2) + 1
     }
 
     /**
      * @private
      */
-    private function computeLevels( originalWidth : uint, originalHeight : uint,
-                                    tileWidth : uint, tileHeight : uint,
-                                    numLevels : int ) : Dictionary
+    private function computeLevels(originalWidth:uint,
+                                   originalHeight:uint,
+                                   tileWidth:uint,
+                                   tileHeight:uint,
+                                   numLevels:int):Dictionary
     {
-        var levels : Dictionary = new Dictionary()
+        var levels:Dictionary = new Dictionary()
 
-        var width  : uint = originalWidth
-        var height : uint = originalHeight
+        var width :uint = originalWidth
+        var height:uint = originalHeight
 
-        for( var index : int = numLevels - 1; index >= 0; index-- )
+        for(var index:int = numLevels - 1; index >= 0; index--)
         {
-            levels[ index ] = new MultiScaleImageLevel( this, index, width, height,
-                                                        Math.ceil( width / tileWidth ),
-                                                        Math.ceil( height / tileHeight ) )
-            width = ( width + 1 ) >> 1
-            height = ( height + 1 ) >> 1
-//            width = Math.ceil( width * 0.5 )
-//            height = Math.ceil( height * 0.5 )
+            levels[ index ] = new MultiScaleImageLevel(this, index, width, height,
+                                                        Math.ceil(width / tileWidth),
+                                                        Math.ceil(height / tileHeight))
+            width = (width + 1) >> 1
+            height = (height + 1) >> 1
+//            width = Math.ceil(width * 0.5)
+//            height = Math.ceil(height * 0.5)
         }
 
 //        Twitter on 17.09.2008
@@ -228,11 +229,11 @@ class DisplayRect extends Rectangle
     /**
      * Constructor.
      */
-    public function DisplayRect( x : Number, y : Number,
-                                 width : Number, height : Number,
-                                 minLevel : int, maxLevel : int )
+    public function DisplayRect(x:Number, y:Number,
+                                 width:Number, height:Number,
+                                 minLevel:int, maxLevel:int)
     {
-        super( x, y, width, height )
+        super(x, y, width, height)
         _minLevel = minLevel
         _maxLevel = maxLevel
     }
@@ -250,9 +251,9 @@ class DisplayRect extends Rectangle
     /**
      * @private
      */
-    private var _minLevel : int
+    private var _minLevel:int
 
-    public function get minLevel() : int
+    public function get minLevel():int
     {
         return _minLevel
     }
@@ -264,9 +265,9 @@ class DisplayRect extends Rectangle
     /**
      * @private
      */
-    private var _maxLevel : int
+    private var _maxLevel:int
 
-    public function get maxLevel() : int
+    public function get maxLevel():int
     {
         return _maxLevel
     }

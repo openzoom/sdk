@@ -40,6 +40,7 @@ public class ViewportEvent extends Event
     public static const TRANSFORM_START : String = "transformStart"
     public static const TRANSFORM_UPDATE : String = "transformUpdate"
     public static const TRANSFORM_END : String = "transformComplete"
+    public static const TARGET_UPDATE : String = "targetUpdate"
 
     //--------------------------------------------------------------------------
     //

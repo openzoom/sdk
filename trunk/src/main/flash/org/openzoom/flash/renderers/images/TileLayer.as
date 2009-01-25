@@ -28,6 +28,7 @@ import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
+import flash.geom.ColorTransform;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
@@ -47,7 +48,7 @@ public class TileLayer extends Sprite implements ITileLayer
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_TILE_SHOW_DURATION : Number = 2.5
+    private static const DEFAULT_TILE_SHOW_DURATION : Number = 0.5
 
     //--------------------------------------------------------------------------
     //
@@ -62,9 +63,11 @@ public class TileLayer extends Sprite implements ITileLayer
                                level : IMultiScaleImageLevel )
     {
         _level = level
+
         // FIXME
 //        scaleXFactor = width  / level.width
 //        scaleYFactor = height / level.height
+
         createFrame( width, height )
     }
 
@@ -77,10 +80,10 @@ public class TileLayer extends Sprite implements ITileLayer
     // TODO: Consider using Sprite because of event propagation.
     private var frame : Shape
     private var data : IMultiScaleImageLevel
-    private var scaleXFactor : Number = 1
-    private var scaleYFactor : Number = 1
+    private var scaleFactorX : Number = 1
+    private var scaleFactorY : Number = 1
 
-    private var tiles : Dictionary = new Dictionary( true )
+    private var tiles : Dictionary = new Dictionary(true)
 
     //--------------------------------------------------------------------------
     //
@@ -121,18 +124,18 @@ public class TileLayer extends Sprite implements ITileLayer
            return null
 
         // store reference to tile
-        tiles[ tile.hashCode ] = tile
+        tiles[tile.hashCode] = tile
 
         // add tile
         var tileBitmap : Bitmap = tile.bitmap
 
         var bounds : Rectangle = level.getTileBounds( tile.column, tile.row )
 
-        tileBitmap.scaleX = scaleXFactor
-        tileBitmap.scaleY = scaleYFactor
+        tileBitmap.scaleX = scaleFactorX
+        tileBitmap.scaleY = scaleFactorY
 
-        tileBitmap.x = bounds.x * scaleXFactor
-        tileBitmap.y = bounds.y * scaleYFactor
+        tileBitmap.x = bounds.x * scaleFactorX
+        tileBitmap.y = bounds.y * scaleFactorY
 
         var tileBitmapRight : Number = tileBitmap.x + tileBitmap.width
         var tileBitmapBottom : Number = tileBitmap.y + tileBitmap.height
@@ -161,6 +164,13 @@ public class TileLayer extends Sprite implements ITileLayer
         if( tileBitmap.x + tileBitmap.width > level.width || tileBitmap.y + tileBitmap.height > level.height )
             trace( "[TileLayer]: Bad cropping" )
 
+
+        // FIXME: Debug coloring
+//        var colorTransform:ColorTransform = tileBitmap.transform.colorTransform
+//        colorTransform.color = Math.random() * 0xFFFFFF
+//        tileBitmap.transform.colorTransform = colorTransform
+
+
         // TODO: Refactor
         tileBitmap.smoothing = true
         tileBitmap.alpha = 0
@@ -168,7 +178,6 @@ public class TileLayer extends Sprite implements ITileLayer
         addChild( tileBitmap )
 
         // TODO: Remove dependency on Tweener
-//        tileBitmap.alpha = 1
         Tweener.addTween( tileBitmap, { alpha: 1, time: DEFAULT_TILE_SHOW_DURATION } )
 
         return tile

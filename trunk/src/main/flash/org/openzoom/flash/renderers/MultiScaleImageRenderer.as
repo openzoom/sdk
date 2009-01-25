@@ -96,10 +96,10 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         if( descriptor.tileOverlap == 0 && renderingMode != RenderingMode.SMOOTH )
             loadBackground()
 
-        updateDisplayListTimer = new Timer( 200 )
-        updateDisplayListTimer.addEventListener( TimerEvent.TIMER,
-                                                 updateDisplayListTimer_timerHandler,
-                                                 false, 0, true )
+//        updateDisplayListTimer = new Timer( 50 )
+//        updateDisplayListTimer.addEventListener( TimerEvent.TIMER,
+//                                                 updateDisplayListTimer_timerHandler,
+//                                                 false, 0, true )
         // FIXME
 //        updateDisplayListTimer.start()
     }
@@ -190,12 +190,20 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     {
         updateDisplayList()
     }
+    
+    /**
+     * @private
+     */
+//    override protected function viewport_targetUpdateHandler( event : ViewportEvent ) : void
+//    {
+//        updateDisplayList()
+//    }
 
     /**
      * @private
      */
-    override protected function viewport_transformUpdateHandler( event : ViewportEvent ) : void
-    {
+//    override protected function viewport_transformUpdateHandler( event : ViewportEvent ) : void
+//    {
         // FIXME: This is where we could trigger refreshes of the
         // MultiScaleImageRenderer in between transformStart and transformEnd.
         // Unfortunately the Flash Player does not like to handle network
@@ -208,7 +216,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
 //            counter = 0
 //            updateDisplayList()
 //        }
-    }
+//    }
 
 //    private var counter : int = 0
 
@@ -319,14 +327,16 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
             normalizedBounds.width /= viewport.scene.sceneWidth
             normalizedBounds.height /= viewport.scene.sceneHeight
 
+        // Return if we're not visible
+        if( !viewport.intersects( normalizedBounds ))
+            return
+
         var visibleRegion : Rectangle = viewport.intersection( normalizedBounds )
         visibleRegion.offset( -bounds.x, -bounds.y )
 
-        // Check if we're visible at all
-
 
 //        drawVisibleRegion( visibleRegion )
-
+        
         var scale : Number = viewport.scale
         var level : IMultiScaleImageLevel = descriptor.getMinLevelForSize( width * scale, height * scale )
 

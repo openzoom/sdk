@@ -49,7 +49,7 @@ public class MouseController extends ViewportControllerBase
     private static const DEFAULT_CLICK_ZOOM_IN_FACTOR    : Number = 2.0
     private static const DEFAULT_CLICK_ZOOM_OUT_FACTOR   : Number = 0.3
 
-    private static const DEFAULT_MOUSE_WHEEL_ZOOM_FACTOR : Number = 0.05
+    private static const DEFAULT_MOUSE_WHEEL_ZOOM_FACTOR : Number = 1.2
 
     //--------------------------------------------------------------------------
     //
@@ -239,7 +239,7 @@ public class MouseController extends ViewportControllerBase
 
         // TODO: React appropriately to different platforms and/or browsers,
         // as they at times report completely different mouse wheel deltas.
-        var factor : Number = clamp( 1 + ( event.delta * mouseWheelZoomFactor ), 0.2, 5 )
+        var factor : Number = clamp( Math.pow( mouseWheelZoomFactor, event.delta ), 0.2, 5 )
 
         // TODO: Refactor        
         if( factor < 1 )

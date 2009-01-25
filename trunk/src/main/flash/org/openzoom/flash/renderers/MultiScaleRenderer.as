@@ -79,6 +79,8 @@ public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
                                           viewport_transformUpdateHandler )
             viewport.removeEventListener( ViewportEvent.TRANSFORM_END,
                                           viewport_transformEndHandler )
+            viewport.removeEventListener( ViewportEvent.TARGET_UPDATE,
+                                          viewport_targetUpdateHandler )
         }
 
         _viewport = value
@@ -87,11 +89,17 @@ public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
         if( viewport )
         {
             viewport.addEventListener( ViewportEvent.TRANSFORM_START,
-                                       viewport_transformStartHandler, false, 0, true )
+                                       viewport_transformStartHandler,
+                                       false, 0, true )
             viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE,
-                                       viewport_transformUpdateHandler, false, 0, true )
+                                       viewport_transformUpdateHandler,
+                                       false, 0, true )
             viewport.addEventListener( ViewportEvent.TRANSFORM_END,
-                                       viewport_transformEndHandler, false, 0, true )
+                                       viewport_transformEndHandler,
+                                       false, 0, true )
+            viewport.addEventListener( ViewportEvent.TARGET_UPDATE,
+                                       viewport_targetUpdateHandler,
+                                       false, 0, true )
         }
     }
 
@@ -119,6 +127,13 @@ public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
      * @private
      */
     protected function viewport_transformEndHandler( event : ViewportEvent ) : void
+    {
+    }
+    
+    /**
+     * @private
+     */
+    protected function viewport_targetUpdateHandler( event : ViewportEvent ) : void
     {
     }
 }
