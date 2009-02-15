@@ -136,7 +136,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     override public function set viewport(value:INormalizedViewport):void
     {
         super.viewport = value
-        updateDisplayList()
+        
+        if (value)
+            updateDisplayList()
     }
 
     //----------------------------------

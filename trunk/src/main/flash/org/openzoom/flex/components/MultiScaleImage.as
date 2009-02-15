@@ -135,19 +135,19 @@ public final class MultiScaleImage extends MultiScaleImageBase
             urlLoader = new URLLoader(new URLRequest(url))
 
             urlLoader.addEventListener(Event.COMPLETE,
-                                        urlLoader_completeHandler,
-                                        false, 0, true)
+                                       urlLoader_completeHandler,
+                                       false, 0, true)
             urlLoader.addEventListener(IOErrorEvent.IO_ERROR,
-                                        urlLoader_ioErrorHandler,
-                                        false, 0, true)
+                                       urlLoader_ioErrorHandler,
+                                       false, 0, true)
             urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
-                                        urlLoader_securityErrorHandler,
-                                        false, 0, true)
+                                       urlLoader_securityErrorHandler,
+                                       false, 0, true)
         }
 
         if(value is IMultiScaleImageDescriptor)
         {
-            _source = IMultiScaleImageDescriptor(value)
+            _source = IMultiScaleImageDescriptor(value).clone()
             dispatchEvent(new Event("sourceChanged"))
 
             addImage(_source)

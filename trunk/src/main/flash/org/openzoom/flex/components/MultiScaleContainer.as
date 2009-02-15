@@ -487,8 +487,8 @@ public final class MultiScaleContainer extends UIComponent
     {
         var child : DisplayObject = _scene.removeChildAt( index )
 
-        if( child is IMultiScaleRenderer )
-            IMultiScaleRenderer( child ).viewport = null
+        if (child is IMultiScaleRenderer)
+            IMultiScaleRenderer(child).viewport = null
 
         return child
     }
