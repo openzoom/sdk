@@ -26,18 +26,16 @@ import flash.events.IEventDispatcher;
 /**
  * Interface for loading items in a queue.
  */
-public interface ILoadingQueue extends IEventDispatcher
+public interface INetworkQueue extends IEventDispatcher
 {
     /**
-     * Add item to loading queue.
+     * Add request to network queue.
      *
-     * @param url URL of the item to load
+     * @param url URL of the request
      * @param type Content type of the item to load
      * @param context Arbitrary data attached to the item for later identification.
      */
-    function addItem( url : String,
-                      type : Class,
-                      context : * = null ) : ILoadingItem
+    function addRequest(url:String, type:Class, context:* = null):INetworkRequest
 }
 
 }

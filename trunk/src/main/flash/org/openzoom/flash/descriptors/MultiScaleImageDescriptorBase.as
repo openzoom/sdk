@@ -43,7 +43,7 @@ public class MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    protected var source : String
+    protected var source:String
 
     //----------------------------------
     //  width
@@ -52,12 +52,12 @@ public class MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    protected var _width : uint
+    protected var _width:uint
 
     /**
      * @copy IMultiScaleImageDescriptor#width
      */
-    public function get width() : uint
+    public function get width():uint
     {
         return _width
     }
@@ -69,12 +69,12 @@ public class MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    protected var _height : uint
+    protected var _height:uint
 
     /**
      * @copy IMultiScaleImageDescriptor#height
      */
-    public function get height() : uint
+    public function get height():uint
     {
         return _height
     }
@@ -86,12 +86,12 @@ public class MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    protected var _numLevels : int
+    protected var _numLevels:int
 
     /**
      * @copy IMultiScaleImageDescriptor#numLevels
      */
-    public function get numLevels() : int
+    public function get numLevels():int
     {
         return _numLevels
     }
@@ -103,12 +103,12 @@ public class MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    protected var _tileWidth : uint
+    protected var _tileWidth:uint
 
     /**
      * @copy IMultiScaleImageDescriptor#tileWidth
      */
-    public function get tileWidth() : uint
+    public function get tileWidth():uint
     {
         return _tileWidth
     }
@@ -120,12 +120,12 @@ public class MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    protected var _tileHeight : uint
+    protected var _tileHeight:uint
 
     /**
      * @copy IMultiScaleImageDescriptor#tileHeight
      */
-    public function get tileHeight() : uint
+    public function get tileHeight():uint
     {
         return _tileHeight
     }
@@ -137,12 +137,12 @@ public class MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    protected var _tileOverlap : uint = 0
+    protected var _tileOverlap:uint = 0
 
     /**
      * @copy IMultiScaleImageDescriptor#tileOverlap
      */
-    public function get tileOverlap() : uint
+    public function get tileOverlap():uint
     {
         return _tileOverlap
     }
@@ -154,12 +154,12 @@ public class MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    protected var _type : String
+    protected var _type:String
 
     /**
      * @copy IMultiScaleImageDescriptor#type
      */
-    public function get type() : String
+    public function get type():String
     {
         return _type
     }
@@ -171,12 +171,12 @@ public class MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    protected var _origin : String = "topLeft"
+    protected var _origin:String = "topLeft"
 
     /**
      * @copy IMultiScaleImageDescriptor#origin
      */
-    public function get origin() : String
+    public function get origin():String
     {
         return _origin
     }
@@ -190,15 +190,15 @@ public class MultiScaleImageDescriptorBase
     /**
      * @copy IMultiScaleImageDescriptor#getTileBounds()
      */
-    public function getTileBounds( level : int, column : uint, row : uint ) : Rectangle
+    public function getTileBounds(level:int, column:uint, row:uint):Rectangle
     {
-        var bounds : Rectangle = new Rectangle()
+        var bounds:Rectangle = new Rectangle()
 
-        var offsetX : uint = ( column == 0 ) ? 0 : tileOverlap
-        var offsetY : uint = ( row    == 0 ) ? 0 : tileOverlap
+        var offsetX:uint = (column == 0) ? 0:tileOverlap
+        var offsetY:uint = (row    == 0) ? 0:tileOverlap
 
-        bounds.x = ( column * tileWidth )  - offsetX
-        bounds.y = ( row    * tileHeight ) - offsetY
+        bounds.x = (column * tileWidth)  - offsetX
+        bounds.y = (row    * tileHeight) - offsetY
 
         return bounds
     }
@@ -206,7 +206,7 @@ public class MultiScaleImageDescriptorBase
     /**
      * @copy IMultiScaleImageDescriptor#existsTile()
      */
-    public function existsTile( level : int, column : uint, row : uint ) : Boolean
+    public function existsTile(level:int, column:uint, row:uint):Boolean
     {
         // By default, all tiles exist
         return true
@@ -221,7 +221,7 @@ public class MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function toString() : String
+    public function toString():String
     {
         return "source:" + source + "\n" +
                "width:" + width + "\n" +

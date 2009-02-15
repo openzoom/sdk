@@ -29,7 +29,7 @@ import flash.net.URLRequest;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
-import org.openzoom.flash.net.ILoadingQueue;
+import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 
 /**
@@ -193,7 +193,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
      * @private
      */
     private function createImage( descriptor : IMultiScaleImageDescriptor,
-                                  loader : ILoadingQueue,
+                                  loader : INetworkQueue,
                                   width : Number,
                                   height : Number ) : MultiScaleImageRenderer
     {

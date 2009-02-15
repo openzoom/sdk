@@ -26,8 +26,18 @@ package org.openzoom.flash.net
  */
 public interface ILoaderClient
 {
-    function get loader() : ILoadingQueue
-    function set loader( value : ILoadingQueue ) : void
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  loader
+    //----------------------------------
+    
+    function get loader() : INetworkQueue
+    function set loader( value : INetworkQueue ) : void
 }
 
 }

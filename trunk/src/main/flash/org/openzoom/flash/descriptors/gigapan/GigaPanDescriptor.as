@@ -44,8 +44,8 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_BASE_LEVEL : uint = 8
-    private static const DEFAULT_TILE_SIZE : uint = 256
+    private static const DEFAULT_BASE_LEVEL:uint = 8
+    private static const DEFAULT_TILE_SIZE:uint = 256
 
     //--------------------------------------------------------------------------
     //
@@ -56,28 +56,20 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     /**
      * Constructor.
      */
-    public function GigaPanDescriptor( url : String,
-                                       extension : String,
-                                       width : uint,
-                                       height : uint,
-                                       numLevels : uint )
+    public function GigaPanDescriptor(id:uint, width:uint, height:uint)
     {
-        this.source = url
-        this.extension = extension
+        this.id = id
 
-        _numLevels = numLevels
         _width = width
         _height = height
+        _numLevels = computeNumLevels(width, height)
 
         _tileWidth = DEFAULT_TILE_SIZE
         _tileHeight = DEFAULT_TILE_SIZE
 
-        if( extension == ".png" )
-            _type = "image/png"
-        else
-            _type = "image/jpeg"
+        _type = "image/jpeg"
 
-        levels = computeLevels( width, height, DEFAULT_TILE_SIZE, numLevels )
+        levels = computeLevels(width, height, DEFAULT_TILE_SIZE, numLevels)
     }
 
     //--------------------------------------------------------------------------
@@ -86,8 +78,9 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private var extension : String
-    private var levels : Dictionary
+    private var id:uint
+    private var extension:String = ".jpg"
+    private var levels:Dictionary
 
     //--------------------------------------------------------------------------
     //
@@ -98,58 +91,58 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL( level : int, column : uint, row : uint ) : String
+    public function getTileURL(level:int, column:uint, row:uint):String
     {
-        var url : String = source
-        var name : String = "r"
-        var z : int = level
-        var bit : int = (1 << z) >> 1
-        var x : int = column
-        var y : int = row
+        var url:String = "http://share.gigapan.org/gigapans0/" + id + "/tiles"
+        var name:String = "r"
+        var z:int = level
+        var bit:int = (1 << z) >> 1
+        var x:int = column
+        var y:int = row
 
-        while( bit > 0 )
+        while (bit > 0)
         {
-            name += String(( x & bit ? 1 : 0 ) + ( y & bit ? 2 : 0 ))
+            name += String((x & bit ? 1 : 0) + (y & bit ? 2 : 0))
             bit = bit >> 1
         }
 
-        var i : int = 0
-        while( i < name.length - 3 )
+        var i:int = 0
+        while (i < name.length - 3)
         {
-            url = url + ("/" + name.substr( i, 3 ))
+            url = url + "/" + name.substr(i, 3)
             i = i + 3
         }
 
-        var tileURL : String = url + "/" + name + extension
+        var tileURL:String = url + "/" + name + extension
         return tileURL
     }
 
     /**
      * @inheritDoc
      */
-    public function getLevelAt( index : int ) : IMultiScaleImageLevel
+    public function getLevelAt(index:int):IMultiScaleImageLevel
     {
-        return IMultiScaleImageLevel( levels[ index ] )
+        return IMultiScaleImageLevel(levels[index])
     }
 
     /**
      * @inheritDoc
      */
-    public function getMinLevelForSize( width : Number,
-                                            height : Number ) : IMultiScaleImageLevel
+    public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
-        var index : int =
-                clamp( Math.ceil( Math.log( Math.max( width, height )) / Math.LN2
-                               - DEFAULT_BASE_LEVEL ), 0, numLevels - 1 )
-        return IMultiScaleImageLevel( getLevelAt( index ) ).clone()
+    	var maxDimension:uint = Math.max(width, height)
+    	var level:uint = Math.ceil(Math.log(maxDimension) / Math.LN2)
+    	var actualLevel:uint = level - DEFAULT_BASE_LEVEL
+        var index:int = clamp(actualLevel, 0, numLevels - 1)
+        return IMultiScaleImageLevel(getLevelAt(index)).clone()
     }
 
     /**
      * @inheritDoc
      */
-    public function clone() : IMultiScaleImageDescriptor
+    public function clone():IMultiScaleImageDescriptor
     {
-        return new GigaPanDescriptor( source, extension, width, height, numLevels )
+        return new GigaPanDescriptor(id, width, height)
     }
 
     //--------------------------------------------------------------------------
@@ -161,7 +154,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    override public function toString() : String
+    override public function toString():String
     {
         return "[GigaPanDescriptor]" + "\n" + super.toString()
     }
@@ -175,23 +168,32 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    private function computeLevels( originalWidth : uint, originalHeight : uint,
-                                    tileSize : uint, numLevels : int ) : Dictionary
+    private function computeNumLevels(width:uint, height:uint):uint
     {
-        var levels : Dictionary = new Dictionary()
+    	var maxDimension:uint = Math.max(width, height)
+    	var actualLevels:uint = Math.ceil(Math.log(maxDimension) / Math.LN2)
+    	var numLevels:uint = Math.max(0, actualLevels - DEFAULT_BASE_LEVEL + 1)
+        return numLevels
+    }
+     
+    /**
+     * @private
+     */
+    private function computeLevels(originalWidth:uint, originalHeight:uint,
+                                   tileSize:uint, numLevels:int):Dictionary
+    {
+        var levels:Dictionary = new Dictionary()
 
-        var width : uint = originalWidth
-        var height : uint = originalHeight
+        var width:uint = originalWidth
+        var height:uint = originalHeight
 
-        for( var index : int = numLevels - 1; index >= 0; index-- )
+        for(var index:int = numLevels - 1; index >= 0; index--)
         {
-            levels[ index ] = new MultiScaleImageLevel( this, index, width, height,
-                                                        Math.ceil( width / tileWidth ),
-                                                        Math.ceil( height / tileHeight ) )
+            levels[index] = new MultiScaleImageLevel(this, index, width, height,
+                                                     Math.ceil(width / tileWidth),
+                                                     Math.ceil(height / tileHeight))
             width >>= 1
             height >>= 1
-//            width = ( width + 1 ) >> 1
-//            height = ( height + 1 ) >> 1
         }
 
         return levels

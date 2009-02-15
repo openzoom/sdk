@@ -26,6 +26,7 @@ import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.ProgressEvent;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
@@ -34,8 +35,8 @@ import mx.core.UIComponent;
 import org.openzoom.flash.components.IMultiScaleContainer;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
-import org.openzoom.flash.net.ILoadingQueue;
-import org.openzoom.flash.net.LoadingQueue;
+import org.openzoom.flash.net.INetworkQueue;
+import org.openzoom.flash.net.NetworkQueue;
 import org.openzoom.flash.renderers.IMultiScaleRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
@@ -169,14 +170,14 @@ public final class MultiScaleContainer extends UIComponent
     //  loader
     //----------------------------------
 
-    private var _loader : ILoadingQueue
+    private var _loader : INetworkQueue
 
-    public function get loader() : ILoadingQueue
+    public function get loader() : INetworkQueue
     {
         return _loader
     }
 
-    public function set loader( value : ILoadingQueue ) : void
+    public function set loader( value : INetworkQueue ) : void
     {
         _loader = value
     }
@@ -597,25 +598,25 @@ public final class MultiScaleContainer extends UIComponent
         dispatchEvent( new Event("viewportChanged" ))
     }
 
-//    private function createLegacyViewport( scene : IReadonlyMultiScaleScene ) : void
-//    {
-//        viewport = new LegacyViewport( DEFAULT_VIEWPORT_WIDTH,
-//                                        DEFAULT_VIEWPORT_HEIGHT,
-//                                        scene )
-//
-//        var transformationController : ViewTransformationController
-//        transformationController = new ViewTransformationController()
-//        transformationController.viewport = viewport
-//        transformationController.view = scene.targetCoordinateSpace
-//
-//        dispatchEvent( new Event("viewportChanged" ))
-//    }
-
     private function createLoader() : void
     {
-        _loader = new LoadingQueue()
+        _loader = new NetworkQueue()
+        _loader.addEventListener(ProgressEvent.PROGRESS,
+                                 loader_progressHandler,
+                                 false, 0, true)
     }
 
+    //--------------------------------------------------------------------------
+    //
+    //  Event handlers: Loader
+    //
+    //--------------------------------------------------------------------------
+    
+    private function loader_progressHandler(event:ProgressEvent):void
+    {
+    	dispatchEvent(event)
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Event handlers: Viewport
@@ -920,11 +921,11 @@ public final class MultiScaleContainer extends UIComponent
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
      */
-    public function zoomToBounds( bounds : Rectangle,
+    public function fitToBounds( bounds : Rectangle,
                                   scale : Number = 1.0,
                                   immediately : Boolean = false ) : void
     {
-        viewport.zoomToBounds( bounds, scale, immediately )
+        viewport.fitToBounds( bounds, scale, immediately )
     }
 
     /**

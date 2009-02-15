@@ -16,11 +16,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[source path] src</name>
-			<type>2</type>
-			<locationURI>OPENZOOM/tools/sdk/flex_sdk_%2534.0.0.%25340%25321_mpl/frameworks/projects/framework/src</locationURI>
-		</link>
-		<link>
 			<name>bin-debug</name>
 			<type>2</type>
 			<location>/Users/dani/Documents/workspace/openzoom/target/main/flash/debug</location>

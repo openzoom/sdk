@@ -23,12 +23,12 @@ package org.openzoom.flash.events
 
 import flash.events.Event;
 
-import org.openzoom.flash.net.ILoadingItem;
+import org.openzoom.flash.net.INetworkRequest;
 
 /**
  * @private
  */
-public class LoadingItemEvent extends Event
+public class NetworkRequestEvent extends Event
 {
     //--------------------------------------------------------------------------
     //
@@ -36,8 +36,8 @@ public class LoadingItemEvent extends Event
     //
     //--------------------------------------------------------------------------
 
-    public static const COMPLETE : String = "complete"
-    public static const ERROR    : String = "error"
+    public static const COMPLETE:String = "complete"
+    public static const ERROR:String = "error"
 
     //--------------------------------------------------------------------------
     //
@@ -48,11 +48,11 @@ public class LoadingItemEvent extends Event
     /**
      * Constructor.
      */
-    public function LoadingItemEvent( type : String,
-                                      bubbles : Boolean = false,
-                                      cancelable : Boolean = false )
+    public function NetworkRequestEvent(type:String,
+                                        bubbles:Boolean = false,
+                                        cancelable:Boolean = false)
     {
-        super( type, bubbles, cancelable )
+        super(type, bubbles, cancelable)
     }
 
     //--------------------------------------------------------------------------
@@ -61,9 +61,9 @@ public class LoadingItemEvent extends Event
     //
     //--------------------------------------------------------------------------
 
-    public var data : * = null
-    public var context : * = null
-    public var item : ILoadingItem
+    public var data:* = null
+    public var context:* = null
+    public var item:INetworkRequest
 
     //--------------------------------------------------------------------------
     //
@@ -74,9 +74,9 @@ public class LoadingItemEvent extends Event
     /**
      * @inheritDoc
      */
-    override public function clone() : Event
+    override public function clone():Event
     {
-        return new LoadingItemEvent( type, bubbles, cancelable )
+        return new NetworkRequestEvent(type, bubbles, cancelable)
     }
 }
 

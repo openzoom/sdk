@@ -24,16 +24,17 @@ package org.openzoom.flash.net
 import flash.display.Bitmap;
 import flash.display.DisplayObject;
 import flash.events.EventDispatcher;
+import flash.events.ProgressEvent;
 
-import org.openzoom.flash.events.LoadingItemEvent;
+import org.openzoom.flash.events.NetworkRequestEvent;
 
 /**
  * @private
  *
  * Basic loading queue for image tiles.
  */
-public class LoadingQueue extends EventDispatcher
-                          implements ILoadingQueue
+public class NetworkQueue extends EventDispatcher
+                          implements INetworkQueue
 {
     //--------------------------------------------------------------------------
     //
@@ -41,7 +42,7 @@ public class LoadingQueue extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    private static const MAX_CONNECTIONS : uint = 8
+    private static const MAX_CONNECTIONS:uint = 8
 
     //--------------------------------------------------------------------------
     //
@@ -52,7 +53,7 @@ public class LoadingQueue extends EventDispatcher
     /**
      * Constructor.
      */
-    public function LoadingQueue()
+    public function NetworkQueue()
     {
     }
 
@@ -62,8 +63,8 @@ public class LoadingQueue extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    private var queue : Array /* of LoadingItem */ = []
-    private var connections : Array /* of LoadingItem */ = []
+    private var queue:Array /* of LoadingItem */ = []
+    private var connections:Array /* of LoadingItem */ = []
 
     //--------------------------------------------------------------------------
     //
@@ -71,39 +72,36 @@ public class LoadingQueue extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    public function addItem( url : String,
-                             type : Class,
-                             context : * = null ) : ILoadingItem
+    public function addRequest(url:String, type:Class, context:* = null):INetworkRequest
     {
-        var item : ILoadingItem
+        var request:INetworkRequest
 
         // TODO
-//        if( type == URLVariables )
+//        if(type == URLVariables)
 
         // TODO
-//      if( type == Sound )
+//      if(type == Sound)
 
         // TODO
-//      if( type == Video || type == NetStream )
+//      if(type == Video || type == NetStream)
 
-        if( type == DisplayObject || type == Bitmap )
-            item = new DisplayObjectLoadingItem( url, context )
+        if(type == DisplayObject || type == Bitmap)
+            request = new DisplayObjectRequest(url, context)
 
-        if( type == String || type == XML )
-            item = new URLLoadingItem( url, context )
+        if(type == String || type == XML)
+            request = new URIRequest(url, context)
 
-        if( !item )
-            throw new ArgumentError( "Type " + type.toString() + " not supported." )
+        if(!request)
+            throw new ArgumentError("Type " + type.toString() + " not supported.")
 
-        item.addEventListener( LoadingItemEvent.COMPLETE,
-                               item_completeHandler )
-        item.addEventListener( LoadingItemEvent.ERROR,
-                               item_errorHandler )
+        request.addEventListener(ProgressEvent.PROGRESS, request_progressHandler)
+        request.addEventListener(NetworkRequestEvent.COMPLETE, request_completeHandler)
+        request.addEventListener(NetworkRequestEvent.ERROR, request_errorHandler)
 
         // Add item to front (LIFO)
-        queue.unshift( item )
+        queue.unshift(request)
         processQueue()
-        return item
+        return request
     }
 
     //--------------------------------------------------------------------------
@@ -115,13 +113,13 @@ public class LoadingQueue extends EventDispatcher
     /**
      * @private
      */
-    private function processQueue() : void
+    private function processQueue():void
     {
-        while( queue.length > 0 && connections.length < MAX_CONNECTIONS )
+        while(queue.length > 0 && connections.length < MAX_CONNECTIONS)
         {
-            var item : ILoadingItem = ILoadingItem( queue.shift() )
-            connections.push( item )
-            item.load()
+            var item:INetworkRequest = INetworkRequest(queue.shift())
+            connections.push(item)
+            item.start()
         }
     }
 
@@ -134,12 +132,12 @@ public class LoadingQueue extends EventDispatcher
     /**
      * @private
      */
-    private function item_completeHandler( event : LoadingItemEvent ) : void
+    private function request_completeHandler(event:NetworkRequestEvent):void
     {
-        var index : int = connections.indexOf( event.item )
+        var index:int = connections.indexOf(event.item)
 
-        if( index > 0 )
-           connections.splice( index, 1 )
+        if(index > 0)
+           connections.splice(index, 1)
 
         processQueue()
     }
@@ -147,9 +145,30 @@ public class LoadingQueue extends EventDispatcher
     /**
      * @private
      */
-    private function item_errorHandler( event : LoadingItemEvent ) : void
+    private function request_errorHandler(event:NetworkRequestEvent):void
     {
-        item_completeHandler( event )
+        trace("[NetworkQueue] item_errorHandler")
+        request_completeHandler(event)
+    }
+
+    /**
+     * @private
+     */
+    private function request_progressHandler(event:ProgressEvent):void
+    {
+    	var bytesLoaded:uint = 0
+    	var bytesTotal:uint = 0
+    	
+    	for each(var request:INetworkRequest in connections)
+    	{
+    		bytesLoaded += request.bytesLoaded
+    		bytesTotal += request.bytesTotal
+    	}
+    	
+    	var progressEvent:ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS)
+    	progressEvent.bytesLoaded = bytesLoaded
+    	progressEvent.bytesTotal = bytesTotal
+    	dispatchEvent(progressEvent)
     }
 }
 

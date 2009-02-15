@@ -23,15 +23,16 @@ package org.openzoom.flex.components
 
 import flash.events.Event;
 import flash.events.IOErrorEvent;
+import flash.events.ProgressEvent;
 import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
 import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
-import org.openzoom.flash.events.LoadingItemEvent;
-import org.openzoom.flash.net.ILoadingItem;
-import org.openzoom.flash.net.ILoadingQueue;
-import org.openzoom.flash.net.LoadingQueue;
+import org.openzoom.flash.events.NetworkRequestEvent;
+import org.openzoom.flash.net.INetworkQueue;
+import org.openzoom.flash.net.INetworkRequest;
+import org.openzoom.flash.net.NetworkQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 
 /**
@@ -75,8 +76,8 @@ public class DeepZoomContainer extends MultiScaleImageBase
     //
     //--------------------------------------------------------------------------
 
-    private static const TYPE_COLLECTION : String = "Collection"
-    private static const TYPE_IMAGE      : String = "Image"
+    private static const TYPE_COLLECTION:String = "Collection"
+    private static const TYPE_IMAGE:String = "Image"
 
     //--------------------------------------------------------------------------
     //
@@ -94,7 +95,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         tabEnabled = false
         tabChildren = true
 
-        itemLoadingQueue = new LoadingQueue()
+        itemLoadingQueue = new NetworkQueue()
     }
 
     //--------------------------------------------------------------------------
@@ -103,10 +104,10 @@ public class DeepZoomContainer extends MultiScaleImageBase
     //
     //--------------------------------------------------------------------------
 
-    private var urlLoader : URLLoader
-    private var items : Array /* of ItemInfo */ = []
-    private var itemLoadingQueue : ILoadingQueue
-    private var numItemsToDownload : int = 0
+    private var urlLoader:URLLoader
+    private var items:Array /* of ItemInfo */ = []
+    private var itemLoadingQueue:INetworkQueue
+    private var numItemsToDownload:int = 0
 
     //--------------------------------------------------------------------------
     //
@@ -118,20 +119,20 @@ public class DeepZoomContainer extends MultiScaleImageBase
     //  source
     //----------------------------------
 
-    private var _source : Object
-    private var sourceChanged : Boolean = false
+    private var _source:Object
+    private var sourceChanged:Boolean = false
 
    ;[Bindable(event="sourceChanged")]
 
     /**
      * URL to load
      */
-    public function get source() : Object
+    public function get source():Object
     {
         return _source
     }
 
-    public function set source( value : Object ) : void
+    public function set source(value:Object):void
     {
         if (_source !== value)
         {
@@ -142,7 +143,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
             sourceChanged = true
 
             invalidateProperties()
-            dispatchEvent( new Event( "sourceChanged" ))
+            dispatchEvent(new Event("sourceChanged"))
         }
     }
 
@@ -155,14 +156,14 @@ public class DeepZoomContainer extends MultiScaleImageBase
     /**
      * @private
      */
-    override protected function commitProperties() : void
+    override protected function commitProperties():void
     {
         super.commitProperties()
 
-        if( sourceChanged )
+        if(sourceChanged )
         {
             sourceChanged = false
-            load( _source )
+            load(_source)
         }
     }
 
@@ -172,80 +173,79 @@ public class DeepZoomContainer extends MultiScaleImageBase
     //
     //--------------------------------------------------------------------------
 
-    private function load( classOrString : Object ) : void
+    private function load(classOrString:Object):void
     {
         // Remove all children
-        while( container.numChildren > 0 )
-            container.removeChildAt( 0 )
+        while(container.numChildren > 0)
+            container.removeChildAt(0)
 
         // URL
-        if( classOrString is String )
+        if(classOrString is String)
         {
-            urlLoader = new URLLoader( new URLRequest( String( classOrString )))
+            urlLoader = new URLLoader(new URLRequest(String(classOrString)))
 
-            urlLoader.addEventListener( Event.COMPLETE,
-                                        urlLoader_completeHandler,
-                                        false, 0, true )
-            urlLoader.addEventListener( IOErrorEvent.IO_ERROR,
-                                        urlLoader_ioErrorHandler,
-                                        false, 0, true )
-            urlLoader.addEventListener( SecurityErrorEvent.SECURITY_ERROR,
-                                        urlLoader_securityErrorHandler,
-                                        false, 0, true )
+            urlLoader.addEventListener(Event.COMPLETE,
+                                       urlLoader_completeHandler,
+                                       false, 0, true )
+            urlLoader.addEventListener(IOErrorEvent.IO_ERROR,
+                                       urlLoader_ioErrorHandler,
+                                       false, 0, true )
+            urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
+                                       urlLoader_securityErrorHandler,
+                                       false, 0, true )
         }
 
         // Descriptor
-        if( classOrString is DZIDescriptor )
+        if(classOrString is DZIDescriptor)
         {
-            createImage( DZIDescriptor( classOrString ))
+            createImage(DZIDescriptor(classOrString))
         }
     }
 
     /**
      * @private
      */
-    private function loadItems() : void
+    private function loadItems():void
     {
-        for each( var item : ItemInfo in items )
+        for each(var item:ItemInfo in items)
         {
-            var loadingItem : ILoadingItem =
-                                 itemLoadingQueue.addItem( item.source,
-                                                           String,
-                                                           item )
-            loadingItem.addEventListener( LoadingItemEvent.COMPLETE,
-                                          loadingItem_completeHandler )
+            var request:INetworkRequest = itemLoadingQueue.addRequest(item.source,
+                                                                      String,
+                                                                      item)
+            request.addEventListener(NetworkRequestEvent.COMPLETE,
+                                     loadingItem_completeHandler)
         }
     }
 
     /**
      * @private
      */
-    private function itemsLoaded() : void
+    private function itemsLoaded():void
     {
-        var maxX : Number = 0
-        var maxY : Number = 0
+        var maxX:Number = 0
+        var maxY:Number = 0
 
-        var item : ItemInfo
+        var item:ItemInfo
 
         // Precompute the normalized maximum
         // dimensions this collection could take up
-        for each( item in items )
+        for each(item in items)
         {
-            var aspectRatio : Number = item.width / item.height
+            var aspectRatio:Number = item.width / item.height
 
             item.targetX = -item.viewportX / item.viewportWidth
             item.targetY = -item.viewportY / item.viewportWidth
             item.targetWidth  = 1 / item.viewportWidth
             item.targetHeight = item.targetWidth / aspectRatio
 
-            maxX = Math.max( maxX, item.targetX + item.targetWidth )
-            maxY = Math.max( maxY, item.targetY + item.targetHeight )
+            maxX = Math.max(maxX, item.targetX + item.targetWidth)
+            maxY = Math.max(maxY, item.targetY + item.targetHeight)
         }
 
         // Set the scene size in a way that no overflow can occur
-        var sceneAspectRatio : Number = maxX / maxY
+        var sceneAspectRatio:Number = maxX / maxY
 
-        if( sceneAspectRatio > 1 )
+        if(sceneAspectRatio > 1)
         {
             container.sceneWidth  = DEFAULT_SCENE_DIMENSION
             container.sceneHeight = DEFAULT_SCENE_DIMENSION / sceneAspectRatio
@@ -257,42 +257,42 @@ public class DeepZoomContainer extends MultiScaleImageBase
         }
 
         // Add, size and position items in scene
-        for each( item in items )
+        for each(item in items)
         {
-            var targetX      : Number = item.targetX * container.sceneWidth
-            var targetY      : Number = item.targetY * container.sceneWidth
-            var targetWidth  : Number = item.targetWidth  * container.sceneWidth
-            var targetHeight : Number = item.targetHeight * container.sceneWidth
+            var targetX     :Number = item.targetX * container.sceneWidth
+            var targetY     :Number = item.targetY * container.sceneWidth
+            var targetWidth :Number = item.targetWidth  * container.sceneWidth
+            var targetHeight:Number = item.targetHeight * container.sceneWidth
 
-//            if( !item.source || !item.data )
+//            if(!item.source || !item.data)
 //                continue
 
-            var descriptor : DZIDescriptor =
-                                     new DZIDescriptor( item.source, item.data )
-            var renderer : MultiScaleImageRenderer =
-                                  new MultiScaleImageRenderer( descriptor,
+            var descriptor:DZIDescriptor =
+                                     new DZIDescriptor(item.source, item.data)
+            var renderer:MultiScaleImageRenderer =
+                                  new MultiScaleImageRenderer(descriptor,
                                                                container.loader,
                                                                targetWidth,
-                                                               targetHeight )
+                                                               targetHeight)
             renderer.x = targetX
             renderer.y = targetY
 
-            addChild( renderer )
+            addChild(renderer)
         }
 
         // Silverlight MultiScaleImage default behavior, I think
         viewport.width = 1
-        viewport.panTo( 0, 0, true )
+        viewport.panTo(0, 0, true)
     }
 
     /**
      * @private
      */
-    private function createImage( descriptor : DZIDescriptor ) : void
+    private function createImage(descriptor:DZIDescriptor):void
     {
-        var aspectRatio : Number = descriptor.width / descriptor.height
+        var aspectRatio:Number = descriptor.width / descriptor.height
 
-        if( aspectRatio > 1 )
+        if(aspectRatio > 1)
         {
             container.sceneWidth  = DEFAULT_SCENE_DIMENSION
             container.sceneHeight = DEFAULT_SCENE_DIMENSION / aspectRatio
@@ -303,13 +303,13 @@ public class DeepZoomContainer extends MultiScaleImageBase
             container.sceneHeight = DEFAULT_SCENE_DIMENSION
         }
 
-        var renderer : MultiScaleImageRenderer =
-                                  new MultiScaleImageRenderer( descriptor,
-                                                               container.loader,
-                                                               sceneWidth,
-                                                               sceneHeight )
+        var renderer:MultiScaleImageRenderer =
+                                  new MultiScaleImageRenderer(descriptor,
+                                                              container.loader,
+                                                              sceneWidth,
+                                                              sceneHeight)
 
-        addChild( renderer )
+        addChild(renderer)
     }
 
     //--------------------------------------------------------------------------
@@ -321,24 +321,24 @@ public class DeepZoomContainer extends MultiScaleImageBase
     /**
      * @private
      */
-    private function urlLoader_completeHandler( event : Event ) : void
+    private function urlLoader_completeHandler(event:Event):void
     {
-        if( !urlLoader || !urlLoader.data )
+        if(!urlLoader || !urlLoader.data)
             return
 
-        var data : XML = new XML( urlLoader.data )
+        var data:XML = new XML(urlLoader.data)
 
-        var item : ItemInfo
+        var item:ItemInfo
         use namespace deepzoom
 
         // Collection
-        if( data.localName() == TYPE_COLLECTION )
+        if(data.localName() == TYPE_COLLECTION)
         {
             items = []
-            for each( var itemXML : XML in data.Items.* )
+            for each(var itemXML:XML in data.Items.*)
             {
-                item = ItemInfo.fromXML( source.toString(), itemXML )
-                items.push( item )
+                item = ItemInfo.fromXML(source.toString(), itemXML)
+                items.push(item)
             }
 
             numItemsToDownload = items.length
@@ -346,39 +346,39 @@ public class DeepZoomContainer extends MultiScaleImageBase
         }
 
         // Single image
-        if( data.localName() == TYPE_IMAGE )
+        if(data.localName() == TYPE_IMAGE)
         {
-            var descriptor : DZIDescriptor =
-                          new DZIDescriptor( source.toString(), new XML( data ))
-            createImage( descriptor )
+            var descriptor:DZIDescriptor =
+                          new DZIDescriptor(source.toString(), new XML(data))
+            createImage(descriptor)
         }
     }
 
     /**
      * @private
      */
-    private function urlLoader_ioErrorHandler( event : IOErrorEvent ) : void
+    private function urlLoader_ioErrorHandler(event:IOErrorEvent):void
     {
-        dispatchEvent( event )
+        dispatchEvent(event)
     }
 
     /**
      * @private
      */
-    private function urlLoader_securityErrorHandler( event : SecurityErrorEvent ) : void
+    private function urlLoader_securityErrorHandler(event:SecurityErrorEvent):void
     {
-        dispatchEvent( event )
+        dispatchEvent(event)
     }
 
     /**
      * @private
      */
-    private function loadingItem_completeHandler( event : LoadingItemEvent ) : void
+    private function loadingItem_completeHandler(event:NetworkRequestEvent):void
     {
         numItemsToDownload--
-        ItemInfo( event.context ).data = new XML( event.data )
+        ItemInfo(event.context).data = new XML(event.data)
 
-        if( numItemsToDownload == 0 )
+        if(numItemsToDownload == 0)
             itemsLoaded()
     }
 }
@@ -425,18 +425,18 @@ class ItemInfo
     /**
      * @private
      */
-    public static function fromXML( source : String, data : XML ) : ItemInfo
+    public static function fromXML(source:String, data:XML):ItemInfo
     {
-        var itemInfo : ItemInfo = new ItemInfo()
+        var itemInfo:ItemInfo = new ItemInfo()
 
         use namespace deepzoom
 
         itemInfo.id = data.@Id
-        itemInfo.source = LoaderUtil.createAbsoluteURL( source, data.@Source )
+        itemInfo.source = LoaderUtil.createAbsoluteURL(source, data.@Source)
         itemInfo.width = data.Size.@Width
         itemInfo.height = data.Size.@Height
 
-        if( data.Viewport )
+        if(data.Viewport)
         {
             itemInfo.viewportWidth = data.Viewport.@Width
             itemInfo.viewportX = data.Viewport.@X
@@ -452,22 +452,22 @@ class ItemInfo
     //
     //--------------------------------------------------------------------------
 
-    public var id : uint = 0
-    public var source : String
-    public var width : uint
-    public var height : uint
+    public var id:uint = 0
+    public var source:String
+    public var width:uint
+    public var height:uint
 
-    public var viewportWidth : Number = 1
-    public var viewportX : Number = 0
-    public var viewportY : Number = 0
+    public var viewportWidth:Number = 1
+    public var viewportX:Number = 0
+    public var viewportY:Number = 0
 
-    public var data : XML
+    public var data:XML
 
     // FIXME: This probably doesn't belong here
-    public var targetX : Number
-    public var targetY : Number
-    public var targetWidth : Number
-    public var targetHeight : Number
+    public var targetX:Number
+    public var targetY:Number
+    public var targetWidth:Number
+    public var targetHeight:Number
 
     //--------------------------------------------------------------------------
     //
@@ -475,7 +475,7 @@ class ItemInfo
     //
     //--------------------------------------------------------------------------
 
-    public function toString() : String
+    public function toString():String
     {
         return "[ItemInfo]" + "\n" +
                "id:" + id + "\n" +

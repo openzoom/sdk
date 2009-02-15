@@ -79,8 +79,8 @@ public interface IViewport extends IEventDispatcher
     /**
      * Horizontal coordinate of the viewport.
      */
-    function get x() : Number
-    function set x( value : Number ) : void
+    function get x():Number
+    function set x(value:Number):void
 
     //----------------------------------
     //  y
@@ -89,8 +89,8 @@ public interface IViewport extends IEventDispatcher
     /**
      * Vertical coordinate of the viewport.
      */
-    function get y() : Number
-    function set y( value : Number ) : void
+    function get y():Number
+    function set y(value:Number):void
 
     //----------------------------------
     //  width
@@ -99,8 +99,8 @@ public interface IViewport extends IEventDispatcher
     /**
      * Horizontal dimension of the viewport.
      */
-    function get width() : Number
-    function set width( value : Number ) : void
+    function get width():Number
+    function set width(value:Number):void
 
     //----------------------------------
     //  height
@@ -109,8 +109,8 @@ public interface IViewport extends IEventDispatcher
     /**
      * Vertical dimension of the viewport.
      */
-    function get height() : Number
-    function set height( value : Number ) : void
+    function get height():Number
+    function set height(value:Number):void
 
     //----------------------------------
     //  viewportWidth
@@ -119,7 +119,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * Width of the viewport container.
      */
-    function get viewportWidth() : Number
+    function get viewportWidth():Number
 
     //----------------------------------
     //  viewportHeight
@@ -128,7 +128,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * Height of the viewport container.
      */
-    function get viewportHeight() : Number
+    function get viewportHeight():Number
 
     //--------------------------------------------------------------------------
     //
@@ -140,8 +140,8 @@ public interface IViewport extends IEventDispatcher
 //    //  constraint
 //    //----------------------------------
 //
-//    function get constraint() : IViewportConstraint
-//    function set constraint( value : IViewportConstraint ) : void
+//    function get constraint():IViewportConstraint
+//    function set constraint(value:IViewportConstraint):void
 
     //----------------------------------
     //  transformer
@@ -150,8 +150,8 @@ public interface IViewport extends IEventDispatcher
     /**
      * Transforms the IViewport object after its state has been changed.
      */
-    function get transformer() : IViewportTransformer
-    function set transformer( value : IViewportTransformer ) : void
+    function get transformer():IViewportTransformer
+    function set transformer(value:IViewportTransformer):void
 
     //----------------------------------
     //  scene
@@ -160,7 +160,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * Scene this viewport belongs to.
      */
-    function get scene() : IReadonlyMultiScaleScene
+    function get scene():IReadonlyMultiScaleScene
 
     //----------------------------------
     //  scale
@@ -169,8 +169,8 @@ public interface IViewport extends IEventDispatcher
     /**
      * Scale of the scene.
      */
-    function get scale() : Number
-    function set scale( value : Number ) : void
+    function get scale():Number
+    function set scale(value:Number):void
 
     //----------------------------------
     //  zoom
@@ -180,8 +180,8 @@ public interface IViewport extends IEventDispatcher
      * Zoom level of the viewport.
      * Scene fits exactly into viewport at value 1.
      */
-    function get zoom() : Number
-    function set zoom( value : Number ) : void
+    function get zoom():Number
+    function set zoom(value:Number):void
 
     //--------------------------------------------------------------------------
     //
@@ -195,9 +195,9 @@ public interface IViewport extends IEventDispatcher
      * @param transformX Horizontal coordinate of the zooming center
      * @param transformY Vertical coordinate of the zooming center
      */
-    function zoomTo( zoom : Number,
-                     transformX : Number = 0.5, transformY : Number = 0.5,
-                     immediately : Boolean = false ) : void
+    function zoomTo(zoom:Number,
+                     transformX:Number = 0.5, transformY:Number = 0.5,
+                     immediately:Boolean = false):void
 
     /**
      * Zoom the viewport by a factor.
@@ -205,9 +205,9 @@ public interface IViewport extends IEventDispatcher
      * @param transformX Horizontal coordinate of the zooming center
      * @param transformY Vertical coordinate of the zooming center
      */
-    function zoomBy( factor : Number,
-                     transformX : Number = 0.5, transformY : Number = 0.5,
-                     immediately : Boolean = false ) : void
+    function zoomBy(factor:Number,
+                     transformX:Number = 0.5, transformY:Number = 0.5,
+                     immediately:Boolean = false):void
 
     //--------------------------------------------------------------------------
     //
@@ -220,24 +220,24 @@ public interface IViewport extends IEventDispatcher
      * @param x Horizontal coordinate
      * @param y Vertical coordinate
      */
-    function panTo( x : Number, y : Number,
-                    immediately : Boolean = false ) : void
+    function panTo(x:Number, y:Number,
+                    immediately:Boolean = false):void
 
     /**
      * Move the viewport.
      * @param deltaX Horizontal translation delta
      * @param deltaY Vertical translation delta
      */
-    function panBy( deltaX : Number, deltaY : Number,
-                    immediately : Boolean = false ) : void
+    function panBy(deltaX:Number, deltaY:Number,
+                    immediately:Boolean = false):void
 
     /**
      * Move the viewport center.
      * @param centerX Horizontal coordinate of the new center
      * @param centerY Vertical coordinate of the new center
      */
-    function panCenterTo( centerX : Number, centerY : Number,
-                          immediately : Boolean = false ) : void
+    function panCenterTo(centerX:Number, centerY:Number,
+                          immediately:Boolean = false):void
 
     //--------------------------------------------------------------------------
     //
@@ -248,7 +248,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * Fit entire scene into the viewport.
      */
-    function showAll( immediately : Boolean = false ) : void
+    function showAll(immediately:Boolean = false):void
 
     /**
      * Show a rectangular area of the scene inside the viewport.
@@ -257,14 +257,14 @@ public interface IViewport extends IEventDispatcher
      * @param scale Scale at which the rectangle is beeing displayed, e.g. useful
      *              for displaying some space around the rectangle.
      */
-    function zoomToBounds( bounds : Rectangle,
-                           scale : Number = 1.0,
-                           immediately : Boolean = false ) : void
+    function fitToBounds(bounds:Rectangle,
+                         scale:Number = 1.0,
+                         immediately:Boolean = false):void
 
     /**
      * Returns a Rectangle object with the bounds of the viewport.
-     */ 
-    function getBounds() : Rectangle
+     */
+    function getBounds():Rectangle
 
     //--------------------------------------------------------------------------
     //
@@ -276,13 +276,13 @@ public interface IViewport extends IEventDispatcher
      * Converts the point object from the viewport's
      * container (local) coordinates to scene coordinates.
      */
-    function localToScene( point : Point ) : Point
+    function localToScene(point:Point):Point
 
     /**
      * Converts the point object from scene coordinates
      * to the viewport's container (local) coordinates.
      */
-    function sceneToLocal( point : Point ) : Point
+    function sceneToLocal(point:Point):Point
 
     //--------------------------------------------------------------------------
     //
@@ -299,7 +299,7 @@ public interface IViewport extends IEventDispatcher
      * @return true if this Viewport object contains the specified
      * point; otherwise false.
      */
-    function contains( x : Number, y : Number ) : Boolean
+    function contains(x:Number, y:Number):Boolean
 
     /**
      * Determines whether the object specified in the toIntersect parameter
@@ -312,7 +312,7 @@ public interface IViewport extends IEventDispatcher
      * @return true if the specified object intersects with this Viewport
      * object; otherwise false.
      */
-    function intersects( toIntersect : Rectangle ) : Boolean
+    function intersects(toIntersect:Rectangle):Boolean
 
     /**
      * If the Rectangle object specified in the toIntersect parameter intersects
@@ -327,7 +327,7 @@ public interface IViewport extends IEventDispatcher
      * If the rectangles do not intersect, this method returns an empty Rectangle
      * object; that is, a rectangle with its x, y, width, and height properties set to 0.
      */
-    function intersection( toIntersect : Rectangle ) : Rectangle
+    function intersection(toIntersect:Rectangle):Rectangle
 
     //--------------------------------------------------------------------------
     //
@@ -342,7 +342,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * The y coordinate of the top-left corner of the viewport.
      */
-    function get top() : Number
+    function get top():Number
 
     //----------------------------------
     //  right
@@ -351,7 +351,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * The sum of the x and width properties.
      */
-    function get right() : Number
+    function get right():Number
 
     //----------------------------------
     //  bottom
@@ -360,7 +360,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * The sum of the y and height properties.
      */
-    function get bottom() : Number
+    function get bottom():Number
 
     //----------------------------------
     //  left
@@ -369,7 +369,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * The x coordinate of the top-left corner of the viewport.
      */
-    function get left() : Number
+    function get left():Number
 
     //----------------------------------
     //  topLeft
@@ -379,7 +379,7 @@ public interface IViewport extends IEventDispatcher
      * The location of the IViewport object's top-left corner,
      * determined by the x and y coordinates of the point.
      */
-    function get topLeft() : Point
+    function get topLeft():Point
 
     //----------------------------------
     //  bottomRight
@@ -389,7 +389,7 @@ public interface IViewport extends IEventDispatcher
      * The location of the IViewport object's bottom-right corner,
      * determined by the values of the right and bottom properties.
      */
-    function get bottomRight() : Point
+    function get bottomRight():Point
 }
 
 }

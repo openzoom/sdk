@@ -23,11 +23,11 @@ package org.openzoom.flex.components
 
 import flash.display.DisplayObject;
 import flash.events.Event;
+import flash.events.ProgressEvent;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import mx.core.UIComponent;
-import mx.core.mx_internal;
 
 import org.openzoom.flash.components.IMultiScaleContainer;
 import org.openzoom.flash.viewport.INormalizedViewport;
@@ -45,10 +45,10 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //
     //--------------------------------------------------------------------------
 
-    protected static const DEFAULT_SCENE_DIMENSION : Number = 16384 // 2^14
+    protected static const DEFAULT_SCENE_DIMENSION:Number = 16384 // 2^14
 
-    private static const DEFAULT_VIEWPORT_WIDTH    : Number = 800
-    private static const DEFAULT_VIEWPORT_HEIGHT   : Number = 600
+    private static const DEFAULT_VIEWPORT_WIDTH:Number = 800
+    private static const DEFAULT_VIEWPORT_HEIGHT:Number = 600
 
     //--------------------------------------------------------------------------
     //
@@ -242,6 +242,9 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
         if( !container )
         {
             container = new MultiScaleContainer()
+            container.addEventListener(ProgressEvent.PROGRESS,
+                                       container_progressHandler,
+                                       false, 0, true)
             super.addChild( container )
 
             dispatchEvent( new Event( "containerChanged" ))
@@ -321,6 +324,17 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
         }
     }
 
+    //--------------------------------------------------------------------------
+    //
+    //  Event handlers: Container
+    //
+    //--------------------------------------------------------------------------
+    
+    private function container_progressHandler(event:ProgressEvent):void
+    {
+    	dispatchEvent(event)
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Properties: IMultiScaleContainer
@@ -538,11 +552,11 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
      */
-    public function zoomToBounds( bounds : Rectangle,
+    public function fitToBounds( bounds : Rectangle,
                                   scale : Number = 1.0,
                                   immediately : Boolean = false ) : void
     {
-        container.zoomToBounds( bounds, scale, immediately )
+        container.fitToBounds( bounds, scale, immediately )
     }
 
     /**

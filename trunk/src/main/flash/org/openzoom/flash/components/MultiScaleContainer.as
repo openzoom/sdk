@@ -30,8 +30,8 @@ import flash.geom.Rectangle;
 
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
-import org.openzoom.flash.net.ILoadingQueue;
-import org.openzoom.flash.net.LoadingQueue;
+import org.openzoom.flash.net.INetworkQueue;
+import org.openzoom.flash.net.NetworkQueue;
 import org.openzoom.flash.renderers.IMultiScaleRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
@@ -152,14 +152,14 @@ public final class MultiScaleContainer extends Sprite
     //  loader
     //----------------------------------
 
-    private var _loader : ILoadingQueue
+    private var _loader : INetworkQueue
 
-    public function get loader() : ILoadingQueue
+    public function get loader() : INetworkQueue
     {
         return _loader
     }
 
-    public function set loader( value : ILoadingQueue ) : void
+    public function set loader( value : INetworkQueue ) : void
     {
         _loader = value
     }
@@ -413,7 +413,7 @@ public final class MultiScaleContainer extends Sprite
 
     private function createLoader() : void
     {
-        _loader = new LoadingQueue()
+        _loader = new NetworkQueue()
     }
 
     //--------------------------------------------------------------------------
@@ -698,7 +698,7 @@ public final class MultiScaleContainer extends Sprite
                                   scale : Number = 1.0,
                                   immediately : Boolean = false ) : void
     {
-        viewport.zoomToBounds( bounds, scale, immediately )
+        viewport.fitToBounds( bounds, scale, immediately )
     }
 
     /**

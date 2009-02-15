@@ -40,13 +40,13 @@ import flash.events.IEventDispatcher;
 /**
  * Interface for loading items.
  */
-public interface ILoadingItem extends IEventDispatcher
+public interface INetworkRequest extends IEventDispatcher
 {
-    function load() : void
-//  function cancel() : void
+    function start() : void
+//  function stop() : void
 
-//  function get bytesLoaded() : Number
-//  function get bytesTotal() : Number
+    function get bytesLoaded():uint
+    function get bytesTotal():uint
 }
 
 }

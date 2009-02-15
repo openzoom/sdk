@@ -48,7 +48,7 @@ public class TileLayer extends Sprite implements ITileLayer
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_TILE_SHOW_DURATION : Number = 0.5
+    private static const DEFAULT_TILE_SHOW_DURATION:Number = 2.5
 
     //--------------------------------------------------------------------------
     //
@@ -59,8 +59,8 @@ public class TileLayer extends Sprite implements ITileLayer
     /**
      * Constructor.
      */
-    public function TileLayer( width : Number, height : Number,
-                               level : IMultiScaleImageLevel )
+    public function TileLayer(width:Number, height:Number,
+                               level:IMultiScaleImageLevel)
     {
         _level = level
 
@@ -68,7 +68,7 @@ public class TileLayer extends Sprite implements ITileLayer
 //        scaleXFactor = width  / level.width
 //        scaleYFactor = height / level.height
 
-        createFrame( width, height )
+        createFrame(width, height)
     }
 
     //--------------------------------------------------------------------------
@@ -78,12 +78,12 @@ public class TileLayer extends Sprite implements ITileLayer
     //--------------------------------------------------------------------------
 
     // TODO: Consider using Sprite because of event propagation.
-    private var frame : Shape
-    private var data : IMultiScaleImageLevel
-    private var scaleFactorX : Number = 1
-    private var scaleFactorY : Number = 1
+    private var frame:Shape
+    private var data:IMultiScaleImageLevel
+    private var scaleFactorX:Number = 1
+    private var scaleFactorY:Number = 1
 
-    private var tiles : Dictionary = new Dictionary(true)
+    private var tiles:Dictionary = new Dictionary(true)
 
     //--------------------------------------------------------------------------
     //
@@ -91,9 +91,9 @@ public class TileLayer extends Sprite implements ITileLayer
     //
     //--------------------------------------------------------------------------
 
-    private var _level : IMultiScaleImageLevel
+    private var _level:IMultiScaleImageLevel
 
-    public function get level() : IMultiScaleImageLevel
+    public function get level():IMultiScaleImageLevel
     {
         return _level
     }
@@ -104,32 +104,32 @@ public class TileLayer extends Sprite implements ITileLayer
     //
     //--------------------------------------------------------------------------
 
-    public function containsTile( tile : Tile ) : Boolean
+    public function containsTile(tile:Tile):Boolean
     {
         return tiles[ tile.hashCode ]
     }
 
-    public function addTile( tile : Tile ) : Tile
+    public function addTile(tile:Tile):Tile
     {
-        if( tile.level != level.index )
+        if(tile.level != level.index)
         {
-            trace( "[TileLayer]: Adding Tile from wrong level." )
+            trace("[TileLayer]: Adding Tile from wrong level.")
             return null
         }
 
-//        trace( level.index, level.width, level.height )
+//        trace(level.index, level.width, level.height)
 
         // return if tile already added
-        if( tiles[ tile.hashCode ] )
+        if(tiles[ tile.hashCode ])
            return null
 
         // store reference to tile
         tiles[tile.hashCode] = tile
 
         // add tile
-        var tileBitmap : Bitmap = tile.bitmap
+        var tileBitmap:Bitmap = tile.bitmap
 
-        var bounds : Rectangle = level.getTileBounds( tile.column, tile.row )
+        var bounds:Rectangle = level.getTileBounds(tile.column, tile.row)
 
         tileBitmap.scaleX = scaleFactorX
         tileBitmap.scaleY = scaleFactorY
@@ -137,23 +137,27 @@ public class TileLayer extends Sprite implements ITileLayer
         tileBitmap.x = bounds.x * scaleFactorX
         tileBitmap.y = bounds.y * scaleFactorY
 
-        var tileBitmapRight : Number = tileBitmap.x + tileBitmap.width
-        var tileBitmapBottom : Number = tileBitmap.y + tileBitmap.height
-        var horizontalOverflow : Boolean = tileBitmapRight > level.width
-        var verticalOverflow : Boolean = tileBitmapBottom > level.height
+        var tileBitmapRight:Number = tileBitmap.x + tileBitmap.width
+        var tileBitmapBottom:Number = tileBitmap.y + tileBitmap.height
+        var horizontalOverflow:Boolean = tileBitmapRight > level.width
+        var verticalOverflow:Boolean = tileBitmapBottom > level.height
 
-        if( tileBitmap.x >= level.width || tileBitmap.y >= level.height )
-            trace( "[TileLayer]: Wrong tile positioning" )
+        if(tileBitmap.x >= level.width || tileBitmap.y >= level.height)
+            trace("[TileLayer]: Wrong tile positioning")
 
         // Fix for too large tiles
-        if( horizontalOverflow || verticalOverflow )
+        if(horizontalOverflow || verticalOverflow)
         {
             // TODO: Check bounds with new descriptor API
-            var cropBitmapData : BitmapData =
-                   new BitmapData( Math.min( level.width  - tileBitmap.x, tileBitmap.width ),
-                                   Math.min( level.height - tileBitmap.y, tileBitmap.height ))
-            cropBitmapData.copyPixels( tileBitmap.bitmapData, cropBitmapData.rect, new Point( 0, 0 ))
-            var croppedTileBitmap : Bitmap = new Bitmap( cropBitmapData )
+            var cropBitmapData:BitmapData =
+                   new BitmapData(Math.min(level.width  - tileBitmap.x,
+                                           tileBitmap.width),
+                                   Math.min(level.height - tileBitmap.y,
+                                            tileBitmap.height))
+            cropBitmapData.copyPixels(tileBitmap.bitmapData,
+                                      cropBitmapData.rect,
+                                      new Point(0, 0))
+            var croppedTileBitmap:Bitmap = new Bitmap(cropBitmapData)
             croppedTileBitmap.x = tileBitmap.x
             croppedTileBitmap.y = tileBitmap.y
             croppedTileBitmap.scaleX = tileBitmap.scaleX
@@ -161,8 +165,9 @@ public class TileLayer extends Sprite implements ITileLayer
             tileBitmap = croppedTileBitmap
         }
 
-        if( tileBitmap.x + tileBitmap.width > level.width || tileBitmap.y + tileBitmap.height > level.height )
-            trace( "[TileLayer]: Bad cropping" )
+        if(tileBitmap.x + tileBitmap.width > level.width ||
+           tileBitmap.y + tileBitmap.height > level.height)
+            trace("[TileLayer]: Bad cropping")
 
 
         // FIXME: Debug coloring
@@ -175,21 +180,21 @@ public class TileLayer extends Sprite implements ITileLayer
         tileBitmap.smoothing = true
         tileBitmap.alpha = 0
 
-        addChild( tileBitmap )
+        addChild(tileBitmap)
 
         // TODO: Remove dependency on Tweener
-        Tweener.addTween( tileBitmap, { alpha: 1, time: DEFAULT_TILE_SHOW_DURATION } )
+        Tweener.addTween(tileBitmap, {alpha: 1, time: DEFAULT_TILE_SHOW_DURATION})
 
         return tile
     }
 
-    public function removeAllTiles() : void
+    public function removeAllTiles():void
     {
         // Keep Frame
-        while( numChildren > 1 )
-          removeChildAt( 1 )
+        while(numChildren > 1)
+          removeChildAt(1)
 
-        tiles = new Dictionary( true )
+        tiles = new Dictionary(true)
     }
 
     //--------------------------------------------------------------------------
@@ -198,15 +203,15 @@ public class TileLayer extends Sprite implements ITileLayer
     //
     //--------------------------------------------------------------------------
 
-    private function createFrame( width : Number, height : Number ) : void
+    private function createFrame(width:Number, height:Number):void
     {
         frame = new Shape()
-        var g : Graphics = frame.graphics
-        g.beginFill( 0x000000, 0 )
-        g.drawRect( 0, 0, width, height )
+        var g:Graphics = frame.graphics
+        g.beginFill(0x000000, 0)
+        g.drawRect(0, 0, width, height)
         g.endFill()
 
-        addChild( frame )
+        addChild(frame)
     }
 }
 
