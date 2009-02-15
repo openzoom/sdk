@@ -3,7 +3,7 @@
     <mx:Button
         height="30"
         label="View All"
-        click="{ viewer.showAll() }"
+        click="viewer.showAll()"
         />
         
         <mx:Script>
@@ -23,7 +23,7 @@
         horizontalAlign="center"
         verticalAlign="middle"
         >
-        <mx:Button height="100%" label="–" click="{ viewer.zoomBy( 0.6 ) }" />
-        <mx:Button height="100%" label="+" click="{ viewer.zoomBy( 1.3 ) }" />
+        <mx:Button height="100%" label="–" click="{viewer.zoomBy(0.6)}" />
+        <mx:Button height="100%" label="+" click="{viewer.zoomBy(1.3)}" />
     </mx:HBox>
 </mx:Canvas>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-    backgroundColor="#FFFFFF"
-    width="123"
-    height="60"
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+    backgroundColor="#000000"
+    horizontalAlign="center"
+    verticalAlign="middle"
     >
 	<mx:Image
-	    source="@Embed('../assets/app/gigapan.gif')"
-	    width="123"
-	    height="60"
+	    source="@Embed('../assets/app/gigapan.png')"
+	    width="76"
+	    height="21"
 	    />
-</mx:Canvas>
+</mx:HBox>

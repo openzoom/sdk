@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox
-	xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:openzoom="org.openzoom.flex.components.*"
     xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
     xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
@@ -8,18 +8,33 @@
     backgroundColor="#000000"
     >
     <mx:Script>
-    	<![CDATA[
-    		
-    		import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-    		
-    		[Bindable]
-            public var source : IMultiScaleImageDescriptor
-    		
-    	]]>
+        <![CDATA[
+        
+            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+        	import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
+
+            private static const DEFAULT_SCENE_DIMENSION:uint = 16384
+            private static const DEFAULT_PIXEL_RATIO:uint = 4
+
+           ;[Bindable]
+            private var source:IMultiScaleImageDescriptor
+            
+           ;[Bindable]
+            private var maxScale:Number = 1
+            
+            public function load(id:uint):void
+            {
+            	var width:Number = 59783
+            	var height:Number = 24658
+                source = new GigaPanDescriptor(15374, width, height)
+                maxScale = (Math.max(width, height) / DEFAULT_SCENE_DIMENSION) * DEFAULT_PIXEL_RATIO
+            }
+
+        ]]>
     </mx:Script>
     <openzoom:MultiScaleImage
         id="image"
-        source="{ source }"
+        source="{source}"
         width="100%"
         height="100%"
         >
@@ -34,7 +49,7 @@
         <openzoom:constraint>
             <constraints:CompositeConstraint>
                 <constraints:ZoomConstraint minZoom="1"/>
-                <constraints:ScaleConstraint id="scaleConstraint"/>
+                <constraints:ScaleConstraint id="scaleConstraint" maxScale="{maxScale}"/>
                 <constraints:CenterConstraint/>
                 <constraints:VisibilityConstraint/>
             </constraints:CompositeConstraint>
