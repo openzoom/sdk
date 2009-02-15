@@ -34,7 +34,7 @@
 -->
 
 	<!-- The application identifier string, unique to this application. Required. -->
-	<id>GigaPanDesktop</id>
+	<id>org.openzoom.gigapan.GigaPanDesktop</id>
 
 	<!-- Used as the filename for the application. Required. -->
 	<filename>GigaPanDesktop</filename>
@@ -48,7 +48,7 @@
 
 	<!-- Description, displayed in the AIR application installer.
 	     May have multiple values for each language. See samples or xsd schema file. Optional. -->
-	<!-- <description></description> -->
+    <description>Enjoy browsing and viewing GigaPan images from your desktop in fullscreen.</description>
 
 	<!-- Copyright information. Optional -->
 	<copyright>Copyright 2008-2009, Daniel Gasienica</copyright>
@@ -108,10 +108,9 @@
 	<!-- The icon the system uses for the application. For at least one resolution,
 		 specify the path to a PNG file included in the AIR package. Optional. -->
 	<icon>
-		<image16x16></image16x16>
-		<image32x32></image32x32>
-		<image48x48>../assets/icons/gigapan-48x48.png</image48x48>
-		<image128x128></image128x128>
+		<image16x16>icons/gigapan-16x16.png</image16x16>
+		<image32x32>icons/gigapan-32x32.png</image32x32>
+		<image48x48>icons/gigapan-48x48.png</image48x48>
 	</icon>
 
 	<!-- Whether the application handles the update when a user double-clicks an update version
