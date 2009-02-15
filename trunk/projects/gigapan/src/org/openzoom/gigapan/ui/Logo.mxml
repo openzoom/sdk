@@ -4,9 +4,9 @@
     horizontalAlign="center"
     verticalAlign="middle"
     >
-	<mx:Image
-	    source="@Embed('../assets/app/gigapan.png')"
-	    width="76"
-	    height="21"
-	    />
+    <mx:Image
+        source="@Embed('../assets/app/gigapan.png')"
+        width="76"
+        height="21"
+        />
 </mx:HBox>
