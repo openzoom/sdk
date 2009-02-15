@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Label
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+    text="Oops, something went wrong! Please try again…"
+    fontSize="24"
+    color="#FFFFFF"
+    visible="false"
+    horizontalCenter="0"
+    verticalCenter="0"
+    >
+    <mx:filters>
+        <mx:GlowFilter color="#222222" alpha="0.7" />
+    </mx:filters>
+</mx:Label>

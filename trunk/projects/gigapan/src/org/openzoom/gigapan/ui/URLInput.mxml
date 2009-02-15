@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TextInput
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	fontStyle="italic"
+	text="{ prompt }"
+	fontSize="15"
+	focusIn="urlInput_focusInHandler( event )"
+	focusOut="urlInput_focusOutHandler( event )"
+	color="#333333"
+	fontFamily="Arial"
+	>
+	<mx:Script>
+		<![CDATA[
+		
+		    [Bindable]
+		    public var prompt : String
+			
+            private function urlInput_focusInHandler( event : FocusEvent ) : void
+            {
+                if( text == prompt )
+                {
+                    text = "";
+                    setStyle("fontStyle", "normal")
+                    setStyle("fontWeight", "bold")
+                }
+            }
+            
+            private function urlInput_focusOutHandler( event : FocusEvent ) : void
+            {
+                if( text == "" )
+                {
+                    text = prompt;
+                    setStyle("fontStyle", "italic")
+                    setStyle("fontWeight", "normal")
+                }
+            }
+		]]>
+	</mx:Script>
+</mx:TextInput>

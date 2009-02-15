@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Label xmlns:mx="http://www.adobe.com/2006/mxml"
+    text="All Images Copyright GigaPan.org"
+    color="#666666"
+    fontWeight="normal"
+    fontSize="10"
+    />

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:openzoom="org.openzoom.flex.components.*"
+    xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
+    xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
+    xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
+    backgroundColor="#000000"
+    >
+    <mx:Script>
+    	<![CDATA[
+    		
+    		import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+    		
+    		[Bindable]
+            public var source : IMultiScaleImageDescriptor
+    		
+    	]]>
+    </mx:Script>
+    <openzoom:MultiScaleImage
+        id="image"
+        source="{ source }"
+        width="100%"
+        height="100%"
+        >
+        <openzoom:controllers>
+            <controllers:KeyboardController/>
+            <controllers:MouseController/>
+            <controllers:ContextMenuController/>
+        </openzoom:controllers>
+        <openzoom:transformer>
+            <transformers:TweenerTransformer/>
+        </openzoom:transformer>
+        <openzoom:constraint>
+            <constraints:CompositeConstraint>
+                <constraints:ZoomConstraint minZoom="1"/>
+                <constraints:ScaleConstraint id="scaleConstraint"/>
+                <constraints:CenterConstraint/>
+                <constraints:VisibilityConstraint/>
+            </constraints:CompositeConstraint>
+        </openzoom:constraint>
+    </openzoom:MultiScaleImage>
+</mx:VBox>

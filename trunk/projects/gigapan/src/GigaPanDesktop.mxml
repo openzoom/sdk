@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+
+    GigaPan Desktop
+
+    Developed by Daniel Gasienica <daniel@gasienica.ch>
+    Powered by OpenZoom
+    http://openzoom.org/
+    License: GPL3
+
+    All Images Copyright GigaPan.org
+
+////////////////////////////////////////////////////////////////////////////////
+-->
+<mx:WindowedApplication
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:ui="org.openzoom.gigapan.ui.*"
+    backgroundGradientColors="[0xFFFFFF, 0xFFFFFF]"
+    backgroundColor="#FFFFFF"
+    layout="absolute"
+    minWidth="600"
+    minHeight="400"
+    width="900"
+    height="600"
+    viewSourceURL="source/index.html"
+    applicationComplete="loadImage('http://gigapan.org/viewGigapan.php?id=5322')"
+    >
+    <mx:Style>
+        global {
+            theme-color: #0088FF;
+            font-family: Arial;
+            font-size: 14;
+        }
+        Button {
+            fill-alphas: 1, 1, 1, 1;
+        }
+        Label {
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        .dropDown {
+           background-color: #FF6600;
+           border-color: #FF6600;
+           color: #FFFFFF;
+        }
+    </mx:Style>
+
+    <mx:Script>
+        <![CDATA[
+
+            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+            import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
+            import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
+
+            import mx.controls.Alert;
+            import mx.events.ListEvent;
+
+            private static const URL_INPUT_PROMPT : String = "GigaPan URL"
+            private static const GIGAPAN_PARAMETER_REGEX : RegExp = /\?url=*(.*)&suffix=(.*)&.*&width=(\d*)&height=(\d*)&nLevels=(\d*)/gim
+
+            private var loader : URLLoader = new URLLoader()
+
+           ;[Bindable]
+            private var samples : Array = [
+                                            {label: "Hanauma Bay", url: "http://gigapan.org/viewGigapan.php?id=5322"},
+                                            {label: "Golden Gate Bridge", url: "http://gigapan.org/viewGigapan.php?id=6"},
+                                            {label: "Seattle Skyline From Kerry Park", url: "http://gigapan.org/viewGigapan.php?id=9531"},
+                                            {label: "4th of July Fireworks", url: "http://gigapan.org/viewGigapan.php?id=6471"},
+                                          ]
+
+           ;[Bindable]
+            public var source : IMultiScaleImageDescriptor
+
+            private var lastURL : String
+            private var attempts : uint
+
+            private function loadButton_clickHandler(event : Event) : void
+            {
+                var url : String = urlInput.text
+                loadImage(url)
+           }
+
+            private function loadImage(url : String) : void
+            {
+                lastURL = url
+                statusMessage.visible = false
+                loader.load(new URLRequest(url))
+                loader.addEventListener(Event.COMPLETE, loader_completeHandler)
+                loader.addEventListener(IOErrorEvent.IO_ERROR, loader_errorHandler)
+                loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_errorHandler)
+           }
+
+            private function loader_completeHandler(event : Event) : void
+            {
+                var htmlString : String = new String(loader.data)
+                var parameters : Array = GIGAPAN_PARAMETER_REGEX.exec(htmlString) as Array
+
+                if(parameters && parameters.length == 6)
+                {
+                    attempts = 0
+                    var url : String       = parameters[1]
+                    var extension : String = parameters[2]
+                    var width : uint       = parameters[3]
+                    var height : uint      = parameters[4]
+                    var numLevels : int    = parameters[5]
+
+                    var sceneDimension : Number = Math.max(viewer.image.sceneWidth,
+                                                           viewer.image.sceneHeight)
+                    // FIXME
+                    if(isNaN(sceneDimension))
+                        sceneDimension = 16384
+
+                    var maxScale : Number = Math.max(width, height) / sceneDimension
+                    viewer.scaleConstraint.maxScale = maxScale
+                    source = new GigaPanDescriptor(url, extension, width, height, numLevels)
+               }
+                else
+                {
+                    // FIXME
+                    attempts++
+                    if(attempts < 2)
+                    {
+                        loadImage(lastURL)
+                    }
+                    else
+                    {
+                        attempts = 0
+                        displayErrorMessage()
+                    }
+               }
+           }
+
+            private function loader_errorHandler(event : Event) : void
+            {
+                displayErrorMessage()
+            }
+
+            private function displayErrorMessage() : void
+            {
+                statusMessage.visible = true
+            }
+
+            private function sampleChooser_changeHandler(event : ListEvent) : void
+            {
+                loadImage(event.currentTarget.selectedItem.url)
+            }
+
+       ]]>
+    </mx:Script>
+
+    <mx:HBox
+        top="20"
+        verticalAlign="middle"
+        horizontalAlign="center"
+        horizontalCenter="0"
+        >
+        <ui:URLInput
+            id="urlInput"
+            prompt="{URL_INPUT_PROMPT}"
+            minWidth="360"
+            />
+        <mx:Button
+            id="loadButton"
+            label="Go!"
+            height="100%"
+            click="loadButton_clickHandler(event)"
+            focusEnabled="false"
+            tabEnabled="false"
+            enabled="{urlInput.text.length > 0 &amp;&amp; urlInput.text != URL_INPUT_PROMPT}"
+            />
+    </mx:HBox>
+
+    <ui:SampleChooser
+        id="samplesChooser"
+        dataProvider="{samples}"
+        change="sampleChooser_changeHandler(event)"
+        width="180"
+        right="10"
+        top="22"
+        />
+
+    <ui:Viewer
+        id="viewer"
+        top="60"
+        right="0"
+        bottom="50"
+        left="0"
+        source="{source}"
+        />
+
+    <ui:StatusMessage
+        id="statusMessage"
+        />
+
+    <ui:Copyright
+        right="8"
+        bottom="8"
+        />
+
+    <ui:Controls
+        left="10"
+        bottom="10"
+        right="10"
+        viewer="{viewer.image}"
+        />
+
+    <ui:Logo x="8"/>
+
+</mx:WindowedApplication>

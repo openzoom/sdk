@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ComboBox
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    fillColors="[ 0xFF6600, 0xFF6600 ]"
+    borderColor="#FF6600"
+    themeColor="#FF6600"
+    color="#FFFFFF"
+    dropdownStyleName="dropDown"
+    fontSize="12"
+    />
