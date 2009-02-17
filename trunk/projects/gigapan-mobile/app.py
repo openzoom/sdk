@@ -29,7 +29,7 @@ import math
 xml = """\
 <?xml version="1.0" encoding="UTF-8"?>
 <Image TileSize="256" Overlap="0" Format="jpg" xmlns="http://schemas.microsoft.com/deepzoom/2008">
-    <Size Width="59783" Height="24658"/>
+    <Size Width="%(width)s" Height="%(height)s"/>
 </Image>"""
 
 class MainPage(webapp.RequestHandler):
@@ -39,21 +39,36 @@ class MainPage(webapp.RequestHandler):
     
 class GigaPanDescriptor(webapp.RequestHandler):
     def get(self, *groups):
+        id = int(groups[0])
+        
+        if id == 5322:
+            width = 154730
+            height = 36408
+        else:
+            width = 59783
+            height = 24658
+            
         self.response.headers["Content-Type"] = "application/xml"
-        self.response.out.write(xml)
+        self.response.out.write(xml%{"width": width, "height": height})
     
 class GigaPanTile(webapp.RequestHandler):
     def get(self, *groups):
-        self.width = 59783
-        self.height = 24658
-        self.tile_overlap = 0
-        self.tile_size = 256
-        self._num_levels = None
-        
         id = int(groups[0])
         level = int(groups[1])
         column = int(groups[2])
         row = int(groups[3])
+        
+        if id == 5322:
+            self.width = 154730
+            self.height = 36408
+        else:
+            self.width = 59783
+            self.height = 24658
+            
+        self.tile_overlap = 0
+        self.tile_size = 256
+        self._num_levels = None
+        
         
         url ="http://share.gigapan.org/gigapans0/" + str(id) + "/tiles"
         name = "r"
@@ -111,9 +126,9 @@ class GigaPanTile(webapp.RequestHandler):
         """Dimensions of level (width, height)"""
         assert 0 <= level and level < self.num_levels, "Invalid pyramid level"
         scale = self.get_scale(level)
-        width = int(math.floor(self.width * scale))
-        height = int(math.floor(self.height * scale))
-        return (max(1, width), max(1, height))
+        width = int(math.ceil(self.width * scale))
+        height = int(math.ceil(self.height * scale))
+        return (width, height)
 
     @property
     def num_levels(self):
@@ -125,8 +140,8 @@ class GigaPanTile(webapp.RequestHandler):
 
 
 application = webapp.WSGIApplication([("/", MainPage),
-                                      (r"^/([0-9]+).dzi$", GigaPanDescriptor),
-                                      (r"^/([0-9]+)_files/([0-9]+)/([0-9]+)_([0-9]+).jpg$", GigaPanTile)],
+                                      (r"^/gigapan/([0-9]+).dzi$", GigaPanDescriptor),
+                                      (r"^/gigapan/([0-9]+)_files/([0-9]+)/([0-9]+)_([0-9]+).jpg$", GigaPanTile)],
                                       debug=True)
 
 def main():

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>GigaPan</title>
+    <link>http://gigapan.org/</link>
+    <description>Photos from GigaPan.org</description>
+    <language>en-us</language>
+    <image>
+      <title>GigaPan</title>
+      <url>http://gigapan-mobile.appspot.com/gigapan.jpg</url>
+      <link>http://gigapan.org/</link>
+    </image>
+    <item>
+      <category>Most Popular</category>
+      <title>President Barack Obama's Inaugural Address</title>
+      <guid>57f0e0ec-6e1d-449b-a894-b57cb58c3800</guid>
+      <source url="http://www.DavidBergman.net/">David Bergman</source>
+      <enclosure url="http://gigapan-mobile.appspot.com/gigapan/15374.dzi" type="text/xml" />
+      <enclosure url="http://gigapan-mobile.appspot.com/gigapan.jpg" length="0" type="image/jpeg" />
+    </item>
+    <item>
+      <category>Most Popular</category>
+      <title>Hanauma Bay</title>
+      <guid>8d52e91e-c770-4833-8f7a-4f9248552298</guid>
+      <source url="http://gigapan.org/viewProfile.php?userid=319">Richard Palmer</source>
+      <enclosure url="http://gigapan-mobile.appspot.com/gigapan/5322.dzi" type="text/xml" />
+      <enclosure url="http://gigapan-mobile.appspot.com/gigapan.jpg" length="0" type="image/jpeg" />
+    </item>
+  </channel>
+</rss>
