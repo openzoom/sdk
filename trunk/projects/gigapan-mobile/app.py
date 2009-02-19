@@ -32,6 +32,26 @@ xml = """\
     <Size Width="%(width)s" Height="%(height)s"/>
 </Image>"""
 
+#############################################
+# GENERATED
+#############################################
+
+items = {
+    15374: {"width":59783, "height": 24658},
+    5322: {"width":154730, "height": 36408},
+    5144: {"width":65694, "height": 7809},
+    2934: {"width":27056, "height": 12667},
+    11043: {"width":99724, "height": 13953},
+    6130: {"width":155906, "height": 12402},
+    3332: {"width":38807, "height": 23355},
+    6: {"width":47973, "height": 9099},
+    11099: {"width":74384, "height": 12479},
+    3768: {"width":11856, "height": 7454},
+    17217: {"width": 56646, "height": 27788}
+}
+
+#############################################
+
 class MainPage(webapp.RequestHandler):
     def get(self):
         self.response.headers["Content-Type"] = "text/plain"
@@ -41,13 +61,12 @@ class GigaPanDescriptor(webapp.RequestHandler):
     def get(self, *groups):
         id = int(groups[0])
         
-        if id == 5322:
-            width = 154730
-            height = 36408
+        if items.has_key(id):
+            width = items[id]["width"]
+            height = items[id]["height"]
         else:
-            width = 59783
-            height = 24658
-            
+            self.error(404)
+        
         self.response.headers["Content-Type"] = "application/xml"
         self.response.out.write(xml%{"width": width, "height": height})
     
@@ -58,12 +77,11 @@ class GigaPanTile(webapp.RequestHandler):
         column = int(groups[2])
         row = int(groups[3])
         
-        if id == 5322:
-            self.width = 154730
-            self.height = 36408
+        if items.has_key(id):
+            self.width = items[id]["width"]
+            self.height = items[id]["height"]
         else:
-            self.width = 59783
-            self.height = 24658
+            self.error(404)
             
         self.tile_overlap = 0
         self.tile_size = 256
