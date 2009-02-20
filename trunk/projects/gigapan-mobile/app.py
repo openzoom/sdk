@@ -34,10 +34,6 @@ xml = """\
     <Size Width="%(width)s" Height="%(height)s"/>
 </Image>"""
 
-#############################################
-# GENERATED
-#############################################
-
 items = {
     15374: {"width":59783, "height": 24658},
     5322: {"width":154730, "height": 36408},
@@ -52,35 +48,20 @@ items = {
     17217: {"width": 56646, "height": 27788}
 }
 
-#############################################
+
 
 class GigaPan(db.Model):
     id = db.IntegerProperty(required=True)
     width = db.IntegerProperty(required=True)
     height = db.IntegerProperty(required=True)
 
-class DescriptorTestRequestHandler(webapp.RequestHandler):
-    def get(self, *groups):
-        id = int(groups[0])
-        gigapan = db.Query(GigaPan).filter("id =", id).get()
-        if not gigapan:
-            try:
-                self.create_descriptor(id)
-            except:
-                self.error(404)
-                return
-        self.response.out.write(str(gigapan.id) + ": " + str(gigapan.width) + ", " + str(gigapan.height))
-    
-    def create_descriptor(self, id):
-        descriptor_json = fetch("http://api.gigapan.org/beta/gigapans/" + str(id) + ".json")
-        descriptor = json.loads(descriptor_json.content)
-        width = descriptor["width"]
-        height = descriptor["height"]
-        gigapan = GigaPan(id=id, width=width, height=height)
-        gigapan.put()
-        
 class EchoRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
+        for (key, value) in items.iteritems():
+            gigapan = db.Query(GigaPan).filter("id =", key).get()
+            if not gigapan:
+                gigapan = GigaPan(id=key, width=value["width"], height=value["height"])
+                gigapan.put()
         self.response.headers["Content-Type"] = "text/plain"
         self.response.out.write(self.request.headers["User-Agent"])
 
@@ -92,16 +73,16 @@ class MainRequestHandler(webapp.RequestHandler):
 class DescriptorRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
         id = int(groups[0])
-        
-        if items.has_key(id):
-            width = items[id]["width"]
-            height = items[id]["height"]
-        else:
-            self.error(404)
-        
+        gigapan = db.Query(GigaPan).filter("id =", id).get()
+        if not gigapan:
+            try:
+                gigapan = create_gigapan(id)
+            except:
+                self.error(404)
+                return
         self.response.headers["Content-Type"] = "application/xml"
-        self.response.out.write(xml%{"width": width, "height": height})
-    
+        self.response.out.write(xml%{"width": gigapan.width, "height": gigapan.height})
+   
 class TileRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
         id = int(groups[0])
@@ -109,12 +90,13 @@ class TileRequestHandler(webapp.RequestHandler):
         column = int(groups[2])
         row = int(groups[3])
         
-        if items.has_key(id):
-            self.width = items[id]["width"]
-            self.height = items[id]["height"]
-        else:
-            self.error(404)
-            return
+        gigapan = db.Query(GigaPan).filter("id =", id).get()
+        if not gigapan:
+            try:
+                gigapan = create_gigapan(id)
+            except:
+                self.error(404)
+                return
             
         self.tile_overlap = 0
         self.tile_size = 256
@@ -188,10 +170,18 @@ class TileRequestHandler(webapp.RequestHandler):
             self._num_levels = int(math.ceil(math.log(max_dimension, 2))) + 1
         return self._num_levels
 
+def create_gigapan(id):
+    descriptor_json = fetch("http://api.gigapan.org/beta/gigapans/" + str(id) + ".json")
+    descriptor = json.loads(descriptor_json.content)
+    width = descriptor["width"]
+    height = descriptor["height"]
+    gigapan = GigaPan(id=id, width=width, height=height)
+    gigapan.put()
+    return gigapan
+
 
 application = webapp.WSGIApplication([("/", MainRequestHandler),
                                       ("/echo", EchoRequestHandler),
-                                      ("^/test/([0-9]+).dzi$", DescriptorTestRequestHandler),
                                       (r"^/gigapan/([0-9]+).dzi$", DescriptorRequestHandler),
                                       (r"^/gigapan/([0-9]+)_files/([0-9]+)/([0-9]+)_([0-9]+).jpg$", TileRequestHandler)],
                                       debug=True)
