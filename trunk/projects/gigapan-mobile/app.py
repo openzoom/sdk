@@ -17,6 +17,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 
+from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.api.urlfetch import fetch
@@ -25,6 +26,7 @@ from google.appengine.api.images import Image
 
 import google.appengine.api.images
 import math
+import simplejson as json
 
 xml = """\
 <?xml version="1.0" encoding="UTF-8"?>
@@ -52,12 +54,42 @@ items = {
 
 #############################################
 
-class MainPage(webapp.RequestHandler):
+class GigaPan(db.Model):
+    id = db.IntegerProperty(required=True)
+    width = db.IntegerProperty(required=True)
+    height = db.IntegerProperty(required=True)
+
+class DescriptorTestRequestHandler(webapp.RequestHandler):
+    def get(self, *groups):
+        id = int(groups[0])
+        gigapan = db.Query(GigaPan).filter("id =", id).get()
+        if not gigapan:
+            try:
+                self.create_descriptor(id)
+            except:
+                self.error(404)
+                return
+        self.response.out.write(str(gigapan.id) + ": " + str(gigapan.width) + ", " + str(gigapan.height))
+    
+    def create_descriptor(self, id):
+        descriptor_json = fetch("http://api.gigapan.org/beta/gigapans/" + str(id) + ".json")
+        descriptor = json.loads(descriptor_json.content)
+        width = descriptor["width"]
+        height = descriptor["height"]
+        gigapan = GigaPan(id=id, width=width, height=height)
+        gigapan.put()
+        
+class EchoRequestHandler(webapp.RequestHandler):
+    def get(self, *groups):
+        self.response.headers["Content-Type"] = "text/plain"
+        self.response.out.write(self.request.headers["User-Agent"])
+
+class MainRequestHandler(webapp.RequestHandler):
     def get(self):
         self.response.headers["Content-Type"] = "text/plain"
         self.response.out.write("Welcome to GigaPan Mobile. Powered by OpenZoom.org. Developed by Daniel Gasienica (daniel@gasienica.ch)")
     
-class GigaPanDescriptor(webapp.RequestHandler):
+class DescriptorRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
         id = int(groups[0])
         
@@ -70,7 +102,7 @@ class GigaPanDescriptor(webapp.RequestHandler):
         self.response.headers["Content-Type"] = "application/xml"
         self.response.out.write(xml%{"width": width, "height": height})
     
-class GigaPanTile(webapp.RequestHandler):
+class TileRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
         id = int(groups[0])
         level = int(groups[1])
@@ -82,11 +114,11 @@ class GigaPanTile(webapp.RequestHandler):
             self.height = items[id]["height"]
         else:
             self.error(404)
+            return
             
         self.tile_overlap = 0
         self.tile_size = 256
         self._num_levels = None
-        
         
         url ="http://share.gigapan.org/gigapans0/" + str(id) + "/tiles"
         name = "r"
@@ -157,9 +189,11 @@ class GigaPanTile(webapp.RequestHandler):
         return self._num_levels
 
 
-application = webapp.WSGIApplication([("/", MainPage),
-                                      (r"^/gigapan/([0-9]+).dzi$", GigaPanDescriptor),
-                                      (r"^/gigapan/([0-9]+)_files/([0-9]+)/([0-9]+)_([0-9]+).jpg$", GigaPanTile)],
+application = webapp.WSGIApplication([("/", MainRequestHandler),
+                                      ("/echo", EchoRequestHandler),
+                                      ("^/test/([0-9]+).dzi$", DescriptorTestRequestHandler),
+                                      (r"^/gigapan/([0-9]+).dzi$", DescriptorRequestHandler),
+                                      (r"^/gigapan/([0-9]+)_files/([0-9]+)/([0-9]+)_([0-9]+).jpg$", TileRequestHandler)],
                                       debug=True)
 
 def main():
