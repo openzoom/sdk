@@ -28,26 +28,21 @@ import google.appengine.api.images
 import math
 import simplejson as json
 
+
 xml = """\
 <?xml version="1.0" encoding="UTF-8"?>
 <Image TileSize="256" Overlap="0" Format="jpg" xmlns="http://schemas.microsoft.com/deepzoom/2008">
     <Size Width="%(width)s" Height="%(height)s"/>
 </Image>"""
 
-items = {
-    15374: {"width":59783, "height": 24658},
-    5322: {"width":154730, "height": 36408},
-    5144: {"width":65694, "height": 7809},
-    2934: {"width":27056, "height": 12667},
-    11043: {"width":99724, "height": 13953},
-    6130: {"width":155906, "height": 12402},
-    3332: {"width":38807, "height": 23355},
-    6: {"width":47973, "height": 9099},
-    11099: {"width":74384, "height": 12479},
-    3768: {"width":11856, "height": 7454},
-    17217: {"width": 56646, "height": 27788}
-}
-
+def create_gigapan(id):
+    descriptor_json = fetch("http://api.gigapan.org/beta/gigapans/" + str(id) + ".json")
+    descriptor = json.loads(descriptor_json.content)
+    width = descriptor["width"]
+    height = descriptor["height"]
+    gigapan = GigaPan(id=id, width=width, height=height)
+    gigapan.put()
+    return gigapan
 
 
 class GigaPan(db.Model):
@@ -55,20 +50,15 @@ class GigaPan(db.Model):
     width = db.IntegerProperty(required=True)
     height = db.IntegerProperty(required=True)
 
-class EchoRequestHandler(webapp.RequestHandler):
-    def get(self, *groups):
-        for (key, value) in items.iteritems():
-            gigapan = db.Query(GigaPan).filter("id =", key).get()
-            if not gigapan:
-                gigapan = GigaPan(id=key, width=value["width"], height=value["height"])
-                gigapan.put()
-        self.response.headers["Content-Type"] = "text/plain"
-        self.response.out.write(self.request.headers["User-Agent"])
-
 class MainRequestHandler(webapp.RequestHandler):
     def get(self):
         self.response.headers["Content-Type"] = "text/plain"
         self.response.out.write("Welcome to GigaPan Mobile. Powered by OpenZoom.org. Developed by Daniel Gasienica (daniel@gasienica.ch)")
+
+class EchoRequestHandler(webapp.RequestHandler):
+    def get(self):
+        self.response.headers["Content-Type"] = "text/plain"
+        self.response.out.write(self.request.headers["User-Agent"])
     
 class DescriptorRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
@@ -97,7 +87,9 @@ class TileRequestHandler(webapp.RequestHandler):
             except:
                 self.error(404)
                 return
-            
+        
+        self.width = gigapan.width
+        self.height = gigapan.height
         self.tile_overlap = 0
         self.tile_size = 256
         self._num_levels = None
@@ -170,15 +162,6 @@ class TileRequestHandler(webapp.RequestHandler):
             self._num_levels = int(math.ceil(math.log(max_dimension, 2))) + 1
         return self._num_levels
 
-def create_gigapan(id):
-    descriptor_json = fetch("http://api.gigapan.org/beta/gigapans/" + str(id) + ".json")
-    descriptor = json.loads(descriptor_json.content)
-    width = descriptor["width"]
-    height = descriptor["height"]
-    gigapan = GigaPan(id=id, width=width, height=height)
-    gigapan.put()
-    return gigapan
-
 
 application = webapp.WSGIApplication([("/", MainRequestHandler),
                                       ("/echo", EchoRequestHandler),
@@ -186,8 +169,9 @@ application = webapp.WSGIApplication([("/", MainRequestHandler),
                                       (r"^/gigapan/([0-9]+)_files/([0-9]+)/([0-9]+)_([0-9]+).jpg$", TileRequestHandler)],
                                       debug=True)
 
+
 def main():
-  run_wsgi_app(application)
+    run_wsgi_app(application)
 
 if __name__ == "__main__":
-  main()  
+    main()  
