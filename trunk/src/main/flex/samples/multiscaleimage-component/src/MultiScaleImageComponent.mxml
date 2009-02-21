@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:openzoom="org.openzoom.flex.components.*"
+    xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
+    xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
+    xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
+    backgroundGradientColors="[ 0, 0 ]"
+    layout="absolute"
+    >
+    <mx:Script>
+    	<![CDATA[
+    		import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
+    	]]>
+    </mx:Script>
+    <openzoom:MultiScaleImage
+        id="image"
+        top="0"
+        right="0"
+        bottom="0"
+        left="0"
+        source="{new GigaPanDescriptor(15374, 59783, 24658)}"
+        >
+        <openzoom:controllers>
+            <controllers:MouseController/>
+            <controllers:KeyboardController/>
+        </openzoom:controllers>
+        <openzoom:transformer>
+            <transformers:TweenerTransformer/>
+        </openzoom:transformer>
+        <openzoom:constraint>
+            <constraints:CenterConstraint/>
+        </openzoom:constraint>
+    </openzoom:MultiScaleImage>
+</mx:Application>
