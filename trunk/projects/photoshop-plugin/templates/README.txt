@@ -46,7 +46,7 @@
   security sandbox. First of all, you should know that when you upload your
   image onto a server, everything will work just fine.
   Nonetheless, if you wish to test your content locally you can do so by going
-  to the Adobe Flash Player Global Security Manager and add your output folder
+  to the Adobe Flash Player Global Security Manager and adding your output folder
   to the trusted locations:
   
   Adobe Flash Player Global Security Manager

@@ -21,6 +21,7 @@
 </excludedEntries>
 </libraryPathEntry>
 <libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/libs/flash"/>
+<libraryPathEntry kind="3" linkType="1" path="assets/OpenZoomViewerAssets.swc" useDefaultLinkType="false"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>
