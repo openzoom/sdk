@@ -65,6 +65,11 @@
   Changelog
   ---------
   
+  0.2.1 (2009-03-20)
+  ------------------
+  * Added 100ms delay for loading images locally that previously
+    caused trouble in Firefox on Mac OS X.
+  
   0.2 (2009-03-20)
   ----------------
   * Image rendering much more pleasant since tiles are loaded
