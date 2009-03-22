@@ -22,32 +22,10 @@
 import deepzoom
 import math
 import os.path
+import PIL.Image
 import xml.dom.minidom
 
 NS_OPENZOOM = "http://ns.openzoom.org/openzoom/2008"
-
-DESCRIPTOR_TEMPLATE_HEADER = """\
-<?xml version="1.0" encoding="UTF-8"?>
-<image xmlns="http://ns.openzoom.org/openzoom/2008">
-    <pyramid width="%(width)s" height="%(height)s" tileWidth="%(tile_width)s" tileHeight="%(tile_height)s" tileOverlap="%(tile_overlap)s" type="%(type)s" origin="%(origin)s">\
-"""
-
-LEVEL_TEMPLATE_HEADER = """\
-        <level width="%(width)s" height="%(height)s" columns="%(columns)s" rows="%(rows)s">\
-"""
-
-URI_TEMPLATE = """\
-            <uri template="%(uri_template)s"/>\
-"""
-            
-LEVEL_TEMPLATE_FOOTER = """\
-        </level>\
-"""
-    
-DESCRIPTOR_TEMPLATE_FOOTER = """\
-    </pyramid>
-</image>\
-"""
 
 mime_type_map = {"jpg": "image/jpeg",
                  "png": "image/png"}
@@ -70,16 +48,20 @@ class OpenZoomDescriptor(object):
     def save(self, destination):
         """Save descriptor file."""
         file = open(destination, "w+")
-        file.write(self.get_xml())
+        file.write(self.get_xml(destination))
         file.close()
     
-    def add_source(self, dimension, format="jpg"):
-        self.sources.append({dimension: dimension, format: format})
+    def add_source(self, dimension=0):
+        max_dimension = max(self.width, self.height)
+        if dimension == 0:
+            self.sources.append(max_dimension)
+        if dimension > 0 and dimension <= max_dimension:
+            self.sources.append(dimension)
         
     def add_uri(self, uri):
         self.uris.append(uri)
     
-    def get_xml(self):
+    def get_xml(self, destination):
         dzi = self.provider
         doc = xml.dom.minidom.Document()
         
@@ -95,14 +77,16 @@ class OpenZoomDescriptor(object):
         pyramid.setAttribute("type", str(self.type))
         pyramid.setAttribute("origin", str(self.origin))
         
-#        out = ""
-#        out += DESCRIPTOR_TEMPLATE_HEADER%{"width": self.width,
-#                                           "height": self.height,
-#                                           "tile_width": self.tile_width,
-#                                           "tile_height": self.tile_height,
-#                                           "tile_overlap": self.tile_overlap,
-#                                           "type": self.type,
-#                                           "origin": self.origin} + "\n"
+        self.sources.sort()
+        for dimension in self.sources:
+            width, height = self.get_dimensions(dimension)
+            source_node = doc.createElementNS(NS_OPENZOOM, "source")
+            source_node.setAttribute("width", str(width))
+            source_node.setAttribute("height", str(height))
+            source_node.setAttribute("type", str(mime_type_map[dzi.tile_format]))
+            source_node.setAttribute("uri", self.get_source_name(destination, width, height) + "." + dzi.tile_format)
+            image.appendChild(source_node)
+        
         for level in xrange(dzi.num_levels):
             width, height = dzi.get_dimensions(level)
             columns, rows = dzi.get_num_tiles(level)
@@ -111,33 +95,43 @@ class OpenZoomDescriptor(object):
             level_node.setAttribute("height", str(height))
             level_node.setAttribute("columns", str(columns))
             level_node.setAttribute("rows", str(rows))
-#            out += LEVEL_TEMPLATE_HEADER%{"width": width, "height": height,
-#                                          "columns": columns, "rows": rows} + "\n"
                                           
             file_name = os.path.splitext(os.path.basename(self.source))[0]
             if not self.uris:
                 uri = file_name + "_files/%(level)s/{column}_{row}.jpg"%{"level": level}
                 uri_node = doc.createElementNS(NS_OPENZOOM, "uri")
                 uri_node.setAttribute("template", uri)
-#                out += URI_TEMPLATE%{"uri_template": uri} + "\n"
                 level_node.appendChild(uri_node)
             else:
                 for uri in self.uris:
                     uri += "/" + file_name + "_files/%(level)s/{column}_{row}.jpg"%{"level": level}
                     uri_node = doc.createElementNS(NS_OPENZOOM, "uri")
                     uri_node.setAttribute("template", uri)
-#                    out += URI_TEMPLATE%{"uri_template": uri} + "\n"
                     level_node.appendChild(uri_node)
-#            out += LEVEL_TEMPLATE_FOOTER + "\n"
             pyramid.appendChild(level_node)
-#        out += DESCRIPTOR_TEMPLATE_FOOTER
         image.appendChild(pyramid)
         doc.appendChild(image)
-#        return out
-        descriptor = doc.toprettyxml(indent="  ", encoding="UTF-8")
 #        descriptor = doc.toxml(encoding="UTF-8")
+        descriptor = doc.toprettyxml(indent="    ", encoding="UTF-8")
         return descriptor
-       
+    
+    def get_dimensions(self, longest_side):
+        if longest_side == 0:
+            return self.width, self.height
+        
+        aspect_ratio = self.width / float(self.height)
+        if aspect_ratio > 1:
+            width = longest_side
+            height = int(round(longest_side / aspect_ratio))
+        else:
+            width = int(round(longest_side * aspect_ratio))
+            height = longest_side
+        return width, height
+    
+    def get_source_name(self, destination, width, height):
+        name = os.path.basename(os.path.dirname(destination))
+        return "%s-%sx%s"%(name, width, height)
+    
     @property
     def width(self):
         return self.provider.width
@@ -171,7 +165,8 @@ class ImageCreator(object):
     """Creates OpenZoom images."""
     def __init__(self, tile_size=256, tile_overlap=1, tile_format="jpg",
                  image_quality=0.95, resize_filter=None):
-        self.creator = deepzoom.ImageCreator(tile_size, tile_overlap, tile_format, image_quality, resize_filter)
+        self.creator = deepzoom.ImageCreator(tile_size, tile_overlap, tile_format,
+                                             image_quality, resize_filter)
 
     def create(self, source, destination, sources=[]):
         """Creates OpenZoom image from a source file and saves it to destination."""
@@ -180,6 +175,13 @@ class ImageCreator(object):
         self.creator.create(source, dzi)
         self.descriptor = OpenZoomDescriptor()
         self.descriptor.open(dzi , "dzi")
-        for source in sources:
-            self.descriptor.add_source(source)
+        for dimension in sources:
+                self.descriptor.add_source(dimension)
+        for dimension in self.descriptor.sources:
+            width, height = self.descriptor.get_dimensions(dimension)
+            image = PIL.Image.open(source)
+            image = image.resize((width, height), PIL.Image.ANTIALIAS)
+            ext = os.path.splitext(self.basename)[1]
+            file_name = self.descriptor.get_source_name(dzi, width, height) + ext  
+            image.save(destination + "/" + file_name)
         self.descriptor.save(destination + "/image.xml")
