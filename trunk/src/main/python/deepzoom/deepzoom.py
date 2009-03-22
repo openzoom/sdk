@@ -31,23 +31,15 @@
 # 
 ################################################################################
 
-import elementtree.ElementTree as ET
 import math
 import optparse
 import os
-import sys
 import PIL.Image
+import sys
+import urllib2
 import xml.dom.minidom
 
-
-DEEPZOOM_NAMESPACE = "http://schemas.microsoft.com/deepzoom/2008"
-
-DZI_TEMPLATE = """\
-<?xml version="1.0" encoding="UTF-8"?>
-<Image TileSize="%(tile_size)s" Overlap="%(tile_overlap)s" \
-Format="%(tile_format)s" xmlns="http://schemas.microsoft.com/deepzoom/2008">
-    <Size Width="%(width)s" Height="%(height)s"/>
-</Image>"""
+NS_DEEPZOOM = "http://schemas.microsoft.com/deepzoom/2008"
 
 resize_filter_map = {
     "cubic": PIL.Image.CUBIC,
@@ -62,6 +54,9 @@ image_format_map = {
     "png": "png",
     }
 
+
+VERBOSE = False
+
 class DZIDescriptor(object):
     def __init__(self, width=None, height=None,
                  tile_size=256, tile_overlap=1, tile_format="jpg"):
@@ -74,20 +69,35 @@ class DZIDescriptor(object):
     
     def open(self, source):
         """Intialize descriptor from an existing descriptor file."""
-        tree = ET.parse(source)
-        image = tree.getroot()
-        size = tree.find("{%s}Size"%DEEPZOOM_NAMESPACE)
+        doc = xml.dom.minidom.parse(source)
+        image = doc.getElementsByTagName("Image")[0]
+        size = doc.getElementsByTagName("Size")[0]
 
-        self.width = int(size.attrib["Width"])
-        self.height = int(size.attrib["Height"])
-        self.tile_size = int(image.attrib["TileSize"])
-        self.tile_overlap = int(image.attrib["Overlap"])
-        self.tile_format = image.attrib["Format"]
+        self.width = int(size.getAttribute("Width"))
+        self.height = int(size.getAttribute("Height"))
+        self.tile_size = int(image.getAttribute("TileSize"))
+        self.tile_overlap = int(image.getAttribute("Overlap"))
+        self.tile_format = image.getAttribute("Format")
         
     def save(self, destination):
         """Save descriptor file."""
         file = open(destination, "w")
-        file.write(DZI_TEMPLATE%(self.__dict__))
+        
+        doc = xml.dom.minidom.Document()
+        image = doc.createElementNS(NS_DEEPZOOM, "Image")
+        image.setAttribute("xmlns", NS_DEEPZOOM)
+        image.setAttribute("TileSize", str(self.tile_size))
+        image.setAttribute("Overlap", str(self.tile_overlap))
+        image.setAttribute("Format", str(self.tile_format))
+        size = doc.createElementNS(NS_DEEPZOOM, "Size")
+        size.setAttribute("Width", str(self.width))
+        size.setAttribute("Height", str(self.height))
+        image.appendChild(size)
+        doc.appendChild(image)
+        descriptor = doc.toxml(encoding="UTF-8")
+#        descriptor = doc.toprettyxml(indent="    ", encoding="UTF-8")
+        
+        file.write(descriptor)
         file.close()
 
     @property
@@ -219,7 +229,7 @@ class CollectionCreator(object):
                     tile_image = PIL.Image.new("RGB", (self.tile_size, self.tile_size))
                     tile_image.save(tile_path, "JPEG", quality=int(self.image_quality * 100))
                 tile_image = PIL.Image.open(tile_path)                
-                source_path = os.path.splitext(path)[0] + "_files/" + str(level) + "/%s_%s.%s"%(0, 0, descriptor.tile_format)
+                source_path = open(os.path.splitext(path)[0] + "_files/" + str(level) + "/%s_%s.%s"%(0, 0, descriptor.tile_format))
                 source_image = PIL.Image.open(source_path)
                 images_per_tile = int(math.floor(self.tile_size / level_size))
                 column, row = self._get_position(i)
@@ -231,14 +241,14 @@ class CollectionCreator(object):
     def _create_descriptor(self, images, destination):
         """Creates a Deep Zoom collection descriptor from a list of images."""
         doc = xml.dom.minidom.Document()
-        collection = doc.createElementNS(DEEPZOOM_NAMESPACE, "Collection")
-        collection.setAttribute("xmlns", DEEPZOOM_NAMESPACE)
+        collection = doc.createElementNS(NS_DEEPZOOM, "Collection")
+        collection.setAttribute("xmlns", NS_DEEPZOOM)
         collection.setAttribute("MaxLevel", str(self.max_level))
         collection.setAttribute("TileSize", str(self.tile_size))
         collection.setAttribute("Format", str(self.tile_format))
         collection.setAttribute("Quality", str(self.image_quality))
         
-        items = doc.createElementNS(DEEPZOOM_NAMESPACE, "Items")
+        items = doc.createElementNS(NS_DEEPZOOM, "Items")
         
         next_item_id = 0
         for path in images:
@@ -250,12 +260,12 @@ class CollectionCreator(object):
             width = descriptor.width
             height = descriptor.height
             
-            item = doc.createElementNS(DEEPZOOM_NAMESPACE, "I")
+            item = doc.createElementNS(NS_DEEPZOOM, "I")
             item.setAttribute("Id", str(id))
             item.setAttribute("N", str(n))
             item.setAttribute("Source", str(source))
             
-            size = doc.createElementNS(DEEPZOOM_NAMESPACE, "Size")
+            size = doc.createElementNS(NS_DEEPZOOM, "Size")
             size.setAttribute("Width", str(width))
             size.setAttribute("Height", str(height))
             item.appendChild(size)
@@ -268,7 +278,8 @@ class CollectionCreator(object):
         collection.appendChild(items)
         doc.appendChild(collection)
         
-        descriptor = doc.toprettyxml(indent="  ", encoding="UTF-8")
+#        descriptor = doc.toprettyxml(indent="  ", encoding="UTF-8")
+        descriptor = doc.toxml(encoding="UTF-8")
         file = open(destination, "w")
         file.write(descriptor)
         file.close()
