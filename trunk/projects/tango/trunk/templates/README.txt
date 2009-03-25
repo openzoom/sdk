@@ -65,6 +65,14 @@
   Changelog
   ---------
   
+  0.3 (2009-03-25)
+  ----------------
+  * Fixed a bug where TileGroup calculation was wrong and certain
+    tile requests resulted in 404 errors.
+    Thanks to Eric for reporting it.
+  * Fixed a bug which resulted in wrong calculation of level sizes for
+    the Zoomify image pyramid.
+  
   0.2.1 (2009-03-20)
   ------------------
   * Added 100ms delay for loading images locally that previously
