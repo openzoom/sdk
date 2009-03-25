@@ -41,7 +41,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the intrinsic width of the image in pixels.
      */
-    function get width() : uint
+    function get width():uint
 
     //----------------------------------
     //  height
@@ -50,7 +50,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the intrinsic height of the image in pixels.
      */
-    function get height() : uint
+    function get height():uint
 
     //----------------------------------
     //  numLevels
@@ -59,7 +59,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the number of levels of this object.
      */
-    function get numLevels() : int
+    function get numLevels():int
 
     //----------------------------------
     //  tileWidth
@@ -68,7 +68,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the width of a single tile of the image pyramid in pixels.
      */
-    function get tileWidth() : uint
+    function get tileWidth():uint
 
     //----------------------------------
     //  tileHeight
@@ -77,7 +77,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the height of a single tile of the image pyramid in pixels.
      */
-    function get tileHeight() : uint
+    function get tileHeight():uint
 
     //----------------------------------
     //  tileOverlap
@@ -87,7 +87,7 @@ public interface IMultiScaleImageDescriptor
      * Returns the tile overlap in pixels.
      * @default 0
      */
-    function get tileOverlap() : uint
+    function get tileOverlap():uint
 
     //----------------------------------
     //  type
@@ -96,7 +96,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the mime-type of the image pyramid tiles, e.g. &lt;image/jpeg&gt; or &lt;image/png&gt;.
      */
-    function get type() : String
+    function get type():String
 
     //----------------------------------
     //  origin
@@ -107,7 +107,7 @@ public interface IMultiScaleImageDescriptor
      *
      * @default topLeft
      */
-    function get origin() : String
+    function get origin():String
 
     //--------------------------------------------------------------------------
     //
@@ -118,13 +118,13 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the image pyramid level that exists at the specified index.
      */
-    function getLevelAt( index : int ) : IMultiScaleImageLevel
+    function getLevelAt( index:int ):IMultiScaleImageLevel
 
     /**
      * Returns the minimum pyramid level that has a greater or equal size
      * than specified by the arguments width and height.
      */
-    function getMinLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
+    function getMinLevelForSize( width:Number, height:Number ):IMultiScaleImageLevel
 
     //--------------------------------------------------------------------------
     //
@@ -135,22 +135,22 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns a Boolean indicating if the tile at the given level, row and column exists.
      */
-    function existsTile( level : int, column : uint, row : uint ) : Boolean
+    function existsTile( level:int, column:uint, row:uint ):Boolean
 
     /**
      * Returns the URL of the tile specified by its level, column and row.
      */
-    function getTileURL( level : int, column : uint, row : uint ) : String
+    function getTileURL( level:int, column:uint, row:uint ):String
 
 //    /**
 //     * Returns the position of the tile specified by its column and row.
 //     */
-//    function getTilePosition( column : uint, row : uint ) : Point
+//    function getTilePosition( column:uint, row:uint ):Point
 
     /**
      * Returns the bounds of the tile specified by the level, column and row.
      */
-    function getTileBounds( level : int, column : uint, row : uint ) : Rectangle
+    function getTileBounds( level:int, column:uint, row:uint ):Rectangle
 
     //--------------------------------------------------------------------------
     //
@@ -161,7 +161,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns a copy of this object.
      */
-    function clone() : IMultiScaleImageDescriptor
+    function clone():IMultiScaleImageDescriptor
 }
 
 }

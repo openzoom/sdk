@@ -30,16 +30,16 @@ package org.openzoom.flash.descriptors.openzoom
  */
 internal class PyramidOrigin
 {
-    public static const TOP_LEFT     : String = "topLeft"
-    public static const TOP_RIGHT    : String = "topRight"
-    public static const BOTTOM_RIGHT : String = "bottomRight"
-    public static const BOTTOM_LEFT  : String = "bottomLeft"
+    public static const TOP_LEFT:String = "topLeft"
+    public static const TOP_RIGHT:String = "topRight"
+    public static const BOTTOM_RIGHT:String = "bottomRight"
+    public static const BOTTOM_LEFT:String = "bottomLeft"
 
     /**
      * Returns <code>true</code> if <code>value</code> is one of the
      * values in the enumeration, otherwise <code>false</code>.
      */
-    public static function isValid( value : String ) : Boolean
+    public static function isValid( value:String ):Boolean
     {
         return value == PyramidOrigin.TOP_LEFT ||
                value == PyramidOrigin.TOP_RIGHT ||

@@ -38,7 +38,7 @@ public interface INormalizedViewportContainer extends INormalizedViewport
      *
      * @see org.openzoom.events.ViewportEvent#RESIZE
      */
-    function setSize( width : Number, height : Number ) : void
+    function setSize( width:Number, height:Number ):void
 }
 
 }

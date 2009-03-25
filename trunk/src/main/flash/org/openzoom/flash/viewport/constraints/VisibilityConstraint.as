@@ -36,7 +36,7 @@ public class VisibilityConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_VISIBILITY_RATIO : Number = 0.5
+    private static const DEFAULT_VISIBILITY_RATIO:Number = 0.5
 
     //--------------------------------------------------------------------------
     //
@@ -61,18 +61,18 @@ public class VisibilityConstraint implements IViewportConstraint
     //  visibilityRatio
     //----------------------------------
 
-    private var _visibilityRatio : Number = DEFAULT_VISIBILITY_RATIO
+    private var _visibilityRatio:Number = DEFAULT_VISIBILITY_RATIO
 
 
     /**
      * Indicates the minimal ratio that has to visible of the scene.
      */
-    public function get visibilityRatio() : Number
+    public function get visibilityRatio():Number
     {
         return _visibilityRatio
     }
 
-    public function set visibilityRatio( value : Number ) : void
+    public function set visibilityRatio( value:Number ):void
     {
        _visibilityRatio = value
     }
@@ -86,11 +86,11 @@ public class VisibilityConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform : IViewportTransform,
-                              target : IViewportTransform ) : IViewportTransform
+    public function validate( transform:IViewportTransform,
+                              target:IViewportTransform ):IViewportTransform
     {
-        var x : Number = transform.x
-        var y : Number = transform.y
+        var x:Number = transform.x
+        var y:Number = transform.y
 
         // content is wider than viewport
         if( transform.width < 1 )

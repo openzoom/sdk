@@ -44,7 +44,7 @@ public class ViewportControllerBase
     /**
     * Constructor.
     */
-    public function ViewportControllerBase() : void
+    public function ViewportControllerBase():void
     {
     }
 
@@ -58,17 +58,17 @@ public class ViewportControllerBase
     //  viewport
     //----------------------------------
 
-    private var _viewport : INormalizedViewport
+    private var _viewport:INormalizedViewport
 
     /**
      * Indicates which viewport is controlled by this controller.
      */
-    public function get viewport() : INormalizedViewport
+    public function get viewport():INormalizedViewport
     {
         return _viewport
     }
 
-    public function set viewport( value : INormalizedViewport ) : void
+    public function set viewport( value:INormalizedViewport ):void
     {
         _viewport = value
     }
@@ -77,17 +77,17 @@ public class ViewportControllerBase
     //  view
     //----------------------------------
 
-    private var _view : DisplayObject
+    private var _view:DisplayObject
 
     /**
      * Indicates the display object this controller receives its events from.
      */
-    public function get view() : DisplayObject
+    public function get view():DisplayObject
     {
         return _view
     }
 
-    public function set view( value : DisplayObject ) : void
+    public function set view( value:DisplayObject ):void
     {
         if( view === value )
             return
@@ -122,7 +122,7 @@ public class ViewportControllerBase
      *
      * Documentation not available.
      */
-    protected function view_addedToStageHandler( event : Event ) : void
+    protected function view_addedToStageHandler( event:Event ):void
     {
     }
 
@@ -131,7 +131,7 @@ public class ViewportControllerBase
      *
      * Documentation not available.
      */
-    protected function view_removedFromStageHandler( event : Event ) : void
+    protected function view_removedFromStageHandler( event:Event ):void
     {
     }
 }

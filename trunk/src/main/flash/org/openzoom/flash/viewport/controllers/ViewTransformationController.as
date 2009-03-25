@@ -46,8 +46,8 @@ public class ViewTransformationController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_TRANSFORMATION_DURATION : Number = 1.5
-    private static const DEFAULT_TRANSFORMATION_EASING : String = "easeOutExpo"
+    private static const DEFAULT_TRANSFORMATION_DURATION:Number = 1.5
+    private static const DEFAULT_TRANSFORMATION_EASING:String = "easeOutExpo"
 
     //--------------------------------------------------------------------------
     //
@@ -68,7 +68,7 @@ public class ViewTransformationController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
 
-    override public function set viewport( value : INormalizedViewport ) : void
+    override public function set viewport( value:INormalizedViewport ):void
     {
         if( viewport === value )
             return
@@ -105,7 +105,7 @@ public class ViewTransformationController extends ViewportControllerBase
         }
     }
 
-    override public function set view( value : DisplayObject ) : void
+    override public function set view( value:DisplayObject ):void
     {
         super.view = value
         transformView( 0 )
@@ -117,23 +117,23 @@ public class ViewTransformationController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
 
-    private function viewport_transformStartHandler( event : ViewportEvent ) : void
+    private function viewport_transformStartHandler( event:ViewportEvent ):void
     {
 //        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_START" )
     }
 
-    private function viewport_transformUpdateHandler( event : ViewportEvent ) : void
+    private function viewport_transformUpdateHandler( event:ViewportEvent ):void
     {
 //        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_UPDATE" )
         transformView( DEFAULT_TRANSFORMATION_DURATION )
     }
 
-    private function viewport_transformEndHandler( event : ViewportEvent ) : void
+    private function viewport_transformEndHandler( event:ViewportEvent ):void
     {
 //        trace( "[ViewportTransformationController] ViewportEvent.TRANSFORM_END" )
     }
 
-    private function viewport_resizeHandler( event : ViewportEvent ) : void
+    private function viewport_resizeHandler( event:ViewportEvent ):void
     {
         transformView( 0 )
     }
@@ -144,13 +144,13 @@ public class ViewTransformationController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
 
-    private function transformView( duration : Number ) : void
+    private function transformView( duration:Number ):void
     {
-        var transition   : String = DEFAULT_TRANSFORMATION_EASING
-        var targetWidth  : Number = viewport.viewportWidth / viewport.width
-        var targetHeight : Number = viewport.viewportHeight / viewport.height
-        var targetX      : Number = -viewport.x * targetWidth
-        var targetY      : Number = -viewport.y * targetHeight
+        var transition:String = DEFAULT_TRANSFORMATION_EASING
+        var targetWidth:Number = viewport.viewportWidth / viewport.width
+        var targetHeight:Number = viewport.viewportHeight / viewport.height
+        var targetX:Number = -viewport.x * targetWidth
+        var targetY:Number = -viewport.y * targetHeight
 
         if( !Tweener.isTweening( view ))
             ITransformerViewport(viewport).beginTransform()

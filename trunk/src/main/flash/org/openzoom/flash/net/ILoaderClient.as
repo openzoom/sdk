@@ -36,8 +36,8 @@ public interface ILoaderClient
     //  loader
     //----------------------------------
     
-    function get loader() : INetworkQueue
-    function set loader( value : INetworkQueue ) : void
+    function get loader():INetworkQueue
+    function set loader(value:INetworkQueue):void
 }
 
 }

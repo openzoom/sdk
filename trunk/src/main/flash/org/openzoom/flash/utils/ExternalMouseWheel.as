@@ -76,15 +76,15 @@ public final class ExternalMouseWheel extends EventDispatcher
     //--------------------------------------------------------------------------
 
     // Singleton instance
-    private static var instance : ExternalMouseWheel
+    private static var instance:ExternalMouseWheel
 
     // External functions
-    private static const EXECUTE_FUNCTION : String = "ExternalMouseWheel.join"
-    private static const FORCE_FUNCTION   : String = "ExternalMouseWheel.force"
-    private static const HANDLER_FUNCTION : String = "externalMouseEvent"
+    private static const EXECUTE_FUNCTION:String = "ExternalMouseWheel.join"
+    private static const FORCE_FUNCTION:String = "ExternalMouseWheel.force"
+    private static const HANDLER_FUNCTION:String = "externalMouseEvent"
 
     // External script
-    private static const EXTERNAL_SCRIPT : XML =
+    private static const EXTERNAL_SCRIPT:XML =
     <script>
         <![CDATA[
 
@@ -110,7 +110,7 @@ public final class ExternalMouseWheel extends EventDispatcher
                         el = el.parentNode;
                     this.target = el;
                     this.eventType = ExternalMouseWheel.browser.mozilla
-                                       ? 'DOMMouseScroll' : 'mousewheel';
+                                       ? 'DOMMouseScroll':'mousewheel';
                 },
                 bind: function() {
                     this.target.addEventListener(this.eventType,
@@ -221,8 +221,8 @@ public final class ExternalMouseWheel extends EventDispatcher
     /**
      * Constructor.
      */
-    public function ExternalMouseWheel( stage : Stage,
-                                        enforcer : SingletonEnforcer )
+    public function ExternalMouseWheel(stage:Stage,
+                                       enforcer:SingletonEnforcer)
     {
         if( !ExternalInterface.available || !stage )
             return
@@ -236,10 +236,10 @@ public final class ExternalMouseWheel extends EventDispatcher
             ExternalInterface.call( EXECUTE_FUNCTION,
                                     ExternalInterface.objectID )
 
-            var os : String = Capabilities.os.toLowerCase()
-            var isMac : Boolean = os.indexOf( "mac" ) != -1
+            var os:String = Capabilities.os.toLowerCase()
+            var isMac:Boolean = os.indexOf( "mac" ) != -1
 
-            var force : Boolean =
+            var force:Boolean =
                  ExternalInterface.call( FORCE_FUNCTION,
                                          ExternalInterface.objectID ) as Boolean
 
@@ -255,7 +255,7 @@ public final class ExternalMouseWheel extends EventDispatcher
             ExternalInterface.addCallback( HANDLER_FUNCTION,
                                            externalMouseEventHandler )
         }
-        catch( error : Error )
+        catch( error:Error )
         {
             // Do nothing
         }
@@ -267,9 +267,9 @@ public final class ExternalMouseWheel extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    private var stage : Stage
-    private var currentItem : InteractiveObject
-    private var clonedEvent : MouseEvent
+    private var stage:Stage
+    private var currentItem:InteractiveObject
+    private var clonedEvent:MouseEvent
 
     //--------------------------------------------------------------------------
     //
@@ -282,7 +282,7 @@ public final class ExternalMouseWheel extends EventDispatcher
      * Make sure that your embedded Flash movie has an
      * <code>id</code> and <code>name</code>.
      */
-    public static function initialize( stage : Stage ) : void
+    public static function initialize( stage:Stage ):void
     {
         if( !instance )
             instance = new ExternalMouseWheel( stage, new SingletonEnforcer())
@@ -297,7 +297,7 @@ public final class ExternalMouseWheel extends EventDispatcher
     /**
      * @private
      */
-    private function stage_mouseMoveHandler( event : MouseEvent ) : void
+    private function stage_mouseMoveHandler( event:MouseEvent ):void
     {
         currentItem = InteractiveObject( event.target )
         clonedEvent = MouseEvent( event )
@@ -306,12 +306,12 @@ public final class ExternalMouseWheel extends EventDispatcher
     /**
      * @private
      */
-    private function externalMouseEventHandler( delta : Number ) : void
+    private function externalMouseEventHandler( delta:Number ):void
     {
         if( !clonedEvent )
             return
 
-        var mouseWheelEvent : MouseEvent =
+        var mouseWheelEvent:MouseEvent =
                                     new MouseEvent(
                                                       MouseEvent.MOUSE_WHEEL,
                                                       true,

@@ -46,15 +46,15 @@ public class MemoryMonitor extends Sprite
     /**
      *  Constructor.
      */
-    public function MemoryMonitor() : void
+    public function MemoryMonitor():void
     {
         createBackground()
         createLabel()
         layout()
 
-        addEventListener( Event.ENTER_FRAME,
+        addEventListener(Event.ENTER_FRAME,
                           enterFrameHandler,
-                          false, 0, true )
+                          false, 0, true)
     }
 
     //--------------------------------------------------------------------------
@@ -63,8 +63,8 @@ public class MemoryMonitor extends Sprite
     //
     //--------------------------------------------------------------------------
 
-    private var label : TextField
-    private var background : Shape
+    private var label:TextField
+    private var background:Shape
 
     //--------------------------------------------------------------------------
     //
@@ -72,23 +72,23 @@ public class MemoryMonitor extends Sprite
     //
     //--------------------------------------------------------------------------
 
-    private function createBackground() : void
+    private function createBackground():void
     {
         background = new Shape()
 
-        var g : Graphics = background.graphics
-        g.beginFill( 0x000000 )
-        g.drawRoundRect( 0, 0, 70, 24, 0 )
+        var g:Graphics = background.graphics
+        g.beginFill(0x000000)
+        g.drawRoundRect(0, 0, 70, 24, 0)
         g.endFill()
 
-        addChildAt( background, 0 )
+        addChildAt(background, 0)
     }
 
-    private function createLabel() : void
+    private function createLabel():void
     {
         label = new TextField()
 
-        var textFormat : TextFormat = new TextFormat()
+        var textFormat:TextFormat = new TextFormat()
         textFormat.size = 11
         textFormat.font = "Arial"
         textFormat.bold = true
@@ -100,14 +100,14 @@ public class MemoryMonitor extends Sprite
         label.autoSize = TextFieldAutoSize.LEFT
         label.selectable = false
 
-        addChild( label )
+        addChild(label)
     }
 
-    private function layout() : void
+    private function layout():void
     {
         // center label
-        label.x = ( background.width - label.width ) / 2
-        label.y = ( background.height - label.height ) / 2
+        label.x = (background.width - label.width) / 2
+        label.y = (background.height - label.height) / 2
     }
 
     //--------------------------------------------------------------------------
@@ -116,11 +116,11 @@ public class MemoryMonitor extends Sprite
     //
     //--------------------------------------------------------------------------
 
-    private function enterFrameHandler( event : Event ) : void
+    private function enterFrameHandler(event:Event):void
     {
-        var memoryConsumption : Number = System.totalMemory / 1024 / 1024
+        var memoryConsumption:Number = System.totalMemory / 1024 / 1024
 
-        label.text = memoryConsumption.toFixed( 2 ).toString() + "MiB"
+        label.text = memoryConsumption.toFixed(2).toString() + "MiB"
         layout()
     }
 }

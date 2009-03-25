@@ -42,11 +42,11 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_DESCRIPTOR_FILE_NAME : String = "ImageProperties.xml"
-    private static const DEFAULT_TILE_FOLDER_NAME : String = "TileGroup"
-    private static const DEFAULT_TILE_FORMAT : String = "jpg"
-    private static const DEFAULT_TILE_OVERLAP : uint = 0
-    private static const DEFAULT_NUM_TILES_IN_FOLDER : uint = 256
+    private static const DEFAULT_DESCRIPTOR_FILE_NAME:String = "ImageProperties.xml"
+    private static const DEFAULT_TILE_FOLDER_NAME:String = "TileGroup"
+    private static const DEFAULT_TILE_FORMAT:String = "jpg"
+    private static const DEFAULT_TILE_OVERLAP:uint = 0
+    private static const DEFAULT_NUM_TILES_IN_FOLDER:uint = 256
 
     //--------------------------------------------------------------------------
     //
@@ -57,14 +57,15 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * Constructor.
      */
-    public function ZoomifyDescriptor( source : String, data : XML )
+    public function ZoomifyDescriptor(source:String, data:XML)
     {
         this.data = data
 
         this.source = source
-        parseXML( data )
-        _numLevels = computeNumLevels( width, height, tileWidth, tileHeight )
-        levels = computeLevels( width, height, tileWidth, tileHeight, numLevels )
+        parseXML(data)
+        _numLevels = computeNumLevels(width, height, tileWidth, tileHeight)
+        levels = computeLevels(width, height, tileWidth, tileHeight, numLevels)
+        tileCountUpToLevel = computeLevelTileCounts(numLevels)
     }
 
     //--------------------------------------------------------------------------
@@ -73,9 +74,10 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private var data : XML
-    private var levels : Dictionary
-    private var numTiles : uint
+    private var data:XML
+    private var levels:Dictionary
+    private var tileCountUpToLevel:Array = []
+    private var numTiles:uint
 
     //--------------------------------------------------------------------------
     //
@@ -86,13 +88,13 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL( level : int, column : uint, row : uint ) : String
+    public function getTileURL(level:int, column:uint, row:uint):String
     {
-        var length : Number = source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length
+        var length:Number = source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length
 
-        var folder : uint = getFolder( level, column, row )
-        var path : String = source.substr( 0, length ) + DEFAULT_TILE_FOLDER_NAME + folder
-        var url : String =  [ path, "/", level, "-", column, "-", row, ".", type ].join("")
+        var tileGroup:uint = getTileGroup(level, column, row)
+        var path:String = source.substr(0, length) + DEFAULT_TILE_FOLDER_NAME + tileGroup
+        var url:String =  [path, "/", level, "-", column, "-", row, ".", type].join("")
 
         return url
     }
@@ -100,38 +102,38 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getMinLevelForSize( width : Number, height : Number ) : IMultiScaleImageLevel
+    public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
         // TODO: Implement a smart(er) algorithm
-        var index : int = numLevels - 1
+        var index:int = numLevels - 1
 
-        while( index >= 0
-               && IMultiScaleImageLevel( levels[ index ] ).width >= width
-               && IMultiScaleImageLevel( levels[ index ] ).height >= height )
+        while(index >= 0 &&
+              IMultiScaleImageLevel(levels[index]).width >= width &&
+              IMultiScaleImageLevel(levels[index]).height >= height)
         {
             index--
         }
 
         // FIXME
-        index = clamp( index + 1, 0, numLevels - 1 )
+        index = clamp(index + 1, 0, numLevels - 1)
 
-        return IMultiScaleImageLevel( levels[ index ] ).clone()
+        return IMultiScaleImageLevel(levels[index]).clone()
     }
 
     /**
      * @inheritDoc
      */
-    public function getLevelAt( index : int ) : IMultiScaleImageLevel
+    public function getLevelAt(index:int):IMultiScaleImageLevel
     {
-        return levels[ index ]
+        return levels[index]
     }
 
     /**
      * @inheritDoc
      */
-    public function clone() : IMultiScaleImageDescriptor
+    public function clone():IMultiScaleImageDescriptor
     {
-        return new ZoomifyDescriptor( source, new XML( data ) )
+        return new ZoomifyDescriptor(source, new XML(data))
     }
 
     //--------------------------------------------------------------------------
@@ -143,7 +145,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    override public function toString() : String
+    override public function toString():String
     {
         return "[ZoomifyDescriptor]" + "\n" + super.toString()
     }
@@ -157,7 +159,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    private function parseXML( data : XML ) : void
+    private function parseXML(data:XML):void
     {
         // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290" NUMTILES="169"
         //        NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
@@ -174,15 +176,15 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    private function computeNumLevels( width : uint, height : uint,
-                                       tileWidth : uint, tileHeight : uint ) : uint
+    private function computeNumLevels(width:uint, height:uint,
+                                      tileWidth:uint, tileHeight:uint):uint
     {
-        var numLevels : uint = 1
+        var numLevels:uint = 1
 
-        while( width > tileWidth || height > tileHeight )
+        while (width > tileWidth || height > tileHeight)
         {
-            width  = Math.floor( width  * 0.5 )
-            height = Math.floor( height * 0.5 )
+            width = Math.ceil(width / 2)
+            height = Math.ceil(height / 2)
             numLevels++
         }
 
@@ -192,27 +194,41 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    private function computeLevels( originalWidth : uint, originalHeight : uint,
-                                    tileWidth : uint, tileHeight : uint,
-                                    numLevels : int ) : Dictionary
+    private function computeLevels(originalWidth:uint, originalHeight:uint,
+                                   tileWidth:uint, tileHeight:uint,
+                                   numLevels:int):Dictionary
     {
-        var levels : Dictionary = new Dictionary()
+        var levels:Dictionary = new Dictionary()
 
-        var width : uint = originalWidth
-        var height : uint = originalHeight
+        var width:uint = originalWidth
+        var height:uint = originalHeight
 
-        for( var index : int = numLevels - 1; index >= 0; index-- )
+        for (var index:int = numLevels - 1; index >= 0; index--)
         {
-            levels[ index ] = new MultiScaleImageLevel( this, index, width, height,
-                                                        Math.ceil( width / tileWidth ),
-                                                        Math.ceil( height / tileHeight ))
-            width >>= 1
-            height >>= 1
-//          width = Math.floor( width * 0.5 )
-//          height = Math.floor( height * 0.5 )
+            levels[index] = new MultiScaleImageLevel(this, index, width, height,
+                                                     Math.ceil(width / tileWidth),
+                                                     Math.ceil(height / tileHeight))
+            width = Math.ceil(width / 2)
+            height = Math.ceil(height / 2)
+//          width = (width + 1) >> 1
+//          height = (height + 1) >> 1
         }
-
+        
         return levels
+    }
+    
+    private function computeLevelTileCounts(numLevels:int):Array
+    {
+    	var levelTileCount:Array = []
+        levelTileCount[0] = 0
+        
+        for (var i:int = 1; i < numLevels; i++)
+        {
+            var l:IMultiScaleImageLevel = IMultiScaleImageLevel(levels[i-1])
+            levelTileCount.push(l.numColumns * l.numRows + levelTileCount[i-1])
+        }
+        
+        return levelTileCount
     }
 
     /**
@@ -222,33 +238,13 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
      * There's probably a more efficient way to do this.
      * Correctness has a higher priority for now, so I didn't bother.
      */
-    private function getFolder( level : int, column : uint, row : uint ) : uint
+    private function getTileGroup(level:int, column:uint, row:uint):uint
     {
-        // Return early if we know there's only one TileGroup folder
-        if( numTiles <= DEFAULT_NUM_TILES_IN_FOLDER )
-            return 0
-
-        // Compute the rank of the requested tile
-        // and determine in which TileGroup folder it resides.
-        var tileNumber : int = 0
-
-        for( var l : int = 0; l < numLevels; l++ )
-        {
-            var currentLevel : IMultiScaleImageLevel = getLevelAt( l )
-
-            for( var r : int = 0; r < currentLevel.numRows; r++ )
-            {
-                for( var c : int = 0; c < currentLevel.numColumns; c++ )
-                {
-                    tileNumber++
-
-                    if( l == level && column == c && row == r )
-                        return Math.floor( tileNumber / DEFAULT_NUM_TILES_IN_FOLDER )
-                }
-            }
-        }
-
-        return 0
+    	var numColumns:uint = getLevelAt(level).numColumns
+    	var tileIndex:uint = column + row * numColumns + tileCountUpToLevel[level]
+    	var tileGroup:uint = tileIndex / DEFAULT_NUM_TILES_IN_FOLDER
+    	
+    	return tileGroup
     }
 }
 

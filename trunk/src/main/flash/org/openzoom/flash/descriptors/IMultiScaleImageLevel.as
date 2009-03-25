@@ -42,7 +42,7 @@ public interface IMultiScaleImageLevel
     /**
      * Returns the index of this level which is in the range [0, numLevels)
      */
-    function get index() : int
+    function get index():int
 
     //----------------------------------
     //  width
@@ -51,7 +51,7 @@ public interface IMultiScaleImageLevel
     /**
      * Returns the width of this level in pixels.
      */
-    function get width() : uint
+    function get width():uint
 
     //----------------------------------
     //  height
@@ -60,7 +60,7 @@ public interface IMultiScaleImageLevel
     /**
      * Returns the height of this level in pixels.
      */
-    function get height() : uint
+    function get height():uint
 
     //----------------------------------
     //  numColumns
@@ -69,7 +69,7 @@ public interface IMultiScaleImageLevel
     /**
      * Returns the number of columns of tiles for this level.
      */
-    function get numColumns() : uint
+    function get numColumns():uint
 
     //----------------------------------
     //  numRows
@@ -78,7 +78,7 @@ public interface IMultiScaleImageLevel
     /**
      * Returns the number of rows of tiles for this level.
      */
-    function get numRows() : uint
+    function get numRows():uint
 
     //--------------------------------------------------------------------------
     //
@@ -89,17 +89,17 @@ public interface IMultiScaleImageLevel
     /**
      * Returns the URL of the tile at the specified position.
      */
-    function getTileURL( column : uint, row : uint ) : String
+    function getTileURL( column:uint, row:uint ):String
 
     /**
      * Returns the bounds of the specified tile.
      */
-    function getTileBounds( column : uint, row : uint ) : Rectangle
+    function getTileBounds( column:uint, row:uint ):Rectangle
 
     /**
      * Returns a copy of this object.
      */
-    function clone() : IMultiScaleImageLevel
+    function clone():IMultiScaleImageLevel
 }
 
 }

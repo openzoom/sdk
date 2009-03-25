@@ -55,18 +55,18 @@ public class CompositeConstraint implements IViewportConstraint
     //  constraints
     //----------------------------------
 
-    private var _constraints : Array /* of IViewportConstraint */ = []
+    private var _constraints:Array /* of IViewportConstraint */ = []
 
    ;[ArrayElementType("org.openzoom.flash.viewport.IViewportConstraint")]
     /**
      * An array of constraints that are applied successively.
      */
-    public function get constraints() : Array
+    public function get constraints():Array
     {
         return _constraints.slice( 0 )
     }
 
-    public function set constraints( value : Array ) : void
+    public function set constraints( value:Array ):void
     {
         _constraints = value.slice( 0 )
     }
@@ -80,10 +80,10 @@ public class CompositeConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform : IViewportTransform,
-                              target : IViewportTransform ) : IViewportTransform
+    public function validate( transform:IViewportTransform,
+                              target:IViewportTransform ):IViewportTransform
     {
-        for each( var constraint : IViewportConstraint in _constraints )
+        for each( var constraint:IViewportConstraint in _constraints )
             transform = constraint.validate( transform, target )
 
         return transform

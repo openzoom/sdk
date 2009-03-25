@@ -35,8 +35,8 @@ public class ZoomConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_MIN_ZOOM : Number = 0.000001
-    private static const DEFAULT_MAX_ZOOM : Number = 10000000
+    private static const DEFAULT_MIN_ZOOM:Number = 0.000001
+    private static const DEFAULT_MAX_ZOOM:Number = 10000000
 
     //--------------------------------------------------------------------------
     //
@@ -61,17 +61,17 @@ public class ZoomConstraint implements IViewportConstraint
     //  minZoom
     //----------------------------------
 
-    private var _minZoom : Number = DEFAULT_MIN_ZOOM
+    private var _minZoom:Number = DEFAULT_MIN_ZOOM
 
     /**
      * Minimum zoom the viewport can reach.
      */
-    public function get minZoom() : Number
+    public function get minZoom():Number
     {
         return _minZoom
     }
 
-    public function set minZoom( value : Number ) : void
+    public function set minZoom( value:Number ):void
     {
         _minZoom = value
     }
@@ -80,18 +80,18 @@ public class ZoomConstraint implements IViewportConstraint
     //  maxZoom
     //----------------------------------
 
-    private var _maxZoom : Number = DEFAULT_MAX_ZOOM
+    private var _maxZoom:Number = DEFAULT_MAX_ZOOM
 
 
     /**
      * Maximum zoom the viewport can reach.
      */
-    public function get maxZoom() : Number
+    public function get maxZoom():Number
     {
         return _maxZoom
     }
 
-    public function set maxZoom( value : Number ) : void
+    public function set maxZoom( value:Number ):void
     {
        _maxZoom = value
     }
@@ -105,8 +105,8 @@ public class ZoomConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform : IViewportTransform,
-                              target : IViewportTransform ) : IViewportTransform
+    public function validate( transform:IViewportTransform,
+                              target:IViewportTransform ):IViewportTransform
     {
         // FIXME
         // Prevent from moving when the zoom limit are reached

@@ -23,9 +23,9 @@ package org.openzoom.flash.utils.math
     /**
      * Utility function to clamp a value between a minimum and maximum.
      */
-    public function clamp( value : Number,
-                           minimum : Number,
-                           maximum : Number ) : Number
+    public function clamp( value:Number,
+                           minimum:Number,
+                           maximum:Number ):Number
     {
         if( value < minimum )
             return minimum

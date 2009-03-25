@@ -196,8 +196,9 @@ public interface IViewport extends IEventDispatcher
      * @param transformY Vertical coordinate of the zooming center
      */
     function zoomTo(zoom:Number,
-                     transformX:Number = 0.5, transformY:Number = 0.5,
-                     immediately:Boolean = false):void
+                    transformX:Number=0.5,
+                    transformY:Number=0.5,
+                    immediately:Boolean=false):void
 
     /**
      * Zoom the viewport by a factor.
@@ -206,8 +207,9 @@ public interface IViewport extends IEventDispatcher
      * @param transformY Vertical coordinate of the zooming center
      */
     function zoomBy(factor:Number,
-                     transformX:Number = 0.5, transformY:Number = 0.5,
-                     immediately:Boolean = false):void
+                    transformX:Number=0.5,
+                    transformY:Number=0.5,
+                    immediately:Boolean=false):void
 
     //--------------------------------------------------------------------------
     //
@@ -221,7 +223,7 @@ public interface IViewport extends IEventDispatcher
      * @param y Vertical coordinate
      */
     function panTo(x:Number, y:Number,
-                    immediately:Boolean = false):void
+                   immediately:Boolean=false):void
 
     /**
      * Move the viewport.
@@ -229,7 +231,7 @@ public interface IViewport extends IEventDispatcher
      * @param deltaY Vertical translation delta
      */
     function panBy(deltaX:Number, deltaY:Number,
-                    immediately:Boolean = false):void
+                   immediately:Boolean=false):void
 
     /**
      * Move the viewport center.
@@ -237,7 +239,7 @@ public interface IViewport extends IEventDispatcher
      * @param centerY Vertical coordinate of the new center
      */
     function panCenterTo(centerX:Number, centerY:Number,
-                          immediately:Boolean = false):void
+                         immediately:Boolean=false):void
 
     //--------------------------------------------------------------------------
     //
@@ -248,7 +250,7 @@ public interface IViewport extends IEventDispatcher
     /**
      * Fit entire scene into the viewport.
      */
-    function showAll(immediately:Boolean = false):void
+    function showAll(immediately:Boolean=false):void
 
     /**
      * Show a rectangular area of the scene inside the viewport.
@@ -258,8 +260,8 @@ public interface IViewport extends IEventDispatcher
      *              for displaying some space around the rectangle.
      */
     function fitToBounds(bounds:Rectangle,
-                         scale:Number = 1.0,
-                         immediately:Boolean = false):void
+                         scale:Number=1.0,
+                         immediately:Boolean=false):void
 
     /**
      * Returns a Rectangle object with the bounds of the viewport.

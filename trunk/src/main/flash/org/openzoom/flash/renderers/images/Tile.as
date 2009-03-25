@@ -39,11 +39,11 @@ public class Tile
     /**
      * Constructor.
      */
-    public function Tile( bitmap : Bitmap,
-                          level : uint,
-                          row : uint,
-                          column : uint,
-                          overlap : uint = 0 )
+    public function Tile( bitmap:Bitmap,
+                          level:uint,
+                          row:uint,
+                          column:uint,
+                          overlap:uint = 0 )
     {
         this.bitmap = bitmap
         _level = level
@@ -62,15 +62,15 @@ public class Tile
     //  bitmap
     //----------------------------------
 
-    public var bitmap : Bitmap
+    public var bitmap:Bitmap
 
     //----------------------------------
     //  level
     //----------------------------------
 
-    private var _level : int
+    private var _level:int
 
-    public function get level() : int
+    public function get level():int
     {
         return _level
     }
@@ -79,9 +79,9 @@ public class Tile
     //  column
     //----------------------------------
 
-    private var _column : uint
+    private var _column:uint
 
-    public function get column() : uint
+    public function get column():uint
     {
         return _column
     }
@@ -90,9 +90,9 @@ public class Tile
     //  row
     //----------------------------------
 
-    private var _row : uint
+    private var _row:uint
 
-    public function get row() : uint
+    public function get row():uint
     {
         return _row
     }
@@ -101,9 +101,9 @@ public class Tile
     //  overlap
     //----------------------------------
 
-    private var _overlap : uint = 0
+    private var _overlap:uint = 0
 
-    public function get overlap() : uint
+    public function get overlap():uint
     {
         return _overlap
     }
@@ -112,7 +112,7 @@ public class Tile
     //  hashCode
     //----------------------------------
 
-    public function get hashCode() : int
+    public function get hashCode():int
     {
         return int(level.toString() + column.toString() + row.toString())
     }
@@ -123,7 +123,7 @@ public class Tile
     //
     //--------------------------------------------------------------------------
 
-    public function toString() : String
+    public function toString():String
     {
         return "[Tile]" + "\n"
                + "bitmap: " + bitmap + "\n"

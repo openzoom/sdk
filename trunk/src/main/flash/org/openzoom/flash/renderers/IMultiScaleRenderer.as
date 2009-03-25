@@ -36,10 +36,10 @@ public interface IMultiScaleRenderer
     /**
      * Indicates the viewport this renderer is viewed in.
      */
-    function get viewport() : INormalizedViewport
-    function set viewport( value : INormalizedViewport ) : void
+    function get viewport():INormalizedViewport
+    function set viewport( value:INormalizedViewport ):void
 
-//  function getBounds( targetViewport : IViewport ) : Rectangle
+//  function getBounds( targetViewport:IViewport ):Rectangle
 }
 
 }

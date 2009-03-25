@@ -33,6 +33,7 @@ import flash.events.SecurityErrorEvent;
 import flash.net.URLRequest;
 
 import org.openzoom.flash.events.NetworkRequestEvent;
+import org.openzoom.flash.renderers.images.Tile;
 
 /**
  * @private
@@ -153,8 +154,9 @@ internal class DisplayObjectRequest extends EventDispatcher
     private function request_ioErrorHandler(event:IOErrorEvent):void
     {
         // FIXME
-//        cleanUp()
+//      cleanUp()
 
+        trace("[DisplayObjectRequest]", "request_ioErrorHandler")
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.item = this
@@ -168,8 +170,9 @@ internal class DisplayObjectRequest extends EventDispatcher
     private function request_securityErrorHandler(event:SecurityErrorEvent):void
     {
         // FIXME
-//        cleanUp()
+//      cleanUp()
 
+        trace("[DisplayObjectRequest]", "request_securityErrorHandler")
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.item = this

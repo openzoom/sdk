@@ -52,7 +52,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     /**
      * Constructor.
      */
-    public function OpenZoomDescriptor( source : String, data : XML )
+    public function OpenZoomDescriptor( source:String, data:XML )
     {
         use namespace openzoom
 
@@ -68,8 +68,8 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private var data : XML
-    private var levels : Dictionary = new Dictionary()
+    private var data:XML
+    private var levels:Dictionary = new Dictionary()
 
     //--------------------------------------------------------------------------
     //
@@ -80,7 +80,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL( level : int, column : uint, row : uint ) : String
+    public function getTileURL( level:int, column:uint, row:uint ):String
     {
         return IMultiScaleImageLevel( levels[ level ] ).getTileURL( column, row )
     }
@@ -88,7 +88,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelAt( index : int ) : IMultiScaleImageLevel
+    public function getLevelAt( index:int ):IMultiScaleImageLevel
     {
         return IMultiScaleImageLevel( levels[ index ] )
     }
@@ -96,13 +96,13 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getMinLevelForSize( width : Number,
-                                        height : Number ) : IMultiScaleImageLevel
+    public function getMinLevelForSize( width:Number,
+                                        height:Number ):IMultiScaleImageLevel
     {
         // TODO
-        var level : IMultiScaleImageLevel
+        var level:IMultiScaleImageLevel
 
-        for( var i : int = numLevels - 1; i >= 0; i-- )
+        for( var i:int = numLevels - 1; i >= 0; i-- )
         {
             level = getLevelAt( i )
             if( level.width < width || level.height < height )
@@ -116,7 +116,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function clone() : IMultiScaleImageDescriptor
+    public function clone():IMultiScaleImageDescriptor
     {
         return new OpenZoomDescriptor( source, data.copy())
     }
@@ -130,7 +130,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    override public function toString() : String
+    override public function toString():String
     {
         return "[OpenZoomDescriptor]" + "\n" + super.toString()
     }
@@ -144,12 +144,12 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @private
      */
-    private function parseXML( data : XML ) : void
+    private function parseXML( data:XML ):void
     {
         use namespace openzoom
 
         // Grrrrh, E4X
-        var pyramid : XML = data.pyramid[ 0 ]
+        var pyramid:XML = data.pyramid[ 0 ]
 
         _width       = pyramid.@width
         _height      = pyramid.@height
@@ -164,12 +164,12 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
         if( PyramidOrigin.isValid( pyramid.@origin ))
             _origin = pyramid.@origin
 
-        for( var index : int = 0; index < numLevels; index++ )
+        for( var index:int = 0; index < numLevels; index++ )
         {
-            var level : XML = data.pyramid.level[ index ]
-            var uris : Array = []
+            var level:XML = data.pyramid.level[ index ]
+            var uris:Array = []
 
-            for each( var uri : XML in level.uri )
+            for each( var uri:XML in level.uri )
                 uris.push( uri.@template.toString() )
 
             levels[ index ] = new MultiScaleImageLevel( this,

@@ -36,9 +36,9 @@ public interface ITileLayer
     //
     //--------------------------------------------------------------------------
 
-    function containsTile( tile : Tile ) : Boolean
-    function addTile( tile : Tile ) : Tile
-    function removeAllTiles() : void
+    function containsTile( tile:Tile ):Boolean
+    function addTile( tile:Tile ):Tile
+    function removeAllTiles():void
 
     //--------------------------------------------------------------------------
     //
@@ -50,35 +50,35 @@ public interface ITileLayer
     //  level
     //----------------------------------
 
-    function get level() : IMultiScaleImageLevel
+    function get level():IMultiScaleImageLevel
 
     //----------------------------------
     //  width
     //----------------------------------
 
-    function get width() : Number
-    function set width( value : Number ) : void
+    function get width():Number
+    function set width( value:Number ):void
 
     //----------------------------------
     //  height
     //----------------------------------
 
-    function get height() : Number
-    function set height( value : Number ) : void
+    function get height():Number
+    function set height( value:Number ):void
 
     //----------------------------------
     //  visible
     //----------------------------------
 
-    function get visible() : Boolean
-    function set visible( value : Boolean ) : void
+    function get visible():Boolean
+    function set visible( value:Boolean ):void
 
     //----------------------------------
     //  alpha
     //----------------------------------
 
-    function get alpha() : Number
-    function set alpha( value : Number ) : void
+    function get alpha():Number
+    function set alpha( value:Number ):void
 }
 
 }

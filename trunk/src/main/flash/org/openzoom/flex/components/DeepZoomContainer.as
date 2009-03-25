@@ -160,7 +160,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
     {
         super.commitProperties()
 
-        if(sourceChanged )
+        if (sourceChanged )
         {
             sourceChanged = false
             load(_source)
@@ -180,7 +180,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
             container.removeChildAt(0)
 
         // URL
-        if(classOrString is String)
+        if (classOrString is String)
         {
             urlLoader = new URLLoader(new URLRequest(String(classOrString)))
 
@@ -196,7 +196,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         }
 
         // Descriptor
-        if(classOrString is DZIDescriptor)
+        if (classOrString is DZIDescriptor)
         {
             createImage(DZIDescriptor(classOrString))
         }
@@ -245,7 +245,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         // Set the scene size in a way that no overflow can occur
         var sceneAspectRatio:Number = maxX / maxY
 
-        if(sceneAspectRatio > 1)
+        if (sceneAspectRatio > 1)
         {
             container.sceneWidth  = DEFAULT_SCENE_DIMENSION
             container.sceneHeight = DEFAULT_SCENE_DIMENSION / sceneAspectRatio
@@ -264,7 +264,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
             var targetWidth :Number = item.targetWidth  * container.sceneWidth
             var targetHeight:Number = item.targetHeight * container.sceneWidth
 
-//            if(!item.source || !item.data)
+//            if (!item.source || !item.data)
 //                continue
 
             var descriptor:DZIDescriptor =
@@ -292,7 +292,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
     {
         var aspectRatio:Number = descriptor.width / descriptor.height
 
-        if(aspectRatio > 1)
+        if (aspectRatio > 1)
         {
             container.sceneWidth  = DEFAULT_SCENE_DIMENSION
             container.sceneHeight = DEFAULT_SCENE_DIMENSION / aspectRatio
@@ -323,7 +323,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
      */
     private function urlLoader_completeHandler(event:Event):void
     {
-        if(!urlLoader || !urlLoader.data)
+        if (!urlLoader || !urlLoader.data)
             return
 
         var data:XML = new XML(urlLoader.data)
@@ -332,7 +332,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         use namespace deepzoom
 
         // Collection
-        if(data.localName() == TYPE_COLLECTION)
+        if (data.localName() == TYPE_COLLECTION)
         {
             items = []
             for each(var itemXML:XML in data.Items.*)
@@ -346,7 +346,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         }
 
         // Single image
-        if(data.localName() == TYPE_IMAGE)
+        if (data.localName() == TYPE_IMAGE)
         {
             var descriptor:DZIDescriptor =
                           new DZIDescriptor(source.toString(), new XML(data))
@@ -378,7 +378,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         numItemsToDownload--
         ItemInfo(event.context).data = new XML(event.data)
 
-        if(numItemsToDownload == 0)
+        if (numItemsToDownload == 0)
             itemsLoaded()
     }
 }
@@ -436,7 +436,7 @@ class ItemInfo
         itemInfo.width = data.Size.@Width
         itemInfo.height = data.Size.@Height
 
-        if(data.Viewport)
+        if (data.Viewport)
         {
             itemInfo.viewportWidth = data.Viewport.@Width
             itemInfo.viewportX = data.Viewport.@X

@@ -45,23 +45,23 @@ public class ContextMenuController extends ViewportControllerBase
     //--------------------------------------------------------------------------
 
     // Context Menu
-    private static const FULL_SCREEN_MENU_NORMAL_CAPTION : String = "Fullscreen\t\t\tF"
-    private static const FULL_SCREEN_MENU_EXIT_CAPTION   : String = "Exit Fullscreen\t\tF"
+    private static const FULL_SCREEN_MENU_NORMAL_CAPTION:String = "Fullscreen\t\t\tF"
+    private static const FULL_SCREEN_MENU_EXIT_CAPTION:String = "Exit Fullscreen\t\tF"
 
-    private static const SHOW_ALL_MENU_CAPTION           : String = "Show All\t\t\tH"
+    private static const SHOW_ALL_MENU_CAPTION:String = "Show All\t\t\tH"
 
-    private static const ZOOM_IN_MENU_CAPTION            : String = "Zoom In\t\t\t\tI / +"
-    private static const ZOOM_OUT_MENU_CAPTION           : String = "Zoom Out\t\t\tO / -"
+    private static const ZOOM_IN_MENU_CAPTION:String = "Zoom In\t\t\t\tI / +"
+    private static const ZOOM_OUT_MENU_CAPTION:String = "Zoom Out\t\t\tO / -"
 
-    private static const PAN_UP_MENU_CAPTION             : String = "Pan Up\t\t\t\tW / Up"
-    private static const PAN_DOWN_MENU_CAPTION           : String = "Pan Down\t\t\tS / Down"
-    private static const PAN_LEFT_MENU_CAPTION           : String = "Pan Left\t\t\t\tA / Left"
-    private static const PAN_RIGHT_MENU_CAPTION          : String = "Pan Right\t\t\tD / Right"
+    private static const PAN_UP_MENU_CAPTION:String = "Pan Up\t\t\t\tW / Up"
+    private static const PAN_DOWN_MENU_CAPTION:String = "Pan Down\t\t\tS / Down"
+    private static const PAN_LEFT_MENU_CAPTION:String = "Pan Left\t\t\t\tA / Left"
+    private static const PAN_RIGHT_MENU_CAPTION:String = "Pan Right\t\t\tD / Right"
 
     // Parameters
-    private static const ZOOM_IN_FACTOR                  : Number = 2.0
-    private static const ZOOM_OUT_FACTOR                 : Number = 0.3
-    private static const PAN_FACTOR                      : Number = 0.1
+    private static const ZOOM_IN_FACTOR:Number = 2.0
+    private static const ZOOM_OUT_FACTOR:Number = 0.3
+    private static const PAN_FACTOR:Number = 0.1
 
     //--------------------------------------------------------------------------
     //
@@ -82,21 +82,21 @@ public class ContextMenuController extends ViewportControllerBase
     //--------------------------------------------------------------------------
 
     // context menu
-    private var menu : ContextMenu
+    private var menu:ContextMenu
 
     // display mode
-    private var showAllMenu : ContextMenuItem
-    private var fullScreenMenu : ContextMenuItem
+    private var showAllMenu:ContextMenuItem
+    private var fullScreenMenu:ContextMenuItem
 
     // zooming
-    private var zoomInMenu : ContextMenuItem
-    private var zoomOutMenu : ContextMenuItem
+    private var zoomInMenu:ContextMenuItem
+    private var zoomOutMenu:ContextMenuItem
 
     // panning
-    private var panDownMenu : ContextMenuItem
-    private var panUpMenu : ContextMenuItem
-    private var panLeftMenu : ContextMenuItem
-    private var panRightMenu : ContextMenuItem
+    private var panDownMenu:ContextMenuItem
+    private var panUpMenu:ContextMenuItem
+    private var panLeftMenu:ContextMenuItem
+    private var panRightMenu:ContextMenuItem
 
     //--------------------------------------------------------------------------
     //
@@ -107,7 +107,7 @@ public class ContextMenuController extends ViewportControllerBase
     /**
      * @private
      */
-    override protected function view_addedToStageHandler( event : Event ) : void
+    override protected function view_addedToStageHandler( event:Event ):void
     {
         // Fullscreen
         view.stage.addEventListener( FullScreenEvent.FULL_SCREEN,
@@ -179,7 +179,7 @@ public class ContextMenuController extends ViewportControllerBase
     /**
      * @private
      */
-    override protected function view_removedFromStageHandler( event : Event ) : void
+    override protected function view_removedFromStageHandler( event:Event ):void
     {
         view.stage.removeEventListener( FullScreenEvent.FULL_SCREEN,
                                         stage_fullScreenHandler )
@@ -192,51 +192,51 @@ public class ContextMenuController extends ViewportControllerBase
     //--------------------------------------------------------------------------
 
     // Display mode
-    private function showAllMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
+    private function showAllMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
     {
         viewport.showAll()
     }
 
-    private function fullScreenMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
+    private function fullScreenMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
     {
         toggleFullScreen()
     }
 
     // Zooming
-    private function zoomInMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
+    private function zoomInMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
     {
-        var origin : Point = getMouseOrigin()
+        var origin:Point = getMouseOrigin()
         viewport.zoomBy( ZOOM_IN_FACTOR, origin.x, origin.y )
     }
 
-    private function zoomOutMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
+    private function zoomOutMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
     {
-        var origin : Point = getMouseOrigin()
+        var origin:Point = getMouseOrigin()
         viewport.zoomBy( ZOOM_OUT_FACTOR, origin.x, origin.y )
     }
 
     // Panning
-    private function panUpMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
+    private function panUpMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
     {
-        var dy : Number = viewport.height * PAN_FACTOR
+        var dy:Number = viewport.height * PAN_FACTOR
         viewport.panBy( 0, -dy )
     }
 
-    private function panDownMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
+    private function panDownMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
     {
-        var dy : Number = viewport.height * PAN_FACTOR
+        var dy:Number = viewport.height * PAN_FACTOR
         viewport.panBy( 0, dy )
     }
 
-    private function panLeftMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
+    private function panLeftMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
     {
-        var dx : Number = viewport.width * PAN_FACTOR
+        var dx:Number = viewport.width * PAN_FACTOR
         viewport.panBy( -dx, 0 )
     }
 
-    private function panRightMenu_menuItemSelectHandler( event : ContextMenuEvent ) : void
+    private function panRightMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
     {
-        var dx : Number = viewport.width * PAN_FACTOR
+        var dx:Number = viewport.width * PAN_FACTOR
         viewport.panBy( dx, 0 )
     }
 
@@ -246,7 +246,7 @@ public class ContextMenuController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
 
-    private function stage_fullScreenHandler( event : FullScreenEvent ) : void
+    private function stage_fullScreenHandler( event:FullScreenEvent ):void
     {
         if( event.fullScreen )
         {
@@ -266,7 +266,7 @@ public class ContextMenuController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
 
-    private function toggleFullScreen() : void
+    private function toggleFullScreen():void
     {
         try
         {
@@ -275,13 +275,13 @@ public class ContextMenuController extends ViewportControllerBase
             else
                 view.stage.displayState = StageDisplayState.NORMAL
         }
-        catch( error : Error )
+        catch( error:Error )
         {
             // Do nothing, what else? =)
         }
     }
 
-    private function getMouseOrigin() : Point
+    private function getMouseOrigin():Point
     {
         return new Point( view.mouseX / view.width,
                           view.mouseY / view.height )

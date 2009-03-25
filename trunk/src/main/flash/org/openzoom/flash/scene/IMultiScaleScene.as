@@ -47,8 +47,8 @@ public interface IMultiScaleScene extends IEventDispatcher
     /**
      * Indicates the width of the scene, in pixels.
      */
-    function get sceneWidth() : Number
-    function set sceneWidth( value : Number ) : void
+    function get sceneWidth():Number
+    function set sceneWidth( value:Number ):void
 
     //----------------------------------
     //  sceneHeight
@@ -57,8 +57,8 @@ public interface IMultiScaleScene extends IEventDispatcher
     /**
      * Indicates the height of the scene, in pixels.
      */
-    function get sceneHeight() : Number
-    function set sceneHeight( value : Number ) : void
+    function get sceneHeight():Number
+    function set sceneHeight( value:Number ):void
 
     //----------------------------------
     //  targetCoordinateSpace
@@ -70,7 +70,7 @@ public interface IMultiScaleScene extends IEventDispatcher
      * bounds with DisplayObject::getBounds relative to the scene
      * they are contained in.
      */
-    function get targetCoordinateSpace() : DisplayObject
+    function get targetCoordinateSpace():DisplayObject
 }
 
 }

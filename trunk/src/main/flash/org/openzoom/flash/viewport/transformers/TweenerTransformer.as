@@ -42,9 +42,9 @@ public class TweenerTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_DURATION : Number = 1.5
-    private static const DEFAULT_EASING   : String = "easeOutExpo"
-    private static const NULL_CONSTRAINT  : IViewportConstraint = new NullConstraint()
+    private static const DEFAULT_DURATION:Number = 1.5
+    private static const DEFAULT_EASING:String = "easeOutExpo"
+    private static const NULL_CONSTRAINT:IViewportConstraint = new NullConstraint()
 
     //--------------------------------------------------------------------------
     //
@@ -66,7 +66,7 @@ public class TweenerTransformer implements IViewportTransformer
     //
     //--------------------------------------------------------------------------
 
-//    private var tweenTransform : IViewportTransform
+//    private var tweenTransform:IViewportTransform
 
     //--------------------------------------------------------------------------
     //
@@ -78,7 +78,7 @@ public class TweenerTransformer implements IViewportTransformer
     //  duration
     //----------------------------------
 
-    private var _duration : Number = DEFAULT_DURATION
+    private var _duration:Number = DEFAULT_DURATION
 
 //   ;[Bindable]
     /**
@@ -86,12 +86,12 @@ public class TweenerTransformer implements IViewportTransformer
      *
      * @default 1.5
      */
-    public function get duration() : Number
+    public function get duration():Number
     {
         return _duration
     }
 
-    public function set duration( value : Number ) : void
+    public function set duration( value:Number ):void
     {
         _duration = value
     }
@@ -100,7 +100,7 @@ public class TweenerTransformer implements IViewportTransformer
     //  easing
     //----------------------------------
 
-    private var _easing : String = DEFAULT_EASING
+    private var _easing:String = DEFAULT_EASING
 
 //   ;[Inspectable(defaultValue="easeOutExpo",
 //                 type="String",
@@ -112,12 +112,12 @@ public class TweenerTransformer implements IViewportTransformer
      * @default easeOutExpo
      * @see http://hosted.zeh.com.br/tweener/docs/en-us/misc/transitions.html
      */
-    public function get easing() : String
+    public function get easing():String
     {
         return _easing
     }
 
-    public function set easing( value : String ) : void
+    public function set easing( value:String ):void
     {
         _easing = value
     }
@@ -132,17 +132,17 @@ public class TweenerTransformer implements IViewportTransformer
     //  viewport
     //----------------------------------
 
-    private var _viewport : ITransformerViewport
+    private var _viewport:ITransformerViewport
 
     /**
      * @inheritDoc
      */
-    public function get viewport() : ITransformerViewport
+    public function get viewport():ITransformerViewport
     {
         return _viewport
     }
 
-    public function set viewport( value : ITransformerViewport ) : void
+    public function set viewport( value:ITransformerViewport ):void
     {
         _viewport = value
 
@@ -157,17 +157,17 @@ public class TweenerTransformer implements IViewportTransformer
     //  constraint
     //----------------------------------
 
-    private var _constraint : IViewportConstraint = NULL_CONSTRAINT
+    private var _constraint:IViewportConstraint = NULL_CONSTRAINT
 
     /**
      * @inheritDoc
      */
-    public function get constraint() : IViewportConstraint
+    public function get constraint():IViewportConstraint
     {
         return _constraint
     }
 
-    public function set constraint( value : IViewportConstraint ) : void
+    public function set constraint( value:IViewportConstraint ):void
     {
         if( value )
             _constraint = value
@@ -179,12 +179,12 @@ public class TweenerTransformer implements IViewportTransformer
     //  target
     //----------------------------------
 
-    private var _target : IViewportTransform
+    private var _target:IViewportTransform
 
     /**
      * @inheritDoc
      */
-    public function get target() : IViewportTransform
+    public function get target():IViewportTransform
     {
         return _target.clone()
     }
@@ -198,7 +198,7 @@ public class TweenerTransformer implements IViewportTransformer
     /**
      * @inheritDoc
      */
-    public function stop() : void
+    public function stop():void
     {
         if( Tweener.isTweening( viewport ))
         {
@@ -215,11 +215,11 @@ public class TweenerTransformer implements IViewportTransformer
     /**
      * @inheritDoc
      */
-    public function transform( target : IViewportTransform,
-                               immediately : Boolean = false ) : void
+    public function transform( target:IViewportTransform,
+                               immediately:Boolean = false ):void
     {
         // Copy target and validate to know where to tween to...
-        var previousTarget : IViewportTransform = this.target
+        var previousTarget:IViewportTransform = this.target
         _target = constraint.validate( target.clone(), previousTarget )
 
         if( immediately )
@@ -273,7 +273,7 @@ public class TweenerTransformer implements IViewportTransformer
 //                                    time: DEFAULT_DURATION,
 //                                    transition: DEFAULT_EASING,
 //                                    onUpdate:
-//                                    function() : void
+//                                    function():void
 //                                    {
 //                                        viewport.transform = tweenTransform
 //                                    },

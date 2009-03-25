@@ -62,8 +62,8 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_RENDERING_MODE:String = RenderingMode.SMOOTH
     private static const DEFAULT_BACKGROUND_SHOW_DURATION:Number = 2.5
+    private static const DEFAULT_RENDERING_MODE:String = RenderingMode.SMOOTH
 
     //--------------------------------------------------------------------------
     //
@@ -93,13 +93,13 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         // Load highest single tile level as background to prevent
         // artifacts between tiles in case we have a format that doesn't
         // feature tile overlap.
-        if(descriptor.tileOverlap == 0 && renderingMode != RenderingMode.SMOOTH)
+        if (descriptor.tileOverlap == 0 && renderingMode != RenderingMode.SMOOTH)
             loadBackground()
 
 //        updateDisplayListTimer = new Timer(50)
 //        updateDisplayListTimer.addEventListener(TimerEvent.TIMER,
-//                                                 updateDisplayListTimer_timerHandler,
-//                                                 false, 0, true)
+//                                                updateDisplayListTimer_timerHandler,
+//                                                false, 0, true)
         // FIXME
 //        updateDisplayListTimer.start()
     }
@@ -408,7 +408,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
                 var dx:Number = Math.abs(position.x - center.x)
                 var dy:Number = Math.abs(position.y - center.y)
                 var distance:Number = dx * dx + dy * dy
-                tiles.push({ url: url, tile: tile, distance: distance })
+                tiles.push({url: url, tile: tile, distance: distance})
             }
         }
 
@@ -419,8 +419,8 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
             var t:Tile = tiles[i].tile
             var item:INetworkRequest = loader.addRequest(tiles[i].url, Bitmap, t)
                 item.addEventListener(Event.COMPLETE,
-                                       tileCompleteHandler,
-                                       false, 0, true )
+                                      tileCompleteHandler,
+                                      false, 0, true)
         }
     }
 
@@ -478,10 +478,10 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         {
             var cropBitmapData:BitmapData =
                    new BitmapData(Math.min(level.width, backgroundTile.width),
-                                   Math.min(level.height, backgroundTile.height))
+                                  Math.min(level.height, backgroundTile.height))
             cropBitmapData.copyPixels(backgroundTile.bitmapData,
-                                       cropBitmapData.rect,
-                                       new Point(0, 0))
+                                      cropBitmapData.rect,
+                                      new Point(0, 0))
             var croppedTileBitmap:Bitmap = new Bitmap(cropBitmapData)
             backgroundTile = croppedTileBitmap
         }
@@ -494,7 +494,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         addChildAt(backgroundTile, getChildIndex(frame))
 
 //        backgroundTile.alpha = 1
-        Tweener.addTween(backgroundTile, { alpha: 1, time: DEFAULT_BACKGROUND_SHOW_DURATION })
+        Tweener.addTween(backgroundTile, {alpha: 1, time: DEFAULT_BACKGROUND_SHOW_DURATION})
     }
 
     //--------------------------------------------------------------------------
@@ -541,11 +541,11 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     {
         var level:IMultiScaleImageLevel
 
-        for(var i:int = 0; i < descriptor.numLevels; i++)
+        for (var i:int = 0; i < descriptor.numLevels; i++)
         {
             level = descriptor.getLevelAt(i)
 
-            if(level.numColumns != 1 || level.numRows != 1)
+            if (level.numColumns != 1 || level.numRows != 1)
                 break
         }
 

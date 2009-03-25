@@ -115,7 +115,7 @@ public class NetworkQueue extends EventDispatcher
      */
     private function processQueue():void
     {
-        while(queue.length > 0 && connections.length < MAX_CONNECTIONS)
+        while (queue.length > 0 && connections.length < MAX_CONNECTIONS)
         {
             var item:INetworkRequest = INetworkRequest(queue.shift())
             connections.push(item)
@@ -159,7 +159,7 @@ public class NetworkQueue extends EventDispatcher
     	var bytesLoaded:uint = 0
     	var bytesTotal:uint = 0
     	
-    	for each(var request:INetworkRequest in connections)
+    	for each (var request:INetworkRequest in connections)
     	{
     		bytesLoaded += request.bytesLoaded
     		bytesTotal += request.bytesTotal

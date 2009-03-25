@@ -37,8 +37,8 @@ public class NullConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_MIN_ZOOM : Number = 0.001
-    private static const DEFAULT_MAX_ZOOM : Number = 1000000
+    private static const DEFAULT_MIN_ZOOM:Number = 0.001
+    private static const DEFAULT_MAX_ZOOM:Number = 1000000
 
     //--------------------------------------------------------------------------
     //
@@ -62,8 +62,8 @@ public class NullConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform : IViewportTransform,
-                              target : IViewportTransform ) : IViewportTransform
+    public function validate( transform:IViewportTransform,
+                              target:IViewportTransform ):IViewportTransform
     {
         if( transform.zoom < DEFAULT_MIN_ZOOM )
             transform.zoomTo( DEFAULT_MIN_ZOOM )

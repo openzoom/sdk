@@ -21,13 +21,13 @@
 package org.openzoom.flash.descriptors.deepzoom
 {
 
-import flash.utils.Dictionary;
+import flash.utils.Dictionary
 
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
-import org.openzoom.flash.descriptors.MultiScaleImageLevel;
-import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor
+import org.openzoom.flash.descriptors.IMultiScaleImageLevel
+import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase
+import org.openzoom.flash.descriptors.MultiScaleImageLevel
+import org.openzoom.flash.utils.math.clamp
 
 /**
  * Descriptor for the
@@ -86,7 +86,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     public function getTileURL(level:int, column:uint, row:uint):String
     {
         var path:String  = source.substring(0, source.length - 4) + "_files"
-        return [ path, "/", level, "/", column, "_", row, ".", extension ].join("")
+        return [path, "/", level, "/", column, "_", row, ".", extension].join("")
     }
 
     /**
@@ -147,7 +147,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
         extension = data.@Format
 
-        switch(extension)
+        switch (extension)
         {
             case "jpg":
                _type = "image/jpeg"
@@ -213,7 +213,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 //
 //------------------------------------------------------------------------------
 
-import flash.geom.Rectangle;
+import flash.geom.Rectangle
 
 /**
  * @private
@@ -230,8 +230,8 @@ class DisplayRect extends Rectangle
      * Constructor.
      */
     public function DisplayRect(x:Number, y:Number,
-                                 width:Number, height:Number,
-                                 minLevel:int, maxLevel:int)
+                                width:Number, height:Number,
+                                minLevel:int, maxLevel:int)
     {
         super(x, y, width, height)
         _minLevel = minLevel

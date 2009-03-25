@@ -46,14 +46,14 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * Constructor.
      */
-    public function MultiScaleImageLevel( descriptor : IMultiScaleImageDescriptor,
-                                          index : int,
-                                          width : uint,
-                                          height : uint,
-                                          numColumns : uint,
-                                          numRows : uint,
-                                          uris : Array,
-                                          pyramidOrigin : String = "topLeft" )
+    public function MultiScaleImageLevel( descriptor:IMultiScaleImageDescriptor,
+                                          index:int,
+                                          width:uint,
+                                          height:uint,
+                                          numColumns:uint,
+                                          numRows:uint,
+                                          uris:Array,
+                                          pyramidOrigin:String = "topLeft" )
     {
         this.descriptor = descriptor
         this.uris = uris
@@ -68,11 +68,11 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     //
     //--------------------------------------------------------------------------
 
-    private var uris : Array /* of String */
-    private var descriptor : IMultiScaleImageDescriptor
-    private var pyramidOrigin : String = PyramidOrigin.TOP_LEFT
+    private var uris:Array /* of String */
+    private var descriptor:IMultiScaleImageDescriptor
+    private var pyramidOrigin:String = PyramidOrigin.TOP_LEFT
 
-    private static var uriIndex : uint = 0
+    private static var uriIndex:uint = 0
 
     //--------------------------------------------------------------------------
     //
@@ -83,17 +83,17 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTileURL( column : uint, row : uint ) : String
+    public function getTileURL( column:uint, row:uint ):String
     {
         if( uris && uris.length > 0 )
         {
             if( ++uriIndex >= uris.length )
                 uriIndex = 0
 
-            var uri : String =  String( uris[ uriIndex ] )
+            var uri:String =  String( uris[ uriIndex ] )
 
-            var computedColumn : uint
-            var computedRow : uint
+            var computedColumn:uint
+            var computedRow:uint
 
             switch( pyramidOrigin )
             {
@@ -128,7 +128,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTileBounds( column : uint, row : uint ) : Rectangle
+    public function getTileBounds( column:uint, row:uint ):Rectangle
     {
         return descriptor.getTileBounds( index, column, row )
     }
@@ -136,7 +136,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function clone() : IMultiScaleImageLevel
+    public function clone():IMultiScaleImageLevel
     {
         return new MultiScaleImageLevel( descriptor.clone(),
                                          index, width, height,
@@ -152,7 +152,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    override public function toString() : String
+    override public function toString():String
     {
         return "[OpenZoomLevel]" + "\n" + super.toString()
     }

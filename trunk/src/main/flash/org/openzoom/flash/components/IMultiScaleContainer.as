@@ -21,12 +21,12 @@
 package org.openzoom.flash.components
 {
 
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import flash.geom.Point
+import flash.geom.Rectangle
 
-import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportConstraint;
-import org.openzoom.flash.viewport.IViewportTransformer;
+import org.openzoom.flash.viewport.INormalizedViewport
+import org.openzoom.flash.viewport.IViewportConstraint
+import org.openzoom.flash.viewport.IViewportTransformer
 
 /**
  * @private
@@ -164,29 +164,29 @@ public interface IMultiScaleContainer
      * @copy org.openzoom.flash.viewport.IViewport#zoomTo()
      */
     function zoomTo(zoom:Number,
-                    transformX:Number = 0.5,
-                    transformY:Number = 0.5,
-                    immediately:Boolean = false):void
+                    transformX:Number=0.5,
+                    transformY:Number=0.5,
+                    immediately:Boolean=false):void
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomBy()
      */
     function zoomBy(factor:Number,
-                    transformX:Number = 0.5,
-                    transformY:Number = 0.5,
-                    immediately:Boolean = false):void
+                    transformX:Number=0.5,
+                    transformY:Number=0.5,
+                    immediately:Boolean=false):void
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#panTo()
      */
     function panTo(x:Number, y:Number,
-                   immediately:Boolean = false):void
+                   immediately:Boolean=false):void
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
      */
     function fitToBounds(bounds:Rectangle,
-                         scale:Number = 1.0,
+                         scale:Number=1.0,
                          immediately:Boolean = false):void
 
     /**
@@ -198,7 +198,7 @@ public interface IMultiScaleContainer
      * @copy org.openzoom.flash.viewport.IViewport#panBy()
      */
     function panBy(deltaX:Number, deltaY:Number,
-                   immediately:Boolean = false):void
+                   immediately:Boolean=false):void
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#localToScene()

@@ -35,8 +35,8 @@ public class ScaleConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_MIN_SCALE : Number = 0.00001
-    private static const DEFAULT_MAX_SCALE : Number = 1000000
+    private static const DEFAULT_MIN_SCALE:Number = 0.00001
+    private static const DEFAULT_MAX_SCALE:Number = 1000000
 
     //--------------------------------------------------------------------------
     //
@@ -61,17 +61,17 @@ public class ScaleConstraint implements IViewportConstraint
     //  minScale
     //----------------------------------
 
-    private var _minScale : Number = DEFAULT_MIN_SCALE
+    private var _minScale:Number = DEFAULT_MIN_SCALE
 
     /**
      * Minimum scale the scene can reach.
      */
-    public function get minScale() : Number
+    public function get minScale():Number
     {
         return _minScale
     }
 
-    public function set minScale( value : Number ) : void
+    public function set minScale( value:Number ):void
     {
         _minScale = value
     }
@@ -80,17 +80,17 @@ public class ScaleConstraint implements IViewportConstraint
     //  maxScale
     //----------------------------------
 
-    private var _maxScale : Number = DEFAULT_MAX_SCALE
+    private var _maxScale:Number = DEFAULT_MAX_SCALE
 
     /**
      * Maximum scale the scene can reach.
      */
-    public function get maxScale() : Number
+    public function get maxScale():Number
     {
         return _maxScale
     }
 
-    public function set maxScale( value : Number ) : void
+    public function set maxScale( value:Number ):void
     {
        _maxScale = value
     }
@@ -104,8 +104,8 @@ public class ScaleConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform : IViewportTransform,
-                              target : IViewportTransform ) : IViewportTransform
+    public function validate( transform:IViewportTransform,
+                              target:IViewportTransform ):IViewportTransform
     {
         // FIXME
         // Prevent from moving when the scale limist are reached

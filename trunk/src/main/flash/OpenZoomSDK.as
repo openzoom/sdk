@@ -25,10 +25,11 @@ import flash.display.Sprite
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#222222")]
 /**
- * OpenZoom is an Open Source Framework for
- * Multi-Scale Images and Zoomable User Interfaces (ZUI)
+ * The open source OpenZoom SDK incubation project consists of a set of classes
+ * and components for the Adobe Flash Platform that enable you to easily build
+ * powerful applications which use zooming capabilities and high-resolution images.
  */
-public class OpenZoomFramework extends Sprite
+public class OpenZoomSDK extends Sprite
 {
     //--------------------------------------------------------------------------
     //
@@ -39,7 +40,7 @@ public class OpenZoomFramework extends Sprite
     /**
      * Constructor.
      */
-    public function OpenZoomFramework()
+    public function OpenZoomSDK()
     {
     }
 }

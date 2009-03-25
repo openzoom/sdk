@@ -55,17 +55,17 @@ public class NullTransformer implements IViewportTransformer
     //  viewport
     //----------------------------------
 
-    private var _viewport : ITransformerViewport
+    private var _viewport:ITransformerViewport
 
     /**
      * @inheritDoc
      */
-    public function get viewport() : ITransformerViewport
+    public function get viewport():ITransformerViewport
     {
         return _viewport
     }
 
-    public function set viewport( value : ITransformerViewport ) : void
+    public function set viewport( value:ITransformerViewport ):void
     {
         _viewport = value
 
@@ -79,17 +79,17 @@ public class NullTransformer implements IViewportTransformer
     //  constraint
     //----------------------------------
 
-    private var _constraint : IViewportConstraint
+    private var _constraint:IViewportConstraint
 
     /**
      * @inheritDoc
      */
-    public function get constraint() : IViewportConstraint
+    public function get constraint():IViewportConstraint
     {
         return _constraint
     }
 
-    public function set constraint( value : IViewportConstraint ) : void
+    public function set constraint( value:IViewportConstraint ):void
     {
         _constraint = value
     }
@@ -98,12 +98,12 @@ public class NullTransformer implements IViewportTransformer
     //  target
     //----------------------------------
 
-    private var _target : IViewportTransform
+    private var _target:IViewportTransform
 
     /**
      * @inheritDoc
      */
-    public function get target() : IViewportTransform
+    public function get target():IViewportTransform
     {
         return _target.clone()
 //        return viewport.transform
@@ -118,7 +118,7 @@ public class NullTransformer implements IViewportTransformer
     /**
      * @inheritDoc
      */
-    public function stop() : void
+    public function stop():void
     {
         // Do nothing
     }
@@ -126,8 +126,8 @@ public class NullTransformer implements IViewportTransformer
     /**
      * @inheritDoc
      */
-    public function transform( targetTransform : IViewportTransform,
-                               immediately : Boolean = false ) : void
+    public function transform( targetTransform:IViewportTransform,
+                               immediately:Boolean = false ):void
     {
         // copy targetTransform
         _target = targetTransform.clone()

@@ -36,11 +36,11 @@ public class ViewportEvent extends Event
     //
     //--------------------------------------------------------------------------
 
-    public static const RESIZE : String = "resize"
-    public static const TRANSFORM_START : String = "transformStart"
-    public static const TRANSFORM_UPDATE : String = "transformUpdate"
-    public static const TRANSFORM_END : String = "transformComplete"
-    public static const TARGET_UPDATE : String = "targetUpdate"
+    public static const RESIZE:String = "resize"
+    public static const TRANSFORM_START:String = "transformStart"
+    public static const TRANSFORM_UPDATE:String = "transformUpdate"
+    public static const TRANSFORM_END:String = "transformComplete"
+    public static const TARGET_UPDATE:String = "targetUpdate"
 
     //--------------------------------------------------------------------------
     //
@@ -51,10 +51,10 @@ public class ViewportEvent extends Event
     /**
      * Constructor.
      */
-    public function ViewportEvent( type : String,
-                                   bubbles : Boolean = false,
-                                   cancelable : Boolean = false,
-                                   oldTransform : IViewportTransform = null )
+    public function ViewportEvent( type:String,
+                                   bubbles:Boolean = false,
+                                   cancelable:Boolean = false,
+                                   oldTransform:IViewportTransform = null )
     {
         super( type, bubbles, cancelable )
 
@@ -71,12 +71,12 @@ public class ViewportEvent extends Event
     //  oldTransform
     //----------------------------------
 
-    private var _oldTransform : IViewportTransform
+    private var _oldTransform:IViewportTransform
 
     /**
      * The transform that was previously applied to the viewport.
      */
-    public function get oldTransform() : IViewportTransform
+    public function get oldTransform():IViewportTransform
     {
         return _oldTransform
     }
@@ -90,7 +90,7 @@ public class ViewportEvent extends Event
     /**
      * @inheritDoc
      */
-    override public function clone() : Event
+    override public function clone():Event
     {
         return new ViewportEvent( type, bubbles, cancelable, oldTransform )
     }

@@ -87,10 +87,10 @@ public final class MultiScaleImage extends MultiScaleImageBase
     //
     //--------------------------------------------------------------------------
 
-    private var url : String
-    private var urlLoader : URLLoader
+    private var url:String
+    private var urlLoader:URLLoader
 
-    private var image : MultiScaleImageRenderer
+    private var image:MultiScaleImageRenderer
 
     //--------------------------------------------------------------------------
     //
@@ -102,7 +102,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
     //  source
     //----------------------------------
 
-    private var _source : IMultiScaleImageDescriptor
+    private var _source:IMultiScaleImageDescriptor
 
     /**
      * Source of this image. Either a URL as String or an
@@ -110,43 +110,43 @@ public final class MultiScaleImage extends MultiScaleImageBase
      *
      * @see org.openzoom.flash.descriptors.IMultiScaleImageDescriptor
      */
-    public function get source() : Object
+    public function get source():Object
     {
         return _source
     }
 
-    public function set source( value : Object ) : void
+    public function set source(value:Object):void
     {
-        if( _source )
+        if(_source)
         {
             _source = null
-            container.removeChildAt( 0 )
-            viewport.showAll( true )
+            container.removeChildAt(0)
+            viewport.showAll(true)
         }
 
-        if( value is String )
+        if(value is String)
         {
-            if( url == String( value ))
+            if(url == String(value))
                 return
 
-            url = String( value )
-            urlLoader = new URLLoader( new URLRequest( url ))
+            url = String(value)
+            urlLoader = new URLLoader(new URLRequest(url))
 
-            urlLoader.addEventListener( Event.COMPLETE,
+            urlLoader.addEventListener(Event.COMPLETE,
                                         urlLoader_completeHandler,
                                         false, 0, true )
-            urlLoader.addEventListener( IOErrorEvent.IO_ERROR,
+            urlLoader.addEventListener(IOErrorEvent.IO_ERROR,
                                         urlLoader_ioErrorHandler,
                                         false, 0, true )
-            urlLoader.addEventListener( SecurityErrorEvent.SECURITY_ERROR,
+            urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
                                         urlLoader_securityErrorHandler,
                                         false, 0, true )
         }
 
-        if( value is IMultiScaleImageDescriptor )
+        if(value is IMultiScaleImageDescriptor)
         {
-            _source = IMultiScaleImageDescriptor( value )
-            addImage( _source )
+            _source = IMultiScaleImageDescriptor(value)
+            addImage(_source)
         }
     }
 
@@ -159,13 +159,13 @@ public final class MultiScaleImage extends MultiScaleImageBase
     /**
      * @private
      */
-    private function addImage( descriptor : IMultiScaleImageDescriptor ) : void
+    private function addImage(descriptor:IMultiScaleImageDescriptor):void
     {
-        var aspectRatio : Number = descriptor.width / descriptor.height
-        var sceneWidth : Number
-        var sceneHeight : Number
+        var aspectRatio:Number = descriptor.width / descriptor.height
+        var sceneWidth:Number
+        var sceneHeight:Number
 
-        if( aspectRatio > 1 )
+        if(aspectRatio > 1)
         {
             sceneWidth  = DEFAULT_SCENE_DIMENSION
             sceneHeight = DEFAULT_SCENE_DIMENSION / aspectRatio
@@ -181,24 +181,24 @@ public final class MultiScaleImage extends MultiScaleImageBase
         container.sceneHeight = sceneHeight
 
         // create renderer
-        image = createImage( descriptor,
+        image = createImage(descriptor,
                              container.loader,
                              sceneWidth,
-                             sceneHeight )
+                             sceneHeight)
 
-        container.addChild( image )
+        container.addChild(image)
     }
 
     /**
      * @private
      */
-    private function createImage( descriptor : IMultiScaleImageDescriptor,
-                                  loader : INetworkQueue,
-                                  width : Number,
-                                  height : Number ) : MultiScaleImageRenderer
+    private function createImage(descriptor:IMultiScaleImageDescriptor,
+                                  loader:INetworkQueue,
+                                  width:Number,
+                                  height:Number):MultiScaleImageRenderer
     {
-        var image : MultiScaleImageRenderer =
-                new MultiScaleImageRenderer( descriptor, loader, width, height )
+        var image:MultiScaleImageRenderer =
+                new MultiScaleImageRenderer(descriptor, loader, width, height)
         return image
     }
 
@@ -211,39 +211,39 @@ public final class MultiScaleImage extends MultiScaleImageBase
     /**
      * @private
      */
-    private function urlLoader_completeHandler( event : Event ) : void
+    private function urlLoader_completeHandler(event:Event):void
     {
-        if( !urlLoader || !urlLoader.data )
+        if(!urlLoader || !urlLoader.data)
             return
 
-        var data : XML = new XML( urlLoader.data )
-        var factory : MultiScaleImageDescriptorFactory =
+        var data:XML = new XML(urlLoader.data)
+        var factory:MultiScaleImageDescriptorFactory =
                                   MultiScaleImageDescriptorFactory.getInstance()
-        var descriptor : IMultiScaleImageDescriptor =
-                                              factory.getDescriptor( url, data )
+        var descriptor:IMultiScaleImageDescriptor =
+                                              factory.getDescriptor(url, data)
 
         _source = descriptor
-        addImage( descriptor )
+        addImage(descriptor)
 
-        viewport.showAll( true )
+        viewport.showAll(true)
 
-        dispatchEvent( event )
+        dispatchEvent(event)
     }
 
     /**
      * @private
      */
-    private function urlLoader_ioErrorHandler( event : IOErrorEvent ) : void
+    private function urlLoader_ioErrorHandler(event:IOErrorEvent):void
     {
-        dispatchEvent( event )
+        dispatchEvent(event)
     }
 
     /**
      * @private
      */
-    private function urlLoader_securityErrorHandler( event : SecurityErrorEvent ) : void
+    private function urlLoader_securityErrorHandler(event:SecurityErrorEvent):void
     {
-        dispatchEvent( event )
+        dispatchEvent(event)
     }
 }
 

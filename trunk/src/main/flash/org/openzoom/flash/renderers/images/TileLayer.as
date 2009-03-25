@@ -111,16 +111,14 @@ public class TileLayer extends Sprite implements ITileLayer
 
     public function addTile(tile:Tile):Tile
     {
-        if(tile.level != level.index)
+        if (tile.level != level.index)
         {
             trace("[TileLayer]: Adding Tile from wrong level.")
             return null
         }
-
-//        trace(level.index, level.width, level.height)
-
+        
         // return if tile already added
-        if(tiles[ tile.hashCode ])
+        if (tiles[tile.hashCode])
            return null
 
         // store reference to tile
@@ -142,18 +140,18 @@ public class TileLayer extends Sprite implements ITileLayer
         var horizontalOverflow:Boolean = tileBitmapRight > level.width
         var verticalOverflow:Boolean = tileBitmapBottom > level.height
 
-        if(tileBitmap.x >= level.width || tileBitmap.y >= level.height)
+        if (tileBitmap.x >= level.width || tileBitmap.y >= level.height)
             trace("[TileLayer]: Wrong tile positioning")
 
         // Fix for too large tiles
-        if(horizontalOverflow || verticalOverflow)
+        if (horizontalOverflow || verticalOverflow)
         {
+            trace("[TileLayer]: Overflow")
             // TODO: Check bounds with new descriptor API
             var cropBitmapData:BitmapData =
-                   new BitmapData(Math.min(level.width  - tileBitmap.x,
-                                           tileBitmap.width),
-                                   Math.min(level.height - tileBitmap.y,
-                                            tileBitmap.height))
+                   new BitmapData(Math.min(level.width - tileBitmap.x, tileBitmap.width),
+                                  Math.min(level.height - tileBitmap.y, tileBitmap.height),
+                                  true)
             cropBitmapData.copyPixels(tileBitmap.bitmapData,
                                       cropBitmapData.rect,
                                       new Point(0, 0))
@@ -165,8 +163,8 @@ public class TileLayer extends Sprite implements ITileLayer
             tileBitmap = croppedTileBitmap
         }
 
-        if(tileBitmap.x + tileBitmap.width > level.width ||
-           tileBitmap.y + tileBitmap.height > level.height)
+        if (tileBitmap.x + tileBitmap.width > level.width ||
+            tileBitmap.y + tileBitmap.height > level.height)
             trace("[TileLayer]: Bad cropping")
 
 

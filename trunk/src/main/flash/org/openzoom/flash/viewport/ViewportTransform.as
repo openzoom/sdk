@@ -39,11 +39,11 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * Constructor.
      */
-    public function ViewportTransform( x : Number, y : Number,
-                                       width : Number, height : Number,
-                                       zoom : Number,
-                                       viewportWidth : Number, viewportHeight : Number,
-                                       sceneWidth : Number, sceneHeight : Number)
+    public function ViewportTransform( x:Number, y:Number,
+                                       width:Number, height:Number,
+                                       zoom:Number,
+                                       viewportWidth:Number, viewportHeight:Number,
+                                       sceneWidth:Number, sceneHeight:Number)
     {
         _x = x
         _y = y
@@ -62,12 +62,12 @@ public class ViewportTransform implements IViewportTransform,
      * Constructs and initializes a ViewportTransform object
      * from the given parameter values.
      */
-    public static function fromValues(  x : Number, y : Number,
-                                        width : Number, height : Number, zoom : Number,
-                                        viewportWidth : Number, viewportHeight : Number,
-                                        sceneWidth : Number, sceneHeight : Number ) : ViewportTransform
+    public static function fromValues(  x:Number, y:Number,
+                                        width:Number, height:Number, zoom:Number,
+                                        viewportWidth:Number, viewportHeight:Number,
+                                        sceneWidth:Number, sceneHeight:Number ):ViewportTransform
     {
-        var instance : ViewportTransform = new ViewportTransform( x, y, width, height, zoom,
+        var instance:ViewportTransform = new ViewportTransform( x, y, width, height, zoom,
                                                                     viewportWidth, viewportHeight,
                                                                     sceneWidth, sceneHeight )
         // initialize
@@ -86,17 +86,17 @@ public class ViewportTransform implements IViewportTransform,
     //  zoom
     //----------------------------------
 
-    private var _zoom : Number
+    private var _zoom:Number
 
     /**
      * @inheritDoc
      */
-    public function get zoom() : Number
+    public function get zoom():Number
     {
         return _zoom
     }
 
-    public function set zoom( value : Number ) : void
+    public function set zoom( value:Number ):void
     {
         zoomTo( value )
     }
@@ -108,15 +108,15 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function get scale() : Number
+    public function get scale():Number
     {
         return viewportWidth / ( _sceneWidth * width )
     }
 
-    public function set scale( value : Number ) : void
+    public function set scale( value:Number ):void
     {
 //        width = viewportWidth / ( value * _sceneWidth )
-        var targetWidth : Number = viewportWidth / ( value * _sceneWidth )
+        var targetWidth:Number = viewportWidth / ( value * _sceneWidth )
         zoomTo( getZoomForWidth( targetWidth ))
     }
 
@@ -130,16 +130,16 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function zoomTo( zoom : Number,
-                            transformX : Number = 0.5,
-                            transformY : Number = 0.5 ) : void
+    public function zoomTo( zoom:Number,
+                            transformX:Number = 0.5,
+                            transformY:Number = 0.5 ):void
     {
         _zoom = zoom
 
         // remember old origin
-        var oldOrigin : Point = getViewportOrigin( transformX, transformY )
+        var oldOrigin:Point = getViewportOrigin( transformX, transformY )
 
-        var bounds : Point = getBoundsForZoom( zoom )
+        var bounds:Point = getBoundsForZoom( zoom )
         _width  = bounds.x
         _height = bounds.y
 
@@ -150,9 +150,9 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function zoomBy( factor : Number,
-                            transformX : Number = 0.5,
-                            transformY : Number = 0.5 ) : void
+    public function zoomBy( factor:Number,
+                            transformX:Number = 0.5,
+                            transformY:Number = 0.5 ):void
     {
         zoomTo( zoom * factor, transformX, transformY )
     }
@@ -166,7 +166,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function panTo( x : Number, y : Number ) : void
+    public function panTo( x:Number, y:Number ):void
     {
         _x = x
         _y = y
@@ -175,7 +175,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function panBy( dx : Number, dy : Number ) : void
+    public function panBy( dx:Number, dy:Number ):void
     {
         panTo( x + dx, y + dy )
     }
@@ -183,7 +183,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function panCenterTo( x : Number, y : Number ) : void
+    public function panCenterTo( x:Number, y:Number ):void
     {
         panOriginTo( x, y, 0.5, 0.5 )
     }
@@ -191,12 +191,12 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function zoomToBounds( bounds : Rectangle, scale : Number = 1.0 ) : void
+    public function zoomToBounds( bounds:Rectangle, scale:Number = 1.0 ):void
     {
-        var center : Point = new Point( bounds.x + bounds.width / 2,
+        var center:Point = new Point( bounds.x + bounds.width / 2,
                                         bounds.y + bounds.height / 2 )
 
-        var scaledBounds : Rectangle = bounds.clone()
+        var scaledBounds:Rectangle = bounds.clone()
             scaledBounds.width  /= scale
             scaledBounds.height /= scale
 
@@ -214,7 +214,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function showAll() : void
+    public function showAll():void
     {
         zoomToBounds( new Rectangle( 0, 0, 1, 1 ))
     }
@@ -229,11 +229,11 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @private
      */
-    private function panOriginTo( x : Number, y : Number,
-                                  transformX : Number, transformY : Number ) : void
+    private function panOriginTo( x:Number, y:Number,
+                                  transformX:Number, transformY:Number ):void
     {
-        var newX : Number = x - width  * transformX
-        var newY : Number = y - height * transformY
+        var newX:Number = x - width  * transformX
+        var newY:Number = y - height * transformY
 
         panTo( newX, newY )
     }
@@ -241,11 +241,11 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @private
      */
-    private function getViewportOrigin( transformX : Number,
-                                        transformY : Number ) : Point
+    private function getViewportOrigin( transformX:Number,
+                                        transformY:Number ):Point
     {
-        var viewportOriginX : Number = x + width  * transformX
-        var viewportOriginY : Number = y + height * transformY
+        var viewportOriginX:Number = x + width  * transformX
+        var viewportOriginY:Number = y + height * transformY
 
         return new Point( viewportOriginX, viewportOriginY )
     }
@@ -260,17 +260,17 @@ public class ViewportTransform implements IViewportTransform,
     //  x
     //----------------------------------
 
-    private var _x : Number = 0
+    private var _x:Number = 0
 
     /**
      * @inheritDoc
      */
-    public function get x() : Number
+    public function get x():Number
     {
         return _x
     }
 
-    public function set x( value : Number ) : void
+    public function set x( value:Number ):void
     {
         panTo( value, y )
     }
@@ -279,17 +279,17 @@ public class ViewportTransform implements IViewportTransform,
     //  y
     //----------------------------------
 
-    private var _y : Number = 0
+    private var _y:Number = 0
 
     /**
      * @inheritDoc
      */
-    public function get y() : Number
+    public function get y():Number
     {
        return _y
     }
 
-    public function set y( value : Number ) : void
+    public function set y( value:Number ):void
     {
         panTo( x, value )
     }
@@ -298,17 +298,17 @@ public class ViewportTransform implements IViewportTransform,
     //  width
     //----------------------------------
 
-    private var _width : Number = 1
+    private var _width:Number = 1
 
     /**
      * @inheritDoc
      */
-    public function get width() : Number
+    public function get width():Number
     {
         return _width
     }
 
-    public function set width( value : Number ) : void
+    public function set width( value:Number ):void
     {
         zoomTo( getZoomForWidth( value ), 0, 0 )
     }
@@ -317,17 +317,17 @@ public class ViewportTransform implements IViewportTransform,
     //  height
     //----------------------------------
 
-    private var _height : Number = 1
+    private var _height:Number = 1
 
     /**
      * @inheritDoc
      */
-    public function get height() : Number
+    public function get height():Number
     {
         return _height
     }
 
-    public function set height( value : Number ) : void
+    public function set height( value:Number ):void
     {
         zoomTo( getZoomForHeight( value ), 0, 0 )
     }
@@ -336,12 +336,12 @@ public class ViewportTransform implements IViewportTransform,
     //  viewportWidth
     //----------------------------------
 
-    private var _viewportWidth : Number
+    private var _viewportWidth:Number
 
     /**
      * @inheritDoc
      */
-    public function get viewportWidth() : Number
+    public function get viewportWidth():Number
     {
         return _viewportWidth
     }
@@ -349,12 +349,12 @@ public class ViewportTransform implements IViewportTransform,
     //  viewportHeight
     //----------------------------------
 
-    private var _viewportHeight : Number
+    private var _viewportHeight:Number
 
     /**
      * @inheritDoc
      */
-    public function get viewportHeight() : Number
+    public function get viewportHeight():Number
     {
         return _viewportHeight
     }
@@ -369,12 +369,12 @@ public class ViewportTransform implements IViewportTransform,
     //  sceneWidth
     //----------------------------------
 
-    private var _sceneWidth : Number
+    private var _sceneWidth:Number
 
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
      */
-    public function get sceneWidth() : Number
+    public function get sceneWidth():Number
     {
         return _sceneWidth
     }
@@ -383,12 +383,12 @@ public class ViewportTransform implements IViewportTransform,
     //  sceneHeight
     //----------------------------------
 
-    private var _sceneHeight : Number
+    private var _sceneHeight:Number
 
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
      */
-    public function get sceneHeight() : Number
+    public function get sceneHeight():Number
     {
         return _sceneHeight
     }
@@ -403,11 +403,11 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @private
      */
-    private function getBoundsForZoom( zoom : Number ) : Point
+    private function getBoundsForZoom( zoom:Number ):Point
     {
-        var ratio : Number = sceneAspectRatio / aspectRatio
-        var width : Number
-        var height : Number
+        var ratio:Number = sceneAspectRatio / aspectRatio
+        var width:Number
+        var height:Number
 
         // sceneAspectRatio > aspectRatio
         if( ratio >= 1 )
@@ -423,17 +423,17 @@ public class ViewportTransform implements IViewportTransform,
             width  = height / ratio
         }
 
-        var bounds : Point = new Point( width, height )
+        var bounds:Point = new Point( width, height )
         return bounds
     }
 
     /**
      * @private
      */
-    private function getZoomForWidth( width : Number ) : Number
+    private function getZoomForWidth( width:Number ):Number
     {
-        var zoom : Number
-        var ratio : Number = sceneAspectRatio / aspectRatio
+        var zoom:Number
+        var ratio:Number = sceneAspectRatio / aspectRatio
 
         if( ratio >= 1 )
             zoom = 1 / width
@@ -446,9 +446,9 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @private
      */
-    private function getZoomForHeight( height : Number ) : Number
+    private function getZoomForHeight( height:Number ):Number
     {
-        var ratio : Number = sceneAspectRatio / aspectRatio
+        var ratio:Number = sceneAspectRatio / aspectRatio
         return getZoomForWidth( height / ratio )
     }
 
@@ -461,7 +461,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function toString() : String
+    public function toString():String
     {
         return "[ViewportTransform] ("
                + "x=" + x + ", "
@@ -474,7 +474,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function copy( other : IViewportTransform ) : void
+    public function copy( other:IViewportTransform ):void
     {
         _x = other.x
         _y = other.y
@@ -489,9 +489,9 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function clone() : IViewportTransform
+    public function clone():IViewportTransform
     {
-        var copy : ViewportTransform =
+        var copy:ViewportTransform =
                         new ViewportTransform( _x, _y, _width, _height, _zoom,
                                                 _viewportWidth, _viewportHeight,
                                                 _sceneWidth, _sceneHeight )
@@ -502,7 +502,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function equals( other : IViewportTransform ) : Boolean
+    public function equals( other:IViewportTransform ):Boolean
     {
         return x == other.x &&
                y == other.y &&
@@ -524,7 +524,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function setSize( width : Number, height : Number ) : void
+    public function setSize( width:Number, height:Number ):void
     {
         _viewportWidth  = width
         _viewportHeight = height
@@ -545,7 +545,7 @@ public class ViewportTransform implements IViewportTransform,
      *
      * Returns the aspect ratio of this Viewport object.
      */
-    private function get aspectRatio() : Number
+    private function get aspectRatio():Number
     {
         return viewportWidth / viewportHeight
     }
@@ -559,7 +559,7 @@ public class ViewportTransform implements IViewportTransform,
      *
      * Returns the aspect ratio of scene.
      */
-    private function get sceneAspectRatio() : Number
+    private function get sceneAspectRatio():Number
     {
         return sceneWidth / sceneHeight
     }
@@ -577,7 +577,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function get left() : Number
+    public function get left():Number
     {
         return x
     }
@@ -589,7 +589,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function get right() : Number
+    public function get right():Number
     {
         return x + width
     }
@@ -601,7 +601,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function get top() : Number
+    public function get top():Number
     {
         return y
     }
@@ -613,7 +613,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function get bottom() : Number
+    public function get bottom():Number
     {
         return y + height
     }
@@ -625,7 +625,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function get topLeft() : Point
+    public function get topLeft():Point
     {
         return new Point( left, top )
     }
@@ -637,7 +637,7 @@ public class ViewportTransform implements IViewportTransform,
     /**
      * @inheritDoc
      */
-    public function get bottomRight() : Point
+    public function get bottomRight():Point
     {
         return new Point( right, bottom )
     }

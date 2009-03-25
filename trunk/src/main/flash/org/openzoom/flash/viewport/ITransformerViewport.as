@@ -39,8 +39,8 @@ public interface ITransformerViewport extends IViewport
     /**
      * Transformation that is currently applied to the viewport
      */
-    function get transform() : IViewportTransform
-    function set transform( value : IViewportTransform ) : void
+    function get transform():IViewportTransform
+    function set transform( value:IViewportTransform ):void
 
     //--------------------------------------------------------------------------
     //
@@ -52,13 +52,13 @@ public interface ITransformerViewport extends IViewport
      * Dispatch <code>transformStart</code> event to
      * let all listeners know that a viewport transition has started.
      */
-    function beginTransform() : void
+    function beginTransform():void
 
     /**
      * Dispatch <code>transformEnd</code> event to
      * let all listeners know that a viewport transition has finished.
      */
-    function endTransform() : void
+    function endTransform():void
 }
 
 }

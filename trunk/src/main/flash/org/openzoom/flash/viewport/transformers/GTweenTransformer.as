@@ -40,14 +40,14 @@ public class GTweenTransformer// implements IViewportTransformer
 //    //
 //    //--------------------------------------------------------------------------
 //
-//    private static const DEFAULT_DURATION : Number = 2.0
-//    private static const DEFAULT_EASING : String = "easeOutExpo"
+//    private static const DEFAULT_DURATION:Number = 2.0
+//    private static const DEFAULT_EASING:String = "easeOutExpo"
 //
-//    private var tween : GTween
+//    private var tween:GTween
 //
-//    private static function easeOutExpo( t : Number, b : Number, c : Number, d : Number ) : Number
+//    private static function easeOutExpo( t:Number, b:Number, c:Number, d:Number ):Number
 //    {
-//        return (t==d) ? b+c : c * 1.001 * (-Math.pow(2, -10 * t/d) + 1) + b;
+//        return (t==d) ? b+c:c * 1.001 * (-Math.pow(2, -10 * t/d) + 1) + b;
 //    }
 //
 //
@@ -60,15 +60,15 @@ public class GTweenTransformer// implements IViewportTransformer
 //    /**
 //     * Constructor.
 //     */
-//    public function GTweenViewportTransformer( viewport : INormalizedViewport )
+//    public function GTweenViewportTransformer( viewport:INormalizedViewport )
 //    {
 //        _viewport = viewport
 //        tween = new GTween( viewport.transform, DEFAULT_DURATION )
 //        tween.ease = easeOutExpo
 //        tween.useSetSize = false
 //        tween.setAssignment( viewport, "transform" )
-//        tween.addEventListener( Event.INIT, function() : void { viewport.beginTransform(); } )
-//        tween.addEventListener( Event.COMPLETE, function() : void { viewport.endTransform(); } )
+//        tween.addEventListener( Event.INIT, function():void { viewport.beginTransform(); } )
+//        tween.addEventListener( Event.COMPLETE, function():void { viewport.endTransform(); } )
 //    }
 //
 //    //--------------------------------------------------------------------------
@@ -77,14 +77,14 @@ public class GTweenTransformer// implements IViewportTransformer
 //    //
 //    //--------------------------------------------------------------------------
 //
-//    private var _viewport : INormalizedViewport
+//    private var _viewport:INormalizedViewport
 //
-//    public function get viewport() : INormalizedViewport
+//    public function get viewport():INormalizedViewport
 //    {
 //        return _viewport
 //    }
 //
-//    public function set viewport( value : INormalizedViewport ) : void
+//    public function set viewport( value:INormalizedViewport ):void
 //    {
 //        _viewport = value
 //    }
@@ -95,11 +95,11 @@ public class GTweenTransformer// implements IViewportTransformer
 //    //
 //    //--------------------------------------------------------------------------
 //
-//    public function transform( viewport : INormalizedViewport,
-//                             targetTransform : IViewportTransform ) : void
+//    public function transform( viewport:INormalizedViewport,
+//                             targetTransform:IViewportTransform ):void
 //    {
-//        var duration : Number = DEFAULT_DURATION
-//        var transition : String = DEFAULT_EASING
+//        var duration:Number = DEFAULT_DURATION
+//        var transition:String = DEFAULT_EASING
 //
 //        tween.proxy.x = targetTransform.x
 //        tween.proxy.y = targetTransform.y
@@ -118,8 +118,8 @@ public class GTweenTransformer// implements IViewportTransformer
 ////                                height: targetTransform.height
 ////                            }
 ////                          )
-////        tween.addEventListener( Event.INIT, function() : void { viewport.beginTransform(); } )
-////        tween.addEventListener( Event.COMPLETE, function() : void { viewport.endTransform(); } )
+////        tween.addEventListener( Event.INIT, function():void { viewport.beginTransform(); } )
+////        tween.addEventListener( Event.COMPLETE, function():void { viewport.endTransform(); } )
 ////        tween.setAssignment( viewport, "transform" )
 //
 ////        tween.target = t
@@ -151,7 +151,7 @@ public class GTweenTransformer// implements IViewportTransformer
 ////                                time: duration,
 ////                                transition: transition,
 ////                                onStart: viewport.beginTransform,
-////                                onUpdate: function() : void { viewport.transform = t; },
+////                                onUpdate: function():void { viewport.transform = t; },
 ////                                onComplete: viewport.endTransform
 ////                            }
 ////                        )

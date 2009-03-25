@@ -42,8 +42,8 @@ import flash.events.IEventDispatcher;
  */
 public interface INetworkRequest extends IEventDispatcher
 {
-    function start() : void
-//  function stop() : void
+    function start():void
+//  function stop():void
 
     function get bytesLoaded():uint
     function get bytesTotal():uint

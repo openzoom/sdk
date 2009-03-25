@@ -122,7 +122,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
         {
             _source = null
             
-            if(container.numChildren > 0)
+            if (container.numChildren > 0)
                 container.removeChildAt(0)
         }
 
@@ -133,7 +133,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
 
             url = String(value)
             urlLoader = new URLLoader(new URLRequest(url))
-
+            
             urlLoader.addEventListener(Event.COMPLETE,
                                        urlLoader_completeHandler,
                                        false, 0, true)
@@ -185,7 +185,8 @@ public final class MultiScaleImage extends MultiScaleImageBase
         container.sceneHeight = sceneHeight
 
         // create renderer
-        image = new MultiScaleImageRenderer(descriptor, container.loader, sceneWidth, sceneHeight)
+        image = new MultiScaleImageRenderer(descriptor, container.loader,
+                                            sceneWidth, sceneHeight)
         container.addChild(image)
         container.showAll(true)
     }

@@ -47,7 +47,7 @@ public interface IReadonlyMultiScaleScene extends IEventDispatcher
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
      */
-    function get sceneWidth() : Number
+    function get sceneWidth():Number
 
     //----------------------------------
     //  sceneHeight
@@ -56,7 +56,7 @@ public interface IReadonlyMultiScaleScene extends IEventDispatcher
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
      */
-    function get sceneHeight() : Number
+    function get sceneHeight():Number
 
     //----------------------------------
     //  targetCoordinateSpace
@@ -65,7 +65,7 @@ public interface IReadonlyMultiScaleScene extends IEventDispatcher
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#targetCoordinateSpace
      */
-    function get targetCoordinateSpace() : DisplayObject
+    function get targetCoordinateSpace():DisplayObject
 }
 
 }

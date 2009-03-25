@@ -39,8 +39,8 @@ public interface IViewportTransformer
     /**
      * Target viewport to transform.
      */
-    function get viewport() : ITransformerViewport
-    function set viewport( value : ITransformerViewport ) : void
+    function get viewport():ITransformerViewport
+    function set viewport( value:ITransformerViewport ):void
 
     //----------------------------------
     //  target
@@ -49,7 +49,7 @@ public interface IViewportTransformer
     /**
      * Target viewport transform.
      */
-    function get target() : IViewportTransform
+    function get target():IViewportTransform
 
     //----------------------------------
     //  constraint
@@ -58,8 +58,8 @@ public interface IViewportTransformer
     /**
      * Constraint for target transform.
      */
-    function get constraint() : IViewportConstraint
-    function set constraint( value : IViewportConstraint ) : void
+    function get constraint():IViewportConstraint
+    function set constraint( value:IViewportConstraint ):void
 
     //--------------------------------------------------------------------------
     //
@@ -70,13 +70,13 @@ public interface IViewportTransformer
     /**
      * Transform viewport to target transform.
      */
-    function transform( target : IViewportTransform,
-                        immediately : Boolean = false ) : void
+    function transform( target:IViewportTransform,
+                        immediately:Boolean = false ):void
 
     /**
      * Stop viewport transformation.
      */
-    function stop() : void
+    function stop():void
 }
 
 }

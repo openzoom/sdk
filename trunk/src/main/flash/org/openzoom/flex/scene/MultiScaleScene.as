@@ -44,8 +44,8 @@ public class MultiScaleScene extends Group
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_SCENE_WIDTH  : Number = 24000
-    private static const DEFAULT_SCENE_HEIGHT : Number = 16000
+    private static const DEFAULT_SCENE_WIDTH:Number = 24000
+    private static const DEFAULT_SCENE_HEIGHT:Number = 16000
 
     //--------------------------------------------------------------------------
     //
@@ -60,7 +60,7 @@ public class MultiScaleScene extends Group
     {
         super()
 
-        var g : Graphics = graphics
+        var g:Graphics = graphics
             g.beginFill( 0xFF6600, 0.5 )
             g.drawRect( 0, 0, DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
             g.endFill()
@@ -74,7 +74,7 @@ public class MultiScaleScene extends Group
     //
     //--------------------------------------------------------------------------
 
-    private var frame : Shape
+    private var frame:Shape
 
     //--------------------------------------------------------------------------
     //
@@ -86,7 +86,7 @@ public class MultiScaleScene extends Group
     //  targetCoordinateSpace
     //----------------------------------
 
-    public function get targetCoordinateSpace() : DisplayObject
+    public function get targetCoordinateSpace():DisplayObject
     {
         return this
     }
@@ -95,20 +95,20 @@ public class MultiScaleScene extends Group
     //  sceneWidth
     //----------------------------------
 
-    private var _sceneWidth : Number = DEFAULT_SCENE_WIDTH
-    private var sceneWidthChanged : Boolean = false
+    private var _sceneWidth:Number = DEFAULT_SCENE_WIDTH
+    private var sceneWidthChanged:Boolean = false
 
    ;[Bindable(event="resize")]
 
     /**
      * @inheritDoc
      */
-    public function get sceneWidth() : Number
+    public function get sceneWidth():Number
     {
         return _sceneWidth
     }
 
-    public function set sceneWidth( value : Number ) : void
+    public function set sceneWidth( value:Number ):void
     {
         if( _sceneWidth != value )
         {
@@ -124,20 +124,20 @@ public class MultiScaleScene extends Group
     //  sceneHeight
     //----------------------------------
 
-    private var _sceneHeight : Number = DEFAULT_SCENE_HEIGHT
-    private var sceneHeightChanged : Boolean = false
+    private var _sceneHeight:Number = DEFAULT_SCENE_HEIGHT
+    private var sceneHeightChanged:Boolean = false
 
    ;[Bindable(event="resize")]
 
     /**
      * @inheritDoc
      */
-    public function get sceneHeight() : Number
+    public function get sceneHeight():Number
     {
         return _sceneHeight
     }
 
-    public function set sceneHeight( value : Number ) : void
+    public function set sceneHeight( value:Number ):void
     {
 //        if( _sceneHeight != value )
 //        {
@@ -158,7 +158,7 @@ public class MultiScaleScene extends Group
     /**
      * @private
      */
-    override protected function createChildren() : void
+    override protected function createChildren():void
     {
         if( !frame )
             createFrame()
@@ -167,8 +167,8 @@ public class MultiScaleScene extends Group
     /**
      * @private
      */
-//    override protected function updateDisplayList( unscaledWidth : Number,
-//                                                   unscaledHeight : Number ) : void
+//    override protected function updateDisplayList( unscaledWidth:Number,
+//                                                   unscaledHeight:Number ):void
 //    {
 //        super.updateDisplayList( unscaledWidth, unscaledHeight )
 //    }
@@ -176,7 +176,7 @@ public class MultiScaleScene extends Group
     /**
      * @private
      */
-    override protected function commitProperties() : void
+    override protected function commitProperties():void
     {
         super.commitProperties()
 
@@ -198,10 +198,10 @@ public class MultiScaleScene extends Group
     /**
      * @private
      */
-    private function createFrame() : void
+    private function createFrame():void
     {
         frame = new Shape()
-        var g : Graphics = frame.graphics
+        var g:Graphics = frame.graphics
             g.beginFill( 0xFF6600, 0.5 )
             g.drawRect( 0, 0, 1, 100 )
             g.endFill()

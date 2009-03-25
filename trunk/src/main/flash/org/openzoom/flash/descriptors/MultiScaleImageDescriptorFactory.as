@@ -37,11 +37,11 @@ public class MultiScaleImageDescriptorFactory
     //
     //--------------------------------------------------------------------------
 
-    private static const DEEPZOOM_NAMESPACE_URI : String =
+    private static const DEEPZOOM_NAMESPACE_URI:String =
                                     "http://schemas.microsoft.com/deepzoom/2008"
-    private static const OPENZOOM_NAMESPACE_URI : String =
+    private static const OPENZOOM_NAMESPACE_URI:String =
                                           "http://ns.openzoom.org/openzoom/2008"
-    private static const ZOOMIFY_ROOT_TAG_NAME : String = "IMAGE_PROPERTIES"
+    private static const ZOOMIFY_ROOT_TAG_NAME:String = "IMAGE_PROPERTIES"
 
     //--------------------------------------------------------------------------
     //
@@ -49,7 +49,7 @@ public class MultiScaleImageDescriptorFactory
     //
     //--------------------------------------------------------------------------
 
-    private static var instance : MultiScaleImageDescriptorFactory
+    private static var instance:MultiScaleImageDescriptorFactory
 
     //--------------------------------------------------------------------------
     //
@@ -60,7 +60,7 @@ public class MultiScaleImageDescriptorFactory
     /**
      * Constructor.
      */
-    public function MultiScaleImageDescriptorFactory( lock : SingletonLock ) : void
+    public function MultiScaleImageDescriptorFactory( lock:SingletonLock ):void
     {
     }
 
@@ -73,7 +73,7 @@ public class MultiScaleImageDescriptorFactory
     /**
      * Returns an instance of this MultiScaleImageDescriptorFactory.
      */
-    public static function getInstance() : MultiScaleImageDescriptorFactory
+    public static function getInstance():MultiScaleImageDescriptorFactory
     {
         if( !instance )
             instance = new MultiScaleImageDescriptorFactory( new SingletonLock() )
@@ -94,8 +94,7 @@ public class MultiScaleImageDescriptorFactory
      * @return An object of type IMultiScaleImageDescriptor or <code>null</code>
      *         if the factory couldn't create a descriptor from the given data.
      */
-    public function getDescriptor( source : String,
-                                   data : XML ) : IMultiScaleImageDescriptor
+    public function getDescriptor( source:String, data:XML ):IMultiScaleImageDescriptor
     {
         if( data.namespace().uri == OPENZOOM_NAMESPACE_URI )
             return new OpenZoomDescriptor( source, data )

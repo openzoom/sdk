@@ -30,8 +30,8 @@ package org.openzoom.flash.renderers.images
  */
 public class RenderingMode
 {
-    public static const FAST   : String = "fast"
-    public static const SMOOTH : String = "smooth"
+    public static const FAST:String = "fast"
+    public static const SMOOTH:String = "smooth"
 }
 
 }

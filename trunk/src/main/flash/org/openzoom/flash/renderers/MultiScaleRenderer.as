@@ -55,17 +55,17 @@ public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
     //  viewport
     //----------------------------------
 
-    private var _viewport : INormalizedViewport
+    private var _viewport:INormalizedViewport
 
     /**
      * @inheritDoc
      */
-    public function get viewport() : INormalizedViewport
+    public function get viewport():INormalizedViewport
     {
         return _viewport
     }
 
-    public function set viewport( value : INormalizedViewport ) : void
+    public function set viewport( value:INormalizedViewport ):void
     {
         if( viewport === value )
             return
@@ -112,28 +112,28 @@ public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
     /**
      * @private
      */
-    protected function viewport_transformStartHandler( event : ViewportEvent ) : void
+    protected function viewport_transformStartHandler( event:ViewportEvent ):void
     {
     }
 
     /**
      * @private
      */
-    protected function viewport_transformUpdateHandler( event : ViewportEvent ) : void
+    protected function viewport_transformUpdateHandler( event:ViewportEvent ):void
     {
     }
 
     /**
      * @private
      */
-    protected function viewport_transformEndHandler( event : ViewportEvent ) : void
+    protected function viewport_transformEndHandler( event:ViewportEvent ):void
     {
     }
     
     /**
      * @private
      */
-    protected function viewport_targetUpdateHandler( event : ViewportEvent ) : void
+    protected function viewport_targetUpdateHandler( event:ViewportEvent ):void
     {
     }
 }

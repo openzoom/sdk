@@ -42,8 +42,8 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#x
      */
-    function get x() : Number
-    function set x( value : Number ) : void
+    function get x():Number
+    function set x( value:Number ):void
 
     //----------------------------------
     //  y
@@ -52,8 +52,8 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#y
      */
-    function get y() : Number
-    function set y( value : Number ) : void
+    function get y():Number
+    function set y( value:Number ):void
 
     //----------------------------------
     //  width
@@ -62,8 +62,8 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#width
      */
-    function get width() : Number
-    function set width( value : Number ) : void
+    function get width():Number
+    function set width( value:Number ):void
 
     //----------------------------------
     //  height
@@ -72,8 +72,8 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#height
      */
-    function get height() : Number
-    function set height( value : Number ) : void
+    function get height():Number
+    function set height( value:Number ):void
 
     //--------------------------------------------------------------------------
     //
@@ -88,7 +88,7 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#viewportWidth
      */
-    function get viewportWidth() : Number
+    function get viewportWidth():Number
 
     //----------------------------------
     //  viewportHeight
@@ -97,7 +97,7 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#viewportHeight
      */
-    function get viewportHeight() : Number
+    function get viewportHeight():Number
 
     //----------------------------------
     //  sceneWidth
@@ -106,7 +106,7 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
      */
-    function get sceneWidth() : Number
+    function get sceneWidth():Number
 
     //----------------------------------
     //  sceneHeight
@@ -115,7 +115,7 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
      */
-    function get sceneHeight() : Number
+    function get sceneHeight():Number
 
     //----------------------------------
     //  scale
@@ -124,8 +124,8 @@ public interface IViewportTransform
     /**
      * Scale of the scene.
      */
-    function get scale() : Number
-    function set scale( value : Number ) : void
+    function get scale():Number
+    function set scale( value:Number ):void
 
     //----------------------------------
     //  zoom
@@ -135,8 +135,8 @@ public interface IViewportTransform
      * Zoom level of the viewport.
      * Scene fits exactly into viewport at value 1.
      */
-    function get zoom() : Number
-    function set zoom( value : Number ) : void
+    function get zoom():Number
+    function set zoom( value:Number ):void
 
     //--------------------------------------------------------------------------
     //
@@ -150,9 +150,9 @@ public interface IViewportTransform
      * @param transformX Horizontal coordinate of the zooming center
      * @param transformY Vertical coordinate of the zooming center
      */
-    function zoomTo( zoom : Number,
-                     transformX : Number = 0.5,
-                     transformY : Number = 0.5 ) : void
+    function zoomTo( zoom:Number,
+                     transformX:Number = 0.5,
+                     transformY:Number = 0.5 ):void
 
     /**
      * Zoom the viewport by a factor.
@@ -160,9 +160,9 @@ public interface IViewportTransform
      * @param transformX Horizontal coordinate of the zooming center
      * @param transformY Vertical coordinate of the zooming center
      */
-    function zoomBy( factor : Number,
-                     transformX : Number = 0.5,
-                     transformY : Number = 0.5 ) : void
+    function zoomBy( factor:Number,
+                     transformX:Number = 0.5,
+                     transformY:Number = 0.5 ):void
 
     //--------------------------------------------------------------------------
     //
@@ -175,21 +175,21 @@ public interface IViewportTransform
      * @param x Horizontal coordinate
      * @param y Vertical coordinate
      */
-    function panTo( x : Number, y : Number ) : void
+    function panTo( x:Number, y:Number ):void
 
     /**
      * Move the viewport.
      * @param dx Horizontal translation delta
      * @param dy Vertical translation delta
      */
-    function panBy( deltaX : Number, deltaY : Number ) : void
+    function panBy( deltaX:Number, deltaY:Number ):void
 
     /**
      * Move the viewport center.
      * @param x Horizontal coordinate
      * @param y Vertical coordinate
      */
-    function panCenterTo( centerX : Number, centerY : Number ) : void
+    function panCenterTo( centerX:Number, centerY:Number ):void
 
     //--------------------------------------------------------------------------
     //
@@ -203,12 +203,12 @@ public interface IViewportTransform
      * @param rect Rectangular area to be shown in the viewport.
      * @param scale Scale at which the area is beeing displayed.
      */
-    function zoomToBounds( bounds : Rectangle, scale : Number = 1.0 ) : void
+    function zoomToBounds( bounds:Rectangle, scale:Number = 1.0 ):void
 
     /**
      * Fit entire scene into the viewport.
      */
-    function showAll() : void
+    function showAll():void
 
     //--------------------------------------------------------------------------
     //
@@ -220,18 +220,18 @@ public interface IViewportTransform
      * Returns a new IViewportTransform object with the same values for the
      * x, y, width, height and zoom properties as the original IViewportTransform object.
      */
-    function clone() : IViewportTransform
+    function clone():IViewportTransform
 
     /**
      * Copy values from other to this instance of IViewportTransform.
      */
-    function copy( other : IViewportTransform ) : void
+    function copy( other:IViewportTransform ):void
 
     /**
      * Determines whether the object specified in the
      * other parameter is equal to this Rectangle object.
      */
-    function equals( other : IViewportTransform ) : Boolean
+    function equals( other:IViewportTransform ):Boolean
 
     //--------------------------------------------------------------------------
     //
@@ -246,7 +246,7 @@ public interface IViewportTransform
     /**
      * Coordinate of the upper boundary of the viewport transform.
      */
-    function get top() : Number
+    function get top():Number
 
     //----------------------------------
     //  right
@@ -255,7 +255,7 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#right
      */
-    function get right() : Number
+    function get right():Number
 
     //----------------------------------
     //  bottom
@@ -264,7 +264,7 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#bottom
      */
-    function get bottom() : Number
+    function get bottom():Number
 
     //----------------------------------
     //  left
@@ -273,7 +273,7 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#left
      */
-    function get left() : Number
+    function get left():Number
 
     //----------------------------------
     //  topLeft
@@ -282,7 +282,7 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#topLeft
      */
-    function get topLeft() : Point
+    function get topLeft():Point
 
     //----------------------------------
     //  bottomRight
@@ -291,7 +291,7 @@ public interface IViewportTransform
     /**
      * @copy org.openzoom.flash.viewport.IViewport#bottomRight
      */
-    function get bottomRight() : Point
+    function get bottomRight():Point
 }
 
 }

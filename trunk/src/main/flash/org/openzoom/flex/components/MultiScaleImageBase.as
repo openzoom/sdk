@@ -70,7 +70,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //--------------------------------------------------------------------------
 
    ;[Bindable(event="containerChanged")]
-    protected var container : MultiScaleContainer
+    protected var container:MultiScaleContainer
 
     //--------------------------------------------------------------------------
     //
@@ -85,9 +85,9 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneWidth
      */
-    public function get sceneWidth() : Number
+    public function get sceneWidth():Number
     {
-        return container ? container.sceneWidth : NaN
+        return container ? container.sceneWidth:NaN
     }
 
     //----------------------------------
@@ -97,9 +97,9 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.scene.IMultiScaleScene#sceneHeight
      */
-    public function get sceneHeight() : Number
+    public function get sceneHeight():Number
     {
-        return container ? container.sceneHeight : NaN
+        return container ? container.sceneHeight:NaN
     }
 
     //--------------------------------------------------------------------------
@@ -117,17 +117,17 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * Viewport of this image.
      */
-    public function get viewport() : INormalizedViewport
+    public function get viewport():INormalizedViewport
     {
-        return container ? container.viewport : null
+        return container ? container.viewport:null
     }
 
     //----------------------------------
     //  transformer
     //----------------------------------
 
-    private var _transformer : IViewportTransformer
-    private var transformerChanged : Boolean = false
+    private var _transformer:IViewportTransformer
+    private var transformerChanged:Boolean = false
 
    ;[Bindable(event="transformerChanged")]
 
@@ -138,12 +138,12 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      * @see org.openzoom.flash.viewport.transformers.TweenerTransformer
      * @see org.openzoom.flash.viewport.transformers.NullTransformer
      */
-    public function get transformer() : IViewportTransformer
+    public function get transformer():IViewportTransformer
     {
         return _transformer
     }
 
-    public function set transformer( value : IViewportTransformer ) : void
+    public function set transformer( value:IViewportTransformer ):void
     {
         if( _transformer !== value )
         {
@@ -159,8 +159,8 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //  constraint
     //----------------------------------
 
-    private var _constraint : IViewportConstraint
-    private var constraintChanged : Boolean = false
+    private var _constraint:IViewportConstraint
+    private var constraintChanged:Boolean = false
 
    ;[Bindable(event="constraintChanged")]
 
@@ -174,12 +174,12 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      * @see org.openzoom.flash.viewport.constraints.CompositeConstraint
      * @see org.openzoom.flash.viewport.constraints.NullConstraint
      */
-    public function get constraint() : IViewportConstraint
+    public function get constraint():IViewportConstraint
     {
         return _constraint
     }
 
-    public function set constraint( value : IViewportConstraint ) : void
+    public function set constraint( value:IViewportConstraint ):void
     {
         if( _constraint !== value )
         {
@@ -195,8 +195,8 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //  controllers
     //----------------------------------
 
-    private var _controllers : Array /* of IViewportController */ = []
-    private var controllersChanged : Boolean = false
+    private var _controllers:Array /* of IViewportController */ = []
+    private var controllersChanged:Boolean = false
 
    ;[Bindable(event="controllersChanged")]
 
@@ -209,12 +209,12 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      * @see org.openzoom.flash.viewport.controllers.KeyboardController
      * @see org.openzoom.flash.viewport.controllers.ContextMenuController
      */
-    public function get controllers() : Array
+    public function get controllers():Array
     {
         return _controllers.slice( 0 )
     }
 
-    public function set controllers( value : Array ) : void
+    public function set controllers( value:Array ):void
     {
         if( _controllers !== value )
         {
@@ -235,7 +235,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @private
      */
-    override protected function createChildren() : void
+    override protected function createChildren():void
     {
         super.createChildren()
 
@@ -255,8 +255,8 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @private
      */
-    override protected function updateDisplayList( unscaledWidth : Number,
-                                                   unscaledHeight : Number ) : void
+    override protected function updateDisplayList( unscaledWidth:Number,
+                                                   unscaledHeight:Number ):void
     {
         container.setActualSize( unscaledWidth, unscaledHeight )
     }
@@ -264,7 +264,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @private
      */
-    override protected function commitProperties() : void
+    override protected function commitProperties():void
     {
         super.commitProperties()
 
@@ -345,20 +345,20 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //  zoom
     //----------------------------------
 
-    private var _zoom : Number
-    private var zoomChanged : Boolean = false
+    private var _zoom:Number
+    private var zoomChanged:Boolean = false
 
    ;[Bindable(event="viewportChanged")]
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoom
      */
-    public function get zoom() : Number
+    public function get zoom():Number
     {
         return _zoom
     }
 
-    public function set zoom( value : Number ) : void
+    public function set zoom( value:Number ):void
     {
         if( _zoom != value )
         {
@@ -372,20 +372,20 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //  scale
     //----------------------------------
 
-    private var _scale : Number
-    private var scaleChanged : Boolean = false
+    private var _scale:Number
+    private var scaleChanged:Boolean = false
 
    ;[Bindable(event="viewportChanged")]
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#scale
      */
-    public function get scale() : Number
+    public function get scale():Number
     {
         return _scale
     }
 
-    public function set scale( value : Number ) : void
+    public function set scale( value:Number ):void
     {
         if( _scale != value )
         {
@@ -399,8 +399,8 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //  viewportX
     //----------------------------------
 
-    private var _viewportX : Number
-    private var viewportXChanged : Boolean = false
+    private var _viewportX:Number
+    private var viewportXChanged:Boolean = false
 
    ;[Bindable(event="viewportChanged")]
 
@@ -408,12 +408,12 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      * @copy org.openzoom.flash.viewport.IViewport#x
      */
 
-    public function get viewportX() : Number
+    public function get viewportX():Number
     {
-        return viewport ? viewport.x : _viewportX
+        return viewport ? viewport.x:_viewportX
     }
 
-    public function set viewportX( value : Number ) : void
+    public function set viewportX( value:Number ):void
     {
         if( _viewportX != value )
         {
@@ -426,20 +426,20 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //  viewportY
     //----------------------------------
 
-    private var _viewportY : Number
-    private var viewportYChanged : Boolean = false
+    private var _viewportY:Number
+    private var viewportYChanged:Boolean = false
 
    ;[Bindable(event="viewportChanged")]
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#y
      */
-    public function get viewportY() : Number
+    public function get viewportY():Number
     {
         return viewport ? viewport.y : _viewportY
     }
 
-    public function set viewportY( value : Number ) : void
+    public function set viewportY( value:Number ):void
     {
         if( _viewportY != value )
         {
@@ -453,20 +453,20 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //  viewportWidth
     //----------------------------------
 
-    private var _viewportWidth : Number
-    private var viewportWidthChanged : Boolean = false
+    private var _viewportWidth:Number
+    private var viewportWidthChanged:Boolean = false
 
    ;[Bindable(event="viewportChanged")]
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#width
      */
-    public function get viewportWidth() : Number
+    public function get viewportWidth():Number
     {
-        return container ? container.viewportWidth : _viewportWidth
+        return container ? container.viewportWidth:_viewportWidth
     }
 
-    public function set viewportWidth( value : Number ) : void
+    public function set viewportWidth( value:Number ):void
     {
         if( _viewportWidth != value )
         {
@@ -480,20 +480,20 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //  viewportHeight
     //----------------------------------
 
-    private var _viewportHeight : Number
-    private var viewportHeightChanged : Boolean = false
+    private var _viewportHeight:Number
+    private var viewportHeightChanged:Boolean = false
 
    ;[Bindable(event="viewportChanged")]
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#height
      */
-    public function get viewportHeight() : Number
+    public function get viewportHeight():Number
     {
-        return container ? container.viewportHeight : _viewportHeight
+        return container ? container.viewportHeight:_viewportHeight
     }
 
-    public function set viewportHeight( value : Number ) : void
+    public function set viewportHeight( value:Number ):void
     {
         if( _viewportHeight != value )
         {
@@ -512,10 +512,10 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomTo()
      */
-    public function zoomTo( zoom : Number,
-                            transformX : Number = 0.5,
-                            transformY : Number = 0.5,
-                            immediately : Boolean = false ) : void
+    public function zoomTo( zoom:Number,
+                            transformX:Number = 0.5,
+                            transformY:Number = 0.5,
+                            immediately:Boolean = false ):void
     {
         container.zoomTo( zoom, transformX, transformY, immediately )
     }
@@ -523,10 +523,10 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomBy()
      */
-    public function zoomBy( factor : Number,
-                            transformX : Number = 0.5,
-                            transformY : Number = 0.5,
-                            immediately : Boolean = false ) : void
+    public function zoomBy( factor:Number,
+                            transformX:Number = 0.5,
+                            transformY:Number = 0.5,
+                            immediately:Boolean = false ):void
     {
         container.zoomBy( factor, transformX, transformY, immediately )
     }
@@ -534,8 +534,8 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.viewport.IViewport#panTo()
      */
-    public function panTo( x : Number, y : Number,
-                           immediately : Boolean = false ) : void
+    public function panTo( x:Number, y:Number,
+                           immediately:Boolean = false ):void
     {
         container.panTo( x, y, immediately )
     }
@@ -543,8 +543,8 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.viewport.IViewport#panBy()
      */
-    public function panBy( deltaX : Number, deltaY : Number,
-                           immediately : Boolean = false ) : void
+    public function panBy( deltaX:Number, deltaY:Number,
+                           immediately:Boolean = false ):void
     {
         container.panBy( deltaX, deltaY, immediately )
     }
@@ -552,9 +552,9 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
      */
-    public function fitToBounds( bounds : Rectangle,
-                                  scale : Number = 1.0,
-                                  immediately : Boolean = false ) : void
+    public function fitToBounds( bounds:Rectangle,
+                                  scale:Number = 1.0,
+                                  immediately:Boolean = false ):void
     {
         container.fitToBounds( bounds, scale, immediately )
     }
@@ -562,7 +562,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.viewport.IViewport#showAll()
      */
-    public function showAll( immediately : Boolean = false ) : void
+    public function showAll( immediately:Boolean = false ):void
     {
         container.showAll( immediately )
     }
@@ -570,7 +570,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.viewport.IViewport#localToScene()
      */
-    public function localToScene( point : Point ) : Point
+    public function localToScene( point:Point ):Point
     {
         return container.localToScene( point )
     }
@@ -578,7 +578,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.viewport.IViewport#sceneToLocal()
      */
-    public function sceneToLocal( point : Point ) : Point
+    public function sceneToLocal( point:Point ):Point
     {
         return container.sceneToLocal( point )
     }
@@ -592,7 +592,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @inheritDoc
      */
-    override public function addChild( child : DisplayObject ) : DisplayObject
+    override public function addChild( child:DisplayObject ):DisplayObject
     {
         return container.addChild( child )
     }
@@ -600,7 +600,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @inheritDoc
      */
-    override public function removeChild( child : DisplayObject ) : DisplayObject
+    override public function removeChild( child:DisplayObject ):DisplayObject
     {
         return container.removeChild( child )
     }
