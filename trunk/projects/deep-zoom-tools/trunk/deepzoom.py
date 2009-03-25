@@ -57,7 +57,7 @@ image_format_map = {
 
 class DZIDescriptor(object):
     def __init__(self, width=None, height=None,
-                 tile_size=256, tile_overlap=1, tile_format="jpg"):
+                 tile_size=254, tile_overlap=1, tile_format="jpg"):
         self.width = width
         self.height = height
         self.tile_size = tile_size
@@ -158,7 +158,7 @@ class Image(object):
 
 class ImageCreator(object):
     """Creates Deep Zoom images."""
-    def __init__(self, tile_size=256, tile_overlap=1, tile_format="jpg",
+    def __init__(self, tile_size=254, tile_overlap=1, tile_format="jpg",
                  image_quality=0.95, resize_filter=None):
         self.tile_size = int(tile_size)
         self.tile_format = tile_format
@@ -222,7 +222,7 @@ class ImageCreator(object):
 
 class CollectionCreator(object):
     """Creates Deep Zoom collections."""
-    def __init__(self, image_quality=0.95, tile_size=256,
+    def __init__(self, image_quality=0.95, tile_size=254,
                  max_level=8, tile_format="jpg", copy_metadata=True):
         self.image_quality = image_quality
         self.tile_size = tile_size
@@ -370,7 +370,7 @@ def main():
                       help="Set the destination of the output.")
 
     parser.add_option("-s", "--tile_size", dest="tile_size", type="int",
-                      default=256, help="Size of the tiles. Default: 256")
+                      default=254, help="Size of the tiles. Default: 254")
     parser.add_option("-f", "--tile_format", dest="tile_format",
                       default="jpg", help="Image format of the tiles \
                                           (jpg or png). Default: jpg")
