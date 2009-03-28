@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       elementFormDefault="qualified"
+       targetNamespace="http://ns.openzoom.org/openzoom/2008"
+       xmlns:openzoom="http://ns.openzoom.org/openzoom/2008">
+  <xs:element name="image">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="openzoom:source"/>
+        <xs:element ref="openzoom:pyramid"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="source">
+    <xs:complexType>
+      <xs:attribute name="height" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="type" use="required" type="xs:string"/>
+      <xs:attribute name="uri" use="required" type="xs:anyURI"/>
+      <xs:attribute name="width" use="required" type="xs:unsignedLong"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="pyramid">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="openzoom:level"/>
+      </xs:sequence>
+      <xs:attribute name="height" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="origin" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="topLeft"/>
+            <xs:enumeration value="topRight"/>
+            <xs:enumeration value="bottomRight"/>
+            <xs:enumeration value="bottomLeft"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="tileHeight" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="tileOverlap" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="tileWidth" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="type" use="required" type="xs:string"/>
+      <xs:attribute name="width" use="required" type="xs:unsignedLong"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="level">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="openzoom:uri"/>
+      </xs:sequence>
+      <xs:attribute name="columns" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="height" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="rows" use="required" type="xs:unsignedLong"/>
+      <xs:attribute name="width" use="required" type="xs:unsignedLong"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="uri">
+    <xs:complexType>
+      <xs:attribute name="template" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
