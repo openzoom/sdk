@@ -35,13 +35,15 @@ xml = """\
     <Size Width="%(width)s" Height="%(height)s"/>
 </Image>"""
 
-def create_gigapan(id):
-    descriptor_json = fetch("http://api.gigapan.org/beta/gigapans/" + str(id) + ".json")
-    descriptor = json.loads(descriptor_json.content)
-    width = descriptor["width"]
-    height = descriptor["height"]
-    gigapan = GigaPan(id=id, width=width, height=height)
-    gigapan.put()
+def get_gigapan(id):
+    gigapan = db.Query(GigaPan).filter("id =", id).get()
+    if not gigapan:
+        descriptor_json = fetch("http://api.gigapan.org/beta/gigapans/" + str(id) + ".json")
+        descriptor = json.loads(descriptor_json.content)
+        width = descriptor["width"]
+        height = descriptor["height"]
+        gigapan = GigaPan(id=id, width=width, height=height)
+        gigapan.put()
     return gigapan
 
 
@@ -63,13 +65,11 @@ class EchoRequestHandler(webapp.RequestHandler):
 class DescriptorRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
         id = int(groups[0])
-        gigapan = db.Query(GigaPan).filter("id =", id).get()
-        if not gigapan:
-            try:
-                gigapan = create_gigapan(id)
-            except:
-                self.error(404)
-                return
+        try:
+            gigapan = get_gigapan(id)
+        except:
+            self.error(404)
+            return
         self.response.headers["Content-Type"] = "application/xml"
         self.response.out.write(xml%{"width": gigapan.width, "height": gigapan.height})
    
@@ -80,13 +80,11 @@ class TileRequestHandler(webapp.RequestHandler):
         column = int(groups[2])
         row = int(groups[3])
         
-        gigapan = db.Query(GigaPan).filter("id =", id).get()
-        if not gigapan:
-            try:
-                gigapan = create_gigapan(id)
-            except:
-                self.error(404)
-                return
+        try:
+            gigapan = get_gigapan(id)
+        except:
+            self.error(404)
+            return
         
         self.width = gigapan.width
         self.height = gigapan.height
