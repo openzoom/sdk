@@ -20,11 +20,4 @@
 		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 		<nature>org.python.pydev.pythonNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>bin-debug</name>
-			<type>2</type>
-			<location>/Users/dani/Documents/workspace/openzoom/target/main/flash/debug</location>
-		</link>
-	</linkedResources>
 </projectDescription>
