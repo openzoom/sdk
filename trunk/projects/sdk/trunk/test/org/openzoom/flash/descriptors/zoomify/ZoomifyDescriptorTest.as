@@ -23,7 +23,8 @@ package org.openzoom.flash.descriptors.zoomify
 
 import flexunit.framework.TestCase;
 
-import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
+import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 
 /**
  * Tests the ZoomifyDescriptor implementation for correctness.

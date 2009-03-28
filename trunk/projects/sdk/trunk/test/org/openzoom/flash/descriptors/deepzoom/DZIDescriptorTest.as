@@ -23,7 +23,8 @@ package org.openzoom.flash.descriptors.deepzoom
 
 import flexunit.framework.TestCase;
 
-import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 
 /**
  * Tests the DZIDescriptor implementation for correctness.
@@ -75,7 +76,7 @@ public class DZIDescriptorTest extends TestCase
     
 	override public function setUp() : void
 	{
-		descriptor = new DZIDescriptor( "test.xml", DESCRIPTOR_XML ) 
+		descriptor = DZIDescriptor.fromXML("test.xml", DESCRIPTOR_XML) 
 	}
 	
 	override public function tearDown() : void
@@ -91,34 +92,34 @@ public class DZIDescriptorTest extends TestCase
 	
 	public function testMaxLevel() : void
 	{
-		assertEquals( "Maximum level correctly computed", 12, descriptor.numLevels - 1 )
+		assertEquals("Maximum level correctly computed", 12, descriptor.numLevels - 1)
 	}
 	
 	public function testOverlap() : void
 	{
-		assertEquals( "Overlap correct", 0, descriptor.tileOverlap )
+		assertEquals("Overlap correct", 0, descriptor.tileOverlap)
 	}
 	
 	public function testLevels() : void
 	{	   
-	   for( var index : int = 0; index < descriptor.numLevels; index++ )
+	   for(var index : int = 0; index < descriptor.numLevels; index++)
 	   {
-	   	   var level : IMultiScaleImageLevel = descriptor.getLevelAt( index )
-		   assertEquals( "Width on level "        + level.index, LEVELS[ level.index ][ 0 ], level.width )
-		   assertEquals( "Height on level "       + level.index, LEVELS[ level.index ][ 1 ], level.height )
-		   assertEquals( "Column count on level " + level.index, LEVELS[ level.index ][ 2 ], level.numColumns )
-		   assertEquals( "Row count on level "    + level.index, LEVELS[ level.index ][ 3 ], level.numRows )
+	   	   var level : IMultiScaleImageLevel = descriptor.getLevelAt(index)
+		   assertEquals("Width on level "        + level.index, LEVELS[ level.index ][ 0 ], level.width)
+		   assertEquals("Height on level "       + level.index, LEVELS[ level.index ][ 1 ], level.height)
+		   assertEquals("Column count on level " + level.index, LEVELS[ level.index ][ 2 ], level.numColumns)
+		   assertEquals("Row count on level "    + level.index, LEVELS[ level.index ][ 3 ], level.numRows)
 	   }
 	   
 	}
 	
 	public function testGetMinimumLevelForSize() : void
 	{
-	   assertEquals( "Level computation for given size", descriptor.numLevels - 1,
-	       descriptor.getMinLevelForSize( descriptor.width, descriptor.height ).index )
+	   assertEquals("Level computation for given size", descriptor.numLevels - 1,
+	       descriptor.getMinLevelForSize(descriptor.width, descriptor.height).index)
 	       	
-	   assertEquals( "Level computation for given size", descriptor.numLevels - 2,
-	       descriptor.getMinLevelForSize( descriptor.width / 3, descriptor.height / 3 ).index )	
+	   assertEquals("Level computation for given size", descriptor.numLevels - 2,
+	       descriptor.getMinLevelForSize(descriptor.width / 3, descriptor.height / 3).index)	
 	}
 }
 
