@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+
+    OpenZoom Visualization: Z-Order
+    Developed by Daniel Gasienica
+
+    Blog: http://gasi.ch/blog/openzoom-visualization-z-order/
+    License: GPL3
+
+////////////////////////////////////////////////////////////////////////////////
+-->
+<mx:Application
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:openzoom="org.openzoom.flex.components.*"
+    xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
+    xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
+    backgroundGradientColors="[0, 0]"
+    viewSourceURL="source/index.html"
+    layout="absolute"
+    applicationComplete="applicationCompleteHandler(event)"
+    >
+
+    <mx:Style>
+        global {
+            theme-color: #222222;
+            font-weight: bold;
+        }
+        Label {
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        Button {
+            fill-alphas: 1, 1, 1, 1;
+        }
+    </mx:Style>
+
+
+    <mx:Script>
+        <![CDATA[
+
+            import mx.events.FlexEvent
+
+            import org.openzoom.flash.utils.ExternalMouseWheel
+            import org.openzoom.flash.utils.ZOrder
+
+
+            private static const DEFAULT_ITERATIONS:uint = 15000
+            private static const SPACING:Number = 16
+
+            private var canvas:Sprite
+
+
+            private function applicationCompleteHandler(event:FlexEvent):void
+            {
+                // Mouse wheel support on Mac OS
+                ExternalMouseWheel.initialize(stage)
+
+                canvas = new Sprite()
+                container.addChild(canvas)
+
+                drawCurve(DEFAULT_ITERATIONS)
+            }
+
+            private function drawCurve(iterations:uint):void
+            {
+                var target:Graphics = canvas.graphics
+
+                var position:Point
+                var drawingPosition:Point
+
+                target.clear()
+                target.beginFill(0x000000, 0)
+                for (var i:int = 0; i < iterations; i++)
+                {
+                    position = ZOrder.getPosition(i)
+                    drawingPosition = new Point(position.x * SPACING,
+                                                 position.y * SPACING)
+                    target.lineStyle(0, i / iterations * 0xFFFFFF)
+                    target.lineTo(drawingPosition.x, drawingPosition.y)
+                    target.moveTo(drawingPosition.x, drawingPosition.y)
+                }
+                target.endFill()
+
+                container.sceneWidth = canvas.width
+                container.sceneHeight = canvas.height
+            }
+
+        ]]>
+    </mx:Script>
+
+    <mx:HBox
+        width="100%"
+        height="40"
+        top="0"
+        right="0"
+        left="0"
+        verticalAlign="middle"
+        horizontalAlign="center"
+        >
+        <mx:Label
+            text="Iterations"
+            />
+        <mx:HSlider
+            id="iterationsSlider"
+            minimum="1000"
+            maximum="100000"
+            snapInterval="100"
+            value="{DEFAULT_ITERATIONS}"
+            />
+        <mx:Button
+            label="Refresh"
+            click="drawCurve(iterationsSlider.value)"
+            />
+    </mx:HBox>
+
+    <openzoom:MultiScaleContainer
+        id="container"
+        top="48"
+        right="0"
+        bottom="0"
+        left="0"
+        >
+        <openzoom:controllers>
+            <controllers:KeyboardController/>
+            <controllers:MouseController/>
+            <controllers:ContextMenuController/>
+        </openzoom:controllers>
+        <openzoom:transformer>
+            <transformers:TweenerTransformer/>
+        </openzoom:transformer>
+    </openzoom:MultiScaleContainer>
+</mx:Application>
