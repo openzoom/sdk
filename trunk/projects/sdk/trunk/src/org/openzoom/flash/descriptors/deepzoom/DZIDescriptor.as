@@ -59,6 +59,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
                                   tileOverlap:uint, format:String)
     {
         this.uri = path
+        extension = format
         _type = getType(format)
         _tileWidth = _tileHeight = tileSize
         _numLevels = computeNumLevels(width, height)

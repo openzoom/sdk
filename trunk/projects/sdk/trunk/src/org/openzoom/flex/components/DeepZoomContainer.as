@@ -23,7 +23,6 @@ package org.openzoom.flex.components
 
 import flash.events.Event;
 import flash.events.IOErrorEvent;
-import flash.events.ProgressEvent;
 import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
@@ -267,13 +266,12 @@ public class DeepZoomContainer extends MultiScaleImageBase
 //            if (!item.source || !item.data)
 //                continue
 
-            var descriptor:DZIDescriptor =
-                                     new DZIDescriptor(item.source, item.data)
+            var descriptor:DZIDescriptor = DZIDescriptor.fromXML(item.source, item.data)
             var renderer:MultiScaleImageRenderer =
                                   new MultiScaleImageRenderer(descriptor,
-                                                               container.loader,
-                                                               targetWidth,
-                                                               targetHeight)
+                                                              container.loader,
+                                                              targetWidth,
+                                                              targetHeight)
             renderer.x = targetX
             renderer.y = targetY
 
@@ -349,7 +347,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         if (data.localName() == TYPE_IMAGE)
         {
             var descriptor:DZIDescriptor =
-                          new DZIDescriptor(source.toString(), new XML(data))
+                    DZIDescriptor.fromXML(source.toString(), new XML(data))
             createImage(descriptor)
         }
     }
