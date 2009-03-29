@@ -4,7 +4,7 @@
     xmlns:components="org.openzoom.flex.components.*"
     xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
     xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
-    backgroundGradientColors="[ 0, 0 ]"
+    backgroundGradientColors="[0, 0]"
     layout="absolute"
     preinitialize="preinitializeHandler(event)"
     applicationComplete="applicationCompleteHandler(event)"
@@ -93,19 +93,19 @@
 
                 flickr = new FlickrService(FLICKR_API_KEY)
                 flickr.addEventListener(FlickrResultEvent.PEOPLE_GET_PUBLIC_PHOTOS,
-                                          flickr_peopleGetPublicPhotosHandler,
-                                          false, 0, true)
-                flickr.people.getPublicPhotos(USER_ID, EXTRAS, NUM_PHOTOS)
+                                        flickr_peopleGetPublicPhotosHandler,
+                                        false, 0, true)
+                flickr.people.getPublicPhotos(USER_ID, EXTRAS, NUM_PHOTOS, 3)
 
                 numColumns = container.sceneWidth / (IMAGE_SIZE * spacing)
             }
 
             private function flickr_peopleGetPublicPhotosHandler(event:FlickrResultEvent):void
             {
-                if(!event.success)
+                if (!event.success)
                     return
 
-                if(!init)
+                if (!init)
                 {
                     stage.addEventListener(KeyboardEvent.KEY_DOWN, stage_keyDownHandler)
                     init = true                	
@@ -119,7 +119,7 @@
 
                 trace("Page", page, "of", numPages)
 
-//                if(page < 3)//numPages)
+//                if (page < 3)//numPages)
 //	                flickr.people.getPublicPhotos(USER_ID, EXTRAS, NUM_PHOTOS, page + 1)
 //	            else
 	               trace("Done.")
@@ -133,24 +133,24 @@
 
             private function addPhotos(photos:Array):void
             {
-                for(var i:int = 0; i < photos.length; i++)
+                for (var i:int = 0; i < photos.length; i++)
                 {
-                    var photo:Photo = photos[ i ] as Photo
+                    var photo:Photo = photos[i] as Photo
 
                     // Flickr photo URL:
                     // http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{o-secret}_o.(jpg|gif|png)
 
                     // Original Size URL
-//                    var url:String = [ "http://farm", photo.farmId,
+//                    var url:String = ["http://farm", photo.farmId,
 //                                         ".static.flickr.com/", photo.server, "/",
 //                                         photo.id, "_", photo.originalSecret, "_o.",
-//                                         photo.originalFormat ].join("")
+//                                         photo.originalFormat].join("")
 
-                    var url:String = [ "http://farm", photo.farmId,
-                                         ".static.flickr.com/", photo.server, "/",
-                                         photo.id, "_", photo.secret, IMAGE_SUFFIX, ".jpg"].join("")
+                    var url:String = ["http://farm", photo.farmId,
+                                      ".static.flickr.com/", photo.server, "/",
+                                      photo.id, "_", photo.secret, IMAGE_SUFFIX, ".jpg"].join("")
 
-                    if(isNaN(photo.originalWidth) || isNaN(photo.originalHeight))
+                    if (isNaN(photo.originalWidth) || isNaN(photo.originalHeight))
                         continue
 
                     var aspectRatio:Number = photo.originalWidth / photo.originalHeight
@@ -158,7 +158,7 @@
                     var imageWidth:Number = photo.originalWidth
                     var imageHeight:Number = photo.originalHeight
 
-//                    if(aspectRatio > 1)
+//                    if (aspectRatio > 1)
 //                    {
 //                        imageWidth = IMAGE_SIZE
 //                        imageHeight = IMAGE_SIZE / aspectRatio
@@ -172,18 +172,19 @@
                     var photoDescriptor:IMultiScaleImageDescriptor
 
 //                    photoDescriptor = new DjatokaDescriptor(DJAKOTA_RESOLVER_URL,
-//                                                             url,
-//                                                             imageWidth,
-//                                                             imageHeight,
-//                                                             256,
-//                                                             1)
+//                                                            url,
+//                                                            imageWidth,
+//                                                            imageHeight,
+//                                                            256,
+//                                                            1)
 
                     // http://static.gasi.ch/images/3128884923/image.xml 
                     var descriptorXML:XML = <Image TileSize="256" Overlap="1" Format="jpg" xmlns="http://schemas.microsoft.com/deepzoom/2008">
                                                   <Size Width={imageWidth} Height={imageHeight}/>
                                               </Image>;
 
-                    photoDescriptor = new DZIDescriptor("http://static.gasi.ch/images/" + photo.id + "/image.dzi", descriptorXML)
+                    var path:String = "http://static.gasi.ch/images/" + photo.id + "/image.dzi"
+                    photoDescriptor = DZIDescriptor.fromXML(path, descriptorXML)
 
                     var scale:Number = 0.2//1 // 0.2
                     var renderer:Sprite
@@ -192,13 +193,12 @@
                                                            imageWidth * scale,
                                                            imageHeight * scale)
 
-//                    renderer = new Sprite()
-//                    var g:Graphics = renderer.graphics
-//                    g.beginFill(Math.random() * 0xFFFFFF)
-//                    g.drawRect(0, 0, imageWidth * scale, imageHeight * scale)
-//                    g.endFill()
+//                  renderer = new Sprite()
+//                  var g:Graphics = renderer.graphics
+//                  g.beginFill(Math.random() * 0xFFFFFF)
+//                  g.drawRect(0, 0, imageWidth * scale, imageHeight * scale)
+//                  g.endFill()
                    
-                    
                     var size:Number = IMAGE_SIZE
                     var position:Point = new Point()
                     position.x = column * size * spacing + (IMAGE_SIZE - renderer.width) / 2
@@ -209,7 +209,7 @@
 
                     container.addChild(renderer)
 
-                    if(++column >= numColumns)
+                    if (++column >= numColumns)
                     {
                         column = 0
                         row++
@@ -219,21 +219,22 @@
 
             private function stage_keyDownHandler(event:KeyboardEvent):void
             {
-                if(event.keyCode != 82) // R
+                if (event.keyCode != 82) // R
                     return
 
-                var options:Array = [ arrangeRandomly,
-                                        arrangeInCircle,
-                                        arrangeInColumns,
-                                        arrangeInRows ]
+                var options:Array = [arrangeRandomly,
+                                     arrangeInCircle,
+                                     arrangeInColumns,
+                                     arrangeInRows]
 
-                var f:Function = options[Math.floor(Math.random() * 1000) % options.length] as Function
+                var index:uint = Math.floor(Math.random() * 1000) % options.length
+                var f:Function = options[index] as Function
                 f()
             }
 
             private function arrangeRandomly():void
             {
-                for(var i:int = 0; i < container.numChildren; i++)
+                for (var i:int = 0; i < container.numChildren; i++)
                 {
                     var child:DisplayObject = container.getChildAt(i)
                     var position:Point = new Point()
@@ -241,24 +242,24 @@
                     position.x = Math.random() * (container.sceneWidth - child.width)
                     position.y = Math.random() * (container.sceneHeight - child.height)
 
-                    Tweener.addTween(child, { x: position.x,
-                                              y: position.y,
-                                              time: 0.5,
-                                              transition: "easeOutQuad",
-                                              delay: Math.random() * 0.15 })
+                    Tweener.addTween(child, {x: position.x,
+                                             y: position.y,
+                                             time: 0.5,
+                                             transition: "easeOutQuad",
+                                             delay: Math.random() * 0.15})
                 }
             }
 
             private function arrangeInCircle():void
             {
-                for(var i:int = 0; i < container.numChildren; i++)
+                for (var i:int = 0; i < container.numChildren; i++)
                 {
                     var child:DisplayObject = container.getChildAt(i)
                     var position:Point = new Point()
 
                     // Circular
                     var center:Point = new Point(container.sceneWidth / 2,
-                                                    container.sceneHeight / 2)
+                                                 container.sceneHeight / 2)
                     var distance:Number = (0.5 + Math.random() * 0.5)
                                                 * Math.min(container.sceneWidth - child.width,
                                                            container.sceneHeight - child.height)
@@ -266,11 +267,11 @@
                     position.x = center.x + Math.cos(angle) * distance / 3
                     position.y = center.y + Math.sin(angle) * distance / 3
 
-                    Tweener.addTween(child, { x: position.x,
-                                               y: position.y,
-                                               time: 0.5,
-                                               transition: "easeOutQuad",
-                                               delay: Math.random() * 0.15 })
+                    Tweener.addTween(child, {x: position.x,
+                                             y: position.y,
+                                             time: 0.5,
+                                             transition: "easeOutQuad",
+                                             delay: Math.random() * 0.15})
                 }
             }
 
@@ -281,7 +282,7 @@
                 var spacing:Number = 1.1
                 var numColumns:int = container.sceneWidth / (IMAGE_SIZE * spacing)
 
-                for(var i:int = 0; i < container.numChildren; i++)
+                for (var i:int = 0; i < container.numChildren; i++)
                 {
                     var child:DisplayObject = container.getChildAt(i)
                     var position:Point = new Point()
@@ -290,13 +291,13 @@
                     position.x = column * size * spacing + (IMAGE_SIZE - child.width) / 2
                     position.y = row * size * spacing + (IMAGE_SIZE - child.height) / 2
 
-                    Tweener.addTween(child, { x: position.x,
-                                               y: position.y,
-                                               time: 0.5,
-                                               transition: "easeOutQuad",
-                                               delay: Math.random() * 0.15 })
+                    Tweener.addTween(child, {x: position.x,
+                                             y: position.y,
+                                             time: 0.5,
+                                             transition: "easeOutQuad",
+                                              delay: Math.random() * 0.15})
 
-                    if(++column >= numColumns)
+                    if (++column >= numColumns)
                     {
                         column = 0
                         row++
@@ -311,7 +312,7 @@
                 var spacing:Number = 1.05
                 var numRows:int = container.sceneHeight / (IMAGE_SIZE * spacing)
 
-                for(var i:int = 0; i < container.numChildren; i++)
+                for (var i:int = 0; i < container.numChildren; i++)
                 {
                     var child:DisplayObject = container.getChildAt(i)
                     var position:Point = new Point()
@@ -320,13 +321,13 @@
                     position.x = column * size * spacing + (IMAGE_SIZE - child.width) / 2
                     position.y = row * size * spacing + (IMAGE_SIZE - child.height) / 2
 
-                    Tweener.addTween(child, { x: position.x,
-                                              y: position.y,
-                                              time: 0.5,
-                                              transition: "easeOutQuad",
-                                              delay: Math.random() * 0.15 })
+                    Tweener.addTween(child, {x: position.x,
+                                             y: position.y,
+                                             time: 0.5,
+                                             transition: "easeOutQuad",
+                                             delay: Math.random() * 0.15})
 
-                    if(++row >= numRows)
+                    if (++row >= numRows)
                     {
                         row = 0
                         column++

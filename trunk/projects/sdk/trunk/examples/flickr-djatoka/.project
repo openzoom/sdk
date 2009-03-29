@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>FlickrDjatoka</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] as3corelib-src</name>
+			<type>2</type>
+			<locationURI>OPENZOOM/trunk/projects/sdk/trunk/lib/as%2533corelib/src</locationURI>
+		</link>
+		<link>
+			<name>[source path] as3flickrlib-src</name>
+			<type>2</type>
+			<locationURI>OPENZOOM/trunk/projects/sdk/trunk/lib/as%2533flickrlib/src</locationURI>
+		</link>
+		<link>
+			<name>[source path] trunk-src</name>
+			<type>2</type>
+			<locationURI>OPENZOOM/trunk/projects/sdk/trunk/src</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionScriptProperties mainApplicationPath="FlickrDjatoka.mxml" version="3">
+<compiler additionalCompilerArguments="-locale en_US -use-network=true" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compilerSourcePath>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/trunk/projects/sdk/trunk/src"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/trunk/projects/sdk/trunk/lib/as3flickrlib/src"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/trunk/projects/sdk/trunk/lib/as3corelib/src"/>
+</compilerSourcePath>
+<libraryPath defaultLinkType="1">
+<libraryPathEntry kind="4" path=""/>
+<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/trunk/projects/sdk/trunk/lib"/>
+</libraryPath>
+<sourceAttachmentPath/>
+</compiler>
+<applications>
+<application path="FlickrDjatoka.mxml"/>
+</applications>
+<modules/>
+<buildCSSFiles/>
+</actionScriptProperties>

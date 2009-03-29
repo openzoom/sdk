@@ -1,0 +1,508 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="Pools,com.adobe.webapis.flickr.methodgroups.Pools,add,getContext,getGroups,getPhotos,remove" name="keywords">
+<title>com.adobe.webapis.flickr.methodgroups.Pools</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'Pools - Adobe ActionScript 3.0 Library - flickr';
+				var baseRef = '../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../index.html?com/adobe/webapis/flickr/methodgroups/Pools.html&amp;com/adobe/webapis/flickr/methodgroups/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;Pools</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#methodSummary">Methods</a>&nbsp;| <a href="#eventSummary">Events</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class Pools"); titleBar_setSubNav(false,false,false,false,true,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.adobe.webapis.flickr.methodgroups</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class Pools</td>
+</tr>
+</table>
+<p></p>
+  Contains the methods for the Pools method group in the Flickr API.
+  
+  Even though the events are listed here, they're really broadcast
+  from the FlickrService instance itself to make using the service
+  easier.
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#Pools()">Pools</a>(service:<a href="../FlickrService.html">FlickrService</a>)</div>
+<div class="summaryTableDescription">
+   Construct a new Pools "method group" class
+      </div>
+</td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#add()">add</a>(photo_id:String, group_id:String):void</div>
+<div class="summaryTableDescription">
+   Add a photo to a group's pool.</div>
+</td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getContext()">getContext</a>(photo_id:String, group_id:String):void</div>
+<div class="summaryTableDescription">
+   Returns next and previous photos for a photo in a group pool.</div>
+</td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getGroups()">getGroups</a>():void</div>
+<div class="summaryTableDescription">
+   Returns a list of groups to which you can add photos.</div>
+</td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getPhotos()">getPhotos</a>(group_id:String, tags:String = "", extras:String = "", per_page:Number = 100, page:Number = 1):void</div>
+<div class="summaryTableDescription">
+   Returns a list of pool photos for a given group, based on the permissions of
+   the group and the user logged in (if any).</div>
+</td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#remove()">remove</a>(photo_id:String, group_id:String):void</div>
+<div class="summaryTableDescription">
+   Remove a photo from a group pool.</div>
+</td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+</table>
+</div>
+<a name="eventSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Events</div>
+<table id="summaryTableEvent" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Event</th><th>Summary</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:groupsPoolsAdd">groupsPoolsAdd</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the add method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+          When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:groupsPoolsGetContext">groupsPoolsGetContext</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the getContext method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an array of length 2 of Photo instances.</td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:groupsPoolsGetGroups">groupsPoolsGetGroups</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the getGroups method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an Array of Group instances
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:groupsPoolsGetPhotos">groupsPoolsGetPhotos</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the getPhotos method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, a PagedPhotoList instance
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:groupsPoolsRemove">groupsPoolsRemove</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the remove method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+          When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">Pools</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="Pools()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">Pools</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function Pools(service:<a href="../FlickrService.html">FlickrService</a>)</code><p>
+   Construct a new Pools "method group" class
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">service</span>:<a href="../FlickrService.html">FlickrService</a></code> &mdash; The FlickrService this method group
+    is associated with.
+   </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="add()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">add</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function add(photo_id:String, group_id:String):void</code><p>
+   Add a photo to a group's pool.
+      This method requires authentication with WRITE permission.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photo_id</span>:String</code> &mdash; The id of the photo to add to the group pool. The photo 
+     must belong to the calling user.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">group_id</span>:String</code> &mdash; The NSID of the group who's pool the photo is to 
+      be added to.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.groups.pools.add.html" target="mm_external">http://www.flickr.com/services/api/flickr.groups.pools.add.html</a>
+</div>
+</div>
+<a name="getContext()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getContext</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getContext(photo_id:String, group_id:String):void</code><p>
+   Returns next and previous photos for a photo in a group pool.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photo_id</span>:String</code> &mdash; The id of the photo to fetch the context for.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">group_id</span>:String</code> &mdash; The NSID of the group who's pool to fetch the photo's 
+      context for.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.groups.pools.getContext.html" target="mm_external">http://www.flickr.com/services/api/flickr.groups.pools.getContext.html</a>
+</div>
+</div>
+<a name="getGroups()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getGroups</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getGroups():void</code><p>
+   Returns a list of groups to which you can add photos.
+      This method requires authentication with READ permission.
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.groups.pools.getGroups.html" target="mm_external">http://www.flickr.com/services/api/flickr.groups.pools.getGroups.html</a>
+</div>
+</div>
+<a name="getPhotos()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getPhotos</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getPhotos(group_id:String, tags:String = "", extras:String = "", per_page:Number = 100, page:Number = 1):void</code><p>
+   Returns a list of pool photos for a given group, based on the permissions of
+   the group and the user logged in (if any).
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">group_id</span>:String</code> &mdash; The id of the group who's pool you which to get the photo 
+     list for.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">tags</span>:String</code> (default = "<code></code>")<code></code> &mdash; (Optional) A tag to filter the pool with. At the moment only 
+     one tag at a time is supported.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">extras</span>:String</code> (default = "<code></code>")<code></code> &mdash; (Optional) A comma-delimited list of extra information to 
+     fetch for each returned record. Currently supported fields are: 
+     license, date_upload, date_taken, owner_name, icon_server.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">per_page</span>:Number</code> (default = <code>100</code>)<code></code> &mdash; (Optional) Number of photos to return per page. If this 
+     argument is omitted, it defaults to 100. The maximum allowed 
+     value is 500.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">page</span>:Number</code> (default = <code>1</code>)<code></code> &mdash; (Optional) The page of results to return. If this argument 
+     is omitted, it defaults to 1.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.groups.pools.getPhotos.html" target="mm_external">http://www.flickr.com/services/api/flickr.groups.pools.getPhotos.html</a>
+</div>
+</div>
+<a name="remove()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">remove</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function remove(photo_id:String, group_id:String):void</code><p>
+   Remove a photo from a group pool.
+      This method requires authentication with WRITE permission.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photo_id</span>:String</code> &mdash; The id of the photo to remove from the group pool. The photo
+     must either be owned by the calling user of the calling user must
+     be an administrator of the group.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">group_id</span>:String</code> &mdash; The NSID of the group who's pool the photo is to 
+      be removed from.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.groups.pools.remove.html" target="mm_external">http://www.flickr.com/services/api/flickr.groups.pools.remove.html</a>
+</div>
+</div>
+<div class="detailSectionHeader">Event detail</div>
+<a name="event:groupsPoolsAdd"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">groupsPoolsAdd</td><td class="detailHeaderType">event&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the add method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+          When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/Pools.html#add" target="">add</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:groupsPoolsGetContext"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">groupsPoolsGetContext</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the getContext method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an array of length 2 of Photo instances.
+      The first element is the previous photo, the second element
+      is the next photo.
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/Pools.html#getContext" target="">getContext</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:groupsPoolsGetGroups"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">groupsPoolsGetGroups</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the getGroups method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an Array of Group instances
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/Pools.html#getGroups" target="">getGroups</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:groupsPoolsGetPhotos"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">groupsPoolsGetPhotos</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the getPhotos method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, a PagedPhotoList instance
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/Pools.html#getPhotos" target="">getPhotos</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:groupsPoolsRemove"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">groupsPoolsRemove</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the remove method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+          When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/Pools.html#remove" target="">remove</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">
+<footer> 
+</footer>
+</center>
+</div>
+</body>
+</html>
+<!-- -->
