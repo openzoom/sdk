@@ -71,15 +71,17 @@
 
                 target.clear()
                 target.beginFill(0x000000, 0)
+                
                 for (var i:int = 0; i < iterations; i++)
                 {
-                    position = ZOrder.getPosition(i)
+                    position = org.openzoom.flash.utils.ZOrder.getPosition(i)
                     drawingPosition = new Point(position.x * SPACING,
-                                                 position.y * SPACING)
+                                                position.y * SPACING)
                     target.lineStyle(0, i / iterations * 0xFFFFFF)
                     target.lineTo(drawingPosition.x, drawingPosition.y)
                     target.moveTo(drawingPosition.x, drawingPosition.y)
                 }
+                
                 target.endFill()
 
                 container.sceneWidth = canvas.width
@@ -107,10 +109,8 @@
             maximum="100000"
             snapInterval="100"
             value="{DEFAULT_ITERATIONS}"
-            />
-        <mx:Button
-            label="Refresh"
-            click="drawCurve(iterationsSlider.value)"
+            change="drawCurve(iterationsSlider.value)"
+            liveDragging="false"
             />
     </mx:HBox>
 
