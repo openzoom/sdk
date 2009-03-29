@@ -22,6 +22,7 @@ package org.openzoom.gigapan
 {
 
 import com.adobe.serialization.json.JSON;
+
 	
 /**
  * The GigaPan class holds information about a GigaPan image.

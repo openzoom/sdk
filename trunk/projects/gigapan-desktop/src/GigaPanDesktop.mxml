@@ -26,8 +26,8 @@
     <mx:Style source="../assets/style/gigapan-desktop.css"/>
     <mx:Script>
         <![CDATA[
+        
         	import flash.utils.setTimeout;
-        	import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
         
         	import com.adobe.serialization.json.JSON;
         
@@ -35,10 +35,11 @@
         	import mx.events.FlexEvent;
         	import mx.events.ListEvent;
         	
+        	import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
         	import org.openzoom.flash.events.NetworkRequestEvent;
+        	import org.openzoom.flash.net.INetworkQueue;
         	import org.openzoom.flash.net.INetworkRequest;
         	import org.openzoom.flash.net.NetworkQueue;
-        	import org.openzoom.flash.net.INetworkQueue;
 
 
             private static const API_ENDPOINT_URI:String = "http://api.gigapan.org/beta/gigapans/" 
@@ -109,16 +110,16 @@
             {
             	var data:Object = JSON.decode(event.data)
             	if (event.context == MOST_RECENT_URI)
-            	   sideBar.mostRecent = new ArrayCollection(data.items)
+                    sideBar.mostRecent = new ArrayCollection(data.items)
             	else
-            	   sideBar.mostPopular = new ArrayCollection(data.items)
+                    sideBar.mostPopular = new ArrayCollection(data.items)
             }
             
             private function sideBar_itemSelectedHandler(event:Event):void
             {
                 var item:Object = sideBar.selectedItem
                 
-                if(item.hasOwnProperty("width") && item.hasOwnProperty("height"))
+                if (item.hasOwnProperty("width") && item.hasOwnProperty("height"))
                 {
                     var descriptor:GigaPanDescriptor
                     descriptor = new GigaPanDescriptor(item.id, item.width, item.height)

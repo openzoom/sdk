@@ -187,13 +187,13 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
         var width:uint = originalWidth
         var height:uint = originalHeight
 
-        for(var index:int = numLevels - 1; index >= 0; index--)
+        for (var index:int = numLevels - 1; index >= 0; index--)
         {
             levels[index] = new MultiScaleImageLevel(this, index, width, height,
                                                      Math.ceil(width / tileWidth),
                                                      Math.ceil(height / tileHeight))
-            width >>= 1
-            height >>= 1
+            width = Math.ceil(width / 2)
+            height = Math.ceil(height / 2)
         }
 
         return levels

@@ -23,14 +23,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[source path] flash</name>
+			<name>[source path] OpenZoom SDK</name>
 			<type>2</type>
-			<locationURI>OPENZOOM/src/main/flash</locationURI>
+			<locationURI>OPENZOOM/trunk/projects/sdk/trunk/src</locationURI>
 		</link>
 		<link>
-			<name>[source path] src</name>
+			<name>[source path] as3corelib</name>
 			<type>2</type>
-			<locationURI>OPENZOOM/libs/flash/as%2533corelib/src</locationURI>
+			<locationURI>OPENZOOM/trunk/projects/sdk/trunk/lib/as3corelib/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
