@@ -12,7 +12,6 @@
 </compiler>
 <applications>
 <application path="OpenZoomTestRunner.mxml"/>
-<application path="OpenZoomSDKTest.mxml"/>
 </applications>
 <modules/>
 <buildCSSFiles/>
