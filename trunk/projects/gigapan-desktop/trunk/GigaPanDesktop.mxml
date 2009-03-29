@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+
+    GigaPan Desktop
+
+    Developed by Daniel Gasienica <daniel@gasienica.ch>
+    Powered by OpenZoom
+    http://openzoom.org/
+    License: GPL3
+
+    All Images Copyright GigaPan.org
+
+////////////////////////////////////////////////////////////////////////////////
+-->
+<mx:WindowedApplication
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:ui="org.openzoom.gigapan.ui.*"
+    layout="absolute"
+    minWidth="640"
+    minHeight="480"
+    width="960"
+    height="600"
+    applicationComplete="applicationCompleteHandler(event)"
+    >
+    <mx:Style source="../assets/style/gigapan-desktop.css"/>
+    <mx:Script>
+        <![CDATA[
+        
+        	import flash.utils.setTimeout;
+        
+        	import com.adobe.serialization.json.JSON;
+        
+        	import mx.collections.ArrayCollection;
+        	import mx.events.FlexEvent;
+        	import mx.events.ListEvent;
+        	
+        	import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
+        	import org.openzoom.flash.events.NetworkRequestEvent;
+        	import org.openzoom.flash.net.INetworkQueue;
+        	import org.openzoom.flash.net.INetworkRequest;
+        	import org.openzoom.flash.net.NetworkQueue;
+
+
+            private static const API_ENDPOINT_URI:String = "http://api.gigapan.org/beta/gigapans/" 
+            private static const API_POLICY_URI:String = "http://api.gigapan.org/crossdomain.xml" 
+            private static const MOST_RECENT_URI:String = API_ENDPOINT_URI + "most_recent.json"
+            private static const MOST_POPULAR_URI:String = API_ENDPOINT_URI + "most_popular.json"
+
+            // Obama Inauguration            
+            private static const DEFAULT_DESCRIPTOR:GigaPanDescriptor = new GigaPanDescriptor(15374, 59783, 24658)
+            
+            private static const LOGO_HIDE_DELAY:Number = 2000
+            private static const SIDEBAR_HIDE_DELAY:Number = 3000
+            
+            private var hiddenSideBarEnabled:Boolean = false
+            private var loader:INetworkQueue
+            
+            
+            private function applicationCompleteHandler(event:FlexEvent):void
+            {
+                initApplication()
+                initViewer()
+                initSideBar()
+            }
+            
+            
+            private function initApplication():void
+            {
+                Security.loadPolicyFile(API_POLICY_URI)
+                
+                stage.addEventListener(KeyboardEvent.KEY_DOWN,
+                                       stage_keyDownHandler,
+                                       false, 0, true)
+                stage.addEventListener(MouseEvent.MOUSE_MOVE,
+                                       stage_mouseMoveHandler,
+                                       false, 0, true)
+                                       
+                setTimeout(sideBarDelayClosure, SIDEBAR_HIDE_DELAY)
+            }
+            
+            private function sideBarDelayClosure():void
+            {
+                hiddenSideBarEnabled = true
+            }
+            
+            private function initViewer():void
+            {
+            	viewer.loadDescriptor(DEFAULT_DESCRIPTOR)
+            }
+            
+            private function initSideBar():void
+            {
+                loader = new NetworkQueue()
+                
+                var request:INetworkRequest
+                request = loader.addRequest(MOST_RECENT_URI, String, MOST_RECENT_URI)
+                request.addEventListener(Event.COMPLETE,
+                                         request_completeHandler,
+                                         false, 0, true)
+                                     
+                // TODO
+//                request = loader.addRequest(MOST_POPULAR_URI, String, MOST_POPULAR_URI)
+//                request.addEventListener(Event.COMPLETE,
+//                                         request_completeHandler,
+//                                         false, 0, true)
+            }
+            
+            private function request_completeHandler(event:NetworkRequestEvent):void
+            {
+            	var data:Object = JSON.decode(event.data)
+            	if (event.context == MOST_RECENT_URI)
+                    sideBar.mostRecent = new ArrayCollection(data.items)
+            	else
+                    sideBar.mostPopular = new ArrayCollection(data.items)
+            }
+            
+            private function sideBar_itemSelectedHandler(event:Event):void
+            {
+                var item:Object = sideBar.selectedItem
+                
+                if (item.hasOwnProperty("width") && item.hasOwnProperty("height"))
+                {
+                    var descriptor:GigaPanDescriptor
+                    descriptor = new GigaPanDescriptor(item.id, item.width, item.height)
+                
+	            	viewer.loadDescriptor(descriptor)
+                }
+                else
+                {
+                	viewer.loadId(item.id)
+                }
+            }
+            
+            private function stage_keyDownHandler(event:KeyboardEvent):void
+            {
+                if (event.keyCode == 70) // F
+                {
+                    if (stage.displayState == StageDisplayState.NORMAL)
+                        stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE
+                    else
+                        stage.displayState = StageDisplayState.NORMAL
+                } 
+            }
+            
+            private function stage_mouseMoveHandler(event:MouseEvent):void
+            {
+            	if (!hiddenSideBarEnabled)
+            	   return
+            	   
+            	if (event.stageX > stage.stageWidth - 64)
+            		showSideBar()
+                if (sideBar.visible && event.stageX < stage.stageWidth - sideBar.width - 64)
+                    hideSideBar()
+            }
+            
+            private function showSideBar():void
+            {
+            	currentState = ""
+            }
+            
+            private function hideSideBar():void
+            {
+            	currentState = "full"
+            }
+       ]]>
+    </mx:Script>
+    
+    <mx:states>
+        <mx:State name="full"/>
+    </mx:states>
+    
+    <mx:transitions>
+        <mx:Transition fromState="" toState="full">
+            <mx:Sequence target="{sideBar}">
+                <mx:SetPropertyAction name="previousWidth" value="{sideBar.width}"/>
+                <mx:Resize widthTo="0" duration="800"/>
+                <mx:SetPropertyAction name="includeInLayout" value="false"/>
+            </mx:Sequence>
+        </mx:Transition>
+        <mx:Transition fromState="full" toState="">
+            <mx:Sequence target="{sideBar}">
+                <mx:SetPropertyAction name="includeInLayout" value="true"/>
+                <mx:Resize widthTo="{sideBar.previousWidth}" duration="600"/>
+            </mx:Sequence>
+        </mx:Transition>
+    </mx:transitions>
+    
+    <mx:HDividedBox
+        top="0"
+        right="0"
+        bottom="0"
+        left="0"
+        liveDragging="true"
+        >
+        <mx:Canvas
+	        width="100%"
+	        height="100%"
+            backgroundColor="#000000"
+	        >
+		    <ui:StatusMessage
+		    	message="Loading…"
+		        horizontalCenter="0"
+		        verticalCenter="0"
+		        />
+		    <ui:Viewer
+		        id="viewer"
+		        top="0"
+		        right="0"
+		        bottom="0"
+		        left="0"
+		        />
+        </mx:Canvas>
+	    <ui:Sidebar
+	    	id="sideBar"
+	    	width="180"
+	        maxWidth="320"
+	        minWidth="140"
+	    	height="100%"
+	    	itemSelected="sideBar_itemSelectedHandler(event)"
+	    	showEffect="Fade"
+	    	hideEffect="Fade"
+	    	/>
+    </mx:HDividedBox>
+    <ui:Logo width="94" height="32" x="5"/>
+</mx:WindowedApplication>
