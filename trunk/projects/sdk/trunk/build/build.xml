@@ -11,8 +11,8 @@
 	
     <property name="openzoom.lib" location="${basedir}/lib"/>
     <property name="openzoom.src" location="${basedir}/src" />
-    <property name="openzoom.docs" location="${basedir}/docs" />
-    <property name="openzoom.docs.out" location="${basedir}/build/docs" />
+    <property name="openzoom.doc" location="${basedir}/docs" />
+    <property name="openzoom.doc.out" location="${basedir}/build/docs" />
     <property name="openzoom.swc.out" location="${basedir}/build/lib" />
 	
     <target name="doc" depends="clean, asdoc" description="Build documentation"/>
@@ -26,24 +26,23 @@
 
     <target name="asdoc">
         <exec executable="${flex_sdk.asdoc}" failonerror="true">
-            <arg line='-source-path ${openzoom.src.main.flash}'/>
-            <arg line='-source-path ${openzoom.libs.flash}/gtween'/>
-            <arg line='-doc-sources ${openzoom.src.main.flash}/org/.'/>
-            <arg line='-library-path ${openzoom.libs.flash}'/>
-            <arg line='-library-path ${openzoom.tools.sdk.flex}/frameworks/libs/'/>
+            <arg line='-source-path ${openzoom.src}'/>
+            <arg line='-doc-sources ${openzoom.src}/org/.'/>
+            <arg line='-library-path ${openzoom.lib}'/>
+            <arg line='-library-path ${flex_sdk.dir}/frameworks/libs/'/>
             <arg line='-window-title "OpenZoom"'/>
-            <arg line='-templates-path ${openzoom.src.docs}/templates'/>
+            <arg line='-templates-path ${openzoom.doc}/templates'/>
             <arg line='-output ${openzoom.doc.out}'/>
         </exec>
     </target>
 
-    <target name="lib">
+    <target name="lib" depends="clean">
         <exec executable="${flex_sdk.compc}" failonerror="true">
             <arg line='-source-path ${openzoom.src}'/>
             <arg line='-library-path ${openzoom.lib}'/>
             <arg line='-library-path ${flex_sdk.dir}/frameworks/libs/'/>
             <arg line="-library-path ${flex_sdk.dir}/frameworks/locale/en_US"/>
-            <arg line='-namespace http://ns.openzoom.org/2008 ${openzoom.src.main.flash}/manifest.xml'/>
+            <arg line='-namespace http://ns.openzoom.org/2008 ${openzoom.src}/manifest.xml'/>
             <arg line='-include-namespaces http://ns.openzoom.org/2008'/>
             <arg line='-output ${openzoom.swc.out}/openzoom.swc'/>
         </exec>
