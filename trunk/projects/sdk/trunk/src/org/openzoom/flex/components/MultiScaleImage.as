@@ -118,7 +118,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
 
     public function set source(value:Object):void
     {
-        if(_source)
+        if (_source)
         {
             _source = null
             
@@ -126,9 +126,9 @@ public final class MultiScaleImage extends MultiScaleImageBase
                 container.removeChildAt(0)
         }
 
-        if(value is String)
+        if (value is String)
         {
-            if(url == String(value))
+            if (url == String(value))
                 return
 
             url = String(value)
@@ -145,7 +145,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
                                        false, 0, true)
         }
 
-        if(value is IMultiScaleImageDescriptor)
+        if (value is IMultiScaleImageDescriptor)
         {
             _source = IMultiScaleImageDescriptor(value).clone()
             dispatchEvent(new Event("sourceChanged"))
@@ -169,7 +169,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
         var sceneWidth:Number
         var sceneHeight:Number
 
-        if(aspectRatio > 1)
+        if (aspectRatio > 1)
         {
             sceneWidth  = DEFAULT_SCENE_DIMENSION
             sceneHeight = DEFAULT_SCENE_DIMENSION / aspectRatio
@@ -203,7 +203,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
      */
     private function urlLoader_completeHandler(event:Event):void
     {
-        if(!urlLoader || !urlLoader.data)
+        if (!urlLoader || !urlLoader.data)
             return
 
         var data:XML = new XML(urlLoader.data)

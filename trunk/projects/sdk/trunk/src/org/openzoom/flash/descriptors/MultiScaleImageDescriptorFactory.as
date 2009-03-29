@@ -102,7 +102,7 @@ public class MultiScaleImageDescriptorFactory
         if (data.namespace().uri == DEEPZOOM_NAMESPACE_URI)
             return DZIDescriptor.fromXML(uri, data)
 
-        else if (data.name() == ZOOMIFY_ROOT_TAG_NAME)
+        if (data.name() == ZOOMIFY_ROOT_TAG_NAME)
             return new ZoomifyDescriptor(uri, data)
 
         return null

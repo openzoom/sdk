@@ -75,8 +75,8 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
      * Constructor.
      */
     public function MultiScaleImageRenderer(descriptor:IMultiScaleImageDescriptor,
-                                             loader:INetworkQueue,
-                                             width:Number, height:Number)
+                                            loader:INetworkQueue,
+                                            width:Number, height:Number)
     {
         _loader = loader
 

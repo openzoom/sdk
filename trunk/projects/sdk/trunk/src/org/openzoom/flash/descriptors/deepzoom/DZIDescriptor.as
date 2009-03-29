@@ -54,11 +54,16 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * Constructor.
      */
-    public function DZIDescriptor(path:String, width:uint,
-                                  height:uint, tileSize:uint,
-                                  tileOverlap:uint, format:String)
+    public function DZIDescriptor(path:String,
+                                  width:uint,
+                                  height:uint,
+                                  tileSize:uint,
+                                  tileOverlap:uint,
+                                  format:String)
     {
         this.uri = path
+        _width = width
+        _height = height
         extension = format
         _type = getType(format)
         _tileWidth = _tileHeight = tileSize
