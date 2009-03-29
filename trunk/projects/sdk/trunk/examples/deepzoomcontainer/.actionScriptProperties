@@ -6,7 +6,7 @@
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path=""/>
-<libraryPathEntry kind="1" linkType="1" path="${DOCUMENTS}/openzoom/OpenZoom/trunk/projects/sdk/trunk/lib"/>
+<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/trunk/projects/sdk/trunk/lib"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>

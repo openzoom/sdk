@@ -6,25 +6,22 @@
 	xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
 	xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
 	backgroundGradientColors="[ 0xFFFFFF, 0xFFFFFF ]"
-	applicationComplete="applicationCompleteHandler( event )"
+	applicationComplete="applicationCompleteHandler(event)"
 	layout="absolute"
 	>
 	<mx:Script>
 		<![CDATA[
-
+		
 			import flashx.textLayout.container.DisplayObjectContainerController;
 			import flashx.textLayout.conversion.ImportExportConfiguration;
 			import flashx.textLayout.conversion.TextFilter;
-			import flashx.textLayout.edit.EditManager;
 			import flashx.textLayout.elements.Configuration;
 			import flashx.textLayout.elements.TextFlow;
-			import flashx.textLayout.formats.CharacterFormat;
-			import flashx.textLayout.formats.TextDecoration;
 
-            private var loader : URLLoader
-            private var textContainer : Sprite
+            private var loader:URLLoader
+            private var textContainer:Sprite
 
-            private function applicationCompleteHandler( event : Event ) : void
+            private function applicationCompleteHandler(event:Event):void
             {
             	loader = new URLLoader(new URLRequest("../data/document.xml"))
             	loader.addEventListener(Event.COMPLETE, loader_completeHandler)
@@ -41,7 +38,7 @@
             	container.addChild(textContainer)
             }
 
-			private function loader_completeHandler( event : Event ) : void
+			private function loader_completeHandler(event:Event):void
 			{
 				// Configuration passed to any TextFlows
 				// the default importer is importing
@@ -49,14 +46,14 @@
 	                                           .defaultConfiguration
 	                                               .textFlowConfiguration
 	            
-   	            var document : String = loader.data
-	            var textFlow:TextFlow = TextFilter.importToFlow( document,
-	                                             TextFilter.TEXT_LAYOUT_FORMAT )
+   	            var document:String = loader.data
+	            var textFlow:TextFlow = TextFilter.importToFlow(document,
+	                                             TextFilter.TEXT_LAYOUT_FORMAT)
 	            
-	            textFlow.flowComposer.addController(
-	              new DisplayObjectContainerController( textContainer,
-	                                                    container.sceneWidth,
-	                                                    container.sceneHeight ))
+                textFlow.flowComposer.addController(
+                    new DisplayObjectContainerController(textContainer,
+	                                                     container.sceneWidth,
+	                                                     container.sceneHeight))
                 textFlow.columnCount = 12
                 textFlow.columnGap = 0
 	            textFlow.flowComposer.updateAllContainers()
