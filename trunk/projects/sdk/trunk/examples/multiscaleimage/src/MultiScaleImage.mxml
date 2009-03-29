@@ -5,7 +5,7 @@
     xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
     xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
     xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
-    backgroundGradientColors="[ 0, 0 ]"
+    backgroundGradientColors="[0, 0]"
     layout="absolute"
     >
     <openzoom:MultiScaleImage
@@ -14,7 +14,7 @@
         right="0"
         bottom="0"
         left="0"
-        source="0000100.xml"
+        source="../../../resources/images/deepzoom/billions.xml"
         >
         <openzoom:controllers>
             <controllers:MouseController/>
