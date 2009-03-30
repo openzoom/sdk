@@ -27,6 +27,8 @@ import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
+import mx.utils.LoaderUtil;
+
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
 import org.openzoom.flash.net.INetworkQueue;
@@ -117,30 +119,30 @@ public final class MultiScaleImage extends MultiScaleImageBase
 
     public function set source(value:Object):void
     {
-        if(_source)
+        if (_source)
         {
             _source = null
             container.removeChildAt(0)
             viewport.showAll(true)
         }
 
-        if(value is String)
+        if (value is String)
         {
-            if(url == String(value))
+            if (url == String(value))
                 return
 
-            url = String(value)
+            url = LoaderUtil.createAbsoluteURL(this.loaderInfo.url, String(value))
             urlLoader = new URLLoader(new URLRequest(url))
 
             urlLoader.addEventListener(Event.COMPLETE,
-                                        urlLoader_completeHandler,
-                                        false, 0, true )
+                                       urlLoader_completeHandler,
+                                       false, 0, true )
             urlLoader.addEventListener(IOErrorEvent.IO_ERROR,
-                                        urlLoader_ioErrorHandler,
-                                        false, 0, true )
+                                       urlLoader_ioErrorHandler,
+                                       false, 0, true )
             urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
-                                        urlLoader_securityErrorHandler,
-                                        false, 0, true )
+                                       urlLoader_securityErrorHandler,
+                                       false, 0, true )
         }
 
         if(value is IMultiScaleImageDescriptor)
@@ -213,7 +215,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
      */
     private function urlLoader_completeHandler(event:Event):void
     {
-        if(!urlLoader || !urlLoader.data)
+        if (!urlLoader || !urlLoader.data)
             return
 
         var data:XML = new XML(urlLoader.data)

@@ -21,7 +21,6 @@
 package org.openzoom.flash.descriptors
 {
 
-import flash.geom.Point;
 import flash.geom.Rectangle;
 
 /**
@@ -37,13 +36,25 @@ public class MultiScaleImageDescriptorBase
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  source
+    //  uri
     //----------------------------------
 
     /**
      * @private
      */
-    protected var uri:String
+    public var uri:String
+
+    //----------------------------------
+    //  sources
+    //----------------------------------
+
+    /**
+     * @copy IMultiScaleImageDescriptor#sources
+     */
+    public function get sources():Array
+    {
+        return []
+    }
 
     //----------------------------------
     //  width
@@ -194,11 +205,11 @@ public class MultiScaleImageDescriptorBase
     {
         var bounds:Rectangle = new Rectangle()
 
-        var offsetX:uint = (column == 0) ? 0:tileOverlap
-        var offsetY:uint = (row    == 0) ? 0:tileOverlap
+        var offsetX:uint = (column == 0) ? 0 : tileOverlap
+        var offsetY:uint = (row == 0) ? 0 : tileOverlap
 
-        bounds.x = (column * tileWidth)  - offsetX
-        bounds.y = (row    * tileHeight) - offsetY
+        bounds.x = (column * tileWidth) - offsetX
+        bounds.y = (row * tileHeight) - offsetY
 
         return bounds
     }

@@ -22,6 +22,7 @@ package org.openzoom.flash.descriptors.deepzoom
 {
 
 import flash.utils.Dictionary;
+import flash.geom.Rectangle;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
@@ -65,6 +66,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         _width = width
         _height = height
         extension = format
+        _tileOverlap = tileOverlap
         _type = getType(format)
         _tileWidth = _tileHeight = tileSize
         _numLevels = computeNumLevels(width, height)
@@ -103,6 +105,26 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     //  Methods: IMultiScaleImageDescriptor
     //
     //--------------------------------------------------------------------------
+
+    /**
+     * @inheritDoc
+     */
+    override public function getTileBounds(level:int, column:uint, row:uint):Rectangle
+    {
+    	var bounds:Rectangle = new Rectangle()
+    	var offsetX:uint = (column == 0) ? 0 : tileOverlap
+    	var offsetY:uint = (row == 0) ? 0 : tileOverlap
+    	bounds.x = (column * tileWidth) - offsetX
+    	bounds.y = (row * tileHeight) - offsetY
+    	
+    	var l:IMultiScaleImageLevel = getLevelAt(level)
+    	var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
+    	var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
+        bounds.width = Math.min(width, l.width - bounds.x)
+        bounds.height = Math.min(height, l.height - bounds.y)
+            	
+        return bounds
+    }
 
     /**
      * @inheritDoc
@@ -237,8 +259,8 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
                                                         Math.ceil(height / tileHeight))
             width = (width + 1) >> 1
             height = (height + 1) >> 1
-//            width = Math.ceil(width * 0.5)
-//            height = Math.ceil(height * 0.5)
+//          width = Math.ceil(width / 2)
+//          height = Math.ceil(height / 2)
         }
 
 //        Twitter on 17.09.2008

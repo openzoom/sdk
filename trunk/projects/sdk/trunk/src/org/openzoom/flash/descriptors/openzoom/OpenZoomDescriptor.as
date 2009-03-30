@@ -23,8 +23,12 @@ package org.openzoom.flash.descriptors.openzoom
 
 import flash.utils.Dictionary;
 
+import mx.utils.LoaderUtil;
+
+import org.openzoom.flash.descriptors.IImageSourceDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.ImageSourceDescriptor;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
 import org.openzoom.flash.utils.math.clamp;
 
@@ -73,6 +77,22 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
 
     //--------------------------------------------------------------------------
     //
+    //  Properties: IMultiScaleImageDescriptor
+    //
+    //--------------------------------------------------------------------------
+    
+    private var _sources:Array = []
+    
+    /**
+     * @inheritDoc
+     */ 
+    override public function get sources():Array
+    {
+        return _sources.slice(0)	
+    }
+
+    //--------------------------------------------------------------------------
+    //
     //  Methods: IMultiScaleImageDescriptor
     //
     //--------------------------------------------------------------------------
@@ -97,7 +117,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
      * @inheritDoc
      */
     public function getMinLevelForSize(width:Number,
-                                        height:Number):IMultiScaleImageLevel
+                                       height:Number):IMultiScaleImageLevel
     {
         // TODO
         var level:IMultiScaleImageLevel
@@ -147,6 +167,21 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     private function parseXML(data:XML):void
     {
         use namespace openzoom
+        
+        // Parse sources
+        for each (var source:XML in data.source)
+        {
+        	var path:String = this.uri.substring(0, this.uri.lastIndexOf("/"))
+        	var sourceUri:String = LoaderUtil.createAbsoluteURL(path, source.@uri)
+        	var width:uint = source.@width
+        	var height:uint = source.@height
+        	var type:String = source.@type
+        	
+            var descriptor:IImageSourceDescriptor
+            descriptor = new ImageSourceDescriptor(sourceUri, width, height, type)
+            
+            _sources.push(descriptor)
+        }
 
         // Grrrrh, E4X
         var pyramid:XML = data.pyramid[0]
@@ -157,7 +192,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
         _tileHeight = pyramid.@tileHeight
 
         _type = pyramid.@type
-        _tileOverlap = pyramid.@overlap
+        _tileOverlap = pyramid.@tileOverlap
 
         _numLevels = data.pyramid.level.length()
 

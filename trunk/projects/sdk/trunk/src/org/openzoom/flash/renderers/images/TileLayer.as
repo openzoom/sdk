@@ -65,8 +65,8 @@ public class TileLayer extends Sprite implements ITileLayer
         _level = level
 
         // FIXME
-//        scaleXFactor = width  / level.width
-//        scaleYFactor = height / level.height
+//      scaleXFactor = width  / level.width
+//      scaleYFactor = height / level.height
 
         createFrame(width, height)
     }
@@ -135,18 +135,28 @@ public class TileLayer extends Sprite implements ITileLayer
         tileBitmap.x = bounds.x * scaleFactorX
         tileBitmap.y = bounds.y * scaleFactorY
 
-        var tileBitmapRight:Number = tileBitmap.x + tileBitmap.width
-        var tileBitmapBottom:Number = tileBitmap.y + tileBitmap.height
-        var horizontalOverflow:Boolean = tileBitmapRight > level.width
-        var verticalOverflow:Boolean = tileBitmapBottom > level.height
 
         if (tileBitmap.x >= level.width || tileBitmap.y >= level.height)
             trace("[TileLayer]: Wrong tile positioning")
+            
+            
+        var tileBitmapRight:Number = tileBitmap.x + tileBitmap.width
+        var tileBitmapBottom:Number = tileBitmap.y + tileBitmap.height
+        
+        var horizontalOverflow:Boolean = tileBitmapRight > level.width
+        var verticalOverflow:Boolean = tileBitmapBottom > level.height
 
-        // Fix for too large tiles
+        // Crop tiles that are too large
         if (horizontalOverflow || verticalOverflow)
         {
             trace("[TileLayer]: Overflow")
+            
+            if (horizontalOverflow)
+                trace("[TileLayer]: horizontalOverflow:", level.width, tileBitmapRight, tile.toString(), bounds)
+                
+            if (verticalOverflow)
+                trace("[TileLayer]: verticalOverflow:", level.height, tileBitmapBottom, tile.toString(), bounds)
+                
             // TODO: Check bounds with new descriptor API
             var cropBitmapData:BitmapData =
                    new BitmapData(Math.min(level.width - tileBitmap.x, tileBitmap.width),

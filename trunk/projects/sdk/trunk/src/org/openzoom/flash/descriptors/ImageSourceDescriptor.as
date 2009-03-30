@@ -18,17 +18,10 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.renderers.images
+package org.openzoom.flash.descriptors
 {
 
-import flash.display.Bitmap;
-
-/**
- * @private
- *
- * Multi-scale image tile.
- */
-public class Tile
+public class ImageSourceDescriptor implements IImageSourceDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -39,17 +32,15 @@ public class Tile
     /**
      * Constructor.
      */
-    public function Tile( bitmap:Bitmap,
-                          level:uint,
-                          row:uint,
-                          column:uint,
-                          overlap:uint = 0 )
+    public function ImageSourceDescriptor(uri:String,
+                                          width:uint,
+                                          height:uint,
+                                          type:String)
     {
-        this.bitmap = bitmap
-        _level = level
-        _row = row
-        _column = column
-        _overlap = overlap
+        _uri = uri
+        _width = width
+        _height = height
+        _type = type
     }
 
     //--------------------------------------------------------------------------
@@ -59,79 +50,73 @@ public class Tile
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  bitmap
+    //  width
     //----------------------------------
 
-    public var bitmap:Bitmap
+    private var _width:uint
 
-    //----------------------------------
-    //  level
-    //----------------------------------
-
-    private var _level:int
-
-    public function get level():int
+    /**
+     * @inheritDoc
+     */
+    public function get width():uint
     {
-        return _level
+        return _width
     }
 
     //----------------------------------
-    //  column
+    //  height
     //----------------------------------
 
-    private var _column:uint
+    private var _height:uint
 
-    public function get column():uint
+    /**
+     * @inheritDoc
+     */
+    public function get height():uint
     {
-        return _column
+        return _height
     }
 
     //----------------------------------
-    //  row
+    //  uri
     //----------------------------------
 
-    private var _row:uint
+    private var _uri:String
 
-    public function get row():uint
+    /**
+     * @inheritDoc
+     */
+    public function get uri():String
     {
-        return _row
+        return _uri
     }
 
     //----------------------------------
-    //  overlap
+    //  type
     //----------------------------------
 
-    private var _overlap:uint = 0
+    private var _type:String
 
-    public function get overlap():uint
+    /**
+     * @inheritDoc
+     */
+    public function get type():String
     {
-        return _overlap
-    }
-
-    //----------------------------------
-    //  hashCode
-    //----------------------------------
-
-    public function get hashCode():int
-    {
-        return int(level.toString() + column.toString() + row.toString())
+        return _type
     }
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: Debug
+    //  Methods
     //
     //--------------------------------------------------------------------------
 
-    public function toString():String
+    /**
+     * @inheritDoc
+     */
+    public function clone():IImageSourceDescriptor
     {
-        return "[Tile]" + "\n"
-               + "width: " + (bitmap ? bitmap.width : 0) + "\n"
-               + "height: " + (bitmap ? bitmap.height : 0) + "\n"
-               + "level: " + level + "\n"
-               + "column: " + column + "\n"
-               + "row: " + row + "\n"
-               + "overlap: " + overlap
+        return new ImageSourceDescriptor(uri, width, height, type)
     }
 }
 
