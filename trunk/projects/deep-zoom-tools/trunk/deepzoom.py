@@ -37,7 +37,6 @@ import optparse
 import os
 import PIL.Image
 import sys
-import urllib2
 import xml.dom.minidom
 
 NS_DEEPZOOM = "http://schemas.microsoft.com/deepzoom/2008"

@@ -24,11 +24,11 @@ package
 /**
  * @private
  *
- * Describes all valid parameters of the OpenZoom Viewer.
+ * Lists all valid parameters of the OpenZoom Viewer.
  */
 public class OpenZoomViewerParameters
 {
-    public static const SOURCE : String = "source"
+    public static const SOURCE:String = "source"
 }
 
 }
