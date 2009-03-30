@@ -30,7 +30,8 @@ import org.openzoom.flash.viewport.INormalizedViewport;
  *
  * Multi-scale renderer base class.
  */
-public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
+public class MultiScaleRenderer extends Sprite
+                                implements IMultiScaleRenderer
 {
     //--------------------------------------------------------------------------
     //
@@ -65,41 +66,41 @@ public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
         return _viewport
     }
 
-    public function set viewport( value:INormalizedViewport ):void
+    public function set viewport(value:INormalizedViewport):void
     {
-        if( viewport === value )
+        if(viewport === value)
             return
 
         // remove old event listener
-        if( viewport )
+        if(viewport)
         {
-            viewport.removeEventListener( ViewportEvent.TRANSFORM_START,
-                                          viewport_transformStartHandler )
-            viewport.removeEventListener( ViewportEvent.TRANSFORM_UPDATE,
-                                          viewport_transformUpdateHandler )
-            viewport.removeEventListener( ViewportEvent.TRANSFORM_END,
-                                          viewport_transformEndHandler )
-            viewport.removeEventListener( ViewportEvent.TARGET_UPDATE,
-                                          viewport_targetUpdateHandler )
+            viewport.removeEventListener(ViewportEvent.TRANSFORM_START,
+                                         viewport_transformStartHandler)
+            viewport.removeEventListener(ViewportEvent.TRANSFORM_UPDATE,
+                                         viewport_transformUpdateHandler)
+            viewport.removeEventListener(ViewportEvent.TRANSFORM_END,
+                                         viewport_transformEndHandler)
+            viewport.removeEventListener(ViewportEvent.TARGET_UPDATE,
+                                         viewport_targetUpdateHandler)
         }
 
         _viewport = value
 
         // register new event listener
-        if( viewport )
+        if(viewport)
         {
-            viewport.addEventListener( ViewportEvent.TRANSFORM_START,
-                                       viewport_transformStartHandler,
-                                       false, 0, true )
-            viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE,
-                                       viewport_transformUpdateHandler,
-                                       false, 0, true )
-            viewport.addEventListener( ViewportEvent.TRANSFORM_END,
-                                       viewport_transformEndHandler,
-                                       false, 0, true )
-            viewport.addEventListener( ViewportEvent.TARGET_UPDATE,
-                                       viewport_targetUpdateHandler,
-                                       false, 0, true )
+            viewport.addEventListener(ViewportEvent.TRANSFORM_START,
+                                      viewport_transformStartHandler,
+                                      false, 0, true)
+            viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
+                                      viewport_transformUpdateHandler,
+                                      false, 0, true)
+            viewport.addEventListener(ViewportEvent.TRANSFORM_END,
+                                      viewport_transformEndHandler,
+                                      false, 0, true)
+            viewport.addEventListener(ViewportEvent.TARGET_UPDATE,
+                                      viewport_targetUpdateHandler,
+                                      false, 0, true)
         }
     }
 
@@ -112,28 +113,28 @@ public class MultiScaleRenderer extends Sprite implements IMultiScaleRenderer
     /**
      * @private
      */
-    protected function viewport_transformStartHandler( event:ViewportEvent ):void
+    protected function viewport_transformStartHandler(event:ViewportEvent):void
     {
     }
 
     /**
      * @private
      */
-    protected function viewport_transformUpdateHandler( event:ViewportEvent ):void
+    protected function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
     }
 
     /**
      * @private
      */
-    protected function viewport_transformEndHandler( event:ViewportEvent ):void
+    protected function viewport_transformEndHandler(event:ViewportEvent):void
     {
     }
     
     /**
      * @private
      */
-    protected function viewport_targetUpdateHandler( event:ViewportEvent ):void
+    protected function viewport_targetUpdateHandler(event:ViewportEvent):void
     {
     }
 }

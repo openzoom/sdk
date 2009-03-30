@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Script>
+	<![CDATA[
+		
+		import org.openzoom.flex.components.MultiScaleImage; MultiScaleImage;
+		import org.openzoom.flex.components.DeepZoomContainer; DeepZoomContainer;
+		
+	]]>
+</mx:Script>
+</mx:Application>

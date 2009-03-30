@@ -139,7 +139,7 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
 
     private var _constraint:IViewportConstraint
-    private var constraintChanged:Boolean = false
+    private var constraintChanged:Boolean=false
 
    ;[Bindable(event="constraintChanged")]
 
@@ -154,15 +154,15 @@ public final class MultiScaleContainer extends UIComponent
         return _constraint
     }
 
-    public function set constraint( value:IViewportConstraint ):void
+    public function set constraint(value:IViewportConstraint):void
     {
-        if( _constraint !== value )
+        if (_constraint !== value)
         {
             _constraint = value
             constraintChanged = true
             invalidateProperties()
 
-            dispatchEvent( new Event( "constraintChanged" ))
+            dispatchEvent(new Event("constraintChanged"))
         }
     }
 
@@ -177,7 +177,7 @@ public final class MultiScaleContainer extends UIComponent
         return _loader
     }
 
-    public function set loader( value:INetworkQueue ):void
+    public function set loader(value:INetworkQueue):void
     {
         _loader = value
     }
@@ -187,7 +187,7 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
 
     private var _transformer:IViewportTransformer
-    private var transformerChanged:Boolean = false
+    private var transformerChanged:Boolean=false
 
    ;[Bindable(event="transformerChanged")]
 
@@ -199,15 +199,15 @@ public final class MultiScaleContainer extends UIComponent
         return _transformer
     }
 
-    public function set transformer( value:IViewportTransformer ):void
+    public function set transformer(value:IViewportTransformer):void
     {
-        if( _transformer !== value )
+        if (_transformer !== value)
         {
             _transformer = value
             transformerChanged = true
             invalidateProperties()
 
-            dispatchEvent( new Event( "transformerChanged" ))
+            dispatchEvent(new Event("transformerChanged"))
         }
     }
 
@@ -217,7 +217,7 @@ public final class MultiScaleContainer extends UIComponent
 
     private var _controllers:Array = []
     private var _controllersHolder:Array = []
-    private var controllersChanged:Boolean = false
+    private var controllersChanged:Boolean=false
 
    ;[ArrayElementType("org.openzoom.flash.viewport.IViewportController")]
    ;[Inspectable(arrayType="org.openzoom.flash.viewport.IViewportController")]
@@ -235,22 +235,22 @@ public final class MultiScaleContainer extends UIComponent
      */
     public function get controllers():Array
     {
-        return _controllers.slice( 0 )
+        return _controllers.slice(0)
     }
 
-    public function set controllers( value:Array ):void
+    public function set controllers(value:Array):void
     {
-        if( _controllers != value )
+        if (_controllers != value)
         {
             // remove old controllers
-            for each( var oldController:IViewportController in _controllers )
-                removeController( oldController )
+            for each (var oldController:IViewportController in _controllers)
+                removeController(oldController)
 
-            _controllersHolder = value.slice( 0 )
+            _controllersHolder = value.slice(0)
             controllersChanged = true
             invalidateProperties()
 
-            dispatchEvent( new Event( "controllersChanged" ))
+            dispatchEvent(new Event("controllersChanged"))
         }
     }
 
@@ -259,16 +259,16 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
 
     private var _children:Array
-    private var childrenChanged:Boolean = false
+    private var childrenChanged:Boolean=false
 
     public function get children():Array
     {
         return _children
     }
 
-    public function set children( value:Array ):void
+    public function set children(value:Array):void
     {
-    	if( _children != value )
+    	if (_children != value)
     	{
     		_children = value
     		childrenChanged = true
@@ -287,7 +287,7 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
 
     private var _sceneWidth:Number
-    private var sceneWidthChanged:Boolean = false
+    private var sceneWidthChanged:Boolean=false
 
    ;[Bindable(event="sceneResize")]
 
@@ -299,9 +299,9 @@ public final class MultiScaleContainer extends UIComponent
         return scene ? scene.sceneWidth:_sceneWidth
     }
 
-    public function set sceneWidth( value:Number ):void
+    public function set sceneWidth(value:Number):void
     {
-        if( _sceneWidth != value )
+        if (_sceneWidth != value)
         {
             _sceneWidth = value
             sceneWidthChanged = true
@@ -315,7 +315,7 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
 
     private var _sceneHeight:Number
-    private var sceneHeightChanged:Boolean = false
+    private var sceneHeightChanged:Boolean=false
 
    ;[Bindable(event="sceneHeightChanged")]
 
@@ -327,9 +327,9 @@ public final class MultiScaleContainer extends UIComponent
         return scene ? scene.sceneHeight:_sceneHeight
     }
 
-    public function set sceneHeight( value:Number ):void
+    public function set sceneHeight(value:Number):void
     {
-        if( _sceneHeight != value )
+        if (_sceneHeight != value)
         {
             _sceneHeight = value
             sceneHeightChanged = true
@@ -344,107 +344,151 @@ public final class MultiScaleContainer extends UIComponent
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @private
+     */
     override protected function createChildren():void
     {
         super.createChildren()
 
-        if( !scene )
+        if (!scene)
             createScene()
 
-        if( !viewport )
-            createNormalizedViewport( _scene )
+        if (!viewport)
+            createNormalizedViewport(_scene)
 
-        if( !mouseCatcher )
+        if (!mouseCatcher)
             createMouseCatcher()
 
-        if( !contentMask )
+        if (!contentMask)
             createContentMask()
 
-        if( !loader )
+        if (!loader)
             createLoader()
     }
 
+    /**
+     * @private
+     */
     override protected function commitProperties():void
     {
         super.commitProperties()
 
-        if( childrenChanged )
+        if (childrenChanged)
         {
 	        // remove all existing children
-	        while( numChildren > 0 )
-	            removeChildAt( 0 )
+	        while (numChildren > 0)
+                removeChildAt(0)
 	
-//	        for each( var child:DisplayObject in _children )
-//	            _scene.addItem( child )
+//	        for each (var child:DisplayObject in _children)
+//	            _scene.addItem(child)
         }
 
-        if( sceneWidthChanged || sceneHeightChanged )
+        if (sceneWidthChanged || sceneHeightChanged)
         {
            _scene.sceneWidth = _sceneWidth
            _scene.sceneHeight = _sceneHeight
 
            sceneWidthChanged = sceneHeightChanged = false
 
-           dispatchEvent( new Event( "sceneResize" ))
+           dispatchEvent(new Event("sceneResize"))
         }
 
-        if( transformerChanged )
+        if (transformerChanged)
         {
             viewport.transformer = _transformer
             transformerChanged = false
         }
 
-        if( constraintChanged )
+        if (constraintChanged)
         {
             _viewport.transformer.constraint = _constraint
             constraintChanged = false
         }
 
-        if( controllersChanged )
+        if (controllersChanged)
         {
-            for each( var controller:IViewportController in _controllersHolder )
-                addController( controller )
+            for each (var controller:IViewportController in _controllersHolder)
+                addController(controller)
 
             _controllersHolder = []
             controllersChanged = false
         }
 
-        if( zoomChanged || scaleChanged
-            || viewportXChanged || viewportYChanged
-            || viewportWidthChanged || viewportHeightChanged )
+        if (zoomChanged || scaleChanged ||
+            viewportXChanged || viewportYChanged ||
+            viewportWidthChanged || viewportHeightChanged)
         {
-            if( zoomChanged )
+            if (zoomChanged)
             {
                 viewport.zoom = zoom
                 zoomChanged = false
             }
 
-            if( scaleChanged )
+            if (scaleChanged)
             {
                 viewport.scale = scale
                 scaleChanged = false
             }
 
-            if( viewportXChanged || viewportYChanged )
+            if (viewportXChanged || viewportYChanged)
             {
-                viewport.panTo( viewportX, viewportY )
+                viewport.panTo(viewportX, viewportY)
                 viewportXChanged = viewportYChanged = false
             }
 
-            if( viewportWidthChanged )
+            if (viewportWidthChanged)
             {
                 viewport.width = viewportWidth
                 viewportWidthChanged = false
             }
 
-            if( viewportHeightChanged )
+            if (viewportHeightChanged)
             {
                 viewport.height = viewportHeight
                 viewportHeightChanged = false
             }
 
-            dispatchEvent( new Event( "transformUpdate" ))
+            dispatchEvent(new Event("transformUpdate"))
         }
+    }
+
+    /**
+     * @private
+     */
+    override protected function updateDisplayList(unscaledWidth:Number,
+                                                  unscaledHeight:Number):void
+    {
+    	
+        if (viewport.viewportWidth != unscaledWidth ||
+            viewport.viewportHeight != unscaledHeight)
+            _viewport.setSize(unscaledWidth, unscaledHeight)
+
+        if (mouseCatcher.width != unscaledWidth ||
+            mouseCatcher.height != unscaledHeight)
+        {
+            mouseCatcher.width = unscaledWidth
+            mouseCatcher.height = unscaledHeight
+        }
+        
+        if (contentMask.width != unscaledWidth ||
+            contentMask.height != unscaledHeight)
+        {
+	        contentMask.width = unscaledWidth
+	        contentMask.height = unscaledHeight
+        }
+        
+        var vp:INormalizedViewport = _viewport
+        var targetWidth:Number =  vp.viewportWidth / vp.width
+        var targetHeight:Number =  vp.viewportHeight / vp.height
+        var targetX:Number = -vp.x * targetWidth
+        var targetY:Number = -vp.y * targetHeight
+
+        var target:DisplayObject = _scene.targetCoordinateSpace
+            target.x = targetX
+            target.y = targetY
+            target.width = targetWidth
+            target.height = targetHeight
     }
 
     //--------------------------------------------------------------------------
@@ -464,28 +508,28 @@ public final class MultiScaleContainer extends UIComponent
     //
     //--------------------------------------------------------------------------
 
-    override public function addChild( child:DisplayObject ):DisplayObject
+    override public function addChild(child:DisplayObject):DisplayObject
     {
-        return addChildAt( child, Math.max( 0, numChildren - 1 ))
+        return addChildAt(child, Math.max(0, numChildren - 1))
     }
 
-    override public function removeChild( child:DisplayObject ):DisplayObject
+    override public function removeChild(child:DisplayObject):DisplayObject
     {
-        return _scene.removeChildAt( getChildIndex( child ))
+        return _scene.removeChildAt(getChildIndex(child))
     }
 
-    override public function addChildAt( child:DisplayObject,
-                                         index:int ):DisplayObject
+    override public function addChildAt(child:DisplayObject,
+                                        index:int):DisplayObject
     {
-        if( child is IMultiScaleRenderer )
-            IMultiScaleRenderer( child ).viewport = _viewport
+        if (child is IMultiScaleRenderer)
+            IMultiScaleRenderer(child).viewport = _viewport
 
-        return _scene.addChildAt( child, index )
+        return _scene.addChildAt(child, index)
     }
 
-    override public function removeChildAt( index:int ):DisplayObject
+    override public function removeChildAt(index:int):DisplayObject
     {
-        var child:DisplayObject = _scene.removeChildAt( index )
+        var child:DisplayObject = _scene.removeChildAt(index)
 
         if (child is IMultiScaleRenderer)
             IMultiScaleRenderer(child).viewport = null
@@ -493,37 +537,37 @@ public final class MultiScaleContainer extends UIComponent
         return child
     }
 
-    override public function getChildAt( index:int ):DisplayObject
+    override public function getChildAt(index:int):DisplayObject
     {
-        return _scene.getChildAt( index )
+        return _scene.getChildAt(index)
     }
 
-    override public function getChildByName( name:String ):DisplayObject
+    override public function getChildByName(name:String):DisplayObject
     {
-        return _scene.getChildByName( name )
+        return _scene.getChildByName(name)
     }
 
-    override public function getChildIndex( child:DisplayObject ):int
+    override public function getChildIndex(child:DisplayObject):int
     {
-        return _scene.getChildIndex( child )
+        return _scene.getChildIndex(child)
     }
 
-    override public function setChildIndex( child:DisplayObject,
-                                            index:int ):void
+    override public function setChildIndex(child:DisplayObject,
+                                           index:int):void
     {
-        _scene.setChildIndex( child, index )
+        _scene.setChildIndex(child, index)
     }
 
-    override public function swapChildren( child1:DisplayObject,
-                                           child2:DisplayObject ):void
+    override public function swapChildren(child1:DisplayObject,
+                                          child2:DisplayObject):void
     {
-        _scene.swapChildren( child1, child2 )
+        _scene.swapChildren(child1, child2)
     }
 
-    override public function swapChildrenAt( index1:int,
-                                             index2:int ):void
+    override public function swapChildrenAt(index1:int,
+                                            index2:int):void
     {
-        _scene.swapChildrenAt( index1, index2 )
+        _scene.swapChildrenAt(index1, index2)
     }
 
     //--------------------------------------------------------------------------
@@ -537,17 +581,17 @@ public final class MultiScaleContainer extends UIComponent
      */
     private function createScene():void
     {
-        _scene = new MultiScaleScene( DEFAULT_SCENE_WIDTH,
-                                      DEFAULT_SCENE_HEIGHT,
-                                      DEFAULT_SCENE_BACKGROUND_COLOR,
-                                      DEFAULT_SCENE_BACKGROUND_ALPHA )
+        _scene = new MultiScaleScene(DEFAULT_SCENE_WIDTH,
+                                     DEFAULT_SCENE_HEIGHT,
+                                     DEFAULT_SCENE_BACKGROUND_COLOR,
+                                     DEFAULT_SCENE_BACKGROUND_ALPHA)
 
-//        _scene = new MultiScaleScene()
-//        scene.sceneWidth = DEFAULT_SCENE_WIDTH
-//        scene.sceneHeight = DEFAULT_SCENE_HEIGHT
+//      _scene = new MultiScaleScene()
+//      scene.sceneWidth = DEFAULT_SCENE_WIDTH
+//      scene.sceneHeight = DEFAULT_SCENE_HEIGHT
 
-        super.addChild( _scene )
-        dispatchEvent( new Event("sceneChanged" ))
+        super.addChild(_scene)
+        dispatchEvent(new Event("sceneChanged"))
     }
 
     /**
@@ -557,11 +601,14 @@ public final class MultiScaleContainer extends UIComponent
     {
         mouseCatcher = new Sprite()
         var g:Graphics = mouseCatcher.graphics
-        g.beginFill( 0x000000, 0 )
-        g.drawRect( 0, 0, 100, 100 )
+        g.beginFill(0x000000, 0)
+        g.drawRect(0, 0, 100, 100)
         g.endFill()
 
-        super.addChild( mouseCatcher )
+        // TODO: Test
+        mouseCatcher.mouseEnabled = false
+
+        super.addChild(mouseCatcher)
     }
 
     /**
@@ -571,31 +618,31 @@ public final class MultiScaleContainer extends UIComponent
     {
         contentMask = new Shape()
         var g:Graphics = contentMask.graphics
-        g.beginFill( 0xFF0000, 0 )
-        g.drawRect( 0, 0, 100, 100 )
+        g.beginFill(0xFF0000, 0)
+        g.drawRect(0, 0, 100, 100)
         g.endFill()
 
-        super.addChild( contentMask )
+        super.addChild(contentMask)
         mask = contentMask
     }
 
-    private function createNormalizedViewport( scene:IReadonlyMultiScaleScene ):void
+    private function createNormalizedViewport(scene:IReadonlyMultiScaleScene):void
     {
-        _viewport = new NormalizedViewport( DEFAULT_VIEWPORT_WIDTH,
-                                            DEFAULT_VIEWPORT_HEIGHT,
-                                            scene )
+        _viewport = new NormalizedViewport(DEFAULT_VIEWPORT_WIDTH,
+                                           DEFAULT_VIEWPORT_HEIGHT,
+                                           scene)
 
-        _viewport.addEventListener( ViewportEvent.TRANSFORM_START,
-                                    viewport_transformStartHandler,
-                                    false, 0, true )
-        _viewport.addEventListener( ViewportEvent.TRANSFORM_UPDATE,
-                                    viewport_transformUpdateHandler,
-                                    false, 0, true )
-        _viewport.addEventListener( ViewportEvent.TRANSFORM_END,
-                                    viewport_transformEndHandler,
-                                    false, 0, true )
+        _viewport.addEventListener(ViewportEvent.TRANSFORM_START,
+                                   viewport_transformStartHandler,
+                                   false, 0, true)
+        _viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
+                                   viewport_transformUpdateHandler,
+                                   false, 0, true)
+        _viewport.addEventListener(ViewportEvent.TRANSFORM_END,
+                                   viewport_transformEndHandler,
+                                   false, 0, true)
 
-        dispatchEvent( new Event("viewportChanged" ))
+        dispatchEvent(new Event("viewportChanged"))
     }
 
     private function createLoader():void
@@ -623,30 +670,22 @@ public final class MultiScaleContainer extends UIComponent
     //
     //--------------------------------------------------------------------------
 
-    private function viewport_transformStartHandler( event:ViewportEvent ):void
+    private function viewport_transformStartHandler(event:ViewportEvent):void
     {
 //      trace("ViewportEvent.TRANSFORM_START")
     }
 
-    private function viewport_transformUpdateHandler( event:ViewportEvent ):void
+    private function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
-//        trace("ViewportEvent.TRANSFORM_UPDATE")
-        var v:INormalizedViewport = _viewport
-        var targetWidth:Number =  v.viewportWidth / v.width
-        var targetHeight:Number =  v.viewportHeight / v.height
-        var targetX:Number = -v.x * targetWidth
-        var targetY:Number = -v.y * targetHeight
+//      trace("ViewportEvent.TRANSFORM_UPDATE")
 
-        var target:DisplayObject = _scene.targetCoordinateSpace
-            target.x = targetX
-            target.y = targetY
-            target.width = targetWidth
-            target.height = targetHeight
+        // TODO: Test…
+        invalidateDisplayList()
     }
 
-    private function viewport_transformEndHandler( event:ViewportEvent ):void
+    private function viewport_transformEndHandler(event:ViewportEvent):void
     {
-//        trace("ViewportEvent.TRANSFORM_END")
+//      trace("ViewportEvent.TRANSFORM_END")
     }
 
     //--------------------------------------------------------------------------
@@ -658,12 +697,12 @@ public final class MultiScaleContainer extends UIComponent
     /**
      * @private
      */
-    private function addController( controller:IViewportController ):Boolean
+    private function addController(controller:IViewportController):Boolean
     {
-        if( _controllers.indexOf( controller ) != -1 )
+        if (_controllers.indexOf(controller) != -1)
             return false
 
-        _controllers.push( controller )
+        _controllers.push(controller)
         controller.viewport = _viewport
         controller.view = this
         return true
@@ -672,36 +711,15 @@ public final class MultiScaleContainer extends UIComponent
     /**
      * @private
      */
-    private function removeController( controller:IViewportController ):Boolean
+    private function removeController(controller:IViewportController):Boolean
     {
-        if( _controllers.indexOf( controller ) == -1 )
+        if (_controllers.indexOf(controller) == -1)
             return false
 
-        _controllers.splice( _controllers.indexOf( controller ), 1 )
+        _controllers.splice(_controllers.indexOf(controller), 1)
         controller.viewport = null
         controller.view = null
         return true
-    }
-
-    //--------------------------------------------------------------------------
-    //
-    //  Overridden methods: UIComponent
-    //
-    //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     */
-    override protected function updateDisplayList( unscaledWidth:Number,
-                                                   unscaledHeight:Number ):void
-    {
-        _viewport.setSize( unscaledWidth, unscaledHeight )
-
-        mouseCatcher.width = unscaledWidth
-        mouseCatcher.height = unscaledHeight
-
-        contentMask.width = unscaledWidth
-        contentMask.height = unscaledHeight
     }
 
     //--------------------------------------------------------------------------
@@ -727,9 +745,9 @@ public final class MultiScaleContainer extends UIComponent
         return _zoom
     }
 
-    public function set zoom( value:Number ):void
+    public function set zoom(value:Number):void
     {
-        if( _zoom != value )
+        if (_zoom != value)
         {
             _zoom = value
             zoomChanged = true
@@ -754,9 +772,9 @@ public final class MultiScaleContainer extends UIComponent
         return _scale
     }
 
-    public function set scale( value:Number ):void
+    public function set scale(value:Number):void
     {
-        if( _scale != value )
+        if (_scale != value)
         {
             _scale = value
             scaleChanged = true
@@ -782,9 +800,9 @@ public final class MultiScaleContainer extends UIComponent
         return _viewportX
     }
 
-    public function set viewportX( value:Number ):void
+    public function set viewportX(value:Number):void
     {
-        if( _viewportX != value )
+        if (_viewportX != value)
         {
             _viewportX = value
             viewportXChanged = true
@@ -808,9 +826,9 @@ public final class MultiScaleContainer extends UIComponent
         return _viewportY
     }
 
-    public function set viewportY( value:Number ):void
+    public function set viewportY(value:Number):void
     {
-        if( _viewportY != value )
+        if (_viewportY != value)
         {
             _viewportY = value
             viewportYChanged = true
@@ -835,9 +853,9 @@ public final class MultiScaleContainer extends UIComponent
         return _viewportWidth
     }
 
-    public function set viewportWidth( value:Number ):void
+    public function set viewportWidth(value:Number):void
     {
-        if( _viewportWidth != value )
+        if (_viewportWidth != value)
         {
             _viewportWidth = value
             viewportWidthChanged = true
@@ -862,9 +880,9 @@ public final class MultiScaleContainer extends UIComponent
         return _viewportHeight
     }
 
-    public function set viewportHeight( value:Number ):void
+    public function set viewportHeight(value:Number):void
     {
-        if( _viewportHeight != value )
+        if (_viewportHeight != value)
         {
             _viewportHeight = value
             viewportHeightChanged = true
@@ -881,75 +899,75 @@ public final class MultiScaleContainer extends UIComponent
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomTo()
      */
-    public function zoomTo( zoom:Number,
-                            transformX:Number = 0.5,
-                            transformY:Number = 0.5,
-                            immediately:Boolean = false ):void
+    public function zoomTo(zoom:Number,
+                           transformX:Number=0.5,
+                           transformY:Number=0.5,
+                           immediately:Boolean=false):void
     {
-        viewport.zoomTo( zoom, transformX, transformY, immediately )
+        viewport.zoomTo(zoom, transformX, transformY, immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomBy()
      */
-    public function zoomBy( factor:Number,
-                            transformX:Number = 0.5,
-                            transformY:Number = 0.5,
-                            immediately:Boolean = false ):void
+    public function zoomBy(factor:Number,
+                           transformX:Number=0.5,
+                           transformY:Number=0.5,
+                           immediately:Boolean=false):void
     {
-        viewport.zoomBy( factor, transformX, transformY, immediately )
+        viewport.zoomBy(factor, transformX, transformY, immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#panTo()
      */
-    public function panTo( x:Number, y:Number,
-                           immediately:Boolean = false ):void
+    public function panTo(x:Number, y:Number,
+                          immediately:Boolean=false):void
     {
-        viewport.panTo( x, y, immediately )
+        viewport.panTo(x, y, immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#panBy()
      */
-    public function panBy( deltaX:Number, deltaY:Number,
-                           immediately:Boolean = false ):void
+    public function panBy(deltaX:Number, deltaY:Number,
+                          immediately:Boolean=false):void
     {
-        viewport.panBy( deltaX, deltaY, immediately )
+        viewport.panBy(deltaX, deltaY, immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
      */
-    public function fitToBounds( bounds:Rectangle,
-                                  scale:Number = 1.0,
-                                  immediately:Boolean = false ):void
+    public function fitToBounds(bounds:Rectangle,
+                                scale:Number = 1.0,
+                                immediately:Boolean=false):void
     {
-        viewport.fitToBounds( bounds, scale, immediately )
+        viewport.fitToBounds(bounds, scale, immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#showAll()
      */
-    public function showAll( immediately:Boolean = false ):void
+    public function showAll(immediately:Boolean=false):void
     {
-        viewport.showAll( immediately )
+        viewport.showAll(immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#localToScene()
      */
-    public function localToScene( point:Point ):Point
+    public function localToScene(point:Point):Point
     {
-        return viewport.localToScene( point )
+        return viewport.localToScene(point)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#sceneToLocal()
      */
-    public function sceneToLocal( point:Point ):Point
+    public function sceneToLocal(point:Point):Point
     {
-        return viewport.sceneToLocal( point )
+        return viewport.sceneToLocal(point)
     }
 }
 

@@ -131,7 +131,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
             if (url == String(value))
                 return
 
-            url = LoaderUtil.createAbsoluteURL(this.loaderInfo.url, String(value))
+            url = LoaderUtil.createAbsoluteURL(loaderInfo.url, String(value))
             urlLoader = new URLLoader(new URLRequest(url))
 
             urlLoader.addEventListener(Event.COMPLETE,

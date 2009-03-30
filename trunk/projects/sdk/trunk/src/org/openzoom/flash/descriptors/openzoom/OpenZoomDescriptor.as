@@ -171,7 +171,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
         // Parse sources
         for each (var source:XML in data.source)
         {
-        	var path:String = this.uri.substring(0, this.uri.lastIndexOf("/"))
+        	var path:String = this.uri.substring(0, this.uri.lastIndexOf("/") + 1)
         	var sourceUri:String = LoaderUtil.createAbsoluteURL(path, source.@uri)
         	var width:uint = source.@width
         	var height:uint = source.@height

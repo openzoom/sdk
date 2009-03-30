@@ -96,11 +96,11 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         if (descriptor.tileOverlap == 0 && renderingMode != RenderingMode.SMOOTH)
             loadBackground()
 
-//        updateDisplayListTimer = new Timer(50)
+//        updateDisplayListTimer = new Timer(100)
 //        updateDisplayListTimer.addEventListener(TimerEvent.TIMER,
 //                                                updateDisplayListTimer_timerHandler,
 //                                                false, 0, true)
-        // FIXME
+//        // FIXME
 //        updateDisplayListTimer.start()
     }
 

@@ -51,12 +51,12 @@ public class ViewportEvent extends Event
     /**
      * Constructor.
      */
-    public function ViewportEvent( type:String,
+    public function ViewportEvent(type:String,
                                    bubbles:Boolean = false,
                                    cancelable:Boolean = false,
-                                   oldTransform:IViewportTransform = null )
+                                   oldTransform:IViewportTransform = null)
     {
-        super( type, bubbles, cancelable )
+        super(type, bubbles, cancelable)
 
         _oldTransform = oldTransform
     }
@@ -92,7 +92,7 @@ public class ViewportEvent extends Event
      */
     override public function clone():Event
     {
-        return new ViewportEvent( type, bubbles, cancelable, oldTransform )
+        return new ViewportEvent(type, bubbles, cancelable, oldTransform)
     }
 }
 

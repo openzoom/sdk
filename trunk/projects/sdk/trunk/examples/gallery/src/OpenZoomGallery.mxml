@@ -9,10 +9,9 @@
     >
     <mx:Script>
         <![CDATA[
-        	import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
 
             /**
-             * Seadragon AJAX Gallery in OpenZoom
+             * Seadragon Ajax Gallery in OpenZoom
              * Developed by Daniel Gasienica
              *
              * All Images Copyright Microsoft

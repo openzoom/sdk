@@ -364,6 +364,9 @@ public final class MultiScaleContainer extends Sprite
         g.drawRect(0, 0, 100, 100)
         g.endFill()
 
+        // TODO: Test
+        mouseCatcher.mouseEnabled = false
+
         super.addChild(mouseCatcher)
     }
 
