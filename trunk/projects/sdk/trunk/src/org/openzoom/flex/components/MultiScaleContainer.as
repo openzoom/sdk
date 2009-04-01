@@ -379,7 +379,7 @@ public final class MultiScaleContainer extends UIComponent
             // remove all existing children
             while (numChildren > 0)
                 removeChildAt(0)
-    
+
 //            for each (var child:DisplayObject in _children)
 //                _scene.addItem(child)
         }
@@ -459,7 +459,7 @@ public final class MultiScaleContainer extends UIComponent
     override protected function updateDisplayList(unscaledWidth:Number,
                                                   unscaledHeight:Number):void
     {
-        
+
         if (viewport.viewportWidth != unscaledWidth ||
             viewport.viewportHeight != unscaledHeight)
             _viewport.setSize(unscaledWidth, unscaledHeight)
@@ -937,7 +937,7 @@ public final class MultiScaleContainer extends UIComponent
     }
 
     /**
-     * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
+     * @copy org.openzoom.flash.viewport.IViewport#fitToBounds()
      */
     public function fitToBounds(bounds:Rectangle,
                                 scale:Number = 1.0,

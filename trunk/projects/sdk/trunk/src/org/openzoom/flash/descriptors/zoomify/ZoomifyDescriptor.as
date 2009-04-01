@@ -61,7 +61,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     {
         this.data = data
         this.uri = source
-        
+
         parseXML(data)
         _numLevels = computeNumLevels(width, height, tileWidth, tileHeight)
         levels = computeLevels(width, height, tileWidth, tileHeight, numLevels)
@@ -243,7 +243,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
         var numColumns:uint = getLevelAt(level).numColumns
         var tileIndex:uint = column + row * numColumns + tileCountUpToLevel[level]
         var tileGroup:uint = tileIndex / DEFAULT_NUM_TILES_IN_FOLDER
-        
+
         return tileGroup
     }
 }

@@ -39,7 +39,7 @@ public interface IMultiScaleRenderer
      */
     function get viewport():INormalizedViewport
     function set viewport(value:INormalizedViewport):void
-    
+
     /**
      * The scene this renderer is attached to.
      */
@@ -48,7 +48,7 @@ public interface IMultiScaleRenderer
 
     /**
      * Bounds of this renderer.
-     */ 
+     */
     function getBounds(targetCoordinateSpace:DisplayObject):Rectangle
 }
 

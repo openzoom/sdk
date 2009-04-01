@@ -35,6 +35,8 @@ import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
 
 /**
+ * @private
+ *
  * Base class for MultiScaleImage and DeepZoomContainer.
  */
 public class MultiScaleImageBase extends UIComponent
@@ -551,7 +553,7 @@ public class MultiScaleImageBase extends UIComponent
     }
 
     /**
-     * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
+     * @copy org.openzoom.flash.viewport.IViewport#fitToBounds()
      */
     public function fitToBounds(bounds:Rectangle,
                                 scale:Number=1.0,

@@ -138,7 +138,7 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
         tileBounds.x = Math.ceil((tileBounds.x / currentLevel.width) * maxLevel.width)
         tileBounds.y = Math.ceil((tileBounds.y / currentLevel.height) * maxLevel.height)
         var region:String = [tileBounds.y, tileBounds.x, tileBounds.height, tileBounds.width].join(",")
-        
+
         var url:String =  resolverURL + "?" +
                                "url_ver=Z39.88-2004&" +
                                "rft_id=" + url + "&" +
@@ -154,17 +154,17 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
     override public function getTileBounds(level:int, column:uint, row:uint):Rectangle
     {
         var currentLevel:IMultiScaleImageLevel = levels[level] as IMultiScaleImageLevel
-        
+
         var offsetX:uint = (column == 0) ? 0 : tileOverlap
         var offsetY:uint = (row == 0) ? 0 : tileOverlap
         var x:uint = (column * tileWidth)  - offsetX
         var y:uint = (row * tileHeight) - offsetY
-        
+
         var w:uint = tileWidth +  (column == 0 ? 1 : 2) * tileOverlap
         var h:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
         w = Math.min(w, currentLevel.width - x)
         h = Math.min(h, currentLevel.height - y)
-        
+
         var bounds:Rectangle = new Rectangle(x, y, w, h)
         return bounds
     }

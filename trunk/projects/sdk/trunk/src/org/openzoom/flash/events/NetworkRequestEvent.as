@@ -60,21 +60,21 @@ public class NetworkRequestEvent extends Event
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Request this event belongs to.
-     */ 
+     */
     public var request:INetworkRequest
-    
+
     /**
      * Data that the event is carrying.
-     */ 
+     */
     public var data:* = null
-    
+
     /**
      * Context of this request event.
      * Useful for identifying certain requests, e.g. by URL.
-     */ 
+     */
     public var context:* = null
 
     //--------------------------------------------------------------------------

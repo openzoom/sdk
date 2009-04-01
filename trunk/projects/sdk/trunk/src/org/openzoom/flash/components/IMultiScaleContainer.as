@@ -183,7 +183,7 @@ public interface IMultiScaleContainer
                    immediately:Boolean=false):void
 
     /**
-     * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
+     * @copy org.openzoom.flash.viewport.IViewport#fitToBounds()
      */
     function fitToBounds(bounds:Rectangle,
                          scale:Number=1.0,

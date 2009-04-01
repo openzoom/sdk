@@ -5,12 +5,13 @@
 	xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
 	xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
 	xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
-	backgroundGradientColors="[ 0xFFFFFF, 0xFFFFFF ]"
+	backgroundGradientColors="[0xFFFFFF, 0xFFFFFF]"
 	applicationComplete="applicationCompleteHandler(event)"
 	layout="absolute"
 	>
 	<mx:Script>
 		<![CDATA[
+			import org.openzoom.flash.events.ViewportEvent;
 		
 			import flashx.textLayout.container.DisplayObjectContainerController;
 			import flashx.textLayout.conversion.ImportExportConfiguration;
@@ -26,16 +27,19 @@
             	loader = new URLLoader(new URLRequest("../data/document.xml"))
             	loader.addEventListener(Event.COMPLETE, loader_completeHandler)
             	
-            	var box:Sprite = new Sprite()
-            	var g:Graphics = box.graphics
-            	g.beginFill(0xFF6600, 0.2)
-            	g.drawRect(0, 0, 1000, 1000)
-            	g.endFill()
-            	
-            	container.addChild(box)
+//            	var box:Sprite = new Sprite()
+//            	var g:Graphics = box.graphics
+//            	g.beginFill(0xFF6600, 0.2)
+//            	g.drawRect(0, 0, 1000, 1000)
+//            	g.endFill()
+//            	
+//            	container.addChild(box)
             	
             	textContainer = new Sprite()
             	container.addChild(textContainer)
+            	container.viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
+            	                                    viewport_transformUpdateHandler,
+            	                                    false, 0, true)
             }
 
 			private function loader_completeHandler(event:Event):void
@@ -54,11 +58,16 @@
                     new DisplayObjectContainerController(textContainer,
 	                                                     container.sceneWidth,
 	                                                     container.sceneHeight))
-                textFlow.columnCount = 12
-                textFlow.columnGap = 0
+                textFlow.columnCount = 16
+                textFlow.columnGap = 10
 	            textFlow.flowComposer.updateAllContainers()
 	            textFlow.color = 0xFFFFFF
-			}	
+			}
+				
+            private function viewport_transformUpdateHandler(event:ViewportEvent):void
+            {
+                trace(container.viewport.scale)
+            }
 			
 		]]>
 	</mx:Script>

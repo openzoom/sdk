@@ -29,6 +29,6 @@ package org.openzoom.flash.utils.uri
 
         // TODO: Implement this...
 
-        return resolvedURI 
+        return resolvedURI
     }
 }

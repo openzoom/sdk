@@ -29,10 +29,10 @@ package org.openzoom.flash.utils.math
     {
         if (value < minimum)
             return minimum
-            
+
         if (value > maximum)
             return maximum
-            
+
         return value
     }
 }

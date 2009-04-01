@@ -118,7 +118,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
 
             uri = uri.replace(/{column}/, computedColumn)
                      .replace(/{row}/, computedRow)
-                     
+
             return resolveURI(descriptor.uri, uri)
         }
 

@@ -160,13 +160,13 @@ public class NetworkQueue extends EventDispatcher
     {
         var bytesLoaded:uint = 0
         var bytesTotal:uint = 0
-        
+
         for each (var request:INetworkRequest in connections)
         {
             bytesLoaded += request.bytesLoaded
             bytesTotal += request.bytesTotal
         }
-        
+
         var progressEvent:ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS)
         progressEvent.bytesLoaded = bytesLoaded
         progressEvent.bytesTotal = bytesTotal

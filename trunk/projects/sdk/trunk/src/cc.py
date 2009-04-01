@@ -20,23 +20,23 @@ from __future__ import with_statement
 import fileinput
 import os
 import re
+import sys
 
 def convert(file):
     for line in fileinput.FileInput(file, inplace=1):
         line = re.sub("( )+$", "", line)
         line = re.sub("\t", "    ", line)
 #        line =  re.sub(" : ", ":", line) # messes up ternary expressions
-        line =  re.sub("\( ", "(", line)
-        line =  re.sub(" \)", ")", line)
-        line =  re.sub("if\(", "if (", line)
-        line =  re.sub("for\(", "for (", line)
-        line =  re.sub("while\(", "while (", line)
-        line =  re.sub("for each\(", "for each (", line)
-        line =  re.sub("switch\(", "switch (", line)
-        line =  re.sub("\n", "", line)
-        line =  re.sub("\n$", "", line)
-        print line
-        
+        line = re.sub("\( ", "(", line)
+        line = re.sub(" \)", ")", line)
+        line = re.sub("if\(", "if (", line)
+        line = re.sub("for\(", "for (", line)
+        line = re.sub("while\(", "while (", line)
+        line = re.sub("for each\(", "for each (", line)
+        line = re.sub("switch\(", "switch (", line)
+        sys.stdout.write(line)
+
+
 for root, dirs, files in os.walk("."):
     for file in files:
         _, ext = os.path.splitext(file)

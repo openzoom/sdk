@@ -695,11 +695,11 @@ public final class MultiScaleContainer extends Sprite
     }
 
     /**
-     * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
+     * @copy org.openzoom.flash.viewport.IViewport#fitToBounds()
      */
-    public function zoomToBounds(bounds:Rectangle,
-                                 scale:Number=1.0,
-                                 immediately:Boolean=false):void
+    public function fitToBounds(bounds:Rectangle,
+                                scale:Number=1.0,
+                                immediately:Boolean=false):void
     {
         viewport.fitToBounds(bounds, scale, immediately)
     }

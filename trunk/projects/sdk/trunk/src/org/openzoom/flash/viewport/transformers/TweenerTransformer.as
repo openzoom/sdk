@@ -250,7 +250,7 @@ public class TweenerTransformer implements IViewportTransformer
                                   transition: easing,
                                   onComplete: viewport.endTransform
                               }
-                           )
+                          )
 
             // END: TRANSFORMSHORTCUTS
 
@@ -279,7 +279,7 @@ public class TweenerTransformer implements IViewportTransformer
 //                                    },
 //                                    onComplete: viewport.endTransform
 //                                }
-//                           )
+//                          )
             // END: THE GOOD WAY.
         }
     }

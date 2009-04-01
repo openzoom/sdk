@@ -129,7 +129,7 @@ public final class ExternalMouseWheel extends EventDispatcher
                         evt.returnValue = false;
                         if (!target.externalMouseEvent)
                             return;
-                        switch(true) {
+                        switch (true) {
                         case ExternalMouseWheel.browser.mozilla:
                             delta = -evt.detail;
                             break;

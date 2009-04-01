@@ -380,7 +380,7 @@ public class KeyboardController extends ViewportControllerBase
     private function updateFlags(event:KeyboardEvent,
                                  value:Boolean):void
     {
-        switch(event.keyCode)
+        switch (event.keyCode)
         {
             // booster
             case Keyboard.SHIFT:
@@ -467,7 +467,7 @@ public class KeyboardController extends ViewportControllerBase
             viewport.panBy(-deltaX, 0)
 
         if (rightActivated)
-            viewport.panBy( deltaX, 0)
+            viewport.panBy(deltaX, 0)
 
         // quick navigation
         if (pageUpActivated)
