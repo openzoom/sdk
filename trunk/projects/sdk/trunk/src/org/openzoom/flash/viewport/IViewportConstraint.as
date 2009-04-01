@@ -39,8 +39,8 @@ public interface IViewportConstraint
      *
      * @return Validated IViewportTransform object.
      */
-    function validate( transform:IViewportTransform,
-                       target:IViewportTransform ):IViewportTransform
+    function validate(transform:IViewportTransform,
+                      target:IViewportTransform):IViewportTransform
 }
 
 }

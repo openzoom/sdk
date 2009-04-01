@@ -37,8 +37,8 @@ public final class Base16
     /**
      * Returns the decoded value of the Base16 encoded String <code>value</code>.
      */
-    public static function decode( value:String,
-                                   ignoreCase:Boolean = false ):String
+    public static function decode(value:String,
+                                   ignoreCase:Boolean = false):String
     {
         var result:String = ""
         var l:int = value.length
@@ -46,10 +46,10 @@ public final class Base16
 //        if (l % 2 != 0)
 //            throw new ArgumentError("Argument is not a valid Base16 encoded String.")
 
-        for( var i:int = 0; i < l; i += 2 )
+        for (var i:int = 0; i < l; i += 2)
         {
-            var s:int = parseInt( value.substr( i, 2 ), 16 )
-            result += String.fromCharCode( s )
+            var s:int = parseInt(value.substr(i, 2), 16)
+            result += String.fromCharCode(s)
         }
 
         return result
@@ -58,13 +58,13 @@ public final class Base16
     /**
      * Returns the Base16 encoded String of <code>value</code>.
      */
-    public static function encode( value:String ):String
+    public static function encode(value:String):String
     {
         var result:String = ""
         var l:int = value.length
 
-        for( var i:int = 0; i < l; i++ )
-            result += value.charCodeAt( i ).toString( 16 )
+        for (var i:int = 0; i < l; i++)
+            result += value.charCodeAt(i).toString(16)
 
         return result.toUpperCase()
     }

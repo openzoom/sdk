@@ -26,7 +26,7 @@ import flash.display.Bitmap;
 /**
  * @private
  *
- * Multi-scale image tile.
+ * Multiscale image tile.
  */
 public class Tile
 {
@@ -39,11 +39,11 @@ public class Tile
     /**
      * Constructor.
      */
-    public function Tile( bitmap:Bitmap,
-                          level:uint,
-                          row:uint,
-                          column:uint,
-                          overlap:uint = 0 )
+    public function Tile(bitmap:Bitmap,
+                         level:uint,
+                         row:uint,
+                         column:uint,
+                         overlap:uint=0)
     {
         this.bitmap = bitmap
         _level = level
@@ -125,13 +125,13 @@ public class Tile
 
     public function toString():String
     {
-        return "[Tile]" + "\n"
-               + "width: " + (bitmap ? bitmap.width : 0) + "\n"
-               + "height: " + (bitmap ? bitmap.height : 0) + "\n"
-               + "level: " + level + "\n"
-               + "column: " + column + "\n"
-               + "row: " + row + "\n"
-               + "overlap: " + overlap
+        return "[Tile]" + "\n" +
+               "width: " + (bitmap ? bitmap.width : 0) + "\n" +
+               "height: " + (bitmap ? bitmap.height : 0) + "\n" +
+               "level: " + level + "\n" +
+               "column: " + column + "\n" +
+               "row: " + row + "\n" +
+               "overlap: " + overlap
     }
 }
 

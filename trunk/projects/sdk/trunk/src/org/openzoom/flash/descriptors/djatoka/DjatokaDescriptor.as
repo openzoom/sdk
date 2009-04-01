@@ -30,6 +30,11 @@ import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
 import org.openzoom.flash.descriptors.MultiScaleImageLevel;
 import org.openzoom.flash.utils.math.clamp;
 
+/**
+ * Descriptor for the
+ * <a href="http://african.lanl.gov/aDORe/projects/djatoka/">
+ * djakota Image Server</a> by the Los Alamos National Library.
+ */
 public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
                                implements IMultiScaleImageDescriptor
 {
@@ -60,7 +65,7 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
     {
 
         levels = new Dictionary()
-        this.url = imageURL
+        url = imageURL
         this.resolverURL = resolverURL
         _width = width
         _height = height
@@ -110,14 +115,14 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
 
     public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
-    	var index:int = clamp(Math.ceil(Math.log(Math.max(width, height)) / Math.LN2)
-    	                             - DEFAULT_BASE_LEVEL, 0, numLevels - 1)
+        var index:int = clamp(Math.ceil(Math.log(Math.max(width, height)) / Math.LN2)
+                                     - DEFAULT_BASE_LEVEL, 0, numLevels - 1)
         return IMultiScaleImageLevel(getLevelAt(index)).clone()
     }
 
     public function getTileURL(level:int, column:uint, row:uint):String
     {
-        //http://african.lanl.gov/adore-djatoka/resolver?
+        //http://localhost/adore-djatoka/resolver?
         //       url_ver=Z39.88-2004 &
         //       rft_id={url} &
         //       svc_id=info:lanl-repo/svc/getRegion &
@@ -127,40 +132,40 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
         //       svc.rotate=0 &
         //       svc.region=1596,634,676,1320
 
-    	var tileBounds:Rectangle = getTileBounds(level, column, row)
-    	var currentLevel:IMultiScaleImageLevel = getLevelAt(level)
-    	var maxLevel:IMultiScaleImageLevel = getLevelAt(numLevels - 1)
-    	tileBounds.x = Math.ceil((tileBounds.x / currentLevel.width) * maxLevel.width)
-    	tileBounds.y = Math.ceil((tileBounds.y / currentLevel.height) * maxLevel.height)
-    	var region:String = [tileBounds.y, tileBounds.x, tileBounds.height, tileBounds.width].join(",")
-    	
-    	var url:String =  resolverURL + "?" +
-				               "url_ver=Z39.88-2004&" +
-				               "rft_id=" + url + "&" +
-				               "svc_id=info:lanl-repo/svc/getRegion&" +
-				               "svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000&" +
-				               "svc.format=" + type + "&" +
-				               "svc.level=" + level + "&" +
-				               "svc.rotate=0&" +
-				               "svc.region=" + region
+        var tileBounds:Rectangle = getTileBounds(level, column, row)
+        var currentLevel:IMultiScaleImageLevel = getLevelAt(level)
+        var maxLevel:IMultiScaleImageLevel = getLevelAt(numLevels - 1)
+        tileBounds.x = Math.ceil((tileBounds.x / currentLevel.width) * maxLevel.width)
+        tileBounds.y = Math.ceil((tileBounds.y / currentLevel.height) * maxLevel.height)
+        var region:String = [tileBounds.y, tileBounds.x, tileBounds.height, tileBounds.width].join(",")
+        
+        var url:String =  resolverURL + "?" +
+                               "url_ver=Z39.88-2004&" +
+                               "rft_id=" + url + "&" +
+                               "svc_id=info:lanl-repo/svc/getRegion&" +
+                               "svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000&" +
+                               "svc.format=" + type + "&" +
+                               "svc.level=" + level + "&" +
+                               "svc.rotate=0&" +
+                               "svc.region=" + region
         return url
     }
 
     override public function getTileBounds(level:int, column:uint, row:uint):Rectangle
     {
-    	var currentLevel:IMultiScaleImageLevel = levels[level] as IMultiScaleImageLevel
-    	
-    	var offsetX:uint = (column == 0) ? 0:tileOverlap
-    	var offsetY:uint = (row    == 0) ? 0:tileOverlap
-    	var x:uint = (column * tileWidth)  - offsetX
-    	var y:uint = (row    * tileHeight) - offsetY
-    	
-    	var w:uint = tileWidth +  (column == 0 ? 1 : 2) * tileOverlap
-    	var h:uint = tileHeight + (row    == 0 ? 1 : 2) * tileOverlap
-    	w = Math.min(w, currentLevel.width - x)
-    	h = Math.min(h, currentLevel.height - y)
-    	
-    	var bounds:Rectangle = new Rectangle(x, y, w, h)
+        var currentLevel:IMultiScaleImageLevel = levels[level] as IMultiScaleImageLevel
+        
+        var offsetX:uint = (column == 0) ? 0 : tileOverlap
+        var offsetY:uint = (row == 0) ? 0 : tileOverlap
+        var x:uint = (column * tileWidth)  - offsetX
+        var y:uint = (row * tileHeight) - offsetY
+        
+        var w:uint = tileWidth +  (column == 0 ? 1 : 2) * tileOverlap
+        var h:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
+        w = Math.min(w, currentLevel.width - x)
+        h = Math.min(h, currentLevel.height - y)
+        
+        var bounds:Rectangle = new Rectangle(x, y, w, h)
         return bounds
     }
 

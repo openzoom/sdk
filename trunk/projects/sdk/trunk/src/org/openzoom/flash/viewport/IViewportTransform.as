@@ -203,7 +203,7 @@ public interface IViewportTransform
      * @param rect Rectangular area to be shown in the viewport.
      * @param scale Scale at which the area is beeing displayed.
      */
-    function zoomToBounds(bounds:Rectangle, scale:Number=1.0):void
+    function fitToBounds(bounds:Rectangle, scale:Number=1.0):void
 
     /**
      * Fit entire scene into the viewport.

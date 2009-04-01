@@ -35,7 +35,7 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 /**
  * @private
  *
- * Component for quickly navigating a multi-scale scene.
+ * Component for quickly navigating a multiscale scene.
  */
 public class SceneNavigator extends Sprite
 {
@@ -99,12 +99,12 @@ public class SceneNavigator extends Sprite
 
     public function set viewport(value:INormalizedViewport):void
     {
-        if(value === viewport)
+        if (value === viewport)
             return
 
         _viewport = value
 
-        if(viewport)
+        if (viewport)
         {
             viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
                                       viewport_transformUpdateHandler,
@@ -118,8 +118,10 @@ public class SceneNavigator extends Sprite
             var aspectRatio:Number =
                     viewport.scene.sceneWidth / viewport.scene.sceneHeight
 
-            background.width = Math.min(DEFAULT_DIMENSION, DEFAULT_DIMENSION * aspectRatio)
-            background.height = Math.min(DEFAULT_DIMENSION, DEFAULT_DIMENSION / aspectRatio)
+            background.width = Math.min(DEFAULT_DIMENSION,
+                                        DEFAULT_DIMENSION * aspectRatio)
+            background.height = Math.min(DEFAULT_DIMENSION,
+                                         DEFAULT_DIMENSION / aspectRatio)
 
             var backgroundBounds:Rectangle = background.getRect(this)
             backgroundWidth = backgroundBounds.width
@@ -195,7 +197,7 @@ public class SceneNavigator extends Sprite
 
     private function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
-        if(panning)
+        if (panning)
            return
 
         transformWindow()
@@ -229,16 +231,16 @@ public class SceneNavigator extends Sprite
         var windowWidth:Number = windowBounds.width
         var windowHeight:Number = windowBounds.height
 
-        if(targetX < 0)
+        if (targetX < 0)
             targetX = 0
 
-        if(targetY < 0)
+        if (targetY < 0)
             targetY = 0
 
-        if(windowBounds.right > backgroundWidth)
+        if (windowBounds.right > backgroundWidth)
             targetX = backgroundWidth - windowWidth
 
-        if(windowBounds.bottom > backgroundHeight)
+        if (windowBounds.bottom > backgroundHeight)
             targetY = backgroundHeight - windowHeight
 
         window.x = targetX
@@ -289,8 +291,8 @@ public class SceneNavigator extends Sprite
         var targetHeight:Number = clamp(v.height, 0, 1) * backgroundHeight
 
         // enable / disable window dragging
-        if(viewport.transformer.target.width >= 1 &&
-           viewport.transformer.target.height >= 1)
+        if (viewport.transformer.target.width >= 1 &&
+            viewport.transformer.target.height >= 1)
             window.mouseEnabled = false
         else
             window.mouseEnabled = true
@@ -298,7 +300,7 @@ public class SceneNavigator extends Sprite
         // transform
         window.width = targetWidth
         window.height = targetHeight
-        window.x = clamp(targetX, 0, background.width  - window.width)
+        window.x = clamp(targetX, 0, background.width - window.width)
         window.y = clamp(targetY, 0, background.height - window.height)
   }
 }

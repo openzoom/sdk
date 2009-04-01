@@ -4,45 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>OpenZoom Taishet: Inline Multiscale Image Replacement &mdash OpenZoom.org</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-//                $("input.enter").click(function(){enhanceImages();});
-                enhanceImages();
-             })
-            function enhanceImages() {
-                $('img').each(function() {
-                    var width = $(this).attr('width');
-                    var height = $(this).attr('height');
-                    var image = '<img src="' + $(this).attr('src') + '" width="' + width + '" height="' + height + '">';
-                    var source = $(this).attr('openzoom:source');
-                    var viewer = getEmbedHTML(source, width, height, image, "viewer" + Math.floor(Math.random() * 100000));
-                    $(this).replaceWith(viewer);
-                });
-            }
-            
-            function getEmbedHTML(source, width, height, alternate, id) {
-                return '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="'+ width +'" height="'+ height +'" id="' + id + '" name="' + id + '">' +
-                       '  <param name="movie" value="OpenZoomViewer.swf"/>' +
-                       '  <param name="scale" value="noscale" />' +
-                       '  <param name="bgcolor" value="#111111" />' +
-                       '  <param name="allowfullscreen" value="true"/>' +
-                       '  <param name="allowscriptaccess" value="always" />' +
-                       '  <param name="flashvars" value="source=' + source + '"/>' +
-                       '  <!--[if !IE]>-->' +
-                       '  <object type="application/x-shockwave-flash" data="OpenZoomViewer.swf" width="'+ width +'" height="'+ height +'" name="' + id + '">' +
-                       '    <param name="scale" value="noscale" />' +
-                       '    <param name="bgcolor" value="#111111" />' +
-                       '    <param name="allowfullscreen" value="true" />' +
-                       '    <param name="allowscriptaccess" value="always" />' +
-                       '    <param name="flashvars" value="source=' + source + '"/>' +
-                       '  <!--<![endif]-->' +
-                       + alternate +
-                       '  <!--[if !IE]>--> ' +
-                       '  </object>' +
-                       '  <!--<![endif]-->' +
-                       '</object>';
-            }
-        </script>
+        <script type="text/javascript" src="openzoom.js"></script>
         <style type="text/css">
             body {
             	background-color: #111;

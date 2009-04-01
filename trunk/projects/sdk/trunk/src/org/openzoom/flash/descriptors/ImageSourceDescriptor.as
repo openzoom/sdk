@@ -21,6 +21,9 @@
 package org.openzoom.flash.descriptors
 {
 
+/**
+ * Basic implementation of the IImageSourceDescriptor interface.
+ */
 public class ImageSourceDescriptor implements IImageSourceDescriptor
 {
     //--------------------------------------------------------------------------

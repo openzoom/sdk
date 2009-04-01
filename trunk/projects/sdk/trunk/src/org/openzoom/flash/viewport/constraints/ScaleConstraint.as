@@ -35,8 +35,8 @@ public class ScaleConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_MIN_SCALE:Number = 0.00001
-    private static const DEFAULT_MAX_SCALE:Number = 1000000
+    private static const DEFAULT_MIN_SCALE:Number = 0.000001
+    private static const DEFAULT_MAX_SCALE:Number = 10000000
 
     //--------------------------------------------------------------------------
     //
@@ -71,7 +71,7 @@ public class ScaleConstraint implements IViewportConstraint
         return _minScale
     }
 
-    public function set minScale( value:Number ):void
+    public function set minScale(value:Number):void
     {
         _minScale = value
     }
@@ -90,7 +90,7 @@ public class ScaleConstraint implements IViewportConstraint
         return _maxScale
     }
 
-    public function set maxScale( value:Number ):void
+    public function set maxScale(value:Number):void
     {
        _maxScale = value
     }
@@ -104,22 +104,22 @@ public class ScaleConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform:IViewportTransform,
-                              target:IViewportTransform ):IViewportTransform
+    public function validate(transform:IViewportTransform,
+                              target:IViewportTransform):IViewportTransform
     {
         // FIXME
         // Prevent from moving when the scale limist are reached
-//        if( transform.scale == minScale || transform.scale == maxScale )
+//        if (transform.scale == minScale || transform.scale == maxScale)
 //        {
-////            target.panTo( transform.x, transform.y )
+////            target.panTo(transform.x, transform.y)
 //            return target
 //        }
 
         // validate zoom
-        if( transform.scale > maxScale )
+        if (transform.scale > maxScale)
             transform.scale = maxScale
 
-        if( transform.scale < minScale )
+        if (transform.scale < minScale)
             transform.scale = minScale
 
         // return validated transform

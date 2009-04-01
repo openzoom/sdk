@@ -21,8 +21,8 @@
 package org.openzoom.flash.descriptors.deepzoom
 {
 
-import flash.utils.Dictionary;
 import flash.geom.Rectangle;
+import flash.utils.Dictionary;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
@@ -33,7 +33,7 @@ import org.openzoom.flash.utils.math.clamp;
 /**
  * Descriptor for the
  * <a href="http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx">
- * Microsoft Deep Zoom Image (DZI) format.</a>
+ * Microsoft Deep Zoom Image (DZI) format</a>.
  */
 public class DZIDescriptor extends MultiScaleImageDescriptorBase
                            implements IMultiScaleImageDescriptor
@@ -111,18 +111,18 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
      */
     override public function getTileBounds(level:int, column:uint, row:uint):Rectangle
     {
-    	var bounds:Rectangle = new Rectangle()
-    	var offsetX:uint = (column == 0) ? 0 : tileOverlap
-    	var offsetY:uint = (row == 0) ? 0 : tileOverlap
-    	bounds.x = (column * tileWidth) - offsetX
-    	bounds.y = (row * tileHeight) - offsetY
-    	
-    	var l:IMultiScaleImageLevel = getLevelAt(level)
-    	var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
-    	var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
+        var bounds:Rectangle = new Rectangle()
+        var offsetX:uint = (column == 0) ? 0 : tileOverlap
+        var offsetY:uint = (row == 0) ? 0 : tileOverlap
+        bounds.x = (column * tileWidth) - offsetX
+        bounds.y = (row * tileHeight) - offsetY
+        
+        var l:IMultiScaleImageLevel = getLevelAt(level)
+        var width:uint = tileWidth + (column == 0 ? 1:2) * tileOverlap
+        var height:uint = tileHeight + (row == 0 ? 1:2) * tileOverlap
         bounds.width = Math.min(width, l.width - bounds.x)
         bounds.height = Math.min(height, l.height - bounds.y)
-            	
+                
         return bounds
     }
 
@@ -148,7 +148,11 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
      */
     public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
-        var index:int = clamp(Math.ceil(Math.log(Math.max(width, height)) / Math.LN2), 0, numLevels - 1)
+    	var longestSide:Number = Math.max(width, height)
+    	var log2:Number = Math.log(longestSide) / Math.LN2
+    	var maxLevel:uint = numLevels - 1
+        var index:int = clamp(Math.ceil(log2), 0, maxLevel)
+        
         return IMultiScaleImageLevel(getLevelAt(index)).clone()
     }
 
@@ -252,11 +256,11 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         var width :uint = originalWidth
         var height:uint = originalHeight
 
-        for(var index:int = numLevels - 1; index >= 0; index--)
+        for (var index:int = numLevels - 1; index >= 0; index--)
         {
             levels[ index ] = new MultiScaleImageLevel(this, index, width, height,
-                                                        Math.ceil(width / tileWidth),
-                                                        Math.ceil(height / tileHeight))
+                                                       Math.ceil(width / tileWidth),
+                                                       Math.ceil(height / tileHeight))
             width = (width + 1) >> 1
             height = (height + 1) >> 1
 //          width = Math.ceil(width / 2)
@@ -264,7 +268,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         }
 
 //        Twitter on 17.09.2008
-//        for(var i:int=max;i>=0;i--){levels[i]=new Level(w,h,Math.ceil(w/tileWidth),Math.ceil(h/tileHeight));w=Math.ceil(w/2);h=Math.ceil(h/2)}
+//        for (var i:int=max;i>=0;i--){levels[i]=new Level(w,h,Math.ceil(w/tileWidth),Math.ceil(h/tileHeight));w=Math.ceil(w/2);h=Math.ceil(h/2)}
 
         return levels
     }

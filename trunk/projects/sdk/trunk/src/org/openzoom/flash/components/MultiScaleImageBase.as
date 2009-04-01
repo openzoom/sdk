@@ -86,7 +86,7 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleContainer
      */
     public function get sceneWidth():Number
     {
-        return container ? container.scene.sceneWidth:NaN
+        return container ? container.scene.sceneWidth : NaN
     }
 
     //----------------------------------
@@ -98,7 +98,7 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleContainer
      */
     public function get sceneHeight():Number
     {
-        return container ? container.scene.sceneHeight:NaN
+        return container ? container.scene.sceneHeight : NaN
     }
 
     //--------------------------------------------------------------------------
@@ -137,7 +137,7 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleContainer
 
     public function set transformer(value:IViewportTransformer):void
     {
-        if(transformer !== value)
+        if (transformer !== value)
             viewport.transformer = value
     }
 
@@ -162,7 +162,7 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleContainer
 
     public function set constraint(value:IViewportConstraint):void
     {
-        if(constraint !== value)
+        if (constraint !== value)
             viewport.transformer.constraint = value
     }
 
@@ -200,7 +200,7 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleContainer
      */
     private function createChildren():void
     {
-        if(!container)
+        if (!container)
             createContainer()
     }
 
@@ -408,9 +408,9 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleContainer
      * @copy org.openzoom.flash.viewport.IViewport#zoomBy()
      */
     public function zoomBy(factor:Number,
-                            transformX:Number=0.5,
-                            transformY:Number=0.5,
-                            immediately:Boolean=false):void
+                           transformX:Number=0.5,
+                           transformY:Number=0.5,
+                           immediately:Boolean=false):void
     {
         viewport.zoomBy(factor, transformX, transformY, immediately)
     }
@@ -428,7 +428,7 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleContainer
      * @copy org.openzoom.flash.viewport.IViewport#panBy()
      */
     public function panBy(deltaX:Number, deltaY:Number,
-                           immediately:Boolean=false):void
+                          immediately:Boolean=false):void
     {
         viewport.panBy(deltaX, deltaY, immediately)
     }

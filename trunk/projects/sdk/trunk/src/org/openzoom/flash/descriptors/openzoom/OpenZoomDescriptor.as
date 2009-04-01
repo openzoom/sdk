@@ -23,14 +23,13 @@ package org.openzoom.flash.descriptors.openzoom
 
 import flash.utils.Dictionary;
 
-import mx.utils.LoaderUtil;
-
 import org.openzoom.flash.descriptors.IImageSourceDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.ImageSourceDescriptor;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
 import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.utils.uri.resolveURI;
 
 /**
  * OpenZoom Descriptor.
@@ -88,7 +87,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
      */ 
     override public function get sources():Array
     {
-        return _sources.slice(0)	
+        return _sources.slice(0)    
     }
 
     //--------------------------------------------------------------------------
@@ -122,7 +121,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
         // TODO
         var level:IMultiScaleImageLevel
 
-        for(var i:int = numLevels - 1; i >= 0; i--)
+        for (var i:int = numLevels - 1; i >= 0; i--)
         {
             level = getLevelAt(i)
             if (level.width < width || level.height < height)
@@ -171,12 +170,12 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
         // Parse sources
         for each (var source:XML in data.source)
         {
-        	var path:String = this.uri.substring(0, this.uri.lastIndexOf("/") + 1)
-        	var sourceUri:String = LoaderUtil.createAbsoluteURL(path, source.@uri)
-        	var width:uint = source.@width
-        	var height:uint = source.@height
-        	var type:String = source.@type
-        	
+            var path:String = this.uri.substring(0, this.uri.lastIndexOf("/") + 1)
+            var sourceUri:String = resolveURI(path, source.@uri)
+            var width:uint = source.@width
+            var height:uint = source.@height
+            var type:String = source.@type
+            
             var descriptor:IImageSourceDescriptor
             descriptor = new ImageSourceDescriptor(sourceUri, width, height, type)
             

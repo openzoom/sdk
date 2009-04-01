@@ -22,7 +22,7 @@ package org.openzoom.flash.descriptors
 {
 
 /**
- * Descriptor for an image source.
+ * Interface for a descriptor of an image source.
  */
 public interface IImageSourceDescriptor
 {
@@ -35,36 +35,36 @@ public interface IImageSourceDescriptor
     //----------------------------------
     //  width
     //----------------------------------
-    
+
     /**
      * Intrinsic width of the image source in pixels.
-     */ 
+     */
     function get width():uint
-    
+
     //----------------------------------
     //  height
     //----------------------------------
-    
+
     /**
      * Intrinsic height of the image source in pixels.
-     */ 
+     */
     function get height():uint
-    
+
     //----------------------------------
     //  uri
     //----------------------------------
-    
+
     /**
      * Absolute URI to the image source.
-     */ 
+     */
     function get uri():String
-    
+
     //----------------------------------
     //  type
     //----------------------------------
-    
+
     /**
-     * Mime-type of the image source. 
+     * Mime-type of the image source.
      */
     function get type():String
 

@@ -107,82 +107,82 @@ public class ContextMenuController extends ViewportControllerBase
     /**
      * @private
      */
-    override protected function view_addedToStageHandler( event:Event ):void
+    override protected function view_addedToStageHandler(event:Event):void
     {
         // Fullscreen
-        view.stage.addEventListener( FullScreenEvent.FULL_SCREEN,
-                                     stage_fullScreenHandler,
-                                     false, 0, true )
+        view.stage.addEventListener(FullScreenEvent.FULL_SCREEN,
+                                    stage_fullScreenHandler,
+                                    false, 0, true)
 
         // Context Menu
         menu = new ContextMenu()
         menu.hideBuiltInItems()
 
         // Display state
-        fullScreenMenu = new ContextMenuItem( FULL_SCREEN_MENU_NORMAL_CAPTION )
-        fullScreenMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                         fullScreenMenu_menuItemSelectHandler,
-                                         false, 0, true )
-        menu.customItems.push( fullScreenMenu )
+        fullScreenMenu = new ContextMenuItem(FULL_SCREEN_MENU_NORMAL_CAPTION)
+        fullScreenMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                        fullScreenMenu_menuItemSelectHandler,
+                                        false, 0, true)
+        menu.customItems.push(fullScreenMenu)
 
-        showAllMenu = new ContextMenuItem( SHOW_ALL_MENU_CAPTION )
-        showAllMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                      showAllMenu_menuItemSelectHandler,
-                                      false, 0, true )
-        menu.customItems.push( showAllMenu )
+        showAllMenu = new ContextMenuItem(SHOW_ALL_MENU_CAPTION)
+        showAllMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                     showAllMenu_menuItemSelectHandler,
+                                     false, 0, true)
+        menu.customItems.push(showAllMenu)
 
         // Zooming
-        zoomInMenu = new ContextMenuItem( ZOOM_IN_MENU_CAPTION )
+        zoomInMenu = new ContextMenuItem(ZOOM_IN_MENU_CAPTION)
         zoomInMenu.separatorBefore = true
-        zoomInMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                     zoomInMenu_menuItemSelectHandler,
-                                     false, 0, true )
-        menu.customItems.push( zoomInMenu )
+        zoomInMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                    zoomInMenu_menuItemSelectHandler,
+                                    false, 0, true)
+        menu.customItems.push(zoomInMenu)
 
-        zoomOutMenu = new ContextMenuItem( ZOOM_OUT_MENU_CAPTION )
-        zoomOutMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                      zoomOutMenu_menuItemSelectHandler,
-                                      false, 0, true )
-        menu.customItems.push( zoomOutMenu )
+        zoomOutMenu = new ContextMenuItem(ZOOM_OUT_MENU_CAPTION)
+        zoomOutMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                     zoomOutMenu_menuItemSelectHandler,
+                                     false, 0, true)
+        menu.customItems.push(zoomOutMenu)
 
         // Panning
-        panUpMenu = new ContextMenuItem( PAN_UP_MENU_CAPTION )
+        panUpMenu = new ContextMenuItem(PAN_UP_MENU_CAPTION)
         panUpMenu.separatorBefore = true
-        panUpMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                    panUpMenu_menuItemSelectHandler,
-                                    false, 0, true )
-        menu.customItems.push( panUpMenu )
+        panUpMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                   panUpMenu_menuItemSelectHandler,
+                                   false, 0, true)
+        menu.customItems.push(panUpMenu)
 
-        panDownMenu = new ContextMenuItem( PAN_DOWN_MENU_CAPTION )
-        panDownMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                      panDownMenu_menuItemSelectHandler,
-                                      false, 0, true )
-        menu.customItems.push( panDownMenu )
+        panDownMenu = new ContextMenuItem(PAN_DOWN_MENU_CAPTION)
+        panDownMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                     panDownMenu_menuItemSelectHandler,
+                                     false, 0, true)
+        menu.customItems.push(panDownMenu)
 
 
-        panLeftMenu = new ContextMenuItem( PAN_LEFT_MENU_CAPTION )
-        panLeftMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                      panLeftMenu_menuItemSelectHandler,
-                                      false, 0, true )
-        menu.customItems.push( panLeftMenu )
+        panLeftMenu = new ContextMenuItem(PAN_LEFT_MENU_CAPTION)
+        panLeftMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                     panLeftMenu_menuItemSelectHandler,
+                                     false, 0, true)
+        menu.customItems.push(panLeftMenu)
 
-        panRightMenu = new ContextMenuItem( PAN_RIGHT_MENU_CAPTION )
-        panRightMenu.addEventListener( ContextMenuEvent.MENU_ITEM_SELECT,
-                                       panRightMenu_menuItemSelectHandler,
-                                       false, 0, true )
-        menu.customItems.push( panRightMenu )
+        panRightMenu = new ContextMenuItem(PAN_RIGHT_MENU_CAPTION)
+        panRightMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                      panRightMenu_menuItemSelectHandler,
+                                      false, 0, true)
+        menu.customItems.push(panRightMenu)
 
-        if( view is DisplayObjectContainer )
-            DisplayObjectContainer( view ).contextMenu = menu
+        if (view is DisplayObjectContainer)
+            DisplayObjectContainer(view).contextMenu = menu
     }
 
     /**
      * @private
      */
-    override protected function view_removedFromStageHandler( event:Event ):void
+    override protected function view_removedFromStageHandler(event:Event):void
     {
-        view.stage.removeEventListener( FullScreenEvent.FULL_SCREEN,
-                                        stage_fullScreenHandler )
+        view.stage.removeEventListener(FullScreenEvent.FULL_SCREEN,
+                                       stage_fullScreenHandler)
     }
 
     //--------------------------------------------------------------------------
@@ -192,52 +192,78 @@ public class ContextMenuController extends ViewportControllerBase
     //--------------------------------------------------------------------------
 
     // Display mode
-    private function showAllMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
+
+    /**
+     * @private
+     */
+    private function showAllMenu_menuItemSelectHandler(event:ContextMenuEvent):void
     {
         viewport.showAll()
     }
 
-    private function fullScreenMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
+    /**
+     * @private
+     */
+    private function fullScreenMenu_menuItemSelectHandler(event:ContextMenuEvent):void
     {
         toggleFullScreen()
     }
 
     // Zooming
-    private function zoomInMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
+
+    /**
+     * @private
+     */
+    private function zoomInMenu_menuItemSelectHandler(event:ContextMenuEvent):void
     {
         var origin:Point = getMouseOrigin()
-        viewport.zoomBy( ZOOM_IN_FACTOR, origin.x, origin.y )
+        viewport.zoomBy(ZOOM_IN_FACTOR, origin.x, origin.y)
     }
 
-    private function zoomOutMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
+    /**
+     * @private
+     */
+    private function zoomOutMenu_menuItemSelectHandler(event:ContextMenuEvent):void
     {
         var origin:Point = getMouseOrigin()
-        viewport.zoomBy( ZOOM_OUT_FACTOR, origin.x, origin.y )
+        viewport.zoomBy(ZOOM_OUT_FACTOR, origin.x, origin.y)
     }
 
     // Panning
-    private function panUpMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
+    /**
+     * @private
+     */
+    private function panUpMenu_menuItemSelectHandler(event:ContextMenuEvent):void
     {
         var dy:Number = viewport.height * PAN_FACTOR
-        viewport.panBy( 0, -dy )
+        viewport.panBy(0, -dy)
     }
 
-    private function panDownMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
+    /**
+     * @private
+     */
+    private function panDownMenu_menuItemSelectHandler(event:ContextMenuEvent):void
     {
         var dy:Number = viewport.height * PAN_FACTOR
-        viewport.panBy( 0, dy )
+        viewport.panBy(0, dy)
     }
 
-    private function panLeftMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
+    /**
+     * @private
+     */
+    private function panLeftMenu_menuItemSelectHandler(event:ContextMenuEvent):void
     {
         var dx:Number = viewport.width * PAN_FACTOR
-        viewport.panBy( -dx, 0 )
+        viewport.panBy(-dx, 0)
     }
 
-    private function panRightMenu_menuItemSelectHandler( event:ContextMenuEvent ):void
+    /**
+     * @private
+     */
+    private function panRightMenu_menuItemSelectHandler(event:ContextMenuEvent):void
     {
         var dx:Number = viewport.width * PAN_FACTOR
-        viewport.panBy( dx, 0 )
+        viewport.panBy(dx, 0)
     }
 
     //--------------------------------------------------------------------------
@@ -246,16 +272,19 @@ public class ContextMenuController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
 
-    private function stage_fullScreenHandler( event:FullScreenEvent ):void
+    /**
+     * @private
+     */
+    private function stage_fullScreenHandler(event:FullScreenEvent):void
     {
-        if( event.fullScreen )
+        if (event.fullScreen)
         {
-            if( fullScreenMenu )
+            if (fullScreenMenu)
                 fullScreenMenu.caption = FULL_SCREEN_MENU_EXIT_CAPTION
         }
         else
         {
-            if( fullScreenMenu )
+            if (fullScreenMenu)
                 fullScreenMenu.caption = FULL_SCREEN_MENU_NORMAL_CAPTION
         }
     }
@@ -266,25 +295,31 @@ public class ContextMenuController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @private
+     */
     private function toggleFullScreen():void
     {
         try
         {
-            if( view.stage.displayState == StageDisplayState.NORMAL )
+            if (view.stage.displayState == StageDisplayState.NORMAL)
                 view.stage.displayState = StageDisplayState.FULL_SCREEN
             else
                 view.stage.displayState = StageDisplayState.NORMAL
         }
-        catch( error:Error )
+        catch(error:Error)
         {
             // Do nothing, what else? =)
         }
     }
 
+    /**
+     * @private
+     */
     private function getMouseOrigin():Point
     {
-        return new Point( view.mouseX / view.width,
-                          view.mouseY / view.height )
+        return new Point(view.mouseX / view.width,
+                          view.mouseY / view.height)
     }
 }
 

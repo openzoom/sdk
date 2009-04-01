@@ -50,7 +50,7 @@ import org.openzoom.flash.viewport.NormalizedViewport;
 
 [DefaultProperty("children")]
 /**
- * Generic container for multi-scale content.
+ * Generic container for multiscale content.
  */
 public final class MultiScaleContainer extends UIComponent
                                        implements IMultiScaleContainer,
@@ -67,7 +67,7 @@ public final class MultiScaleContainer extends UIComponent
 
     private static const DEFAULT_SCENE_WIDTH:Number = 24000
     private static const DEFAULT_SCENE_HEIGHT:Number = 18000
-    private static const DEFAULT_SCENE_BACKGROUND_COLOR:uint   = 0x333333
+    private static const DEFAULT_SCENE_BACKGROUND_COLOR:uint = 0x333333
     private static const DEFAULT_SCENE_BACKGROUND_ALPHA:Number = 0
 
     //--------------------------------------------------------------------------
@@ -139,7 +139,7 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
 
     private var _constraint:IViewportConstraint
-    private var constraintChanged:Boolean=false
+    private var constraintChanged:Boolean = false
 
    ;[Bindable(event="constraintChanged")]
 
@@ -217,7 +217,7 @@ public final class MultiScaleContainer extends UIComponent
 
     private var _controllers:Array = []
     private var _controllersHolder:Array = []
-    private var controllersChanged:Boolean=false
+    private var controllersChanged:Boolean = false
 
    ;[ArrayElementType("org.openzoom.flash.viewport.IViewportController")]
    ;[Inspectable(arrayType="org.openzoom.flash.viewport.IViewportController")]
@@ -259,7 +259,7 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
 
     private var _children:Array
-    private var childrenChanged:Boolean=false
+    private var childrenChanged:Boolean = false
 
     public function get children():Array
     {
@@ -268,12 +268,12 @@ public final class MultiScaleContainer extends UIComponent
 
     public function set children(value:Array):void
     {
-    	if (_children != value)
-    	{
-    		_children = value
-    		childrenChanged = true
-    		invalidateProperties()
-    	}
+        if (_children != value)
+        {
+            _children = value
+            childrenChanged = true
+            invalidateProperties()
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -287,7 +287,7 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
 
     private var _sceneWidth:Number
-    private var sceneWidthChanged:Boolean=false
+    private var sceneWidthChanged:Boolean = false
 
    ;[Bindable(event="sceneResize")]
 
@@ -296,7 +296,7 @@ public final class MultiScaleContainer extends UIComponent
      */
     public function get sceneWidth():Number
     {
-        return scene ? scene.sceneWidth:_sceneWidth
+        return scene ? scene.sceneWidth : _sceneWidth
     }
 
     public function set sceneWidth(value:Number):void
@@ -315,7 +315,7 @@ public final class MultiScaleContainer extends UIComponent
     //----------------------------------
 
     private var _sceneHeight:Number
-    private var sceneHeightChanged:Boolean=false
+    private var sceneHeightChanged:Boolean = false
 
    ;[Bindable(event="sceneHeightChanged")]
 
@@ -324,7 +324,7 @@ public final class MultiScaleContainer extends UIComponent
      */
     public function get sceneHeight():Number
     {
-        return scene ? scene.sceneHeight:_sceneHeight
+        return scene ? scene.sceneHeight : _sceneHeight
     }
 
     public function set sceneHeight(value:Number):void
@@ -376,12 +376,12 @@ public final class MultiScaleContainer extends UIComponent
 
         if (childrenChanged)
         {
-	        // remove all existing children
-	        while (numChildren > 0)
+            // remove all existing children
+            while (numChildren > 0)
                 removeChildAt(0)
-	
-//	        for each (var child:DisplayObject in _children)
-//	            _scene.addItem(child)
+    
+//            for each (var child:DisplayObject in _children)
+//                _scene.addItem(child)
         }
 
         if (sceneWidthChanged || sceneHeightChanged)
@@ -459,7 +459,7 @@ public final class MultiScaleContainer extends UIComponent
     override protected function updateDisplayList(unscaledWidth:Number,
                                                   unscaledHeight:Number):void
     {
-    	
+        
         if (viewport.viewportWidth != unscaledWidth ||
             viewport.viewportHeight != unscaledHeight)
             _viewport.setSize(unscaledWidth, unscaledHeight)
@@ -470,17 +470,17 @@ public final class MultiScaleContainer extends UIComponent
             mouseCatcher.width = unscaledWidth
             mouseCatcher.height = unscaledHeight
         }
-        
+
         if (contentMask.width != unscaledWidth ||
             contentMask.height != unscaledHeight)
         {
-	        contentMask.width = unscaledWidth
-	        contentMask.height = unscaledHeight
+            contentMask.width = unscaledWidth
+            contentMask.height = unscaledHeight
         }
-        
+
         var vp:INormalizedViewport = _viewport
-        var targetWidth:Number =  vp.viewportWidth / vp.width
-        var targetHeight:Number =  vp.viewportHeight / vp.height
+        var targetWidth:Number = vp.viewportWidth / vp.width
+        var targetHeight:Number = vp.viewportHeight / vp.height
         var targetX:Number = -vp.x * targetWidth
         var targetY:Number = -vp.y * targetHeight
 
@@ -499,7 +499,7 @@ public final class MultiScaleContainer extends UIComponent
 
     override public function get numChildren():int
     {
-        return _scene ? _scene.numChildren:0
+        return _scene ? _scene.numChildren : 0
     }
 
     //--------------------------------------------------------------------------
@@ -658,12 +658,12 @@ public final class MultiScaleContainer extends UIComponent
     //  Event handlers: Loader
     //
     //--------------------------------------------------------------------------
-    
+
     private function loader_progressHandler(event:ProgressEvent):void
     {
-    	dispatchEvent(event)
+        dispatchEvent(event)
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers: Viewport

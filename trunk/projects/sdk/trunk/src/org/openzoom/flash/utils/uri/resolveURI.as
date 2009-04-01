@@ -18,29 +18,17 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.viewport
+package org.openzoom.flash.utils.uri
 {
-
-/**
- * Interface to the viewport for a viewport container.
- * Allows the container to the set the size (viewportWidth and viewportHeight)
- * of IViewportTransform.
- */
-public interface IViewportTransformContainer extends IViewportTransform
-{
-    //--------------------------------------------------------------------------
-    //
-    //  Methods
-    //
-    //--------------------------------------------------------------------------
-
     /**
-     * Sets viewportWidth and viewportHeight.
-     * Dispatches ViewportEvent.RESIZE
-     *
-     * @see org.openzoom.flash.events.ViewportEvent#resize
+     * Resolve given <code>uri</code> relative to <code>baseURI</code>.
      */
-    function setSize(width:Number, height:Number):void
-}
+    public function resolveURI(baseURI:String, uri:String):String
+    {
+        var resolvedURI:String = uri
 
+        // TODO: Implement this...
+
+        return resolvedURI 
+    }
 }

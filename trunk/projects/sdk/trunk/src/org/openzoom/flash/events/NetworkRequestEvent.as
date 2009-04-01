@@ -36,7 +36,7 @@ public class NetworkRequestEvent extends Event
     //
     //--------------------------------------------------------------------------
 
-    public static const COMPLETE : String = "complete"   
+    public static const COMPLETE:String = "complete"
     public static const ERROR:String = "error"
 
     //--------------------------------------------------------------------------
@@ -45,12 +45,12 @@ public class NetworkRequestEvent extends Event
     //
     //--------------------------------------------------------------------------
 
-	/**
-	 * Constructor.
-	 */
+    /**
+     * Constructor.
+     */
     public function NetworkRequestEvent(type:String,
-                                        bubbles:Boolean = false,
-                                        cancelable:Boolean = false)   
+                                        bubbles:Boolean=false,
+                                        cancelable:Boolean=false)
     {
         super(type, bubbles, cancelable)
     }
@@ -60,10 +60,22 @@ public class NetworkRequestEvent extends Event
     //  Properties
     //
     //--------------------------------------------------------------------------
-
+    
+    /**
+     * Request this event belongs to.
+     */ 
+    public var request:INetworkRequest
+    
+    /**
+     * Data that the event is carrying.
+     */ 
     public var data:* = null
-    public var context : * = null
-    public var item:INetworkRequest
+    
+    /**
+     * Context of this request event.
+     * Useful for identifying certain requests, e.g. by URL.
+     */ 
+    public var context:* = null
 
     //--------------------------------------------------------------------------
     //

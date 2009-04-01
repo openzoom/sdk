@@ -36,7 +36,7 @@ import org.openzoom.flash.events.NetworkRequestEvent;
 /**
  * @private
  *
- * Represents a single item to load from a URL.
+ * Represents a single item to load from a URI.
  */
 internal class URIRequest extends EventDispatcher
                           implements INetworkRequest
@@ -50,7 +50,7 @@ internal class URIRequest extends EventDispatcher
     /**
      * Constructor.
      */
-    public function URIRequest(url:String, context:* = null)
+    public function URIRequest(url:String, context:*=null)
     {
         this.url = url
         this.context = context
@@ -65,7 +65,7 @@ internal class URIRequest extends EventDispatcher
     private var context:*
     private var loader:URLLoader
     private var url:String
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -75,21 +75,21 @@ internal class URIRequest extends EventDispatcher
     //----------------------------------
     //  bytesLoaded
     //----------------------------------
-    
+
     public function get bytesLoaded():uint
     {
-    	return loader ? loader.bytesLoaded : 0
+        return loader ? loader.bytesLoaded : 0
     }
-    
+
     //----------------------------------
     //  bytesTotal
     //----------------------------------
-    
-    public function get bytesTotal():uint   
+
+    public function get bytesTotal():uint
     {
-    	return loader ? loader.bytesTotal : 0
+        return loader ? loader.bytesTotal : 0
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -124,7 +124,7 @@ internal class URIRequest extends EventDispatcher
 
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.COMPLETE)
-            requestEvent.item = this
+            requestEvent.request = this
             requestEvent.data = data
             requestEvent.context = context
 
@@ -139,7 +139,7 @@ internal class URIRequest extends EventDispatcher
         // FIXME
 //        cleanUp()
 
-//        var requestEvent:NetworkRequestEvent = 
+//        var requestEvent:NetworkRequestEvent =
 //                new NetworkRequestEvent(NetworkRequestEvent.ERROR)
 //            requestEvent.item = this
 //
@@ -156,7 +156,7 @@ internal class URIRequest extends EventDispatcher
 
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
-            requestEvent.item = this
+            requestEvent.request = this
 
         dispatchEvent(requestEvent)
     }
@@ -171,17 +171,17 @@ internal class URIRequest extends EventDispatcher
 
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
-            requestEvent.item = this
+            requestEvent.request = this
 
         dispatchEvent(requestEvent)
     }
-    
+
     /**
      * @private
      */
     private function request_progressHandler(event:ProgressEvent):void
     {
-    	// Forward event
+        // Forward event
         dispatchEvent(event)
     }
 

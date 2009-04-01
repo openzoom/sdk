@@ -71,7 +71,7 @@ public class ZoomConstraint implements IViewportConstraint
         return _minZoom
     }
 
-    public function set minZoom( value:Number ):void
+    public function set minZoom(value:Number):void
     {
         _minZoom = value
     }
@@ -91,7 +91,7 @@ public class ZoomConstraint implements IViewportConstraint
         return _maxZoom
     }
 
-    public function set maxZoom( value:Number ):void
+    public function set maxZoom(value:Number):void
     {
        _maxZoom = value
     }
@@ -105,23 +105,23 @@ public class ZoomConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform:IViewportTransform,
-                              target:IViewportTransform ):IViewportTransform
+    public function validate(transform:IViewportTransform,
+                              target:IViewportTransform):IViewportTransform
     {
         // FIXME
         // Prevent from moving when the zoom limit are reached
-//        if( transform.zoom == minZoom || transform.zoom == maxZoom )
+//        if (transform.zoom == minZoom || transform.zoom == maxZoom)
 //        {
-////          target.panTo( transform.x, transform.y )
+////          target.panTo(transform.x, transform.y)
 //            return target
 //        }
 
         // validate zoom
-        if( transform.zoom > maxZoom )
-            transform.zoomTo( maxZoom )
+        if (transform.zoom > maxZoom)
+            transform.zoomTo(maxZoom)
 
-        if( transform.zoom < minZoom )
-            transform.zoomTo( minZoom )
+        if (transform.zoom < minZoom)
+            transform.zoomTo(minZoom)
 
         // return validated transform
         return transform

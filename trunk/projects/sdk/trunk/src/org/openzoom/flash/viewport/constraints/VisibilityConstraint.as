@@ -72,7 +72,7 @@ public class VisibilityConstraint implements IViewportConstraint
         return _visibilityRatio
     }
 
-    public function set visibilityRatio( value:Number ):void
+    public function set visibilityRatio(value:Number):void
     {
        _visibilityRatio = value
     }
@@ -86,62 +86,62 @@ public class VisibilityConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform:IViewportTransform,
-                              target:IViewportTransform ):IViewportTransform
+    public function validate(transform:IViewportTransform,
+                              target:IViewportTransform):IViewportTransform
     {
         var x:Number = transform.x
         var y:Number = transform.y
 
         // content is wider than viewport
-        if( transform.width < 1 )
+        if (transform.width < 1)
         {
             // horizontal bounds checking:
             // the viewport sticks out on the left:
             // align it with the left margin
-            if( transform.x + transform.width * ( 1 - visibilityRatio ) < 0 )
-                x = -transform.width * ( 1 - visibilityRatio )
+            if (transform.x + transform.width * (1 - visibilityRatio) < 0)
+                x = -transform.width * (1 - visibilityRatio)
 
            // the viewport sticks out on the right:
            // align it with the right margin
-           if( transform.x + transform.width * visibilityRatio > 1 )
+           if (transform.x + transform.width * visibilityRatio > 1)
                x = 1 - transform.width * visibilityRatio
         }
         else
         {
             // FIXME
-            if( transform.x > ( 1 - visibilityRatio ))
+            if (transform.x > (1 - visibilityRatio))
                 x = 1 - visibilityRatio
 
-            if( transform.x + transform.width * ( 1 - visibilityRatio ) < 0 )
-                x = -transform.width * ( 1 - visibilityRatio )
+            if (transform.x + transform.width * (1 - visibilityRatio) < 0)
+                x = -transform.width * (1 - visibilityRatio)
         }
 
         // scene is taller than viewport
-        if( transform.height < 1 )
+        if (transform.height < 1)
         {
             // vertical bounds checking:
             // the viewport sticks out at the top:
             // align it with the top margin
-            if( transform.y + transform.height * ( 1 - visibilityRatio ) < 0 )
-                y = -transform.height * ( 1 - visibilityRatio )
+            if (transform.y + transform.height * (1 - visibilityRatio) < 0)
+                y = -transform.height * (1 - visibilityRatio)
 
             // the viewport sticks out at the bottom:
             // align it with the bottom margin
-            if( transform.y + transform.height * visibilityRatio > 1 )
+            if (transform.y + transform.height * visibilityRatio > 1)
                 y = 1 - transform.height * visibilityRatio
         }
         else
         {
             // FIXME
-            if( transform.y > ( 1 - visibilityRatio ))
+            if (transform.y > (1 - visibilityRatio))
                 y = 1 - visibilityRatio
 
-            if( transform.y + transform.height * ( 1 - visibilityRatio ) < 0 )
-                y = -transform.height * ( 1 - visibilityRatio )
+            if (transform.y + transform.height * (1 - visibilityRatio) < 0)
+                y = -transform.height * (1 - visibilityRatio)
         }
 
         // validate bounds
-        transform.panTo( x, y )
+        transform.panTo(x, y)
 
         // return validated transform
         return transform

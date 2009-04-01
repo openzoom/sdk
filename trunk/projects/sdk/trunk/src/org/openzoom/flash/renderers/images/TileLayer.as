@@ -60,7 +60,7 @@ public class TileLayer extends Sprite implements ITileLayer
      * Constructor.
      */
     public function TileLayer(width:Number, height:Number,
-                               level:IMultiScaleImageLevel)
+                              level:IMultiScaleImageLevel)
     {
         _level = level
 
@@ -116,7 +116,7 @@ public class TileLayer extends Sprite implements ITileLayer
             trace("[TileLayer]: Adding Tile from wrong level.")
             return null
         }
-        
+
         // return if tile already added
         if (tiles[tile.hashCode])
            return null
@@ -138,11 +138,11 @@ public class TileLayer extends Sprite implements ITileLayer
 
         if (tileBitmap.x >= level.width || tileBitmap.y >= level.height)
             trace("[TileLayer]: Wrong tile positioning")
-            
-            
+
+
         var tileBitmapRight:Number = tileBitmap.x + tileBitmap.width
         var tileBitmapBottom:Number = tileBitmap.y + tileBitmap.height
-        
+
         var horizontalOverflow:Boolean = tileBitmapRight > level.width
         var verticalOverflow:Boolean = tileBitmapBottom > level.height
 
@@ -150,13 +150,13 @@ public class TileLayer extends Sprite implements ITileLayer
         if (horizontalOverflow || verticalOverflow)
         {
             trace("[TileLayer]: Overflow")
-            
+
             if (horizontalOverflow)
                 trace("[TileLayer]: horizontalOverflow:", level.width, tileBitmapRight, tile.toString(), bounds)
-                
+
             if (verticalOverflow)
                 trace("[TileLayer]: verticalOverflow:", level.height, tileBitmapBottom, tile.toString(), bounds)
-                
+
             // TODO: Check bounds with new descriptor API
             var cropBitmapData:BitmapData =
                    new BitmapData(Math.min(level.width - tileBitmap.x, tileBitmap.width),
@@ -191,7 +191,8 @@ public class TileLayer extends Sprite implements ITileLayer
         addChild(tileBitmap)
 
         // TODO: Remove dependency on Tweener
-        Tweener.addTween(tileBitmap, {alpha: 1, time: DEFAULT_TILE_SHOW_DURATION})
+        Tweener.addTween(tileBitmap, {alpha: 1,
+                                      time: DEFAULT_TILE_SHOW_DURATION})
 
         return tile
     }
@@ -199,7 +200,7 @@ public class TileLayer extends Sprite implements ITileLayer
     public function removeAllTiles():void
     {
         // Keep Frame
-        while(numChildren > 1)
+        while (numChildren > 1)
           removeChildAt(1)
 
         tiles = new Dictionary(true)

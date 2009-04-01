@@ -37,9 +37,9 @@ public class MultiScaleImageLevelBase
     /**
      * Constructor.
      */
-    public function MultiScaleImageLevelBase( index:int,
-                                              width:uint, height:uint,
-                                              numColumns:uint, numRows:uint )
+    public function MultiScaleImageLevelBase(index:int,
+                                             width:uint, height:uint,
+                                             numColumns:uint, numRows:uint)
     {
         _index = index
 

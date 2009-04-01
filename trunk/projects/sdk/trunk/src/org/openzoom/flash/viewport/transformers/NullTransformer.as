@@ -65,11 +65,11 @@ public class NullTransformer implements IViewportTransformer
         return _viewport
     }
 
-    public function set viewport( value:ITransformerViewport ):void
+    public function set viewport(value:ITransformerViewport):void
     {
         _viewport = value
 
-        if( value )
+        if (value)
             _target = viewport.transform
         else
             _target = null
@@ -89,7 +89,7 @@ public class NullTransformer implements IViewportTransformer
         return _constraint
     }
 
-    public function set constraint( value:IViewportConstraint ):void
+    public function set constraint(value:IViewportConstraint):void
     {
         _constraint = value
     }
@@ -126,8 +126,8 @@ public class NullTransformer implements IViewportTransformer
     /**
      * @inheritDoc
      */
-    public function transform( targetTransform:IViewportTransform,
-                               immediately:Boolean = false ):void
+    public function transform(targetTransform:IViewportTransform,
+                              immediately:Boolean=false):void
     {
         // copy targetTransform
         _target = targetTransform.clone()

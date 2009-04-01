@@ -21,25 +21,35 @@
 package org.openzoom.flash.renderers
 {
 
+import flash.display.DisplayObject;
 import flash.geom.Rectangle;
 
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewport;
 
 /**
  * @private
  *
- * Interface for a renderer that is multi-scalar.
+ * Interface for a renderer that is multiscalar.
  */
 public interface IMultiScaleRenderer
 {
     /**
-     * Indicates the viewport this renderer is viewed in.
+     * The viewport this renderer is viewed in.
      */
     function get viewport():INormalizedViewport
-    function set viewport( value:INormalizedViewport ):void
+    function set viewport(value:INormalizedViewport):void
+    
+    /**
+     * The scene this renderer is attached to.
+     */
+//  function get scene():IReadonlyMultiScaleScene
+//  function set scene(value:IReadonlyMultiScaleScene):void
 
-//  function getBounds( targetViewport:IViewport ):Rectangle
+    /**
+     * Bounds of this renderer.
+     */ 
+    function getBounds(targetCoordinateSpace:DisplayObject):Rectangle
 }
 
 }

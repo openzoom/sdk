@@ -23,16 +23,13 @@ package org.openzoom.flash.descriptors.openzoom
 
 import flash.geom.Rectangle;
 
-import mx.utils.LoaderUtil;
-
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.MultiScaleImageLevelBase;
+import org.openzoom.flash.utils.uri.resolveURI;
 
 
 /**
- * @private
- *
- * Represents a single level of a multi-scale
+ * Represents a single level of a multiscale
  * image pyramid described by an OpenZoom descriptor.
  */
 internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
@@ -96,7 +93,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
             var computedColumn:uint
             var computedRow:uint
 
-            switch(pyramidOrigin)
+            switch (pyramidOrigin)
             {
                 case PyramidOrigin.TOP_LEFT:
                     computedColumn = column
@@ -119,8 +116,10 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
                     break
             }
 
-            uri = uri.replace(/{column}/, computedColumn).replace(/{row}/, computedRow)
-            return LoaderUtil.createAbsoluteURL(descriptor.uri, uri)
+            uri = uri.replace(/{column}/, computedColumn)
+                     .replace(/{row}/, computedRow)
+                     
+            return resolveURI(descriptor.uri, uri)
         }
 
         return ""

@@ -53,8 +53,8 @@ public class MemoryMonitor extends Sprite
         layout()
 
         addEventListener(Event.ENTER_FRAME,
-                          enterFrameHandler,
-                          false, 0, true)
+                         enterFrameHandler,
+                         false, 0, true)
     }
 
     //--------------------------------------------------------------------------

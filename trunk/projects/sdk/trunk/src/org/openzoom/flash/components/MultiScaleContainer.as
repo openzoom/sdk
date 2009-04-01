@@ -62,7 +62,7 @@ public final class MultiScaleContainer extends Sprite
 
     private static const DEFAULT_SCENE_WIDTH:Number = 24000
     private static const DEFAULT_SCENE_HEIGHT:Number = 18000
-    private static const DEFAULT_SCENE_BACKGROUND_COLOR:uint   = 0x333333
+    private static const DEFAULT_SCENE_BACKGROUND_COLOR:uint = 0x333333
     private static const DEFAULT_SCENE_BACKGROUND_ALPHA:Number = 0
 
     //--------------------------------------------------------------------------
@@ -144,7 +144,7 @@ public final class MultiScaleContainer extends Sprite
 
     public function set constraint(value:IViewportConstraint):void
     {
-        if(viewport)
+        if (viewport)
             viewport.transformer.constraint = value
     }
 
@@ -180,7 +180,7 @@ public final class MultiScaleContainer extends Sprite
 
     public function set transformer(value:IViewportTransformer):void
     {
-        if(viewport)
+        if (viewport)
             viewport.transformer = value
     }
 
@@ -209,13 +209,13 @@ public final class MultiScaleContainer extends Sprite
     public function set controllers(value:Array):void
     {
         // remove old controllers
-        for each(var oldController:IViewportController in _controllers)
+        for each (var oldController:IViewportController in _controllers)
             removeController(oldController)
 
         _controllers = []
 
         // add new controllers
-        for each(var controller:IViewportController in value)
+        for each (var controller:IViewportController in value)
             addController(controller)
     }
 
@@ -261,19 +261,19 @@ public final class MultiScaleContainer extends Sprite
 
     private function createChildren():void
     {
-        if(!scene)
+        if (!scene)
             createScene()
 
-        if(!viewport)
+        if (!viewport)
             createViewport(_scene)
 
-        if(!mouseCatcher)
+        if (!mouseCatcher)
             createMouseCatcher()
 
-        if(!contentMask)
+        if (!contentMask)
             createContentMask()
 
-        if(!loader)
+        if (!loader)
             createLoader()
     }
 
@@ -285,7 +285,7 @@ public final class MultiScaleContainer extends Sprite
 
     override public function get numChildren():int
     {
-        return scene ? _scene.numChildren:0
+        return scene ? _scene.numChildren : 0
     }
 
     //--------------------------------------------------------------------------
@@ -299,7 +299,7 @@ public final class MultiScaleContainer extends Sprite
         child = _scene.addChild(child)
 
         // FIXME
-        if(child is IMultiScaleRenderer)
+        if (child is IMultiScaleRenderer)
             IMultiScaleRenderer(child).viewport = viewport
 
         return child
@@ -311,12 +311,12 @@ public final class MultiScaleContainer extends Sprite
     }
 
     override public function addChildAt(child:DisplayObject,
-                                         index:int):DisplayObject
+                                        index:int):DisplayObject
     {
         child = _scene.addChildAt(child, index)
 
         // FIXME
-        if(child is IMultiScaleRenderer)
+        if (child is IMultiScaleRenderer)
             IMultiScaleRenderer(child).viewport = viewport
 
         return child
@@ -328,26 +328,26 @@ public final class MultiScaleContainer extends Sprite
     }
 
     override public function swapChildren(child1:DisplayObject,
-                                           child2:DisplayObject):void
+                                          child2:DisplayObject):void
     {
         _scene.swapChildren(child1, child2)
     }
 
     override public function swapChildrenAt(index1:int,
-                                             index2:int):void
+                                            index2:int):void
     {
         _scene.swapChildrenAt(index1, index2)
     }
 
     override public function setChildIndex(child:DisplayObject,
-                                            index:int):void
+                                           index:int):void
     {
         _scene.setChildIndex(child, index)
     }
-    
+
     override public function getChildAt(index:int):DisplayObject
     {
-    	return _scene.getChildAt(index)
+        return _scene.getChildAt(index)
     }
 
     //--------------------------------------------------------------------------
@@ -391,26 +391,26 @@ public final class MultiScaleContainer extends Sprite
     private function createViewport(scene:IReadonlyMultiScaleScene):void
     {
         _viewport = new NormalizedViewport(DEFAULT_VIEWPORT_WIDTH,
-                                            DEFAULT_VIEWPORT_HEIGHT,
-                                            scene)
+                                           DEFAULT_VIEWPORT_HEIGHT,
+                                           scene)
 
         _viewport.addEventListener(ViewportEvent.TRANSFORM_START,
-                                    viewport_transformStartHandler,
-                                    false, 0, true)
+                                   viewport_transformStartHandler,
+                                   false, 0, true)
         _viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
-                                    viewport_transformUpdateHandler,
-                                    false, 0, true)
+                                   viewport_transformUpdateHandler,
+                                   false, 0, true)
         _viewport.addEventListener(ViewportEvent.TRANSFORM_END,
-                                    viewport_transformEndHandler,
-                                    false, 0, true)
+                                   viewport_transformEndHandler,
+                                   false, 0, true)
     }
 
     private function createScene():void
     {
         _scene = new MultiScaleScene(DEFAULT_SCENE_WIDTH,
-                                      DEFAULT_SCENE_HEIGHT,
-                                      DEFAULT_SCENE_BACKGROUND_COLOR,
-                                      DEFAULT_SCENE_BACKGROUND_ALPHA)
+                                     DEFAULT_SCENE_HEIGHT,
+                                     DEFAULT_SCENE_BACKGROUND_COLOR,
+                                     DEFAULT_SCENE_BACKGROUND_ALPHA)
         super.addChild(_scene)
     }
 
@@ -432,10 +432,10 @@ public final class MultiScaleContainer extends Sprite
 
     private function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
-//        trace("ViewportEvent.TRANSFORM_UPDATE")
+//      trace("ViewportEvent.TRANSFORM_UPDATE")
         var v:INormalizedViewport = viewport
-        var targetWidth:Number =  v.viewportWidth / v.width
-        var targetHeight:Number =  v.viewportHeight / v.height
+        var targetWidth:Number = v.viewportWidth / v.width
+        var targetHeight:Number = v.viewportHeight / v.height
         var targetX:Number = -v.x * targetWidth
         var targetY:Number = -v.y * targetHeight
 
@@ -448,7 +448,7 @@ public final class MultiScaleContainer extends Sprite
 
     private function viewport_transformEndHandler(event:ViewportEvent):void
     {
-//        trace("ViewportEvent.TRANSFORM_END")
+//      trace("ViewportEvent.TRANSFORM_END")
     }
 
     //--------------------------------------------------------------------------
@@ -459,7 +459,7 @@ public final class MultiScaleContainer extends Sprite
 
     private function addController(controller:IViewportController):Boolean
     {
-        if(_controllers.indexOf(controller) != -1)
+        if (_controllers.indexOf(controller) != -1)
             return false
 
         _controllers.push(controller)
@@ -470,7 +470,7 @@ public final class MultiScaleContainer extends Sprite
 
     private function removeController(controller:IViewportController):Boolean
     {
-        if(_controllers.indexOf(controller) == -1)
+        if (_controllers.indexOf(controller) == -1)
             return false
 
         _controllers.splice(_controllers.indexOf(controller), 1)
@@ -521,19 +521,19 @@ public final class MultiScaleContainer extends Sprite
 
     public function setActualSize(width:Number, height:Number):void
     {
-        if(this.width == width && this.height == height)
+        if (this.width == width && this.height == height)
             return
 
-        if(_viewport)
+        if (_viewport)
             _viewport.setSize(width, height)
 
-        if(contentMask)
+        if (contentMask)
         {
             contentMask.width = width
             contentMask.height = height
         }
 
-        if(mouseCatcher)
+        if (mouseCatcher)
         {
             mouseCatcher.width = width
             mouseCatcher.height = height
@@ -658,9 +658,9 @@ public final class MultiScaleContainer extends Sprite
      * @copy org.openzoom.flash.viewport.IViewport#zoomTo()
      */
     public function zoomTo(zoom:Number,
-                            transformX:Number = 0.5,
-                            transformY:Number = 0.5,
-                            immediately:Boolean = false):void
+                           transformX:Number=0.5,
+                           transformY:Number=0.5,
+                           immediately:Boolean=false):void
     {
         viewport.zoomTo(zoom, transformX, transformY, immediately)
     }
@@ -669,9 +669,9 @@ public final class MultiScaleContainer extends Sprite
      * @copy org.openzoom.flash.viewport.IViewport#zoomBy()
      */
     public function zoomBy(factor:Number,
-                            transformX:Number = 0.5,
-                            transformY:Number = 0.5,
-                            immediately:Boolean = false):void
+                           transformX:Number=0.5,
+                           transformY:Number=0.5,
+                           immediately:Boolean=false):void
     {
         viewport.zoomBy(factor, transformX, transformY, immediately)
     }
@@ -680,7 +680,7 @@ public final class MultiScaleContainer extends Sprite
      * @copy org.openzoom.flash.viewport.IViewport#panTo()
      */
     public function panTo(x:Number, y:Number,
-                           immediately:Boolean = false):void
+                          immediately:Boolean=false):void
     {
         viewport.panTo(x, y, immediately)
     }
@@ -689,7 +689,7 @@ public final class MultiScaleContainer extends Sprite
      * @copy org.openzoom.flash.viewport.IViewport#panBy()
      */
     public function panBy(deltaX:Number, deltaY:Number,
-                           immediately:Boolean = false):void
+                          immediately:Boolean=false):void
     {
         viewport.panBy(deltaX, deltaY, immediately)
     }
@@ -698,8 +698,8 @@ public final class MultiScaleContainer extends Sprite
      * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
      */
     public function zoomToBounds(bounds:Rectangle,
-                                  scale:Number = 1.0,
-                                  immediately:Boolean = false):void
+                                 scale:Number=1.0,
+                                 immediately:Boolean=false):void
     {
         viewport.fitToBounds(bounds, scale, immediately)
     }
@@ -707,7 +707,7 @@ public final class MultiScaleContainer extends Sprite
     /**
      * @copy org.openzoom.flash.viewport.IViewport#showAll()
      */
-    public function showAll(immediately:Boolean = false):void
+    public function showAll(immediately:Boolean=false):void
     {
         viewport.showAll(immediately)
     }

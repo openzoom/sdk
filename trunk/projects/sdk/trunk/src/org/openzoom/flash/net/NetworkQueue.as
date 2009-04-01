@@ -72,26 +72,28 @@ public class NetworkQueue extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    public function addRequest(url:String, type:Class, context:* = null):INetworkRequest
+    public function addRequest(url:String,
+                               type:Class,
+                               context:*=null):INetworkRequest
     {
         var request:INetworkRequest
 
         // TODO
-//        if(type == URLVariables)
+//        if (type == URLVariables)
 
         // TODO
-//      if(type == Sound)
+//      if (type == Sound)
 
         // TODO
-//      if(type == Video || type == NetStream)
+//      if (type == Video || type == NetStream)
 
-        if(type == DisplayObject || type == Bitmap)
+        if (type == DisplayObject || type == Bitmap)
             request = new DisplayObjectRequest(url, context)
 
-        if(type == String || type == XML)
+        if (type == String || type == XML)
             request = new URIRequest(url, context)
 
-        if(!request)
+        if (!request)
             throw new ArgumentError("Type " + type.toString() + " not supported.")
 
         request.addEventListener(ProgressEvent.PROGRESS, request_progressHandler)
@@ -134,9 +136,9 @@ public class NetworkQueue extends EventDispatcher
      */
     private function request_completeHandler(event:NetworkRequestEvent):void
     {
-        var index:int = connections.indexOf(event.item)
+        var index:int = connections.indexOf(event.request)
 
-        if(index > 0)
+        if (index > 0)
            connections.splice(index, 1)
 
         processQueue()
@@ -156,19 +158,19 @@ public class NetworkQueue extends EventDispatcher
      */
     private function request_progressHandler(event:ProgressEvent):void
     {
-    	var bytesLoaded:uint = 0
-    	var bytesTotal:uint = 0
-    	
-    	for each (var request:INetworkRequest in connections)
-    	{
-    		bytesLoaded += request.bytesLoaded
-    		bytesTotal += request.bytesTotal
-    	}
-    	
-    	var progressEvent:ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS)
-    	progressEvent.bytesLoaded = bytesLoaded
-    	progressEvent.bytesTotal = bytesTotal
-    	dispatchEvent(progressEvent)
+        var bytesLoaded:uint = 0
+        var bytesTotal:uint = 0
+        
+        for each (var request:INetworkRequest in connections)
+        {
+            bytesLoaded += request.bytesLoaded
+            bytesTotal += request.bytesTotal
+        }
+        
+        var progressEvent:ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS)
+        progressEvent.bytesLoaded = bytesLoaded
+        progressEvent.bytesTotal = bytesTotal
+        dispatchEvent(progressEvent)
     }
 }
 

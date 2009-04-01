@@ -27,12 +27,11 @@ import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
-import mx.utils.LoaderUtil;
-
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
+import org.openzoom.flash.utils.uri.resolveURI;
 
 /**
  *  Dispatched when the image has successfully loaded.
@@ -56,7 +55,7 @@ import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 [Event(name="securityError", type="flash.events.SecurityErrorEvent")]
 
 /**
- * Flash component for displaying a single multi-scale image.
+ * Flash component for displaying a single multiscale image.
  * Inspired by the <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.multiscaleimage(VS.95).aspx">
  * Microsoft Silverlight Deep Zoom MultiScaleImage control.</a>
  * This implementation has built-in support for Zoomify, Deep Zoom and OpenZoom images.
@@ -79,8 +78,8 @@ public final class MultiScaleImage extends MultiScaleImageBase
     {
         super()
 
-//        tabEnabled = false
-//        tabChildren = true
+//      tabEnabled = false
+//      tabChildren = true
     }
 
     //--------------------------------------------------------------------------
@@ -131,7 +130,9 @@ public final class MultiScaleImage extends MultiScaleImageBase
             if (url == String(value))
                 return
 
-            url = LoaderUtil.createAbsoluteURL(loaderInfo.url, String(value))
+            trace("[MultiScaleImage] loaderInfo.url", loaderInfo.url)
+            
+            url = resolveURI(loaderInfo.url, String(value))
             urlLoader = new URLLoader(new URLRequest(url))
 
             urlLoader.addEventListener(Event.COMPLETE,
@@ -145,7 +146,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
                                        false, 0, true )
         }
 
-        if(value is IMultiScaleImageDescriptor)
+        if (value is IMultiScaleImageDescriptor)
         {
             _source = IMultiScaleImageDescriptor(value)
             addImage(_source)
@@ -167,7 +168,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
         var sceneWidth:Number
         var sceneHeight:Number
 
-        if(aspectRatio > 1)
+        if (aspectRatio > 1)
         {
             sceneWidth  = DEFAULT_SCENE_DIMENSION
             sceneHeight = DEFAULT_SCENE_DIMENSION / aspectRatio
@@ -195,9 +196,9 @@ public final class MultiScaleImage extends MultiScaleImageBase
      * @private
      */
     private function createImage(descriptor:IMultiScaleImageDescriptor,
-                                  loader:INetworkQueue,
-                                  width:Number,
-                                  height:Number):MultiScaleImageRenderer
+                                 loader:INetworkQueue,
+                                 width:Number,
+                                 height:Number):MultiScaleImageRenderer
     {
         var image:MultiScaleImageRenderer =
                 new MultiScaleImageRenderer(descriptor, loader, width, height)

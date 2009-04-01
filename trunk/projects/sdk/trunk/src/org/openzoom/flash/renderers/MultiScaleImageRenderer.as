@@ -51,7 +51,7 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 /**
  * @private
  *
- * Generic renderer for multi-scale images.
+ * Generic renderer for multiscale images.
  */
 public class MultiScaleImageRenderer extends MultiScaleRenderer
                                      implements ILoaderClient
@@ -213,7 +213,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
 
 //        updateDisplayList()
 
-//        if(++counter > 100)
+//        if (++counter > 100)
 //        {
 //            counter = 0
 //            updateDisplayList()
@@ -272,9 +272,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     /**
      * @private
      */
-    private function createLayers(descriptor:IMultiScaleImageDescriptor, width:Number, height:Number ):void
+    private function createLayers(descriptor:IMultiScaleImageDescriptor, width:Number, height:Number):void
     {
-        for(var i:int = 0; i < descriptor.numLevels; i++)
+        for (var i:int = 0; i < descriptor.numLevels; i++)
         {
             var level:IMultiScaleImageLevel = descriptor.getLevelAt(i)
             var layer:TileLayer = new TileLayer(level.width, level.height, level)
@@ -297,7 +297,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     {
         var level:int = getHighestSingleTileLevel()
 
-        if(!descriptor.existsTile(level, 0, 0))
+        if (!descriptor.existsTile(level, 0, 0))
             return
 
         var url:String = descriptor.getTileURL(level, 0, 0)
@@ -330,12 +330,11 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
             normalizedBounds.height /= viewport.scene.sceneHeight
 
         // Return if we're not visible
-        if(!viewport.intersects(normalizedBounds))
+        if (!viewport.intersects(normalizedBounds))
             return
 
         var visibleRegion:Rectangle = viewport.intersection(normalizedBounds)
         visibleRegion.offset(-bounds.x, -bounds.y)
-
 
 //        drawVisibleRegion(visibleRegion)
         
@@ -346,12 +345,12 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
 
         var firstLevel:int = level.index + 1
 //
-        for(var i:int = firstLevel; i < descriptor.numLevels; i++)
+        for (var i:int = firstLevel; i < descriptor.numLevels; i++)
             getLayer(i).removeAllTiles()
 
-        if(renderingMode == RenderingMode.SMOOTH)
+        if (renderingMode == RenderingMode.SMOOTH)
         {
-            for(var l:int = 0; l <= level.index; l++)
+            for (var l:int = 0; l <= level.index; l++)
             {
                 var currentLevel:IMultiScaleImageLevel = descriptor.getLevelAt(l)
                 loadTiles(currentLevel, visibleRegion)
@@ -374,17 +373,17 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         // FIXME
         var minColumn:int = Math.max(0, Math.floor(area.left * level.numColumns / unscaledWidth) - 1)
         var maxColumn:int = Math.min(level.numColumns, Math.ceil(area.right * level.numColumns / unscaledWidth))
-        var minRow   :int = Math.max(0, Math.floor(area.top * level.numRows / unscaledHeight) - 1)
-        var maxRow   :int = Math.min(level.numRows, Math.ceil(area.bottom * level.numRows / unscaledHeight))
+        var minRow:int = Math.max(0, Math.floor(area.top * level.numRows / unscaledHeight) - 1)
+        var maxRow:int = Math.min(level.numRows, Math.ceil(area.bottom * level.numRows / unscaledHeight))
 
         var layer:ITileLayer = getLayer(level.index)
         var tiles:Array = []
         var center:Point = new Point((minColumn +  maxColumn) / 2,
                                        (minRow + maxRow) / 2)
 
-        for(var column:int = minColumn; column < maxColumn; column++)
+        for (var column:int = minColumn; column < maxColumn; column++)
         {
-            for(var row:int = minRow; row < maxRow; row++)
+            for (var row:int = minRow; row < maxRow; row++)
             {
                 var tile:Tile = new Tile(null,
                                             level.index,
@@ -396,7 +395,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
                 var exists:Boolean =
                       descriptor.existsTile(tile.level, tile.column, tile.row)
 
-                if(contained || !exists)
+                if (contained || !exists)
                     continue
 
                 var url:String = descriptor.getTileURL(tile.level,
@@ -414,7 +413,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
 
         tiles.sort(compareTiles, Array.DESCENDING)
 
-        for(var i:int = 0; i < tiles.length; i++)
+        for (var i:int = 0; i < tiles.length; i++)
         {
             var t:Tile = tiles[i].tile
             var item:INetworkRequest = loader.addRequest(tiles[i].url, Bitmap, t)
@@ -432,9 +431,9 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
 
     private function compareTiles(tile1:Object, tile2:Object):int
     {
-        if(tile1.distance < tile2.distance)
+        if (tile1.distance < tile2.distance)
            return -1
-        if(tile1.distance > tile2.distance)
+        if (tile1.distance > tile2.distance)
            return 1
         else
            return 0
@@ -474,7 +473,7 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         var tooWide:Boolean = backgroundTile.width > level.width
         var tooHigh:Boolean = backgroundTile.height > level.height
 
-        if(tooWide || tooHigh)
+        if (tooWide || tooHigh)
         {
             var cropBitmapData:BitmapData =
                    new BitmapData(Math.min(level.width, backgroundTile.width),

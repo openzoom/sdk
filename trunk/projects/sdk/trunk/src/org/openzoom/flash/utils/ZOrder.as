@@ -42,27 +42,27 @@ public final class ZOrder
      *
      * @return Position of the Z-order in space (column, row)
      */
-    public static function getPosition( value:uint ):Point
+    public static function getPosition(value:uint):Point
     {
         var column:uint
         var row:uint
 
-        for( var i:uint = 0; i < 32; i += 2 )
+        for (var i:uint = 0; i < 32; i += 2)
         {
             var offset:uint = i / 2
 
             var columnOffset:uint = i
             var columnMask:uint = 1 << columnOffset
-            var columnValue:uint = ( value & columnMask ) >> columnOffset
+            var columnValue:uint = (value & columnMask) >> columnOffset
             column |= columnValue << offset
 
             var rowOffset:uint = i + 1
             var rowMask:uint = 1 << rowOffset
-            var rowValue:uint = ( value & rowMask ) >> rowOffset
+            var rowValue:uint = (value & rowMask) >> rowOffset
             row |= rowValue << offset
         }
 
-        var position:Point = new Point( column, row )
+        var position:Point = new Point( column, row)
         return position
     }
 
@@ -74,12 +74,12 @@ public final class ZOrder
      *
      * @return Z-order (Morton number) for the given coordinates.
      */
-    public static function getValue( column:uint, row:uint ):uint
+    public static function getValue(column:uint, row:uint):uint
     {
         var zOrder:uint
 
-        for( var i:int = 0; i < 32; i++ )
-            zOrder |= ( column & 1 << i ) << i | ( row & 1 << i ) << ( i + 1 )
+        for (var i:int = 0; i < 32; i++)
+            zOrder |= (column & 1 << i) << i | (row & 1 << i) << (i + 1)
 
         return zOrder
     }

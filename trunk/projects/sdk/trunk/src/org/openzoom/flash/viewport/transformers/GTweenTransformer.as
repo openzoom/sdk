@@ -21,7 +21,7 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import com.gskinner.motion.GTween;
+//import com.gskinner.motion.GTween;
 
 import flash.events.Event;
 
@@ -45,9 +45,9 @@ public class GTweenTransformer// implements IViewportTransformer
 //
 //    private var tween:GTween
 //
-//    private static function easeOutExpo( t:Number, b:Number, c:Number, d:Number ):Number
+//    private static function easeOutExpo(t:Number, b:Number, c:Number, d:Number):Number
 //    {
-//        return (t==d) ? b+c:c * 1.001 * (-Math.pow(2, -10 * t/d) + 1) + b;
+//        return (t==d) ? b+c : c * 1.001 * (-Math.pow(2, -10 * t/d) + 1) + b;
 //    }
 //
 //
@@ -60,15 +60,15 @@ public class GTweenTransformer// implements IViewportTransformer
 //    /**
 //     * Constructor.
 //     */
-//    public function GTweenViewportTransformer( viewport:INormalizedViewport )
+//    public function GTweenViewportTransformer(viewport:INormalizedViewport)
 //    {
 //        _viewport = viewport
-//        tween = new GTween( viewport.transform, DEFAULT_DURATION )
+//        tween = new GTween(viewport.transform, DEFAULT_DURATION)
 //        tween.ease = easeOutExpo
 //        tween.useSetSize = false
-//        tween.setAssignment( viewport, "transform" )
-//        tween.addEventListener( Event.INIT, function():void { viewport.beginTransform(); } )
-//        tween.addEventListener( Event.COMPLETE, function():void { viewport.endTransform(); } )
+//        tween.setAssignment(viewport, "transform")
+//        tween.addEventListener(Event.INIT, function():void { viewport.beginTransform(); })
+//        tween.addEventListener(Event.COMPLETE, function():void { viewport.endTransform(); })
 //    }
 //
 //    //--------------------------------------------------------------------------
@@ -84,7 +84,7 @@ public class GTweenTransformer// implements IViewportTransformer
 //        return _viewport
 //    }
 //
-//    public function set viewport( value:INormalizedViewport ):void
+//    public function set viewport(value:INormalizedViewport):void
 //    {
 //        _viewport = value
 //    }
@@ -95,8 +95,8 @@ public class GTweenTransformer// implements IViewportTransformer
 //    //
 //    //--------------------------------------------------------------------------
 //
-//    public function transform( viewport:INormalizedViewport,
-//                             targetTransform:IViewportTransform ):void
+//    public function transform(viewport:INormalizedViewport,
+//                             targetTransform:IViewportTransform):void
 //    {
 //        var duration:Number = DEFAULT_DURATION
 //        var transition:String = DEFAULT_EASING
@@ -106,7 +106,7 @@ public class GTweenTransformer// implements IViewportTransformer
 //        tween.proxy.width = targetTransform.width
 //        tween.proxy.height = targetTransform.height
 //
-////        if( tween )
+////        if (tween)
 ////            tween.reset()
 ////        tween = new GTween(
 ////                            viewport.transform,
@@ -117,30 +117,30 @@ public class GTweenTransformer// implements IViewportTransformer
 ////                                width: targetTransform.width,
 ////                                height: targetTransform.height
 ////                            }
-////                          )
-////        tween.addEventListener( Event.INIT, function():void { viewport.beginTransform(); } )
-////        tween.addEventListener( Event.COMPLETE, function():void { viewport.endTransform(); } )
-////        tween.setAssignment( viewport, "transform" )
+////                         )
+////        tween.addEventListener(Event.INIT, function():void { viewport.beginTransform(); })
+////        tween.addEventListener(Event.COMPLETE, function():void { viewport.endTransform(); })
+////        tween.setAssignment(viewport, "transform")
 //
 ////        tween.target = t
-////        tween.setProperties( { x: targetTransform.x,
+////        tween.setProperties({ x: targetTransform.x,
 ////                               y: targetTransform.y,
 ////                               width: targetTransform.width,
-////                               height: targetTransform.height } )
+////                               height: targetTransform.height })
 ////        tween.duration = duration
-////        tween.setAssignment( viewport, "transform" )
+////        tween.setAssignment(viewport, "transform")
 //
-////        trace( targetTransform.x - t.x, targetTransform.y - t.y,
-////               targetTransform.width - t.width, targetTransform.height - t.height )
+////        trace(targetTransform.x - t.x, targetTransform.y - t.y,
+////               targetTransform.width - t.width, targetTransform.height - t.height)
 //
-////        trace( "@pre:", t.zoom )
-////        trace( "@post:", targetTransform.zoom )
+////        trace("@pre:", t.zoom)
+////        trace("@post:", targetTransform.zoom)
 //
 ////        viewport.beginTransform()
 ////        viewport.transform = targetTransform
 ////        viewport.endTransform()
 //
-////        Tweener.removeTweens( t )
+////        Tweener.removeTweens(t)
 ////        Tweener.addTween(
 ////                            t,
 ////                            {
@@ -154,7 +154,7 @@ public class GTweenTransformer// implements IViewportTransformer
 ////                                onUpdate: function():void { viewport.transform = t; },
 ////                                onComplete: viewport.endTransform
 ////                            }
-////                        )
+////                       )
 //    }
 }
 

@@ -27,7 +27,7 @@ import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 
 
 /**
- * The MultiScaleImageDescriptorFactory creates MultiScaleImageDescriptor objects.
+ * Factory for creating multiscale image descriptor from given data.
  */
 public class MultiScaleImageDescriptorFactory
 {
@@ -38,9 +38,9 @@ public class MultiScaleImageDescriptorFactory
     //--------------------------------------------------------------------------
 
     private static const DEEPZOOM_NAMESPACE_URI:String =
-                                    "http://schemas.microsoft.com/deepzoom/2008"
+                            "http://schemas.microsoft.com/deepzoom/2008"
     private static const OPENZOOM_NAMESPACE_URI:String =
-                                          "http://ns.openzoom.org/openzoom/2008"
+                            "http://ns.openzoom.org/openzoom/2008"
     private static const ZOOMIFY_ROOT_TAG_NAME:String = "IMAGE_PROPERTIES"
 
     //--------------------------------------------------------------------------

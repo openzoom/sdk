@@ -53,7 +53,7 @@ import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 [Event(name="securityError", type="flash.events.SecurityErrorEvent")]
 
 /**
- * Flex component for displaying a single multi-scale image.
+ * Flex component for displaying a single multiscale image.
  * Inspired by the <a href="http://msdn.microsoft.com/en-us/library/system.windows.controls.multiscaleimage(VS.95).aspx">
  * Microsoft Silverlight Deep Zoom MultiScaleImage control.</a>
  * This implementation has built-in support for Zoomify, Deep Zoom and OpenZoom images.
@@ -121,7 +121,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
         if (_source)
         {
             _source = null
-            
+
             if (container.numChildren > 0)
                 container.removeChildAt(0)
         }
@@ -133,7 +133,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
 
             url = String(value)
             urlLoader = new URLLoader(new URLRequest(url))
-            
+
             urlLoader.addEventListener(Event.COMPLETE,
                                        urlLoader_completeHandler,
                                        false, 0, true)

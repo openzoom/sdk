@@ -44,7 +44,7 @@ public interface IViewportController
      * Indicates the display object the controller receives events from.
      */
     function get view():DisplayObject
-    function set view( value:DisplayObject ):void
+    function set view(value:DisplayObject):void
 
     //----------------------------------
     //  viewport
@@ -54,7 +54,7 @@ public interface IViewportController
      * Indicates the viewport this controller acts upon.
      */
     function get viewport():INormalizedViewport
-    function set viewport( value:INormalizedViewport ):void
+    function set viewport(value:INormalizedViewport):void
 }
 
 }

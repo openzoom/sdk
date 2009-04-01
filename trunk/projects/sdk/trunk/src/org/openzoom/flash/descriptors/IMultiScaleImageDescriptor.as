@@ -24,7 +24,7 @@ package org.openzoom.flash.descriptors
 import flash.geom.Rectangle;
 
 /**
- * Interface of a multi-scale image descriptor.
+ * Interface of a multiscale image descriptor.
  */
 public interface IMultiScaleImageDescriptor
 {
@@ -128,13 +128,13 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the image pyramid level that exists at the specified index.
      */
-    function getLevelAt( index:int ):IMultiScaleImageLevel
+    function getLevelAt(index:int):IMultiScaleImageLevel
 
     /**
      * Returns the minimum pyramid level that has a greater or equal size
      * than specified by the arguments width and height.
      */
-    function getMinLevelForSize( width:Number, height:Number ):IMultiScaleImageLevel
+    function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
 
     //--------------------------------------------------------------------------
     //
@@ -145,22 +145,19 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns a Boolean indicating if the tile at the given level, row and column exists.
      */
-    function existsTile( level:int, column:uint, row:uint ):Boolean
+    function existsTile(level:int, column:uint, row:uint):Boolean
 
     /**
      * Returns the URL of the tile specified by its level, column and row.
      */
-    function getTileURL( level:int, column:uint, row:uint ):String
+    function getTileURL(level:int, column:uint, row:uint):String
 
-//    /**
-//     * Returns the position of the tile specified by its column and row.
-//     */
-//    function getTilePosition( column:uint, row:uint ):Point
 
     /**
-     * Returns the bounds of the tile specified by the level, column and row.
+     * Returns the bounds (position and dimensions) of the tile specified
+     * by the level, column and row.
      */
-    function getTileBounds( level:int, column:uint, row:uint ):Rectangle
+    function getTileBounds(level:int, column:uint, row:uint):Rectangle
 
     //--------------------------------------------------------------------------
     //

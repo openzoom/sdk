@@ -48,15 +48,15 @@ public class KeyboardController extends ViewportControllerBase
     private static const DEFAULT_PAN_FACTOR:Number = 0.1
     private static const DEFAULT_ACCELERATION_FACTOR:Number = 15
 
-    private static const DEFAULT_UP_KEY_CODE:uint   = 87 // W
-    private static const DEFAULT_RIGHT_KEY_CODE:uint   = 68 // D
-    private static const DEFAULT_DOWN_KEY_CODE:uint   = 83 // S
-    private static const DEFAULT_LEFT_KEY_CODE:uint   = 65 // A
+    private static const DEFAULT_UP_KEY_CODE:uint = 87       // W
+    private static const DEFAULT_RIGHT_KEY_CODE:uint = 68    // D
+    private static const DEFAULT_DOWN_KEY_CODE:uint = 83     // S
+    private static const DEFAULT_LEFT_KEY_CODE:uint = 65     // A
 
-    private static const DEFAULT_ZOOM_IN_KEY_CODE:uint   = 73 // I
-    private static const DEFAULT_ZOOM_OUT_KEY_CODE:uint   = 79 // 0
+    private static const DEFAULT_ZOOM_IN_KEY_CODE:uint = 73  // I
+    private static const DEFAULT_ZOOM_OUT_KEY_CODE:uint = 79 // 0
 
-    private static const DEFAULT_SHOW_ALL_KEY_CODE:uint   = 72 // H
+    private static const DEFAULT_SHOW_ALL_KEY_CODE:uint = 72 // H
 
     //--------------------------------------------------------------------------
     //
@@ -104,35 +104,35 @@ public class KeyboardController extends ViewportControllerBase
     /**
      * @private
      */
-    override protected function view_addedToStageHandler( event:Event ):void
+    override protected function view_addedToStageHandler(event:Event):void
     {
-        if( !keyboardTimer )
-            keyboardTimer = new Timer( KEYBOARD_REFRESH_DELAY )
+        if (!keyboardTimer)
+            keyboardTimer = new Timer(KEYBOARD_REFRESH_DELAY)
 
         keyboardTimer.start()
-        keyboardTimer.addEventListener( TimerEvent.TIMER,
-                                        keyboardTimerHandler,
-                                        false, 0, true )
+        keyboardTimer.addEventListener(TimerEvent.TIMER,
+                                       keyboardTimerHandler,
+                                       false, 0, true)
 
-        view.stage.addEventListener( KeyboardEvent.KEY_DOWN,
-                                     keyDownHandler,
-                                     false, 0, true )
-        view.stage.addEventListener( KeyboardEvent.KEY_UP,
-                                     keyUpHandler,
-                                     false, 0, true )
+        view.stage.addEventListener(KeyboardEvent.KEY_DOWN,
+                                    keyDownHandler,
+                                    false, 0, true)
+        view.stage.addEventListener(KeyboardEvent.KEY_UP,
+                                    keyUpHandler,
+                                    false, 0, true)
     }
 
     /**
      * @private
      */
-    override protected function view_removedFromStageHandler( event:Event ):void
+    override protected function view_removedFromStageHandler(event:Event):void
     {
-        keyboardTimer.removeEventListener( TimerEvent.TIMER, keyboardTimerHandler )
+        keyboardTimer.removeEventListener(TimerEvent.TIMER, keyboardTimerHandler)
         keyboardTimer.stop()
         keyboardTimer = null
 
-        view.stage.removeEventListener( KeyboardEvent.KEY_DOWN, keyDownHandler )
-        view.stage.removeEventListener( KeyboardEvent.KEY_UP, keyUpHandler )
+        view.stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler)
+        view.stage.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler)
     }
 
     //--------------------------------------------------------------------------
@@ -154,12 +154,12 @@ public class KeyboardController extends ViewportControllerBase
      */
     public function get upKey():String
     {
-        return String.fromCharCode( upKeyCode )
+        return String.fromCharCode(upKeyCode)
     }
 
-    public function set upKey( value:String ):void
+    public function set upKey(value:String):void
     {
-        upKeyCode = value.toUpperCase().charCodeAt( 0 )
+        upKeyCode = value.toUpperCase().charCodeAt(0)
     }
 
     //----------------------------------
@@ -175,12 +175,12 @@ public class KeyboardController extends ViewportControllerBase
      */
     public function get rightKey():String
     {
-        return String.fromCharCode( rightKeyCode )
+        return String.fromCharCode(rightKeyCode)
     }
 
-    public function set rightKey( value:String ):void
+    public function set rightKey(value:String):void
     {
-        rightKeyCode = value.toUpperCase().charCodeAt( 0 )
+        rightKeyCode = value.toUpperCase().charCodeAt(0)
     }
 
     //----------------------------------
@@ -196,12 +196,12 @@ public class KeyboardController extends ViewportControllerBase
      */
     public function get downKey():String
     {
-        return String.fromCharCode( downKeyCode )
+        return String.fromCharCode(downKeyCode)
     }
 
-    public function set downKey( value:String ):void
+    public function set downKey(value:String):void
     {
-        downKeyCode = value.toUpperCase().charCodeAt( 0 )
+        downKeyCode = value.toUpperCase().charCodeAt(0)
     }
 
     //----------------------------------
@@ -217,12 +217,12 @@ public class KeyboardController extends ViewportControllerBase
      */
     public function get leftKey():String
     {
-        return String.fromCharCode( leftKeyCode )
+        return String.fromCharCode(leftKeyCode)
     }
 
-    public function set leftKey( value:String ):void
+    public function set leftKey(value:String):void
     {
-        leftKeyCode = value.toUpperCase().charCodeAt( 0 )
+        leftKeyCode = value.toUpperCase().charCodeAt(0)
     }
 
     //----------------------------------
@@ -238,12 +238,12 @@ public class KeyboardController extends ViewportControllerBase
      */
     public function get zoomInKey():String
     {
-        return String.fromCharCode( zoomInKeyCode )
+        return String.fromCharCode(zoomInKeyCode)
     }
 
-    public function set zoomInKey( value:String ):void
+    public function set zoomInKey(value:String):void
     {
-        zoomInKeyCode = value.toUpperCase().charCodeAt( 0 )
+        zoomInKeyCode = value.toUpperCase().charCodeAt(0)
     }
 
     //----------------------------------
@@ -259,12 +259,12 @@ public class KeyboardController extends ViewportControllerBase
      */
     public function get zoomOutKey():String
     {
-        return String.fromCharCode( zoomOutKeyCode )
+        return String.fromCharCode(zoomOutKeyCode)
     }
 
-    public function set zoomOutKey( value:String ):void
+    public function set zoomOutKey(value:String):void
     {
-        zoomOutKeyCode = value.toUpperCase().charCodeAt( 0 )
+        zoomOutKeyCode = value.toUpperCase().charCodeAt(0)
     }
 
     //----------------------------------
@@ -280,12 +280,12 @@ public class KeyboardController extends ViewportControllerBase
      */
     public function get showAllKey():String
     {
-        return String.fromCharCode( showAllKeyCode )
+        return String.fromCharCode(showAllKeyCode)
     }
 
-    public function set showAllKey( value:String ):void
+    public function set showAllKey(value:String):void
     {
-        showAllKeyCode = value.toUpperCase().charCodeAt( 0 )
+        showAllKeyCode = value.toUpperCase().charCodeAt(0)
     }
 
     //----------------------------------
@@ -304,7 +304,7 @@ public class KeyboardController extends ViewportControllerBase
         return _zoomInFactor
     }
 
-    public function set zoomInFactor( value:Number ):void
+    public function set zoomInFactor(value:Number):void
     {
         _zoomInFactor = value
     }
@@ -325,7 +325,7 @@ public class KeyboardController extends ViewportControllerBase
         return _zoomOutFactor
     }
 
-    public function set zoomOutFactor( value:Number ):void
+    public function set zoomOutFactor(value:Number):void
     {
         _zoomOutFactor = value
     }
@@ -347,7 +347,7 @@ public class KeyboardController extends ViewportControllerBase
         return _panFactor
     }
 
-    public function set panFactor( value:Number ):void
+    public function set panFactor(value:Number):void
     {
         _panFactor = value
     }
@@ -361,26 +361,26 @@ public class KeyboardController extends ViewportControllerBase
     /**
      * @private
      */
-    private function keyDownHandler( event:KeyboardEvent ):void
+    private function keyDownHandler(event:KeyboardEvent):void
     {
-        updateFlags( event, true )
+        updateFlags(event, true)
     }
 
     /**
      * @private
      */
-    private function keyUpHandler( event:KeyboardEvent ):void
+    private function keyUpHandler(event:KeyboardEvent):void
     {
-        updateFlags( event, false )
+        updateFlags(event, false)
     }
 
     /**
      * @private
      */
-    private function updateFlags( event:KeyboardEvent,
-                                  value:Boolean ):void
+    private function updateFlags(event:KeyboardEvent,
+                                 value:Boolean):void
     {
-        switch( event.keyCode )
+        switch(event.keyCode)
         {
             // booster
             case Keyboard.SHIFT:
@@ -445,52 +445,52 @@ public class KeyboardController extends ViewportControllerBase
     /**
      * @private
      */
-    private function keyboardTimerHandler( event:TimerEvent ):void
+    private function keyboardTimerHandler(event:TimerEvent):void
     {
-        var deltaX:Number = viewport.width  * panFactor
+        var deltaX:Number = viewport.width * panFactor
         var deltaY:Number = viewport.height * panFactor
 
-        if( accelerationActivated )
+        if (accelerationActivated)
         {
             deltaX *= DEFAULT_ACCELERATION_FACTOR
             deltaY *= DEFAULT_ACCELERATION_FACTOR
         }
 
         // panning
-        if( upActivated )
-            viewport.panBy( 0, -deltaY )
+        if (upActivated)
+            viewport.panBy(0, -deltaY)
 
-        if( downActivated )
-            viewport.panBy( 0,  deltaY )
+        if (downActivated)
+            viewport.panBy(0,  deltaY)
 
-        if( leftActivated )
-            viewport.panBy( -deltaX, 0 )
+        if (leftActivated)
+            viewport.panBy(-deltaX, 0)
 
-        if( rightActivated )
-            viewport.panBy(  deltaX, 0 )
+        if (rightActivated)
+            viewport.panBy( deltaX, 0)
 
         // quick navigation
-        if( pageUpActivated )
-            viewport.panTo( viewport.x, 0 )
+        if (pageUpActivated)
+            viewport.panTo(viewport.x, 0)
 
-        if( pageDownActivated )
-            viewport.panTo( viewport.x, 1 )
+        if (pageDownActivated)
+            viewport.panTo(viewport.x, 1)
 
-        if( homeActivated )
-            viewport.panTo( 0, viewport.y )
+        if (homeActivated)
+            viewport.panTo(0, viewport.y)
 
-        if( endActivated )
-            viewport.panTo( 1, viewport.y )
+        if (endActivated)
+            viewport.panTo(1, viewport.y)
 
-        if( showAllActivated )
+        if (showAllActivated)
             viewport.showAll()
 
         // zooming
-        if( zoomInActivated )
-            viewport.zoomBy( zoomInFactor )
+        if (zoomInActivated)
+            viewport.zoomBy(zoomInFactor)
 
-        if( zoomOutActivated )
-            viewport.zoomBy( zoomOutFactor )
+        if (zoomOutActivated)
+            viewport.zoomBy(zoomOutFactor)
     }
 }
 

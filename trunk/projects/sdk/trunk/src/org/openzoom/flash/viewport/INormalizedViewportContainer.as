@@ -22,7 +22,8 @@ package org.openzoom.flash.viewport
 {
 
 /**
- * Interface for the viewport container (owner).
+ * Interface for the viewport container (owner),
+ * e.g. MultiScaleContainer or MultiScaleImage components.
  */
 public interface INormalizedViewportContainer extends INormalizedViewport
 {
@@ -38,7 +39,7 @@ public interface INormalizedViewportContainer extends INormalizedViewport
      *
      * @see org.openzoom.events.ViewportEvent#RESIZE
      */
-    function setSize( width:Number, height:Number ):void
+    function setSize(width:Number, height:Number):void
 }
 
 }

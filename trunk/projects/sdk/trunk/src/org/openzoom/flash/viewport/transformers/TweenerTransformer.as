@@ -91,7 +91,7 @@ public class TweenerTransformer implements IViewportTransformer
         return _duration
     }
 
-    public function set duration( value:Number ):void
+    public function set duration(value:Number):void
     {
         _duration = value
     }
@@ -117,7 +117,7 @@ public class TweenerTransformer implements IViewportTransformer
         return _easing
     }
 
-    public function set easing( value:String ):void
+    public function set easing(value:String):void
     {
         _easing = value
     }
@@ -137,16 +137,16 @@ public class TweenerTransformer implements IViewportTransformer
     /**
      * @inheritDoc
      */
-    public function get viewport() : ITransformerViewport
+    public function get viewport():ITransformerViewport
     {
         return _viewport
     }
 
-    public function set viewport( value : ITransformerViewport ):void
+    public function set viewport(value:ITransformerViewport):void
     {
         _viewport = value
 
-        if( value )
+        if (value)
             _target = viewport.transform
         else
             _target = null
@@ -167,9 +167,9 @@ public class TweenerTransformer implements IViewportTransformer
         return _constraint
     }
 
-    public function set constraint( value:IViewportConstraint ):void
+    public function set constraint(value:IViewportConstraint):void
     {
-        if( value )
+        if (value)
             _constraint = value
         else
             _constraint = NULL_CONSTRAINT
@@ -200,14 +200,14 @@ public class TweenerTransformer implements IViewportTransformer
      */
     public function stop():void
     {
-        if( Tweener.isTweening( viewport ))
+        if (Tweener.isTweening(viewport))
         {
-            Tweener.removeTweens( viewport )
+            Tweener.removeTweens(viewport)
             viewport.endTransform()
         }
-//        if( Tweener.isTweening( tweenTransform ))
+//        if (Tweener.isTweening(tweenTransform))
 //        {
-//            Tweener.removeTweens( tweenTransform )
+//            Tweener.removeTweens(tweenTransform)
 //            viewport.endTransform()
 //        }
     }
@@ -215,14 +215,14 @@ public class TweenerTransformer implements IViewportTransformer
     /**
      * @inheritDoc
      */
-    public function transform( target:IViewportTransform,
-                               immediately:Boolean = false ):void
+    public function transform(target:IViewportTransform,
+                              immediately:Boolean=false):void
     {
         // Copy target and validate to know where to tween to...
         var previousTarget:IViewportTransform = this.target
-        _target = constraint.validate( target.clone(), previousTarget )
+        _target = constraint.validate(target.clone(), previousTarget)
 
-        if( immediately )
+        if (immediately)
         {
             stop()
             viewport.beginTransform()
@@ -230,13 +230,13 @@ public class TweenerTransformer implements IViewportTransformer
             viewport.endTransform()
 
             // update tween transform
-//            tweenTransform.copy( ViewportTransform2( viewport.transform ))
+//            tweenTransform.copy(ViewportTransform2(viewport.transform))
         }
         else
         {
             // BEGIN: TRANSFORMSHORTCUTS
 
-            if( !Tweener.isTweening( viewport ))
+            if (!Tweener.isTweening(viewport))
                 viewport.beginTransform()
 
             Tweener.addTween(
@@ -250,18 +250,18 @@ public class TweenerTransformer implements IViewportTransformer
                                   transition: easing,
                                   onComplete: viewport.endTransform
                               }
-                            )
+                           )
 
             // END: TRANSFORMSHORTCUTS
 
 
             // BEGIN: THE GOOD WAY.
 //
-//            if( !Tweener.isTweening( tweenTransform ))
+//            if (!Tweener.isTweening(tweenTransform))
 //                viewport.beginTransform()
 //
 //            // update tween transform
-//            tweenTransform.copy( ViewportTransform2( viewport.transform ))
+//            tweenTransform.copy(ViewportTransform2(viewport.transform))
 //
 //            Tweener.addTween(
 //                                tweenTransform,
@@ -279,7 +279,7 @@ public class TweenerTransformer implements IViewportTransformer
 //                                    },
 //                                    onComplete: viewport.endTransform
 //                                }
-//                            )
+//                           )
             // END: THE GOOD WAY.
         }
     }

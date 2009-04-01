@@ -25,7 +25,8 @@ import flash.geom.Rectangle;
 
 /**
  * The MultiScaleImageLevel class represents a single level of a
- * multi-scale image pyramid. It is a default implementation of IMultiScaleImageLevel.
+ * multiscale image pyramid.
+ * It is the default implementation of IMultiScaleImageLevel.
  */
 public class MultiScaleImageLevel extends MultiScaleImageLevelBase
                                   implements IMultiScaleImageLevel
@@ -39,13 +40,13 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * Constructor.
      */
-    public function MultiScaleImageLevel( descriptor:IMultiScaleImageDescriptor,
+    public function MultiScaleImageLevel(descriptor:IMultiScaleImageDescriptor,
                                           index:int, width:uint, height:uint,
-                                          numColumns:uint, numRows:uint )
+                                          numColumns:uint, numRows:uint)
     {
         this.descriptor = descriptor
 
-        super( index, width, height, numColumns, numRows )
+        super(index, width, height, numColumns, numRows)
     }
 
     //--------------------------------------------------------------------------
@@ -68,17 +69,17 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTileURL( column:uint, row:uint ):String
+    public function getTileURL(column:uint, row:uint):String
     {
-        return descriptor.getTileURL( index, column, row )
+        return descriptor.getTileURL(index, column, row)
     }
 
     /**
      * @inheritDoc
      */
-    public function getTileBounds( column:uint, row:uint ):Rectangle
+    public function getTileBounds(column:uint, row:uint):Rectangle
     {
-        return descriptor.getTileBounds( index, column, row )
+        return descriptor.getTileBounds(index, column, row)
     }
 
     /**
@@ -86,7 +87,9 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
      */
     public function clone():IMultiScaleImageLevel
     {
-        return new MultiScaleImageLevel( descriptor, index, width, height, numColumns, numRows )
+        return new MultiScaleImageLevel(descriptor, index,
+                                        width, height,
+                                        numColumns, numRows)
     }
 
     //--------------------------------------------------------------------------

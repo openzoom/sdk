@@ -175,7 +175,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
     private function load(classOrString:Object):void
     {
         // Remove all children
-        while(container.numChildren > 0)
+        while (container.numChildren > 0)
             container.removeChildAt(0)
 
         // URL
@@ -206,7 +206,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
      */
     private function loadItems():void
     {
-        for each(var item:ItemInfo in items)
+        for each (var item:ItemInfo in items)
         {
             var request:INetworkRequest = itemLoadingQueue.addRequest(item.source,
                                                                       String,
@@ -228,7 +228,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
 
         // Precompute the normalized maximum
         // dimensions this collection could take up
-        for each(item in items)
+        for each (item in items)
         {
             var aspectRatio:Number = item.width / item.height
 
@@ -256,17 +256,18 @@ public class DeepZoomContainer extends MultiScaleImageBase
         }
 
         // Add, size and position items in scene
-        for each(item in items)
+        for each (item in items)
         {
-            var targetX     :Number = item.targetX * container.sceneWidth
-            var targetY     :Number = item.targetY * container.sceneWidth
-            var targetWidth :Number = item.targetWidth  * container.sceneWidth
+            var targetX:Number = item.targetX * container.sceneWidth
+            var targetY:Number = item.targetY * container.sceneWidth
+            var targetWidth:Number = item.targetWidth  * container.sceneWidth
             var targetHeight:Number = item.targetHeight * container.sceneWidth
 
 //            if (!item.source || !item.data)
 //                continue
 
-            var descriptor:DZIDescriptor = DZIDescriptor.fromXML(item.source, item.data)
+            var descriptor:DZIDescriptor = DZIDescriptor.fromXML(item.source,
+                                                                 item.data)
             var renderer:MultiScaleImageRenderer =
                                   new MultiScaleImageRenderer(descriptor,
                                                               container.loader,
@@ -333,7 +334,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
         if (data.localName() == TYPE_COLLECTION)
         {
             items = []
-            for each(var itemXML:XML in data.Items.*)
+            for each (var itemXML:XML in data.Items.*)
             {
                 item = ItemInfo.fromXML(source.toString(), itemXML)
                 items.push(item)
@@ -391,6 +392,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
 //------------------------------------------------------------------------------
 
 import mx.utils.LoaderUtil;
+import org.openzoom.flash.utils.uri.resolveURI;
 
 /**
  * @private
@@ -430,7 +432,7 @@ class ItemInfo
         use namespace deepzoom
 
         itemInfo.id = data.@Id
-        itemInfo.source = LoaderUtil.createAbsoluteURL(source, data.@Source)
+        itemInfo.source = resolveURI(source, data.@Source)
         itemInfo.width = data.Size.@Width
         itemInfo.height = data.Size.@Height
 

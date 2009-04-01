@@ -28,7 +28,7 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 /**
  * @private
  *
- * Multi-scale renderer base class.
+ * Multiscale renderer base class.
  */
 public class MultiScaleRenderer extends Sprite
                                 implements IMultiScaleRenderer
@@ -68,11 +68,11 @@ public class MultiScaleRenderer extends Sprite
 
     public function set viewport(value:INormalizedViewport):void
     {
-        if(viewport === value)
+        if (viewport === value)
             return
 
         // remove old event listener
-        if(viewport)
+        if (viewport)
         {
             viewport.removeEventListener(ViewportEvent.TRANSFORM_START,
                                          viewport_transformStartHandler)
@@ -87,7 +87,7 @@ public class MultiScaleRenderer extends Sprite
         _viewport = value
 
         // register new event listener
-        if(viewport)
+        if (viewport)
         {
             viewport.addEventListener(ViewportEvent.TRANSFORM_START,
                                       viewport_transformStartHandler,
@@ -130,7 +130,7 @@ public class MultiScaleRenderer extends Sprite
     protected function viewport_transformEndHandler(event:ViewportEvent):void
     {
     }
-    
+
     /**
      * @private
      */

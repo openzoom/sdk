@@ -68,7 +68,7 @@ public class ViewportControllerBase
         return _viewport
     }
 
-    public function set viewport( value:INormalizedViewport ):void
+    public function set viewport(value:INormalizedViewport):void
     {
         _viewport = value
     }
@@ -87,27 +87,27 @@ public class ViewportControllerBase
         return _view
     }
 
-    public function set view( value:DisplayObject ):void
+    public function set view(value:DisplayObject):void
     {
-        if( view === value )
+        if (view === value)
             return
 
-        if( !value )
-            view_removedFromStageHandler( null )
+        if (!value)
+            view_removedFromStageHandler(null)
 
         _view = value
 
-        if( value )
+        if (value)
         {
-            view.addEventListener( Event.ADDED_TO_STAGE,
-                                   view_addedToStageHandler,
-                                   false, 0, true )
-            view.addEventListener( Event.REMOVED_FROM_STAGE,
-                                   view_removedFromStageHandler,
-                                   false, 0, true )
+            view.addEventListener(Event.ADDED_TO_STAGE,
+                                  view_addedToStageHandler,
+                                  false, 0, true)
+            view.addEventListener(Event.REMOVED_FROM_STAGE,
+                                  view_removedFromStageHandler,
+                                  false, 0, true)
 
-            if( view.stage )
-                view_addedToStageHandler( null )
+            if (view.stage)
+                view_addedToStageHandler(null)
         }
     }
 
@@ -122,7 +122,7 @@ public class ViewportControllerBase
      *
      * Documentation not available.
      */
-    protected function view_addedToStageHandler( event:Event ):void
+    protected function view_addedToStageHandler(event:Event):void
     {
     }
 
@@ -131,7 +131,7 @@ public class ViewportControllerBase
      *
      * Documentation not available.
      */
-    protected function view_removedFromStageHandler( event:Event ):void
+    protected function view_removedFromStageHandler(event:Event):void
     {
     }
 }

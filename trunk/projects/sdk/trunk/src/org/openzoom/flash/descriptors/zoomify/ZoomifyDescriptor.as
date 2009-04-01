@@ -30,8 +30,8 @@ import org.openzoom.flash.descriptors.MultiScaleImageLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
- * Descriptor for the Zoomify multi-scale image format.
- * <a href="http://www.zoomify.com/">http://www.zoomify.com/</a>
+ * Descriptor for the <a href="http://www.zoomify.com/">Zoomify</a>
+ * multiscale image format.
  */
 public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
                                implements IMultiScaleImageDescriptor
@@ -60,8 +60,8 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     public function ZoomifyDescriptor(source:String, data:XML)
     {
         this.data = data
-
         this.uri = source
+        
         parseXML(data)
         _numLevels = computeNumLevels(width, height, tileWidth, tileHeight)
         levels = computeLevels(width, height, tileWidth, tileHeight, numLevels)
@@ -107,7 +107,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
         // TODO: Implement a smart(er) algorithm
         var index:int = numLevels - 1
 
-        while(index >= 0 &&
+        while (index >= 0 &&
               IMultiScaleImageLevel(levels[index]).width >= width &&
               IMultiScaleImageLevel(levels[index]).height >= height)
         {
@@ -213,21 +213,21 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 //          width = (width + 1) >> 1
 //          height = (height + 1) >> 1
         }
-        
+
         return levels
     }
-    
+
     private function computeLevelTileCounts(numLevels:int):Array
     {
-    	var levelTileCount:Array = []
+        var levelTileCount:Array = []
         levelTileCount[0] = 0
-        
+
         for (var i:int = 1; i < numLevels; i++)
         {
             var l:IMultiScaleImageLevel = IMultiScaleImageLevel(levels[i-1])
             levelTileCount.push(l.numColumns * l.numRows + levelTileCount[i-1])
         }
-        
+
         return levelTileCount
     }
 
@@ -240,11 +240,11 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
      */
     private function getTileGroup(level:int, column:uint, row:uint):uint
     {
-    	var numColumns:uint = getLevelAt(level).numColumns
-    	var tileIndex:uint = column + row * numColumns + tileCountUpToLevel[level]
-    	var tileGroup:uint = tileIndex / DEFAULT_NUM_TILES_IN_FOLDER
-    	
-    	return tileGroup
+        var numColumns:uint = getLevelAt(level).numColumns
+        var tileIndex:uint = column + row * numColumns + tileCountUpToLevel[level]
+        var tileGroup:uint = tileIndex / DEFAULT_NUM_TILES_IN_FOLDER
+        
+        return tileGroup
     }
 }
 

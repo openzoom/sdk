@@ -89,14 +89,14 @@ public final class ExternalMouseWheel extends EventDispatcher
         <![CDATA[
 
         function() {
-            if( window.ExternalMouseWheel )
+            if (window.ExternalMouseWheel)
                 return;
             var win = window;
             var doc = document;
             var nav = navigator;
-            var ExternalMouseWheel = window.ExternalMouseWheel = function( id ) {
-                this.setUp( id );
-                if( ExternalMouseWheel.browser.msie )
+            var ExternalMouseWheel = window.ExternalMouseWheel = function(id) {
+                this.setUp(id);
+                if (ExternalMouseWheel.browser.msie)
                     this.bind4msie();
                 else
                     this.bind();
@@ -105,12 +105,12 @@ public final class ExternalMouseWheel extends EventDispatcher
             ExternalMouseWheel.prototype = {
                 setUp: function(id) {
                     var el = doc.getElementById(id);
-                    if( el.nodeName.toLowerCase() == 'embed'
-                        || ExternalMouseWheel.browser.safari )
+                    if (el.nodeName.toLowerCase() == 'embed'
+                        || ExternalMouseWheel.browser.safari)
                         el = el.parentNode;
                     this.target = el;
                     this.eventType = ExternalMouseWheel.browser.mozilla
-                                       ? 'DOMMouseScroll':'mousewheel';
+                                       ? 'DOMMouseScroll' : 'mousewheel';
                 },
                 bind: function() {
                     this.target.addEventListener(this.eventType,
@@ -127,9 +127,9 @@ public final class ExternalMouseWheel extends EventDispatcher
                         if (name != 'object' && name != 'embed') return;
                         evt.preventDefault();
                         evt.returnValue = false;
-                        if( !target.externalMouseEvent )
+                        if (!target.externalMouseEvent)
                             return;
-                        switch( true ) {
+                        switch(true) {
                         case ExternalMouseWheel.browser.mozilla:
                             delta = -evt.detail;
                             break;
@@ -147,13 +147,13 @@ public final class ExternalMouseWheel extends EventDispatcher
                         var evt = win.event,
                         delta = 0,
                         name = evt.srcElement.nodeName.toLowerCase();
-                        if( name != 'object' && name != 'embed' )
+                        if (name != 'object' && name != 'embed')
                             return;
                         evt.returnValue = false;
-                        if( !target.externalMouseEvent )
+                        if (!target.externalMouseEvent)
                             return;
                         delta = evt.wheelDelta / 80;
-                        target.externalMouseEvent( delta );
+                        target.externalMouseEvent(delta);
                     };
                     _unload = function() {
                         target.detachEvent('onmousewheel', _wheel);
@@ -175,34 +175,34 @@ public final class ExternalMouseWheel extends EventDispatcher
                 }
             })(nav.userAgent.toLowerCase());
 
-            ExternalMouseWheel.join = function( id ) {
+            ExternalMouseWheel.join = function(id) {
                 var t = setInterval(function() {
-                    if (doc.getElementById( id )) {
-                        clearInterval( t );
-                        new ExternalMouseWheel( id );
+                    if (doc.getElementById(id)) {
+                        clearInterval(t);
+                        new ExternalMouseWheel(id);
                     }
                 },
                 0);
             };
 
             ExternalMouseWheel.force = function(id) {
-                if( ExternalMouseWheel.browser.safari
-                    || ExternalMouseWheel.browser.stainless )
+                if (ExternalMouseWheel.browser.safari
+                    || ExternalMouseWheel.browser.stainless)
                     return true;
                 var el = doc.getElementById(id),
                 name = el.nodeName.toLowerCase();
-                if( name == 'object' )
+                if (name == 'object')
                 {
                     var k, v, param, params = el.getElementsByTagName('param');
                     for (var i = 0; i < params.length; i++) {
                         param = params[i];
-                        k = param.getAttribute( 'name' );
-                        v = param.getAttribute( 'value' ) || '';
-                        if( /wmode/i.test( k ) && /(opaque|transparent)/i.test( v ))
+                        k = param.getAttribute('name');
+                        v = param.getAttribute('value') || '';
+                        if (/wmode/i.test(k) && /(opaque|transparent)/i.test(v))
                             return true;
                     }
                 }
-                else if( name == 'embed' )
+                else if (name == 'embed')
                 {
                     return /(opaque|transparent)/i.test(el.getAttribute('wmode'));
                 }
@@ -224,38 +224,38 @@ public final class ExternalMouseWheel extends EventDispatcher
     public function ExternalMouseWheel(stage:Stage,
                                        enforcer:SingletonEnforcer)
     {
-        if( !ExternalInterface.available || !stage )
+        if (!ExternalInterface.available || !stage)
             return
 
         try
         {
             // Inject script
-            ExternalInterface.call( EXTERNAL_SCRIPT )
+            ExternalInterface.call(EXTERNAL_SCRIPT)
 
             // Initialize external script
-            ExternalInterface.call( EXECUTE_FUNCTION,
-                                    ExternalInterface.objectID )
+            ExternalInterface.call(EXECUTE_FUNCTION,
+                                    ExternalInterface.objectID)
 
             var os:String = Capabilities.os.toLowerCase()
-            var isMac:Boolean = os.indexOf( "mac" ) != -1
+            var isMac:Boolean = os.indexOf("mac") != -1
 
             var force:Boolean =
-                 ExternalInterface.call( FORCE_FUNCTION,
-                                         ExternalInterface.objectID ) as Boolean
+                 ExternalInterface.call(FORCE_FUNCTION,
+                                         ExternalInterface.objectID) as Boolean
 
             // Ignore if not Mac OS or Safari
-            if( !isMac && !force )
+            if (!isMac && !force)
                 return
 
             this.stage = stage
-            this.stage.addEventListener( MouseEvent.MOUSE_MOVE,
+            this.stage.addEventListener(MouseEvent.MOUSE_MOVE,
                                          stage_mouseMoveHandler,
-                                         false, 0, true )
+                                         false, 0, true)
 
-            ExternalInterface.addCallback( HANDLER_FUNCTION,
-                                           externalMouseEventHandler )
+            ExternalInterface.addCallback(HANDLER_FUNCTION,
+                                           externalMouseEventHandler)
         }
-        catch( error:Error )
+        catch(error:Error)
         {
             // Do nothing
         }
@@ -282,10 +282,10 @@ public final class ExternalMouseWheel extends EventDispatcher
      * Make sure that your embedded Flash movie has an
      * <code>id</code> and <code>name</code>.
      */
-    public static function initialize( stage:Stage ):void
+    public static function initialize(stage:Stage):void
     {
-        if( !instance )
-            instance = new ExternalMouseWheel( stage, new SingletonEnforcer())
+        if (!instance)
+            instance = new ExternalMouseWheel(stage, new SingletonEnforcer())
     }
 
     //--------------------------------------------------------------------------
@@ -297,36 +297,34 @@ public final class ExternalMouseWheel extends EventDispatcher
     /**
      * @private
      */
-    private function stage_mouseMoveHandler( event:MouseEvent ):void
+    private function stage_mouseMoveHandler(event:MouseEvent):void
     {
-        currentItem = InteractiveObject( event.target )
-        clonedEvent = MouseEvent( event )
+        currentItem = InteractiveObject(event.target)
+        clonedEvent = MouseEvent(event)
     }
 
     /**
      * @private
      */
-    private function externalMouseEventHandler( delta:Number ):void
+    private function externalMouseEventHandler(delta:Number):void
     {
-        if( !clonedEvent )
+        if (!clonedEvent)
             return
 
         var mouseWheelEvent:MouseEvent =
-                                    new MouseEvent(
-                                                      MouseEvent.MOUSE_WHEEL,
-                                                      true,
-                                                      false,
-                                                      clonedEvent.localX,
-                                                      clonedEvent.localY,
-                                                      clonedEvent.relatedObject,
-                                                      clonedEvent.ctrlKey,
-                                                      clonedEvent.altKey,
-                                                      clonedEvent.shiftKey,
-                                                      clonedEvent.buttonDown,
-                                                      int( delta )
-                                                  )
+                                    new MouseEvent(MouseEvent.MOUSE_WHEEL,
+                                                   true,
+                                                   false,
+                                                   clonedEvent.localX,
+                                                   clonedEvent.localY,
+                                                   clonedEvent.relatedObject,
+                                                   clonedEvent.ctrlKey,
+                                                   clonedEvent.altKey,
+                                                   clonedEvent.shiftKey,
+                                                   clonedEvent.buttonDown,
+                                                   int(delta))
 
-        currentItem.dispatchEvent( mouseWheelEvent )
+        currentItem.dispatchEvent(mouseWheelEvent)
     }
 }
 

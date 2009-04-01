@@ -24,8 +24,7 @@ package org.openzoom.flash.descriptors
 import flash.geom.Rectangle;
 
 /**
- * The IMultiScaleImageLevel interface defines a set of properties
- * a level of a multi-scale image pyramid has to expose.
+ * Interface of a level of a multiscale image pyramid.
  */
 public interface IMultiScaleImageLevel
 {
@@ -89,12 +88,12 @@ public interface IMultiScaleImageLevel
     /**
      * Returns the URL of the tile at the specified position.
      */
-    function getTileURL( column:uint, row:uint ):String
+    function getTileURL(column:uint, row:uint):String
 
     /**
      * Returns the bounds of the specified tile.
      */
-    function getTileBounds( column:uint, row:uint ):Rectangle
+    function getTileBounds(column:uint, row:uint):Rectangle
 
     /**
      * Returns a copy of this object.

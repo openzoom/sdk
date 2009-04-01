@@ -32,6 +32,8 @@ import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 
 /**
+ * @private
+ * 
  * MultiScaleScene class based on the Flex framework.
  */
 public class MultiScaleScene extends Group
@@ -61,8 +63,8 @@ public class MultiScaleScene extends Group
         super()
 
         var g:Graphics = graphics
-            g.beginFill( 0xFF6600, 0.5 )
-            g.drawRect( 0, 0, DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT )
+            g.beginFill(0xFF6600, 0.5)
+            g.drawRect(0, 0, DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT)
             g.endFill()
         tabEnabled = false
         tabChildren = true
@@ -108,9 +110,9 @@ public class MultiScaleScene extends Group
         return _sceneWidth
     }
 
-    public function set sceneWidth( value:Number ):void
+    public function set sceneWidth(value:Number):void
     {
-        if( _sceneWidth != value )
+        if (_sceneWidth != value)
         {
             _sceneWidth = value
             sceneWidthChanged = true
@@ -137,9 +139,9 @@ public class MultiScaleScene extends Group
         return _sceneHeight
     }
 
-    public function set sceneHeight( value:Number ):void
+    public function set sceneHeight(value:Number):void
     {
-//        if( _sceneHeight != value )
+//        if (_sceneHeight != value)
 //        {
 //            _sceneHeight = value
 //            sceneHeightChanged = true
@@ -160,17 +162,17 @@ public class MultiScaleScene extends Group
      */
     override protected function createChildren():void
     {
-        if( !frame )
+        if (!frame)
             createFrame()
     }
 
     /**
      * @private
      */
-//    override protected function updateDisplayList( unscaledWidth:Number,
-//                                                   unscaledHeight:Number ):void
+//    override protected function updateDisplayList(unscaledWidth:Number,
+//                                                   unscaledHeight:Number):void
 //    {
-//        super.updateDisplayList( unscaledWidth, unscaledHeight )
+//        super.updateDisplayList(unscaledWidth, unscaledHeight)
 //    }
 
     /**
@@ -180,13 +182,13 @@ public class MultiScaleScene extends Group
     {
         super.commitProperties()
 
-//        if( sceneWidthChanged || sceneHeightChanged )
+//        if (sceneWidthChanged || sceneHeightChanged)
 //        {
 //            frame.width = sceneWidth
 //            frame.height = sceneHeight
 //
 //            sceneWidthChanged = sceneHeightChanged = false
-//            dispatchEvent( new Event( Event.RESIZE ))
+//            dispatchEvent(new Event(Event.RESIZE ))
 //        }
     }
     //--------------------------------------------------------------------------
@@ -202,11 +204,11 @@ public class MultiScaleScene extends Group
     {
         frame = new Shape()
         var g:Graphics = frame.graphics
-            g.beginFill( 0xFF6600, 0.5 )
-            g.drawRect( 0, 0, 1, 100 )
+            g.beginFill(0xFF6600, 0.5)
+            g.drawRect(0, 0, 1, 100)
             g.endFill()
-//        addChild( frame )
-        addItem( frame )
+//      addChild(frame)
+        addItem(frame)
     }
 }
 

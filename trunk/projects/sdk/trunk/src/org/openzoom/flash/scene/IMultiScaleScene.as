@@ -30,7 +30,7 @@ import flash.events.IEventDispatcher;
 [Event(name="resize", type="flash.events.Event")]
 
 /**
- * Interface for a multi-scale scene that is viewed with a viewport.
+ * Interface for a multiscale scene that is viewed with a viewport.
  */
 public interface IMultiScaleScene extends IEventDispatcher
 {
@@ -48,7 +48,7 @@ public interface IMultiScaleScene extends IEventDispatcher
      * Indicates the width of the scene, in pixels.
      */
     function get sceneWidth():Number
-    function set sceneWidth( value:Number ):void
+    function set sceneWidth(value:Number):void
 
     //----------------------------------
     //  sceneHeight
@@ -58,7 +58,7 @@ public interface IMultiScaleScene extends IEventDispatcher
      * Indicates the height of the scene, in pixels.
      */
     function get sceneHeight():Number
-    function set sceneHeight( value:Number ):void
+    function set sceneHeight(value:Number):void
 
     //----------------------------------
     //  targetCoordinateSpace

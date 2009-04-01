@@ -52,7 +52,7 @@ internal class DisplayObjectRequest extends EventDispatcher
     /**
      * Constructor.
      */
-    public function DisplayObjectRequest(url:String, context:* = null)
+    public function DisplayObjectRequest(url:String, context:*=null)
     {
         this.url = url
         this.context = context
@@ -67,7 +67,7 @@ internal class DisplayObjectRequest extends EventDispatcher
     private var context:*
     private var loader:Loader
     private var url:String
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -77,17 +77,17 @@ internal class DisplayObjectRequest extends EventDispatcher
     //----------------------------------
     //  bytesLoaded
     //----------------------------------
-    
+
     public function get bytesLoaded():uint
     {
         return loader ? loader.contentLoaderInfo.bytesLoaded : 0
     }
-    
+
     //----------------------------------
     //  bytesTotal
     //----------------------------------
-    
-    public function get bytesTotal():uint   
+
+    public function get bytesTotal():uint
     {
         return loader ? loader.contentLoaderInfo.bytesTotal : 0
     }
@@ -126,7 +126,7 @@ internal class DisplayObjectRequest extends EventDispatcher
 
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.COMPLETE)
-            requestEvent.item = this
+            requestEvent.request = this
             requestEvent.data = bitmap
             requestEvent.context = context
 
@@ -159,7 +159,7 @@ internal class DisplayObjectRequest extends EventDispatcher
         trace("[DisplayObjectRequest]", "request_ioErrorHandler")
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
-            requestEvent.item = this
+            requestEvent.request = this
 
         dispatchEvent(requestEvent)
     }
@@ -175,11 +175,11 @@ internal class DisplayObjectRequest extends EventDispatcher
         trace("[DisplayObjectRequest]", "request_securityErrorHandler")
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
-            requestEvent.item = this
+            requestEvent.request = this
 
         dispatchEvent(requestEvent)
     }
-    
+
     /**
      * @private
      */
@@ -204,7 +204,7 @@ internal class DisplayObjectRequest extends EventDispatcher
         var useUnloadAndStop:Boolean = true
         var unloadAndStopGC:Boolean = true
 
-        if(useUnloadAndStop && "unloadAndStop" in loader)
+        if (useUnloadAndStop && "unloadAndStop" in loader)
             loader["unloadAndStop"](unloadAndStopGC)
         else
             loader.unload()

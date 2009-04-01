@@ -30,8 +30,6 @@ import org.openzoom.flash.descriptors.MultiScaleImageLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
- * @private
- *
  * Descriptor for the GigaPan.org project panoramas.
  * Copyright GigaPan.org, <a href="http://gigapan.org/">http://gigapan.org/</a>
  */
@@ -113,7 +111,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
             i = i + 3
         }
 
-        var tileURL:String = url + "/" + name + extension
+        var tileURL:String = [url, "/", name, extension].join("")
         return tileURL
     }
 
@@ -130,10 +128,11 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
      */
     public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
-    	var maxDimension:uint = Math.max(width, height)
-    	var level:uint = Math.ceil(Math.log(maxDimension) / Math.LN2)
-    	var actualLevel:uint = level - DEFAULT_BASE_LEVEL
+        var maxDimension:uint = Math.max(width, height)
+        var level:uint = Math.ceil(Math.log(maxDimension) / Math.LN2)
+        var actualLevel:uint = level - DEFAULT_BASE_LEVEL
         var index:int = clamp(actualLevel, 0, numLevels - 1)
+        
         return IMultiScaleImageLevel(getLevelAt(index)).clone()
     }
 
@@ -170,9 +169,9 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
      */
     private function computeNumLevels(width:uint, height:uint):uint
     {
-    	var maxDimension:uint = Math.max(width, height)
-    	var actualLevels:uint = Math.ceil(Math.log(maxDimension) / Math.LN2)
-    	var numLevels:uint = Math.max(0, actualLevels - DEFAULT_BASE_LEVEL + 1)
+        var maxDimension:uint = Math.max(width, height)
+        var actualLevels:uint = Math.ceil(Math.log(maxDimension) / Math.LN2)
+        var numLevels:uint = Math.max(0, actualLevels - DEFAULT_BASE_LEVEL + 1)
         return numLevels
     }
      

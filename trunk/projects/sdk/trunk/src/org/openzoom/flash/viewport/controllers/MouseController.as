@@ -72,31 +72,31 @@ public class MouseController extends ViewportControllerBase
     //--------------------------------------------------------------------------
 
     private var clickTimer:Timer
-    private var click:Boolean   = false
+    private var click:Boolean = false
     private var mouseDownPosition:Point
 
     private var viewDragVector:Rectangle = new Rectangle()
     private var viewportDragVector:Rectangle = new Rectangle()
-    private var panning:Boolean   = false
+    private var panning:Boolean = false
 
     //----------------------------------
     //  minMouseWheelZoomInFactor
     //----------------------------------
-    
+
     public var minMouseWheelZoomInFactor:Number = 1
-    
+
     //----------------------------------
     //  minMouseWheelZoomOutFactor
     //----------------------------------
-    
+
     public var minMouseWheelZoomOutFactor:Number = 1
-    
+
     //----------------------------------
     //  smoothPanning
     //----------------------------------
-    
+
     public var smoothPanning:Boolean = true
-    
+
     //----------------------------------
     //  clickZoomInFactor
     //----------------------------------
@@ -113,7 +113,7 @@ public class MouseController extends ViewportControllerBase
         return _clickZoomInFactor
     }
 
-    public function set clickZoomInFactor( value:Number ):void
+    public function set clickZoomInFactor(value:Number):void
     {
         _clickZoomInFactor = value
     }
@@ -134,7 +134,7 @@ public class MouseController extends ViewportControllerBase
         return _clickZoomOutFactor
     }
 
-    public function set clickZoomOutFactor( value:Number ):void
+    public function set clickZoomOutFactor(value:Number):void
     {
         _clickZoomOutFactor = value
     }
@@ -155,7 +155,7 @@ public class MouseController extends ViewportControllerBase
         return _mouseWheelZoomFactor
     }
 
-    public function set mouseWheelZoomFactor( value:Number ):void
+    public function set mouseWheelZoomFactor(value:Number):void
     {
         _mouseWheelZoomFactor = value
     }
@@ -171,9 +171,10 @@ public class MouseController extends ViewportControllerBase
      */
     private function createClickTimer():void
     {
-        clickTimer = new Timer( CLICK_THRESHOLD_DURATION, 1 )
-        clickTimer.addEventListener( TimerEvent.TIMER_COMPLETE,
-                                     clickTimer_completeHandler )
+        clickTimer = new Timer(CLICK_THRESHOLD_DURATION, 1)
+        clickTimer.addEventListener(TimerEvent.TIMER_COMPLETE,
+                                    clickTimer_completeHandler,
+                                    false, 0, true)
     }
 
     //--------------------------------------------------------------------------
@@ -185,41 +186,41 @@ public class MouseController extends ViewportControllerBase
     /**
      * @private
      */
-    override protected function view_addedToStageHandler( event:Event ):void
+    override protected function view_addedToStageHandler(event:Event):void
     {
         // panning listeners
-        view.addEventListener( MouseEvent.MOUSE_DOWN,
-                               view_mouseDownHandler,
-                               false, 0, true )
-        view.addEventListener( MouseEvent.ROLL_OUT,
-                               view_rollOutHandler,
-                               false, 0, true )
-        view.stage.addEventListener( Event.MOUSE_LEAVE,
-                                     stage_mouseLeaveHandler,
-                                     false, 0, true )
+        view.addEventListener(MouseEvent.MOUSE_DOWN,
+                              view_mouseDownHandler,
+                              false, 0, true)
+        view.addEventListener(MouseEvent.ROLL_OUT,
+                              view_rollOutHandler,
+                              false, 0, true)
+        view.stage.addEventListener(Event.MOUSE_LEAVE,
+                                    stage_mouseLeaveHandler,
+                                    false, 0, true)
 
         // zooming listeners
-        view.addEventListener( MouseEvent.MOUSE_WHEEL,
-                               view_mouseWheelHandler,
-                               false, 0, true )
+        view.addEventListener(MouseEvent.MOUSE_WHEEL,
+                              view_mouseWheelHandler,
+                              false, 0, true)
     }
 
     /**
      * @private
      */
-    override protected function view_removedFromStageHandler( event:Event ):void
+    override protected function view_removedFromStageHandler(event:Event):void
     {
         // panning listeners
-        view.removeEventListener( MouseEvent.MOUSE_DOWN,
-                                  view_mouseDownHandler )
-        view.removeEventListener( MouseEvent.ROLL_OUT,
-                                  view_rollOutHandler )
-        view.stage.removeEventListener( Event.MOUSE_LEAVE,
-                                        stage_mouseLeaveHandler )
+        view.removeEventListener(MouseEvent.MOUSE_DOWN,
+                                 view_mouseDownHandler)
+        view.removeEventListener(MouseEvent.ROLL_OUT,
+                                 view_rollOutHandler)
+        view.stage.removeEventListener(Event.MOUSE_LEAVE,
+                                       stage_mouseLeaveHandler)
 
         // zooming listeners
-        view.removeEventListener( MouseEvent.MOUSE_WHEEL,
-                                  view_mouseWheelHandler )
+        view.removeEventListener(MouseEvent.MOUSE_WHEEL,
+                                 view_mouseWheelHandler)
     }
 
     //--------------------------------------------------------------------------
@@ -231,28 +232,28 @@ public class MouseController extends ViewportControllerBase
     /**
      * @private
      */
-    private function view_mouseWheelHandler( event:MouseEvent ):void
+    private function view_mouseWheelHandler(event:MouseEvent):void
     {
         // prevent zooming when panning
-        if( panning )
+        if (panning)
             return
 
         // TODO: React appropriately to different platforms and/or browsers,
         // as they at times report completely different mouse wheel deltas.
-        var factor:Number = clamp( Math.pow( mouseWheelZoomFactor, event.delta ), 0.2, 5 )
+        var factor:Number = clamp(Math.pow(mouseWheelZoomFactor, event.delta), 0.2, 5)
 
-        // TODO: Refactor        
-        if( factor < 1 )
-            factor = Math.min( factor, minMouseWheelZoomOutFactor )
+        // TODO: Refactor
+        if (factor < 1)
+            factor = Math.min(factor, minMouseWheelZoomOutFactor)
         else
-            factor = Math.max( factor, minMouseWheelZoomInFactor )
+            factor = Math.max(factor, minMouseWheelZoomInFactor)
 
         // compute normalized origin of mouse relative to viewport.
         var originX:Number = view.mouseX / view.width
         var originY:Number = view.mouseY / view.height
 
         // transform viewport
-        viewport.zoomBy( factor, originX, originY )
+        viewport.zoomBy(factor, originX, originY)
     }
 
     //--------------------------------------------------------------------------
@@ -264,7 +265,7 @@ public class MouseController extends ViewportControllerBase
     /**
      * @private
      */
-    private function clickTimer_completeHandler( event:TimerEvent ):void
+    private function clickTimer_completeHandler(event:TimerEvent):void
     {
         click = false
         clickTimer.reset()
@@ -273,14 +274,14 @@ public class MouseController extends ViewportControllerBase
     /**
      * @private
      */
-    private function view_mouseDownHandler( event:MouseEvent ):void
+    private function view_mouseDownHandler(event:MouseEvent):void
     {
-        view.addEventListener( MouseEvent.MOUSE_UP,
-                               view_mouseUpHandler,
-                               false, 0, true )
+        view.addEventListener(MouseEvent.MOUSE_UP,
+                              view_mouseUpHandler,
+                              false, 0, true)
 
         // remember mouse position
-        mouseDownPosition = new Point( view.mouseX, view.mouseY )
+        mouseDownPosition = new Point(view.mouseX, view.mouseY)
 
         // assume mouse down is a click
         click = true
@@ -290,9 +291,9 @@ public class MouseController extends ViewportControllerBase
         clickTimer.start()
 
         // register where we are in the view as well as in the viewport
-        viewDragVector.topLeft = new Point( view.mouseX, view.mouseY )
-        viewportDragVector.topLeft = new Point( viewport.transformer.target.x,
-                                                viewport.transformer.target.y )
+        viewDragVector.topLeft = new Point(view.mouseX, view.mouseY)
+        viewportDragVector.topLeft = new Point(viewport.transformer.target.x,
+                                               viewport.transformer.target.y)
 
         beginPanning()
     }
@@ -300,48 +301,48 @@ public class MouseController extends ViewportControllerBase
     /**
      * @private
      */
-    private function view_mouseMoveHandler( event:MouseEvent ):void
+    private function view_mouseMoveHandler(event:MouseEvent):void
     {
-        if( !panning )
+        if (!panning)
             return
 
         // update view drag vector
-        viewDragVector.bottomRight = new Point( view.mouseX, view.mouseY )
+        viewDragVector.bottomRight = new Point(view.mouseX, view.mouseY)
 
         var distanceX:Number = viewDragVector.width / viewport.viewportWidth
         var distanceY:Number = viewDragVector.height / viewport.viewportHeight
 
-        var targetX:Number = viewportDragVector.x - ( distanceX * viewport.width )
-        var targetY:Number = viewportDragVector.y - ( distanceY * viewport.height )
+        var targetX:Number = viewportDragVector.x - (distanceX * viewport.width)
+        var targetY:Number = viewportDragVector.y - (distanceY * viewport.height)
 
-        viewport.panTo( targetX, targetY, !smoothPanning )
+        viewport.panTo(targetX, targetY, !smoothPanning)
     }
 
     /**
      * @private
      */
-    private function view_mouseUpHandler( event:MouseEvent ):void
+    private function view_mouseUpHandler(event:MouseEvent):void
     {
-        view.removeEventListener( MouseEvent.MOUSE_UP, view_mouseUpHandler )
+        view.removeEventListener(MouseEvent.MOUSE_UP, view_mouseUpHandler)
 
-        var mouseUpPosition:Point = new Point( view.mouseX, view.mouseY )
+        var mouseUpPosition:Point = new Point(view.mouseX, view.mouseY)
         var deltaX:Number = mouseUpPosition.x - mouseDownPosition.x
         var deltaY:Number = mouseUpPosition.y - mouseDownPosition.y
 
-        var distance:Number = Math.sqrt( deltaX * deltaX + deltaY * deltaY )
+        var distance:Number = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
 
-        if( click && distance < CLICK_THRESHOLD_DISTANCE )
+        if (click && distance < CLICK_THRESHOLD_DISTANCE)
         {
             var factor:Number
 
-            if( event.shiftKey || event.ctrlKey )
+            if (event.shiftKey || event.ctrlKey)
                 factor = clickZoomOutFactor
             else
                 factor = clickZoomInFactor
 
-            viewport.zoomBy( factor,
-                             view.mouseX / view.width,
-                             view.mouseY / view.height )
+            viewport.zoomBy(factor,
+                            view.mouseX / view.width,
+                            view.mouseY / view.height)
         }
 
         click = false
@@ -359,9 +360,9 @@ public class MouseController extends ViewportControllerBase
         panning = true
 
         // register for mouse move events
-        view.addEventListener( MouseEvent.MOUSE_MOVE,
-                               view_mouseMoveHandler,
-                               false, 0, true )
+        view.addEventListener(MouseEvent.MOUSE_MOVE,
+                              view_mouseMoveHandler,
+                              false, 0, true)
     }
 
     /**
@@ -371,9 +372,9 @@ public class MouseController extends ViewportControllerBase
     {
         // unregister from mouse move events
         // FIXME
-        if( view && view.hasEventListener( MouseEvent.MOUSE_MOVE ) )
-            view.removeEventListener( MouseEvent.MOUSE_MOVE,
-                                      view_mouseMoveHandler )
+        if (view && view.hasEventListener(MouseEvent.MOUSE_MOVE))
+            view.removeEventListener(MouseEvent.MOUSE_MOVE,
+                                     view_mouseMoveHandler)
 
         panning = false
     }
@@ -381,7 +382,7 @@ public class MouseController extends ViewportControllerBase
     /**
      * @private
      */
-    private function stage_mouseLeaveHandler( event:Event ):void
+    private function stage_mouseLeaveHandler(event:Event):void
     {
         stopPanning()
     }
@@ -389,7 +390,7 @@ public class MouseController extends ViewportControllerBase
     /**
      * @private
      */
-    private function view_rollOutHandler( event:MouseEvent ):void
+    private function view_rollOutHandler(event:MouseEvent):void
     {
         stopPanning()
     }

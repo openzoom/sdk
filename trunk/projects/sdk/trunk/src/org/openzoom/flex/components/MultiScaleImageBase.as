@@ -37,7 +37,8 @@ import org.openzoom.flash.viewport.IViewportTransformer;
 /**
  * Base class for MultiScaleImage and DeepZoomContainer.
  */
-public class MultiScaleImageBase extends UIComponent implements IMultiScaleContainer
+public class MultiScaleImageBase extends UIComponent
+                                 implements IMultiScaleContainer
 {
     //--------------------------------------------------------------------------
     //
@@ -87,7 +88,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      */
     public function get sceneWidth():Number
     {
-        return container ? container.sceneWidth:NaN
+        return container ? container.sceneWidth : NaN
     }
 
     //----------------------------------
@@ -99,7 +100,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      */
     public function get sceneHeight():Number
     {
-        return container ? container.sceneHeight:NaN
+        return container ? container.sceneHeight : NaN
     }
 
     //--------------------------------------------------------------------------
@@ -119,7 +120,7 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      */
     public function get viewport():INormalizedViewport
     {
-        return container ? container.viewport:null
+        return container ? container.viewport : null
     }
 
     //----------------------------------
@@ -143,15 +144,15 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
         return _transformer
     }
 
-    public function set transformer( value:IViewportTransformer ):void
+    public function set transformer(value:IViewportTransformer):void
     {
-        if( _transformer !== value )
+        if (_transformer !== value)
         {
             _transformer = value
             transformerChanged = true
             invalidateProperties()
 
-            dispatchEvent( new Event( "transformerChanged" ))
+            dispatchEvent(new Event("transformerChanged"))
         }
     }
 
@@ -179,15 +180,15 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
         return _constraint
     }
 
-    public function set constraint( value:IViewportConstraint ):void
+    public function set constraint(value:IViewportConstraint):void
     {
-        if( _constraint !== value )
+        if (_constraint !== value)
         {
             _constraint = value
             constraintChanged = true
             invalidateProperties()
 
-            dispatchEvent( new Event( "constraintChanged" ))
+            dispatchEvent(new Event("constraintChanged"))
         }
     }
 
@@ -211,18 +212,18 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      */
     public function get controllers():Array
     {
-        return _controllers.slice( 0 )
+        return _controllers.slice(0)
     }
 
-    public function set controllers( value:Array ):void
+    public function set controllers(value:Array):void
     {
-        if( _controllers !== value )
+        if (_controllers !== value)
         {
-            _controllers = value.slice( 0 )
+            _controllers = value.slice(0)
             controllersChanged = true
             invalidateProperties()
 
-            dispatchEvent( new Event( "controllersChanged" ))
+            dispatchEvent(new Event("controllersChanged"))
         }
     }
 
@@ -239,26 +240,26 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     {
         super.createChildren()
 
-        if( !container )
+        if (!container)
         {
             container = new MultiScaleContainer()
             container.addEventListener(ProgressEvent.PROGRESS,
                                        container_progressHandler,
                                        false, 0, true)
-            super.addChild( container )
+            super.addChild(container)
 
-            dispatchEvent( new Event( "containerChanged" ))
-            dispatchEvent( new Event( "viewportChanged" ))
+            dispatchEvent(new Event("containerChanged"))
+            dispatchEvent(new Event("viewportChanged"))
         }
     }
 
     /**
      * @private
      */
-    override protected function updateDisplayList( unscaledWidth:Number,
-                                                   unscaledHeight:Number ):void
+    override protected function updateDisplayList(unscaledWidth:Number,
+                                                   unscaledHeight:Number):void
     {
-        container.setActualSize( unscaledWidth, unscaledHeight )
+        container.setActualSize(unscaledWidth, unscaledHeight)
     }
 
     /**
@@ -268,59 +269,59 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     {
         super.commitProperties()
 
-        if( controllersChanged )
+        if (controllersChanged)
         {
             container.controllers = _controllers
             controllersChanged = false
         }
 
-        if( transformerChanged )
+        if (transformerChanged)
         {
             container.transformer = _transformer
             transformerChanged = false
         }
 
-        if( constraintChanged )
+        if (constraintChanged)
         {
             container.constraint = _constraint
             constraintChanged = false
         }
 
-        if( zoomChanged || scaleChanged
+        if (zoomChanged || scaleChanged
             || viewportXChanged || viewportYChanged
-            || viewportWidthChanged || viewportHeightChanged )
+            || viewportWidthChanged || viewportHeightChanged)
         {
-            if( zoomChanged )
+            if (zoomChanged)
             {
                 container.zoom = zoom
                 zoomChanged = false
             }
 
-            if( scaleChanged )
+            if (scaleChanged)
             {
                 container.scale = scale
                 scaleChanged = false
             }
 
-            if( viewportXChanged || viewportYChanged )
+            if (viewportXChanged || viewportYChanged)
             {
-                container.panTo( viewportX, viewportY )
+                container.panTo(viewportX, viewportY)
                 viewportXChanged = viewportYChanged = false
             }
 
-            if( viewportWidthChanged )
+            if (viewportWidthChanged)
             {
                 container.viewportWidth = viewportWidth
                 viewportWidthChanged = false
             }
 
-            if( viewportHeightChanged )
+            if (viewportHeightChanged)
             {
                 container.viewportHeight = viewportHeight
                 viewportHeightChanged = false
             }
 
-            dispatchEvent( new Event( "viewportChanged" ))
+            dispatchEvent(new Event("viewportChanged"))
         }
     }
 
@@ -329,12 +330,12 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     //  Event handlers: Container
     //
     //--------------------------------------------------------------------------
-    
+
     private function container_progressHandler(event:ProgressEvent):void
     {
-    	dispatchEvent(event)
+        dispatchEvent(event)
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: IMultiScaleContainer
@@ -358,9 +359,9 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
         return _zoom
     }
 
-    public function set zoom( value:Number ):void
+    public function set zoom(value:Number):void
     {
-        if( _zoom != value )
+        if (_zoom != value)
         {
             _zoom = value
             zoomChanged = true
@@ -385,9 +386,9 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
         return _scale
     }
 
-    public function set scale( value:Number ):void
+    public function set scale(value:Number):void
     {
-        if( _scale != value )
+        if (_scale != value)
         {
             _scale = value
             scaleChanged = true
@@ -410,12 +411,12 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
 
     public function get viewportX():Number
     {
-        return viewport ? viewport.x:_viewportX
+        return viewport ? viewport.x : _viewportX
     }
 
-    public function set viewportX( value:Number ):void
+    public function set viewportX(value:Number):void
     {
-        if( _viewportX != value )
+        if (_viewportX != value)
         {
             _viewportX = value
             viewportXChanged = true
@@ -439,9 +440,9 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
         return viewport ? viewport.y : _viewportY
     }
 
-    public function set viewportY( value:Number ):void
+    public function set viewportY(value:Number):void
     {
-        if( _viewportY != value )
+        if (_viewportY != value)
         {
             _viewportY = value
             viewportYChanged = true
@@ -463,12 +464,12 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      */
     public function get viewportWidth():Number
     {
-        return container ? container.viewportWidth:_viewportWidth
+        return container ? container.viewportWidth : _viewportWidth
     }
 
-    public function set viewportWidth( value:Number ):void
+    public function set viewportWidth(value:Number):void
     {
-        if( _viewportWidth != value )
+        if (_viewportWidth != value)
         {
             _viewportWidth = value
             viewportWidthChanged = true
@@ -490,12 +491,12 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
      */
     public function get viewportHeight():Number
     {
-        return container ? container.viewportHeight:_viewportHeight
+        return container ? container.viewportHeight : _viewportHeight
     }
 
-    public function set viewportHeight( value:Number ):void
+    public function set viewportHeight(value:Number):void
     {
-        if( _viewportHeight != value )
+        if (_viewportHeight != value)
         {
             _viewportHeight = value
             viewportHeightChanged = true
@@ -512,75 +513,75 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomTo()
      */
-    public function zoomTo( zoom:Number,
-                            transformX:Number = 0.5,
-                            transformY:Number = 0.5,
-                            immediately:Boolean = false ):void
+    public function zoomTo(zoom:Number,
+                           transformX:Number=0.5,
+                           transformY:Number=0.5,
+                           immediately:Boolean=false):void
     {
-        container.zoomTo( zoom, transformX, transformY, immediately )
+        container.zoomTo(zoom, transformX, transformY, immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomBy()
      */
-    public function zoomBy( factor:Number,
-                            transformX:Number = 0.5,
-                            transformY:Number = 0.5,
-                            immediately:Boolean = false ):void
+    public function zoomBy(factor:Number,
+                           transformX:Number=0.5,
+                           transformY:Number=0.5,
+                           immediately:Boolean=false):void
     {
-        container.zoomBy( factor, transformX, transformY, immediately )
+        container.zoomBy(factor, transformX, transformY, immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#panTo()
      */
-    public function panTo( x:Number, y:Number,
-                           immediately:Boolean = false ):void
+    public function panTo(x:Number, y:Number,
+                          immediately:Boolean=false):void
     {
-        container.panTo( x, y, immediately )
+        container.panTo(x, y, immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#panBy()
      */
-    public function panBy( deltaX:Number, deltaY:Number,
-                           immediately:Boolean = false ):void
+    public function panBy(deltaX:Number, deltaY:Number,
+                          immediately:Boolean=false):void
     {
-        container.panBy( deltaX, deltaY, immediately )
+        container.panBy(deltaX, deltaY, immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoomToBounds()
      */
-    public function fitToBounds( bounds:Rectangle,
-                                  scale:Number = 1.0,
-                                  immediately:Boolean = false ):void
+    public function fitToBounds(bounds:Rectangle,
+                                scale:Number=1.0,
+                                immediately:Boolean=false):void
     {
-        container.fitToBounds( bounds, scale, immediately )
+        container.fitToBounds(bounds, scale, immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#showAll()
      */
-    public function showAll( immediately:Boolean = false ):void
+    public function showAll(immediately:Boolean=false):void
     {
-        container.showAll( immediately )
+        container.showAll(immediately)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#localToScene()
      */
-    public function localToScene( point:Point ):Point
+    public function localToScene(point:Point):Point
     {
-        return container.localToScene( point )
+        return container.localToScene(point)
     }
 
     /**
      * @copy org.openzoom.flash.viewport.IViewport#sceneToLocal()
      */
-    public function sceneToLocal( point:Point ):Point
+    public function sceneToLocal(point:Point):Point
     {
-        return container.sceneToLocal( point )
+        return container.sceneToLocal(point)
     }
 
     //--------------------------------------------------------------------------
@@ -592,17 +593,17 @@ public class MultiScaleImageBase extends UIComponent implements IMultiScaleConta
     /**
      * @inheritDoc
      */
-    override public function addChild( child:DisplayObject ):DisplayObject
+    override public function addChild(child:DisplayObject):DisplayObject
     {
-        return container.addChild( child )
+        return container.addChild(child)
     }
 
     /**
      * @inheritDoc
      */
-    override public function removeChild( child:DisplayObject ):DisplayObject
+    override public function removeChild(child:DisplayObject):DisplayObject
     {
-        return container.removeChild( child )
+        return container.removeChild(child)
     }
 
     // TODO: Implement rest of child management methods

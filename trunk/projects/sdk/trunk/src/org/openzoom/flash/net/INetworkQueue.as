@@ -35,7 +35,7 @@ public interface INetworkQueue extends IEventDispatcher
      * @param type Content type of the item to load
      * @param context Arbitrary data attached to the item for later identification.
      */
-    function addRequest(url:String, type:Class, context:* = null):INetworkRequest
+    function addRequest(url:String, type:Class, context:*=null):INetworkRequest
 }
 
 }

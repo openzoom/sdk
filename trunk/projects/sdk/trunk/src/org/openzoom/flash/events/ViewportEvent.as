@@ -52,9 +52,9 @@ public class ViewportEvent extends Event
      * Constructor.
      */
     public function ViewportEvent(type:String,
-                                   bubbles:Boolean = false,
-                                   cancelable:Boolean = false,
-                                   oldTransform:IViewportTransform = null)
+                                  bubbles:Boolean=false,
+                                  cancelable:Boolean=false,
+                                  oldTransform:IViewportTransform=null)
     {
         super(type, bubbles, cancelable)
 
