@@ -272,7 +272,7 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleContainer
      */
     public function setActualSize(width:Number, height:Number):void
     {
-        if(this.width == width && this.height == height)
+        if (this.width == width && this.height == height)
             return
 
         container.setActualSize(width, height)

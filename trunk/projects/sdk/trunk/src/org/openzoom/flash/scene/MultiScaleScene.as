@@ -54,7 +54,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
                                      backgroundColor:uint = 0x000000,
                                      backgroundAlpha:Number = 0 )
     {
-        this.backgroundColor = backgroundColor
+         this.backgroundColor = backgroundColor
          this.backgroundAlpha = backgroundAlpha
 
          createFrame()
@@ -69,7 +69,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
     //--------------------------------------------------------------------------
 
     private var frame:Shape
-    private var backgroundColor:uint   = 0x000000
+    private var backgroundColor:uint = 0x000000
     private var backgroundAlpha:Number = 0
 
     //--------------------------------------------------------------------------
