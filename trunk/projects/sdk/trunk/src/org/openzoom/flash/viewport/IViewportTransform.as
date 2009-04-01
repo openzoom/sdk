@@ -43,7 +43,7 @@ public interface IViewportTransform
      * @copy org.openzoom.flash.viewport.IViewport#x
      */
     function get x():Number
-    function set x( value:Number ):void
+    function set x(value:Number):void
 
     //----------------------------------
     //  y
@@ -53,7 +53,7 @@ public interface IViewportTransform
      * @copy org.openzoom.flash.viewport.IViewport#y
      */
     function get y():Number
-    function set y( value:Number ):void
+    function set y(value:Number):void
 
     //----------------------------------
     //  width
@@ -63,7 +63,7 @@ public interface IViewportTransform
      * @copy org.openzoom.flash.viewport.IViewport#width
      */
     function get width():Number
-    function set width( value:Number ):void
+    function set width(value:Number):void
 
     //----------------------------------
     //  height
@@ -73,7 +73,7 @@ public interface IViewportTransform
      * @copy org.openzoom.flash.viewport.IViewport#height
      */
     function get height():Number
-    function set height( value:Number ):void
+    function set height(value:Number):void
 
     //--------------------------------------------------------------------------
     //
@@ -125,7 +125,7 @@ public interface IViewportTransform
      * Scale of the scene.
      */
     function get scale():Number
-    function set scale( value:Number ):void
+    function set scale(value:Number):void
 
     //----------------------------------
     //  zoom
@@ -136,7 +136,7 @@ public interface IViewportTransform
      * Scene fits exactly into viewport at value 1.
      */
     function get zoom():Number
-    function set zoom( value:Number ):void
+    function set zoom(value:Number):void
 
     //--------------------------------------------------------------------------
     //
@@ -150,9 +150,9 @@ public interface IViewportTransform
      * @param transformX Horizontal coordinate of the zooming center
      * @param transformY Vertical coordinate of the zooming center
      */
-    function zoomTo( zoom:Number,
-                     transformX:Number = 0.5,
-                     transformY:Number = 0.5 ):void
+    function zoomTo(zoom:Number,
+                    transformX:Number=0.5,
+                    transformY:Number=0.5):void
 
     /**
      * Zoom the viewport by a factor.
@@ -160,9 +160,9 @@ public interface IViewportTransform
      * @param transformX Horizontal coordinate of the zooming center
      * @param transformY Vertical coordinate of the zooming center
      */
-    function zoomBy( factor:Number,
-                     transformX:Number = 0.5,
-                     transformY:Number = 0.5 ):void
+    function zoomBy(factor:Number,
+                    transformX:Number=0.5,
+                    transformY:Number=0.5):void
 
     //--------------------------------------------------------------------------
     //
@@ -175,21 +175,21 @@ public interface IViewportTransform
      * @param x Horizontal coordinate
      * @param y Vertical coordinate
      */
-    function panTo( x:Number, y:Number ):void
+    function panTo(x:Number, y:Number):void
 
     /**
      * Move the viewport.
      * @param dx Horizontal translation delta
      * @param dy Vertical translation delta
      */
-    function panBy( deltaX:Number, deltaY:Number ):void
+    function panBy(deltaX:Number, deltaY:Number):void
 
     /**
      * Move the viewport center.
      * @param x Horizontal coordinate
      * @param y Vertical coordinate
      */
-    function panCenterTo( centerX:Number, centerY:Number ):void
+    function panCenterTo(centerX:Number, centerY:Number):void
 
     //--------------------------------------------------------------------------
     //
@@ -203,7 +203,7 @@ public interface IViewportTransform
      * @param rect Rectangular area to be shown in the viewport.
      * @param scale Scale at which the area is beeing displayed.
      */
-    function zoomToBounds( bounds:Rectangle, scale:Number = 1.0 ):void
+    function zoomToBounds(bounds:Rectangle, scale:Number=1.0):void
 
     /**
      * Fit entire scene into the viewport.
@@ -225,13 +225,13 @@ public interface IViewportTransform
     /**
      * Copy values from other to this instance of IViewportTransform.
      */
-    function copy( other:IViewportTransform ):void
+    function copy(other:IViewportTransform):void
 
     /**
      * Determines whether the object specified in the
      * other parameter is equal to this Rectangle object.
      */
-    function equals( other:IViewportTransform ):Boolean
+    function equals(other:IViewportTransform):Boolean
 
     //--------------------------------------------------------------------------
     //

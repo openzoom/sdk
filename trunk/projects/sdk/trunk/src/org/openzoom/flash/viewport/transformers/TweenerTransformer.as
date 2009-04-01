@@ -137,12 +137,12 @@ public class TweenerTransformer implements IViewportTransformer
     /**
      * @inheritDoc
      */
-    public function get viewport():ITransformerViewport
+    public function get viewport() : ITransformerViewport
     {
         return _viewport
     }
 
-    public function set viewport( value:ITransformerViewport ):void
+    public function set viewport( value : ITransformerViewport ):void
     {
         _viewport = value
 

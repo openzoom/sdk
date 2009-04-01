@@ -51,28 +51,28 @@ public class CenterConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform:IViewportTransform,
-                              target:IViewportTransform ):IViewportTransform
+    public function validate(transform:IViewportTransform,
+                             target:IViewportTransform):IViewportTransform
     {
         var x:Number = transform.x
         var y:Number = transform.y
 
-        if( transform.width >= 1 )
+        if (transform.width >= 1)
         {
             // viewport is wider than scene,
             // center scene horizontally
-            x = ( 1 - transform.width ) * 0.5
+            x = (1 - transform.width) * 0.5
         }
 
-        if( transform.height >= 1 )
+        if (transform.height >= 1)
         {
             // viewport is taller than scene,
             // center scene vertically
-            y = ( 1 - transform.height ) * 0.5
+            y = (1 - transform.height) * 0.5
         }
 
         // validate bounds
-        transform.panTo( x, y )
+        transform.panTo(x, y)
 
         // return validated transform
         return transform

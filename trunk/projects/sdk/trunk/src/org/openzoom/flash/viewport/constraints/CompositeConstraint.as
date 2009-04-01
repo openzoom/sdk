@@ -63,12 +63,12 @@ public class CompositeConstraint implements IViewportConstraint
      */
     public function get constraints():Array
     {
-        return _constraints.slice( 0 )
+        return _constraints.slice(0)
     }
 
-    public function set constraints( value:Array ):void
+    public function set constraints(value:Array):void
     {
-        _constraints = value.slice( 0 )
+        _constraints = value.slice(0)
     }
 
     //--------------------------------------------------------------------------
@@ -80,11 +80,11 @@ public class CompositeConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform:IViewportTransform,
-                              target:IViewportTransform ):IViewportTransform
+    public function validate(transform:IViewportTransform,
+                             target:IViewportTransform):IViewportTransform
     {
-        for each( var constraint:IViewportConstraint in _constraints )
-            transform = constraint.validate( transform, target )
+        for each(var constraint:IViewportConstraint in _constraints)
+            transform = constraint.validate(transform, target)
 
         return transform
     }

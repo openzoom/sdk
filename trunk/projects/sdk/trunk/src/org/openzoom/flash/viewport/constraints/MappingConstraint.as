@@ -63,10 +63,10 @@ public class MappingConstraint implements IViewportConstraint
     /**
      * @inheritDoc
      */
-    public function validate( transform:IViewportTransform,
-                              target:IViewportTransform ):IViewportTransform
+    public function validate(transform:IViewportTransform,
+                              target:IViewportTransform):IViewportTransform
     {
-        transform.scale = roundToNearestPowerOf2( transform.scale )
+        transform.scale = roundToNearestPowerOf2(transform.scale)
         return transform
     }
 
@@ -76,23 +76,23 @@ public class MappingConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
 
-    private function roundToNearestPowerOf2( value:Number ):Number
+    private function roundToNearestPowerOf2(value:Number):Number
     {
         // snap to scale that are powers of two
         // most map tiles look best that way
-        var exp:Number = Math.log( value ) / Math.LN2
-        var r:Number = exp - Math.floor( exp )
+        var exp:Number = Math.log(value) / Math.LN2
+        var r:Number = exp - Math.floor(exp)
 
         var n:Number
-        if( r < LOG2_3 - 1 )
-            n = Math.floor( exp )
+        if (r < LOG2_3 - 1)
+            n = Math.floor(exp)
         else
-            n = Math.ceil( exp )
+            n = Math.ceil(exp)
 
-        if( n == 0 )
+        if (n == 0)
             n = 1
 
-        return Math.pow( 2, n )
+        return Math.pow(2, n)
     }
 }
 
