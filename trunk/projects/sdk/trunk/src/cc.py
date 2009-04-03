@@ -26,6 +26,7 @@ def convert(file):
     for line in fileinput.FileInput(file, inplace=1):
         line = re.sub("( )+$", "", line)
         line = re.sub("\t", "    ", line)
+#        line = re.sub("^import;$", "", line)
 #        line =  re.sub(" : ", ":", line) # messes up ternary expressions
         line = re.sub("\( ", "(", line)
         line = re.sub(" \)", ")", line)
@@ -40,7 +41,7 @@ def convert(file):
 for root, dirs, files in os.walk("."):
     for file in files:
         _, ext = os.path.splitext(file)
-        if ext == ".as":
+        if ext == ".as" and str(file).count("ExternalMouseWheel") == 0:
             convert(os.path.join(root, file))
     if ".svn" in dirs:
         dirs.remove(".svn")

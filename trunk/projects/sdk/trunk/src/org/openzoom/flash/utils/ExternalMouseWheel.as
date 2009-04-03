@@ -105,8 +105,8 @@ public final class ExternalMouseWheel extends EventDispatcher
             ExternalMouseWheel.prototype = {
                 setUp: function(id) {
                     var el = doc.getElementById(id);
-                    if (el.nodeName.toLowerCase() == 'embed'
-                        || ExternalMouseWheel.browser.safari)
+                    if (el.nodeName.toLowerCase() == 'embed' ||
+                        ExternalMouseWheel.browser.safari)
                         el = el.parentNode;
                     this.target = el;
                     this.eventType = ExternalMouseWheel.browser.mozilla
@@ -210,7 +210,8 @@ public final class ExternalMouseWheel extends EventDispatcher
             };
         }
         ]]>
-    </script>
+    </script>;
+
 
     //--------------------------------------------------------------------------
     //

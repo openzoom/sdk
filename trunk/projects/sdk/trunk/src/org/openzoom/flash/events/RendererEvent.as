@@ -26,9 +26,9 @@ import flash.events.Event;
 import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
- * Viewport event class.
+ * Renderer event class.
  */
-public class ViewportEvent extends Event
+public class RendererEvent extends Event
 {
     //--------------------------------------------------------------------------
     //
@@ -36,11 +36,7 @@ public class ViewportEvent extends Event
     //
     //--------------------------------------------------------------------------
 
-    public static const RESIZE:String = "resize"
-    public static const TRANSFORM_START:String = "transformStart"
-    public static const TRANSFORM_UPDATE:String = "transformUpdate"
-    public static const TRANSFORM_END:String = "transformComplete"
-//  public static const TARGET_UPDATE:String = "targetUpdate"
+    public static const ADDED_TO_SCENE:String = "addedToScene"
 
     //--------------------------------------------------------------------------
     //
@@ -51,34 +47,11 @@ public class ViewportEvent extends Event
     /**
      * Constructor.
      */
-    public function ViewportEvent(type:String,
+    public function RendererEvent(type:String,
                                   bubbles:Boolean=false,
-                                  cancelable:Boolean=false,
-                                  oldTransform:IViewportTransform=null)
+                                  cancelable:Boolean=false)
     {
         super(type, bubbles, cancelable)
-
-        _oldTransform = oldTransform
-    }
-
-    //--------------------------------------------------------------------------
-    //
-    //  Properties
-    //
-    //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  oldTransform
-    //----------------------------------
-
-    private var _oldTransform:IViewportTransform
-
-    /**
-     * The transform that was previously applied to the viewport.
-     */
-    public function get oldTransform():IViewportTransform
-    {
-        return _oldTransform
     }
 
     //--------------------------------------------------------------------------
@@ -92,7 +65,7 @@ public class ViewportEvent extends Event
      */
     override public function clone():Event
     {
-        return new ViewportEvent(type, bubbles, cancelable, oldTransform)
+        return new RendererEvent(type, bubbles, cancelable)
     }
 }
 

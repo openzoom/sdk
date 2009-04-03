@@ -32,20 +32,37 @@ import org.openzoom.flash.viewport.INormalizedViewport;
  *
  * Interface for a renderer that is multiscalar.
  */
-public interface IMultiScaleRenderer
+public interface IRenderer
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  scene
+    //----------------------------------
+    /**
+     * The scene this renderer is attached to.
+     */
+    function get scene():IReadonlyMultiScaleScene
+    function set scene(value:IReadonlyMultiScaleScene):void
+
+    //----------------------------------
+    //  width
+    //----------------------------------
     /**
      * The viewport this renderer is viewed in.
      */
     function get viewport():INormalizedViewport
     function set viewport(value:INormalizedViewport):void
 
-    /**
-     * The scene this renderer is attached to.
-     */
-//  function get scene():IReadonlyMultiScaleScene
-//  function set scene(value:IReadonlyMultiScaleScene):void
-
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
     /**
      * Bounds of this renderer.
      */

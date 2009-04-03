@@ -37,6 +37,7 @@ import flash.utils.Timer;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.events.NetworkRequestEvent;
+import org.openzoom.flash.events.RendererEvent;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
 import org.openzoom.flash.net.INetworkQueue;
@@ -46,14 +47,13 @@ import org.openzoom.flash.renderers.images.RenderingMode;
 import org.openzoom.flash.renderers.images.Tile;
 import org.openzoom.flash.renderers.images.TileLayer;
 import org.openzoom.flash.utils.math.clamp;
-import org.openzoom.flash.viewport.INormalizedViewport;
 
 /**
  * @private
  *
  * Generic renderer for multiscale images.
  */
-public class MultiScaleImageRenderer extends MultiScaleRenderer
+public class MultiScaleImageRenderer extends Renderer
                                      implements ILoaderClient
 {
     //--------------------------------------------------------------------------
@@ -78,10 +78,11 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
                                             loader:INetworkQueue,
                                             width:Number, height:Number)
     {
+    	addEventListener(RendererEvent.ADDED_TO_SCENE,
+    	                 addedToSceneHandler,
+    	                 false, 0, true)
         _loader = loader
-
         this.descriptor = descriptor
-
         createFrame(width, height)
 
         // FIXME: Phase instantiation of layers
@@ -95,13 +96,6 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
         // feature tile overlap.
         if (descriptor.tileOverlap == 0 && renderingMode != RenderingMode.SMOOTH)
             loadBackground()
-
-//        updateDisplayListTimer = new Timer(100)
-//        updateDisplayListTimer.addEventListener(TimerEvent.TIMER,
-//                                                updateDisplayListTimer_timerHandler,
-//                                                false, 0, true)
-//        // FIXME
-//        updateDisplayListTimer.start()
     }
 
     //--------------------------------------------------------------------------
@@ -125,21 +119,6 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     //  Properties
     //
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  viewport
-    //----------------------------------
-
-    /**
-     * @inheritDoc
-     */
-    override public function set viewport(value:INormalizedViewport):void
-    {
-        super.viewport = value
-        
-        if (value)
-            updateDisplayList()
-    }
 
     //----------------------------------
     //  loader
@@ -188,40 +167,22 @@ public class MultiScaleImageRenderer extends MultiScaleRenderer
     /**
      * @private
      */
-    override protected function viewport_transformEndHandler(event:ViewportEvent):void
+    private function addedToSceneHandler(event:RendererEvent):void
+    {
+    	viewport.addEventListener(ViewportEvent.TRANSFORM_END,
+    	                          viewport_transformEndHandler,
+    	                          false, 0, true)
+        updateDisplayList()
+    } 
+
+    /**
+     * @private
+     */
+    private function viewport_transformEndHandler(event:ViewportEvent):void
     {
         updateDisplayList()
     }
     
-    /**
-     * @private
-     */
-//    override protected function viewport_targetUpdateHandler(event:ViewportEvent):void
-//    {
-//        updateDisplayList()
-//    }
-
-    /**
-     * @private
-     */
-//    override protected function viewport_transformUpdateHandler(event:ViewportEvent):void
-//    {
-        // FIXME: This is where we could trigger refreshes of the
-        // MultiScaleImageRenderer in between transformStart and transformEnd.
-        // Unfortunately the Flash Player does not like to handle network
-        // and rendering at the same time.
-
-//        updateDisplayList()
-
-//        if (++counter > 100)
-//        {
-//            counter = 0
-//            updateDisplayList()
-//        }
-//    }
-
-//    private var counter:int = 0
-
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal

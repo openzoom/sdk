@@ -24,7 +24,8 @@ package org.openzoom.flash.viewport
 import org.openzoom.flash.viewport.IViewport;
 
 /**
- * Interface for a viewport with a normalized coordinate system.
+ * Interface for a viewport that is based on the scene
+ * coordinate system [0, scene(Width|Height)].
  */
 public interface ISceneViewport extends IViewport
 {

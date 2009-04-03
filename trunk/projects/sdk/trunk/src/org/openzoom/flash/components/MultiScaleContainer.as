@@ -32,7 +32,7 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.ILoaderClient;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.net.NetworkQueue;
-import org.openzoom.flash.renderers.IMultiScaleRenderer;
+import org.openzoom.flash.renderers.IRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
@@ -299,8 +299,11 @@ public final class MultiScaleContainer extends Sprite
         child = _scene.addChild(child)
 
         // FIXME
-        if (child is IMultiScaleRenderer)
-            IMultiScaleRenderer(child).viewport = viewport
+        if (child is IRenderer)
+        {
+            IRenderer(child).viewport = viewport
+            IRenderer(child).scene = IReadonlyMultiScaleScene(scene)
+        }
 
         return child
     }
@@ -316,8 +319,11 @@ public final class MultiScaleContainer extends Sprite
         child = _scene.addChildAt(child, index)
 
         // FIXME
-        if (child is IMultiScaleRenderer)
-            IMultiScaleRenderer(child).viewport = viewport
+        if (child is IRenderer)
+        {
+            IRenderer(child).viewport = viewport
+            IRenderer(child).scene = IReadonlyMultiScaleScene(scene)
+        }
 
         return child
     }

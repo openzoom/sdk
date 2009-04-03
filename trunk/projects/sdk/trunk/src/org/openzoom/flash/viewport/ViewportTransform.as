@@ -212,7 +212,7 @@ public class ViewportTransform implements IViewportTransform,
                                      bounds.y + bounds.height / 2)
 
         var scaledBounds:Rectangle = bounds.clone()
-            scaledBounds.width  /= scale
+            scaledBounds.width /= scale
             scaledBounds.height /= scale
 
         // Fit viewport width to width of bounds
