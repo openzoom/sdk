@@ -104,10 +104,16 @@ public class ContextMenuController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
 
-    public var showShowAllMenu:Boolean = true
-    public var showFullScreenMenu:Boolean = true
-    public var showZoomMenu:Boolean = true
-    public var showPanMenu:Boolean = true
+    public var showAll:Boolean = true
+    public var fullScreen:Boolean = true
+    
+    public var zoomIn:Boolean = true
+    public var zoomOut:Boolean = true
+    
+    public var panDown:Boolean = true
+    public var panUp:Boolean = true
+    public var panLeft:Boolean = true
+    public var panRight:Boolean = true
 
     //--------------------------------------------------------------------------
     //
@@ -130,7 +136,7 @@ public class ContextMenuController extends ViewportControllerBase
         menu.hideBuiltInItems()
 
         // Display state
-        if (showFullScreenMenu)
+        if (fullScreen)
         {
 	        fullScreenMenu = new ContextMenuItem(FULL_SCREEN_MENU_NORMAL_CAPTION)
 	        fullScreenMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
@@ -139,7 +145,7 @@ public class ContextMenuController extends ViewportControllerBase
 	        menu.customItems.push(fullScreenMenu)
         }
 
-        if (showShowAllMenu)
+        if (showAll)
         {
 	        showAllMenu = new ContextMenuItem(SHOW_ALL_MENU_CAPTION)
 	        showAllMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
@@ -149,7 +155,7 @@ public class ContextMenuController extends ViewportControllerBase
         }
 
         // Zooming
-        if (showZoomMenu)
+        if (zoomIn)
         {
 	        zoomInMenu = new ContextMenuItem(ZOOM_IN_MENU_CAPTION)
 	        zoomInMenu.separatorBefore = true
@@ -157,7 +163,10 @@ public class ContextMenuController extends ViewportControllerBase
 	                                    zoomInMenu_menuItemSelectHandler,
 	                                    false, 0, true)
 	        menu.customItems.push(zoomInMenu)
-	
+        }
+        
+	    if (zoomOut)
+	    {
 	        zoomOutMenu = new ContextMenuItem(ZOOM_OUT_MENU_CAPTION)
 	        zoomOutMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
 	                                     zoomOutMenu_menuItemSelectHandler,
@@ -166,7 +175,7 @@ public class ContextMenuController extends ViewportControllerBase
         }
 
         // Panning
-        if (showPanMenu)
+        if (panUp)
         {
 	        panUpMenu = new ContextMenuItem(PAN_UP_MENU_CAPTION)
 	        panUpMenu.separatorBefore = true
@@ -174,20 +183,28 @@ public class ContextMenuController extends ViewportControllerBase
 	                                   panUpMenu_menuItemSelectHandler,
 	                                   false, 0, true)
 	        menu.customItems.push(panUpMenu)
-	
+        }
+        
+        if (panDown)
+        {
 	        panDownMenu = new ContextMenuItem(PAN_DOWN_MENU_CAPTION)
 	        panDownMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
 	                                     panDownMenu_menuItemSelectHandler,
 	                                     false, 0, true)
 	        menu.customItems.push(panDownMenu)
-	
-	
+        }
+        
+        if (panLeft)
+        {	
 	        panLeftMenu = new ContextMenuItem(PAN_LEFT_MENU_CAPTION)
 	        panLeftMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
 	                                     panLeftMenu_menuItemSelectHandler,
 	                                     false, 0, true)
 	        menu.customItems.push(panLeftMenu)
-	
+        }
+        
+        if (panRight)
+        {
 	        panRightMenu = new ContextMenuItem(PAN_RIGHT_MENU_CAPTION)
 	        panRightMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
 	                                      panRightMenu_menuItemSelectHandler,

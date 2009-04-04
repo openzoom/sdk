@@ -130,8 +130,6 @@ public final class MultiScaleImage extends MultiScaleImageBase
             if (url == String(value))
                 return
 
-            trace("[MultiScaleImage] loaderInfo.url", loaderInfo.url)
-
             url = resolveURI(loaderInfo.url, String(value))
             urlLoader = new URLLoader(new URLRequest(url))
 
