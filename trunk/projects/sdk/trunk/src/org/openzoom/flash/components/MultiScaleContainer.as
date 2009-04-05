@@ -298,7 +298,6 @@ public final class MultiScaleContainer extends Sprite
     {
         child = _scene.addChild(child)
 
-        // FIXME
         if (child is IRenderer)
         {
             IRenderer(child).viewport = viewport
@@ -318,7 +317,6 @@ public final class MultiScaleContainer extends Sprite
     {
         child = _scene.addChildAt(child, index)
 
-        // FIXME
         if (child is IRenderer)
         {
             IRenderer(child).viewport = viewport

@@ -105,7 +105,7 @@ public class ScaleConstraint implements IViewportConstraint
      * @inheritDoc
      */
     public function validate(transform:IViewportTransform,
-                              target:IViewportTransform):IViewportTransform
+                             target:IViewportTransform):IViewportTransform
     {
         // FIXME
         // Prevent from moving when the scale limist are reached

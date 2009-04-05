@@ -326,10 +326,10 @@ public class MouseController extends ViewportControllerBase
         view.removeEventListener(MouseEvent.MOUSE_UP, view_mouseUpHandler)
 
         var mouseUpPosition:Point = new Point(view.mouseX, view.mouseY)
-        var deltaX:Number = mouseUpPosition.x - mouseDownPosition.x
-        var deltaY:Number = mouseUpPosition.y - mouseDownPosition.y
+        var dx:Number = mouseUpPosition.x - mouseDownPosition.x
+        var dy:Number = mouseUpPosition.y - mouseDownPosition.y
 
-        var distance:Number = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+        var distance:Number = Math.sqrt(dx * dx + dy * dy)
 
         if (click && distance < CLICK_THRESHOLD_DISTANCE)
         {

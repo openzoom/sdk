@@ -118,7 +118,6 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     public function getMinLevelForSize(width:Number,
                                        height:Number):IMultiScaleImageLevel
     {
-        // TODO
         var level:IMultiScaleImageLevel
 
         for (var i:int = numLevels - 1; i >= 0; i--)
@@ -128,7 +127,6 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
                 break
         }
 
-        // FIXME
         return getLevelAt(clamp(level.index + 1, 0, numLevels - 1)).clone()
     }
 

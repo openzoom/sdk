@@ -87,8 +87,11 @@ public class VisibilityConstraint implements IViewportConstraint
      * @inheritDoc
      */
     public function validate(transform:IViewportTransform,
-                              target:IViewportTransform):IViewportTransform
+                             target:IViewportTransform):IViewportTransform
     {
+    	// FIXME: Issue 5
+    	// http://code.google.com/p/open-zoom/issues/detail?id=5
+    	
         var x:Number = transform.x
         var y:Number = transform.y
 
@@ -108,7 +111,6 @@ public class VisibilityConstraint implements IViewportConstraint
         }
         else
         {
-            // FIXME
             if (transform.x > (1 - visibilityRatio))
                 x = 1 - visibilityRatio
 
@@ -132,7 +134,6 @@ public class VisibilityConstraint implements IViewportConstraint
         }
         else
         {
-            // FIXME
             if (transform.y > (1 - visibilityRatio))
                 y = 1 - visibilityRatio
 

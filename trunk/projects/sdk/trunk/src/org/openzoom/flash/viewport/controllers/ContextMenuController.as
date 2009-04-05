@@ -104,6 +104,7 @@ public class ContextMenuController extends ViewportControllerBase
     //
     //--------------------------------------------------------------------------
 
+    // TODO: Create getters & setters
     public var showAll:Boolean = true
     public var fullScreen:Boolean = true
 

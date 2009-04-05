@@ -104,17 +104,17 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
      */
     public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
-        // TODO: Implement a smart(er) algorithm
+        // TODO: Adapt Deep Zoom algorithm
+        // for finding optimal tile level
         var index:int = numLevels - 1
 
         while (index >= 0 &&
-              IMultiScaleImageLevel(levels[index]).width >= width &&
-              IMultiScaleImageLevel(levels[index]).height >= height)
+               IMultiScaleImageLevel(levels[index]).width >= width &&
+               IMultiScaleImageLevel(levels[index]).height >= height)
         {
             index--
         }
 
-        // FIXME
         index = clamp(index + 1, 0, numLevels - 1)
 
         return IMultiScaleImageLevel(levels[index]).clone()

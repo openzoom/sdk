@@ -106,7 +106,7 @@ public class ZoomConstraint implements IViewportConstraint
      * @inheritDoc
      */
     public function validate(transform:IViewportTransform,
-                              target:IViewportTransform):IViewportTransform
+                             target:IViewportTransform):IViewportTransform
     {
         // FIXME
         // Prevent from moving when the zoom limit are reached

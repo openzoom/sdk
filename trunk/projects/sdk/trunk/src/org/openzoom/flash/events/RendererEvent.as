@@ -23,8 +23,6 @@ package org.openzoom.flash.events
 
 import flash.events.Event;
 
-import org.openzoom.flash.viewport.IViewportTransform;
-
 /**
  * Renderer event class.
  */
@@ -37,6 +35,7 @@ public class RendererEvent extends Event
     //--------------------------------------------------------------------------
 
     public static const ADDED_TO_SCENE:String = "addedToScene"
+    public static const REMOVED_FROM_SCENE:String = "removedFromScene"
 
     //--------------------------------------------------------------------------
     //
