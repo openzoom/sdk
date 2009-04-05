@@ -43,24 +43,25 @@ partial class MainForm(System.Windows.Forms.Form):
 		self.browseSourceFolderButton.TabIndex = 2
 		self.browseSourceFolderButton.Text = "..."
 		self.browseSourceFolderButton.UseVisualStyleBackColor = true
+		self.browseSourceFolderButton.Click += self.BrowseSourceFolderButtonClick as System.EventHandler
 		# 
 		# exportButton
 		# 
+		self.exportButton.Enabled = false
 		self.exportButton.Location = System.Drawing.Point(364, 39)
 		self.exportButton.Name = "exportButton"
 		self.exportButton.Size = System.Drawing.Size(75, 23)
 		self.exportButton.TabIndex = 3
 		self.exportButton.Text = "Export"
 		self.exportButton.UseVisualStyleBackColor = true
+		self.exportButton.Click += self.ExportButtonClick as System.EventHandler
 		# 
 		# openFileDialog
 		# 
 		self.openFileDialog.DefaultExt = "jpg"
-		self.openFileDialog.FileName = "openFileDialog"
-		/*
 		self.openFileDialog.Filter = "Image Files (*.jpg, *.png)|*.jpg||*.png"
-		*/
 		self.openFileDialog.Title = "Choose Image File"
+		self.openFileDialog.FileOk += self.OpenFileDialogFileOk as System.ComponentModel.CancelEventHandler
 		# 
 		# MainForm
 		# 
@@ -80,4 +81,3 @@ partial class MainForm(System.Windows.Forms.Form):
 	private browseSourceFolderButton as System.Windows.Forms.Button
 	private sourceFolderTextBox as System.Windows.Forms.TextBox
 	private sourceFolderLabel as System.Windows.Forms.Label
-

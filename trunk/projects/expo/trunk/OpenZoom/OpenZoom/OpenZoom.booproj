@@ -22,7 +22,7 @@
   <ItemGroup>
     <Reference Include="Boo.Lang.Useful" />
     <Reference Include="DeepZoomTools">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Microsoft Expression\Deep Zoom Composer\DeepZoomTools.DLL</HintPath>
+      <HintPath>DeepZoomTools.DLL</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />

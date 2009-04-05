@@ -1,18 +1,35 @@
 ﻿namespace OpenZoom
 
+import Microsoft.DeepZoomTools
 import System
 import System.Collections
 import System.Drawing
+import System.IO
 import System.Windows.Forms
 
 partial class MainForm:
 	def constructor():
 		// The InitializeComponent() call is required for Windows Forms designer support.
 		InitializeComponent()
+		
+	private def OpenFileDialogFileOk(sender as object, e as System.ComponentModel.CancelEventArgs):
+		self.sourceName = openFileDialog.FileName
+		sourceFolderTextBox.Text = self.sourceName
+		exportButton.Enabled = true
 	
-	private def OpenFileDialog1FileOk(sender as object, e as System.ComponentModel.CancelEventArgs):
-		pass
-		// TODO: Add constructor code after the InitializeComponent() call.
+	private def BrowseSourceFolderButtonClick(sender as object, e as System.EventArgs):
+		openFileDialog.ShowDialog()
+		
+	private def ExportButtonClick(sender as object, e as System.EventArgs):
+		imageCreator = ImageCreator()	
+		imageCreator.TileSize = 254
+		imageCreator.TileOverlap = 1
+		imageCreator.ImageQuality = 0.95
+		imageCreator.TileFormat = ImageFormat.Jpg
+		destinationName = Path.GetFileNameWithoutExtension(self.sourceName) + ".dzi"
+		imageCreator.Create(self.sourceName, destinationName)
+
+	private sourceName as string
 
 [STAThread]
 def Main(argv as (string)):
