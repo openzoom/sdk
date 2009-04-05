@@ -21,13 +21,13 @@
 package
 {
 
-import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 
 import org.openzoom.flash.components.MultiScaleContainer;
+import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
@@ -54,12 +54,31 @@ public class InteractiveRenderers extends Sprite
     	stage.addEventListener(Event.RESIZE, stage_resizeHandler)
     	
     	container = new MultiScaleContainer()
-    	container.transformer = new TweenerTransformer()
+    	
+    	var transformer:TweenerTransformer = new TweenerTransformer()
+//      transformer.easing = "easeOutElastic"
+//    	transformer.duration = 1
+    	container.transformer = transformer
+    	
     	var mouseController:MouseController = new MouseController()
     	var keyboardController:KeyboardController = new KeyboardController()
-    	container.controllers = [mouseController, keyboardController]
+    	var contextMenuController:ContextMenuController = new ContextMenuController()
+    	
+    	contextMenuController.panUp = false
+    	contextMenuController.panDown = false
+    	contextMenuController.panRight = false
+    	contextMenuController.panLeft = false
+    	
+    	contextMenuController.zoomIn = false
+    	contextMenuController.zoomOut = false
+    	
+    	container.controllers = [mouseController,
+    	                         keyboardController,
+    	                         contextMenuController]
     	
     	var spacing:uint = 100
+    	var maxRight:Number = 0
+    	var maxBottom:Number = 0
     	
     	for (var i:int = 0; i < 500; i++)
     	{
@@ -76,12 +95,17 @@ public class InteractiveRenderers extends Sprite
     		renderer.x = (i % 20) * (dimension + spacing) - offsetX
     		renderer.y = Math.floor(i / 20) * (dimension + spacing) - offsetY
     		
+    		if (renderer.x + renderer.width > maxRight)
+                maxRight = renderer.x + renderer.width
+                
+    		if (renderer.y + renderer.height > maxBottom)
+                maxBottom = renderer.y + renderer.height
+    		
     		container.addChild(renderer)
     	}
     	
-    	var lastRenderer:DisplayObject = container.getChildAt(i-1)
-    	container.sceneWidth = lastRenderer.x + lastRenderer.width
-    	container.sceneHeight = lastRenderer.y + lastRenderer.height
+    	container.sceneWidth = maxRight
+    	container.sceneHeight = maxBottom
     	
     	addChild(container)
     	layout()
@@ -133,6 +157,7 @@ import org.openzoom.flash.events.RendererEvent;
 import org.openzoom.flash.renderers.Renderer;
 import org.openzoom.flash.viewport.ISceneViewport;
 import org.openzoom.flash.viewport.SceneViewport;
+import flash.geom.Rectangle;
 
 
 class InteractiveRenderer extends Renderer
@@ -215,7 +240,8 @@ class InteractiveRenderer extends Renderer
 	private function clickHandler(event:MouseEvent):void
 	{
 		var vp:ISceneViewport = SceneViewport.getInstance(viewport)
-		vp.fitToBounds(getBounds(scene.targetCoordinateSpace), 0.5)
+        var bounds:Rectangle = getBounds(scene.targetCoordinateSpace)
+		vp.fitToBounds(bounds, 0.6)
 	}
 }
 

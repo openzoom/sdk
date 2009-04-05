@@ -233,6 +233,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
         frame = new Shape()
         var g:Graphics = frame.graphics
             g.beginFill(backgroundColor, backgroundAlpha)
+//          g.beginFill(0x0088FF, 0.2)
             g.drawRect(0, 0, 100, 100)
             g.endFill()
         addChild(frame)
