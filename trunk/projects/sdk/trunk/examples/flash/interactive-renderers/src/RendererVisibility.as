@@ -27,16 +27,14 @@ import flash.display.StageScaleMode;
 import flash.events.Event;
 
 import org.openzoom.flash.components.MultiScaleContainer;
+import org.openzoom.flash.renderers.Renderer;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#222222")]
-/**
- * Example that illustrates how to use interactive renderers with the OpenZoom SDK.
- */
-public class InteractiveRenderers extends Sprite
+public class RendererVisibility extends Sprite
 {
     //--------------------------------------------------------------------------
     //
@@ -47,7 +45,7 @@ public class InteractiveRenderers extends Sprite
     /**
      * Constructor.
      */
-	public function InteractiveRenderers()
+	public function RendererVisibility()
     {
     	stage.align = StageAlign.TOP_LEFT
     	stage.scaleMode = StageScaleMode.NO_SCALE
@@ -76,37 +74,41 @@ public class InteractiveRenderers extends Sprite
     	                         keyboardController,
     	                         contextMenuController]
     	
-    	var spacing:uint = 100
-    	var maxRight:Number = 0
-    	var maxBottom:Number = 0
-    	var numColumns:uint = 100
-    	
-    	for (var i:int = 0; i < 5000; i++)
-    	{
-    	    var format:String
-            if (Math.random() > 0.5)
-                format = Format.LANDSCAPE
-            else
-                format = Format.PORTRAIT
-                 
-    		var renderer:InteractiveRenderer = new InteractiveRenderer(format)
-    		var dimension:Number = InteractiveRenderer.DIMENSION 
-    		var offsetX:Number = (renderer.width - dimension) / 2 
-    		var offsetY:Number = (renderer.height - dimension) / 2 
-    		renderer.x = (i % numColumns) * (dimension + spacing) - offsetX
-    		renderer.y = Math.floor(i / numColumns) * (dimension + spacing) - offsetY
-    		
-    		if (renderer.x + renderer.width > maxRight)
+//    	container.sceneWidth = 1000
+//    	container.sceneHeight = 1000
+//    	
+//        var renderer:Renderer
+//        renderer = new BoxRenderer()
+//        renderer.x = 100
+//        renderer.y = 100
+//        container.addChild(renderer)
+
+        var spacing:uint = 100
+        var maxRight:Number = 0
+        var maxBottom:Number = 0
+        var numColumns:uint = 60
+        
+        for (var i:int = 0; i < 800; i++)
+        {
+            var renderer:BoxRenderer = new BoxRenderer()
+            var dimension:Number = BoxRenderer.DIMENSION 
+            var offsetX:Number = (renderer.width - dimension) / 2 
+            var offsetY:Number = (renderer.height - dimension) / 2 
+            renderer.x = (i % numColumns) * (dimension + spacing) - offsetX
+            renderer.y = Math.floor(i / numColumns) * (dimension + spacing) - offsetY
+            
+            if (renderer.x + renderer.width > maxRight)
                 maxRight = renderer.x + renderer.width
                 
-    		if (renderer.y + renderer.height > maxBottom)
+            if (renderer.y + renderer.height > maxBottom)
                 maxBottom = renderer.y + renderer.height
-    		
-    		container.addChild(renderer)
-    	}
-    	
-    	container.sceneWidth = maxRight
-    	container.sceneHeight = maxBottom
+            
+            container.addChild(renderer)
+        }
+        
+        container.sceneWidth = maxRight
+        container.sceneHeight = maxBottom
+        
     	
     	addChild(container)
     	layout()
@@ -159,9 +161,10 @@ import org.openzoom.flash.renderers.Renderer;
 import org.openzoom.flash.viewport.ISceneViewport;
 import org.openzoom.flash.viewport.SceneViewport;
 import flash.geom.Rectangle;
+import org.openzoom.flash.events.ViewportEvent;
 
 
-class InteractiveRenderer extends Renderer
+class BoxRenderer extends Renderer
 {
     //--------------------------------------------------------------------------
     //
@@ -169,9 +172,7 @@ class InteractiveRenderer extends Renderer
     //
     //--------------------------------------------------------------------------
     
-	public static const DIMENSION:Number = 300
-	public static const ASPECT_RATIO:Number = 2/3
-	public static const PADDING:Number = 8
+	public static const DIMENSION:Number = 100
 	
     //--------------------------------------------------------------------------
     //
@@ -182,12 +183,12 @@ class InteractiveRenderer extends Renderer
     /**
      * Constructor.
      */ 
-	public function InteractiveRenderer(format:String)
+	public function BoxRenderer()
 	{
 		addEventListener(RendererEvent.ADDED_TO_SCENE,
 		                 addedToSceneHandler,
 		                 false, 0, true)
-		draw(format)
+		draw()
 	}
     
     //--------------------------------------------------------------------------
@@ -196,32 +197,12 @@ class InteractiveRenderer extends Renderer
     //
     //--------------------------------------------------------------------------
 	
-	private function draw(format:String):void
+	private function draw():void
 	{
-        var width:Number
-        var height:Number
-        
-        if (format == Format.LANDSCAPE)
-        {
-            width = DIMENSION
-            height = DIMENSION * ASPECT_RATIO
-        }
-        else
-        {
-            width = DIMENSION * ASPECT_RATIO
-            height = DIMENSION
-        }
-        
         var g:Graphics = graphics
-        g.beginFill(0xFFFFFF)
-        g.drawRect(0, 0, width, height)
-        g.endFill()
-        
+        g.clear()
         g.beginFill(0x000000)
-        g.drawRect(PADDING,
-                   PADDING,
-                   width - 2 * PADDING,
-                   height - 2 * PADDING)
+        g.drawRect(0, 0, DIMENSION, DIMENSION)
         g.endFill()
 	}
     
@@ -236,6 +217,31 @@ class InteractiveRenderer extends Renderer
 		addEventListener(MouseEvent.CLICK,
 		                 clickHandler,
 		                 false, 0, true)
+        
+        viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
+                                  viewport_transformEndHandler,
+                                  false, 0, true)
+	}
+	
+	private function viewport_transformEndHandler(event:ViewportEvent):void
+	{
+		var vp:ISceneViewport = SceneViewport.getInstance(viewport)
+        var bounds:Rectangle = getBounds(scene.targetCoordinateSpace)
+
+        if (!vp.intersects(bounds))
+            return
+
+        var visibleBounds:Rectangle = vp.intersection(bounds)
+        visibleBounds.offset(-bounds.x, -bounds.y)
+        
+//        trace("visibleBounds:", visibleBounds, width, height, scaleX, scaleY)
+    
+        draw()
+        var g:Graphics = graphics
+        g.beginFill(0xFF0000)
+        g.drawRect(visibleBounds.x + 10, visibleBounds.y + 10,
+                   visibleBounds.width - 20, visibleBounds.height - 20)
+        g.endFill()
 	}
 	
 	private function clickHandler(event:MouseEvent):void
@@ -244,11 +250,4 @@ class InteractiveRenderer extends Renderer
         var bounds:Rectangle = getBounds(scene.targetCoordinateSpace)
 		vp.fitToBounds(bounds, 0.6)
 	}
-}
-
-
-class Format
-{
-	public static const PORTRAIT:String = "portrait" 
-	public static const LANDSCAPE:String = "landscape"
 }
