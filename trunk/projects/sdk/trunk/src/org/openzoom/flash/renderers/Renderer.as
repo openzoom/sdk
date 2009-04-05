@@ -64,14 +64,14 @@ public class Renderer extends Sprite
     {
         return _scene
     }
-    
+
     public function set scene(value:IReadonlyMultiScaleScene):void
     {
         if (scene === value)
             return
-        
+
         _scene = value
-        
+
         dispatchEvent(new RendererEvent(RendererEvent.ADDED_TO_SCENE))
     }
 

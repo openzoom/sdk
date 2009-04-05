@@ -20,27 +20,27 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.utils.uri
 {
-	import mx.utils.LoaderUtil;
-	
+    import mx.utils.LoaderUtil;
+    
     /**
      * Resolve given <code>uri</code> relative to <code>baseURI</code>.
      */
     public function resolveURI(baseURI:String, uri:String):String
     {
         var resolvedURI:String
-        
+
         // Parameter uri is already absolute
         if (uri.lastIndexOf("//") != -1)
             resolvedURI = uri
-        
+
         if (baseURI)
         {
-            // Remove filename        	
-        	baseURI = baseURI.substring(0, baseURI.lastIndexOf("/") + 1)
+            // Remove filename            
+            baseURI = baseURI.substring(0, baseURI.lastIndexOf("/") + 1)
         }
-        
-        resolvedURI = baseURI + uri 
-        
+
+        resolvedURI = baseURI + uri
+
         return resolvedURI
     }
 }

@@ -117,7 +117,7 @@ public class GTweenTransformer// implements IViewportTransformer
 ////                                width: targetTransform.width,
 ////                                height: targetTransform.height
 ////                            }
-////                        )
+////                       )
 ////        tween.addEventListener(Event.INIT, function():void { viewport.beginTransform(); })
 ////        tween.addEventListener(Event.COMPLETE, function():void { viewport.endTransform(); })
 ////        tween.setAssignment(viewport, "transform")
@@ -154,7 +154,7 @@ public class GTweenTransformer// implements IViewportTransformer
 ////                                onUpdate: function():void { viewport.transform = t; },
 ////                                onComplete: viewport.endTransform
 ////                            }
-////                      )
+////                     )
 //    }
 }
 

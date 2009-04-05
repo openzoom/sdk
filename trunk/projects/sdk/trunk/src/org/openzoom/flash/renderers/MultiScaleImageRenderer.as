@@ -78,9 +78,9 @@ public class MultiScaleImageRenderer extends Renderer
                                             loader:INetworkQueue,
                                             width:Number, height:Number)
     {
-    	addEventListener(RendererEvent.ADDED_TO_SCENE,
-    	                 addedToSceneHandler,
-    	                 false, 0, true)
+        addEventListener(RendererEvent.ADDED_TO_SCENE,
+                         addedToSceneHandler,
+                         false, 0, true)
         _loader = loader
         this.descriptor = descriptor
         createFrame(width, height)
@@ -169,9 +169,9 @@ public class MultiScaleImageRenderer extends Renderer
      */
     private function addedToSceneHandler(event:RendererEvent):void
     {
-    	viewport.addEventListener(ViewportEvent.TRANSFORM_END,
-    	                          viewport_transformEndHandler,
-    	                          false, 0, true)
+        viewport.addEventListener(ViewportEvent.TRANSFORM_END,
+                                  viewport_transformEndHandler,
+                                  false, 0, true)
         updateDisplayList()
     } 
 

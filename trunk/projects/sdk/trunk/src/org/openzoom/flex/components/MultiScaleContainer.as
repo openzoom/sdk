@@ -537,7 +537,7 @@ public final class MultiScaleContainer extends UIComponent
         if (child is IRenderer)
         {
             IRenderer(child).viewport = null
-            IRenderer(child).scene = null        	
+            IRenderer(child).scene = null            
         }
 
         return child

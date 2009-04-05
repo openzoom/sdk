@@ -106,10 +106,10 @@ public class ContextMenuController extends ViewportControllerBase
 
     public var showAll:Boolean = true
     public var fullScreen:Boolean = true
-    
+
     public var zoomIn:Boolean = true
     public var zoomOut:Boolean = true
-    
+
     public var panDown:Boolean = true
     public var panUp:Boolean = true
     public var panLeft:Boolean = true
@@ -138,78 +138,78 @@ public class ContextMenuController extends ViewportControllerBase
         // Display state
         if (fullScreen)
         {
-	        fullScreenMenu = new ContextMenuItem(FULL_SCREEN_MENU_NORMAL_CAPTION)
-	        fullScreenMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
-	                                        fullScreenMenu_menuItemSelectHandler,
-	                                        false, 0, true)
-	        menu.customItems.push(fullScreenMenu)
+            fullScreenMenu = new ContextMenuItem(FULL_SCREEN_MENU_NORMAL_CAPTION)
+            fullScreenMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                            fullScreenMenu_menuItemSelectHandler,
+                                            false, 0, true)
+            menu.customItems.push(fullScreenMenu)
         }
 
         if (showAll)
         {
-	        showAllMenu = new ContextMenuItem(SHOW_ALL_MENU_CAPTION)
-	        showAllMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
-	                                     showAllMenu_menuItemSelectHandler,
-	                                     false, 0, true)
-	        menu.customItems.push(showAllMenu)
+            showAllMenu = new ContextMenuItem(SHOW_ALL_MENU_CAPTION)
+            showAllMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                         showAllMenu_menuItemSelectHandler,
+                                         false, 0, true)
+            menu.customItems.push(showAllMenu)
         }
 
         // Zooming
         if (zoomIn)
         {
-	        zoomInMenu = new ContextMenuItem(ZOOM_IN_MENU_CAPTION)
-	        zoomInMenu.separatorBefore = true
-	        zoomInMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
-	                                    zoomInMenu_menuItemSelectHandler,
-	                                    false, 0, true)
-	        menu.customItems.push(zoomInMenu)
+            zoomInMenu = new ContextMenuItem(ZOOM_IN_MENU_CAPTION)
+            zoomInMenu.separatorBefore = true
+            zoomInMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                        zoomInMenu_menuItemSelectHandler,
+                                        false, 0, true)
+            menu.customItems.push(zoomInMenu)
         }
-        
-	    if (zoomOut)
-	    {
-	        zoomOutMenu = new ContextMenuItem(ZOOM_OUT_MENU_CAPTION)
-	        zoomOutMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
-	                                     zoomOutMenu_menuItemSelectHandler,
-	                                     false, 0, true)
-	        menu.customItems.push(zoomOutMenu)
+
+        if (zoomOut)
+        {
+            zoomOutMenu = new ContextMenuItem(ZOOM_OUT_MENU_CAPTION)
+            zoomOutMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                         zoomOutMenu_menuItemSelectHandler,
+                                         false, 0, true)
+            menu.customItems.push(zoomOutMenu)
         }
 
         // Panning
         if (panUp)
         {
-	        panUpMenu = new ContextMenuItem(PAN_UP_MENU_CAPTION)
-	        panUpMenu.separatorBefore = true
-	        panUpMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
-	                                   panUpMenu_menuItemSelectHandler,
-	                                   false, 0, true)
-	        menu.customItems.push(panUpMenu)
+            panUpMenu = new ContextMenuItem(PAN_UP_MENU_CAPTION)
+            panUpMenu.separatorBefore = true
+            panUpMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                       panUpMenu_menuItemSelectHandler,
+                                       false, 0, true)
+            menu.customItems.push(panUpMenu)
         }
-        
+
         if (panDown)
         {
-	        panDownMenu = new ContextMenuItem(PAN_DOWN_MENU_CAPTION)
-	        panDownMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
-	                                     panDownMenu_menuItemSelectHandler,
-	                                     false, 0, true)
-	        menu.customItems.push(panDownMenu)
+            panDownMenu = new ContextMenuItem(PAN_DOWN_MENU_CAPTION)
+            panDownMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                         panDownMenu_menuItemSelectHandler,
+                                         false, 0, true)
+            menu.customItems.push(panDownMenu)
         }
-        
+
         if (panLeft)
-        {	
-	        panLeftMenu = new ContextMenuItem(PAN_LEFT_MENU_CAPTION)
-	        panLeftMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
-	                                     panLeftMenu_menuItemSelectHandler,
-	                                     false, 0, true)
-	        menu.customItems.push(panLeftMenu)
+        {    
+            panLeftMenu = new ContextMenuItem(PAN_LEFT_MENU_CAPTION)
+            panLeftMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                         panLeftMenu_menuItemSelectHandler,
+                                         false, 0, true)
+            menu.customItems.push(panLeftMenu)
         }
-        
+
         if (panRight)
         {
-	        panRightMenu = new ContextMenuItem(PAN_RIGHT_MENU_CAPTION)
-	        panRightMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
-	                                      panRightMenu_menuItemSelectHandler,
-	                                      false, 0, true)
-	        menu.customItems.push(panRightMenu)
+            panRightMenu = new ContextMenuItem(PAN_RIGHT_MENU_CAPTION)
+            panRightMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                          panRightMenu_menuItemSelectHandler,
+                                          false, 0, true)
+            menu.customItems.push(panRightMenu)
         }
 
         if (view is DisplayObjectContainer)
