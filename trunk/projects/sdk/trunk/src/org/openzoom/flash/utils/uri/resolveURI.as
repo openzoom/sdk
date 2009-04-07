@@ -38,7 +38,13 @@ package org.openzoom.flash.utils.uri
             // Remove filename            
             baseURI = baseURI.substring(0, baseURI.lastIndexOf("/") + 1)
         }
-
+        
+//        while (uri.indexOf("../") == 0)
+//        {
+//            baseURI = baseURI.substring(0, baseURI.substr(0, baseURI.length - 1).lastIndexOf("/") + 1)
+//            uri = uri.substring(3)
+//        }
+        
         resolvedURI = baseURI + uri
 
         return resolvedURI

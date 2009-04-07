@@ -28,7 +28,6 @@ NS_OPENZOOM = "http://ns.openzoom.org/openzoom/2008"
 mime_type_map = {"jpg": "image/jpeg",
                  "png": "image/png"}
 
-
 class OpenZoomDescriptor(object):
     def __init__(self):
         self.uris = []
@@ -96,7 +95,7 @@ class OpenZoomDescriptor(object):
                                           
             file_name = os.path.splitext(os.path.basename(self.source))[0]
             if not self.uris:
-                uri = file_name + "_files/%(level)s/{column}_{row}.jpg"%{"level": level}
+                uri = file_name + "_files/%(level)s/{column}_{row}.%(tile_format)s"%{"level": level, "tile_format": dzi.tile_format}
                 uri_node = doc.createElementNS(NS_OPENZOOM, "uri")
                 uri_node.setAttribute("template", uri)
                 level_node.appendChild(uri_node)

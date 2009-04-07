@@ -3,11 +3,11 @@
 from distutils.core import setup
 
 setup(name="openzoom-caral",
-      version="0.1",
+      version="0.2",
       description="Python tools for generating OpenZoom images.",
       author="Daniel Gasienica",
       author_email="daniel@gasienica.ch",
-      download_url="http://open-zoom.googlecode.com/files/openzoom-caral-0.1.zip",
+      download_url="http://open-zoom.googlecode.com/files/openzoom-caral-0.2.zip",
       keywords="openzoom",
       url="http://code.google.com/p/open-zoom/",
       py_modules=["openzoom"],

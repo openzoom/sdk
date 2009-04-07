@@ -32,7 +32,11 @@
 
   Changelog
   ---------
-    
+  
+  0.2 (2009-04-06)
+  ----------------
+  * Fixed a bug where OpenZoom descriptors were written with wrong tile extensions.
+  
   0.1 (2009-03-30)
   ----------------
   ÇFirst release. Nothing is new, or everything is new,

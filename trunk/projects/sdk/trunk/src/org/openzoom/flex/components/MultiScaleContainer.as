@@ -515,7 +515,7 @@ public final class MultiScaleContainer extends UIComponent
 
     override public function removeChild(child:DisplayObject):DisplayObject
     {
-        return _scene.removeChildAt(getChildIndex(child))
+        return removeChildAt(getChildIndex(child))
     }
 
     override public function addChildAt(child:DisplayObject,
@@ -532,15 +532,15 @@ public final class MultiScaleContainer extends UIComponent
 
     override public function removeChildAt(index:int):DisplayObject
     {
-        var child:DisplayObject = _scene.removeChildAt(index)
+        var child:DisplayObject = _scene.getChildAt(index)
 
         if (child is IRenderer)
         {
+            IRenderer(child).scene = null
             IRenderer(child).viewport = null
-            IRenderer(child).scene = null            
         }
 
-        return child
+        return _scene.removeChildAt(index)
     }
 
     override public function getChildAt(index:int):DisplayObject

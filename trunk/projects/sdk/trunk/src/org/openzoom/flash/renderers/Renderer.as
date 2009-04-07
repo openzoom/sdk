@@ -69,10 +69,14 @@ public class Renderer extends Sprite
     {
         if (scene === value)
             return
+        
+        if (!value)
+            dispatchEvent(new RendererEvent(RendererEvent.REMOVED_FROM_SCENE))
 
         _scene = value
-
-        dispatchEvent(new RendererEvent(RendererEvent.ADDED_TO_SCENE))
+        
+        if (_scene)
+            dispatchEvent(new RendererEvent(RendererEvent.ADDED_TO_SCENE))
     }
 
     //----------------------------------

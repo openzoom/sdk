@@ -18,31 +18,33 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-$(document).ready(function()
+jQuery.noConflict();
+
+jQuery(document).ready(function()
 {
     replaceImages();
 })
  
 function replaceImages()
 {
-    $('img').each(function()
+    jQuery('img').each(function()
     {
-        var width = $(this).attr('width');
-        var height = $(this).attr('height');
-        var image = '<img src="' + $(this).attr('src') + '" width="' + width + '" height="' + height + '">';
-        var source = $(this).attr('openzoom:source');
-    	var viewerId = "viewer" + Math.floor(Math.random() * 10000);
+        var width = jQuery(this).attr('width');
+        var height = jQuery(this).attr('height');
+        var image = '<img src="' + jQuery(this).attr('src') + '" width="' + width + '" height="' + height + '">';
+        var source = jQuery(this).attr('openzoom:source');
+        var viewerId = "viewer" + Math.floor(Math.random() * 10000);
         var viewer = getEmbedHTML(source, width, height, image, viewerId);
         
         if (source != null && source != "")
-            $(this).replaceWith(viewer);
+            jQuery(this).replaceWith(viewer);
     });
 }
 
 function getEmbedHTML(source, width, height, alternate, id)
 {
     return '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" ' +
-    	   ' width="'+ width +'" height="'+ height +'" id="' + id + '" name="' + id + '">' +
+           ' width="'+ width +'" height="'+ height +'" id="' + id + '" name="' + id + '">' +
            '  <param name="movie" value="OpenZoomViewer.swf"/>' +
            '  <param name="scale" value="noscale" />' +
            '  <param name="bgcolor" value="#111111" />' +
@@ -58,7 +60,7 @@ function getEmbedHTML(source, width, height, alternate, id)
            '    <param name="allowscriptaccess" value="always" />' +
            '    <param name="flashvars" value="source=' + source + '"/>' +
            '  <!--<![endif]-->' +
-           + alternate +
+           alternate +
            '  <!--[if !IE]>--> ' +
            '  </object>' +
            '  <!--<![endif]-->' +

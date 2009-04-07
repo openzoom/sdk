@@ -81,6 +81,10 @@ public class MultiScaleImageRenderer extends Renderer
         addEventListener(RendererEvent.ADDED_TO_SCENE,
                          addedToSceneHandler,
                          false, 0, true)
+                         
+        addEventListener(RendererEvent.REMOVED_FROM_SCENE,
+                         removedFromSceneHandler,
+                         false, 0, true)
         _loader = loader
         this.descriptor = descriptor
         createFrame(width, height)
@@ -173,6 +177,15 @@ public class MultiScaleImageRenderer extends Renderer
                                   viewport_transformEndHandler,
                                   false, 0, true)
         updateDisplayList()
+    } 
+
+    /**
+     * @private
+     */
+    private function removedFromSceneHandler(event:RendererEvent):void
+    {
+        viewport.removeEventListener(ViewportEvent.TRANSFORM_END,
+                                     viewport_transformEndHandler)
     } 
 
     /**
@@ -273,6 +286,9 @@ public class MultiScaleImageRenderer extends Renderer
      */
     private function updateDisplayList():void
     {
+    	if (!viewport)
+    	   return
+    	
 //        trace("[MultiScaleImageRender] updateDisplayList()")
 //        debugLayer.graphics.clear()
 
