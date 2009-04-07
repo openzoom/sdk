@@ -10,6 +10,17 @@
 
   python setup.py install
 
+  
+  Dependencies
+  ------------
+  
+  * Python Imaging Library (PIL)
+    <http://www.pythonware.com/products/pil/>
+  
+  * Python Deep Zoom Tools
+    <http://open-zoom.googlecode.com/>
+  
+  
 
 --------------------------------------------------------------------------------
 
@@ -35,7 +46,8 @@
   
   0.2 (2009-04-06)
   ----------------
-  * Fixed a bug where OpenZoom descriptors were written with wrong tile extensions.
+  * Fixed a bug where OpenZoom descriptors
+    were written with wrong tile extensions.
   
   0.1 (2009-03-30)
   ----------------

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<image xmlns="http://ns.openzoom.org/openzoom/2008">
+    <source height="375" type="image/jpeg" uri="me-500x375.jpg" width="500"/>
+    <source height="768" type="image/jpeg" uri="me-1024x768.jpg" width="1024"/>
+    <pyramid height="768" origin="topLeft" tileHeight="256" tileOverlap="1" tileWidth="256" type="image/jpeg" width="1024">
+        <level columns="1" height="1" rows="1" width="1">
+            <uri template="image_files/0/{column}_{row}.jpg"/>
+        </level>
+        <level columns="1" height="2" rows="1" width="2">
+            <uri template="image_files/1/{column}_{row}.jpg"/>
+        </level>
+        <level columns="1" height="3" rows="1" width="4">
+            <uri template="image_files/2/{column}_{row}.jpg"/>
+        </level>
+        <level columns="1" height="6" rows="1" width="8">
+            <uri template="image_files/3/{column}_{row}.jpg"/>
+        </level>
+        <level columns="1" height="12" rows="1" width="16">
+            <uri template="image_files/4/{column}_{row}.jpg"/>
+        </level>
+        <level columns="1" height="24" rows="1" width="32">
+            <uri template="image_files/5/{column}_{row}.jpg"/>
+        </level>
+        <level columns="1" height="48" rows="1" width="64">
+            <uri template="image_files/6/{column}_{row}.jpg"/>
+        </level>
+        <level columns="1" height="96" rows="1" width="128">
+            <uri template="image_files/7/{column}_{row}.jpg"/>
+        </level>
+        <level columns="1" height="192" rows="1" width="256">
+            <uri template="image_files/8/{column}_{row}.jpg"/>
+        </level>
+        <level columns="2" height="384" rows="2" width="512">
+            <uri template="image_files/9/{column}_{row}.jpg"/>
+        </level>
+        <level columns="4" height="768" rows="3" width="1024">
+            <uri template="image_files/10/{column}_{row}.jpg"/>
+        </level>
+    </pyramid>
+</image>
