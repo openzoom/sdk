@@ -127,10 +127,11 @@ public final class MultiScaleImage extends MultiScaleImageBase
 
         if (value is String)
         {
-            if (url == String(value))
+            if (String(value) === url)
                 return
 
-            url = resolveURI(loaderInfo.url, String(value))
+//            url = resolveURI(loaderInfo.url, String(value))
+            url = String(value)
             urlLoader = new URLLoader(new URLRequest(url))
 
             urlLoader.addEventListener(Event.COMPLETE,

@@ -2,12 +2,12 @@
 <actionScriptProperties mainApplicationPath="GigaPanDesktop.mxml" version="3">
 <compiler additionalCompilerArguments="-locale en_US" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="true" verifyDigests="true" warn="true">
 <compilerSourcePath>
-<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/trunk/projects/sdk/trunk/src"/>
-<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/trunk/projects/sdk/trunk/lib/as3corelib/src"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/src"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/lib/as3corelib/src"/>
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path=""/>
-<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/trunk/projects/sdk/trunk/lib"/>
+<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/lib"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>

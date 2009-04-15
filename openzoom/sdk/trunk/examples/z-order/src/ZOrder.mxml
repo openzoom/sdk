@@ -101,7 +101,7 @@
         horizontalAlign="center"
         >
         <mx:Label
-            text="Iterations"
+            text="Level of Detail"
             />
         <mx:HSlider
             id="iterationsSlider"

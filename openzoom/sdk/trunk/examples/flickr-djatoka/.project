@@ -19,17 +19,17 @@
 		<link>
 			<name>[source path] OpenZoom SDK</name>
 			<type>2</type>
-			<location>/Users/dani/Documents/workspace/openzoom/OpenZoom/trunk/projects/sdk/trunk/src</location>
+			<location>OPENZOOM/src</location>
 		</link>
 		<link>
 			<name>[source path] as3corelib</name>
 			<type>2</type>
-			<locationURI>OPENZOOM/trunk/projects/sdk/trunk/lib/as3corelib/src</locationURI>
+			<locationURI>OPENZOOM/lib/as3corelib/src</locationURI>
 		</link>
 		<link>
 			<name>[source path] as3flickrlib</name>
 			<type>2</type>
-			<locationURI>OPENZOOM/trunk/projects/sdk/trunk/lib/as3flickrlib/src</locationURI>
+			<locationURI>OPENZOOM/lib/as3flickrlib/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

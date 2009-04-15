@@ -128,7 +128,6 @@ public class MappingFlash extends Sprite
 
         map.constraint = constraint
 
-
         // Listen for the complete event in order to set the maximum scale
         // the map can reach. We can only set this once we know the size of the
         // loaded image.
