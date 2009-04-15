@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:ui="org.openzoom.gigapan.ui.*"
+    width="100%"
+    height="100%"
+    verticalGap="8"
+    backgroundAlpha="0"
+    backgroundColor="#000000"
+    horizontalScrollPolicy="off"
+    >
+
+    <mx:Metadata>
+        [Event("itemSelected")]
+    </mx:Metadata>
+
+    <mx:Script>
+        <![CDATA[
+            import mx.events.FlexEvent;
+
+            import mx.events.ListEvent;
+            import mx.collections.ArrayCollection;
+
+            private static const PROMPT:String = "GigaPan ID"
+
+           ;[Bindable]
+            public var previousWidth:Number = 180
+
+           ;[Bindable]
+            public var mostRecent:ArrayCollection
+
+           ;[Bindable]
+            public var mostPopular:ArrayCollection
+
+           ;[Bindable]
+            public var selectedItem:Object
+
+            private function mostRecentList_itemClickHandler(event:ListEvent):void
+            {
+                handleListSelection(mostRecentList)
+            }
+
+//            private function mostPopularList_itemClickHandler(event:ListEvent):void
+//            {
+//                handleListSelection(mostPopularList)
+//            }
+
+            private function handleListSelection(list:List):void
+            {
+                selectedItem = list.selectedItem
+                dispatchEvent(new Event("itemSelected"))
+            }
+
+            private function goButton_clickHandler(event:Event):void
+            {
+                selectedItem = {id: uint(idInput.text)}
+                dispatchEvent(new Event("itemSelected"))
+            }
+
+            private function idInput_keyDownHandler(event:KeyboardEvent):void
+            {
+                if (event.keyCode == Keyboard.ENTER && goButton.enabled)
+                    goButton_clickHandler(null)
+            }
+
+        ]]>
+    </mx:Script>
+
+    <mx:VBox
+        width="100%"
+        styleName="sideBarBox"
+        >
+        <mx:Label text="BROWSE"/>
+        <mx:HBox
+            width="100%"
+            styleName="sideBarBox"
+            >
+            <ui:PromptInput
+                id="idInput"
+                prompt="{PROMPT}"
+                tabIndex="1"
+                width="100%"
+                restrict="0-9"
+                keyDown="idInput_keyDownHandler(event)"
+                />
+            <mx:Button
+                id="goButton"
+                width="48"
+                label="GO"
+                tabIndex="2"
+                click="goButton_clickHandler(event)"
+                enabled="{idInput.text != PROMPT &amp;&amp; idInput.text.length > 0}"
+                />
+        </mx:HBox>
+    </mx:VBox>
+
+    <mx:VBox
+        width="100%"
+        height="100%"
+        minHeight="400"
+        styleName="sideBarBox"
+        >
+        <mx:Label text="MOST RECENT"/>
+        <mx:List
+            id="mostRecentList"
+            width="100%"
+            height="100%"
+            styleName="plainList"
+            dataProvider="{mostRecent}"
+            itemClick="mostRecentList_itemClickHandler(event)"
+            itemRenderer="org.openzoom.gigapan.ui.itemRenderers.ImageRenderer"
+            rowHeight="36"
+            />
+    </mx:VBox>
+<!--
+    <mx:VBox
+        width="100%"
+        height="100%"
+        styleName="sideBarBox"
+        >
+        <mx:Label text="MOST POPULAR"/>
+        <mx:List
+            id="mostPopularList"
+            width="100%"
+            height="100%"
+            styleName="plainList"
+            dataProvider="{mostPopular}"
+            itemClick="mostPopularList_itemClickHandler(event)"
+            itemRenderer="org.openzoom.gigapan.ui.itemRenderers.ImageRenderer"
+            rowHeight="24"
+            />
+    </mx:VBox>
+-->
+</mx:VBox>

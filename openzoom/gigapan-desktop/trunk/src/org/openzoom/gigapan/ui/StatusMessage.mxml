@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Label
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    text="{message.toUpperCase()}"
+    fontSize="36"
+    color="#FFFFFF"
+    >
+    <mx:Script>
+        <![CDATA[
+
+            [Bindable]
+            public var message:String
+
+        ]]>
+    </mx:Script>
+    <mx:filters>
+        <mx:GlowFilter color="#222222" alpha="0.7"/>
+    </mx:filters>
+</mx:Label>

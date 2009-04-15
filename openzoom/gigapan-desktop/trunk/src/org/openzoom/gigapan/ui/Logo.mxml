@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+    backgroundColor="#000000"
+    horizontalAlign="center"
+    verticalAlign="middle"
+    >
+    <mx:Image
+        source="@Embed('../assets/app/gigapan.png')"
+        width="76"
+        height="21"
+        />
+</mx:HBox>

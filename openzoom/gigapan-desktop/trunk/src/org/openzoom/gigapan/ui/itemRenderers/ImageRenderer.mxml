@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    width="100%"
+    horizontalAlign="right"
+    verticalAlign="middle"
+    horizontalScrollPolicy="off"
+    verticalScrollPolicy="off"
+    >
+    <mx:Image source="{'http://api.gigapan.org/beta/gigapans/' + data.id + '-600x32.jpg'}" height="32"/>
+</mx:HBox>

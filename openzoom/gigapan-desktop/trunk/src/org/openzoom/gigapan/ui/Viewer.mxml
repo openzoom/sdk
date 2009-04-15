@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:openzoom="org.openzoom.flex.components.*"
+    xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
+    xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
+    xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
+    >
+    <mx:Script>
+        <![CDATA[
+
+            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+            import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
+            import org.openzoom.gigapan.GigaPan;
+
+
+            private static const API_ENDPOINT:String = "http://api.gigapan.org/beta/gigapans/"
+            private static const MOST_RECENT_URL:String = API_ENDPOINT + "most_recent.json"
+            private static const MOST_POPULAR_URL:String = API_ENDPOINT + "most_popular.json"
+
+            private static const DEFAULT_SCENE_DIMENSION:uint = 16384
+            private static const DEFAULT_PIXEL_RATIO:uint = 4
+
+
+           ;[Bindable]
+            private var maxScale:Number = 1
+
+            private var loader:URLLoader
+
+
+            public function loadId(id:uint):void
+            {
+                loader = new URLLoader()
+                var request:URLRequest = new URLRequest(API_ENDPOINT + id + ".json")
+                loader.dataFormat = URLLoaderDataFormat.TEXT
+                loader.addEventListener(Event.COMPLETE, loader_completeHandler)
+                loader.addEventListener(IOErrorEvent.IO_ERROR, loader_ioErrorHandler)
+                loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, loader_securityErrorHandler)
+                loader.load(request)
+            }
+
+            public function loadDescriptor(descriptor:IMultiScaleImageDescriptor):void
+            {
+                image.source = descriptor
+                var maxDimension:Number = Math.max(descriptor.width, descriptor.height)
+                var actualMaxScale:Number = maxDimension / DEFAULT_SCENE_DIMENSION
+                maxScale = actualMaxScale * DEFAULT_PIXEL_RATIO
+            }
+
+            private function loader_completeHandler(event:Event):void
+            {
+                trace("INFO: loader_completeHandler")
+
+                var gigapan:GigaPan
+                try
+                {
+                    gigapan = GigaPan.fromJSON(String(loader.data))
+                }
+                catch (error:Error)
+                {
+                    trace("ERROR: loader_completeHandler")
+                    return
+                }
+
+                var descriptor:GigaPanDescriptor = new GigaPanDescriptor(gigapan.id,
+                                                                         gigapan.width,
+                                                                         gigapan.height)
+                loadDescriptor(descriptor)
+            }
+
+            private function loader_ioErrorHandler(event:IOErrorEvent):void
+            {
+                trace("ERROR: loader_ioErrorHandler")
+            }
+
+            private function loader_securityErrorHandler(event:SecurityErrorEvent):void
+            {
+                trace("ERROR: loader_securityErrorHandler")
+            }
+
+        ]]>
+    </mx:Script>
+    <openzoom:MultiScaleImage
+        id="image"
+        top="0"
+        right="0"
+        bottom="0"
+        left="0"
+        >
+        <openzoom:controllers>
+            <controllers:KeyboardController/>
+            <controllers:MouseController/>
+            <controllers:ContextMenuController/>
+        </openzoom:controllers>
+        <openzoom:transformer>
+            <transformers:TweenerTransformer/>
+        </openzoom:transformer>
+        <openzoom:constraint>
+            <constraints:CompositeConstraint>
+                <constraints:ZoomConstraint minZoom="1"/>
+                <constraints:ScaleConstraint id="scaleConstraint" maxScale="{maxScale}"/>
+                <constraints:CenterConstraint/>
+                <constraints:VisibilityConstraint/>
+            </constraints:CompositeConstraint>
+        </openzoom:constraint>
+    </openzoom:MultiScaleImage>
+</mx:Canvas>
