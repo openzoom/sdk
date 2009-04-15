@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright (c) 2008, Adobe Systems Incorporated
+	All rights reserved.
+
+	Redistribution and use in source and binary forms, with or without 
+	modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, 
+    	this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, 
+    	this list of conditions and the following disclaimer in the 
+    	documentation and/or other materials provided with the distribution.
+    * Neither the name of Adobe Systems Incorporated nor the names of its 
+    	contributors may be used to endorse or promote products derived from 
+    	this software without specific prior written permission.
+
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+	AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+	IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+	ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+	LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+	CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+	POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="*"
+	creationComplete="initApp();">
+
+	<mx:Script>
+		<![CDATA[
+		
+			import com.adobe.webapis.flickr.*;
+			import com.adobe.webapis.flickr.events.FlickrResultEvent;
+			
+			//import mx.events.AlertClickEvent;
+			import mx.controls.Alert;
+			import mx.utils.ObjectUtil;
+			import flash.net.*;
+			import flash.geom.Rectangle;
+		
+			private var service:FlickrService;
+			private var frob:String; // store the frob we'll use for authentication
+			
+			/**
+			 * Initialize the application by creating a new instance of
+			 * the Flickr api with our application's api key
+			 */
+			public function initApp():void
+			{
+				var api_key:String = "<YOUR API KEY HERE>";
+				service = new FlickrService( api_key );
+				service.secret = "<YOUR FLICKR SECRET HERE>";
+							
+				// Check to see if the auth token was stored, and if so
+				// check the token to see if a user is logged in and what
+				// kind of permission they have
+				var flickrCookie:SharedObject = SharedObject.getLocal( "FlickrServiceTest" );
+				if ( flickrCookie.data.auth_token ) {
+					debug.text += "Found stored token.. trying to auto-login\n";
+					
+					// Check the token with the service to auto log in the user
+					service.addEventListener( FlickrResultEvent.AUTH_CHECK_TOKEN, checkTokenResponse );
+					service.auth.checkToken( flickrCookie.data.auth_token );
+				}
+				
+			}
+			
+			/**
+			 * Called if there was a token stored locally in a cookie. Try to
+			 * log the user back in based on the token, otherwise clear
+			 * the value.
+			 */
+			private function checkTokenResponse( event:FlickrResultEvent ):void {
+				debug.text += "checkTokenResponse: success = " + event.success + "\n";
+				if ( event.success ) {
+					// Re-use the login logic in getTokenResponse
+					getTokenResponse( event );
+				} else {
+					var flickrCookie:SharedObject = SharedObject.getLocal( "FlickrServiceTest" );
+					flickrCookie.clear();
+				}
+			}
+		
+			/**
+			 * Some methods require authentication, so this is how you
+			 * would start the login sequence.  We need to set the secret
+			 * assigned to our particular application, and then get
+			 * a frob used for authentication.
+			 */
+			private function startLoginSequence():void {
+				service.addEventListener( FlickrResultEvent.AUTH_GET_FROB, getFrobResponse );
+				service.auth.getFrob();
+			}
+			
+			/**
+			 * When we receive the frob, we need to construct a login link
+			 * and open a browser window for the user to log into the flickr
+			 * site.  Use the service getLoginURL method to construct a 
+			 * login link with the frob we received, and pass along the
+			 * permission we'd like to be granted from the user.
+			 */
+			private function getFrobResponse( event:FlickrResultEvent ):void {
+				debug.text += "getFrobResponse: success = " + event.success + "\n";
+				
+				if ( event.success ) {
+					// Have the service construct a login url for us with the
+					// authentication frob, and request the user that we'd like
+					// to have DELETE access to their data
+					frob = String( event.data );
+					var auth_url:String = service.getLoginURL( frob, AuthPerm.DELETE );
+					
+					// Open a new browser window to authenticate the user
+					// and grant our application permission
+					navigateToURL( new URLRequest( auth_url ), "_blank" );
+										
+					// Show the alert saying  they need to authenticate on the 
+					// flickr site.  when the alert closes, we need to get the 
+					// token then to get their logged-in status
+					Alert.show( "This application requires that you authenticate"
+								+ " on Flickr.com before proceeding.  Please log in"
+								+ " to Flickr in the separate browser window that"
+								+ " opened.  After you have successfully logged in,"
+								+ " press 'OK' below to continue",
+								"Authentication Required",
+								Alert.OK | Alert.CANCEL,
+								null,
+								onCloseAuthWindow );
+								
+				} else {
+					debug.text += "error code: " + event.data.error.errorCode + "\n";
+					debug.text += "error message: " + event.data.error.errorMessage + "\n";
+				}
+			}
+			
+			/**
+			 * After the alert closes, if they pressed the OK button we
+			 * assume that they logged into Flickr, so try to get their
+			 * auth token that we can use throughout the rest of our app
+			 */
+			private function onCloseAuthWindow( event:* ):void {
+				// Only process if they pressed OK
+				if ( event.detail == Alert.OK ) {
+					// Get their authentication token, and call getTokenResponse
+					// when it's available
+					service.addEventListener( FlickrResultEvent.AUTH_GET_TOKEN, getTokenResponse );
+					service.auth.getToken( frob );	
+				}
+			}
+			
+			/**
+			 * This completes the login process.  When the user is successfully
+			 * authenticated and the application has permission to use their
+			 * data, there will be a token that flickr assigns to us.
+			 */
+			private function getTokenResponse( event:FlickrResultEvent ):void {
+				debug.text += "getTokenResponse: success = " + event.success + "\n";
+				
+				if ( event.success ) {
+					var authResult:AuthResult = AuthResult( event.data );
+					// dump the object internals for debugging
+					debug.text += ObjectUtil.toString( authResult ) + "\n";
+					
+					// Assign the token and permission to the service so that
+					// all calls that require authentication have their values
+					// populated
+					service.token = authResult.token;
+					service.permission = authResult.perms;
+					
+					// Save the token in a shared object so that when the application
+					// loads again we can re-authenticate automatically
+					var flickrCookie:SharedObject = SharedObject.getLocal( "FlickrServiceTest" );
+					flickrCookie.data.auth_token = service.token;
+					flickrCookie.flush();
+					
+					// Update the UI to show the currently logged in username
+					username.text = authResult.user.username + " (" + authResult.user.fullname + " )";
+					permission.text = service.permission;
+					
+					debug.text += "token: " + service.token + "\n";
+					debug.text += "perms: " + service.permission + "\n";
+					
+					// Toggle the login/logout buttons
+					login.visible = false;
+					logout.visible = true;
+					
+				} else {
+					debug.text += "error code: " + event.data.errorCode + "\n";
+					debug.text += "error message: " + event.data.errorMessage + "\n";
+				}
+			}
+			
+			/**
+			 * Calls the appropriate Flickr method based on the selection
+			 * in the method combobox
+			 */
+			private function invokeFlickrMethod():void {
+				switch ( method.selectedLabel ) {
+					
+					case "flickr.blogs.getList":
+						service.addEventListener( FlickrResultEvent.BLOGS_GET_LIST, genericResponseHandler );
+						service.blogs.getList();
+						break;
+						
+					case "flickr.blogs.postPhoto":
+						service.addEventListener( FlickrResultEvent.BLOGS_POST_PHOTO, genericResponseHandler );
+						service.blogs.postPhoto( "0", "0", "test title", "test desc", "test password" );
+						break;
+						
+					case "flickr.contacts.getList":
+						service.addEventListener( FlickrResultEvent.CONTACTS_GET_LIST, genericResponseHandler );
+						service.contacts.getList();
+						break;
+						
+					case "flickr.contacts.getPublicList":
+						service.addEventListener( FlickrResultEvent.CONTACTS_GET_PUBLIC_LIST, genericResponseHandler );
+						service.contacts.getPublicList( "82511024@N00" );
+						break;
+						
+					case "flickr.favorites.add":
+						service.addEventListener( FlickrResultEvent.FAVORITES_ADD, genericResponseHandler );
+						service.favorites.add( "14849732" );
+						break;
+						
+					case "flickr.favorites.getList":
+						service.addEventListener( FlickrResultEvent.FAVORITES_GET_LIST, genericResponseHandler );
+						service.favorites.getList( "", "license,date_upload,date_taken,owner_name,icon_server,original_format" );
+						break;
+						
+					case "flickr.favorites.getPublicList":
+						service.addEventListener( FlickrResultEvent.FAVORITES_GET_PUBLIC_LIST, genericResponseHandler );
+						service.favorites.getPublicList( "82511024@N00" );
+						break;
+						
+					case "flickr.favorites.remove":
+						service.addEventListener( FlickrResultEvent.FAVORITES_REMOVE, genericResponseHandler );
+						service.favorites.remove( "14849732" );
+						break;
+						
+					case "flickr.groups.browse":
+						service.addEventListener( FlickrResultEvent.GROUPS_BROWSE, genericResponseHandler );
+						service.groups.browse( "0" );
+						break;
+					
+					case "flickr.groups.getInfo":
+						service.addEventListener( FlickrResultEvent.GROUPS_GET_INFO, genericResponseHandler );
+						service.groups.getInfo( "30691243@N00" );
+						break;
+						
+					case "flickr.groups.search":
+						service.addEventListener( FlickrResultEvent.GROUPS_SEARCH, genericResponseHandler );
+						service.groups.search( "macromedia" );
+						break;
+						
+					case "flickr.groups.pools.add":
+						service.addEventListener( FlickrResultEvent.GROUPS_POOLS_ADD, genericResponseHandler );
+						service.groups.pools.add( "0", "123" );
+						break;
+						
+					case "flickr.groups.pools.getContext":
+						service.addEventListener( FlickrResultEvent.GROUPS_POOLS_GET_CONTEXT, genericResponseHandler );
+						service.groups.pools.getContext( "69878677", "62045142@N00" );
+						break;
+					
+					case "flickr.groups.pools.getGroups":
+						service.addEventListener( FlickrResultEvent.GROUPS_POOLS_GET_GROUPS, genericResponseHandler );
+						service.groups.pools.getGroups( );
+						break;
+					
+					case "flickr.groups.pools.getPhotos":
+						service.addEventListener( FlickrResultEvent.GROUPS_POOLS_GET_PHOTOS, genericResponseHandler );
+						service.groups.pools.getPhotos( "62045142@N00" );
+						break;
+						
+					case "flickr.groups.pools.remove":
+						service.addEventListener( FlickrResultEvent.GROUPS_POOLS_REMOVE, genericResponseHandler );
+						service.groups.pools.remove( "0", "123" );
+						break;
+					
+					case "flickr.people.findByEmail":
+						service.addEventListener( FlickrResultEvent.PEOPLE_FIND_BY_EMAIL, genericResponseHandler );
+						service.people.findByEmail( "ddura@macromedia.com" );
+						break;
+						
+					case "flickr.people.findByUsername":
+						service.addEventListener( FlickrResultEvent.PEOPLE_FIND_BY_USERNAME, genericResponseHandler );
+						service.people.findByUsername( "darronschall" );
+						break;
+						
+					case "flickr.people.getInfo":
+						service.addEventListener( FlickrResultEvent.PEOPLE_GET_INFO, genericResponseHandler );
+						service.people.getInfo( "82511024@N00" );
+						break;
+						
+					case "flickr.people.getPublicGroups":
+						service.addEventListener( FlickrResultEvent.PEOPLE_GET_PUBLIC_GROUPS, genericResponseHandler );
+						service.people.getPublicGroups( "82511024@N00" );
+						break;
+						
+					case "flickr.people.getPublicPhotos":
+						service.addEventListener( FlickrResultEvent.PEOPLE_GET_PUBLIC_PHOTOS, genericResponseHandler );
+						service.people.getPublicPhotos( "82511024@N00" );
+						break;
+						
+					case "flickr.people.getUploadStatus":
+						service.addEventListener( FlickrResultEvent.PEOPLE_GET_UPLOAD_STATUS, genericResponseHandler );
+						service.people.getUploadStatus( );
+						break;
+						
+					case "flickr.photos.addTags":
+						service.addEventListener( FlickrResultEvent.PHOTOS_ADD_TAGS, genericResponseHandler );
+						service.photos.addTags( "1", "test" );
+						break;
+					
+					case "flickr.photos.getAllContexts":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_ALL_CONTEXTS, genericResponseHandler );
+						service.photos.getAllContexts( "69999323" );
+						break;
+						
+					case "flickr.photos.getContactsPhotos":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_CONTACTS_PHOTOS, genericResponseHandler );
+						service.photos.getContactsPhotos();
+						break;
+						
+					case "flickr.photos.getContactsPublicPhotos":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_CONTACTS_PUBLIC_PHOTOS, genericResponseHandler );
+						service.photos.getContactsPublicPhotos( "82511024@N00" );
+						break;
+						
+					case "flickr.photos.getContext":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_CONTEXT, genericResponseHandler );
+						service.photos.getContext( "69999323" );
+						break;
+						
+					case "flickr.photos.getCounts":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_COUNTS, genericResponseHandler );
+						
+						var dates:Array = new Array();
+						dates.push( new Date( 2005, 0, 1 ) );
+						dates.push( new Date( 2005, 1, 1 ) );
+						dates.push( new Date( 2005, 2, 1 ) );
+						dates.push( new Date( 2005, 3, 1 ) );
+						dates.push( new Date( 2005, 4, 1 ) );
+						dates.push( new Date( 2005, 5, 1 ) );
+						dates.push( new Date( 2005, 6, 1 ) );
+						dates.push( new Date( 2005, 7, 1 ) );
+						dates.push( new Date( 2005, 8, 1 ) );
+						dates.push( new Date( 2005, 9, 1 ) );
+						dates.push( new Date( 2005, 10, 1 ) );
+						dates.push( new Date( 2005, 11, 1 ) );
+						dates.push( new Date( 2006, 0, 1 ) );
+						service.photos.getCounts( dates );
+						break;
+						
+					case "flickr.photos.getExif":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_EXIF, genericResponseHandler );
+						service.photos.getExif( "69999323" );
+						break;
+						
+					case "flickr.photos.getInfo":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_INFO, genericResponseHandler );
+						service.photos.getInfo( "69999323" );
+						break;
+						
+					case "flickr.photos.getNotInSet":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_NOT_IN_SET, genericResponseHandler );
+						service.photos.getNotInSet( "license,date_upload,date_taken,owner_name,icon_server,original_format" );
+						break;
+						
+					case "flickr.photos.getPerms":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_PERMS, genericResponseHandler );
+						service.photos.getPerms( "38059757" );
+						break;
+						
+					case "flickr.photos.getRecent":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_RECENT, genericResponseHandler );
+						service.photos.getRecent( "license,date_upload,date_taken,owner_name,icon_server,original_format" );
+						break;
+						
+					case "flickr.photos.getSizes":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_SIZES, genericResponseHandler );
+						service.photos.getSizes( "38059757" );
+						break;
+						
+					case "flickr.photos.getUntagged":
+						service.addEventListener( FlickrResultEvent.PHOTOS_GET_UNTAGGED, genericResponseHandler );
+						service.photos.getUntagged( );
+						break;
+						
+					case "flickr.photos.removeTag":
+						service.addEventListener( FlickrResultEvent.PHOTOS_REMOVE_TAG, genericResponseHandler );
+						service.photos.removeTag( "1" );
+						break;
+						
+					case "flickr.photos.search":
+						service.addEventListener( FlickrResultEvent.PHOTOS_SEARCH, genericResponseHandler );
+						service.photos.search( "", "macromedia" );
+						break;
+						
+					case "flickr.photos.setDates":
+						service.addEventListener( FlickrResultEvent.PHOTOS_SET_DATES, genericResponseHandler );
+						service.photos.setDates( "1" );
+						break;
+						
+					case "flickr.photos.setMeta":
+						service.addEventListener( FlickrResultEvent.PHOTOS_SET_META, genericResponseHandler );
+						service.photos.setMeta( "1", "test title", "test description" );
+						break;
+						
+					case "flickr.photos.setPerms":
+						service.addEventListener( FlickrResultEvent.PHOTOS_SET_PERMS, genericResponseHandler );
+						service.photos.setPerms( "1", true, true, true, 0, 0 );
+						break;
+						
+					case "flickr.photos.setTags":
+						service.addEventListener( FlickrResultEvent.PHOTOS_SET_TAGS, genericResponseHandler );
+						service.photos.setTags( "1", "test \"tag with space\" tag" );
+						break;
+						
+					case "flickr.photos.licenses.getInfo":
+						service.addEventListener( FlickrResultEvent.PHOTOS_LICENSES_GET_INFO, genericResponseHandler );
+						service.photos.licenses.getInfo( );
+						break;
+						
+					case "flickr.photos.licenses.setLicense":
+						service.addEventListener( FlickrResultEvent.PHOTOS_LICENSES_SET_LICENSE, genericResponseHandler );
+						service.photos.licenses.setLicense( "38059757", License.ALL_RIGHTS_RESERVED );
+						break;
+						
+					case "flickr.photos.notes.add":
+						service.addEventListener( FlickrResultEvent.PHOTOS_NOTES_ADD, genericResponseHandler );
+						service.photos.notes.add( "1", new Rectangle(0, 0, 100, 100), "test" );
+						break;
+						
+					case "flickr.photos.notes.deleteNote":
+						service.addEventListener( FlickrResultEvent.PHOTOS_NOTES_DELETE, genericResponseHandler );
+						service.photos.notes.deleteNote( "1" );
+						break;
+						
+					case "flickr.photos.notes.edit":
+						service.addEventListener( FlickrResultEvent.PHOTOS_NOTES_EDIT, genericResponseHandler );
+						service.photos.notes.edit( "1", new Rectangle(0, 0, 100, 100), "test" );
+						break;
+						
+					case "flickr.photos.transform.rotate":
+						service.addEventListener( FlickrResultEvent.PHOTOS_TRANSFORM_ROTATE, genericResponseHandler );
+						service.photos.transform.rotate( "1", 180 );
+						break;
+						
+					case "flickr.photos.upload.checkTickets":
+						service.addEventListener( FlickrResultEvent.PHOTOS_UPLOAD_CHECK_TICKETS, genericResponseHandler );
+						service.photos.upload.checkTickets( [1,2,3,4] );
+						break;
+						
+					case "flickr.photos.upload.upload":
+						var file:FileReference = new FileReference();
+						var types:Array = [{description: "Images (*.jpg;*.gif;*.png)", 
+											extension: "*.jpg;*.gif;*.png"}]
+						file.addEventListener( "select", onUploadPhotoSelect );
+						file.browse( /*types*/ );
+						
+						
+						break;
+						
+					case "flickr.photosets.addPhoto":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_ADD_PHOTO, genericResponseHandler );
+						service.photosets.addPhoto( "1", "1" );
+						break;
+						
+					case "flickr.photosets.create":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_CREATE, genericResponseHandler );
+						service.photosets.create( "test title", "", "1" );
+						break;
+						
+					case "flickr.photosets.deleteSet":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_DELETE, genericResponseHandler );
+						service.photosets.deleteSet( "1" );
+						break;
+						
+					case "flickr.photosets.editMeta":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_EDIT_META, genericResponseHandler );
+						service.photosets.editMeta( "1", "new title", "new desc" );
+						break;
+						
+					case "flickr.photosets.editPhotos":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_EDIT_PHOTOS, genericResponseHandler );
+						service.photosets.editPhotos( "1", "3", [1, 2, 3, 4] );
+						break;
+						
+					case "flickr.photosets.getContext":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_GET_CONTEXT, genericResponseHandler );
+						service.photosets.getContext( "53537944", "838083" );
+						break;
+						
+					case "flickr.photosets.getInfo":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_GET_INFO, genericResponseHandler );
+						service.photosets.getInfo( "838083" );
+						break;
+						
+					case "flickr.photosets.getList":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_GET_LIST, genericResponseHandler );
+						service.photosets.getList( "39443901262@N01" );
+						break;
+						
+					case "flickr.photosets.getPhotos":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_GET_PHOTOS, genericResponseHandler );
+						service.photosets.getPhotos( "838083" );
+						break;
+						
+					case "flickr.photosets.orderSets":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_ORDER_SETS, genericResponseHandler );
+						service.photosets.orderSets( [1, 2, 3] );
+						break;
+						
+					case "flickr.photosets.removePhoto":
+						service.addEventListener( FlickrResultEvent.PHOTOSETS_REMOVE_PHOTO, genericResponseHandler );
+						service.photosets.removePhoto( "1", "1" );
+						break;
+						
+					case "flickr.tags.getListPhoto":
+						service.addEventListener( FlickrResultEvent.TAGS_GET_LIST_PHOTO, genericResponseHandler );
+						service.tags.getListPhoto( "53537944" );
+						break;
+						
+					case "flickr.tags.getListUser":
+						service.addEventListener( FlickrResultEvent.TAGS_GET_LIST_USER, genericResponseHandler );
+						service.tags.getListUser( "39443901262@N01" );
+						break;
+						
+					case "flickr.tags.getListUserPopular":
+						service.addEventListener( FlickrResultEvent.TAGS_GET_LIST_USER_POPULAR, genericResponseHandler );
+						service.tags.getListUserPopular( "39443901262@N01" );
+						break;
+						
+					case "flickr.tags.getRelated":
+						service.addEventListener( FlickrResultEvent.TAGS_GET_RELATED, genericResponseHandler );
+						service.tags.getRelated( "macromedia" );
+						break;
+						
+					case "flickr.test.echo":
+						service.addEventListener( FlickrResultEvent.TEST_ECHO, testEchoResponse );
+						service.test.echo( extraArgs.text );
+						break;
+						
+					case "flickr.test.login":
+						service.addEventListener( FlickrResultEvent.TEST_LOGIN, testLoginResponse );
+						service.test.login();
+						break;
+						
+					case "flickr.urls.getGroup":
+						service.addEventListener( FlickrResultEvent.URLS_GET_GROUP, genericResponseHandler );
+						service.urls.getGroup( "62045142@N00" );
+						break;
+						
+					case "flickr.urls.getUserPhotos":
+						service.addEventListener( FlickrResultEvent.URLS_GET_USER_PHOTOS, genericResponseHandler );
+						service.urls.getUserPhotos( "39443901262@N01" );
+						break;
+						
+					case "flickr.urls.getUserProfile":
+						service.addEventListener( FlickrResultEvent.URLS_GET_USER_PROFILE, genericResponseHandler );
+						service.urls.getUserProfile( "39443901262@N01" );
+						break;
+						
+					case "flickr.urls.lookupGroup":
+						service.addEventListener( FlickrResultEvent.URLS_LOOKUP_GROUP, genericResponseHandler );
+						service.urls.lookupGroup( "http://www.flickr.com/groups/picturethemoon/" );
+						break;
+						
+					case "flickr.urls.lookupUser":
+						service.addEventListener( FlickrResultEvent.URLS_LOOKUP_USER, genericResponseHandler );
+						service.urls.lookupUser( "http://www.flickr.com/photos/darronschall" );
+						break;
+				}
+			}
+			
+			/**
+			 * Handles the result of the flickr.test.echo method
+			 */
+			public function testEchoResponse( event:FlickrResultEvent ):void {
+				debug.text += "testEchoResponse: success = " + event.success + "\n";
+				
+				if ( event.success ) {
+					debug.text += "api_key = " + event.data.api_key + "\n";
+					debug.text += "method = " + event.data.method + "\n";
+					debug.text += "param0 = " + event.data.param0 + "\n";
+				} else {
+					debug.text += "error code: " + event.data.errorCode + "\n"
+					debug.text += "error message: " + event.data.errorMessage + "\n"
+				}
+			}
+			
+			/**
+			 * Handles the result of the flickr.test.login method
+			 */
+			public function testLoginResponse( event:FlickrResultEvent ):void {
+				debug.text += "testLoginResponse: success = " + event.success + "\n";
+				
+				if ( event.success ) {
+					var user:XML = XML( event.data.user );
+					debug.text += "Logged in as: " + user.username.toString() + " (id= " + user.@id.toString() + " )" + "\n";
+				} else {
+					debug.text += "error code: " + event.data.errorCode + "\n";
+					debug.text += "error message: " + event.data.errorMessage + "\n";
+					
+					// Example of examining the error code to create a more
+					// meaningful message for the user
+					switch ( event.data.errorCode ) {
+						case FlickrError.INSUFFICIENT_PERMISSIONS:
+							debug.text += "You don't have permission to call this method." + "\n";
+							break;
+					}
+				}
+			}
+			
+			/**
+			 * Generically handle the response to a flickr method call - just output
+			 * the information in the event to the screen.
+			 */
+			private function genericResponseHandler( event:FlickrResultEvent ):void {
+				debug.text += event.type +  " success = " + event.success + "\n";
+				
+				if ( event.success ) {
+					// The call was successful, just dump out the data object
+					debug.text += ObjectUtil.toString( event.data ) + "\n";
+				} else {
+					// Encountered some kind of error on Flickr...
+					var e:FlickrError = FlickrError( event.data.error );
+					
+					debug.text += "error code: " + e.errorCode + "\n";
+					debug.text += "error message: " + e.errorMessage + "\n";
+				}
+			}
+			
+			/**
+			 * When the user selects a file to upload, this handles the upload
+			 */
+			private function onUploadPhotoSelect( event:Event ):void {
+				/* Upload doesn't work - need some player modifications first */
+				//service.photos.upload.upload( FileReference( event.target ), "test", "dest descr", "testtag" );
+			}
+			
+			/**
+			 * Logout the user from the application and update the display
+			 */
+			private function processLogout():void {
+						
+				// Configure the service so it looks like the user
+				// is logged out
+				service.token = "";
+				service.permission = AuthPerm.NONE;
+				
+				// Update the UI to reflect the user being logged out
+				login.visible = true;
+				username.text = "Not logged in.";
+				permission.text = "none";
+				logout.visible = false;
+				
+				// Clear the authentication cookie so we don't auto-login next time
+				var flickrCookie:SharedObject = SharedObject.getLocal( "FlickrServiceTest" );
+				flickrCookie.clear();
+				
+				// Display a note about authentication to the user
+				Alert.show("The application instance now considers you to be"
+					+ " logged out.  However, the application is still"
+					+ " authenticated on flickr.com until you remove it from"
+					+ " your 'Authentication list' at"
+					+ " http://www.flickr.com/services/auth/list.gne",
+					"Logout successful",
+					Alert.OK );
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+	
+	<mx:HBox width="100%">
+		
+		<mx:HBox horizontalAlign="left" width="50%" height="100%" verticalAlign="bottom">
+			<mx:Label text="Select method to call:" />
+			<mx:ComboBox id="method">
+				<mx:dataProvider>
+					<mx:Array>
+						<mx:String>flickr.blogs.getList</mx:String>
+						<mx:String>flickr.blogs.postPhoto</mx:String>
+						<mx:String>flickr.contacts.getList</mx:String>
+						<mx:String>flickr.contacts.getPublicList</mx:String>
+						<mx:String>flickr.favorites.add</mx:String>
+						<mx:String>flickr.favorites.getList</mx:String>
+						<mx:String>flickr.favorites.getPublicList</mx:String>
+						<mx:String>flickr.favorites.remove</mx:String>
+						<mx:String>flickr.groups.browse</mx:String>
+						<mx:String>flickr.groups.getInfo</mx:String>
+						<mx:String>flickr.groups.search</mx:String>
+						<mx:String>flickr.groups.pools.add</mx:String>
+						<mx:String>flickr.groups.pools.getContext</mx:String>
+						<mx:String>flickr.groups.pools.getGroups</mx:String>
+						<mx:String>flickr.groups.pools.getPhotos</mx:String>
+						<mx:String>flickr.groups.pools.remove</mx:String>
+						<mx:String>flickr.people.findByEmail</mx:String>
+						<mx:String>flickr.people.findByUsername</mx:String>
+						<mx:String>flickr.people.getInfo</mx:String>
+						<mx:String>flickr.people.getPublicGroups</mx:String>
+						<mx:String>flickr.people.getPublicPhotos</mx:String>
+						<mx:String>flickr.people.getUploadStatus</mx:String>
+						<mx:String>flickr.photos.addTags</mx:String>
+						<mx:String>flickr.photos.getAllContexts</mx:String>
+						<mx:String>flickr.photos.getContactsPhotos</mx:String>
+						<mx:String>flickr.photos.getContactsPublicPhotos</mx:String>
+						<mx:String>flickr.photos.getContext</mx:String>
+						<mx:String>flickr.photos.getCounts</mx:String>
+						<mx:String>flickr.photos.getExif</mx:String>
+						<mx:String>flickr.photos.getInfo</mx:String>
+						<mx:String>flickr.photos.getNotInSet</mx:String>
+						<mx:String>flickr.photos.getPerms</mx:String>
+						<mx:String>flickr.photos.getRecent</mx:String>
+						<mx:String>flickr.photos.getSizes</mx:String>
+						<mx:String>flickr.photos.getUntagged</mx:String>
+						<mx:String>flickr.photos.removeTag</mx:String>
+						<mx:String>flickr.photos.search</mx:String>
+						<mx:String>flickr.photos.setDates</mx:String>
+						<mx:String>flickr.photos.setMeta</mx:String>
+						<mx:String>flickr.photos.setPerms</mx:String>
+						<mx:String>flickr.photos.setTags</mx:String>
+						<mx:String>flickr.photos.licenses.getInfo</mx:String>
+						<mx:String>flickr.photos.licenses.setLicense</mx:String>
+						<mx:String>flickr.photos.notes.add</mx:String>
+						<mx:String>flickr.photos.notes.deleteNote</mx:String>
+						<mx:String>flickr.photos.notes.edit</mx:String>
+						<mx:String>flickr.photos.transform.rotate</mx:String>
+						<mx:String>flickr.photos.upload.checkTickets</mx:String>
+						<!-- <mx:String>flickr.photos.upload.upload</mx:String> -->
+						<mx:String>flickr.photosets.addPhoto</mx:String>
+						<mx:String>flickr.photosets.create</mx:String>
+						<mx:String>flickr.photosets.deleteSet</mx:String>
+						<mx:String>flickr.photosets.editMeta</mx:String>
+						<mx:String>flickr.photosets.editPhotos</mx:String>
+						<mx:String>flickr.photosets.getContext</mx:String>
+						<mx:String>flickr.photosets.getInfo</mx:String>
+						<mx:String>flickr.photosets.getList</mx:String>
+						<mx:String>flickr.photosets.getPhotos</mx:String>
+						<mx:String>flickr.photosets.orderSets</mx:String>
+						<mx:String>flickr.photosets.removePhoto</mx:String>
+						<mx:String>flickr.tags.getListPhoto</mx:String>
+						<mx:String>flickr.tags.getListUser</mx:String>
+						<mx:String>flickr.tags.getListUserPopular</mx:String>
+						<mx:String>flickr.tags.getRelated</mx:String>
+						<mx:String>flickr.urls.getGroup</mx:String>
+						<mx:String>flickr.urls.getUserPhotos</mx:String>
+						<mx:String>flickr.urls.getUserProfile</mx:String>
+						<mx:String>flickr.urls.lookupGroup</mx:String>
+						<mx:String>flickr.urls.lookupUser</mx:String>
+						<mx:String>flickr.test.echo</mx:String>
+						<mx:String>flickr.test.login</mx:String>
+					</mx:Array>				
+				</mx:dataProvider>
+			</mx:ComboBox>
+			
+			<mx:Label text="method argument:" />
+			<mx:TextInput id="extraArgs" />
+			
+			<mx:Button label="Call Method" id="callMethod" click="invokeFlickrMethod();" />
+		
+		</mx:HBox>
+		
+		<mx:VBox horizontalAlign="right" width="50%">
+			<mx:HBox>
+				<mx:Label text="Username:" 	/>
+				<mx:Text id="username" text="Not logged in" />
+			</mx:HBox>
+			
+			<mx:HBox>
+				<mx:Label text="Permission:" 	/>
+				<mx:Text id="permission" text="none" />
+			</mx:HBox>
+	
+			<mx:Canvas>
+				<mx:Button id="login" label="Login" click="startLoginSequence();" />
+				<mx:Button id="logout" label="Logout" click="processLogout();" visible="false" />
+			</mx:Canvas>
+			
+		</mx:VBox>
+		
+	</mx:HBox>
+	
+	<mx:TextArea id="debug" width="100%" height="100%" text="" />
+</mx:Application>

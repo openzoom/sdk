@@ -1,0 +1,931 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="PhotoSets,com.adobe.webapis.flickr.methodgroups.PhotoSets,addPhoto,create,deleteSet,editMeta,editPhotos,getContext,getInfo,getList,getPhotos,orderSets,removePhoto" name="keywords">
+<title>com.adobe.webapis.flickr.methodgroups.PhotoSets</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'PhotoSets - Adobe ActionScript 3.0 Library - flickr';
+				var baseRef = '../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../index.html?com/adobe/webapis/flickr/methodgroups/PhotoSets.html&amp;com/adobe/webapis/flickr/methodgroups/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;PhotoSets</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#methodSummary">Methods</a>&nbsp;| <a href="#eventSummary">Events</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class PhotoSets"); titleBar_setSubNav(false,false,false,false,true,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.adobe.webapis.flickr.methodgroups</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class PhotoSets</td>
+</tr>
+</table>
+<p></p>
+  Contains the methods for the PhotoSets method group in the Flickr API.
+  
+  Even though the events are listed here, they're really broadcast
+  from the FlickrService instance itself to make using the service
+  easier.
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#PhotoSets()">PhotoSets</a>(service:<a href="../FlickrService.html">FlickrService</a>)</div>
+<div class="summaryTableDescription">
+   Construct a new Notes "method group" class
+      </div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#addPhoto()">addPhoto</a>(photoset_id:String, photo_id:String):void</div>
+<div class="summaryTableDescription">
+   Add a photo to the end of an existing photoset.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#create()">create</a>(title:String, description:String, primary_photo_id:String):void</div>
+<div class="summaryTableDescription">
+   Create a new photoset for the calling user.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#deleteSet()">deleteSet</a>(photoset_id:String):void</div>
+<div class="summaryTableDescription">
+   Delete a photoset.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#editMeta()">editMeta</a>(photoset_id:String, title:String, description:String = ""):void</div>
+<div class="summaryTableDescription">
+   Modify the meta-data for a photoset.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#editPhotos()">editPhotos</a>(photoset_id:String, primary_photo_id:String, photo_ids:Array):void</div>
+<div class="summaryTableDescription">
+   Modify the photos in a photoset.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getContext()">getContext</a>(photo_id:String, photoset_id:String):void</div>
+<div class="summaryTableDescription">
+   Returns next and previous photos for a photo in a set.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getInfo()">getInfo</a>(photoset_id:String):void</div>
+<div class="summaryTableDescription">
+   Returns next and previous photos for a photo in a set.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getList()">getList</a>(user_id:String = ""):void</div>
+<div class="summaryTableDescription">
+   Returns the photosets belonging to the specified user.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getPhotos()">getPhotos</a>(photoset_id:String):void</div>
+<div class="summaryTableDescription">
+   Get the list of photos in a set.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#orderSets()">orderSets</a>(photoset_ids:Array):void</div>
+<div class="summaryTableDescription">
+   Set the order of photosets for the calling user.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#removePhoto()">removePhoto</a>(photoset_id:String, photo_id:String):void</div>
+<div class="summaryTableDescription">
+   Remove a photo from a photoset.</div>
+</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+</table>
+</div>
+<a name="eventSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Events</div>
+<table id="summaryTableEvent" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Event</th><th>Summary</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsAddPhoto">photosetsAddPhoto</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the addPhoto method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsCreate">photosetsCreate</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the create method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, a PhotoSet instance
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsDelete">photosetsDelete</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the deleteSet method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsEditMeta">photosetsEditMeta</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the editMeta method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsEditPhotos">photosetsEditPhotos</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the editPhotos method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsGetContext">photosetsGetContext</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the getContext method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an Array of Photo instances.</td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsGetInfo">photosetsGetInfo</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the getInfo method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, a PhotoSet instance
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsGetList">photosetsGetList</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the getList method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an Array of PhotoSet instnaces
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsGetPhotos">photosetsGetPhotos</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the getPhotos method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, a PhotoSet instance
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsOrderSets">photosetsOrderSets</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the orderSets method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:photosetsRemovePhoto">photosetsRemovePhoto</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+   Broadcast as a result of the removePhoto method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </td><td class="summaryTableOwnerCol">PhotoSets</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="PhotoSets()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PhotoSets</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function PhotoSets(service:<a href="../FlickrService.html">FlickrService</a>)</code><p>
+   Construct a new Notes "method group" class
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">service</span>:<a href="../FlickrService.html">FlickrService</a></code> &mdash; The FlickrService this method group
+    is associated with.
+   </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="addPhoto()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">addPhoto</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function addPhoto(photoset_id:String, photo_id:String):void</code><p>
+   Add a photo to the end of an existing photoset.
+      This method requires authentication with WRITE permission.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photoset_id</span>:String</code> &mdash; The id of the photoset to add a photo to.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">photo_id</span>:String</code> &mdash; The id of the photo to add to the set.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.addPhoto.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.addPhoto.html</a>
+</div>
+</div>
+<a name="create()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">create</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function create(title:String, description:String, primary_photo_id:String):void</code><p>
+   Create a new photoset for the calling user.
+      This method requires authentication with WRITE permission.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">title</span>:String</code> &mdash; A title for the photoset.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">description</span>:String</code> &mdash; (Optional) A description of the photoset. May 
+      contain limited html.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">primary_photo_id</span>:String</code> &mdash; The id of the photo to represent this set. 
+      The photo must belong to the calling user.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.create.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.create.html</a>
+</div>
+</div>
+<a name="deleteSet()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">deleteSet</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function deleteSet(photoset_id:String):void</code><p>
+   Delete a photoset.
+      This method requires authentication with WRITE permission.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photoset_id</span>:String</code> &mdash; The id of the photoset to delete. It must be 
+      owned by the calling user.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.delete.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.delete.html</a>
+</div>
+</div>
+<a name="editMeta()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">editMeta</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function editMeta(photoset_id:String, title:String, description:String = ""):void</code><p>
+   Modify the meta-data for a photoset.
+      This method requires authentication with WRITE permission.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photoset_id</span>:String</code> &mdash; The id of the photoset to modify.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">title</span>:String</code> &mdash; The new title for the photoset.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">description</span>:String</code> (default = "<code></code>")<code></code> &mdash; (Optional) A description of the photoset. May 
+     contain limited html.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.editMeta.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.editMeta.html</a>
+</div>
+</div>
+<a name="editPhotos()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">editPhotos</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function editPhotos(photoset_id:String, primary_photo_id:String, photo_ids:Array):void</code><p>
+   Modify the photos in a photoset. Use this method to add, remove 
+   and re-order photos.
+      This method requires authentication with WRITE permission.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photoset_id</span>:String</code> &mdash; The id of the photoset to modify. The photoset must 
+     belong to the calling user.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">primary_photo_id</span>:String</code> &mdash; The id of the photo to use as the 'primary' photo 
+      for the set. This id must also be passed along in photo_ids 
+     list argument.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">photo_ids</span>:Array</code> &mdash; An array of photo ids (number or string) to include in the set. 
+     They will appear in the set in the order sent. This list must 
+     contain the primary photo id. All photos must belong to the owner 
+     of the set. This list of photos replaces the existing list. 
+     Call flickr.photosets.addPhoto to append a photo to a set.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.editPhotos.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.editPhotos.html</a>
+</div>
+</div>
+<a name="getContext()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getContext</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getContext(photo_id:String, photoset_id:String):void</code><p>
+   Returns next and previous photos for a photo in a set.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photo_id</span>:String</code> &mdash; The id of the photo to fetch the context for.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">photoset_id</span>:String</code> &mdash; The id of the photoset for which to fetch the 
+     photo's context.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.getContext.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.getContext.html</a>
+</div>
+</div>
+<a name="getInfo()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getInfo</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getInfo(photoset_id:String):void</code><p>
+   Returns next and previous photos for a photo in a set.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photoset_id</span>:String</code> &mdash; The ID of the photoset to fetch information for.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.getInfo.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.getInfo.html</a>
+</div>
+</div>
+<a name="getList()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getList</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getList(user_id:String = ""):void</code><p>
+   Returns the photosets belonging to the specified user.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">user_id</span>:String</code> (default = "<code></code>")<code></code> &mdash; The NSID of the user to get a photoset list for. If 
+     none is specified, the calling user is assumed.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.getList.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.getList.html</a>
+</div>
+</div>
+<a name="getPhotos()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getPhotos</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getPhotos(photoset_id:String):void</code><p>
+   Get the list of photos in a set.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photoset_id</span>:String</code> &mdash; The id of the photoset to return the photos for.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.getPhotos.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.getPhotos.html</a>
+</div>
+</div>
+<a name="orderSets()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">orderSets</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function orderSets(photoset_ids:Array):void</code><p>
+   Set the order of photosets for the calling user.
+      This method requires authentication with WRITE permission.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photoset_ids</span>:Array</code> &mdash; An array of photoset IDs (number or string), ordered
+     with the set to show first, first in the list. Any set IDs not
+     given in the list will be set to appear at the end of the list, 
+     ordered by their IDs.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.orderSets.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.orderSets.html</a>
+</div>
+</div>
+<a name="removePhoto()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">removePhoto</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function removePhoto(photoset_id:String, photo_id:String):void</code><p>
+   Remove a photo from a photoset.
+      This method requires authentication with WRITE permission.
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">photoset_id</span>:String</code> &mdash; The id of the photoset to remove a photo from.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">photo_id</span>:String</code> &mdash; The id of the photo to remove from the set.
+   </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://www.flickr.com/services/api/flickr.photosets.removePhoto.html" target="mm_external">http://www.flickr.com/services/api/flickr.photosets.removePhoto.html</a>
+</div>
+</div>
+<div class="detailSectionHeader">Event detail</div>
+<a name="event:photosetsAddPhoto"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsAddPhoto</td><td class="detailHeaderType">event&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the addPhoto method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#addPhoto" target="">addPhoto</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:photosetsCreate"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsCreate</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the create method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, a PhotoSet instance
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#create" target="">create</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:photosetsDelete"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsDelete</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the deleteSet method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#deleteSet" target="">deleteSet</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:photosetsEditMeta"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsEditMeta</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the editMeta method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#editMeta" target="">editMeta</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:photosetsEditPhotos"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsEditPhotos</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the editPhotos method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#editPhotos" target="">editPhotos</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:photosetsGetContext"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsGetContext</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the getContext method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an Array of Photo instances.  The first
+      element is the previous photo, the second element is
+      the next photo.
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#getContext" target="">getContext</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:photosetsGetInfo"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsGetInfo</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the getInfo method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, a PhotoSet instance
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#getInfo" target="">getInfo</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:photosetsGetList"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsGetList</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the getList method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an Array of PhotoSet instnaces
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#getList" target="">getList</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:photosetsGetPhotos"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsGetPhotos</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the getPhotos method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, a PhotoSet instance
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#getPhotos" target="">getPhotos</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:photosetsOrderSets"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsOrderSets</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the orderSets method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#orderSets" target="">orderSets</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<a name="event:photosetsRemovePhoto"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">photosetsRemovePhoto</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../events/FlickrResultEvent.html"><code>com.adobe.webapis.flickr.events.FlickrResultEvent</code></a>
+<br>
+<p></p><p>
+   Broadcast as a result of the removePhoto method being called
+      The event contains the following properties
+   success - Boolean indicating if the call was successful or not
+   data - When success is true, an empty object
+       When success is false, contains an "error" FlickrError instance
+      </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../methodgroups/PhotoSets.html#removePhoto" target="">removePhoto</a>
+<br>com.adobe.service.flickr.FlickrError</div>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">
+<footer> 
+</footer>
+</center>
+</div>
+</body>
+</html>
+<!-- -->

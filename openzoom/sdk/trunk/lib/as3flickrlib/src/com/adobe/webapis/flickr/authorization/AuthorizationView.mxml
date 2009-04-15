@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Copyright (c) 2008, Adobe Systems Incorporated
+	All rights reserved.
+
+	Redistribution and use in source and binary forms, with or without 
+	modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, 
+    	this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, 
+    	this list of conditions and the following disclaimer in the 
+    	documentation and/or other materials provided with the distribution.
+    * Neither the name of Adobe Systems Incorporated nor the names of its 
+    	contributors may be used to endorse or promote products derived from 
+    	this software without specific prior written permission.
+
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+	AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+	IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+	ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+	LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+	CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+	POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" width="400" height="228" 
+	title="Flickr Application Authorization">
+
+	<mx:Script source="AuthorizationViewClass.as" />
+
+	<mx:states>
+		<mx:State name="settingsErrorState">
+			<mx:AddChild position="lastChild">
+				<mx:Text y="70" 
+					text="Flickr API Key and Flickr secret have not been set." 
+					right="10" left="10" textAlign="center" color="#FF0202" height="78"/>
+			</mx:AddChild>
+			<mx:RemoveChild target="{authButton}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Button label="Open Settings" bottom="10" left="10" click="onOpenSettingsClick()"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="authorizationState">
+			<mx:RemoveChild target="{authButton}"/>
+			<mx:RemoveChild target="{button1}"/>
+			<mx:AddChild position="lastChild">
+				<mx:ProgressBar bottom="10" left="10" right="10" mode="manual" label="" labelPlacement="top" id="pBar" indeterminate="true"/>
+			</mx:AddChild>
+			<mx:SetProperty target="{text1}" name="text">
+				<mx:value>Please wait while the application authorizes with Flickr. This may take a few seconds.</mx:value>
+			</mx:SetProperty>
+		</mx:State>
+		<mx:State name="urlAuthorizationState">
+			<mx:RemoveChild target="{authButton}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Button label="Launch Flickr to Authorize" left="10" bottom="10" click="onLaunchFlickrClick()"/>
+			</mx:AddChild>
+			<mx:RemoveChild target="{text1}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Text right="10" left="10" top="10" height="54"
+						text="For the final step of authorization, you must click the Complete Authorization button below. This will launch the Flickr website in your browser, where you can complete the authorization.">
+				</mx:Text>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Text text="Once you have authorized the application on the Flickr website, return to the application to complete the process." left="10" top="72" right="10" height="76"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="gettokenState">
+			<mx:RemoveChild target="{authButton}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Button label="Complete Authorization" left="10" bottom="10" click="onGetTokenClick()"/>
+			</mx:AddChild>
+			<mx:SetProperty target="{text1}" name="text">
+				<mx:value>Press the Complete Authorization button below to complete the authorization process.</mx:value>
+			</mx:SetProperty>
+		</mx:State>
+		<mx:State name="authorizationCompleteState">
+			<mx:RemoveChild target="{button1}"/>
+			<mx:RemoveChild target="{text1}"/>
+			<mx:RemoveChild target="{authButton}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Button label="Close" right="10" bottom="10" click="onCloseClick()"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Text text="Authorization Complete" right="10" left="10" top="10" textAlign="center" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Text text="The application has successfully authenticated with Flickr." right="10" left="10" top="51" height="97"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="errorState">
+			<mx:RemoveChild target="{text1}"/>
+			<mx:RemoveChild target="{authButton}"/>
+			<mx:AddChild position="lastChild">
+				<mx:Button label="Try Again" left="10" bottom="10" click="onTryAgainClick()"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Text text="Authorization Failed" right="10" left="10" top="10" textAlign="center" fontWeight="bold" color="#FD0303"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Text text="The authorization failed. Make sure that you are online, and click Try Again, to try to authorize the application again." 
+					right="10" left="10" top="36" height="42"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Text left="10" top="86" id="errorField" text="" right="10" bottom="40"/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	
+	
+	<mx:Text text="Before the application can upload images to your account, you must first authorize it with Flickr."
+							 right="10" left="10" top="10" height="52" id="text1"/>
+	<mx:Button label="Begin Authorization Process" bottom="10" left="10" id="authButton" click="onAuthorizationStartClick()"/>
+	<mx:Button label="Cancel" right="12" bottom="10" click="onCancelClick()" id="button1"/>
+
+	
+</mx:Panel>
