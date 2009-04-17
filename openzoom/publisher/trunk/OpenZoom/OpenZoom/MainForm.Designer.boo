@@ -14,18 +14,45 @@ partial class MainForm(System.Windows.Forms.Form):
 	// not be able to load this method if it was changed manually.
 	def InitializeComponent():
 		exportGroupBox as System.Windows.Forms.GroupBox
+		self.exportButton = System.Windows.Forms.Button()
 		self.sourceFolderLabel = System.Windows.Forms.Label()
 		self.sourceFolderTextBox = System.Windows.Forms.TextBox()
 		self.browseSourceFolderButton = System.Windows.Forms.Button()
-		self.exportButton = System.Windows.Forms.Button()
 		self.openFileDialog = System.Windows.Forms.OpenFileDialog()
 		self.importGroupBox = System.Windows.Forms.GroupBox()
 		self.tableLayoutPanel1 = System.Windows.Forms.TableLayoutPanel()
 		exportGroupBox = System.Windows.Forms.GroupBox()
+		exportGroupBox.SuspendLayout()
 		self.importGroupBox.SuspendLayout()
 		self.tableLayoutPanel1.SuspendLayout()
-		exportGroupBox.SuspendLayout()
 		self.SuspendLayout()
+		# 
+		# exportGroupBox
+		# 
+		exportGroupBox.Anchor = cast(System.Windows.Forms.AnchorStyles,(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+						| System.Windows.Forms.AnchorStyles.Left) 
+						| System.Windows.Forms.AnchorStyles.Right))
+		exportGroupBox.AutoSize = true
+		exportGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+		exportGroupBox.Controls.Add(self.exportButton)
+		exportGroupBox.Location = System.Drawing.Point(3, 254)
+		exportGroupBox.Name = "exportGroupBox"
+		exportGroupBox.Size = System.Drawing.Size(761, 245)
+		exportGroupBox.TabIndex = 5
+		exportGroupBox.TabStop = false
+		exportGroupBox.Text = "Export"
+		# 
+		# exportButton
+		# 
+		self.exportButton.Anchor = cast(System.Windows.Forms.AnchorStyles,(System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right))
+		self.exportButton.Enabled = false
+		self.exportButton.Location = System.Drawing.Point(680, 216)
+		self.exportButton.Name = "exportButton"
+		self.exportButton.Size = System.Drawing.Size(75, 23)
+		self.exportButton.TabIndex = 3
+		self.exportButton.Text = "Export"
+		self.exportButton.UseVisualStyleBackColor = true
+		self.exportButton.Click += self.ExportButtonClick as System.EventHandler
 		# 
 		# sourceFolderLabel
 		# 
@@ -37,31 +64,23 @@ partial class MainForm(System.Windows.Forms.Form):
 		# 
 		# sourceFolderTextBox
 		# 
+		self.sourceFolderTextBox.Anchor = cast(System.Windows.Forms.AnchorStyles,((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+						| System.Windows.Forms.AnchorStyles.Right))
 		self.sourceFolderTextBox.Location = System.Drawing.Point(6, 36)
 		self.sourceFolderTextBox.Name = "sourceFolderTextBox"
-		self.sourceFolderTextBox.Size = System.Drawing.Size(728, 20)
+		self.sourceFolderTextBox.Size = System.Drawing.Size(716, 20)
 		self.sourceFolderTextBox.TabIndex = 1
 		# 
 		# browseSourceFolderButton
 		# 
-		self.browseSourceFolderButton.Location = System.Drawing.Point(740, 34)
+		self.browseSourceFolderButton.Anchor = cast(System.Windows.Forms.AnchorStyles,(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right))
+		self.browseSourceFolderButton.Location = System.Drawing.Point(728, 34)
 		self.browseSourceFolderButton.Name = "browseSourceFolderButton"
 		self.browseSourceFolderButton.Size = System.Drawing.Size(27, 23)
 		self.browseSourceFolderButton.TabIndex = 2
 		self.browseSourceFolderButton.Text = "..."
 		self.browseSourceFolderButton.UseVisualStyleBackColor = true
 		self.browseSourceFolderButton.Click += self.BrowseSourceFolderButtonClick as System.EventHandler
-		# 
-		# exportButton
-		# 
-		self.exportButton.Enabled = false
-		self.exportButton.Location = System.Drawing.Point(692, 220)
-		self.exportButton.Name = "exportButton"
-		self.exportButton.Size = System.Drawing.Size(75, 23)
-		self.exportButton.TabIndex = 3
-		self.exportButton.Text = "Export"
-		self.exportButton.UseVisualStyleBackColor = true
-		self.exportButton.Click += self.ExportButtonClick as System.EventHandler
 		# 
 		# openFileDialog
 		# 
@@ -82,7 +101,7 @@ partial class MainForm(System.Windows.Forms.Form):
 		self.importGroupBox.Controls.Add(self.browseSourceFolderButton)
 		self.importGroupBox.Location = System.Drawing.Point(3, 3)
 		self.importGroupBox.Name = "importGroupBox"
-		self.importGroupBox.Size = System.Drawing.Size(773, 249)
+		self.importGroupBox.Size = System.Drawing.Size(761, 245)
 		self.importGroupBox.TabIndex = 4
 		self.importGroupBox.TabStop = false
 		self.importGroupBox.Text = "Import"
@@ -101,37 +120,22 @@ partial class MainForm(System.Windows.Forms.Form):
 		self.tableLayoutPanel1.RowCount = 2
 		self.tableLayoutPanel1.RowStyles.Add(System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50))
 		self.tableLayoutPanel1.RowStyles.Add(System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50))
-		self.tableLayoutPanel1.Size = System.Drawing.Size(779, 510)
+		self.tableLayoutPanel1.Size = System.Drawing.Size(767, 502)
 		self.tableLayoutPanel1.TabIndex = 5
-		# 
-		# exportGroupBox
-		# 
-		exportGroupBox.Anchor = cast(System.Windows.Forms.AnchorStyles,(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-						| System.Windows.Forms.AnchorStyles.Left) 
-						| System.Windows.Forms.AnchorStyles.Right))
-		exportGroupBox.AutoSize = true
-		exportGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-		exportGroupBox.Controls.Add(self.exportButton)
-		exportGroupBox.Location = System.Drawing.Point(3, 258)
-		exportGroupBox.Name = "exportGroupBox"
-		exportGroupBox.Size = System.Drawing.Size(773, 249)
-		exportGroupBox.TabIndex = 5
-		exportGroupBox.TabStop = false
-		exportGroupBox.Text = "Export"
 		# 
 		# MainForm
 		# 
 		self.AutoScaleDimensions = System.Drawing.SizeF(6, 13)
 		self.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-		self.ClientSize = System.Drawing.Size(803, 534)
+		self.ClientSize = System.Drawing.Size(791, 526)
 		self.Controls.Add(self.tableLayoutPanel1)
 		self.Name = "MainForm"
-		self.Text = "OpenZoom Exporter"
+		self.Text = "OpenZoom Publisher"
+		exportGroupBox.ResumeLayout(false)
 		self.importGroupBox.ResumeLayout(false)
 		self.importGroupBox.PerformLayout()
 		self.tableLayoutPanel1.ResumeLayout(false)
 		self.tableLayoutPanel1.PerformLayout()
-		exportGroupBox.ResumeLayout(false)
 		self.ResumeLayout(false)
 	private tableLayoutPanel1 as System.Windows.Forms.TableLayoutPanel
 	private importGroupBox as System.Windows.Forms.GroupBox
