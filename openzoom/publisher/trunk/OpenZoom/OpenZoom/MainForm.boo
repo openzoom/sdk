@@ -14,6 +14,8 @@ partial class MainForm:
 		
 	private def OpenFileDialogFileOk(sender as object, e as System.ComponentModel.CancelEventArgs):
 		self.sourceName = openFileDialog.FileName
+		//previewPictureBox.ImageLocation = self.sourceName
+		importListView.Items.Add(Path.GetFileName(self.sourceName))
 		sourceFolderTextBox.Text = self.sourceName
 		exportButton.Enabled = true
 	
@@ -30,6 +32,12 @@ partial class MainForm:
 		imageCreator.Create(self.sourceName, destinationName)
 
 	private sourceName as string
+	
+	private def Label1Click(sender as object, e as System.EventArgs):
+		pass
+	
+	private def Button1Click(sender as object, e as System.EventArgs):
+		pass
 
 [STAThread]
 def Main(argv as (string)):

@@ -6,6 +6,7 @@
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="OpenZoomTheme.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 			<!-- Resources scoped at the Application level should be defined here. -->
 		</ResourceDictionary>
