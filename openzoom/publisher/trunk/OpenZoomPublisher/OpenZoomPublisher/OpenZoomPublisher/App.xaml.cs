@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 
-namespace OpenZoomPublisher
+namespace OpenZoom.Publisher
 {
 	public partial class App: System.Windows.Application
 	{

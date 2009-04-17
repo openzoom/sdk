@@ -9,7 +9,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Forms;
 
-namespace OpenZoomPublisher
+namespace OpenZoom.Publisher
 {
 	public partial class MainWindow
 	{

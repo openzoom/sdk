@@ -4,14 +4,14 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-	xmlns:OpenZoomPublisher="clr-namespace:OpenZoomPublisher"
-	x:Class="OpenZoomPublisher.MainWindow"
+	xmlns:OpenZoom="clr-namespace:OpenZoom.Publisher"
+	x:Class="OpenZoom.Publisher.MainWindow"
 	x:Name="OpenZoom_Publisher"
 	Title="OpenZoom Publisher"
 	Width="400"
     Height="680"
     MinWidth="320"
-    Background="#FF333333"
+    Background="#FF303030"
     AllowDrop="False"
     Foreground="#FFFFFFFF"
     Margin="0,0,0,0"
@@ -40,11 +40,16 @@
 			<ColumnDefinition Width="Auto" MinWidth="0"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="0.7*"/>
-			<RowDefinition Height="0.5*"/>
+			<RowDefinition Height="0*"/>
+			<RowDefinition Height="48"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
 			<RowDefinition Height="42"/>
 		</Grid.RowDefinitions>
-		<Grid Margin="8,8,8,4" Grid.Column="1" x:Name="ImagesPanel">
+		<Grid d:LayoutOverrides="HorizontalAlignment" x:Name="Header" Grid.Column="1" Margin="0,0,0,0" Grid.Row="1">
+			<Image HorizontalAlignment="Left" Margin="10,0,0,0" Width="Auto" Source="openzoom-logo.png" Stretch="None" d:LayoutOverrides="Width"/>
+		</Grid>
+		<Grid Margin="8,0,8,4" Grid.Column="1" x:Name="ImagesPanel" Grid.Row="2">
 			<Rectangle RadiusX="4" RadiusY="4" Stroke="{x:Null}" Fill="#FF595959" StrokeThickness="1" d:IsLocked="True"/>
 			<Grid Margin="4,31.277,4,4">
 				<Rectangle RadiusX="3" RadiusY="3" Stroke="{x:Null}" StrokeThickness="1" Fill="#FF424242" d:IsLocked="True"/>
@@ -53,7 +58,7 @@
 			</Grid>
 			<Label Foreground="#FFFFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Images" d:LayoutOverrides="GridBox" RenderTransformOrigin="0.85,1.203" Margin="4,4,0,0"/>
 		</Grid>
-		<Grid Margin="8,4,8,0" Grid.Column="1" x:Name="ExportPanel" Grid.Row="1">
+		<Grid Margin="8,4,8,0" Grid.Column="1" x:Name="ExportPanel" Grid.Row="3">
 			<Rectangle RadiusX="4" RadiusY="4" Stroke="{x:Null}" Fill="#FF595959" StrokeThickness="1"/>
 			<Grid Margin="4,35.277,4,3.999">
 				<Grid.ColumnDefinitions>
@@ -77,7 +82,7 @@
             </Grid>
 			<Label Foreground="#FFFFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Export" Margin="4,4,0,0" d:LayoutOverrides="GridBox" RenderTransformOrigin="-0.654,-0.827"/>
 		</Grid>
-		<Button Background="#FF717171" BorderBrush="#FFFFFFFF" Foreground="#FFFFFFFF" Margin="0,8,8,8" Content="Export" Grid.Column="1" Grid.Row="2" Click="export_Click" Width="96" d:LayoutOverrides="GridBox" HorizontalAlignment="Right" Height="Auto" Style="{DynamicResource SimpleButton}"/>
-		<CheckBox Style="{DynamicResource SimpleCheckBox}" Content="Show Preview" Foreground="#FFFFFFFF" Height="Auto" Width="Auto" HorizontalAlignment="Left" IsChecked="False" d:LayoutOverrides="Height, GridBox" Grid.Column="1" Grid.Row="2" Margin="10,18.723,0,10"/>
+		<Button Background="#FF717171" BorderBrush="#FFFFFFFF" Foreground="#FFFFFFFF" Margin="0,8,8,8" Content="Export" Grid.Column="1" Grid.Row="4" Click="export_Click" Width="96" HorizontalAlignment="Right" Height="Auto" Style="{DynamicResource SimpleButton}"/>
+		<CheckBox Style="{DynamicResource SimpleCheckBox}" Content="Show Preview" Foreground="#FFFFFFFF" Height="Auto" Width="Auto" HorizontalAlignment="Left" IsChecked="False" d:LayoutOverrides="Height" Grid.Column="1" Grid.Row="4" Margin="10,18.723,0,10"/>
 	</Grid>
 </Window>
