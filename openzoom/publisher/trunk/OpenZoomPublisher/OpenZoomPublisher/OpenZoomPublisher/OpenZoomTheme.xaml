@@ -992,23 +992,23 @@
 						</Grid.RowDefinitions>
 						
 						<!-- TickBar shows the ticks for Slider -->
-						<TickBar Visibility="Collapsed" x:Name="TopTick" Height="4" SnapsToDevicePixels="True" Placement="Top" Fill="{DynamicResource GlyphBrush}" d:IsLocked="True"/>
+						<TickBar Visibility="Collapsed" x:Name="TopTick" Height="4" SnapsToDevicePixels="True" Placement="Top" Fill="{DynamicResource GlyphBrush}"/>
 						<Border Grid.Row="1" Margin="0" x:Name="Border" Height="4" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
 						
 						<!-- The Track lays out the repeat buttons and thumb -->
-						<Track Grid.Row="1" x:Name="PART_Track" d:IsLocked="True">
+						<Track Grid.Row="1" x:Name="PART_Track">
 							<Track.Thumb>
-								<Thumb Style="{DynamicResource SimpleSliderThumb}" d:IsLocked="True" Background="{x:Null}"/>
+								<Thumb Style="{DynamicResource SimpleSliderThumb}" Background="{x:Null}"/>
 							</Track.Thumb>
 							<Track.IncreaseRepeatButton>
-								<RepeatButton Style="{DynamicResource SimpleScrollRepeatButtonStyle}" Command="Slider.IncreaseLarge" d:IsLocked="True"/>
+								<RepeatButton Style="{DynamicResource SimpleScrollRepeatButtonStyle}" Command="Slider.IncreaseLarge"/>
 							</Track.IncreaseRepeatButton>
 							<Track.DecreaseRepeatButton>
-								<RepeatButton Style="{DynamicResource SimpleScrollRepeatButtonStyle}" Command="Slider.DecreaseLarge" d:IsLocked="True"/>
+								<RepeatButton Style="{DynamicResource SimpleScrollRepeatButtonStyle}" Command="Slider.DecreaseLarge"/>
 							</Track.DecreaseRepeatButton>
 						</Track>
 						
-						<TickBar Visibility="Collapsed" Grid.Row="2" x:Name="BottomTick" Height="4" SnapsToDevicePixels="True" Placement="Bottom" Fill="{TemplateBinding Foreground}" d:IsLocked="True"/>
+						<TickBar Visibility="Collapsed" Grid.Row="2" x:Name="BottomTick" Height="4" SnapsToDevicePixels="True" Placement="Bottom" Fill="{TemplateBinding Foreground}"/>
 					</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="TickPlacement" Value="TopLeft">

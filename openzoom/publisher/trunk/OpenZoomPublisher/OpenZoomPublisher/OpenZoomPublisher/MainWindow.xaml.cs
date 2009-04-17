@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace OpenZoomPublisher
 {
-	public partial class Window1
+	public partial class MainWindow
 	{
-		public Window1()
+        public MainWindow()
 		{
 			this.InitializeComponent();
 			
@@ -22,13 +22,13 @@ namespace OpenZoomPublisher
 
         private void addImage_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Multiselect = true;
-            dialog.Filter = "Image Files (*.jpg, *.png)|*.jpg;*.jpeg;*.png";
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
+            openFileDialog.Filter = "Image Files (*.jpg, *.png)|*.jpg;*.jpeg;*.png";
 
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                foreach (String file in dialog.FileNames)
+                foreach (String file in openFileDialog.FileNames)
                 {
                     //imageListBox.Items.Add(Path.GetFileName(file));
                     imageListBox.Items.Add(file);
@@ -39,6 +39,17 @@ namespace OpenZoomPublisher
         private void export_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void browseOutputFolder_Click(object sender, RoutedEventArgs e)
+        {
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+
+
+            if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                outputFolderTextBox.Text = folderBrowserDialog.SelectedPath;
+            }
         }
 	}
 }
