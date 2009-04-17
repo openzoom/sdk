@@ -35,5 +35,10 @@ namespace OpenZoomPublisher
                 }
             }
         }
+
+        private void export_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 	}
 }

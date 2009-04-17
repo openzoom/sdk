@@ -20,8 +20,11 @@
 
 	<Window.Resources>
 		<DataTemplate x:Key="sourceTemplate">
-			<Image Source="{Binding Mode=OneWay}" Height="100" Width="100" OpacityMask="{x:Null}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<Image Source="{Binding Mode=OneWay}" Height="80" Width="80" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 		</DataTemplate>
+		<ItemsPanelTemplate x:Key="ImagePanelTemplate">
+			<WrapPanel/>
+		</ItemsPanelTemplate>
 	</Window.Resources>
 
 	<Grid x:Name="LayoutRoot">
@@ -30,7 +33,7 @@
 			<ColumnDefinition Width="*" MinWidth="280"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="0.771*"/>
+			<RowDefinition Height="0.7*"/>
 			<RowDefinition Height="0.3*"/>
 			<RowDefinition Height="42"/>
 		</Grid.RowDefinitions>
@@ -38,7 +41,7 @@
 			<Rectangle RadiusX="4" RadiusY="4" Stroke="{x:Null}" Fill="#FF595959" StrokeThickness="1" d:IsLocked="True"/>
 			<Grid Margin="4,25.277,4,4">
 				<Rectangle RadiusX="3" RadiusY="3" Stroke="{x:Null}" StrokeThickness="1" Fill="#FF424242" d:IsLocked="True"/>
-                <ListBox x:Name="imageListBox" d:LayoutOverrides="GridBox" IsSynchronizedWithCurrentItem="True" Background="{x:Null}" Margin="8,33.277,8,8" BorderBrush="{x:Null}" ItemTemplate="{DynamicResource sourceTemplate}" Foreground="{x:Null}"/>
+                <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="imageListBox" d:LayoutOverrides="GridBox" IsSynchronizedWithCurrentItem="True" Background="{x:Null}" Margin="8,33.277,8,8" BorderBrush="{x:Null}" ItemTemplate="{DynamicResource sourceTemplate}" Foreground="{x:Null}" ItemsPanel="{DynamicResource ImagePanelTemplate}"/>
                 <Button Background="{x:Null}" BorderBrush="#FFFFFFFF" Foreground="#FF000000" HorizontalAlignment="Right" Margin="0,8,8,0" VerticalAlignment="Top" Width="96" Height="21.277" Content="Add Image..." x:Name="button" Click="addImage_Click" />
 			</Grid>
 			<Label Foreground="#FFFFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Images" d:LayoutOverrides="GridBox"/>
@@ -50,6 +53,6 @@
             </Grid>
 			<Label Foreground="#FFFFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Export" d:LayoutOverrides="GridBox"/>
 		</Grid>
-		<Button Background="{x:Null}" BorderBrush="#FFFFFFFF" Foreground="#FF000000" HorizontalAlignment="Right" Margin="0,11,8,8" Width="96" Content="Export" d:LayoutOverrides="GridBox" Grid.Column="1" Grid.Row="2"/>
+		<Button Background="{x:Null}" BorderBrush="#FFFFFFFF" Foreground="#FF000000" HorizontalAlignment="Right" Margin="0,11,8,8" Width="96" Content="Export" d:LayoutOverrides="GridBox" Grid.Column="1" Grid.Row="2" Click="export_Click"/>
 	</Grid>
 </Window>
