@@ -6,79 +6,8 @@
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Simple Styles.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 			<!-- Resources scoped at the Application level should be defined here. -->
-			<Style x:Key="ButtonFocusVisual">
-				<Setter Property="Control.Template">
-					<Setter.Value>
-						<ControlTemplate>
-							<Rectangle SnapsToDevicePixels="true" Margin="3" Stroke="Black" StrokeDashArray="1 2" StrokeThickness="1"/>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
-			</Style>
-			<LinearGradientBrush x:Key="ButtonNormalBackgroundFill" EndPoint="0.5,1" StartPoint="0.5,0">
-				<GradientStop Color="#FFFFFFFF" Offset="0"/>
-				<GradientStop Color="#FFF0F0EA" Offset="0.9"/>
-			</LinearGradientBrush>
-			<SolidColorBrush x:Key="ButtonBorder" Color="#FF003C74"/>
-			<Style x:Key="DefaultButtonStyle" TargetType="{x:Type Button}">
-				<Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
-				<Setter Property="Foreground" Value="#FFFFFFFF"/>
-				<Setter Property="HorizontalContentAlignment" Value="Center"/>
-				<Setter Property="VerticalContentAlignment" Value="Center"/>
-				<Setter Property="Background" Value="#FFC8C8C8"/>
-				<Setter Property="BorderBrush" Value="{x:Null}"/>
-			</Style>
-			<Style x:Key="ButtonStyle1" BasedOn="{x:Null}" TargetType="{x:Type Button}">
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type Button}">
-							<ControlTemplate.Resources>
-								<Storyboard x:Key="Fade"/>
-							</ControlTemplate.Resources>
-							<Grid>
-								<Rectangle x:Name="rectangle" RadiusX="4" RadiusY="4" d:LayoutOverrides="GridBox">
-									<Rectangle.Fill>
-										<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-											<GradientStop Color="#FFAAAAAA" Offset="1"/>
-											<GradientStop Color="#FFEEEEEE" Offset="0.335"/>
-										</LinearGradientBrush>
-									</Rectangle.Fill>
-								</Rectangle>
-								<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" x:Name="contentPresenter" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" Margin="4,4,4,4"/>
-							</Grid>
-							<ControlTemplate.Triggers>
-								<Trigger Property="IsFocused" Value="True"/>
-								<Trigger Property="IsDefaulted" Value="True"/>
-								<Trigger Property="IsMouseOver" Value="True">
-									<Setter Property="Fill" TargetName="rectangle">
-										<Setter.Value>
-											<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-												<GradientStop Color="#FF666666" Offset="1"/>
-												<GradientStop Color="#FFAAAAAA" Offset="0.335"/>
-											</LinearGradientBrush>
-										</Setter.Value>
-									</Setter>
-								</Trigger>
-								<Trigger Property="IsPressed" Value="True">
-									<Setter Property="Fill" TargetName="rectangle">
-										<Setter.Value>
-											<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-												<GradientStop Color="#FFAAAAAA" Offset="0.665"/>
-												<GradientStop Color="#FF666666" Offset="0"/>
-											</LinearGradientBrush>
-										</Setter.Value>
-									</Setter>
-								</Trigger>
-								<Trigger Property="IsCancel" Value="False"/>
-								<Trigger Property="IsEnabled" Value="False"/>
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
-			</Style>
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>
