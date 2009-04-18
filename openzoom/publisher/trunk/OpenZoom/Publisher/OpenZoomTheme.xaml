@@ -170,7 +170,7 @@
 						<BulletDecorator.Bullet>
 							<Grid Width="13" Height="13">
 								<Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
-								<Path Fill="{x:Null}" Stretch="Fill" Stroke="{DynamicResource GlyphBrush}" StrokeThickness="2" Data="M2.5414899,6.1673597 C4.4655529,6.8304188 5.5824439,8.0429529 6.6400235,9.2857253 8.2081748,6.2789048 10.055185,3.476977 12.174311,0.87498622" Margin="0.979,1.194,1.436,2.332" x:Name="Checkmark"/>
+								<Path Fill="{x:Null}" Stretch="Fill" Stroke="{DynamicResource GlyphBrush}" StrokeThickness="2" Data="M2.5414899,6.1673597 C4.4655529,6.8304188 5.5824439,8.0429529 6.6400235,9.2857253 8.2081748,6.2789048 10.055185,3.476977 12.174311,0.87498622" Margin="1.48,1.73,1.866,2.63" x:Name="Checkmark"/>
 							</Grid>
 						</BulletDecorator.Bullet>
 						<ContentPresenter Width="Auto" Height="Auto" Margin="4,0,0,0"/>
@@ -960,15 +960,20 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Thumb}">
 					<Grid>
-						<Ellipse x:Name="Ellipse" Fill="{DynamicResource NormalBrush}" Stroke="{DynamicResource NormalBorderBrush}" StrokeThickness="1"/>
+						<Path Fill="{DynamicResource NormalBorderBrush}" Stretch="Fill" Stroke="{DynamicResource DefaultedBorderBrush}" StrokeThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Data="M0,0 L6,0 6,6 3,8 0,6 z" Width="Auto" RenderTransformOrigin="0.5,0.5" Margin="1.412,-0.717,1.421,-5.575">
+							<Path.RenderTransform>
+								<TransformGroup>
+									<ScaleTransform ScaleX="1" ScaleY="1"/>
+									<SkewTransform AngleX="0" AngleY="0"/>
+									<RotateTransform Angle="0"/>
+									<TranslateTransform X="0" Y="0"/>
+								</TransformGroup>
+							</Path.RenderTransform>
+						</Path>
 					</Grid>
 					<ControlTemplate.Triggers>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Fill" Value="{DynamicResource MouseOverBrush}" TargetName="Ellipse"/>
-						</Trigger>
-						<Trigger Property="IsEnabled" Value="false">
-							<Setter Property="Fill" Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Ellipse"/>
-						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True"/>
+						<Trigger Property="IsEnabled" Value="false"/>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>

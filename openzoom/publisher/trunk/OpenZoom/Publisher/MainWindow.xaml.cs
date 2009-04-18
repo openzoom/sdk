@@ -1,15 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Navigation;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using Microsoft.DeepZoomTools;
-using System.Collections.ObjectModel;
 
 namespace OpenZoom.Publisher
 {
@@ -116,7 +112,15 @@ namespace OpenZoom.Publisher
                         imageCreator.TileFormat = ImageFormat.Png;
                 }
 
-                imageCreator.Create(image.Path, Path.Combine(imageDirectory, "image.dzi"));
+                String dziPath = Path.Combine(imageDirectory, "image.dzi");
+                imageCreator.Create(image.Path, dziPath);
+
+                XNamespace deepzoomNS = "http://schemas.microsoft.com/deepzoom/2008";
+                XNamespace openzoomNS = "http://ns.openzoom.org/2008";
+                XElement dzi = XElement.Load(dziPath);
+                dzi.Add(new XAttribute(XNamespace.Xmlns + "openzoom", "http://ns.openzoom.org/2008"));
+                dzi.Add(new XElement(openzoomNS + "source"), imageFileName);
+                dzi.Save(dziPath);
             }
         }
 
