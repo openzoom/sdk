@@ -3,10 +3,10 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
 	xmlns:OpenZoom="clr-namespace:OpenZoom.Publisher"
 	x:Class="OpenZoom.Publisher.MainWindow"
 	x:Name="OpenZoom_Publisher"
+    mc:Ignorable="d"
 	Title="OpenZoom Publisher"
 	Width="400"
     Height="680"
@@ -20,14 +20,14 @@
 
 	<Window.Resources>
 		<DataTemplate x:Key="sourceTemplate">
-			<Grid Width="80" Height="80" Margin="4,4,4,4">
+			<Grid Width="80" Height="80" Margin="2,2,2,2">
 				<Border Margin="0,0,0,0" CornerRadius="4,4,4,4" Padding="6,6,6,6" Background="#FF333333">
 					<Image Source="{Binding Path=Path, Mode=OneWay}" Width="Auto" Height="Auto"/>
 				</Border>
 			</Grid>
 		</DataTemplate>
 		<ItemsPanelTemplate x:Key="ImagePanelTemplate">
-			<WrapPanel/>
+			<WrapPanel Margin="4,4,4,4"/>
 		</ItemsPanelTemplate>
 	</Window.Resources>
 
@@ -54,11 +54,11 @@
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 				<Rectangle RadiusX="3" RadiusY="3" Stroke="{x:Null}" StrokeThickness="1" Fill="#FF424242" d:IsLocked="True"/>
-                <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="imageListBox" IsSynchronizedWithCurrentItem="True" Background="{x:Null}" Margin="8,8,8,8" BorderBrush="{x:Null}" ItemTemplate="{DynamicResource sourceTemplate}" Foreground="{x:Null}" ItemsPanel="{DynamicResource ImagePanelTemplate}" IsEnabled="True"/>
+                <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="imageListBox" IsSynchronizedWithCurrentItem="True" Background="{x:Null}" Margin="0,0,0,20" BorderBrush="{x:Null}" ItemTemplate="{DynamicResource sourceTemplate}" Foreground="{x:Null}" ItemsPanel="{DynamicResource ImagePanelTemplate}" IsEnabled="True"/>
 			</Grid>
 			<Label Foreground="#FFFFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Images" d:LayoutOverrides="GridBox" RenderTransformOrigin="0.85,1.203" Margin="4,4,0,0"/>
 			<Button Background="{x:Null}" BorderBrush="#FFFFFFFF" Foreground="#FFEEEEEE" HorizontalAlignment="Right" Margin="0,5,8,0" VerticalAlignment="Top" Width="96" Height="21.277" Content="Add Images..." x:Name="addImagesButton" Click="addImagesButton_Click" Style="{DynamicResource SimpleButton}" />
-            <Button Background="{x:Null}" BorderBrush="#FFFFFFFF" Foreground="#FFEEEEEE" HorizontalAlignment="Right" Margin="0,0,8,8" VerticalAlignment="Bottom" Width="16" Height="16" x:Name="clearButton" Click="clearButton_Click" Style="{DynamicResource SimpleButton}" RenderTransformOrigin="0.5,1.0" IsCancel="False">
+            <Button Background="{x:Null}" BorderBrush="#FFFFFFFF" Foreground="#FFEEEEEE" HorizontalAlignment="Right" Margin="0,0,8,8" VerticalAlignment="Bottom" Width="16" Height="16" x:Name="clearButton" Click="clearButton_Click" Style="{DynamicResource SimpleButton}" RenderTransformOrigin="0.5,1.0" IsCancel="False" Visibility="Hidden">
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="7" Height="7" RenderTransformOrigin="0.5,0.5">
 					<Grid.RenderTransform>
 						<TransformGroup>
@@ -99,8 +99,8 @@
 				</Grid.ColumnDefinitions>
 				<Rectangle RadiusX="3" RadiusY="3" Stroke="{x:Null}" StrokeThickness="1" Fill="#FF424242" d:IsLocked="True"/>
 				<Grid HorizontalAlignment="Stretch" Width="Auto" Height="Auto">
-					<Label Foreground="#FFFFFFFF" Width="Auto" Content="File Format" d:LayoutOverrides="GridBox" HorizontalAlignment="Left" Margin="8,88,0,0" VerticalAlignment="Top" Height="Auto" x:Name="fileFormatComboBox"/>
-					<ComboBox IsSynchronizedWithCurrentItem="True" Style="{DynamicResource SimpleComboBox}" IsDropDownOpen="False" SelectedIndex="0" Margin="76.353,89.999,177.647,0" VerticalAlignment="Top" Height="23" Foreground="#FFFFFFFF" x:Name="formatComboBox">
+					<Label Foreground="#FFFFFFFF" Width="Auto" Content="File Format" d:LayoutOverrides="GridBox" HorizontalAlignment="Left" Margin="8,88,0,0" VerticalAlignment="Top" Height="Auto" x:Name="fileFormatLabel"/>
+					<ComboBox IsSynchronizedWithCurrentItem="True" Style="{DynamicResource SimpleComboBox}" IsDropDownOpen="False" SelectedIndex="0" Margin="76.353,89.999,177.647,0" VerticalAlignment="Top" Height="23" Foreground="#FFFFFFFF" x:Name="fileFormatComboBox">
 						<ComboBoxItem Style="{DynamicResource SimpleComboBoxItem}" Content="Auto"/>
 						<ComboBoxItem Style="{DynamicResource SimpleComboBoxItem}" Content="JPEG"/>
 						<ComboBoxItem Style="{DynamicResource SimpleComboBoxItem}" Content="PNG"/>
@@ -111,13 +111,15 @@
 					<Label Foreground="#FFFFFFFF" Width="Auto" Content="Output Folder" HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Height="Auto" d:LayoutOverrides="GridBox"/>
 					<Button HorizontalAlignment="Right" Margin="0,9,8,0" Style="{DynamicResource SimpleButton}" VerticalAlignment="Top" Width="24.04" Height="21.277" Content="..." IsCancel="False" ToolTip="Choose Output Folder" Click="browseOutputFolderButton_Click" x:Name="browseOutputFolderButton" Foreground="#FFEEEEEE"/>
 					<TextBox Margin="88.983,8,36.04,0" Style="{DynamicResource SimpleTextBox}" VerticalAlignment="Top" Text="" TextWrapping="Wrap" Foreground="#FFFFFFFF" x:Name="outputFolderTextBox" Background="#FF000000"/>
-					<Label Foreground="#FFFFFFFF" Width="Auto" Content="Longest Side" HorizontalAlignment="Left" Margin="13,0,0,76.447" Height="Auto" x:Name="fileFormatComboBox_Copy" d:LayoutOverrides="Height, GridBox" VerticalAlignment="Bottom"/>
-					<TextBox Margin="88.88,0,0,76.447" Style="{DynamicResource SimpleTextBox}" Text="" TextWrapping="Wrap" Foreground="#FFFFFFFF" x:Name="outputFolderTextBox_Copy" d:LayoutOverrides="Height" VerticalAlignment="Bottom" Width="60" HorizontalAlignment="Left" Background="#FF000000"/>
+					<Label Foreground="#FFFFFFFF" Width="Auto" Content="Longest Side" HorizontalAlignment="Left" Margin="13,0,0,76.447" Height="Auto" x:Name="longestSideLabel" d:LayoutOverrides="Height, GridBox" VerticalAlignment="Bottom"/>
+					<TextBox Margin="88.88,0,0,76.447" Style="{DynamicResource SimpleTextBox}" Text="" TextWrapping="Wrap" Foreground="#FFFFFFFF" x:Name="longestSideTextBox" d:LayoutOverrides="Height" VerticalAlignment="Bottom" Width="60" HorizontalAlignment="Left" Background="#FF000000"/>
 				</Grid>
             </Grid>
 			<Label Foreground="#FFFFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Export" Margin="4,4,0,0" d:LayoutOverrides="GridBox" RenderTransformOrigin="-0.654,-0.827"/>
 		</Grid>
 		<Button Background="#FF717171" BorderBrush="#FFFFFFFF" Foreground="#FFEEEEEE" Margin="0,8,8,8" Content="Export" Grid.Column="1" Grid.Row="4" Click="exportButton_Click" Width="96" HorizontalAlignment="Right" Height="Auto" Style="{DynamicResource SimpleButton}"/>
+		<!--
 		<CheckBox Style="{DynamicResource SimpleCheckBox}" Content="Show Preview" Foreground="#FFFFFFFF" Height="Auto" Width="Auto" HorizontalAlignment="Left" IsChecked="False" d:LayoutOverrides="Height" Grid.Column="1" Grid.Row="4" Margin="10,18.723,0,10"/>
+		-->
 	</Grid>
 </Window>

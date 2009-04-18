@@ -71,6 +71,7 @@ namespace OpenZoom.Publisher
             }
 
             imageListBox.ItemsSource = images;
+            clearButton.Visibility = Visibility.Visible;
         }
 
         private void exportButton_Click(object sender, RoutedEventArgs e)
@@ -92,21 +93,26 @@ namespace OpenZoom.Publisher
                 Directory.CreateDirectory(imageDirectory);
 
                 if (exportOriginalCheckBox.IsChecked == true)
-                    File.Copy(image.Path, Path.Combine(imageDirectory, imageFileName));
+                    File.Copy(image.Path, Path.Combine(imageDirectory, imageFileName), true);
 
-                if (formatComboBox.SelectedValue == "Auto")
+
+                ComboBoxItem selectedItem = fileFormatComboBox.SelectedItem as ComboBoxItem;
+                
+                if (selectedItem != null)
                 {
-                    if (imageExtension == ".png")
-                        imageCreator.TileFormat = ImageFormat.Png;
-                    else
-                        imageCreator.TileFormat = ImageFormat.Jpg;
-                }
-                else
-                {
-                    if (formatComboBox.SelectedValue == "JPEG")
+                    String fileFormat = selectedItem.Content.ToString();
+                    if (fileFormat == "Auto")
+                    {
+                        if (imageExtension == ".png")
+                            imageCreator.TileFormat = ImageFormat.Png;
+                        else
+                            imageCreator.TileFormat = ImageFormat.Jpg;
+                    }
+
+                    if (fileFormat == "JPEG")
                         imageCreator.TileFormat = ImageFormat.Jpg;
 
-                    if (formatComboBox.SelectedValue == "PNG")
+                    if (fileFormat == "PNG")
                         imageCreator.TileFormat = ImageFormat.Png;
                 }
 
@@ -128,9 +134,9 @@ namespace OpenZoom.Publisher
         private void clearButton_Click(object sender, RoutedEventArgs e)
         {
             if (images != null)
-            {
                 images.Clear();
-            }
+
+            clearButton.Visibility = Visibility.Hidden;
         }
 	}
 }
