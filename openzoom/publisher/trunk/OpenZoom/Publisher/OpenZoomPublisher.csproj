@@ -64,7 +64,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Resource Include="openzoom-logo.png" />
-    <Resource Include="Sunset.jpg" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

@@ -1,7 +1,7 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenZoomPublisher", "OpenZoomPublisher\OpenZoomPublisher.csproj", "{C89417E9-718E-4397-876F-765E014B8E1D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenZoom", "Publisher\OpenZoomPublisher.csproj", "{C89417E9-718E-4397-876F-765E014B8E1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
