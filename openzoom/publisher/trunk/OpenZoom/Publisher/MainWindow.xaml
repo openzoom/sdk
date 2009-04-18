@@ -65,7 +65,7 @@
             <RowDefinition
                 Height="*" />
             <RowDefinition
-                Height="*" />
+                Height="180" />
             <RowDefinition
                 Height="42" />
         </Grid.RowDefinitions>
@@ -84,7 +84,7 @@
                 d:LayoutOverrides="Width" />
         </Grid>
         <Grid
-            Margin="8,0,8,4"
+            Margin="8,0,8,4.824"
             Grid.Column="1"
             x:Name="ImagesPanel"
             Grid.Row="2">
@@ -231,7 +231,7 @@
             </Button>
         </Grid>
         <Grid
-            Margin="8,4,8,0"
+            Margin="8,3.176,8,0"
             Grid.Column="1"
             x:Name="ExportPanel"
             Grid.Row="3">
@@ -258,195 +258,185 @@
                     HorizontalAlignment="Stretch"
                     Width="Auto"
                     Height="Auto">
-                    <StackPanel
+                    <Label
+                        Foreground="#FFFFFFFF"
                         Width="76.983"
-                        Height="218.724"
+                        Content="Output Folder"
+                        d:LayoutOverrides="GridBox"
                         HorizontalAlignment="Left"
                         Margin="8,8,0,0"
+                        Height="23.277"
+                        VerticalAlignment="Top" />
+                    <Grid
+                        Height="23.277"
+                        Margin="88.983,8,8,0"
                         VerticalAlignment="Top">
+                        <TextBox
+                            Style="{DynamicResource SimpleTextBox}"
+                            Text=""
+                            TextWrapping="Wrap"
+                            Foreground="#FFFFFFFF"
+                            x:Name="outputFolderTextBox"
+                            Background="#FF000000"
+                            HorizontalAlignment="Stretch"
+                            Margin="0,0,28,0" />
+                        <Button
+                            Style="{DynamicResource SimpleButton}"
+                            Width="24"
+                            Content="..."
+                            IsCancel="False"
+                            ToolTip="Choose Output Folder"
+                            Click="browseOutputFolderButton_Click"
+                            x:Name="browseOutputFolderButton"
+                            Foreground="#FFEEEEEE"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Right" />
+                    </Grid>
+                    <Label
+                        Foreground="#FFFFFFFF"
+                        Width="69.173"
+                        Content="Resize to Fit"
+                        Height="23.276"
+                        d:LayoutOverrides="GridBox"
+                        HorizontalAlignment="Left"
+                        Margin="15.81,41.277,0,0"
+                        VerticalAlignment="Top" />
+                    <StackPanel
+                        Width="Auto"
+                        Orientation="Horizontal"
+                        Margin="88.983,41.277,33.063,0"
+                        d:LayoutOverrides="Width"
+                        Height="23.277"
+                        VerticalAlignment="Top">
+                        <ComboBox
+                            Foreground="#FFFFFFFF"
+                            Style="{DynamicResource SimpleComboBox}"
+                            Height="23.277"
+                            IsSynchronizedWithCurrentItem="True"
+                            Width="90"
+                            SelectedIndex="0">
+                            <ComboBoxItem
+                                Style="{DynamicResource SimpleComboBoxItem}"
+                                Content="Long Edge" />
+                            <ComboBoxItem
+                                Style="{DynamicResource SimpleComboBoxItem}"
+                                Content="Short Edge" />
+                            <ComboBoxItem
+                                Style="{DynamicResource SimpleComboBoxItem}"
+                                Content="Width" />
+                            <ComboBoxItem
+                                Style="{DynamicResource SimpleComboBoxItem}"
+                                Content="Height" />
+                            <!--<ComboBoxItem Style="{DynamicResource SimpleComboBoxItem}" Content="Width & Height"/>
+                                    <ComboBoxItem Style="{DynamicResource SimpleComboBoxItem}" Content="Dimensions"/>-->
+                        </ComboBox>
+                        <TextBox
+                            x:Name="longestSideTextBox"
+                            Style="{DynamicResource SimpleTextBox}"
+                            TextWrapping="Wrap"
+                            Foreground="#FFFFFFFF"
+                            Background="#FF000000"
+                            Margin="4,0,0,0"
+                            Width="60"
+                            Height="23.277" />
                         <Label
+                            Foreground="#FFFFFFFF"
+                            Width="21.527"
+                            Content="px"
+                            Height="23.277"
+                            x:Name="fileFormatLabel_Copy"
+                            d:LayoutOverrides="GridBox"
+                            Margin="-2,0,0,0" />
+                        <CheckBox
+                            Style="{DynamicResource SimpleCheckBox}"
+                            Content="Don't Enlarge"
                             Foreground="#FFFFFFFF"
                             Width="Auto"
-                            Content="Output Folder"
+                            IsChecked="True"
+                            x:Name="dontEnlargeCheckBox"
                             Height="Auto"
-                            d:LayoutOverrides="GridBox"
-                            HorizontalAlignment="Right"
-                            Margin="0,0,0,8" />
-                        <Label
-                            Foreground="#FFFFFFFF"
-                            Width="69.173"
-                            Content="Resize to Fit"
-                            Height="Auto"
-                            HorizontalAlignment="Right"
-                            d:LayoutOverrides="Height, GridBox"
-                            Margin="0,0,0,8" />
-                        <Label
-                            Foreground="#FFFFFFFF"
-                            Width="64.353"
-                            Content="File Format"
-                            d:LayoutOverrides="Height, GridBox"
-                            Height="23.277"
-                            HorizontalAlignment="Right"
-                            Margin="0,0,0,8" />
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center" />
                     </StackPanel>
+                    <Label
+                        Foreground="#FFFFFFFF"
+                        Width="64.353"
+                        Content="File Format"
+                        d:LayoutOverrides="Height, GridBox"
+                        Height="23.277"
+                        HorizontalAlignment="Left"
+                        Margin="20.63,78.554,0,0"
+                        VerticalAlignment="Top" />
                     <Grid
-                        Margin="88.983,8,8,8"
-                        Height="Auto"
-                        HorizontalAlignment="Stretch">
-                        <StackPanel
-                            Height="Auto"
-                            Background="{x:Null}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch">
-                            <Grid
-                                HorizontalAlignment="Stretch"
-                                Margin="0,0,0,8"
-                                Width="Auto"
-                                Height="Auto">
-                                <TextBox
-                                    Style="{DynamicResource SimpleTextBox}"
-                                    Text=""
-                                    TextWrapping="Wrap"
-                                    Foreground="#FFFFFFFF"
-                                    x:Name="outputFolderTextBox"
-                                    Background="#FF000000"
-                                    HorizontalAlignment="Stretch"
-                                    Margin="0,0,28,0" />
-                                <Button
-                                    Style="{DynamicResource SimpleButton}"
-                                    Width="24"
-                                    Content="..."
-                                    IsCancel="False"
-                                    ToolTip="Choose Output Folder"
-                                    Click="browseOutputFolderButton_Click"
-                                    x:Name="browseOutputFolderButton"
-                                    Foreground="#FFEEEEEE"
-                                    Margin="0,0,0,0"
-                                    HorizontalAlignment="Right" />
-                            </Grid>
-                            <StackPanel
-                                HorizontalAlignment="Left"
-                                Width="Auto"
-                                Height="Auto"
-                                Orientation="Horizontal"
-                                Margin="0,0,0,8">
-                                <ComboBox
-                                    Foreground="#FFFFFFFF"
-                                    Style="{DynamicResource SimpleComboBox}"
-                                    Height="23.277"
-                                    IsSynchronizedWithCurrentItem="True"
-                                    Width="90"
-                                    SelectedIndex="0">
-                                    <ComboBoxItem
-                                        Style="{DynamicResource SimpleComboBoxItem}"
-                                        Content="Long Edge" />
-                                    <ComboBoxItem
-                                        Style="{DynamicResource SimpleComboBoxItem}"
-                                        Content="Short Edge" />
-                                    <ComboBoxItem
-                                        Style="{DynamicResource SimpleComboBoxItem}"
-                                        Content="Width" />
-                                    <ComboBoxItem
-                                        Style="{DynamicResource SimpleComboBoxItem}"
-                                        Content="Height" />
-                                    <!--<ComboBoxItem Style="{DynamicResource SimpleComboBoxItem}" Content="Width & Height"/>
-                                    <ComboBoxItem Style="{DynamicResource SimpleComboBoxItem}" Content="Dimensions"/>-->
-                                </ComboBox>
-                                <TextBox
-                                    x:Name="longestSideTextBox"
-                                    Style="{DynamicResource SimpleTextBox}"
-                                    TextWrapping="Wrap"
-                                    Foreground="#FFFFFFFF"
-                                    Background="#FF000000"
-                                    Margin="4,0,0,0"
-                                    Width="60"
-                                    Height="23.277" />
-                                <Label
-                                    Foreground="#FFFFFFFF"
-                                    Width="21.527"
-                                    Content="px"
-                                    Height="23.277"
-                                    x:Name="fileFormatLabel_Copy"
-                                    d:LayoutOverrides="GridBox"
-                                    Margin="-2,0,0,0" />
-                                <CheckBox
-                                    Style="{DynamicResource SimpleCheckBox}"
-                                    Content="Don't Enlarge"
-                                    Foreground="#FFFFFFFF"
-                                    Width="Auto"
-                                    IsChecked="True"
-                                    x:Name="dontEnlargeCheckBox"
-                                    Height="Auto"
-                                    Margin="10,0,0,0"
-                                    VerticalAlignment="Center" />
-                            </StackPanel>
-                            <Grid
-                                HorizontalAlignment="Stretch"
-                                Margin="0,0,0,8"
-                                Width="Auto"
-                                Height="Auto">
-                                <ComboBox
-                                    IsSynchronizedWithCurrentItem="True"
-                                    Style="{DynamicResource SimpleComboBox}"
-                                    IsDropDownOpen="False"
-                                    SelectedIndex="0"
-                                    Foreground="#FFFFFFFF"
-                                    x:Name="fileFormatComboBox"
-                                    Width="90"
-                                    HorizontalAlignment="Left">
-                                    <ComboBoxItem
-                                        Style="{DynamicResource SimpleComboBoxItem}"
-                                        Content="Auto" />
-                                    <ComboBoxItem
-                                        Style="{DynamicResource SimpleComboBoxItem}"
-                                        Content="JPEG" />
-                                    <ComboBoxItem
-                                        Style="{DynamicResource SimpleComboBoxItem}"
-                                        Content="PNG" />
-                                </ComboBox>
-                                <Label
-                                    Foreground="#FFFFFFFF"
-                                    Height="Auto"
-                                    Content="Quality"
-                                    d:LayoutOverrides="GridBox"
-                                    Margin="96,0,0,0"
-                                    HorizontalAlignment="Left"
-                                    Width="63.877" />
-                                <Slider
-                                    Style="{DynamicResource SimpleSlider}"
-                                    LargeChange="10"
-                                    Maximum="100"
-                                    SmallChange="1"
-                                    TickFrequency="0.1"
-                                    IsEnabled="True"
-                                    Height="Auto"
-                                    Value="95"
-                                    TickPlacement="None"
-                                    x:Name="qualitySlider"
-                                    d:LayoutOverrides="Height"
-                                    Margin="144,5.139,52,4.139" />
-                                <TextBox
-                                    x:Name="qualityTextBox"
-                                    Style="{DynamicResource SimpleTextBox}"
-                                    Foreground="#FFFFFFFF"
-                                    Background="#FF000000"
-                                    Margin="0,0,8,0"
-                                    Width="40"
-                                    Height="23.277"
-                                    Text="{Binding Path=Value, Converter={StaticResource roundingConverter}, ElementName=qualitySlider, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    d:LayoutOverrides="Width"
-                                    HorizontalAlignment="Right" />
-                            </Grid>
-                            <CheckBox
-                                Style="{DynamicResource SimpleCheckBox}"
-                                Content="Export Original"
+                        Margin="88.983,78.554,8,0"
+                        VerticalAlignment="Top"
+                        Height="55.377">
+                        <Grid
+                            Height="23.278"
+                            VerticalAlignment="Top">
+                            <ComboBox
+                                IsSynchronizedWithCurrentItem="True"
+                                Style="{DynamicResource SimpleComboBox}"
+                                IsDropDownOpen="False"
+                                SelectedIndex="0"
                                 Foreground="#FFFFFFFF"
-                                Width="Auto"
-                                IsChecked="True"
-                                x:Name="exportOriginalCheckBox"
+                                x:Name="fileFormatComboBox"
+                                Width="90"
+                                HorizontalAlignment="Left">
+                                <ComboBoxItem
+                                    Style="{DynamicResource SimpleComboBoxItem}"
+                                    Content="Auto" />
+                                <ComboBoxItem
+                                    Style="{DynamicResource SimpleComboBoxItem}"
+                                    Content="JPEG" />
+                                <ComboBoxItem
+                                    Style="{DynamicResource SimpleComboBoxItem}"
+                                    Content="PNG" />
+                            </ComboBox>
+                            <Label
+                                Foreground="#FFFFFFFF"
                                 Height="Auto"
-                                d:LayoutOverrides="Width, Height" />
-                        </StackPanel>
+                                Content="Quality"
+                                d:LayoutOverrides="GridBox"
+                                Margin="96,0,0,0"
+                                HorizontalAlignment="Left"
+                                Width="Auto" />
+                            <Slider
+                                Style="{DynamicResource SimpleSlider}"
+                                LargeChange="10"
+                                Maximum="100"
+                                SmallChange="1"
+                                TickFrequency="0.1"
+                                IsEnabled="True"
+                                Height="Auto"
+                                Value="95"
+                                TickPlacement="None"
+                                x:Name="qualitySlider"
+                                d:LayoutOverrides="Height"
+                                Margin="144,5.139,52,4.139" />
+                            <TextBox
+                                x:Name="qualityTextBox"
+                                Style="{DynamicResource SimpleTextBox}"
+                                Foreground="#FFFFFFFF"
+                                Background="#FF000000"
+                                Margin="0,0,8,0"
+                                Width="40"
+                                Height="23.277"
+                                Text="{Binding Path=Value, Converter={StaticResource roundingConverter}, ElementName=qualitySlider, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                d:LayoutOverrides="Width"
+                                HorizontalAlignment="Right" />
+                        </Grid>
+                        <CheckBox
+                            Style="{DynamicResource SimpleCheckBox}"
+                            Content="Export Original"
+                            Foreground="#FFFFFFFF"
+                            Width="Auto"
+                            IsChecked="True"
+                            x:Name="exportOriginalCheckBox"
+                            Height="13.276"
+                            d:LayoutOverrides="Width"
+                            Margin="0,0,0,10.823"
+                            VerticalAlignment="Bottom" />
                     </Grid>
                 </Grid>
             </Grid>
