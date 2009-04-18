@@ -13,6 +13,27 @@ using System.Collections.ObjectModel;
 
 namespace OpenZoom.Publisher
 {
+    public class Image
+    {
+        public Image(String path)
+        {
+            this.Path = path;
+        }
+
+        public String Path
+        {
+            get;
+            set;
+        }
+    }
+
+    public enum TileFormat
+    {
+        Auto,
+        JPEG,
+        PNG
+    }
+
 	public partial class MainWindow
 	{
         private const int DEFAULT_TILE_SIZE = 254;
@@ -30,14 +51,15 @@ namespace OpenZoom.Publisher
             imageCreator = new ImageCreator();
             imageCreator.TileSize = DEFAULT_TILE_SIZE;
             imageCreator.TileOverlap = DEFAULT_TILE_OVERLAP;
+
+            images = new ObservableCollection<Image>();
 		}
 
-        private void addImage_Click(object sender, RoutedEventArgs e)
+        private void addImagesButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = true;
-            openFileDialog.Filter = "Images (*.jpg, *.png)|*.jpg;*.jpeg;*.png";
-            images = new ObservableCollection<Image>();
+            openFileDialog.Filter = "Image Files (*.jpg, *.png)|*.jpg;*.jpeg;*.png";
 
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -51,7 +73,7 @@ namespace OpenZoom.Publisher
             imageListBox.ItemsSource = images;
         }
 
-        private void export_Click(object sender, RoutedEventArgs e)
+        private void exportButton_Click(object sender, RoutedEventArgs e)
         {
             if (!Directory.Exists(outputFolderPath))
             {
@@ -72,16 +94,27 @@ namespace OpenZoom.Publisher
                 if (exportOriginalCheckBox.IsChecked == true)
                     File.Copy(image.Path, Path.Combine(imageDirectory, imageFileName));
 
-                if (imageExtension == ".png")
-                    imageCreator.TileFormat = ImageFormat.Png;
+                if (formatComboBox.SelectedValue == "Auto")
+                {
+                    if (imageExtension == ".png")
+                        imageCreator.TileFormat = ImageFormat.Png;
+                    else
+                        imageCreator.TileFormat = ImageFormat.Jpg;
+                }
                 else
-                    imageCreator.TileFormat = ImageFormat.Jpg;
+                {
+                    if (formatComboBox.SelectedValue == "JPEG")
+                        imageCreator.TileFormat = ImageFormat.Jpg;
+
+                    if (formatComboBox.SelectedValue == "PNG")
+                        imageCreator.TileFormat = ImageFormat.Png;
+                }
 
                 imageCreator.Create(image.Path, Path.Combine(imageDirectory, "image.dzi"));
             }
         }
 
-        private void browseOutputFolder_Click(object sender, RoutedEventArgs e)
+        private void browseOutputFolderButton_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
 
@@ -91,19 +124,13 @@ namespace OpenZoom.Publisher
                 outputFolderTextBox.Text = outputFolderPath;
             }
         }
+
+        private void clearButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (images != null)
+            {
+                images.Clear();
+            }
+        }
 	}
-
-    public class Image
-    {
-        public Image(String path)
-        {
-            this.Path = path;
-        }
-
-        public String Path
-        {
-            get;
-            set;
-        }
-    }
 }

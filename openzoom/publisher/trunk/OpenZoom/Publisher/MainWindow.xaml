@@ -22,7 +22,7 @@
 		<DataTemplate x:Key="sourceTemplate">
 			<Grid Width="80" Height="80" Margin="4,4,4,4">
 				<Border Margin="0,0,0,0" CornerRadius="4,4,4,4" Padding="6,6,6,6" Background="#FF333333">
-					<Image Source="{Binding Mode=OneWay, Path=Path}" Width="Auto" Height="Auto"/>
+					<Image Source="{Binding Path=Path, Mode=OneWay}" Width="Auto" Height="Auto"/>
 				</Border>
 			</Grid>
 		</DataTemplate>
@@ -30,8 +30,6 @@
 			<WrapPanel/>
 		</ItemsPanelTemplate>
 	</Window.Resources>
-	<Window.Triggers>
-	</Window.Triggers>
 
 	<Grid x:Name="LayoutRoot">
 		<Grid.ColumnDefinitions>
@@ -59,7 +57,39 @@
                 <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="imageListBox" IsSynchronizedWithCurrentItem="True" Background="{x:Null}" Margin="8,8,8,8" BorderBrush="{x:Null}" ItemTemplate="{DynamicResource sourceTemplate}" Foreground="{x:Null}" ItemsPanel="{DynamicResource ImagePanelTemplate}" IsEnabled="True"/>
 			</Grid>
 			<Label Foreground="#FFFFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Images" d:LayoutOverrides="GridBox" RenderTransformOrigin="0.85,1.203" Margin="4,4,0,0"/>
-			<Button Background="{x:Null}" BorderBrush="#FFFFFFFF" Foreground="#FFFFFFFF" HorizontalAlignment="Right" Margin="0,5,8,0" VerticalAlignment="Top" Width="96" Height="21.277" Content="Add Images..." x:Name="button" Click="addImage_Click" Style="{DynamicResource SimpleButton}" />
+			<Button Background="{x:Null}" BorderBrush="#FFFFFFFF" Foreground="#FFEEEEEE" HorizontalAlignment="Right" Margin="0,5,8,0" VerticalAlignment="Top" Width="96" Height="21.277" Content="Add Images..." x:Name="addImagesButton" Click="addImagesButton_Click" Style="{DynamicResource SimpleButton}" />
+            <Button Background="{x:Null}" BorderBrush="#FFFFFFFF" Foreground="#FFEEEEEE" HorizontalAlignment="Right" Margin="0,0,8,8" VerticalAlignment="Bottom" Width="16" Height="16" x:Name="clearButton" Click="clearButton_Click" Style="{DynamicResource SimpleButton}" RenderTransformOrigin="0.5,1.0" IsCancel="False">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="7" Height="7" RenderTransformOrigin="0.5,0.5">
+					<Grid.RenderTransform>
+						<TransformGroup>
+							<ScaleTransform ScaleX="1" ScaleY="1"/>
+							<SkewTransform AngleX="0" AngleY="0"/>
+							<RotateTransform Angle="0"/>
+							<TranslateTransform X="0" Y="0"/>
+						</TransformGroup>
+					</Grid.RenderTransform>
+					<Path Fill="#FFFFFFFF" Stretch="Fill" Stroke="#FFEEEEEE" Data="M0,0 L10,-10" RenderTransformOrigin="0.5,0.5" StrokeThickness="1.5">
+						<Path.RenderTransform>
+							<TransformGroup>
+								<ScaleTransform ScaleX="1" ScaleY="1"/>
+								<SkewTransform AngleX="0" AngleY="0"/>
+								<RotateTransform Angle="0"/>
+								<TranslateTransform X="0" Y="0"/>
+							</TransformGroup>
+						</Path.RenderTransform>
+					</Path>
+					<Path Fill="#FFFFFFFF" Stretch="Fill" Stroke="#FFEEEEEE" Data="M0,0 L10,-10" RenderTransformOrigin="0.5,0.5" StrokeThickness="1.5">
+						<Path.RenderTransform>
+							<TransformGroup>
+								<ScaleTransform ScaleX="-1" ScaleY="1"/>
+								<SkewTransform AngleX="0" AngleY="0"/>
+								<RotateTransform Angle="0"/>
+								<TranslateTransform X="0" Y="0"/>
+							</TransformGroup>
+						</Path.RenderTransform>
+					</Path>
+				</Grid>
+			</Button>
 		</Grid>
 		<Grid Margin="8,4,8,0" Grid.Column="1" x:Name="ExportPanel" Grid.Row="3">
 			<Rectangle RadiusX="4" RadiusY="4" Stroke="{x:Null}" Fill="#FF595959" StrokeThickness="1"/>
@@ -79,7 +109,7 @@
 					<Slider Style="{DynamicResource SimpleSlider}" Width="103" LargeChange="10" Maximum="100" SmallChange="1" TickFrequency="0.1" IsEnabled="True" HorizontalAlignment="Right" Margin="0,93.276,8,0" VerticalAlignment="Top" Height="14.001" Value="90" TickPlacement="None" x:Name="qualitySlider"/>
 					<CheckBox Style="{DynamicResource SimpleCheckBox}" Content="Export Original" Foreground="#FFFFFFFF" Margin="13,52.277,0,0" d:LayoutOverrides="Width" Width="Auto" HorizontalAlignment="Left" IsChecked="True" x:Name="exportOriginalCheckBox" VerticalAlignment="Top" Height="Auto"/>
 					<Label Foreground="#FFFFFFFF" Width="Auto" Content="Output Folder" HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Height="Auto" d:LayoutOverrides="GridBox"/>
-					<Button HorizontalAlignment="Right" Margin="0,9,8,0" Style="{DynamicResource SimpleButton}" VerticalAlignment="Top" Width="24.04" Height="21.277" Content="..." IsCancel="False" ToolTip="Choose Output Folder" Click="browseOutputFolder_Click" x:Name="browseOutputFolderButton"/>
+					<Button HorizontalAlignment="Right" Margin="0,9,8,0" Style="{DynamicResource SimpleButton}" VerticalAlignment="Top" Width="24.04" Height="21.277" Content="..." IsCancel="False" ToolTip="Choose Output Folder" Click="browseOutputFolderButton_Click" x:Name="browseOutputFolderButton" Foreground="#FFEEEEEE"/>
 					<TextBox Margin="88.983,8,36.04,0" Style="{DynamicResource SimpleTextBox}" VerticalAlignment="Top" Text="" TextWrapping="Wrap" Foreground="#FFFFFFFF" x:Name="outputFolderTextBox" Background="#FF000000"/>
 					<Label Foreground="#FFFFFFFF" Width="Auto" Content="Longest Side" HorizontalAlignment="Left" Margin="13,0,0,76.447" Height="Auto" x:Name="fileFormatComboBox_Copy" d:LayoutOverrides="Height, GridBox" VerticalAlignment="Bottom"/>
 					<TextBox Margin="88.88,0,0,76.447" Style="{DynamicResource SimpleTextBox}" Text="" TextWrapping="Wrap" Foreground="#FFFFFFFF" x:Name="outputFolderTextBox_Copy" d:LayoutOverrides="Height" VerticalAlignment="Bottom" Width="60" HorizontalAlignment="Left" Background="#FF000000"/>
@@ -87,7 +117,7 @@
             </Grid>
 			<Label Foreground="#FFFFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Height="Auto" Content="Export" Margin="4,4,0,0" d:LayoutOverrides="GridBox" RenderTransformOrigin="-0.654,-0.827"/>
 		</Grid>
-		<Button Background="#FF717171" BorderBrush="#FFFFFFFF" Foreground="#FFFFFFFF" Margin="0,8,8,8" Content="Export" Grid.Column="1" Grid.Row="4" Click="export_Click" Width="96" HorizontalAlignment="Right" Height="Auto" Style="{DynamicResource SimpleButton}"/>
+		<Button Background="#FF717171" BorderBrush="#FFFFFFFF" Foreground="#FFEEEEEE" Margin="0,8,8,8" Content="Export" Grid.Column="1" Grid.Row="4" Click="exportButton_Click" Width="96" HorizontalAlignment="Right" Height="Auto" Style="{DynamicResource SimpleButton}"/>
 		<CheckBox Style="{DynamicResource SimpleCheckBox}" Content="Show Preview" Foreground="#FFFFFFFF" Height="Auto" Width="Auto" HorizontalAlignment="Left" IsChecked="False" d:LayoutOverrides="Height" Grid.Column="1" Grid.Row="4" Margin="10,18.723,0,10"/>
 	</Grid>
 </Window>
