@@ -591,20 +591,20 @@
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
 						<!-- The ToggleButton is databound to the ComboBox itself to toggle IsDropDownOpen -->
-						<ToggleButton Grid.Column="0" Template="{DynamicResource ComboBoxToggleButton}" x:Name="ToggleButton" Focusable="false" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" Grid.ColumnSpan="1"/>
-						<ContentPresenter HorizontalAlignment="Left" Margin="6,0,0,0" x:Name="ContentSite" VerticalAlignment="Center" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" IsHitTestVisible="False"/>
+						<ToggleButton Grid.Column="0" Template="{DynamicResource ComboBoxToggleButton}" x:Name="ToggleButton" Focusable="false" IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" Grid.ColumnSpan="1" d:IsLocked="True"/>
+						<ContentPresenter HorizontalAlignment="Left" Margin="6,0,0,0" x:Name="ContentSite" VerticalAlignment="Center" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" IsHitTestVisible="False" d:IsLocked="True"/>
 						
 						<!-- The TextBox must be named PART_EditableTextBox or ComboBox will not recognize it -->
-						<TextBox Visibility="Hidden" Template="{DynamicResource ComboBoxTextBox}" HorizontalAlignment="Left" Margin="3,0,0,0" x:Name="PART_EditableTextBox" Style="{x:Null}" VerticalAlignment="Center" Focusable="True" Background="Transparent" IsReadOnly="{TemplateBinding IsReadOnly}"/>
+						<TextBox Visibility="Hidden" Template="{DynamicResource ComboBoxTextBox}" HorizontalAlignment="Left" Margin="3,0,0,0" x:Name="PART_EditableTextBox" Style="{x:Null}" VerticalAlignment="Center" Focusable="True" Background="Transparent" IsReadOnly="{TemplateBinding IsReadOnly}" d:IsLocked="True"/>
 						
 						<!-- The Popup shows the list of items in the ComboBox. IsOpen is databound to IsDropDownOpen which is toggled via the ComboBoxToggleButton -->
-						<Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" x:Name="Popup" Focusable="False" AllowsTransparency="True" PopupAnimation="Slide" Grid.ColumnSpan="1" OpacityMask="{x:Null}">
-							<Grid MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" x:Name="DropDown" SnapsToDevicePixels="True" Background="{x:Null}">
-								<Border x:Name="DropDownBorder" Background="#FF333333" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Margin="0,0,0,0" CornerRadius="8,8,8,8"/>
-								<ScrollViewer Margin="0,0,0,0" Style="{DynamicResource SimpleScrollViewer}" SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True" Background="{x:Null}" Foreground="#FFFFFFFF">
+						<Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" x:Name="Popup" Focusable="False" AllowsTransparency="True" PopupAnimation="Slide" Grid.ColumnSpan="1" OpacityMask="{x:Null}" d:IsLocked="True">
+							<Grid MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" x:Name="DropDown" SnapsToDevicePixels="True" Background="{x:Null}" d:IsLocked="True">
+								<Border x:Name="DropDownBorder" Background="#FF333333" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" Margin="0,0,0,0" CornerRadius="8,8,8,8" d:IsLocked="True"/>
+								<ScrollViewer Margin="0,0,0,0" Style="{DynamicResource SimpleScrollViewer}" SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True" Background="{x:Null}" Foreground="#FFFFFFFF" d:IsLocked="True">
 							
 									<!-- The StackPanel is used to display the children by setting IsItemsHost to be True -->
-									<StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" Margin="5,5,5,5" Background="{x:Null}"/>
+									<StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" Margin="3,3,2,2" Background="{x:Null}" d:IsLocked="True"/>
 								
 								</ScrollViewer>
 							</Grid>
@@ -960,13 +960,19 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Thumb}">
 					<Grid>
-						<Path Fill="{DynamicResource NormalBorderBrush}" Stretch="Fill" Stroke="{DynamicResource DefaultedBorderBrush}" StrokeThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Data="M0,0 L6,0 6,6 3,8 0,6 z" Width="Auto" RenderTransformOrigin="0.5,0.5" Margin="1.412,-0.717,1.421,-5.575">
+						<Path Stretch="Fill" Stroke="#FF000000" StrokeThickness="0.5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Data="M0,0 L6,0 6,6 3,8 0,6 z" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" OpacityMask="{x:Null}" Width="12" Height="20">
+							<Path.Fill>
+								<LinearGradientBrush EndPoint="-0.149,0.396" StartPoint="0.648,0.393">
+									<GradientStop Color="#FF979797" Offset="0"/>
+									<GradientStop Color="#FF3F3F3F" Offset="1"/>
+								</LinearGradientBrush>
+							</Path.Fill>
 							<Path.RenderTransform>
 								<TransformGroup>
-									<ScaleTransform ScaleX="1" ScaleY="1"/>
+									<ScaleTransform/>
 									<SkewTransform AngleX="0" AngleY="0"/>
 									<RotateTransform Angle="0"/>
-									<TranslateTransform X="0" Y="0"/>
+									<TranslateTransform/>
 								</TransformGroup>
 							</Path.RenderTransform>
 						</Path>
@@ -998,12 +1004,12 @@
 						
 						<!-- TickBar shows the ticks for Slider -->
 						<TickBar Visibility="Collapsed" x:Name="TopTick" Height="4" SnapsToDevicePixels="True" Placement="Top" Fill="{DynamicResource GlyphBrush}"/>
-						<Border Grid.Row="1" Margin="0" x:Name="Border" Height="4" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
+						<Border Grid.Row="1" Margin="0" x:Name="Border" Height="6" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"/>
 						
 						<!-- The Track lays out the repeat buttons and thumb -->
 						<Track Grid.Row="1" x:Name="PART_Track">
 							<Track.Thumb>
-								<Thumb Style="{DynamicResource SimpleSliderThumb}" Background="{x:Null}"/>
+								<Thumb Style="{DynamicResource SimpleSliderThumb}" Background="{x:Null}" Margin="0,0,0,0" ClipToBounds="False" Width="Auto" Height="Auto"/>
 							</Track.Thumb>
 							<Track.IncreaseRepeatButton>
 								<RepeatButton Style="{DynamicResource SimpleScrollRepeatButtonStyle}" Command="Slider.IncreaseLarge"/>

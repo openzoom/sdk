@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using Microsoft.DeepZoomTools;
+using System.Drawing;
 
 namespace OpenZoom.Publisher
 {
@@ -23,7 +24,7 @@ namespace OpenZoom.Publisher
         }
     }
 
-    public enum TileFormat
+    public enum FileFormat
     {
         Auto,
         JPEG,
@@ -31,9 +32,12 @@ namespace OpenZoom.Publisher
     }
 
 	public partial class MainWindow
-	{
+    {
         private const int DEFAULT_TILE_SIZE = 254;
         private const int DEFAULT_TILE_OVERLAP = 1;
+
+        private XNamespace deepzoomNS;
+        private XNamespace openzoomNS;
 
         private ImageCreator imageCreator;
         private ObservableCollection<Image> images;
@@ -43,7 +47,9 @@ namespace OpenZoom.Publisher
 		{
 			this.InitializeComponent();
 			
-			// Insert code required on object creation below this point.
+            deepzoomNS = "http://schemas.microsoft.com/deepzoom/2008";
+            openzoomNS = "http://ns.openzoom.org/2008";
+
             imageCreator = new ImageCreator();
             imageCreator.TileSize = DEFAULT_TILE_SIZE;
             imageCreator.TileOverlap = DEFAULT_TILE_OVERLAP;
@@ -91,7 +97,6 @@ namespace OpenZoom.Publisher
                 if (exportOriginalCheckBox.IsChecked == true)
                     File.Copy(image.Path, Path.Combine(imageDirectory, imageFileName), true);
 
-
                 ComboBoxItem selectedItem = fileFormatComboBox.SelectedItem as ComboBoxItem;
                 
                 if (selectedItem != null)
@@ -115,13 +120,21 @@ namespace OpenZoom.Publisher
                 String dziPath = Path.Combine(imageDirectory, "image.dzi");
                 imageCreator.Create(image.Path, dziPath);
 
-                XNamespace deepzoomNS = "http://schemas.microsoft.com/deepzoom/2008";
-                XNamespace openzoomNS = "http://ns.openzoom.org/2008";
+                System.Drawing.Image bitmap = System.Drawing.Image.FromFile(image.Path);
+                int width = bitmap.Width;
+                int height = bitmap.Height;
+
                 XElement dzi = XElement.Load(dziPath);
-                dzi.Add(new XAttribute(XNamespace.Xmlns + "openzoom", "http://ns.openzoom.org/2008"));
-                dzi.Add(new XElement(openzoomNS + "source"), imageFileName);
-                dzi.Save(dziPath);
+                dzi.Add(new XAttribute(XNamespace.Xmlns + "openzoom", openzoomNS.NamespaceName));
+                dzi.Add(new XElement(openzoomNS + "source",
+                        new XAttribute("uri", imageFileName),
+                        new XAttribute("type", imageCreator.TileFormat == ImageFormat.Jpg ? "image/jpeg" : "image/png"),
+                        new XAttribute("width", width),
+                        new XAttribute("height", height)));
+                dzi.Save(dziPath, SaveOptions.DisableFormatting);
             }
+
+            System.Diagnostics.Process.Start("explorer.exe", outputFolderPath);
         }
 
         private void browseOutputFolderButton_Click(object sender, RoutedEventArgs e)
