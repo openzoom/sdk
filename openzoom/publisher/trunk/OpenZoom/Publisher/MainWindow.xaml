@@ -20,18 +20,26 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="SingleBorderWindow">
 
-    <Window.Resources>
+    <Window.Resources
+        <!-- Value Converters -->
+        <local:ThresholdToVisibilityConverter
+            x:Key="thresholdToVisibilityConverter" />
         <local:RoundingConverter
             x:Key="roundingConverter" />
-        <ObjectDataProvider
-            MethodName="GetValues"
-            ObjectType="{x:Type sys:Enum}"
-            x:Key="fileFormatProvider">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type
-                    TypeName="local:FileFormat" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+
+        <!-- Form Data -->
+        <local:ImagesFormData
+            x:Key="imagesFormData" />
+        <local:GeneralFormData
+            x:Key="generalFormData" />
+        <local:SourceFormData
+            x:Key="sourceFormData" />
+        <local:PyramidFormData
+            x:Key="pyramidFormData" />
+        <local:AfterExportFormData
+            x:Key="afterExportFormData" />
+
+        <!-- Templates -->
         <DataTemplate
             x:Key="sourceTemplate">
             <Grid
@@ -54,18 +62,20 @@
             x:Key="ImagePanelTemplate">
             <WrapPanel
                 Margin="4,4,4,4" />
-        </ItemsPanelTemplate>
+        </ItemsPanelTemplate
+            
+        <!-- Brushes & Fonts -->
         <SolidColorBrush
             x:Key="LabelColor"
             Color="#FFEEEEEE" />
         <SolidColorBrush
             x:Key="InnerPanelBackgroundBrush"
             Color="#FF505050" />
-        <FontFamily
-            x:Key="BackgroundInfoFont">Arial</FontFamily>
         <SolidColorBrush
             x:Key="BackgroundInfoBrush"
             Color="#FF545454" />
+        <FontFamily
+            x:Key="BackgroundInfoFont">Arial</FontFamily>
     </Window.Resources>
 
     <Grid
@@ -121,6 +131,10 @@
             <Grid
                 Margin="4,31.277,4,4"
                 ClipToBounds="True">
+                <Grid.DataContext>
+                    <Binding
+                        Source="{StaticResource imagesFormData}" />
+                </Grid.DataContext>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
                         Width="*" />
@@ -156,7 +170,44 @@
                     ItemTemplate="{DynamicResource sourceTemplate}"
                     Foreground="{x:Null}"
                     ItemsPanel="{DynamicResource ImagePanelTemplate}"
-                    IsEnabled="True" />
+                    IsEnabled="True"
+                    ItemsSource="{Binding Path=Images, Mode=Default}" />
+                <Button
+                    Background="{x:Null}"
+                    BorderBrush="#FFFFFFFF"
+                    Foreground="#FFEEEEEE"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Width="16"
+                    Height="16"
+                    x:Name="clearButton"
+                    Click="clearButton_Click"
+                    Style="{DynamicResource SimpleButton}"
+                    RenderTransformOrigin="0.5,1.0"
+                    IsCancel="False"
+                    Visibility="{Binding Path=Images.Count, Converter={StaticResource thresholdToVisibilityConverter}, Mode=Default}"
+                    Margin="0,0,2,2">
+                	<Grid
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="7"
+                        Height="7">
+                		<Path
+                            Fill="#FFFFFFFF"
+                            Stretch="Fill"
+                            Stroke="#FFEEEEEE"
+                            Data="M0,0 L10,-10"
+                            RenderTransformOrigin="0.5,0.5"
+                            StrokeThickness="1.5" />
+                		<Path
+                            Fill="#FFFFFFFF"
+                            Stretch="Fill"
+                            Stroke="#FFEEEEEE"
+                            Data="M0,0 L-10,-10"
+                            RenderTransformOrigin="0.5,0.5"
+                            StrokeThickness="1.5" />
+                	</Grid>
+                </Button>
             </Grid>
             <Label
                 HorizontalAlignment="Left"
@@ -182,74 +233,6 @@
                 x:Name="addImagesButton"
                 Click="addImagesButton_Click"
                 Style="{DynamicResource SimpleButton}" />
-            <Button
-                Background="{x:Null}"
-                BorderBrush="#FFFFFFFF"
-                Foreground="#FFEEEEEE"
-                HorizontalAlignment="Right"
-                Margin="0,0,8,8"
-                VerticalAlignment="Bottom"
-                Width="16"
-                Height="16"
-                x:Name="clearButton"
-                Click="clearButton_Click"
-                Style="{DynamicResource SimpleButton}"
-                RenderTransformOrigin="0.5,1.0"
-                IsCancel="False"
-                Visibility="Hidden">
-                <Grid
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="7"
-                    Height="7">
-                    <Path
-                        Fill="#FFFFFFFF"
-                        Stretch="Fill"
-                        Stroke="#FFEEEEEE"
-                        Data="M0,0 L10,-10"
-                        RenderTransformOrigin="0.5,0.5"
-                        StrokeThickness="1.5">
-                        <Path.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform
-                                    ScaleX="1"
-                                    ScaleY="1" />
-                                <SkewTransform
-                                    AngleX="0"
-                                    AngleY="0" />
-                                <RotateTransform
-                                    Angle="0" />
-                                <TranslateTransform
-                                    X="0"
-                                    Y="0" />
-                            </TransformGroup>
-                        </Path.RenderTransform>
-                    </Path>
-                    <Path
-                        Fill="#FFFFFFFF"
-                        Stretch="Fill"
-                        Stroke="#FFEEEEEE"
-                        Data="M0,0 L10,-10"
-                        RenderTransformOrigin="0.5,0.5"
-                        StrokeThickness="1.5">
-                        <Path.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform
-                                    ScaleX="-1"
-                                    ScaleY="1" />
-                                <SkewTransform
-                                    AngleX="0"
-                                    AngleY="0" />
-                                <RotateTransform
-                                    Angle="0" />
-                                <TranslateTransform
-                                    X="0"
-                                    Y="0" />
-                            </TransformGroup>
-                        </Path.RenderTransform>
-                    </Path>
-                </Grid>
-            </Button>
         </Grid>
         <Grid
             Margin="8,3.176,8,0"
@@ -284,6 +267,10 @@
                         Width="Auto"
                         Height="60"
                         Margin="0,0,0,2">
+                        <Grid.DataContext>
+                            <Binding
+                                Source="{StaticResource generalFormData}" />
+                        </Grid.DataContext>
                         <Rectangle
                             Fill="{DynamicResource InnerPanelBackgroundBrush}"
                             Stroke="{x:Null}"
@@ -303,45 +290,54 @@
                             TextWrapping="NoWrap"
                             Margin="0,0,-10,-25"
                             TextAlignment="Right"
-                            d:IsLocked="True"><Run
-                                Text="general" /></TextBlock>
+                            d:IsLocked="True">
+                                <Run
+                                Text="general" />
+                        </TextBlock>
                         <Label
-                            Width="76.983"
+                            Width="Auto"
                             Content="Output Folder"
                             d:LayoutOverrides="Height, GridBox"
                             HorizontalAlignment="Left"
                             Foreground="{DynamicResource LabelColor}"
-                            Margin="8.017,0,0,0"
-                            VerticalAlignment="Center" />
+                            Margin="8.017,18.362,0,18.361" />
                         <Grid
-                            Margin="85,0,8,0"
+                            Margin="81,0,8,0"
+                            Height="Auto"
                             VerticalAlignment="Center">
-                            <TextBox
-                                Style="{DynamicResource SimpleTextBox}"
-                                Text=""
-                                TextWrapping="Wrap"
-                                Foreground="{DynamicResource LabelColor}"
-                                x:Name="outputFolderTextBox"
-                                Background="#FF000000"
+                            <Label
+                                x:Name="outputFolderLabel"
+                                Foreground="#FFCFCFCF"
                                 HorizontalAlignment="Stretch"
-                                Margin="0,0,28,0" />
+                                d:LayoutOverrides="Height"
+                                Margin="0,0,30,0"
+                                VerticalAlignment="Center">
+                                <TextBlock
+                                    Text="{Binding Path=OutputFolderPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    TextTrimming="CharacterEllipsis"
+                                    Width="Auto"
+                                    Height="Auto" />
+							</Label>
                             <Button
                                 Style="{DynamicResource SimpleButton}"
-                                Width="24"
+                                Width="26"
                                 Content="..."
                                 IsCancel="False"
                                 ToolTip="Choose Output Folder"
                                 Click="browseOutputFolderButton_Click"
                                 x:Name="browseOutputFolderButton"
                                 Foreground="#FFEEEEEE"
-                                HorizontalAlignment="Right" />
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Height="23.277" />
                         </Grid>
                     </Grid>
                     <Grid
                         ClipToBounds="True"
                         Width="Auto"
                         Height="90"
-                        Margin="0,0,0,2">
+                        Margin="0,0,0,2"
+                        DataContext="{DynamicResource sourceFormData}">
                         <Rectangle
                             Fill="{DynamicResource InnerPanelBackgroundBrush}"
                             Stroke="{x:Null}"
@@ -386,10 +382,10 @@
                 				<ComboBox
                                     Foreground="{DynamicResource LabelColor}"
                                     Style="{DynamicResource SimpleComboBox}"
-                                    Height="23.277"
                                     IsSynchronizedWithCurrentItem="True"
                                     Width="90"
-                                    SelectedIndex="0">
+                                    SelectedIndex="0"
+                                    x:Name="resizeConstraintComboBox">
                 					<ComboBoxItem
                                         Style="{DynamicResource SimpleComboBoxItem}"
                                         Content="Long Edge" />
@@ -424,13 +420,12 @@
                                     Background="#FF000000"
                                     Margin="0,0,0,0"
                                     Width="60"
-                                    Height="23.277" />
+                                    Text="{Binding Path=ResizeValue, Mode=Default}" />
                 				<Label
                                     Foreground="{DynamicResource LabelColor}"
                                     Width="Auto"
                                     Content="px"
                                     RenderTransformOrigin="0.864,0.414"
-                                    Height="Auto"
                                     Margin="-2,0,0,0" />
                 				<CheckBox
                                     Style="{DynamicResource SimpleCheckBox}"
@@ -460,7 +455,9 @@
                     <Grid
                         ClipToBounds="True"
                         Width="Auto"
-                        Height="80">
+                        Height="60"
+                        Margin="0,0,0,2"
+                        DataContext="{DynamicResource pyramidFormData}">
                         <Rectangle
                             Fill="{DynamicResource InnerPanelBackgroundBrush}"
                             Stroke="{x:Null}"
@@ -572,6 +569,69 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center" />
                 		</Grid>
+                	</Grid>
+                    <Grid
+                        ClipToBounds="True"
+                        Width="Auto"
+                        Height="50"
+                        VerticalAlignment="Center"
+                        DataContext="{DynamicResource afterExportFormData}">
+                        <Rectangle
+                            Fill="{DynamicResource InnerPanelBackgroundBrush}"
+                            Stroke="{x:Null}"
+                            StrokeThickness="1"
+                            RadiusX="2"
+                            RadiusY="2"
+                            Width="Auto"
+                            HorizontalAlignment="Stretch"
+                            Margin="0,0,0,0"
+                            Height="Auto"
+                            d:IsLocked="True" />
+                        <TextBlock
+                            Width="Auto"
+                            Height="Auto"
+                            FontFamily="{DynamicResource BackgroundInfoFont}"
+                            FontSize="100"
+                            FontWeight="Bold"
+                            Foreground="{DynamicResource BackgroundInfoBrush}"
+                            TextWrapping="NoWrap"
+                            d:LayoutOverrides="Width, Height"
+                            HorizontalAlignment="Right"
+                            Margin="0,0,-10,-25"
+                            VerticalAlignment="Bottom"
+                            Text="post"
+                            TextAlignment="Right"
+                            d:IsLocked="True" />
+                		<Label
+                            Foreground="{DynamicResource LabelColor}"
+                            Width="Auto"
+                            Content="After Export"
+                            d:LayoutOverrides="GridBox"
+                            Height="23.277"
+                            HorizontalAlignment="Left"
+                            Margin="16.717,0,0,0"
+                            VerticalAlignment="Center" />
+                		<ComboBox
+                            IsSynchronizedWithCurrentItem="True"
+                            Style="{DynamicResource SimpleComboBox}"
+                            IsDropDownOpen="False"
+                            SelectedIndex="1"
+                            Foreground="#FFFFFFFF"
+                            x:Name="afterExportComboBox"
+                            Height="23.277"
+                            d:LayoutOverrides="Height"
+                            Margin="85,0,0,0"
+                            MaxWidth="180"
+                            Width="128"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                                <ComboBoxItem
+                                Style="{DynamicResource SimpleComboBoxItem}"
+                                Content="Do Nothing" />
+                                <ComboBoxItem
+                                Style="{DynamicResource SimpleComboBoxItem}"
+                                Content="Show in Explorer" />
+                	    </ComboBox>
                 	</Grid>
                 </StackPanel>
             </Grid>
