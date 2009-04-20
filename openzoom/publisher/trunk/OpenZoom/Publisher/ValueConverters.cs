@@ -8,22 +8,6 @@ using System.Windows;
 
 namespace OpenZoom.Publisher
 {
-    [ValueConversion(typeof(double), typeof(int))]
-    public class RoundingConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType,
-                              object parameter, CultureInfo culture)
-        {
-            return System.Convert.ToInt32(value);
-        }
-
-        public object ConvertBack(object value, Type targetType,
-                                  object parameter, CultureInfo culture)
-        {
-            return System.Convert.ToDouble(value);
-        }
-    }
-
     [ValueConversion(typeof(int), typeof(Visibility))]
     public class ThresholdToVisibilityConverter : IValueConverter
     {
@@ -37,6 +21,27 @@ namespace OpenZoom.Publisher
                                   object parameter, CultureInfo culture)
         {
             throw new NotSupportedException("ThresholdToVisibilityConverter.ConvertBack");
+        }
+    }
+
+    [ValueConversion(typeof(double), typeof(int))]
+    public class ImageQualityToIntConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType,
+                              object parameter, CultureInfo culture)
+        {
+            double result = System.Convert.ToDouble(value) * 100.0;
+
+            if (System.Convert.ToBoolean(parameter))
+                result = Math.Round(result);
+
+            return System.Convert.ToInt32(result);
+        }
+
+        public object ConvertBack(object value, Type targetType,
+                                  object parameter, CultureInfo culture)
+        {
+            return System.Convert.ToInt32(value) / 100.0;
         }
     }
 }

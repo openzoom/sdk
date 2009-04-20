@@ -218,18 +218,29 @@ namespace OpenZoom.Publisher
         }
     }
 
-    public class GeneralFormData : INotifyPropertyChanged
+    public class Bindable : INotifyPropertyChanged
     {
-        public GeneralFormData()
-        {
-            outputFolderPath = "";
-        }
-
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
+        
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    public class GeneralFormData : Bindable
+    {
+        public GeneralFormData()
+        {
+            outputFolderPath = "";
+        }
 
         private String outputFolderPath;
 
@@ -241,14 +252,6 @@ namespace OpenZoom.Publisher
                 outputFolderPath = value;
                 OnPropertyChanged("OutputFolderPath");
             }
-        }
-
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(name));
         }
     }
 
@@ -281,7 +284,7 @@ namespace OpenZoom.Publisher
         }
     }
 
-    public class PyramidFormData
+    public class PyramidFormData : Bindable
     {
         public FileFormat FileFormat
         {
@@ -289,10 +292,16 @@ namespace OpenZoom.Publisher
             set;
         }
 
-        public Double Quality
+        private double imageQuality = 0.95;
+
+        public Double ImageQuality
         {
-            get;
-            set;
+            get { return imageQuality; }
+            set
+            {
+                imageQuality = value;
+                OnPropertyChanged("ImageQuality");
+            }
         }
     }
 

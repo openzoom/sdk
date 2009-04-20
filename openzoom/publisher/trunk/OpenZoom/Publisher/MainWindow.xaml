@@ -24,8 +24,8 @@
         <!-- Value Converters -->
         <local:ThresholdToVisibilityConverter
             x:Key="thresholdToVisibilityConverter" />
-        <local:RoundingConverter
-            x:Key="roundingConverter" />
+        <local:ImageQualityToIntConverter
+            x:Key="imageQualityToIntConverter" />
 
         <!-- Form Data -->
         <local:ImagesFormData
@@ -63,7 +63,7 @@
             <WrapPanel
                 Margin="4,4,4,4" />
         </ItemsPanelTemplate>
-            
+
         <!-- Brushes & Fonts -->
         <SolidColorBrush
             x:Key="LabelColor"
@@ -527,6 +527,7 @@
                                 Width="Auto"
                                 VerticalAlignment="Center" />
                 			<Slider
+                                x:Name="qualitySlider"
                                 BorderThickness="0.5"
                                 BorderBrush="Black"
                                 Style="{DynamicResource SimpleSlider}"
@@ -536,13 +537,12 @@
                                 TickFrequency="0.1"
                                 IsEnabled="True"
                                 Height="Auto"
-                                Value="95"
                                 TickPlacement="None"
-                                x:Name="qualitySlider"
                                 d:LayoutOverrides="Height"
                                 Margin="150,1,50,0"
                                 VerticalAlignment="Center"
-                                OpacityMask="{x:Null}">
+                                OpacityMask="{x:Null}"
+                                Value="{Binding Path=ImageQuality, Converter={StaticResource imageQualityToIntConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 				<Slider.Background>
                 					<LinearGradientBrush
                                         EndPoint="0,1"
@@ -564,7 +564,7 @@
                                 Margin="0,0,4,0"
                                 Width="40"
                                 Height="23.277"
-                                Text="{Binding Path=Value, Converter={StaticResource roundingConverter}, ElementName=qualitySlider, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding Path=ImageQuality, Converter={StaticResource imageQualityToIntConverter},  ConverterParameter=true, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 d:LayoutOverrides="Width"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center" />
