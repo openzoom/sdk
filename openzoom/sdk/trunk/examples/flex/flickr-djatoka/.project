@@ -19,7 +19,7 @@
 		<link>
 			<name>[source path] OpenZoom SDK</name>
 			<type>2</type>
-			<location>OPENZOOM/src</location>
+			<locationURI>OPENZOOM/src</locationURI>
 		</link>
 		<link>
 			<name>[source path] as3corelib</name>
