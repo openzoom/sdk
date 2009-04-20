@@ -20,7 +20,7 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="SingleBorderWindow">
 
-    <Window.Resources
+    <Window.Resources>
         <!-- Value Converters -->
         <local:ThresholdToVisibilityConverter
             x:Key="thresholdToVisibilityConverter" />
@@ -62,7 +62,7 @@
             x:Key="ImagePanelTemplate">
             <WrapPanel
                 Margin="4,4,4,4" />
-        </ItemsPanelTemplate
+        </ItemsPanelTemplate>
             
         <!-- Brushes & Fonts -->
         <SolidColorBrush
