@@ -5,7 +5,13 @@
   \____/ .__/\__/_//_/___/\___/\___/_/_/_/
       /_/                                                               
     
-  Welcome to the OpenZoom project. <http://openzoom.org/>
+  
+  Home: <http://openzoom.org/>
+  Twitter: @OpenZoom <http://twitter.com/OpenZoom>
+  Code: <http://code.google.com/p/open-zoom/>
+    
+    
+  Welcome to the OpenZoom project.
   All projects that are part of the OpenZoom project can easily be imported
   into Eclipse through the "Import..." command. Please set the OPENZOOM linked
   resource to point to the trunk of the OpenZoom SDK and get started!
