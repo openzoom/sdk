@@ -62,7 +62,7 @@ public class MappingFlash extends Sprite
     {
         // Cross-domain security
         Security.loadPolicyFile("http://tile.openstreetmap.org/crossdomain.xml")
-        
+
         // Standard stage setup
         stage.scaleMode = StageScaleMode.NO_SCALE
         stage.align = StageAlign.TOP_LEFT
@@ -77,7 +77,7 @@ public class MappingFlash extends Sprite
 
         // Controllers handle user input
         var mouseController:MouseController = new MouseController()
-        
+
         // Because we always zoom to power of 2 scale we need
         // the following constraints for the mousewheel zooming.
         mouseController.minMouseWheelZoomInFactor = 2
@@ -132,7 +132,7 @@ public class MappingFlash extends Sprite
         // the map can reach. We can only set this once we know the size of the
         // loaded image.
         map.addEventListener(Event.COMPLETE, map_completeHandler)
-        
+
         // Avoid trouble with OSM
         setTimeout(initializeMap, 1000)
     }
@@ -144,7 +144,7 @@ public class MappingFlash extends Sprite
     //--------------------------------------------------------------------------
 
     private var map:MultiScaleImage
-    
+
     // We're keeping a reference to the scale constraints
     // since the maxScale is only set after the image has loaded
     private var scaleConstraint:ScaleConstraint
@@ -177,17 +177,17 @@ public class MappingFlash extends Sprite
 
         if (descriptor)
         {
-        	// This is where we're ensuring that the user cannot zoom in more
-        	// than the original size of the highest resolution of the map.
-        	// Through the descriptor we find the size of the image (for OSM this
-        	// would be 67108864 pixels) and divide it by the size of the underlying
-        	// Sprite object (scene) for rendering which through empiric tests
-        	// has been set to 16384 pixels. In this case this gives us a maximum
-        	// scale factor (scaleX and scaleY) of 4096 (2^12) for the scene sprite.
-        	// After a lot of testing and tearing out hair I found that the best
-        	// scaling happens when the scene has a size that is a power of 2.
-        	// In retrospect this makes kind of sense considering the structure
-        	// of integers in computers.
+            // This is where we're ensuring that the user cannot zoom in more
+            // than the original size of the highest resolution of the map.
+            // Through the descriptor we find the size of the image (for OSM this
+            // would be 67108864 pixels) and divide it by the size of the underlying
+            // Sprite object (scene) for rendering which through empiric tests
+            // has been set to 16384 pixels. In this case this gives us a maximum
+            // scale factor (scaleX and scaleY) of 4096 (2^12) for the scene sprite.
+            // After a lot of testing and tearing out hair I found that the best
+            // scaling happens when the scene has a size that is a power of 2.
+            // In retrospect this makes kind of sense considering the structure
+            // of integers in computers.
             var maxScale:Number = descriptor.width / map.sceneWidth
             scaleConstraint.maxScale = maxScale
         }
@@ -201,8 +201,8 @@ public class MappingFlash extends Sprite
 
     private function layout():void
     {
-    	// Making sure the map fits the
-    	// entire available screen real estate.
+        // Making sure the map fits the
+        // entire available screen real estate.
         if (map)
         {
             map.x = map.y = 0
