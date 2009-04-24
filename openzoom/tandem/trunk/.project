@@ -17,17 +17,17 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[source path] OpenZoom SDK</name>
+			<name>[source path] OPENZOOM-src</name>
 			<type>2</type>
 			<locationURI>OPENZOOM/src</locationURI>
 		</link>
 		<link>
-			<name>[source path] as3corelib</name>
+			<name>[source path] as3corelib-src</name>
 			<type>2</type>
 			<locationURI>OPENZOOM/lib/as3corelib/src</locationURI>
 		</link>
 		<link>
-			<name>[source path] as3flickrlib</name>
+			<name>[source path] as3flickrlib-src</name>
 			<type>2</type>
 			<locationURI>OPENZOOM/lib/as3flickrlib/src</locationURI>
 		</link>

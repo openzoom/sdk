@@ -19,7 +19,9 @@
 </libraryPathEntry>
 <libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/lib"/>
 </libraryPath>
-<sourceAttachmentPath/>
+<sourceAttachmentPath>
+<sourceAttachmentPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex4.swc" sourcepath="${DOCUMENTS}/flex4/trunk/frameworks/projects/flex4/src" useDefaultLinkType="false"/>
+</sourceAttachmentPath>
 </compiler>
 <applications>
 <application path="tandem.mxml"/>

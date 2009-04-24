@@ -11,63 +11,42 @@
 	>
 	<mx:Script>
 		<![CDATA[
-			import org.openzoom.flash.events.ViewportEvent;
 		
-			import flashx.textLayout.container.DisplayObjectContainerController;
-			import flashx.textLayout.conversion.ImportExportConfiguration;
+		    import flashx.textLayout.container.ContainerController;
 			import flashx.textLayout.conversion.TextFilter;
-			import flashx.textLayout.elements.Configuration;
 			import flashx.textLayout.elements.TextFlow;
+			
+			import org.openzoom.flash.utils.ExternalMouseWheel;
 
             private var loader:URLLoader
             private var textContainer:Sprite
 
             private function applicationCompleteHandler(event:Event):void
             {
-            	loader = new URLLoader(new URLRequest("../data/document.xml"))
-            	loader.addEventListener(Event.COMPLETE, loader_completeHandler)
+            	ExternalMouseWheel.initialize(systemManager.stage)
             	
-//            	var box:Sprite = new Sprite()
-//            	var g:Graphics = box.graphics
-//            	g.beginFill(0xFF6600, 0.2)
-//            	g.drawRect(0, 0, 1000, 1000)
-//            	g.endFill()
-//            	
-//            	container.addChild(box)
+            	loader = new URLLoader(new URLRequest("document.xml"))
+            	loader.addEventListener(Event.COMPLETE, loader_completeHandler)
             	
             	textContainer = new Sprite()
             	container.addChild(textContainer)
-            	container.viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
-            	                                    viewport_transformUpdateHandler,
-            	                                    false, 0, true)
             }
 
 			private function loader_completeHandler(event:Event):void
 			{
-				// Configuration passed to any TextFlows
-				// the default importer is importing
-	            var config:Configuration = ImportExportConfiguration
-	                                           .defaultConfiguration
-	                                               .textFlowConfiguration
-	            
    	            var document:String = loader.data
 	            var textFlow:TextFlow = TextFilter.importToFlow(document,
 	                                             TextFilter.TEXT_LAYOUT_FORMAT)
 	            
                 textFlow.flowComposer.addController(
-                    new DisplayObjectContainerController(textContainer,
+                    new ContainerController(textContainer,
 	                                                     container.sceneWidth,
 	                                                     container.sceneHeight))
                 textFlow.columnCount = 16
                 textFlow.columnGap = 10
-	            textFlow.flowComposer.updateAllContainers()
+	            textFlow.flowComposer.updateAllControllers()
 	            textFlow.color = 0xFFFFFF
 			}
-				
-            private function viewport_transformUpdateHandler(event:ViewportEvent):void
-            {
-                trace(container.viewport.scale)
-            }
 			
 		]]>
 	</mx:Script>
@@ -75,8 +54,8 @@
 	<components:MultiScaleContainer
 		id="container"
 		top="0" right="0" bottom="0" left="0"
-		sceneWidth="4096"
-		sceneHeight="2048"
+		sceneWidth="4000"
+		sceneHeight="2000"
 		>
 		<components:transformer>
 			<transformers:TweenerTransformer/>
