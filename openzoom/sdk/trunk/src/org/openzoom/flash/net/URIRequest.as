@@ -90,6 +90,15 @@ internal class URIRequest extends EventDispatcher
         return loader ? loader.bytesTotal : 0
     }
 
+    //----------------------------------
+    //  uri
+    //----------------------------------
+
+    public function get uri():String
+    {
+        return url
+    }
+
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -127,6 +136,7 @@ internal class URIRequest extends EventDispatcher
             requestEvent.request = this
             requestEvent.data = data
             requestEvent.context = context
+            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
@@ -157,6 +167,7 @@ internal class URIRequest extends EventDispatcher
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
+            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
@@ -172,6 +183,7 @@ internal class URIRequest extends EventDispatcher
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
+            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }

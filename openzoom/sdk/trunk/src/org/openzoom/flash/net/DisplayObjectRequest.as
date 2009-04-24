@@ -92,6 +92,15 @@ internal class DisplayObjectRequest extends EventDispatcher
         return loader ? loader.contentLoaderInfo.bytesTotal : 0
     }
 
+    //----------------------------------
+    //  uri
+    //----------------------------------
+
+    public function get uri():String
+    {
+        return url
+    }
+
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -129,6 +138,7 @@ internal class DisplayObjectRequest extends EventDispatcher
             requestEvent.request = this
             requestEvent.data = bitmap
             requestEvent.context = context
+            requestEvent.uri = url
 
         dispatchEvent(requestEvent)
     }
@@ -160,6 +170,7 @@ internal class DisplayObjectRequest extends EventDispatcher
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
+            requestEvent.uri = url
 
         dispatchEvent(requestEvent)
     }
@@ -176,6 +187,7 @@ internal class DisplayObjectRequest extends EventDispatcher
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
+            requestEvent.uri = url
 
         dispatchEvent(requestEvent)
     }

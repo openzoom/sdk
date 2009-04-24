@@ -47,6 +47,7 @@ public interface INetworkRequest extends IEventDispatcher
 
     function get bytesLoaded():uint
     function get bytesTotal():uint
+    function get uri():String
 }
 
 }

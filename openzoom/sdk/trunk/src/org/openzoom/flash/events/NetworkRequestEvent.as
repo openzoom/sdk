@@ -76,6 +76,11 @@ public class NetworkRequestEvent extends Event
      * Useful for identifying certain requests, e.g. by URL.
      */
     public var context:* = null
+    
+    /**
+     * URI of this request.
+     */ 
+    public var uri:String
 
     //--------------------------------------------------------------------------
     //
