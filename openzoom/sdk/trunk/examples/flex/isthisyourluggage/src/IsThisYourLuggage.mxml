@@ -34,6 +34,7 @@
             import org.openzoom.flash.net.INetworkRequest;
             import org.openzoom.flash.net.NetworkQueue;
             import org.openzoom.flash.renderers.MultiScaleImageRenderer;
+        	import org.openzoom.flash.utils.ExternalMouseWheel;
             import org.openzoom.flash.viewport.SceneViewport;
 
             import mx.events.FlexEvent;
@@ -49,6 +50,8 @@
 
             private function applicationCompleteHandler(event:FlexEvent):void
             {
+            	ExternalMouseWheel.initialize(stage)
+            	
                 container.viewport.fitToBounds(HOME_BOUNDS, 0.8, true)
                 loader = new NetworkQueue()
 
