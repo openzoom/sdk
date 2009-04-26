@@ -6,7 +6,9 @@
 <libraryPathEntry kind="4" path=""/>
 <libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/lib"/>
 </libraryPath>
-<sourceAttachmentPath/>
+<sourceAttachmentPath>
+<sourceAttachmentPathEntry kind="3" linkType="1" path="/Users/dani/Documents/workspace/openzoom/openzoom/sdk/trunk/lib/TweensyZeroCS4.swc" sourcepath="${OPENZOOM}/lib/Tweensy 0.2.2/releases/source/cs4/zero" useDefaultLinkType="false"/>
+</sourceAttachmentPath>
 </compiler>
 <applications>
 <application path="OpenZoomSDK.mxml"/>

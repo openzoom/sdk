@@ -18,18 +18,25 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.viewport.transformers
+package org.openzoom.examples.ityl.pages
 {
 
-import org.openzoom.flash.viewport.IViewportTransform;
-import org.openzoom.flash.viewport.IViewportTransformer;
+import flash.display.SimpleButton;
+import flash.events.MouseEvent;
+import flash.net.URLRequest;
+import flash.net.navigateToURL;
+
+
+//--------------------------------------------------------------------------
+//
+//  Constructor
+//
+//--------------------------------------------------------------------------
 
 /**
- * Null Object Pattern applied to IViewportTransformer.
- * The NullTransformer transforms the given viewport without any kind of animation.
+ * Constructor.
  */
-public class NullTransformer extends ViewportTransformerBase
-                             implements IViewportTransformer
+public class ContactPage extends Page
 {
     //--------------------------------------------------------------------------
     //
@@ -40,38 +47,30 @@ public class NullTransformer extends ViewportTransformerBase
     /**
      * Constructor.
      */
-    public function NullTransformer()
+    public function ContactPage()
     {
+        sendMailButton.addEventListener(MouseEvent.CLICK,
+                                        sendMailButton_clickHandler,
+                                        false, 0, false)
     }
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IViewportTransformer
+    //  Variables
     //
     //--------------------------------------------------------------------------
 
-    /**
-     * @inheritDoc
-     */
-    public function stop():void
-    {
-        // Do nothing
-    }
+    public var sendMailButton:SimpleButton
 
-    /**
-     * @inheritDoc
-     */
-    override public function transform(target:IViewportTransform,
-                                       immediately:Boolean=false):void
-    {
-    	super.transform(target,immediately)
-    	
-        // copy targetTransform
-        _target = target.clone()
+    //--------------------------------------------------------------------------
+    //
+    //  Event handlers
+    //
+    //--------------------------------------------------------------------------
 
-        viewport.beginTransform()
-        viewport.transform = _target
-        viewport.endTransform()
+    private function sendMailButton_clickHandler(event:MouseEvent):void
+    {
+        navigateToURL(new URLRequest("http://www.isthisyourluggage.com/Site/contact.html"))
     }
 }
 

@@ -98,6 +98,12 @@ public class MouseController extends ViewportControllerBase
     public var smoothPanning:Boolean = true
 
     //----------------------------------
+    //  clickEnabled
+    //----------------------------------
+
+    public var clickEnabled:Boolean = true
+
+    //----------------------------------
     //  clickZoomInFactor
     //----------------------------------
 
@@ -275,7 +281,7 @@ public class MouseController extends ViewportControllerBase
      * @private
      */
     private function view_mouseDownHandler(event:MouseEvent):void
-    {
+    {    	
         view.addEventListener(MouseEvent.MOUSE_UP,
                               view_mouseUpHandler,
                               false, 0, true)
@@ -331,7 +337,7 @@ public class MouseController extends ViewportControllerBase
 
         var distance:Number = Math.sqrt(dx * dx + dy * dy)
 
-        if (click && distance < CLICK_THRESHOLD_DISTANCE)
+        if (clickEnabled && click && distance < CLICK_THRESHOLD_DISTANCE)
         {
             var factor:Number
 

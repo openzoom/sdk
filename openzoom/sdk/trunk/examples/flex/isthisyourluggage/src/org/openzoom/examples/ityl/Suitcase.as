@@ -18,18 +18,13 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.viewport.transformers
+package org.openzoom.examples.ityl
 {
 
-import org.openzoom.flash.viewport.IViewportTransform;
-import org.openzoom.flash.viewport.IViewportTransformer;
+import flash.display.Bitmap;
 
-/**
- * Null Object Pattern applied to IViewportTransformer.
- * The NullTransformer transforms the given viewport without any kind of animation.
- */
-public class NullTransformer extends ViewportTransformerBase
-                             implements IViewportTransformer
+
+public class Suitcase
 {
     //--------------------------------------------------------------------------
     //
@@ -40,39 +35,21 @@ public class NullTransformer extends ViewportTransformerBase
     /**
      * Constructor.
      */
-    public function NullTransformer()
+    public function Suitcase(name:String, offset:Number)
     {
+        this.name = name
+        this.offset = offset
     }
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IViewportTransformer
+    //  Properties
     //
     //--------------------------------------------------------------------------
 
-    /**
-     * @inheritDoc
-     */
-    public function stop():void
-    {
-        // Do nothing
-    }
-
-    /**
-     * @inheritDoc
-     */
-    override public function transform(target:IViewportTransform,
-                                       immediately:Boolean=false):void
-    {
-    	super.transform(target,immediately)
-    	
-        // copy targetTransform
-        _target = target.clone()
-
-        viewport.beginTransform()
-        viewport.transform = _target
-        viewport.endTransform()
-    }
+    public var name:String
+    public var image:Bitmap
+    public var offset:Number
 }
 
 }

@@ -36,30 +36,37 @@ import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 /**
  *  Dispatched when the viewport container is resized.
  *
- *  @eventType org.openzoom.events.ViewportEvent.RESIZE
+ *  @eventType org.openzoom.flash.events.ViewportEvent.RESIZE
  */
 [Event(name="resize", type="org.openzoom.events.ViewportEvent")]
 
 /**
  *  Dispatched when a viewport transformation begins.
  *
- *  @eventType org.openzoom.events.ViewportEvent.TRANSFORM_START
+ *  @eventType org.openzoom.flash.events.ViewportEvent.TRANSFORM_START
  */
 [Event(name="transformStart", type="org.openzoom.events.ViewportEvent")]
 
 /**
  *  Dispatched when the viewport transformation is updated.
  *
- *  @eventType org.openzoom.events.ViewportEvent.TRANSFORM_UPDATE
+ *  @eventType org.openzoom.flash.events.ViewportEvent.TRANSFORM_UPDATE
  */
 [Event(name="transformUpdate", type="org.openzoom.events.ViewportEvent")]
 
 /**
  *  Dispatched when a viewport transformation ends.
  *
- *  @eventType org.openzoom.events.ViewportEvent.TRANSFORM_END
+ *  @eventType org.openzoom.flash.events.ViewportEvent.TRANSFORM_END
  */
 [Event(name="transformEnd", type="org.openzoom.events.ViewportEvent")]
+
+///**
+// *  Dispatched when the viewport transformation target is updated.
+// *
+// *  @eventType org.openzoom.flash.events.ViewportEvent.TARGET_UPDATE
+// */
+//[Event(name="targetUpdate", type="org.openzoom.events.ViewportEvent")]
 
 /**
  * Interface a viewport implementation has to provide.

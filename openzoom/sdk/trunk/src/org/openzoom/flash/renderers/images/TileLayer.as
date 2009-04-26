@@ -21,14 +21,13 @@
 package org.openzoom.flash.renderers.images
 {
 
-import caurina.transitions.Tweener;
+import com.flashdynamix.motion.TweensyZero;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
-import flash.geom.ColorTransform;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
@@ -67,6 +66,9 @@ public class TileLayer extends Sprite implements ITileLayer
         // FIXME
 //      scaleXFactor = width  / level.width
 //      scaleYFactor = height / level.height
+
+        mouseEnabled = false
+        mouseChildren = false
 
         createFrame(width, height)
     }
@@ -190,9 +192,8 @@ public class TileLayer extends Sprite implements ITileLayer
 
         addChild(tileBitmap)
 
-        // TODO: Remove dependency on Tweener
-        Tweener.addTween(tileBitmap, {alpha: 1,
-                                      time: DEFAULT_TILE_SHOW_DURATION})
+        // TODO: Remove dependency on TweensyZero
+        TweensyZero.to(tileBitmap, {alpha: 1}, DEFAULT_TILE_SHOW_DURATION)
 
         return tile
     }

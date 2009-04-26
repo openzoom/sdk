@@ -26,6 +26,26 @@ import org.openzoom.flash.events.RendererEvent;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
 
+//------------------------------------------------------------------------------
+//
+//  Events
+//
+//------------------------------------------------------------------------------
+
+/**
+ *  Dispatched when the renderer is added to the scene.
+ *
+ *  @eventType org.openzoom.flash.events.RendererEvent.ADDED_TO_SCENE
+ */
+[Event(name="addedToScene", type="org.openzoom.flash.events.RendererEvent")]
+
+/**
+ *  Dispatched when the renderer is removed from the scene.
+ *
+ *  @eventType org.openzoom.flash.events.RendererEvent.REMOVED_FROM_SCENE
+ */
+[Event(name="removedFromScene", type="org.openzoom.flash.events.RendererEvent")]
+
 /**
  * Renderer base class.
  */
@@ -99,6 +119,22 @@ public class Renderer extends Sprite
             return
 
         _viewport = value
+    }
+
+    //----------------------------------
+    //  zoom
+    //----------------------------------
+    
+    public function get zoom():Number
+    {
+    	if (!viewport)
+    	   return NaN
+    	 
+        var normalizedWidth:Number = width / scene.sceneWidth
+        var normalizedHeight:Number = height / scene.sceneHeight
+        
+        return Math.max(normalizedWidth / viewport.width,
+                        normalizedHeight / viewport.height)
     }
 }
 

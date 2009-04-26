@@ -21,8 +21,6 @@
 package org.openzoom.flash.renderers
 {
 
-import caurina.transitions.Tweener;
-
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Graphics;
@@ -47,6 +45,7 @@ import org.openzoom.flash.renderers.images.RenderingMode;
 import org.openzoom.flash.renderers.images.Tile;
 import org.openzoom.flash.renderers.images.TileLayer;
 import org.openzoom.flash.utils.math.clamp;
+import com.flashdynamix.motion.TweensyZero;
 
 /**
  * @private
@@ -470,7 +469,7 @@ public class MultiScaleImageRenderer extends Renderer
         addChildAt(backgroundTile, getChildIndex(frame))
 
 //        backgroundTile.alpha = 1
-        Tweener.addTween(backgroundTile, {alpha: 1, time: DEFAULT_BACKGROUND_SHOW_DURATION})
+        TweensyZero.to(backgroundTile, {alpha: 1}, DEFAULT_BACKGROUND_SHOW_DURATION)
     }
 
     //--------------------------------------------------------------------------
