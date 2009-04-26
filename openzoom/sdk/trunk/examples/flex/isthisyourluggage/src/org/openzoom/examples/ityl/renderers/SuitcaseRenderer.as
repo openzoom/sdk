@@ -93,7 +93,7 @@ public class SuitcaseRenderer extends Renderer
                                                       loader_completeHandler,
                                                       false, 0, true)
 
-            var uri:String = "../images/suitcases/" + data.name + "-content.png"
+            var uri:String = "images/suitcases/" + data.name + "-content.png"
             loader.load(new URLRequest(uri))
         }
 

@@ -60,7 +60,7 @@
 
                 for each (var suitcase:Suitcase in suitcases)
                 {
-                    var url:String = "../images/suitcases/" + suitcase.name + ".png"
+                    var url:String = "images/suitcases/" + suitcase.name + ".png"
                     var request:INetworkRequest = loader.addRequest(url, Bitmap, suitcase)
                     request.addEventListener(NetworkRequestEvent.COMPLETE,
                                              request_completeHandler)
