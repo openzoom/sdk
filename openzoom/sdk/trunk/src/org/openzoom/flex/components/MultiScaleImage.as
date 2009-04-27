@@ -75,7 +75,6 @@ public final class MultiScaleImage extends MultiScaleImageBase
     public function MultiScaleImage()
     {
         super()
-
 //      tabEnabled = false
 //      tabChildren = true
     }

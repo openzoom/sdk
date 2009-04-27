@@ -53,6 +53,9 @@ public class MultiScaleImageBase extends UIComponent
     private static const DEFAULT_VIEWPORT_WIDTH:Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT:Number = 600
 
+    private static const DEFAULT_MEASURED_WIDTH:Number = 400
+    private static const DEFAULT_MEASURED_HEIGHT:Number = 300
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -262,6 +265,12 @@ public class MultiScaleImageBase extends UIComponent
                                                    unscaledHeight:Number):void
     {
         container.setActualSize(unscaledWidth, unscaledHeight)
+    }
+    
+    override protected function measure():void
+    {
+        measuredWidth = DEFAULT_MEASURED_WIDTH
+        measuredHeight = DEFAULT_MEASURED_HEIGHT
     }
 
     /**
