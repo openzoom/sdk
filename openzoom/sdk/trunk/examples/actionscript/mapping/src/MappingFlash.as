@@ -21,25 +21,24 @@
 package
 {
 
-import flash.display.Sprite
-import flash.display.StageAlign
-import flash.display.StageScaleMode
-import flash.events.Event
-import flash.system.Security
-import flash.utils.setTimeout
+import flash.display.Sprite;
+import flash.display.StageAlign;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+import flash.system.Security;
+import flash.utils.setTimeout;
 
-import org.openzoom.flash.components.MultiScaleImage
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor
-import org.openzoom.flash.utils.ExternalMouseWheel
-import org.openzoom.flash.viewport.constraints.CompositeConstraint
-import org.openzoom.flash.viewport.constraints.MappingConstraint
-import org.openzoom.flash.viewport.constraints.ScaleConstraint
-import org.openzoom.flash.viewport.constraints.ZoomConstraint
-import org.openzoom.flash.viewport.controllers.ContextMenuController
-import org.openzoom.flash.viewport.controllers.KeyboardController
-import org.openzoom.flash.viewport.controllers.MouseController
-import org.openzoom.flash.viewport.transformers.TweenerTransformer
-
+import org.openzoom.flash.components.MultiScaleImage;
+import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.flash.utils.ExternalMouseWheel;
+import org.openzoom.flash.viewport.constraints.CompositeConstraint;
+import org.openzoom.flash.viewport.constraints.MappingConstraint;
+import org.openzoom.flash.viewport.constraints.ScaleConstraint;
+import org.openzoom.flash.viewport.constraints.ZoomConstraint;
+import org.openzoom.flash.viewport.controllers.ContextMenuController;
+import org.openzoom.flash.viewport.controllers.KeyboardController;
+import org.openzoom.flash.viewport.controllers.MouseController;
+import org.openzoom.flash.viewport.transformers.TweensyZeroTransformer;
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#222222")]
 /**
@@ -101,7 +100,7 @@ public class MappingFlash extends Sprite
         // Viewport animation (this is what makes the file 15K bigger,
         // implementing a more light-weight tweening engine and we have
         // an OpenZoom map engine of 20K, not bad, ey?! +)
-        map.transformer = new TweenerTransformer()
+        map.transformer = new TweensyZeroTransformer()
 
         // Constraints (due to a bug, these have to be applied after the transformer)
         scaleConstraint = new ScaleConstraint()
@@ -122,9 +121,9 @@ public class MappingFlash extends Sprite
         // we can use the composite design pattern for grouping several constraints
         // with a the CompositeConstraint class.
         var constraint:CompositeConstraint = new CompositeConstraint()
-        constraint.constraints = [ scaleConstraint,
-                                   zoomConstraint,
-                                   mappingConstraint ]
+        constraint.constraints = [scaleConstraint,
+                                  zoomConstraint,
+                                  mappingConstraint]
 
         map.constraint = constraint
 

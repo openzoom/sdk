@@ -27,10 +27,12 @@ import flash.display.StageScaleMode;
 import flash.events.Event;
 
 import org.openzoom.flash.components.MultiScaleContainer;
+import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
+import org.openzoom.flash.viewport.transformers.TweensyZeroTransformer;
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#222222")]
 /**
@@ -55,10 +57,14 @@ public class InteractiveRenderers extends Sprite
     	
     	container = new MultiScaleContainer()
     	
-    	var transformer:TweenerTransformer = new TweenerTransformer()
+//    	var transformer:TweenerTransformer = new TweenerTransformer()
+    	var transformer:TweensyZeroTransformer = new TweensyZeroTransformer()
+
 //      transformer.easing = "easeOutElastic"
 //    	transformer.duration = 1
     	container.transformer = transformer
+    	container.constraint = new CenterConstraint()
+    	
     	
     	var mouseController:MouseController = new MouseController()
     	var keyboardController:KeyboardController = new KeyboardController()
@@ -233,6 +239,7 @@ class InteractiveRenderer extends Renderer
 	
 	private function addedToSceneHandler(event:RendererEvent):void
 	{
+		buttonMode = true
 		addEventListener(MouseEvent.CLICK,
 		                 clickHandler,
 		                 false, 0, true)
