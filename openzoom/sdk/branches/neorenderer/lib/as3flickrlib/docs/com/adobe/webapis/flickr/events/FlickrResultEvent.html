@@ -1,0 +1,1044 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="FlickrResultEvent,com.adobe.webapis.flickr.events.FlickrResultEvent,AUTH_CHECK_TOKEN,AUTH_GET_FROB,AUTH_GET_TOKEN,BLOGS_GET_LIST,BLOGS_POST_PHOTO,CONTACTS_GET_LIST,CONTACTS_GET_PUBLIC_LIST,FAVORITES_ADD,FAVORITES_GET_LIST,FAVORITES_GET_PUBLIC_LIST,FAVORITES_REMOVE,GROUPS_BROWSE,GROUPS_GET_INFO,GROUPS_SEARCH,GROUPS_POOLS_ADD,GROUPS_POOLS_GET_CONTEXT,GROUPS_POOLS_GET_GROUPS,GROUPS_POOLS_GET_PHOTOS,GROUPS_POOLS_REMOVE,INTERESTINGNESS_GET_LIST,PEOPLE_FIND_BY_EMAIL,PEOPLE_FIND_BY_USERNAME,PEOPLE_GET_INFO,PEOPLE_GET_PUBLIC_GROUPS,PEOPLE_GET_PUBLIC_PHOTOS,PEOPLE_GET_UPLOAD_STATUS,PHOTOS_ADD_TAGS,PHOTOS_GET_ALL_CONTEXTS,PHOTOS_GET_CONTACTS_PHOTOS,PHOTOS_GET_CONTACTS_PUBLIC_PHOTOS,PHOTOS_GET_CONTEXT,PHOTOS_GET_COUNTS,PHOTOS_GET_EXIF,PHOTOS_GET_INFO,PHOTOS_GET_NOT_IN_SET,PHOTOS_GET_PERMS,PHOTOS_GET_RECENT,PHOTOS_GET_SIZES,PHOTOS_GET_UNTAGGED,PHOTOS_REMOVE_TAG,PHOTOS_SEARCH,PHOTOS_SET_DATES,PHOTOS_SET_META,PHOTOS_SET_PERMS,PHOTOS_SET_TAGS,PHOTOS_LICENSES_GET_INFO,PHOTOS_LICENSES_SET_LICENSE,PHOTOS_NOTES_ADD,PHOTOS_NOTES_EDIT,PHOTOS_NOTES_DELETE,PHOTOS_TRANSFORM_ROTATE,PHOTOS_UPLOAD_CHECK_TICKETS,PHOTOSETS_ADD_PHOTO,PHOTOSETS_CREATE,PHOTOSETS_DELETE,PHOTOSETS_EDIT_META,PHOTOSETS_EDIT_PHOTOS,PHOTOSETS_GET_CONTEXT,PHOTOSETS_GET_INFO,PHOTOSETS_GET_LIST,PHOTOSETS_GET_PHOTOS,PHOTOSETS_ORDER_SETS,PHOTOSETS_REMOVE_PHOTO,TAGS_GET_LIST_PHOTO,TAGS_GET_LIST_USER,TAGS_GET_LIST_USER_POPULAR,TAGS_GET_RELATED,TEST_ECHO,TEST_LOGIN,URLS_GET_GROUP,URLS_GET_USER_PHOTOS,URLS_GET_USER_PROFILE,URLS_LOOKUP_GROUP,URLS_LOOKUP_USER,success" name="keywords">
+<title>com.adobe.webapis.flickr.events.FlickrResultEvent</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FlickrResultEvent - Adobe ActionScript 3.0 Library - flickr';
+				var baseRef = '../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../index.html?com/adobe/webapis/flickr/events/FlickrResultEvent.html&amp;com/adobe/webapis/flickr/events/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlickrResultEvent</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlickrResultEvent"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.adobe.webapis.flickr.events</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlickrResultEvent</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FlickrResultEvent <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../images/inherit-arrow.gif"> com.adobe.webapis.events.ServiceEvent</td>
+</tr>
+</table>
+<p></p>
+ Event class that contains information about events broadcast in response
+ to data events from the Flickr API.
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#success">success</a> : Boolean<div class="summaryTableDescription">
+   True if the event is the result of a successful call,
+   False if the call failed
+   </div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FlickrResultEvent()">FlickrResultEvent</a>(type:String, bubbles:Boolean = false, cancelable:Boolean = false)</div>
+<div class="summaryTableDescription">
+   Constructs a new FlickrResultEvent
+   </div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#AUTH_CHECK_TOKEN">AUTH_CHECK_TOKEN</a> : String = "authCheckToken"<div class="summaryTableDescription">[static] Constant for the authCheckToken event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#AUTH_GET_FROB">AUTH_GET_FROB</a> : String = "authGetFrob"<div class="summaryTableDescription">[static] Constant for the authGetFrob event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#AUTH_GET_TOKEN">AUTH_GET_TOKEN</a> : String = "authGetToken"<div class="summaryTableDescription">[static] Constant for the authGetToken event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#BLOGS_GET_LIST">BLOGS_GET_LIST</a> : String = "blogsGetList"<div class="summaryTableDescription">[static] Constant for the blogsGetList event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#BLOGS_POST_PHOTO">BLOGS_POST_PHOTO</a> : String = "blogsPostPhoto"<div class="summaryTableDescription">[static] Constant for the blogsPostPhoto event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#CONTACTS_GET_LIST">CONTACTS_GET_LIST</a> : String = "contactsGetList"<div class="summaryTableDescription">[static] Constant for the contactsGetList event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#CONTACTS_GET_PUBLIC_LIST">CONTACTS_GET_PUBLIC_LIST</a> : String = "contactsGetPublicList"<div class="summaryTableDescription">[static] Constant for the contactsGetPublicList event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#FAVORITES_ADD">FAVORITES_ADD</a> : String = "favoritesAdd"<div class="summaryTableDescription">[static] Constant for the favoritesAdd event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#FAVORITES_GET_LIST">FAVORITES_GET_LIST</a> : String = "favoritesGetList"<div class="summaryTableDescription">[static] Constant for the favoritesGetList event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#FAVORITES_GET_PUBLIC_LIST">FAVORITES_GET_PUBLIC_LIST</a> : String = "favoritesGetPublicList"<div class="summaryTableDescription">[static] Constant for the favoritesGetPublicList event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#FAVORITES_REMOVE">FAVORITES_REMOVE</a> : String = "favoritesRemove"<div class="summaryTableDescription">[static] Constant for the favoritesRemove event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#GROUPS_BROWSE">GROUPS_BROWSE</a> : String = "groupsBrowse"<div class="summaryTableDescription">[static] Constant for the groupsBrowse event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#GROUPS_GET_INFO">GROUPS_GET_INFO</a> : String = "groupsGetInfo"<div class="summaryTableDescription">[static] Constant for the groupsGetInfo event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#GROUPS_POOLS_ADD">GROUPS_POOLS_ADD</a> : String = "groupsPoolsAdd"<div class="summaryTableDescription">[static] Constant for the groupsPoolsAdd event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#GROUPS_POOLS_GET_CONTEXT">GROUPS_POOLS_GET_CONTEXT</a> : String = "groupsPoolsGetContext"<div class="summaryTableDescription">[static] Constant for the groupsPoolsGetContext event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#GROUPS_POOLS_GET_GROUPS">GROUPS_POOLS_GET_GROUPS</a> : String = "groupsPoolsGetGroups"<div class="summaryTableDescription">[static] Constant for the groupsPoolsGetGroups event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#GROUPS_POOLS_GET_PHOTOS">GROUPS_POOLS_GET_PHOTOS</a> : String = "groupsPoolsGetPhotos"<div class="summaryTableDescription">[static] Constant for the groupsPoolsGetPhotos event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#GROUPS_POOLS_REMOVE">GROUPS_POOLS_REMOVE</a> : String = "groupsPoolsRemove"<div class="summaryTableDescription">[static] Constant for the groupsPoolRemove event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#GROUPS_SEARCH">GROUPS_SEARCH</a> : String = "groupsSearch"<div class="summaryTableDescription">[static] Constant for the groupsSearch event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#INTERESTINGNESS_GET_LIST">INTERESTINGNESS_GET_LIST</a> : String = "interestingnessGetList"<div class="summaryTableDescription">[static] Constant for the interestingnessGetList event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PEOPLE_FIND_BY_EMAIL">PEOPLE_FIND_BY_EMAIL</a> : String = "peopleFindByEmail"<div class="summaryTableDescription">[static] Constant for the peopleFindByEmail event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PEOPLE_FIND_BY_USERNAME">PEOPLE_FIND_BY_USERNAME</a> : String = "peopleFindByUsername"<div class="summaryTableDescription">[static] Constant for the peopleFindByUsername event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PEOPLE_GET_INFO">PEOPLE_GET_INFO</a> : String = "peopleGetInfo"<div class="summaryTableDescription">[static] Constant for the peopleGetInfo event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PEOPLE_GET_PUBLIC_GROUPS">PEOPLE_GET_PUBLIC_GROUPS</a> : String = "peopleGetPublicGroups"<div class="summaryTableDescription">[static] Constant for the peopleGetPublicGroups event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PEOPLE_GET_PUBLIC_PHOTOS">PEOPLE_GET_PUBLIC_PHOTOS</a> : String = "peopleGetPublicPhotos"<div class="summaryTableDescription">[static] Constant for the peopleetPublicPhotos event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PEOPLE_GET_UPLOAD_STATUS">PEOPLE_GET_UPLOAD_STATUS</a> : String = "peopleGetUploadStatus"<div class="summaryTableDescription">[static] Constant for the peopleGetUploadStatus event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_ADD_TAGS">PHOTOS_ADD_TAGS</a> : String = "photosAddTags"<div class="summaryTableDescription">[static] Constant for the photosAddTags event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_ADD_PHOTO">PHOTOSETS_ADD_PHOTO</a> : String = "photosetsAddPhoto"<div class="summaryTableDescription">[static] Constant for the photosetsAddPhoto event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_CREATE">PHOTOSETS_CREATE</a> : String = "photosetsCreate"<div class="summaryTableDescription">[static] Constant for the photosetsCreate event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_DELETE">PHOTOSETS_DELETE</a> : String = "photosetsDelete"<div class="summaryTableDescription">[static] Constant for the photosetsDelete event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_EDIT_META">PHOTOSETS_EDIT_META</a> : String = "photosetsEditMeta"<div class="summaryTableDescription">[static] Constant for the photosetsEditMeta event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_EDIT_PHOTOS">PHOTOSETS_EDIT_PHOTOS</a> : String = "photosetsEditPhotos"<div class="summaryTableDescription">[static] Constant for the photosetsEditPhotos event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_GET_CONTEXT">PHOTOSETS_GET_CONTEXT</a> : String = "photosetsGetContext"<div class="summaryTableDescription">[static] Constant for the photosetsGetContext event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_GET_INFO">PHOTOSETS_GET_INFO</a> : String = "photosetsGetInfo"<div class="summaryTableDescription">[static] Constant for the photosetsGetInfo event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_GET_LIST">PHOTOSETS_GET_LIST</a> : String = "photosetsGetList"<div class="summaryTableDescription">[static] Constant for the photosetsGetList event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_GET_PHOTOS">PHOTOSETS_GET_PHOTOS</a> : String = "photosetsGetPhotos"<div class="summaryTableDescription">[static] Constant for the photosetsGetPhotos event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_ORDER_SETS">PHOTOSETS_ORDER_SETS</a> : String = "photosetsOrderSets"<div class="summaryTableDescription">[static] Constant for the photosets event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOSETS_REMOVE_PHOTO">PHOTOSETS_REMOVE_PHOTO</a> : String = "photosetsRemovePhoto"<div class="summaryTableDescription">[static] Constant for the photosets event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_ALL_CONTEXTS">PHOTOS_GET_ALL_CONTEXTS</a> : String = "photosGetAllContexts"<div class="summaryTableDescription">[static] Constant for the photosGetAllContexts event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_CONTACTS_PHOTOS">PHOTOS_GET_CONTACTS_PHOTOS</a> : String = "photosGetContactsPhotos"<div class="summaryTableDescription">[static] Constant for the photosGetContactsPhotos event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_CONTACTS_PUBLIC_PHOTOS">PHOTOS_GET_CONTACTS_PUBLIC_PHOTOS</a> : String = "photosGetContactsPublicPhotos"<div class="summaryTableDescription">[static] Constant for the photosGetContactsPublicPhotos event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_CONTEXT">PHOTOS_GET_CONTEXT</a> : String = "photosGetContext"<div class="summaryTableDescription">[static] Constant for the photosGetContext event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_COUNTS">PHOTOS_GET_COUNTS</a> : String = "photosGetCounts"<div class="summaryTableDescription">[static] Constant for the photosGetCounts event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_EXIF">PHOTOS_GET_EXIF</a> : String = "photosGetExif"<div class="summaryTableDescription">[static] Constant for the photosGetExif event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_INFO">PHOTOS_GET_INFO</a> : String = "photosGetInfo"<div class="summaryTableDescription">[static] Constant for the photosGetInfo event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_NOT_IN_SET">PHOTOS_GET_NOT_IN_SET</a> : String = "photosGetNotInSet"<div class="summaryTableDescription">[static] Constant for the photosGetNotInSet event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_PERMS">PHOTOS_GET_PERMS</a> : String = "photosGetPerms"<div class="summaryTableDescription">[static] Constant for the photosGetPerms event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_RECENT">PHOTOS_GET_RECENT</a> : String = "photosGetRecent"<div class="summaryTableDescription">[static] Constant for the photosGetRecent event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_SIZES">PHOTOS_GET_SIZES</a> : String = "photosGetSizes"<div class="summaryTableDescription">[static] Constant for the photosGetSizes event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_GET_UNTAGGED">PHOTOS_GET_UNTAGGED</a> : String = "photosGetUntagged"<div class="summaryTableDescription">[static] Constant for the photosGetUntagged event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_LICENSES_GET_INFO">PHOTOS_LICENSES_GET_INFO</a> : String = "photosLicensesGetInfo"<div class="summaryTableDescription">[static] Constant for the photosLicensesGetInfo event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_LICENSES_SET_LICENSE">PHOTOS_LICENSES_SET_LICENSE</a> : String = "photosLicensesSetLicense"<div class="summaryTableDescription">[static] Constant for the photosLicensesSetLicense event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_NOTES_ADD">PHOTOS_NOTES_ADD</a> : String = "photosNotesAdd"<div class="summaryTableDescription">[static] Constant for the photosNotesAdd event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_NOTES_DELETE">PHOTOS_NOTES_DELETE</a> : String = "photosNotesDelete"<div class="summaryTableDescription">[static] Constant for the photosNotesDelete event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_NOTES_EDIT">PHOTOS_NOTES_EDIT</a> : String = "photosNotesEdit"<div class="summaryTableDescription">[static] Constant for the photosNotesEdit event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_REMOVE_TAG">PHOTOS_REMOVE_TAG</a> : String = "photosRemoveTag"<div class="summaryTableDescription">[static] Constant for the photosRemoveTag event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_SEARCH">PHOTOS_SEARCH</a> : String = "photosSearch"<div class="summaryTableDescription">[static] Constant for the photosSearch event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_SET_DATES">PHOTOS_SET_DATES</a> : String = "photosSetDates"<div class="summaryTableDescription">[static] Constant for the photosSetDates event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_SET_META">PHOTOS_SET_META</a> : String = "photosSetMeta"<div class="summaryTableDescription">[static] Constant for the photosSetMeta event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_SET_PERMS">PHOTOS_SET_PERMS</a> : String = "photosSetPerms"<div class="summaryTableDescription">[static] Constant for the photosSetPerms event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_SET_TAGS">PHOTOS_SET_TAGS</a> : String = "photosSetTags"<div class="summaryTableDescription">[static] Constant for the photosSetTags event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_TRANSFORM_ROTATE">PHOTOS_TRANSFORM_ROTATE</a> : String = "photosTransformRotate"<div class="summaryTableDescription">[static] Constant for the photosTransformRotate event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PHOTOS_UPLOAD_CHECK_TICKETS">PHOTOS_UPLOAD_CHECK_TICKETS</a> : String = "photosUploadCheckTickets"<div class="summaryTableDescription">[static] Constant for the photosUploadCheckTickets event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TAGS_GET_LIST_PHOTO">TAGS_GET_LIST_PHOTO</a> : String = "tagsGetListPhoto"<div class="summaryTableDescription">[static] Constant for the tagsGetListPhoto event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TAGS_GET_LIST_USER">TAGS_GET_LIST_USER</a> : String = "tagsGetListUser"<div class="summaryTableDescription">[static] Constant for the tagsGetListUser event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TAGS_GET_LIST_USER_POPULAR">TAGS_GET_LIST_USER_POPULAR</a> : String = "tagsGetListUserPopular"<div class="summaryTableDescription">[static] Constant for the tagsGetListUserPopular event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TAGS_GET_RELATED">TAGS_GET_RELATED</a> : String = "tagsGetRelated"<div class="summaryTableDescription">[static] Constant for the tagsGetRelated event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TEST_ECHO">TEST_ECHO</a> : String = "testEcho"<div class="summaryTableDescription">[static] Constant for the testEcho event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TEST_LOGIN">TEST_LOGIN</a> : String = "testLogin"<div class="summaryTableDescription">[static] Constant for the testLogin event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#URLS_GET_GROUP">URLS_GET_GROUP</a> : String = "urlsGetGroup"<div class="summaryTableDescription">[static] Constant for the urlsGetGroup event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#URLS_GET_USER_PHOTOS">URLS_GET_USER_PHOTOS</a> : String = "urlsGetUserPhotos"<div class="summaryTableDescription">[static] Constant for the urlsGetUserPhotos event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#URLS_GET_USER_PROFILE">URLS_GET_USER_PROFILE</a> : String = "urlsGetUserProfile"<div class="summaryTableDescription">[static] Constant for the urlsGetUserProfile event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#URLS_LOOKUP_GROUP">URLS_LOOKUP_GROUP</a> : String = "urlsLookupGroup"<div class="summaryTableDescription">[static] Constant for the urlsLookupGroup event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#URLS_LOOKUP_USER">URLS_LOOKUP_USER</a> : String = "urlsLookupUser"<div class="summaryTableDescription">[static] Constant for the urlsLookupUser event type.</div>
+</td><td class="summaryTableOwnerCol">FlickrResultEvent</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="success"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">success</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var success:Boolean</code><p>
+   True if the event is the result of a successful call,
+   False if the call failed
+   </p></div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FlickrResultEvent()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FlickrResultEvent</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FlickrResultEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false)</code><p>
+   Constructs a new FlickrResultEvent
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">bubbles</span>:Boolean</code> (default = <code>false</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">cancelable</span>:Boolean</code> (default = <code>false</code>)<code></code></td>
+</tr>
+</table>
+</div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="AUTH_CHECK_TOKEN"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">AUTH_CHECK_TOKEN</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const AUTH_CHECK_TOKEN:String = "authCheckToken"</code><p> Constant for the authCheckToken event type. </p></div>
+<a name="AUTH_GET_FROB"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">AUTH_GET_FROB</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const AUTH_GET_FROB:String = "authGetFrob"</code><p> Constant for the authGetFrob event type. </p></div>
+<a name="AUTH_GET_TOKEN"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">AUTH_GET_TOKEN</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const AUTH_GET_TOKEN:String = "authGetToken"</code><p> Constant for the authGetToken event type. </p></div>
+<a name="BLOGS_GET_LIST"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">BLOGS_GET_LIST</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const BLOGS_GET_LIST:String = "blogsGetList"</code><p> Constant for the blogsGetList event type. </p></div>
+<a name="BLOGS_POST_PHOTO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">BLOGS_POST_PHOTO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const BLOGS_POST_PHOTO:String = "blogsPostPhoto"</code><p> Constant for the blogsPostPhoto event type. </p></div>
+<a name="CONTACTS_GET_LIST"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">CONTACTS_GET_LIST</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const CONTACTS_GET_LIST:String = "contactsGetList"</code><p> Constant for the contactsGetList event type. </p></div>
+<a name="CONTACTS_GET_PUBLIC_LIST"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">CONTACTS_GET_PUBLIC_LIST</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const CONTACTS_GET_PUBLIC_LIST:String = "contactsGetPublicList"</code><p> Constant for the contactsGetPublicList event type. </p></div>
+<a name="FAVORITES_ADD"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FAVORITES_ADD</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const FAVORITES_ADD:String = "favoritesAdd"</code><p> Constant for the favoritesAdd event type. </p></div>
+<a name="FAVORITES_GET_LIST"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FAVORITES_GET_LIST</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const FAVORITES_GET_LIST:String = "favoritesGetList"</code><p> Constant for the favoritesGetList event type. </p></div>
+<a name="FAVORITES_GET_PUBLIC_LIST"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FAVORITES_GET_PUBLIC_LIST</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const FAVORITES_GET_PUBLIC_LIST:String = "favoritesGetPublicList"</code><p> Constant for the favoritesGetPublicList event type. </p></div>
+<a name="FAVORITES_REMOVE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FAVORITES_REMOVE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const FAVORITES_REMOVE:String = "favoritesRemove"</code><p> Constant for the favoritesRemove event type. </p></div>
+<a name="GROUPS_BROWSE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">GROUPS_BROWSE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const GROUPS_BROWSE:String = "groupsBrowse"</code><p> Constant for the groupsBrowse event type. </p></div>
+<a name="GROUPS_GET_INFO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">GROUPS_GET_INFO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const GROUPS_GET_INFO:String = "groupsGetInfo"</code><p> Constant for the groupsGetInfo event type. </p></div>
+<a name="GROUPS_POOLS_ADD"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">GROUPS_POOLS_ADD</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const GROUPS_POOLS_ADD:String = "groupsPoolsAdd"</code><p> Constant for the groupsPoolsAdd event type. </p></div>
+<a name="GROUPS_POOLS_GET_CONTEXT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">GROUPS_POOLS_GET_CONTEXT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const GROUPS_POOLS_GET_CONTEXT:String = "groupsPoolsGetContext"</code><p> Constant for the groupsPoolsGetContext event type. </p></div>
+<a name="GROUPS_POOLS_GET_GROUPS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">GROUPS_POOLS_GET_GROUPS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const GROUPS_POOLS_GET_GROUPS:String = "groupsPoolsGetGroups"</code><p> Constant for the groupsPoolsGetGroups event type. </p></div>
+<a name="GROUPS_POOLS_GET_PHOTOS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">GROUPS_POOLS_GET_PHOTOS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const GROUPS_POOLS_GET_PHOTOS:String = "groupsPoolsGetPhotos"</code><p> Constant for the groupsPoolsGetPhotos event type. </p></div>
+<a name="GROUPS_POOLS_REMOVE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">GROUPS_POOLS_REMOVE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const GROUPS_POOLS_REMOVE:String = "groupsPoolsRemove"</code><p> Constant for the groupsPoolRemove event type. </p></div>
+<a name="GROUPS_SEARCH"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">GROUPS_SEARCH</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const GROUPS_SEARCH:String = "groupsSearch"</code><p> Constant for the groupsSearch event type. </p></div>
+<a name="INTERESTINGNESS_GET_LIST"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">INTERESTINGNESS_GET_LIST</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const INTERESTINGNESS_GET_LIST:String = "interestingnessGetList"</code><p> Constant for the interestingnessGetList event type. </p></div>
+<a name="PEOPLE_FIND_BY_EMAIL"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PEOPLE_FIND_BY_EMAIL</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PEOPLE_FIND_BY_EMAIL:String = "peopleFindByEmail"</code><p> Constant for the peopleFindByEmail event type. </p></div>
+<a name="PEOPLE_FIND_BY_USERNAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PEOPLE_FIND_BY_USERNAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PEOPLE_FIND_BY_USERNAME:String = "peopleFindByUsername"</code><p> Constant for the peopleFindByUsername event type. </p></div>
+<a name="PEOPLE_GET_INFO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PEOPLE_GET_INFO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PEOPLE_GET_INFO:String = "peopleGetInfo"</code><p> Constant for the peopleGetInfo event type. </p></div>
+<a name="PEOPLE_GET_PUBLIC_GROUPS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PEOPLE_GET_PUBLIC_GROUPS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PEOPLE_GET_PUBLIC_GROUPS:String = "peopleGetPublicGroups"</code><p> Constant for the peopleGetPublicGroups event type. </p></div>
+<a name="PEOPLE_GET_PUBLIC_PHOTOS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PEOPLE_GET_PUBLIC_PHOTOS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PEOPLE_GET_PUBLIC_PHOTOS:String = "peopleGetPublicPhotos"</code><p> Constant for the peopleetPublicPhotos event type. </p></div>
+<a name="PEOPLE_GET_UPLOAD_STATUS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PEOPLE_GET_UPLOAD_STATUS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PEOPLE_GET_UPLOAD_STATUS:String = "peopleGetUploadStatus"</code><p> Constant for the peopleGetUploadStatus event type. </p></div>
+<a name="PHOTOS_ADD_TAGS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_ADD_TAGS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_ADD_TAGS:String = "photosAddTags"</code><p> Constant for the photosAddTags event type. </p></div>
+<a name="PHOTOSETS_ADD_PHOTO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_ADD_PHOTO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_ADD_PHOTO:String = "photosetsAddPhoto"</code><p> Constant for the photosetsAddPhoto event type. </p></div>
+<a name="PHOTOSETS_CREATE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_CREATE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_CREATE:String = "photosetsCreate"</code><p> Constant for the photosetsCreate event type. </p></div>
+<a name="PHOTOSETS_DELETE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_DELETE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_DELETE:String = "photosetsDelete"</code><p> Constant for the photosetsDelete event type. </p></div>
+<a name="PHOTOSETS_EDIT_META"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_EDIT_META</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_EDIT_META:String = "photosetsEditMeta"</code><p> Constant for the photosetsEditMeta event type. </p></div>
+<a name="PHOTOSETS_EDIT_PHOTOS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_EDIT_PHOTOS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_EDIT_PHOTOS:String = "photosetsEditPhotos"</code><p> Constant for the photosetsEditPhotos event type. </p></div>
+<a name="PHOTOSETS_GET_CONTEXT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_GET_CONTEXT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_GET_CONTEXT:String = "photosetsGetContext"</code><p> Constant for the photosetsGetContext event type. </p></div>
+<a name="PHOTOSETS_GET_INFO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_GET_INFO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_GET_INFO:String = "photosetsGetInfo"</code><p> Constant for the photosetsGetInfo event type. </p></div>
+<a name="PHOTOSETS_GET_LIST"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_GET_LIST</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_GET_LIST:String = "photosetsGetList"</code><p> Constant for the photosetsGetList event type. </p></div>
+<a name="PHOTOSETS_GET_PHOTOS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_GET_PHOTOS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_GET_PHOTOS:String = "photosetsGetPhotos"</code><p> Constant for the photosetsGetPhotos event type. </p></div>
+<a name="PHOTOSETS_ORDER_SETS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_ORDER_SETS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_ORDER_SETS:String = "photosetsOrderSets"</code><p> Constant for the photosets event type. </p></div>
+<a name="PHOTOSETS_REMOVE_PHOTO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOSETS_REMOVE_PHOTO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOSETS_REMOVE_PHOTO:String = "photosetsRemovePhoto"</code><p> Constant for the photosets event type. </p></div>
+<a name="PHOTOS_GET_ALL_CONTEXTS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_ALL_CONTEXTS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_ALL_CONTEXTS:String = "photosGetAllContexts"</code><p> Constant for the photosGetAllContexts event type. </p></div>
+<a name="PHOTOS_GET_CONTACTS_PHOTOS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_CONTACTS_PHOTOS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_CONTACTS_PHOTOS:String = "photosGetContactsPhotos"</code><p> Constant for the photosGetContactsPhotos event type. </p></div>
+<a name="PHOTOS_GET_CONTACTS_PUBLIC_PHOTOS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_CONTACTS_PUBLIC_PHOTOS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_CONTACTS_PUBLIC_PHOTOS:String = "photosGetContactsPublicPhotos"</code><p> Constant for the photosGetContactsPublicPhotos event type. </p></div>
+<a name="PHOTOS_GET_CONTEXT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_CONTEXT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_CONTEXT:String = "photosGetContext"</code><p> Constant for the photosGetContext event type. </p></div>
+<a name="PHOTOS_GET_COUNTS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_COUNTS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_COUNTS:String = "photosGetCounts"</code><p> Constant for the photosGetCounts event type. </p></div>
+<a name="PHOTOS_GET_EXIF"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_EXIF</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_EXIF:String = "photosGetExif"</code><p> Constant for the photosGetExif event type. </p></div>
+<a name="PHOTOS_GET_INFO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_INFO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_INFO:String = "photosGetInfo"</code><p> Constant for the photosGetInfo event type. </p></div>
+<a name="PHOTOS_GET_NOT_IN_SET"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_NOT_IN_SET</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_NOT_IN_SET:String = "photosGetNotInSet"</code><p> Constant for the photosGetNotInSet event type. </p></div>
+<a name="PHOTOS_GET_PERMS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_PERMS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_PERMS:String = "photosGetPerms"</code><p> Constant for the photosGetPerms event type. </p></div>
+<a name="PHOTOS_GET_RECENT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_RECENT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_RECENT:String = "photosGetRecent"</code><p> Constant for the photosGetRecent event type. </p></div>
+<a name="PHOTOS_GET_SIZES"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_SIZES</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_SIZES:String = "photosGetSizes"</code><p> Constant for the photosGetSizes event type. </p></div>
+<a name="PHOTOS_GET_UNTAGGED"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_GET_UNTAGGED</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_GET_UNTAGGED:String = "photosGetUntagged"</code><p> Constant for the photosGetUntagged event type. </p></div>
+<a name="PHOTOS_LICENSES_GET_INFO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_LICENSES_GET_INFO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_LICENSES_GET_INFO:String = "photosLicensesGetInfo"</code><p> Constant for the photosLicensesGetInfo event type. </p></div>
+<a name="PHOTOS_LICENSES_SET_LICENSE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_LICENSES_SET_LICENSE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_LICENSES_SET_LICENSE:String = "photosLicensesSetLicense"</code><p> Constant for the photosLicensesSetLicense event type. </p></div>
+<a name="PHOTOS_NOTES_ADD"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_NOTES_ADD</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_NOTES_ADD:String = "photosNotesAdd"</code><p> Constant for the photosNotesAdd event type. </p></div>
+<a name="PHOTOS_NOTES_DELETE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_NOTES_DELETE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_NOTES_DELETE:String = "photosNotesDelete"</code><p> Constant for the photosNotesDelete event type. </p></div>
+<a name="PHOTOS_NOTES_EDIT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_NOTES_EDIT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_NOTES_EDIT:String = "photosNotesEdit"</code><p> Constant for the photosNotesEdit event type. </p></div>
+<a name="PHOTOS_REMOVE_TAG"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_REMOVE_TAG</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_REMOVE_TAG:String = "photosRemoveTag"</code><p> Constant for the photosRemoveTag event type. </p></div>
+<a name="PHOTOS_SEARCH"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_SEARCH</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_SEARCH:String = "photosSearch"</code><p> Constant for the photosSearch event type. </p></div>
+<a name="PHOTOS_SET_DATES"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_SET_DATES</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_SET_DATES:String = "photosSetDates"</code><p> Constant for the photosSetDates event type. </p></div>
+<a name="PHOTOS_SET_META"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_SET_META</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_SET_META:String = "photosSetMeta"</code><p> Constant for the photosSetMeta event type. </p></div>
+<a name="PHOTOS_SET_PERMS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_SET_PERMS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_SET_PERMS:String = "photosSetPerms"</code><p> Constant for the photosSetPerms event type. </p></div>
+<a name="PHOTOS_SET_TAGS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_SET_TAGS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_SET_TAGS:String = "photosSetTags"</code><p> Constant for the photosSetTags event type. </p></div>
+<a name="PHOTOS_TRANSFORM_ROTATE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_TRANSFORM_ROTATE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_TRANSFORM_ROTATE:String = "photosTransformRotate"</code><p> Constant for the photosTransformRotate event type. </p></div>
+<a name="PHOTOS_UPLOAD_CHECK_TICKETS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PHOTOS_UPLOAD_CHECK_TICKETS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PHOTOS_UPLOAD_CHECK_TICKETS:String = "photosUploadCheckTickets"</code><p> Constant for the photosUploadCheckTickets event type. </p></div>
+<a name="TAGS_GET_LIST_PHOTO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TAGS_GET_LIST_PHOTO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TAGS_GET_LIST_PHOTO:String = "tagsGetListPhoto"</code><p> Constant for the tagsGetListPhoto event type. </p></div>
+<a name="TAGS_GET_LIST_USER"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TAGS_GET_LIST_USER</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TAGS_GET_LIST_USER:String = "tagsGetListUser"</code><p> Constant for the tagsGetListUser event type. </p></div>
+<a name="TAGS_GET_LIST_USER_POPULAR"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TAGS_GET_LIST_USER_POPULAR</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TAGS_GET_LIST_USER_POPULAR:String = "tagsGetListUserPopular"</code><p> Constant for the tagsGetListUserPopular event type. </p></div>
+<a name="TAGS_GET_RELATED"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TAGS_GET_RELATED</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TAGS_GET_RELATED:String = "tagsGetRelated"</code><p> Constant for the tagsGetRelated event type. </p></div>
+<a name="TEST_ECHO"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TEST_ECHO</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TEST_ECHO:String = "testEcho"</code><p> Constant for the testEcho event type. </p></div>
+<a name="TEST_LOGIN"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TEST_LOGIN</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TEST_LOGIN:String = "testLogin"</code><p> Constant for the testLogin event type. </p></div>
+<a name="URLS_GET_GROUP"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">URLS_GET_GROUP</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const URLS_GET_GROUP:String = "urlsGetGroup"</code><p> Constant for the urlsGetGroup event type. </p></div>
+<a name="URLS_GET_USER_PHOTOS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">URLS_GET_USER_PHOTOS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const URLS_GET_USER_PHOTOS:String = "urlsGetUserPhotos"</code><p> Constant for the urlsGetUserPhotos event type. </p></div>
+<a name="URLS_GET_USER_PROFILE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">URLS_GET_USER_PROFILE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const URLS_GET_USER_PROFILE:String = "urlsGetUserProfile"</code><p> Constant for the urlsGetUserProfile event type. </p></div>
+<a name="URLS_LOOKUP_GROUP"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">URLS_LOOKUP_GROUP</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const URLS_LOOKUP_GROUP:String = "urlsLookupGroup"</code><p> Constant for the urlsLookupGroup event type. </p></div>
+<a name="URLS_LOOKUP_USER"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">URLS_LOOKUP_USER</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const URLS_LOOKUP_USER:String = "urlsLookupUser"</code><p> Constant for the urlsLookupUser event type. </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">
+<footer> 
+</footer>
+</center>
+</div>
+</body>
+</html>
+<!-- -->

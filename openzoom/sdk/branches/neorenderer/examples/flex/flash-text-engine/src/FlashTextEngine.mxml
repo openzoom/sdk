@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:components="org.openzoom.flex.components.*"
+	xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
+	xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
+	xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
+	backgroundGradientColors="[0xFFFFFF, 0xFFFFFF]"
+	applicationComplete="applicationCompleteHandler(event)"
+	layout="absolute"
+	>
+	<mx:Script>
+		<![CDATA[
+		
+		    import flashx.textLayout.container.ContainerController;
+			import flashx.textLayout.conversion.TextFilter;
+			import flashx.textLayout.elements.TextFlow;
+			
+			import org.openzoom.flash.utils.ExternalMouseWheel;
+
+            private var loader:URLLoader
+            private var textContainer:Sprite
+
+            private function applicationCompleteHandler(event:Event):void
+            {
+            	ExternalMouseWheel.initialize(systemManager.stage)
+            	
+            	loader = new URLLoader(new URLRequest("document.xml"))
+            	loader.addEventListener(Event.COMPLETE, loader_completeHandler)
+            	
+            	textContainer = new Sprite()
+            	container.addChild(textContainer)
+            }
+
+			private function loader_completeHandler(event:Event):void
+			{
+   	            var document:String = loader.data
+	            var textFlow:TextFlow = TextFilter.importToFlow(document,
+	                                             TextFilter.TEXT_LAYOUT_FORMAT)
+	            
+                textFlow.flowComposer.addController(
+                    new ContainerController(textContainer,
+	                                                     container.sceneWidth,
+	                                                     container.sceneHeight))
+                textFlow.columnCount = 16
+                textFlow.columnGap = 10
+	            textFlow.flowComposer.updateAllControllers()
+	            textFlow.color = 0xFFFFFF
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<components:MultiScaleContainer
+		id="container"
+		top="0" right="0" bottom="0" left="0"
+		sceneWidth="4000"
+		sceneHeight="2000"
+		>
+		<components:transformer>
+			<transformers:TweenerTransformer/>
+		</components:transformer>
+		<components:controllers>
+			<controllers:MouseController/>
+			<controllers:KeyboardController/>
+			<controllers:ContextMenuController/>
+		</components:controllers>
+	</components:MultiScaleContainer>
+</mx:Application>

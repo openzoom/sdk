@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:openzoom="org.openzoom.flex.components.*"
+    xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
+    xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
+    xmlns:test="test.*"
+    backgroundGradientColors="[0, 0]"
+    layout="absolute"
+    >
+    <mx:Style>
+        @font-face {
+            src: local("Arial");
+            fontFamily: ArialEmbedded;
+            advancedAntiAliasing: true;
+        }
+    </mx:Style>
+    <mx:Script>
+        <![CDATA[
+
+            import test.Circle;
+            import mx.controls.Button;
+
+
+            private function play_clickHandler(event:Event):void
+            {
+                createStuff()
+            }
+
+            private function play11_clickHandler(event:Event):void
+            {
+                for (var i:int = 0; i < 11; i++)
+                    createStuff()
+            }
+
+            private function createStuff():void
+            {
+                if (Math.random() < 0.042)
+                {
+                    var circle:Circle = new Circle()
+                    circle.color = Math.random() * 0xFFFFFF
+                    circle.radius = Math.random() * 1000 + 20
+                    circle.x = Math.max(0, Math.random() * container.sceneWidth  - circle.radius - 100)
+                    circle.y = Math.max(0, Math.random() * container.sceneHeight - circle.radius - 100)
+                    container.addChild(circle)
+                }
+                else
+                {
+                    var textField:TextField = new TextField()
+                    textField.defaultTextFormat = new TextFormat("ArialEmbedded", 8 /* Math.random() * 180 + 20 */, Math.random() * 0xFFFFFF, true)
+                    textField.text =
+                        'The standard Lorem Ipsum passage, used since the 1500s' +
+						'"Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' +
+						'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ' +
+						'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ' +
+						'ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in ' +
+						'voluptate velit esse cillum dolore eu fugiat nulla pariatur. ' +
+						'Excepteur sint occaecat cupidatat non proident, sunt in culpa' +
+						' qui officia deserunt mollit anim id est laborum."' +
+						'Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC' +
+						'"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,' +
+						'totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt ' +
+						'explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur' +
+						' magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum' +
+						' quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et' +
+						' dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid' +
+						' ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur' +
+						', vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"'
+                    textField.width = 100//Math.random() * 1000 + 800
+                    textField.height = Math.random() * 3000 + 4000
+                    textField.x = Math.max(0, Math.random() * container.sceneWidth - textField.width - 100)
+                    textField.y = Math.max(0, Math.random() * container.sceneHeight - textField.height - 100)
+                    textField.selectable = false
+                    textField.multiline = true
+                    textField.wordWrap = true
+                    textField.embedFonts = true
+                    container.addChild(textField)
+                }
+        }
+
+        ]]>
+    </mx:Script>
+
+    <openzoom:MultiScaleContainer
+        id="container"
+        top="40"
+        right="0"
+        bottom="0"
+        left="0"
+        sceneWidth="2000"
+        sceneHeight="8000"
+        >
+        <openzoom:controllers>
+            <controllers:KeyboardController/>
+            <controllers:MouseController/>
+            <controllers:ContextMenuController/>
+        </openzoom:controllers>
+        <openzoom:transformer>
+            <transformers:TweenerTransformer/>
+        </openzoom:transformer>
+    </openzoom:MultiScaleContainer>
+
+    <mx:Button
+        label="Play!"
+        click="play_clickHandler(event)"
+        top="5"
+        horizontalCenter="-38"
+        />
+
+    <mx:Button
+        label="11 x Play!"
+        click="play11_clickHandler(event)"
+        top="5"
+        horizontalCenter="38"
+        />
+</mx:Application>

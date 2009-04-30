@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:components="org.openzoom.flex.components.*"
+    xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
+    xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
+    layout="absolute"
+    backgroundGradientColors="[0, 0]"
+    applicationComplete="applicationCompleteHandler(event)"
+    >
+    <mx:Script>
+        <![CDATA[
+
+            import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
+            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+            import org.openzoom.flash.events.NetworkRequestEvent;
+            import org.openzoom.flash.net.INetworkRequest;
+            import org.openzoom.flash.net.NetworkQueue;
+            import org.openzoom.flash.renderers.MultiScaleImageRenderer;
+
+            import mx.events.FlexEvent;
+
+
+            private var loader:NetworkQueue
+            private var osmLayer:MultiScaleImageRenderer
+            private var blueMarbleLayer:MultiScaleImageRenderer
+
+            private const OSM_SOURCE:String = "openstreetmap.xml"
+            private const BLUE_MARBLE_SOURCE:String = "bluemarble.xml"
+
+
+            private function applicationCompleteHandler(event:FlexEvent):void
+            {
+                loader = new NetworkQueue()
+                loader.addRequest(BLUE_MARBLE_SOURCE, XML, BLUE_MARBLE_SOURCE)
+                      .addEventListener(NetworkRequestEvent.COMPLETE,
+                                        request_completeHandler,
+                                        false, 0, false)
+                loader.addRequest(OSM_SOURCE, XML, OSM_SOURCE)
+                      .addEventListener(NetworkRequestEvent.COMPLETE,
+                                        request_completeHandler,
+                                        false, 0, false)
+            }
+
+            private function request_completeHandler(event:NetworkRequestEvent):void
+            {
+                var context:String = event.context as String
+                var factory:MultiScaleImageDescriptorFactory =
+                                  MultiScaleImageDescriptorFactory.getInstance()
+                var descriptor:IMultiScaleImageDescriptor =
+                           factory.getDescriptor(event.uri, new XML(event.data))
+                var layerRenderer:MultiScaleImageRenderer =
+                              new MultiScaleImageRenderer(descriptor,
+                                                          container.loader,
+                                                          container.sceneWidth,
+                                                          container.sceneHeight)
+
+                if (context == BLUE_MARBLE_SOURCE)
+                    osmLayer = layerRenderer
+                else
+                    blueMarbleLayer = layerRenderer
+
+                layerRenderer.alpha = 0.5
+                container.addChild(layerRenderer)
+            }
+
+            private function layerAlphaSlider_changeHandler(event:Event):void
+            {
+                if (!osmLayer || !blueMarbleLayer)
+                    return
+
+                osmLayer.alpha = layerAlphaSlider.value
+                blueMarbleLayer.alpha = 1 - layerAlphaSlider.value
+            }
+
+        ]]>
+    </mx:Script>
+    <components:MultiScaleContainer
+        id="container"
+        top="0"
+        right="0"
+        bottom="0"
+        left="0"
+        sceneWidth="16384"
+        sceneHeight="16384">
+        <components:transformer>
+            <transformers:TweenerTransformer/>
+        </components:transformer>
+        <components:controllers>
+            <controllers:KeyboardController/>
+            <controllers:MouseController/>
+        </components:controllers>
+    </components:MultiScaleContainer>
+
+    <mx:VSlider
+        id="layerAlphaSlider"
+        change="layerAlphaSlider_changeHandler(event)"
+        verticalCenter="0"
+        right="20"
+        minimum="0"
+        maximum="1.0"
+        value="0.5"
+        snapInterval="0.05"
+        liveDragging="true"
+        height="40%"
+        minHeight="200"
+        />
+</mx:Application>

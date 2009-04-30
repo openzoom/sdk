@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
+<meta content="FlickrError,com.adobe.webapis.flickr.FlickrError,INVALID_SIGNATURE,MISSING_SIGNATURE,LOGIN_FAILED,INSUFFICIENT_PERMISSIONS,INVALID_API_KEY,SERVICE_CURRENTLY_UNAVAILABLE,FORMAT_NOT_FOUND,METHOD_NOT_FOUND,INVALID_SOAP_ENVELOPE,INVALID_XML_RPC_CALL,errorCode,errorMessage" name="keywords">
+<title>com.adobe.webapis.flickr.FlickrError</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FlickrError - Adobe ActionScript 3.0 Library - flickr';
+				var baseRef = '../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../index.html?com/adobe/webapis/flickr/FlickrError.html&amp;com/adobe/webapis/flickr/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FlickrError</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FlickrError"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">com.adobe.webapis.flickr</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FlickrError</td>
+</tr>
+</table>
+<p></p>
+  These are the common errors that can happen during
+  a call to a flickr method.  Each method may have
+  some method-specific errors, and unfortunately
+  they don't share error #'s so we can't put them
+  in this class.
+    For instance, an error code of 1 for "flickr.blogs.postPhoto"
+  is "Blog not found", whereas the same code of 1 for
+  "flickr.photos.addTags" is "Photo not found", which means the
+  developer using this API will have to check the method-specific
+  errors by hand instead of with these constants.
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#errorCode">errorCode</a> : int<div class="summaryTableDescription">
+   The error code returned from Flickr
+      </div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#errorMessage">errorMessage</a> : String<div class="summaryTableDescription">
+   The error message returned from Flickr
+      </div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FlickrError()">FlickrError</a>()</div>
+<div class="summaryTableDescription">
+   Constructs a new FlickrError instance
+   </div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#FORMAT_NOT_FOUND">FORMAT_NOT_FOUND</a> : int = 111<div class="summaryTableDescription">[static] The requested response format was not found.</div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#INSUFFICIENT_PERMISSIONS">INSUFFICIENT_PERMISSIONS</a> : int = 99<div class="summaryTableDescription">[static] The method requires user authentication but the user was not logged in, or the authenticated method call did not have the required permissions.</div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#INVALID_API_KEY">INVALID_API_KEY</a> : int = 100<div class="summaryTableDescription">[static] The API key passed was not valid or has expired.</div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#INVALID_SIGNATURE">INVALID_SIGNATURE</a> : int = 96<div class="summaryTableDescription">[static] The passed signature was invalid.</div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#INVALID_SOAP_ENVELOPE">INVALID_SOAP_ENVELOPE</a> : int = 114<div class="summaryTableDescription">[static] The SOAP envelope send in the request could not be parsed.</div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#INVALID_XML_RPC_CALL">INVALID_XML_RPC_CALL</a> : int = 115<div class="summaryTableDescription">[static] The XML-RPC request document could not be parsed </div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LOGIN_FAILED">LOGIN_FAILED</a> : int = 98<div class="summaryTableDescription">[static] The login details or auth token passed were invalid.</div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#METHOD_NOT_FOUND">METHOD_NOT_FOUND</a> : int = 112<div class="summaryTableDescription">[static] The requested method was not found.</div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MISSING_SIGNATURE">MISSING_SIGNATURE</a> : int = 97<div class="summaryTableDescription">[static] The call required signing but no signature was sent.</div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SERVICE_CURRENTLY_UNAVAILABLE">SERVICE_CURRENTLY_UNAVAILABLE</a> : int = 105<div class="summaryTableDescription">[static] The requested service is temporarily unavailable.</div>
+</td><td class="summaryTableOwnerCol">FlickrError</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="errorCode"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">errorCode</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>errorCode:int</code>&nbsp;&nbsp;[read-write]<p>
+   The error code returned from Flickr
+      </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get errorCode():int</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set errorCode(value:int):void</code>
+<br>
+</div>
+<a name="errorMessage"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">errorMessage</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>errorMessage:String</code>&nbsp;&nbsp;[read-write]<p>
+   The error message returned from Flickr
+      </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get errorMessage():String</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set errorMessage(value:String):void</code>
+<br>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FlickrError()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FlickrError</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FlickrError()</code><p>
+   Constructs a new FlickrError instance
+   </p></div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="FORMAT_NOT_FOUND"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FORMAT_NOT_FOUND</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const FORMAT_NOT_FOUND:int = 111</code><p> The requested response format was not found. </p></div>
+<a name="INSUFFICIENT_PERMISSIONS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">INSUFFICIENT_PERMISSIONS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const INSUFFICIENT_PERMISSIONS:int = 99</code><p> The method requires user authentication but the user was not logged in, or the authenticated method call did not have the required permissions. </p></div>
+<a name="INVALID_API_KEY"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">INVALID_API_KEY</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const INVALID_API_KEY:int = 100</code><p> The API key passed was not valid or has expired. </p></div>
+<a name="INVALID_SIGNATURE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">INVALID_SIGNATURE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const INVALID_SIGNATURE:int = 96</code><p> The passed signature was invalid. </p></div>
+<a name="INVALID_SOAP_ENVELOPE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">INVALID_SOAP_ENVELOPE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const INVALID_SOAP_ENVELOPE:int = 114</code><p> The SOAP envelope send in the request could not be parsed. </p></div>
+<a name="INVALID_XML_RPC_CALL"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">INVALID_XML_RPC_CALL</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const INVALID_XML_RPC_CALL:int = 115</code><p> The XML-RPC request document could not be parsed </p></div>
+<a name="LOGIN_FAILED"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">LOGIN_FAILED</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const LOGIN_FAILED:int = 98</code><p> The login details or auth token passed were invalid. </p></div>
+<a name="METHOD_NOT_FOUND"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">METHOD_NOT_FOUND</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const METHOD_NOT_FOUND:int = 112</code><p> The requested method was not found. </p></div>
+<a name="MISSING_SIGNATURE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MISSING_SIGNATURE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MISSING_SIGNATURE:int = 97</code><p> The call required signing but no signature was sent. </p></div>
+<a name="SERVICE_CURRENTLY_UNAVAILABLE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SERVICE_CURRENTLY_UNAVAILABLE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SERVICE_CURRENTLY_UNAVAILABLE:int = 105</code><p> The requested service is temporarily unavailable. </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">
+<footer> 
+</footer>
+</center>
+</div>
+</body>
+</html>
+<!-- -->
