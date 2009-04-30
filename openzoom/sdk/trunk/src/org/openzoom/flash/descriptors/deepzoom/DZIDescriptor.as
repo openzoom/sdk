@@ -151,7 +151,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
-        var index:int = clamp(Math.ceil(log2), 0, maxLevel)
+        var index:int = clamp(Math.floor(log2), 0, maxLevel)
         
         return IMultiScaleImageLevel(getLevelAt(index)).clone()
     }
@@ -161,7 +161,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
      */
     public function clone():IMultiScaleImageDescriptor
     {
-        return new DZIDescriptor(uri, width, height, tileWidth, tileOverlap, type)
+        return new DZIDescriptor(uri, width, height, tileWidth, tileOverlap, extension)
     }
 
     //--------------------------------------------------------------------------
@@ -261,10 +261,8 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
             levels[ index ] = new MultiScaleImageLevel(this, index, width, height,
                                                        Math.ceil(width / tileWidth),
                                                        Math.ceil(height / tileHeight))
-            width = (width + 1) >> 1
-            height = (height + 1) >> 1
-//          width = Math.ceil(width / 2)
-//          height = Math.ceil(height / 2)
+            width = Math.ceil(width / 2)
+            height = Math.ceil(height / 2)
         }
 
 //        Twitter on 17.09.2008
