@@ -30,6 +30,7 @@ import flash.utils.setTimeout;
 
 import org.openzoom.flash.components.MultiScaleImage;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.utils.ExternalMouseWheel;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
 import org.openzoom.flash.viewport.constraints.MappingConstraint;

@@ -12,6 +12,7 @@
 </compiler>
 <applications>
 <application path="MappingFlex.mxml"/>
+<application path="GigaPanViewer.mxml"/>
 </applications>
 <modules/>
 <buildCSSFiles/>
