@@ -140,7 +140,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
      */
     public function getLevelAt(index:int):IMultiScaleImageLevel
     {
-        return IMultiScaleImageLevel(levels[index])
+        return levels[index]
     }
 
     /**
@@ -153,7 +153,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         var maxLevel:uint = numLevels - 1
         var index:int = clamp(Math.floor(log2), 0, maxLevel)
         
-        return IMultiScaleImageLevel(getLevelAt(index)).clone()
+        return getLevelAt(index)
     }
 
     /**

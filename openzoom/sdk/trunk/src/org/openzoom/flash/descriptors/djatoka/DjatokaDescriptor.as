@@ -110,14 +110,16 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
 
     public function getLevelAt(index:int):IMultiScaleImageLevel
     {
-        return IMultiScaleImageLevel(levels[index])
+        return levels[index]
     }
 
     public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
-        var index:int = clamp(Math.ceil(Math.log(Math.max(width, height)) / Math.LN2)
-                                     - DEFAULT_BASE_LEVEL, 0, numLevels - 1)
-        return IMultiScaleImageLevel(getLevelAt(index)).clone()
+    	var maxLevel:uint = numLevels - 1
+    	var longestSide:Number = Math.max(width, height)
+    	var log2:Number = Math.log(longestSide) / Math.LN2
+        var index:int = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
+        return getLevelAt(index)
     }
 
     public function getTileURL(level:int, column:uint, row:uint):String

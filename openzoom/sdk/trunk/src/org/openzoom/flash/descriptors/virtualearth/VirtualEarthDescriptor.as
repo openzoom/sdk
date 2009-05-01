@@ -67,10 +67,11 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
         for (var i:int = 0; i < DEFAULT_NUM_LEVELS; i++)
         {
             var size:uint = uint(Math.pow(2, DEFAULT_BASE_LEVEL + i))
-            levels.push(new MultiScaleImageLevel(this, i,
-                                                 size, size,
-                                                 size / tileWidth,
-                                                 size / tileHeight))
+            var columns:uint = Math.ceil(size / tileWidth)
+            var rows:uint = Math.ceil(size / tileHeight)
+            var level:IMultiScaleImageLevel =
+                    new MultiScaleImageLevel(this, i, size, size, columns, rows) 
+            levels.push(level)
         }
     }
 
@@ -106,7 +107,7 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
         var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
-        return levels[index]
+        return getLevelAt(index)
     }
 
     /**
