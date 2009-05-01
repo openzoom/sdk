@@ -118,8 +118,8 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         bounds.y = (row * tileHeight) - offsetY
         
         var l:IMultiScaleImageLevel = getLevelAt(level)
-        var width:uint = tileWidth + (column == 0 ? 1:2) * tileOverlap
-        var height:uint = tileHeight + (row == 0 ? 1:2) * tileOverlap
+        var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
+        var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
         bounds.width = Math.min(width, l.width - bounds.x)
         bounds.height = Math.min(height, l.height - bounds.y)
                 

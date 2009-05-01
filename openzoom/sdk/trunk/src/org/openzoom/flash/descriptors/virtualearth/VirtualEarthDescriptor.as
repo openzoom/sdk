@@ -45,7 +45,7 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
     private static const DEFAULT_TILE_SIZE:uint = 256
     private static const DEFAULT_TILE_FORMAT:String = "image/jpeg"
     private static const DEFAULT_TILE_OVERLAP:uint = 0
-    private static const DEFAULT_BASE_LEVEL:uint = 8
+    private static const DEFAULT_BASE_LEVEL:uint = 9
 
     //--------------------------------------------------------------------------
     //
@@ -66,7 +66,7 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
 
         for (var i:int = 0; i < DEFAULT_NUM_LEVELS; i++)
         {
-            var size:uint = uint(Math.pow(2, DEFAULT_BASE_LEVEL + (i + 1)))
+            var size:uint = uint(Math.pow(2, DEFAULT_BASE_LEVEL + i))
             levels.push(new MultiScaleImageLevel(this, i,
                                                  size, size,
                                                  size / tileWidth,
@@ -104,7 +104,8 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
     {
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
-        var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL - 1, 0, numLevels - 1)
+        var maxLevel:uint = numLevels - 1
+        var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
         return levels[index]
     }
 
