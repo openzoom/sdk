@@ -36,14 +36,14 @@ public class DZIDescriptorTest extends TestCase
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    	
-	private static const DESCRIPTOR_XML : XML =
-		<Image xmlns="http://schemas.microsoft.com/deepzoom/2008"
-		       TileSize="100" Overlap="0" Format="jpg">
-			<Size Width="2592" Height="3872"/>
-		</Image>;
-		
-    private static const LEVELS : Array =
+
+    private static const DESCRIPTOR_XML:XML =
+        <Image xmlns="http://schemas.microsoft.com/deepzoom/2008"
+               TileSize="100" Overlap="0" Format="jpg">
+            <Size Width="2592" Height="3872"/>
+        </Image>;
+
+    private static const LEVELS:Array =
         [// width, height, columns, rows
             [   1,      1,       1,    1 ],
             [   2,      2,       1,    1 ],
@@ -65,62 +65,62 @@ public class DZIDescriptorTest extends TestCase
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
-	private var descriptor : IMultiScaleImageDescriptor
-	
+
+    private var descriptor:IMultiScaleImageDescriptor
+
     //--------------------------------------------------------------------------
     //
     //  Overridden methods: TestCase
     //
     //--------------------------------------------------------------------------
-    
-	override public function setUp() : void
-	{
-		descriptor = DZIDescriptor.fromXML("test.xml", DESCRIPTOR_XML) 
-	}
-	
-	override public function tearDown() : void
-	{
-		descriptor = null
-	}
-	
+
+    override public function setUp():void
+    {
+        descriptor = DZIDescriptor.fromXML("test.xml", DESCRIPTOR_XML)
+    }
+
+    override public function tearDown():void
+    {
+        descriptor = null
+    }
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Tests
     //
     //--------------------------------------------------------------------------
-	
-	public function testMaxLevel() : void
-	{
-		assertEquals("Maximum level correctly computed", 12, descriptor.numLevels - 1)
-	}
-	
-	public function testOverlap() : void
-	{
-		assertEquals("Overlap correct", 0, descriptor.tileOverlap)
-	}
-	
-	public function testLevels() : void
-	{	   
-	   for(var index : int = 0; index < descriptor.numLevels; index++)
-	   {
-	   	   var level : IMultiScaleImageLevel = descriptor.getLevelAt(index)
-		   assertEquals("Width on level "        + level.index, LEVELS[ level.index ][ 0 ], level.width)
-		   assertEquals("Height on level "       + level.index, LEVELS[ level.index ][ 1 ], level.height)
-		   assertEquals("Column count on level " + level.index, LEVELS[ level.index ][ 2 ], level.numColumns)
-		   assertEquals("Row count on level "    + level.index, LEVELS[ level.index ][ 3 ], level.numRows)
-	   }
-	   
-	}
-	
-	public function testGetMinimumLevelForSize() : void
-	{
-	   assertEquals("Level computation for given size", descriptor.numLevels - 1,
-	       descriptor.getMinLevelForSize(descriptor.width, descriptor.height).index)
-	       	
-	   assertEquals("Level computation for given size", descriptor.numLevels - 2,
-	       descriptor.getMinLevelForSize(descriptor.width / 3, descriptor.height / 3).index)	
-	}
+
+    public function testMaxLevel():void
+    {
+        assertEquals("Maximum level correctly computed", 12, descriptor.numLevels - 1)
+    }
+
+    public function testOverlap():void
+    {
+        assertEquals("Overlap correct", 0, descriptor.tileOverlap)
+    }
+
+    public function testLevels():void
+    {
+       for (var index:int = 0; index < descriptor.numLevels; index++)
+       {
+              var level:IMultiScaleImageLevel = descriptor.getLevelAt(index)
+           assertEquals("Width on level "        + level.index, LEVELS[level.index][0], level.width)
+           assertEquals("Height on level "       + level.index, LEVELS[level.index][1], level.height)
+           assertEquals("Column count on level " + level.index, LEVELS[level.index][2], level.numColumns)
+           assertEquals("Row count on level "    + level.index, LEVELS[level.index][3], level.numRows)
+       }
+
+    }
+
+    public function testGetMinimumLevelForSize():void
+    {
+       assertEquals("Level computation for given size", descriptor.numLevels - 1,
+           descriptor.getMinLevelForSize(descriptor.width, descriptor.height).index)
+
+       assertEquals("Level computation for given size", descriptor.numLevels - 2,
+           descriptor.getMinLevelForSize(descriptor.width / 2 - 1, descriptor.height / 2 - 1).index)
+    }
 }
 
 }
