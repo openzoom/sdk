@@ -47,7 +47,7 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 [Event(name="removedFromScene", type="org.openzoom.flash.events.RendererEvent")]
 
 /**
- * Renderer base class.
+ * Base class for all renderers on a multiscale scene.
  */
 public class Renderer extends Sprite
                       implements IRenderer
@@ -89,12 +89,12 @@ public class Renderer extends Sprite
     {
         if (scene === value)
             return
-        
+
         if (!value)
             dispatchEvent(new RendererEvent(RendererEvent.REMOVED_FROM_SCENE))
 
         _scene = value
-        
+
         if (_scene)
             dispatchEvent(new RendererEvent(RendererEvent.ADDED_TO_SCENE))
     }
@@ -124,15 +124,15 @@ public class Renderer extends Sprite
     //----------------------------------
     //  zoom
     //----------------------------------
-    
+
     public function get zoom():Number
     {
-    	if (!viewport)
-    	   return NaN
-    	 
+        if (!viewport)
+           return NaN
+
         var normalizedWidth:Number = width / scene.sceneWidth
         var normalizedHeight:Number = height / scene.sceneHeight
-        
+
         return Math.max(normalizedWidth / viewport.width,
                         normalizedHeight / viewport.height)
     }
