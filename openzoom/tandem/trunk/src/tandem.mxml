@@ -2,6 +2,13 @@
 <s:Application
 	xmlns="http://ns.adobe.com/mxml/2009"
 	xmlns:s="library://ns.adobe.com/flex/spark"
-	backgroundColor="#111111">
-	<s:Button width="200" height="200" label="gasi" horizontalCenter="0" verticalCenter="0"/>
+	backgroundColor="#111111"
+	>
+	<s:Button
+		width="120" 
+        height="40"
+        label="gasi"
+        horizontalCenter="0"
+        verticalCenter="0"
+        />
 </s:Application>
