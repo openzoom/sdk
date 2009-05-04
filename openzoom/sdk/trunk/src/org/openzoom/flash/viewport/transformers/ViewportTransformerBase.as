@@ -25,7 +25,7 @@ import org.openzoom.flash.viewport.ITransformerViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.constraints.NullConstraint;
-	
+
 /**
  * Base class for implementations of IViewportTransformer providing basic
  * getters and setters.
@@ -45,7 +45,7 @@ public class ViewportTransformerBase
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
      */
@@ -124,10 +124,10 @@ public class ViewportTransformerBase
     //  Methods: IViewportTransformer
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function transform(target:IViewportTransform,
                               immediately:Boolean=false):void
     {

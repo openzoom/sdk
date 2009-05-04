@@ -45,20 +45,20 @@ public class DZIDescriptorTest extends TestCase
 
     private static const LEVELS:Array =
         [// width, height, columns, rows
-            [   1,      1,       1,    1 ],
-            [   2,      2,       1,    1 ],
-            [   3,      4,       1,    1 ],
-            [   6,      8,       1,    1 ],
-            [   11,    16,       1,    1 ],
-            [   21,    31,       1,    1 ],
-            [   41,    61,       1,    1 ],
-            [   81,   121,       1,    2 ],
-            [  162,   242,       2,    3 ],
-            [  324,   484,       4,    5 ],
-            [  648,   968,       7,   10 ],
-            [ 1296,  1936,      13,   20 ],
-            [ 2592,  3872,      26,   39 ],
-        ]
+            [  1,      1,       1,    1],
+            [  2,      2,       1,    1],
+            [  3,      4,       1,    1],
+            [  6,      8,       1,    1],
+            [  11,    16,       1,    1],
+            [  21,    31,       1,    1],
+            [  41,    61,       1,    1],
+            [  81,   121,       1,    2],
+            [ 162,   242,       2,    3],
+            [ 324,   484,       4,    5],
+            [ 648,   968,       7,   10],
+            [1296,  1936,      13,   20],
+            [2592,  3872,      26,   39],
+       ]
 
     //--------------------------------------------------------------------------
     //
@@ -104,22 +104,22 @@ public class DZIDescriptorTest extends TestCase
     {
        for (var index:int = 0; index < descriptor.numLevels; index++)
        {
-              var level:IMultiScaleImageLevel = descriptor.getLevelAt(index)
-           assertEquals("Width on level "        + level.index, LEVELS[level.index][0], level.width)
-           assertEquals("Height on level "       + level.index, LEVELS[level.index][1], level.height)
-           assertEquals("Column count on level " + level.index, LEVELS[level.index][2], level.numColumns)
-           assertEquals("Row count on level "    + level.index, LEVELS[level.index][3], level.numRows)
+            var level:IMultiScaleImageLevel = descriptor.getLevelAt(index)
+            assertEquals("Width on level "        + level.index, LEVELS[level.index][0], level.width)
+            assertEquals("Height on level "       + level.index, LEVELS[level.index][1], level.height)
+            assertEquals("Column count on level " + level.index, LEVELS[level.index][2], level.numColumns)
+            assertEquals("Row count on level "    + level.index, LEVELS[level.index][3], level.numRows)
        }
 
     }
 
     public function testGetMinimumLevelForSize():void
     {
-       assertEquals("Level computation for given size", descriptor.numLevels - 1,
-           descriptor.getMinLevelForSize(descriptor.width, descriptor.height).index)
+        assertEquals("Level computation for given size", descriptor.numLevels - 1,
+            descriptor.getMinLevelForSize(descriptor.width, descriptor.height).index)
 
-       assertEquals("Level computation for given size", descriptor.numLevels - 2,
-           descriptor.getMinLevelForSize(descriptor.width / 2 - 1, descriptor.height / 2 - 1).index)
+        assertEquals("Level computation for given size", descriptor.numLevels - 2,
+            descriptor.getMinLevelForSize(descriptor.width / 2 - 1, descriptor.height / 2 - 1).index)
     }
 }
 

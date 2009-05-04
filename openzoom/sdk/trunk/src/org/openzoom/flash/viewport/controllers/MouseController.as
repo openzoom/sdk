@@ -281,7 +281,7 @@ public class MouseController extends ViewportControllerBase
      * @private
      */
     private function view_mouseDownHandler(event:MouseEvent):void
-    {    	
+    {
         view.addEventListener(MouseEvent.MOUSE_UP,
                               view_mouseUpHandler,
                               false, 0, true)

@@ -196,7 +196,7 @@ public class ContextMenuController extends ViewportControllerBase
         }
 
         if (panLeft)
-        {    
+        {
             panLeftMenu = new ContextMenuItem(PAN_LEFT_MENU_CAPTION)
             panLeftMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
                                          panLeftMenu_menuItemSelectHandler,

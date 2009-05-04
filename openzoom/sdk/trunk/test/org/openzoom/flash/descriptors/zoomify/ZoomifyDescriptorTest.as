@@ -43,12 +43,12 @@ public class ZoomifyDescriptorTest extends TestCase
 
     private static const LEVELS:Array =
         [//  width, height, columns, rows
-            [   137,   205,       1,    1 ],
-            [   275,   411,       2,    2 ],
-            [   550,   822,       3,    4 ],
-            [  1101,  1645,       5,    7 ],
-            [  2203,  3290,       9,   13 ],
-        ]
+            [  137,   205,       1,    1],
+            [  275,   411,       2,    2],
+            [  550,   822,       3,    4],
+            [ 1101,  1645,       5,    7],
+            [ 2203,  3290,       9,   13],
+       ]
 
     //--------------------------------------------------------------------------
     //
@@ -97,13 +97,13 @@ public class ZoomifyDescriptorTest extends TestCase
        {
               var level:IMultiScaleImageLevel = descriptor.getLevelAt(index)
            assertEquals("Width on level "        + level.index,
-                         LEVELS[ level.index ][ 0 ], level.width)
+                         LEVELS[level.index][0], level.width)
            assertEquals("Height on level "       + level.index,
-                         LEVELS[ level.index ][ 1 ], level.height)
+                         LEVELS[level.index][1], level.height)
            assertEquals("Column count on level " + level.index,
-                         LEVELS[ level.index ][ 2 ], level.numColumns)
+                         LEVELS[level.index][2], level.numColumns)
            assertEquals("Row count on level "    + level.index,
-                         LEVELS[ level.index ][ 3 ], level.numRows)
+                         LEVELS[level.index][3], level.numRows)
        }
 
     }
@@ -113,7 +113,7 @@ public class ZoomifyDescriptorTest extends TestCase
        assertEquals("Level computation for given size", descriptor.numLevels - 1,
            descriptor.getMinLevelForSize(descriptor.width, descriptor.height).index)
 
-       assertEquals("Level computation for given size", descriptor.numLevels - 2,
+       assertEquals("Level computation for given size", descriptor.numLevels - 3,
            descriptor.getMinLevelForSize(descriptor.width / 2 - 1, descriptor.height / 2 - 1).index)
     }
 }

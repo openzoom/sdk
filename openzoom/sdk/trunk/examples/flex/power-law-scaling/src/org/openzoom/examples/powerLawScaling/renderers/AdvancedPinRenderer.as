@@ -6,9 +6,9 @@ import org.openzoom.flash.events.RendererEvent;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.renderers.Renderer;
 
-public class PinRenderer extends Renderer
+public class AdvancedPinRenderer extends Renderer
 {
-	public function PinRenderer()
+	public function AdvancedPinRenderer()
 	{
         addEventListener(RendererEvent.ADDED_TO_SCENE,
                          addedToSceneHandler,
@@ -36,8 +36,6 @@ public class PinRenderer extends Renderer
         var factor:Number = Math.log(1 / viewport.width) / Math.LN2
         var scale:Number = Math.pow(0.02 * (factor + 1), 2) + 0.01
 		scaleX = scaleY = scale / viewport.scale * 16
-		
-//		scaleX = scaleY = 1 / viewport.scale
 	}
 }
 

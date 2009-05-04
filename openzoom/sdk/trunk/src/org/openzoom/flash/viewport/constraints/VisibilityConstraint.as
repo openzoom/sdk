@@ -89,9 +89,9 @@ public class VisibilityConstraint implements IViewportConstraint
     public function validate(transform:IViewportTransform,
                              target:IViewportTransform):IViewportTransform
     {
-    	// FIXME: Issue 5
-    	// http://code.google.com/p/open-zoom/issues/detail?id=5
-    	
+        // FIXME: Issue 5
+        // http://code.google.com/p/open-zoom/issues/detail?id=5
+
         var x:Number = transform.x
         var y:Number = transform.y
 

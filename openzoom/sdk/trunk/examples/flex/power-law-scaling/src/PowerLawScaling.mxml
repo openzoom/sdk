@@ -11,12 +11,14 @@
     >
     <mx:Script>
         <![CDATA[
+        	import org.openzoom.examples.powerLawScaling.renderers.SimplePinRenderer;
+        	import org.openzoom.flash.renderers.Renderer;
 
             import mx.events.FlexEvent;
             
             import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
             import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
-            import org.openzoom.examples.powerLawScaling.renderers.PinRenderer;
+            import org.openzoom.examples.powerLawScaling.renderers.AdvancedPinRenderer;
 
 
             [Bindable]
@@ -34,7 +36,13 @@
             {
                 for each (var place:Point in places)
                 {
-                    var pin:PinRenderer = new PinRenderer()
+                    var pin:Renderer
+                    
+                    if (Math.random() > 0.5)
+                         pin = new AdvancedPinRenderer()
+                    else
+                         pin = new SimplePinRenderer()
+                    
                     pin.x = place.x * map.sceneWidth
                     pin.y = place.y * map.sceneHeight
                     map.addChild(pin)
@@ -54,7 +62,7 @@
         source="{mapDescriptor}"
         >
         <openzoom:controllers>
-            <controllers:MouseController/>
+            <controllers:MouseController smoothPanning="false"/>
             <controllers:KeyboardController/>
             <controllers:ContextMenuController/>
         </openzoom:controllers>

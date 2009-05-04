@@ -510,7 +510,7 @@ public final class MultiScaleContainer extends UIComponent
 
     override public function addChild(child:DisplayObject):DisplayObject
     {
-        return addChildAt(child, Math.max(0, numChildren - 1))
+        return addChildAt(child, numChildren)
     }
 
     override public function removeChild(child:DisplayObject):DisplayObject
@@ -592,11 +592,8 @@ public final class MultiScaleContainer extends UIComponent
                                      DEFAULT_SCENE_BACKGROUND_COLOR,
                                      DEFAULT_SCENE_BACKGROUND_ALPHA)
 
-//      _scene = new MultiScaleScene()
-//      scene.sceneWidth = DEFAULT_SCENE_WIDTH
-//      scene.sceneHeight = DEFAULT_SCENE_HEIGHT
-
         super.addChild(_scene)
+        
         dispatchEvent(new Event("sceneChanged"))
     }
 
@@ -606,12 +603,12 @@ public final class MultiScaleContainer extends UIComponent
     private function createMouseCatcher():void
     {
         mouseCatcher = new Sprite()
+        
         var g:Graphics = mouseCatcher.graphics
         g.beginFill(0x000000, 0)
         g.drawRect(0, 0, 100, 100)
         g.endFill()
 
-        // TODO: Test
         mouseCatcher.mouseEnabled = false
 
         super.addChild(mouseCatcher)
@@ -623,12 +620,14 @@ public final class MultiScaleContainer extends UIComponent
     private function createContentMask():void
     {
         contentMask = new Shape()
+        
         var g:Graphics = contentMask.graphics
         g.beginFill(0xFF0000, 0)
         g.drawRect(0, 0, 100, 100)
         g.endFill()
 
         super.addChild(contentMask)
+        
         mask = contentMask
     }
 

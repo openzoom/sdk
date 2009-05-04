@@ -48,9 +48,9 @@ public class Base16Test extends TestCase
     {
         for (var i:int = 0; i < SAMPLES.length; i++)
         {
-            var testCase:Array = SAMPLES[ i ]
+            var testCase:Array = SAMPLES[i]
             assertEquals("Correct encoding",
-                          Base16.encode(testCase[ 0 ]), testCase[ 1 ])
+                          Base16.encode(testCase[0]), testCase[1])
         }
     }
 
@@ -58,9 +58,9 @@ public class Base16Test extends TestCase
     {
         for (var i:int = 0; i < SAMPLES.length; i++)
         {
-            var testCase:Array = SAMPLES[ i ]
+            var testCase:Array = SAMPLES[i]
             assertEquals("Correct decoding",
-                          testCase[ 0 ], Base16.decode(testCase[ 1 ]))
+                          testCase[0], Base16.decode(testCase[1]))
         }
     }
 }

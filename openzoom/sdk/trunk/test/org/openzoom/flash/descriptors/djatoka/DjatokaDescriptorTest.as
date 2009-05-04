@@ -41,14 +41,14 @@ public class DjatokaDescriptorTest extends TestCase
 
     private static const LEVELS:Array =
         [// width, height, columns, rows
-            [   38,    57,       1,    1 ],
-            [   76,   113,       1,    1 ],
-            [  151,   226,       1,    1 ],
-            [  302,   452,       2,    2 ],
-            [  604,   903,       3,    4 ],
-            [ 1208,  1805,       5,    8 ],
-            [ 2416,  3610,      10,   15 ],
-        ]
+            [  38,    57,       1,    1],
+            [  76,   113,       1,    1],
+            [ 151,   226,       1,    1],
+            [ 302,   452,       2,    2],
+            [ 604,   903,       3,    4],
+            [1208,  1805,       5,    8],
+            [2416,  3610,      10,   15],
+       ]
 
     //--------------------------------------------------------------------------
     //
@@ -101,10 +101,10 @@ public class DjatokaDescriptorTest extends TestCase
        for (var index:int = 0; index < descriptor.numLevels; index++)
        {
               var level:IMultiScaleImageLevel = descriptor.getLevelAt(index)
-           assertEquals("Width on level "        + level.index, LEVELS[ level.index ][ 0 ], level.width)
-           assertEquals("Height on level "       + level.index, LEVELS[ level.index ][ 1 ], level.height)
-           assertEquals("Column count on level " + level.index, LEVELS[ level.index ][ 2 ], level.numColumns)
-           assertEquals("Row count on level "    + level.index, LEVELS[ level.index ][ 3 ], level.numRows)
+           assertEquals("Width on level "        + level.index, LEVELS[level.index][0], level.width)
+           assertEquals("Height on level "       + level.index, LEVELS[level.index][1], level.height)
+           assertEquals("Column count on level " + level.index, LEVELS[level.index][2], level.numColumns)
+           assertEquals("Row count on level "    + level.index, LEVELS[level.index][3], level.numRows)
        }
 
     }
@@ -114,7 +114,7 @@ public class DjatokaDescriptorTest extends TestCase
        assertEquals("Level computation for given size", descriptor.numLevels - 1,
            descriptor.getMinLevelForSize(descriptor.width, descriptor.height).index)
 
-       assertEquals("Level computation for given size", descriptor.numLevels - 2,
+       assertEquals("Level computation for given size", descriptor.numLevels - 3,
            descriptor.getMinLevelForSize(descriptor.width / 2 - 1, descriptor.height / 2 - 1).index)
     }
 
