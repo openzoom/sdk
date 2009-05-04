@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:openzoom="org.openzoom.flex.components.*"
+    xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
+    xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
+    xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
+    backgroundGradientColors="[0, 0]"
+    layout="absolute"
+    applicationComplete="applicationCompleteHandler(event)"
+    >
+    <mx:Script>
+        <![CDATA[
+
+            import mx.events.FlexEvent;
+            
+            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+            import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
+            import org.openzoom.examples.powerLawScaling.renderers.PinRenderer;
+
+
+            [Bindable]
+            private var mapDescriptor:IMultiScaleImageDescriptor = new VirtualEarthDescriptor()
+
+            private var home:Point = new Point(0.5234956109333568, 0.35019891395599395)
+            private var dc:Point = new Point(0.2855689, 0.3823879)
+            private var paris:Point = new Point(0.5066923, 0.344025045)
+            private var taishet:Point = new Point(0.7722584793459052, 0.31177372230858197)
+            private var kock:Point = new Point(0.5623515278929161, 0.3319235593052571)
+            
+            private var places:Array = [home, dc, paris, taishet, kock]
+
+            private function applicationCompleteHandler(event:FlexEvent):void
+            {
+                for each (var place:Point in places)
+                {
+                    var pin:PinRenderer = new PinRenderer()
+                    pin.x = place.x * map.sceneWidth
+                    pin.y = place.y * map.sceneHeight
+                    map.addChild(pin)
+                }
+
+                scaleConstraint.maxScale = mapDescriptor.width / map.sceneWidth / 24
+            }
+
+        ]]>
+    </mx:Script>
+    <openzoom:MultiScaleImage
+        id="map"
+        top="0"
+        right="0"
+        bottom="0"
+        left="0"
+        source="{mapDescriptor}"
+        >
+        <openzoom:controllers>
+            <controllers:MouseController/>
+            <controllers:KeyboardController/>
+            <controllers:ContextMenuController/>
+        </openzoom:controllers>
+        <openzoom:transformer>
+            <transformers:TweenerTransformer duration="0.2" easing="easeOutSine"/>
+        </openzoom:transformer>
+        <openzoom:constraint>
+            <constraints:CompositeConstraint>
+               <constraints:ZoomConstraint minZoom="1"/>
+               <constraints:CenterConstraint/>
+               <constraints:ScaleConstraint id="scaleConstraint"/>
+            </constraints:CompositeConstraint>
+        </openzoom:constraint>
+    </openzoom:MultiScaleImage>
+</mx:Application>
