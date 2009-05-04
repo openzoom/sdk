@@ -126,8 +126,8 @@ public class Tile
     public function toString():String
     {
         return "[Tile]" + "\n" +
-               "width: " + (bitmap ? bitmap.width:0) + "\n" +
-               "height: " + (bitmap ? bitmap.height:0) + "\n" +
+               "width: " + (bitmap ? bitmap.width : 0) + "\n" +
+               "height: " + (bitmap ? bitmap.height : 0) + "\n" +
                "level: " + level + "\n" +
                "column: " + column + "\n" +
                "row: " + row + "\n" +
