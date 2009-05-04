@@ -151,7 +151,7 @@ public class TweenerTransformer extends ViewportTransformerBase
                                   transition: easing,
                                   onComplete: viewport.endTransform
                               }
-                    )
+                   )
         }
     }
 

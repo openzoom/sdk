@@ -258,7 +258,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
         for (var index:int = numLevels - 1; index >= 0; index--)
         {
-            levels[ index ] = new MultiScaleImageLevel(this, index, width, height,
+            levels[index] = new MultiScaleImageLevel(this, index, width, height,
                                                        Math.ceil(width / tileWidth),
                                                        Math.ceil(height / tileHeight))
             width = Math.ceil(width / 2)

@@ -593,7 +593,7 @@ public final class MultiScaleContainer extends UIComponent
                                      DEFAULT_SCENE_BACKGROUND_ALPHA)
 
         super.addChild(_scene)
-        
+
         dispatchEvent(new Event("sceneChanged"))
     }
 
@@ -603,7 +603,7 @@ public final class MultiScaleContainer extends UIComponent
     private function createMouseCatcher():void
     {
         mouseCatcher = new Sprite()
-        
+
         var g:Graphics = mouseCatcher.graphics
         g.beginFill(0x000000, 0)
         g.drawRect(0, 0, 100, 100)
@@ -620,14 +620,14 @@ public final class MultiScaleContainer extends UIComponent
     private function createContentMask():void
     {
         contentMask = new Shape()
-        
+
         var g:Graphics = contentMask.graphics
         g.beginFill(0xFF0000, 0)
         g.drawRect(0, 0, 100, 100)
         g.endFill()
 
         super.addChild(contentMask)
-        
+
         mask = contentMask
     }
 

@@ -70,7 +70,7 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
             var columns:uint = Math.ceil(size / tileWidth)
             var rows:uint = Math.ceil(size / tileHeight)
             var level:IMultiScaleImageLevel =
-                    new MultiScaleImageLevel(this, i, size, size, columns, rows) 
+                    new MultiScaleImageLevel(this, i, size, size, columns, rows)
             levels.push(level)
         }
     }
