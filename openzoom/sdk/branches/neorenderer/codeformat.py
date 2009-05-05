@@ -26,10 +26,15 @@ def convert(file):
     for line in fileinput.FileInput(file, inplace=1):
         line = re.sub("( )+$", "", line)
         line = re.sub("\t", "    ", line)
-#        line = re.sub("^import;$", "", line)
-#        line =  re.sub(" : ", ":", line) # messes up ternary expressions
+        line = re.sub("^import;$", "", line)
+        
+        # prevent messing up ternary expressions
+        if line.count("?") == 0:
+            line =  re.sub(" : ", ":", line)
         line = re.sub("\( ", "(", line)
         line = re.sub(" \)", ")", line)
+        line = re.sub("\[ ", "[", line)
+        line = re.sub(" \]", "]", line)
         line = re.sub("if\(", "if (", line)
         line = re.sub("for\(", "for (", line)
         line = re.sub("while\(", "while (", line)
@@ -38,10 +43,20 @@ def convert(file):
         sys.stdout.write(line)
 
 
-for root, dirs, files in os.walk("."):
+for root, dirs, files in os.walk("src"):
     for file in files:
         _, ext = os.path.splitext(file)
         if ext == ".as" and str(file).count("ExternalMouseWheel") == 0:
             convert(os.path.join(root, file))
     if ".svn" in dirs:
         dirs.remove(".svn")
+
+for root, dirs, files in os.walk("test"):
+    for file in files:
+        _, ext = os.path.splitext(file)
+        if ext == ".as":
+            convert(os.path.join(root, file))
+    if ".svn" in dirs:
+        dirs.remove(".svn")
+        
+print("Done.")

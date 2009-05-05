@@ -266,7 +266,7 @@ public class MultiScaleImageBase extends UIComponent
     {
         container.setActualSize(unscaledWidth, unscaledHeight)
     }
-    
+
     override protected function measure():void
     {
         measuredWidth = DEFAULT_MEASURED_WIDTH
@@ -617,15 +617,37 @@ public class MultiScaleImageBase extends UIComponent
         return container.removeChild(child)
     }
 
-    // TODO: Implement rest of child management methods
+    override public function getChildIndex(child:DisplayObject):int
+    {
+        return container.getChildIndex(child)
+    }
 
-    /**
-     * @inheritDoc
-     */
+    override public function getChildAt(index:int):DisplayObject
+    {
+        return container.getChildAt(index)
+    }
+
+    override public function getChildByName(name:String):DisplayObject
+    {
+        return container.getChildByName(name)
+    }
+
+    override public function removeChildAt(index:int):DisplayObject
+    {
+        return container.removeChildAt(index)
+    }
+
+    override public function addChildAt(child:DisplayObject, index:int):DisplayObject
+    {
+        return container.addChildAt(child, index)
+    }
+
     override public function get numChildren():int
     {
         return container ? container.numChildren : 0
     }
+
+    // TODO: Implement rest of child management methods
 }
 
 }

@@ -123,11 +123,13 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
         for (var i:int = numLevels - 1; i >= 0; i--)
         {
             level = getLevelAt(i)
-            if (level.width < width || level.height < height)
+            if (level.width <= width || level.height <= height)
                 break
         }
 
-        return getLevelAt(clamp(level.index + 1, 0, numLevels - 1)).clone()
+        var maxLevel:uint = numLevels - 1
+        var index:int = level.index
+        return getLevelAt(clamp(index, 0, maxLevel))
     }
 
     /**

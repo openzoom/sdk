@@ -126,8 +126,8 @@ public class TweenerTransformer extends ViewportTransformerBase
     override public function transform(target:IViewportTransform,
                                        immediately:Boolean=false):void
     {
-    	// apply constrain
-    	super.transform(target, immediately)
+        // apply constrain
+        super.transform(target, immediately)
 
         if (immediately)
         {
@@ -151,7 +151,7 @@ public class TweenerTransformer extends ViewportTransformerBase
                                   transition: easing,
                                   onComplete: viewport.endTransform
                               }
-                         )
+                   )
         }
     }
 
@@ -165,11 +165,6 @@ public class TweenerTransformer extends ViewportTransformerBase
             Tweener.removeTweens(viewport)
             viewport.endTransform()
         }
-//        if (Tweener.isTweening(tweenTransform))
-//        {
-//            Tweener.removeTweens(tweenTransform)
-//            viewport.endTransform()
-//        }
     }
 }
 

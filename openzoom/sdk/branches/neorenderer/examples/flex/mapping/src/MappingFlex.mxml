@@ -12,6 +12,7 @@
     >
     <mx:Script>
         <![CDATA[
+        	import org.openzoom.flash.utils.math.clamp;
 
         	import mx.events.FlexEvent
         	
@@ -22,7 +23,6 @@
 
 
             private static const DEFAULT_SOURCE:String = "openstreetmap.xml"
-
 
             private function initializeHandler(event:FlexEvent):void
             {

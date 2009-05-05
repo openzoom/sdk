@@ -44,7 +44,7 @@ public class MultiScaleImageBase extends Sprite implements IMultiScaleContainer
     //
     //--------------------------------------------------------------------------
 
-    public static const DEFAULT_SCENE_DIMENSION:Number = 16384 // 2^14
+    protected static const DEFAULT_SCENE_DIMENSION:Number = 16384 // 2^14
 
     private static const DEFAULT_VIEWPORT_WIDTH:Number = 800
     private static const DEFAULT_VIEWPORT_HEIGHT:Number = 600

@@ -108,7 +108,7 @@ public class TileLayer extends Sprite implements ITileLayer
 
     public function containsTile(tile:Tile):Boolean
     {
-        return tiles[ tile.hashCode ]
+        return tiles[tile.hashCode]
     }
 
     public function addTile(tile:Tile):Tile

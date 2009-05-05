@@ -75,8 +75,9 @@ public final class MultiScaleImage extends MultiScaleImageBase
     public function MultiScaleImage()
     {
         super()
-//      tabEnabled = false
-//      tabChildren = true
+
+        tabEnabled = false
+        tabChildren = true
     }
 
     //--------------------------------------------------------------------------
@@ -188,6 +189,8 @@ public final class MultiScaleImage extends MultiScaleImageBase
                                             sceneWidth, sceneHeight)
         container.addChild(image)
         container.showAll(true)
+
+        dispatchEvent(new Event(Event.COMPLETE))
     }
 
 
@@ -215,8 +218,6 @@ public final class MultiScaleImage extends MultiScaleImageBase
         dispatchEvent(new Event("sourceChanged"))
 
         addImage(descriptor)
-
-        dispatchEvent(event.clone())
     }
 
     /**

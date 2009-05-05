@@ -35,34 +35,34 @@ public class Base16Test extends TestCase
     //  Includes
     //
     //--------------------------------------------------------------------------
-    	
+
     include "Base16Samples.as"
-		
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Tests
     //
     //--------------------------------------------------------------------------
-    
-    public function testEncode() : void
+
+    public function testEncode():void
     {
-        for( var i : int = 0; i < SAMPLES.length; i++ )
+        for (var i:int = 0; i < SAMPLES.length; i++)
         {
-            var testCase : Array = SAMPLES[ i ]
-            assertEquals( "Correct encoding",
-                          Base16.encode( testCase[ 0 ] ), testCase[ 1 ] )
+            var testCase:Array = SAMPLES[i]
+            assertEquals("Correct encoding",
+                          Base16.encode(testCase[0]), testCase[1])
         }
     }
-	
-	public function testDecode() : void
-	{
-        for( var i : int = 0; i < SAMPLES.length; i++ )
+
+    public function testDecode():void
+    {
+        for (var i:int = 0; i < SAMPLES.length; i++)
         {
-            var testCase : Array = SAMPLES[ i ]
+            var testCase:Array = SAMPLES[i]
             assertEquals("Correct decoding",
-                          testCase[ 0 ], Base16.decode( testCase[ 1 ] ))
+                          testCase[0], Base16.decode(testCase[1]))
         }
-	}
+    }
 }
 
 }

@@ -18,27 +18,18 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.events
+package org.openzoom.flash.renderers
 {
 
-import flash.events.Event;
-
-import org.openzoom.flash.net.INetworkRequest;
+import org.openzoom.flash.events.RendererEvent;
+import org.openzoom.flash.events.ViewportEvent;
 
 /**
- * @private
+ * Base class for all renderers that should preserve their size on a
+ * multiscale scene, e.g. map markers, hotspots, etc.
  */
-public class NetworkRequestEvent extends Event
+public class ScaleInvariantRenderer extends Renderer
 {
-    //--------------------------------------------------------------------------
-    //
-    //  Class constants
-    //
-    //--------------------------------------------------------------------------
-
-    public static const COMPLETE:String = "complete"
-    public static const ERROR:String = "error"
-
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -48,52 +39,62 @@ public class NetworkRequestEvent extends Event
     /**
      * Constructor.
      */
-    public function NetworkRequestEvent(type:String,
-                                        bubbles:Boolean=false,
-                                        cancelable:Boolean=false)
+    public function ScaleInvariantRenderer()
     {
-        super(type, bubbles, cancelable)
+        addEventListener(RendererEvent.ADDED_TO_SCENE,
+                         addedToSceneHandler,
+                         false, 0, true)
+        addEventListener(RendererEvent.REMOVED_FROM_SCENE,
+                         removedFromSceneHandler,
+                         false, 0, true)
     }
 
     //--------------------------------------------------------------------------
     //
-    //  Properties
+    //  Event handlers
     //
     //--------------------------------------------------------------------------
 
     /**
-     * Request this event belongs to.
+     * @private
      */
-    public var request:INetworkRequest
-
-    /**
-     * Data that the event is carrying.
-     */
-    public var data:* = null
-
-    /**
-     * Context of this request event.
-     * Useful for identifying certain requests, e.g. by URL.
-     */
-    public var context:* = null
-
-    /**
-     * URI of this request.
-     */
-    public var uri:String
-
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Event
-    //
-    //--------------------------------------------------------------------------
-
-    /**
-     * @inheritDoc
-     */
-    override public function clone():Event
+    private function addedToSceneHandler(event:RendererEvent):void
     {
-        return new NetworkRequestEvent(type, bubbles, cancelable)
+        viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
+                                  viewport_transformUpdateHandler,
+                                  false, 0, true)
+        updateDisplayList()
+    }
+
+    /**
+     * @private
+     */
+    private function removedFromSceneHandler(event:RendererEvent):void
+    {
+        viewport.removeEventListener(ViewportEvent.TRANSFORM_UPDATE,
+                                     viewport_transformUpdateHandler)
+    }
+
+    /**
+     * @private
+     */
+    private function viewport_transformUpdateHandler(event:ViewportEvent):void
+    {
+        updateDisplayList()
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Layout
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     */
+    private function updateDisplayList():void
+    {
+        scaleX = scaleY = 1 / viewport.scale
     }
 }
 

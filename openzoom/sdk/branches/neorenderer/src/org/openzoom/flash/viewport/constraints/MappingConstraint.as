@@ -78,7 +78,7 @@ public class MappingConstraint implements IViewportConstraint
 
     private function roundToNearestPowerOf2(value:Number):Number
     {
-        // snap to scale that are powers of two
+        // snap to scales that are powers of two
         // most map tiles look best that way
         var exp:Number = Math.log(value) / Math.LN2
         var r:Number = exp - Math.floor(exp)
@@ -92,7 +92,9 @@ public class MappingConstraint implements IViewportConstraint
         if (n == 0)
             n = 1
 
-        return Math.pow(2, n)
+//        trace(value, result)
+        var result:Number = Math.pow(2, n)
+        return result
     }
 }
 

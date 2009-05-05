@@ -109,13 +109,14 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
         var index:int = numLevels - 1
 
         while (index >= 0 &&
-               IMultiScaleImageLevel(levels[index]).width >= width &&
-               IMultiScaleImageLevel(levels[index]).height >= height)
+               IMultiScaleImageLevel(levels[index]).width > width &&
+               IMultiScaleImageLevel(levels[index]).height > height)
         {
             index--
         }
 
-        index = clamp(index + 1, 0, numLevels - 1)
+        var maxLevel:uint = numLevels - 1
+        index = clamp(index, 0, maxLevel)
 
         return IMultiScaleImageLevel(levels[index]).clone()
     }
@@ -208,10 +209,8 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
             levels[index] = new MultiScaleImageLevel(this, index, width, height,
                                                      Math.ceil(width / tileWidth),
                                                      Math.ceil(height / tileHeight))
-            width = Math.ceil(width / 2)
-            height = Math.ceil(height / 2)
-//          width = (width + 1) >> 1
-//          height = (height + 1) >> 1
+            width = Math.floor(width / 2)
+            height = Math.floor(height / 2)
         }
 
         return levels

@@ -285,9 +285,9 @@ public class MultiScaleImageRenderer extends Renderer
      */
     private function updateDisplayList():void
     {
-    	if (!viewport)
-    	   return
-    	
+        if (!viewport)
+           return
+        
 //        trace("[MultiScaleImageRender] updateDisplayList()")
 //        debugLayer.graphics.clear()
 

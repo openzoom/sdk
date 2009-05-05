@@ -84,7 +84,7 @@ public class TweensyZeroTransformer extends ViewportTransformerBase
 
             if (done)
             {
-            	done = false
+                done = false
                 viewport.beginTransform()
             }
 
@@ -117,11 +117,11 @@ public class TweensyZeroTransformer extends ViewportTransformerBase
     {
         viewport.transform = shadowTransform
     }
-    
+
     private function endTransform():void
     {
-    	viewport.endTransform()
-    	done = true
+        viewport.endTransform()
+        done = true
     }
 }
 

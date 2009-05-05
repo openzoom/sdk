@@ -30,6 +30,7 @@ import flash.utils.setTimeout;
 
 import org.openzoom.flash.components.MultiScaleImage;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.utils.ExternalMouseWheel;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
 import org.openzoom.flash.viewport.constraints.MappingConstraint;
@@ -38,7 +39,7 @@ import org.openzoom.flash.viewport.constraints.ZoomConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
-import org.openzoom.flash.viewport.transformers.TweensyZeroTransformer;
+import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#222222")]
 /**
@@ -100,7 +101,7 @@ public class MappingFlash extends Sprite
         // Viewport animation (this is what makes the file 15K bigger,
         // implementing a more light-weight tweening engine and we have
         // an OpenZoom map engine of 20K, not bad, ey?! +)
-        map.transformer = new TweensyZeroTransformer()
+        map.transformer = new TweenerTransformer()
 
         // Constraints (due to a bug, these have to be applied after the transformer)
         scaleConstraint = new ScaleConstraint()
@@ -157,7 +158,8 @@ public class MappingFlash extends Sprite
     private function initializeMap():void
     {
         // Alright, let's load the map...
-        map.source = "openstreetmap.xml"
+//        map.source = "openstreetmap.xml"
+        map.source = new VirtualEarthDescriptor()
 
         // Add the map to the display list
         // and layout the application

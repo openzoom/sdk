@@ -133,7 +133,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
         var actualLevel:uint = level - DEFAULT_BASE_LEVEL
         var index:int = clamp(actualLevel, 0, numLevels - 1)
         
-        return IMultiScaleImageLevel(getLevelAt(index)).clone()
+        return getLevelAt(index)
     }
 
     /**

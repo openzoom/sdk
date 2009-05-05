@@ -118,8 +118,8 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         bounds.y = (row * tileHeight) - offsetY
         
         var l:IMultiScaleImageLevel = getLevelAt(level)
-        var width:uint = tileWidth + (column == 0 ? 1:2) * tileOverlap
-        var height:uint = tileHeight + (row == 0 ? 1:2) * tileOverlap
+        var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
+        var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
         bounds.width = Math.min(width, l.width - bounds.x)
         bounds.height = Math.min(height, l.height - bounds.y)
                 
@@ -140,7 +140,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
      */
     public function getLevelAt(index:int):IMultiScaleImageLevel
     {
-        return IMultiScaleImageLevel(levels[index])
+        return levels[index]
     }
 
     /**
@@ -153,7 +153,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         var maxLevel:uint = numLevels - 1
         var index:int = clamp(Math.floor(log2), 0, maxLevel)
         
-        return IMultiScaleImageLevel(getLevelAt(index)).clone()
+        return getLevelAt(index)
     }
 
     /**
@@ -258,7 +258,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
         for (var index:int = numLevels - 1; index >= 0; index--)
         {
-            levels[ index ] = new MultiScaleImageLevel(this, index, width, height,
+            levels[index] = new MultiScaleImageLevel(this, index, width, height,
                                                        Math.ceil(width / tileWidth),
                                                        Math.ceil(height / tileHeight))
             width = Math.ceil(width / 2)

@@ -285,7 +285,7 @@ public final class MultiScaleContainer extends Sprite
 
     override public function get numChildren():int
     {
-        return scene ? _scene.numChildren : 0
+        return scene ? _scene.numChildren:0
     }
 
     //--------------------------------------------------------------------------
@@ -314,7 +314,7 @@ public final class MultiScaleContainer extends Sprite
             IRenderer(child).scene = null
             IRenderer(child).viewport = null
         }
-        
+
         return _scene.removeChild(child)
     }
 
@@ -335,13 +335,13 @@ public final class MultiScaleContainer extends Sprite
     override public function removeChildAt(index:int):DisplayObject
     {
         var child:DisplayObject = _scene.getChildAt(index)
-        
+
         if (child is IRenderer)
         {
             IRenderer(child).scene = null
             IRenderer(child).viewport = null
         }
-        
+
         return _scene.removeChildAt(index)
     }
 
