@@ -113,7 +113,7 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
         return levels[index]
     }
 
-    public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
+    public function getLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
         var maxLevel:uint = numLevels - 1
         var longestSide:Number = Math.max(width, height)

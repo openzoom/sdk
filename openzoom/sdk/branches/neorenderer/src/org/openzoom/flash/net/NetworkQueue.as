@@ -23,6 +23,7 @@ package org.openzoom.flash.net
 
 import flash.display.Bitmap;
 import flash.display.DisplayObject;
+import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.ProgressEvent;
 
@@ -138,10 +139,13 @@ public class NetworkQueue extends EventDispatcher
     {
         var index:int = connections.indexOf(event.request)
 
-        if (index > 0)
+        if (index >= 0)
            connections.splice(index, 1)
-
+        
         processQueue()
+
+        if (queue.length == 0 && connections.length == 0)
+            dispatchEvent(new Event(Event.COMPLETE))
     }
 
     /**

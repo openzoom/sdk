@@ -101,7 +101,7 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
+    public function getLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2

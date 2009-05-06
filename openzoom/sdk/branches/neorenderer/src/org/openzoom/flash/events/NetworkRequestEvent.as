@@ -77,10 +77,10 @@ public class NetworkRequestEvent extends Event
      */
     public var context:* = null
 
-    /**
-     * URI of this request.
-     */
-    public var uri:String
+//    /**
+//     * URI of this request.
+//     */
+//    public var uri:String
 
     //--------------------------------------------------------------------------
     //

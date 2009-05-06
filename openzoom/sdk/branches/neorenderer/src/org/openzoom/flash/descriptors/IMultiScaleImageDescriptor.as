@@ -134,7 +134,7 @@ public interface IMultiScaleImageDescriptor
      * Returns the minimum pyramid level that has a greater or equal size
      * than specified by the arguments width and height.
      */
-    function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
+    function getLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
 
     //--------------------------------------------------------------------------
     //

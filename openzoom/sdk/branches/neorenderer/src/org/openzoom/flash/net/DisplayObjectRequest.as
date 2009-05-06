@@ -33,7 +33,6 @@ import flash.events.SecurityErrorEvent;
 import flash.net.URLRequest;
 
 import org.openzoom.flash.events.NetworkRequestEvent;
-import org.openzoom.flash.renderers.images.Tile;
 
 /**
  * @private
@@ -138,7 +137,7 @@ internal class DisplayObjectRequest extends EventDispatcher
             requestEvent.request = this
             requestEvent.data = bitmap
             requestEvent.context = context
-            requestEvent.uri = url
+//            requestEvent.uri = url
 
         dispatchEvent(requestEvent)
     }
@@ -170,7 +169,7 @@ internal class DisplayObjectRequest extends EventDispatcher
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
-            requestEvent.uri = url
+//            requestEvent.uri = url
 
         dispatchEvent(requestEvent)
     }
@@ -187,7 +186,7 @@ internal class DisplayObjectRequest extends EventDispatcher
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
-            requestEvent.uri = url
+//            requestEvent.uri = url
 
         dispatchEvent(requestEvent)
     }
@@ -233,6 +232,9 @@ internal class DisplayObjectRequest extends EventDispatcher
        target.addEventListener(Event.COMPLETE,
                                request_completeHandler,
                                false, 0, true)
+       target.addEventListener(ProgressEvent.PROGRESS,
+                               request_progressHandler,
+                               false, 0, true)
        target.addEventListener(HTTPStatusEvent.HTTP_STATUS,
                                request_httpStatusHandler,
                                false, 0, true)
@@ -241,9 +243,6 @@ internal class DisplayObjectRequest extends EventDispatcher
                                false, 0, true)
        target.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
                                request_securityErrorHandler,
-                               false, 0, true)
-       target.addEventListener(ProgressEvent.PROGRESS,
-                               request_progressHandler,
                                false, 0, true)
     }
 
@@ -254,14 +253,14 @@ internal class DisplayObjectRequest extends EventDispatcher
     {
         target.removeEventListener(Event.COMPLETE,
                                    request_completeHandler)
+        target.removeEventListener(ProgressEvent.PROGRESS,
+                                   request_progressHandler)
         target.removeEventListener(HTTPStatusEvent.HTTP_STATUS,
                                    request_httpStatusHandler)
         target.removeEventListener(IOErrorEvent.IO_ERROR,
                                    request_ioErrorHandler)
         target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,
                                    request_securityErrorHandler)
-        target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,
-                                   request_progressHandler)
     }
 }
 

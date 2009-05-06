@@ -11,6 +11,7 @@
 </sourceAttachmentPath>
 </compiler>
 <applications>
+<application path="TextureMapping.as"/>
 <application path="OpenZoomSDK.mxml"/>
 </applications>
 <modules/>

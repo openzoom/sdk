@@ -315,7 +315,7 @@ public class MultiScaleImageRenderer extends Renderer
 //        drawVisibleRegion(visibleRegion)
         
         var scale:Number = viewport.scale
-        var level:IMultiScaleImageLevel = descriptor.getMinLevelForSize(width * scale, height * scale)
+        var level:IMultiScaleImageLevel = descriptor.getLevelForSize(width * scale, height * scale)
 
         // TODO: remove all tiles from loading queue
 

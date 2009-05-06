@@ -115,7 +115,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getMinLevelForSize(width:Number,
+    public function getLevelForSize(width:Number,
                                        height:Number):IMultiScaleImageLevel
     {
         var level:IMultiScaleImageLevel
