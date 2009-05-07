@@ -14,9 +14,11 @@ import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
 import org.openzoom.flash.events.NetworkRequestEvent;
+import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.net.INetworkRequest;
 import org.openzoom.flash.net.NetworkQueue;
+import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
@@ -47,6 +49,9 @@ public class TextureMapping extends Sprite
                                  request_completeHandler)
 		
 		container = new MultiScaleContainer()
+		container.viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
+		                                    viewport_transformUpdateHandler,
+		                                    false, 0, true)
 		container.sceneWidth = (3872 * 0.5 + 300) * 40
 		container.sceneHeight = (2592 * 0.5 + 300) * 40
 		container.transformer = new TweenerTransformer()
@@ -57,23 +62,35 @@ public class TextureMapping extends Sprite
 		                         keyboardController,
 		                         contextMenuController]
 
-        for (var i:int = 0; i < 1600; i++)
-        {
+//        for (var i:int = 0; i < 1600; i++)
+//        {
+            var i:int = 0
 	        var renderer:NeoRenderer = new NeoRenderer(this)
         	renderer.x = (i % 40) * (3872 * 0.5 + 300)
         	renderer.y = Math.floor(i / 40) * (2592 * 0.5 + 300)
 	        container.addChild(renderer)
-        }       
+//        }
         addChild(container)
         
         layout()
 	}
+	
+	private function viewport_transformUpdateHandler(event:ViewportEvent):void
+	{
+        trace(container.viewport.zoom)
+	}
     
     private function request_completeHandler(event:NetworkRequestEvent):void
     {
+    	
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           request_completeHandler)
         descriptor = DZIDescriptor.fromXML(event.request.uri, new XML(event.data))
+    	var renderer:MultiScaleImageRenderer =
+    	       new MultiScaleImageRenderer(descriptor, container.loader,
+    	                                   3872 * 0.5, 2592 * 0.5)
+        renderer.x = 2200
+        container.addChild(renderer)    	                                   
         
 //        var g:Graphics = graphics
 //        g.beginFill(0xFF0000)
@@ -196,7 +213,6 @@ class NeoRenderer extends Renderer
         
         if (!app.initialized)
            return
-        trace(viewport.zoom)
         var stageBounds:Rectangle = getBounds(stage)
         var level:IMultiScaleImageLevel = app.descriptor.getLevelForSize(stageBounds.width, stageBounds.height)
 //        trace(level.index, stageBounds, viewport.zoom)
