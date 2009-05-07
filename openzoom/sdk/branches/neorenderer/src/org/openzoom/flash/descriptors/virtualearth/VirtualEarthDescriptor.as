@@ -21,6 +21,8 @@
 package org.openzoom.flash.descriptors.virtualearth
 {
 
+import flash.geom.Rectangle;
+
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
 import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
@@ -120,6 +122,26 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
         var tileURL:String = [baseURL, getQuadKey(level, column, row), extension].join("")
 
         return tileURL
+    }
+
+    /**
+     * @inheritDoc
+     */
+    override public function getTileBounds(level:int, column:uint, row:uint):Rectangle
+    {
+        var bounds:Rectangle = new Rectangle()
+        var offsetX:uint = (column == 0) ? 0 : tileOverlap
+        var offsetY:uint = (row == 0) ? 0 : tileOverlap
+        bounds.x = (column * tileWidth) - offsetX
+        bounds.y = (row * tileHeight) - offsetY
+        
+        var l:IMultiScaleImageLevel = getLevelAt(level)
+        var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
+        var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
+        bounds.width = Math.min(width, l.width - bounds.x)
+        bounds.height = Math.min(height, l.height - bounds.y)
+                
+        return bounds
     }
 
     /**

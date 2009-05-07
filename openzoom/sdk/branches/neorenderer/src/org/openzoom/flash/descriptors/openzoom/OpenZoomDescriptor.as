@@ -21,6 +21,7 @@
 package org.openzoom.flash.descriptors.openzoom
 {
 
+import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
 import org.openzoom.flash.descriptors.IImageSourceDescriptor;
@@ -116,7 +117,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
      * @inheritDoc
      */
     public function getLevelForSize(width:Number,
-                                       height:Number):IMultiScaleImageLevel
+                                    height:Number):IMultiScaleImageLevel
     {
         var level:IMultiScaleImageLevel
 
@@ -138,6 +139,26 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     public function clone():IMultiScaleImageDescriptor
     {
         return new OpenZoomDescriptor(uri, data.copy())
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    override public function getTileBounds(level:int, column:uint, row:uint):Rectangle
+    {
+        var bounds:Rectangle = new Rectangle()
+        var offsetX:uint = (column == 0) ? 0 : tileOverlap
+        var offsetY:uint = (row == 0) ? 0 : tileOverlap
+        bounds.x = (column * tileWidth) - offsetX
+        bounds.y = (row * tileHeight) - offsetY
+        
+        var l:IMultiScaleImageLevel = getLevelAt(level)
+        var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
+        var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
+        bounds.width = Math.min(width, l.width - bounds.x)
+        bounds.height = Math.min(height, l.height - bounds.y)
+                
+        return bounds
     }
 
     //--------------------------------------------------------------------------

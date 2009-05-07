@@ -25,6 +25,7 @@ import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
@@ -420,6 +421,10 @@ public final class MultiScaleContainer extends Sprite
         _viewport.addEventListener(ViewportEvent.TRANSFORM_END,
                                    viewport_transformEndHandler,
                                    false, 0, true)
+                                   
+        addEventListener(Event.ENTER_FRAME,
+                         enterFrameHandler,
+                         false, 0, true)                                   
     }
 
     private function createScene():void
@@ -450,6 +455,19 @@ public final class MultiScaleContainer extends Sprite
     private function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
 //      trace("ViewportEvent.TRANSFORM_UPDATE")
+        invalidated = true
+
+    }
+    
+    private var invalidated:Boolean = true
+
+    private function viewport_transformEndHandler(event:ViewportEvent):void
+    {
+//      trace("ViewportEvent.TRANSFORM_END")
+    }
+    
+    private function enterFrameHandler(event:Event)
+    {
         var v:INormalizedViewport = viewport
         var targetWidth:Number = v.viewportWidth / v.width
         var targetHeight:Number = v.viewportHeight / v.height
@@ -461,11 +479,8 @@ public final class MultiScaleContainer extends Sprite
             target.y = targetY
             target.width = targetWidth
             target.height = targetHeight
-    }
-
-    private function viewport_transformEndHandler(event:ViewportEvent):void
-    {
-//      trace("ViewportEvent.TRANSFORM_END")
+            
+        invalidated = false
     }
 
     //--------------------------------------------------------------------------

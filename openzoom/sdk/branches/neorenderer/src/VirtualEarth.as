@@ -12,6 +12,7 @@ import flash.utils.Dictionary;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.openzoom.OpenZoomDescriptor;
 import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.events.NetworkRequestEvent;
 import org.openzoom.flash.events.ViewportEvent;
@@ -54,7 +55,9 @@ public class VirtualEarth extends Sprite
 		                       
         loader = new NetworkQueue()
 //        var request:INetworkRequest = loader.addRequest("../resources/images/deepzoom/billions.xml", XML)
-        var request:INetworkRequest = loader.addRequest("http://static.gasi.ch/images/3229924166/image.dzi", XML)
+        var request:INetworkRequest = loader.addRequest("../resources/images/openzoom/openstreetmap.xml", XML)
+//        var request:INetworkRequest = loader.addRequest("../resources/images/openzoom/google-maps-road.xml", XML)
+//        var request:INetworkRequest = loader.addRequest("http://static.gasi.ch/images/3229924166/image.dzi", XML)
 //        var request:INetworkRequest = loader.addRequest("../resources/images/openzoom/openstreetmap.xml", XML)
         request.addEventListener(NetworkRequestEvent.COMPLETE,
                                  request_completeHandler)
@@ -77,7 +80,7 @@ public class VirtualEarth extends Sprite
 		                         contextMenuController]
 
         var aspectRatio:Number = 1//3872 / 2592
-        var size:Number = 16384 * 4
+        var size:Number = 16384// * 4
         var padding:Number = 10
         
         var numRenderers:int = NUM_RENDERERS
@@ -86,7 +89,9 @@ public class VirtualEarth extends Sprite
 		container.sceneWidth = size
 		container.sceneHeight = size
 		var scaleConstraint:ScaleConstraint = new ScaleConstraint()
-		scaleConstraint.maxScale = 2147483648 / container.sceneWidth / 16
+//		scaleConstraint.maxScale = 2147483648 / container.sceneWidth / 24 // VirtualEarth
+		scaleConstraint.maxScale = 67108864 / container.sceneWidth // OpenStreetMap
+//		scaleConstraint.maxScale = 268435456 / container.sceneWidth // Google Satellite
 		container.constraint = scaleConstraint
 		
         renderer = new NeoRenderer(this, size, size / aspectRatio)
@@ -110,15 +115,8 @@ public class VirtualEarth extends Sprite
     	
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           request_completeHandler)
-//        descriptor = new DZIDescriptor("http://static.gasi.ch/images/3229924166/image.dzi", Math.pow(2, 32) - 1, Math.pow(2, 32) - 1, 256, 1, "jpg")//3872 * 1000000, 2592 * 1000000, 256, 1, "jpg")
-//        descriptor = DZIDescriptor.fromXML(event.request.uri, new XML(event.data))
-        descriptor = new VirtualEarthDescriptor()
-//        descriptor = new OpenZoomDescriptor(event.request.uri, new XML(event.data))
-//    	var renderer:MultiScaleImageRenderer =
-//    	       new MultiScaleImageRenderer(descriptor, container.loader,
-//    	                                   3872 * 0.5, 3872 * 0.5)//2592 * 0.5)
-//        renderer.x = 2200
-//        container.addChild(renderer)    	                                   
+//        descriptor = new VirtualEarthDescriptor()
+        descriptor = new OpenZoomDescriptor(event.request.uri, new XML(event.data))
         
 //        loader.addEventListener(Event.COMPLETE,
 //                                loader_completeHandler,
@@ -142,8 +140,6 @@ public class VirtualEarth extends Sprite
     
     public function loadTile(url:String):void
     {
-//    	tileCache[url] = Math.random() * 0xFFFFFF
-    	
     	if (pendingTiles[url] == true)
     	   return
     	
@@ -189,10 +185,13 @@ public class VirtualEarth extends Sprite
 
 }
 
+import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
 import flash.utils.getTimer;
@@ -205,7 +204,6 @@ import org.openzoom.flash.renderers.Renderer;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.ISceneViewport;
 import org.openzoom.flash.viewport.SceneViewport;
-import flash.display.Bitmap;
 
 
 class NeoRenderer extends Renderer
@@ -247,7 +245,11 @@ class NeoRenderer extends Renderer
     private function addedToSceneHandler(event:RendererEvent):void
     {
     	sceneViewport = SceneViewport.getInstance(viewport)
-    	setInterval(updateDisplayList, 1000 / app.FRAMES_PER_SECOND)
+    	
+//    	setInterval(updateDisplayList, 1000 / app.FRAMES_PER_SECOND)
+    	
+    	addEventListener(Event.ENTER_FRAME, enterFrameHandler)
+    	
     	viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
     	                          viewport_transformUpdateHandler,
     	                          false, 0, true)
@@ -257,6 +259,11 @@ class NeoRenderer extends Renderer
     }
     
     private var counter:int = 0
+    
+    private function enterFrameHandler(event:Event):void
+    {
+    	updateDisplayList()
+    }
     
     private function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
@@ -306,13 +313,13 @@ class NeoRenderer extends Renderer
         var right:uint  = Math.min(level.numColumns, Math.floor(localBounds.right  * level.numColumns / sceneBounds.width)  + offset)
         var top:uint    = Math.max(0,                Math.floor(localBounds.top    * level.numRows    / sceneBounds.height) - offset)
         var bottom:uint = Math.min(level.numRows,    Math.floor(localBounds.bottom * level.numRows    / sceneBounds.height) + offset)
-        
+
         for (var a:int = 0; a < 2; a++)
         {
             for (var h:int = 0; h < 2; h++)
             {
-                var url:String = app.descriptor.getTileURL(0, a, h)
-                var bounds:Rectangle = app.descriptor.getTileBounds(0, a, h)
+                var url:String = app.descriptor.getTileURL(1, a, h)
+                var bounds:Rectangle = app.descriptor.getTileBounds(1, a, h)
                 
                 var bitmapData:BitmapData = app.tileCache[url] as BitmapData
                 if (!bitmapData)
@@ -331,7 +338,7 @@ class NeoRenderer extends Renderer
                 g.endFill()
             }
         }
-        
+//        
         for (var i:int = left; i < right; i++)
         {
             for (var j:int = top; j < bottom; j++)
