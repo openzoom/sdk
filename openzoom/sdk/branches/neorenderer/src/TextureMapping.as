@@ -18,6 +18,7 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.net.INetworkRequest;
 import org.openzoom.flash.net.NetworkQueue;
+import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
@@ -33,6 +34,11 @@ public class TextureMapping extends Sprite
     
     public var initialized:Boolean = false
     public var descriptor:IMultiScaleImageDescriptor
+    
+    private const NUM_RENDERERS:uint = 1
+    private const NUM_COLUMNS:uint = 2
+    
+    public const FRAMES_PER_SECOND:Number = 60
     
 	public function TextureMapping()
 	{
@@ -53,6 +59,8 @@ public class TextureMapping extends Sprite
 		                                    false, 0, true)
 		container.transformer = new TweenerTransformer()
 		var mouseController:MouseController = new MouseController()
+//		mouseController.smoothPanning = false
+		
 		var keyboardController:KeyboardController = new KeyboardController()
 		var contextMenuController:ContextMenuController = new ContextMenuController()
 		container.controllers = [mouseController,
@@ -60,20 +68,20 @@ public class TextureMapping extends Sprite
 		                         contextMenuController]
 
         var aspectRatio:Number = 3872 / 2592
-        var size:Number = 100
+        var size:Number = 3872 * 0.5
         var padding:Number = 10
         
-        var numRenderers:int = 500
+        var numRenderers:int = NUM_RENDERERS
+        var numColumns:int = NUM_COLUMNS
         
-		container.sceneWidth = (size + padding) * 40
-		container.sceneHeight = (size / aspectRatio + padding) * 40
+		container.sceneWidth = (size + padding) * numColumns
+		container.sceneHeight = (size / aspectRatio + padding) * Math.ceil(numRenderers / numColumns)
 		
         for (var i:int = 0; i < numRenderers; i++)
         {
-//            var i:int = 0
 	        var renderer:NeoRenderer = new NeoRenderer(this, size, size / aspectRatio)
-        	renderer.x = (i % 40) * (size + padding)
-        	renderer.y = Math.floor(i / 40) * (size / aspectRatio + padding)
+        	renderer.x = (i % numColumns) * (size + padding)
+        	renderer.y = Math.floor(i / numColumns) * (size / aspectRatio + padding)
 	        container.addChild(renderer)
         }
         addChild(container)
@@ -92,11 +100,11 @@ public class TextureMapping extends Sprite
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           request_completeHandler)
         descriptor = DZIDescriptor.fromXML(event.request.uri, new XML(event.data))
-//    	var renderer:MultiScaleImageRenderer =
-//    	       new MultiScaleImageRenderer(descriptor, container.loader,
-//    	                                   3872 * 0.5, 2592 * 0.5)
-//        renderer.x = 2200
-//        container.addChild(renderer)    	                                   
+    	var renderer:MultiScaleImageRenderer =
+    	       new MultiScaleImageRenderer(descriptor, container.loader,
+    	                                   3872 * 0.5, 2592 * 0.5)
+        renderer.x = 2200
+        container.addChild(renderer)    	                                   
         
         loader.addEventListener(Event.COMPLETE,
                                 loader_completeHandler,
@@ -156,6 +164,7 @@ import flash.display.Shape;
 import flash.display.Sprite;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
+import flash.utils.getTimer;
 import flash.utils.setInterval;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
@@ -171,12 +180,12 @@ class NeoRenderer extends Renderer
 {
 	private var sceneViewport:ISceneViewport
 	private var app:TextureMapping
-	private var tileLayer:Sprite
+	private var tileLayer:Shape
 	private var frame:Shape
 	
 	// Renderer is invalidated either when the viewport
 	// is transformed or when a new tile has loaded
-	private var invalidated:Boolean = false
+	private var invalidated:Boolean = true
 	
 	/**
 	 * Constructor.
@@ -184,7 +193,6 @@ class NeoRenderer extends Renderer
     public function NeoRenderer(app:TextureMapping, width:Number, height:Number)
     {
     	this.app = app
-    	
     	
     	frame = new Shape()
         
@@ -197,7 +205,7 @@ class NeoRenderer extends Renderer
     	addChild(frame)
     	mask = frame
     	
-    	tileLayer = new Sprite()
+    	tileLayer = new Shape()
     	addChild(tileLayer)
     	
     	addEventListener(RendererEvent.ADDED_TO_SCENE,
@@ -208,10 +216,13 @@ class NeoRenderer extends Renderer
     private function addedToSceneHandler(event:RendererEvent):void
     {
     	sceneViewport = SceneViewport.getInstance(viewport)
-    	setInterval(updateDisplayList, 1000/20)
+    	setInterval(updateDisplayList, 1000 / app.FRAMES_PER_SECOND)
     	viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
     	                          viewport_transformUpdateHandler,
-    	                          false, 0, true)	
+    	                          false, 0, true)
+        viewport.addEventListener(ViewportEvent.TRANSFORM_END,
+                                  viewport_transformEndHandler,
+                                  false, 0, true)	
     }
     
     private var counter:int = 0
@@ -219,6 +230,13 @@ class NeoRenderer extends Renderer
     private function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
     	invalidated = true
+    }
+    
+    private function viewport_transformEndHandler(event:ViewportEvent):void
+    {
+    	// force validation
+    	invalidated = true
+    	updateDisplayList()
     }
     
     private function updateDisplayList():void
@@ -232,7 +250,9 @@ class NeoRenderer extends Renderer
         
         if (!app.initialized)
            return
-           
+        
+        var time:Number = getTimer()
+        
         var stageBounds:Rectangle = getBounds(stage)
         var level:IMultiScaleImageLevel = app.descriptor.getLevelForSize(stageBounds.width, stageBounds.height)
         var index:int = clamp(level.index + 1, 0, app.descriptor.numLevels - 1)
@@ -240,14 +260,14 @@ class NeoRenderer extends Renderer
         
 //        trace(stageBounds, level.width)
                 
-        while (tileLayer.numChildren > 0)
-            tileLayer.removeChildAt(0)
+//        while (tileLayer.numChildren > 0)
+//            tileLayer.removeChildAt(0)
             
-//        var g:Graphics = tileLayer.graphics
-//        g.clear()
-//        g.beginFill(0xFF6600)
-//        g.drawRect(0, 0, level.width, level.height)
-//        g.endFill()
+        var g:Graphics = tileLayer.graphics
+        g.clear()
+        g.beginFill(0xFF6600)
+        g.drawRect(0, 0, level.width, level.height)
+        g.endFill()
         
         for (var i:int = 0; i < level.numColumns; i++)
         {
@@ -257,16 +277,22 @@ class NeoRenderer extends Renderer
 		        var bounds:Rectangle = app.descriptor.getTileBounds(index, i, j)
 		        
 		        var bitmapData:BitmapData = app.tileCache[url] as BitmapData
+		        
+//		        if (!bitmapData)
+//                    continue
+		        
 		        var matrix:Matrix = new Matrix()
-		        var tile:Shape = new Shape()
-		        var g:Graphics = tile.graphics
+		        matrix.tx = bounds.x
+		        matrix.ty = bounds.y
+//		        var tile:Shape = new Shape()
+//		        var g:Graphics = tile.graphics
 		        g.beginBitmapFill(bitmapData, matrix, false, true)
-		        g.drawRect(0, 0, bounds.width, bounds.height)
+		        g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height)
 		        g.endFill()
 		        
-		        tile.x = bounds.x
-		        tile.y = bounds.y
-		        tileLayer.addChild(tile)
+//		        tile.x = bounds.x
+//		        tile.y = bounds.y
+//		        tileLayer.addChild(tile)
             }
         }
         
@@ -274,5 +300,7 @@ class NeoRenderer extends Renderer
         tileLayer.height = frame.height
         
         invalidated = false
+        
+        trace((getTimer() - time) * app.numChildren)
     }
 }
