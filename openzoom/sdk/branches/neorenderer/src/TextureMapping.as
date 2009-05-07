@@ -18,7 +18,6 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.net.INetworkRequest;
 import org.openzoom.flash.net.NetworkQueue;
-import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
@@ -52,8 +51,6 @@ public class TextureMapping extends Sprite
 		container.viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
 		                                    viewport_transformUpdateHandler,
 		                                    false, 0, true)
-		container.sceneWidth = (3872 * 0.5 + 300) * 40
-		container.sceneHeight = (2592 * 0.5 + 300) * 40
 		container.transformer = new TweenerTransformer()
 		var mouseController:MouseController = new MouseController()
 		var keyboardController:KeyboardController = new KeyboardController()
@@ -62,14 +59,23 @@ public class TextureMapping extends Sprite
 		                         keyboardController,
 		                         contextMenuController]
 
-//        for (var i:int = 0; i < 1600; i++)
-//        {
-            var i:int = 0
-	        var renderer:NeoRenderer = new NeoRenderer(this)
-        	renderer.x = (i % 40) * (3872 * 0.5 + 300)
-        	renderer.y = Math.floor(i / 40) * (2592 * 0.5 + 300)
+        var aspectRatio:Number = 3872 / 2592
+        var size:Number = 100
+        var padding:Number = 10
+        
+        var numRenderers:int = 500
+        
+		container.sceneWidth = (size + padding) * 40
+		container.sceneHeight = (size / aspectRatio + padding) * 40
+		
+        for (var i:int = 0; i < numRenderers; i++)
+        {
+//            var i:int = 0
+	        var renderer:NeoRenderer = new NeoRenderer(this, size, size / aspectRatio)
+        	renderer.x = (i % 40) * (size + padding)
+        	renderer.y = Math.floor(i / 40) * (size / aspectRatio + padding)
 	        container.addChild(renderer)
-//        }
+        }
         addChild(container)
         
         layout()
@@ -77,7 +83,7 @@ public class TextureMapping extends Sprite
 	
 	private function viewport_transformUpdateHandler(event:ViewportEvent):void
 	{
-        trace(container.viewport.zoom)
+//        trace(container.viewport.zoom)
 	}
     
     private function request_completeHandler(event:NetworkRequestEvent):void
@@ -86,16 +92,11 @@ public class TextureMapping extends Sprite
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           request_completeHandler)
         descriptor = DZIDescriptor.fromXML(event.request.uri, new XML(event.data))
-    	var renderer:MultiScaleImageRenderer =
-    	       new MultiScaleImageRenderer(descriptor, container.loader,
-    	                                   3872 * 0.5, 2592 * 0.5)
-        renderer.x = 2200
-        container.addChild(renderer)    	                                   
-        
-//        var g:Graphics = graphics
-//        g.beginFill(0xFF0000)
-//        g.drawRect(0, 0, descriptor.width, descriptor.height)
-//        g.endFill()
+//    	var renderer:MultiScaleImageRenderer =
+//    	       new MultiScaleImageRenderer(descriptor, container.loader,
+//    	                                   3872 * 0.5, 2592 * 0.5)
+//        renderer.x = 2200
+//        container.addChild(renderer)    	                                   
         
         loader.addEventListener(Event.COMPLETE,
                                 loader_completeHandler,
@@ -103,7 +104,7 @@ public class TextureMapping extends Sprite
         
         var tileRequest:INetworkRequest
         
-        for (var i:int = 0; i < 9/*descriptor.numLevels*/; i++)  // level
+        for (var i:int = 0; i < descriptor.numLevels; i++)  // level
         {
             var level:IMultiScaleImageLevel = descriptor.getLevelAt(i)
             
@@ -149,32 +150,54 @@ public class TextureMapping extends Sprite
 
 }
 
-import org.openzoom.flash.renderers.Renderer;
-import org.openzoom.flash.viewport.ISceneViewport;
-import org.openzoom.flash.events.RendererEvent;
-import flash.utils.setInterval;
-import flash.display.Graphics;
 import flash.display.BitmapData;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import flash.geom.Rectangle;
-import flash.geom.Matrix;
-import org.openzoom.flash.viewport.SceneViewport;
+import flash.display.Graphics;
 import flash.display.Shape;
+import flash.display.Sprite;
+import flash.geom.Matrix;
+import flash.geom.Rectangle;
+import flash.utils.setInterval;
+
+import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.events.RendererEvent;
+import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.renderers.Renderer;
+import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.viewport.ISceneViewport;
+import org.openzoom.flash.viewport.SceneViewport;
 
 
 class NeoRenderer extends Renderer
 {
 	private var sceneViewport:ISceneViewport
 	private var app:TextureMapping
-	private var tileLayer:Shape
+	private var tileLayer:Sprite
+	private var frame:Shape
 	
-    public function NeoRenderer(app:TextureMapping)
+	// Renderer is invalidated either when the viewport
+	// is transformed or when a new tile has loaded
+	private var invalidated:Boolean = false
+	
+	/**
+	 * Constructor.
+	 */
+    public function NeoRenderer(app:TextureMapping, width:Number, height:Number)
     {
     	this.app = app
     	
-    	drawBackground()
     	
-    	tileLayer = new Shape()
+    	frame = new Shape()
+        
+        var g:Graphics = frame.graphics
+        g.beginFill(0xFF0000)
+        g.drawRect(0, 0, width, height)
+        g.endFill()
+        frame.width = width
+        frame.height = height
+    	addChild(frame)
+    	mask = frame
+    	
+    	tileLayer = new Sprite()
     	addChild(tileLayer)
     	
     	addEventListener(RendererEvent.ADDED_TO_SCENE,
@@ -182,50 +205,74 @@ class NeoRenderer extends Renderer
     	                 false, 0, true)
     }
     
-    private function drawBackground():void
-    {
-        var g:Graphics = graphics
-        g.beginFill(0xFF0000)
-        g.drawRect(0, 0, 3872/2, 2592/2)
-        g.endFill()
-    }
-    
     private function addedToSceneHandler(event:RendererEvent):void
     {
     	sceneViewport = SceneViewport.getInstance(viewport)
-    	setInterval(updateDisplayList, 1000/3)
-//    	viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
-//    	                          viewport_transformUpdateHandler,
-//    	                          false, 0, true)	
+    	setInterval(updateDisplayList, 1000/20)
+    	viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
+    	                          viewport_transformUpdateHandler,
+    	                          false, 0, true)	
     }
     
     private var counter:int = 0
     
-//    private function viewport_transformUpdateHandler(event:ViewportEvent):void
-//    {
-//    }
+    private function viewport_transformUpdateHandler(event:ViewportEvent):void
+    {
+    	invalidated = true
+    }
     
     private function updateDisplayList():void
     {
+    	if (!invalidated)
+    	   return
+    	
         var sceneBounds:Rectangle = getBounds(scene.targetCoordinateSpace)
         if (!sceneViewport.intersects(sceneBounds) || !app.descriptor)
            return
         
         if (!app.initialized)
            return
+           
         var stageBounds:Rectangle = getBounds(stage)
         var level:IMultiScaleImageLevel = app.descriptor.getLevelForSize(stageBounds.width, stageBounds.height)
-//        trace(level.index, stageBounds, viewport.zoom)
+        var index:int = clamp(level.index + 1, 0, app.descriptor.numLevels - 1)
+        level = app.descriptor.getLevelAt(index)
         
-        var url:String = app.descriptor.getTileURL(counter++ % 8, 0, 0)
-        var bitmapData:BitmapData = app.tileCache[url] as BitmapData
-        var matrix:Matrix = new Matrix()
-        matrix.createBox(app.descriptor.width / bitmapData.width * 0.5,
-                         app.descriptor.height / bitmapData.height * 0.5)
-        var g:Graphics = tileLayer.graphics
-        g.clear()
-        g.beginBitmapFill(bitmapData, matrix, true, true)
-        g.drawRect(0, 0, app.descriptor.width * 0.5, app.descriptor.height * 0.5)
-        g.endFill()
+//        trace(stageBounds, level.width)
+                
+        while (tileLayer.numChildren > 0)
+            tileLayer.removeChildAt(0)
+            
+//        var g:Graphics = tileLayer.graphics
+//        g.clear()
+//        g.beginFill(0xFF6600)
+//        g.drawRect(0, 0, level.width, level.height)
+//        g.endFill()
+        
+        for (var i:int = 0; i < level.numColumns; i++)
+        {
+            for (var j:int = 0; j < level.numRows; j++)
+            {
+		        var url:String = app.descriptor.getTileURL(index, i, j)
+		        var bounds:Rectangle = app.descriptor.getTileBounds(index, i, j)
+		        
+		        var bitmapData:BitmapData = app.tileCache[url] as BitmapData
+		        var matrix:Matrix = new Matrix()
+		        var tile:Shape = new Shape()
+		        var g:Graphics = tile.graphics
+		        g.beginBitmapFill(bitmapData, matrix, false, true)
+		        g.drawRect(0, 0, bounds.width, bounds.height)
+		        g.endFill()
+		        
+		        tile.x = bounds.x
+		        tile.y = bounds.y
+		        tileLayer.addChild(tile)
+            }
+        }
+        
+        tileLayer.width = frame.width
+        tileLayer.height = frame.height
+        
+        invalidated = false
     }
 }
