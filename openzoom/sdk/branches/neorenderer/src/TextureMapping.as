@@ -18,7 +18,6 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.net.INetworkRequest;
 import org.openzoom.flash.net.NetworkQueue;
-import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
@@ -30,18 +29,22 @@ public class TextureMapping extends Sprite
 	private var container:MultiScaleContainer
 	
     public var tileCache:Dictionary = new Dictionary()
+    public var pendingTiles:Dictionary = new Dictionary()
     public var loader:INetworkQueue
     
     public var initialized:Boolean = false
     public var descriptor:IMultiScaleImageDescriptor
     
     private const NUM_RENDERERS:uint = 1
-    private const NUM_COLUMNS:uint = 2
+    private const NUM_COLUMNS:uint = 1
     
     public const FRAMES_PER_SECOND:Number = 60
     
 	public function TextureMapping()
 	{
+        // Cross-domain security
+//        Security.loadPolicyFile("http://tile.openstreetmap.org/crossdomain.xml")
+        
 		stage.align = StageAlign.TOP_LEFT
 		stage.scaleMode = StageScaleMode.NO_SCALE
 		stage.addEventListener(Event.RESIZE,
@@ -49,7 +52,9 @@ public class TextureMapping extends Sprite
 		                       false, 0, true)
 		                       
         loader = new NetworkQueue()
-        var request:INetworkRequest = loader.addRequest("../resources/images/deepzoom/billions.xml", XML)
+//        var request:INetworkRequest = loader.addRequest("../resources/images/deepzoom/billions.xml", XML)
+        var request:INetworkRequest = loader.addRequest("http://static.gasi.ch/images/3229924166/image.dzi", XML)
+//        var request:INetworkRequest = loader.addRequest("../resources/images/openzoom/openstreetmap.xml", XML)
         request.addEventListener(NetworkRequestEvent.COMPLETE,
                                  request_completeHandler)
 		
@@ -68,7 +73,7 @@ public class TextureMapping extends Sprite
 		                         contextMenuController]
 
         var aspectRatio:Number = 3872 / 2592
-        var size:Number = 3872 * 0.5
+        var size:Number = 100
         var padding:Number = 10
         
         var numRenderers:int = NUM_RENDERERS
@@ -99,40 +104,58 @@ public class TextureMapping extends Sprite
     	
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           request_completeHandler)
-        descriptor = DZIDescriptor.fromXML(event.request.uri, new XML(event.data))
-    	var renderer:MultiScaleImageRenderer =
-    	       new MultiScaleImageRenderer(descriptor, container.loader,
-    	                                   3872 * 0.5, 2592 * 0.5)
-        renderer.x = 2200
-        container.addChild(renderer)    	                                   
+        descriptor = new DZIDescriptor("http://static.gasi.ch/images/3229924166/image.dzi", 3872 * 1000, 2592 * 1000, 256, 1, "jpg")
+//        descriptor = DZIDescriptor.fromXML(event.request.uri, new XML(event.data))
+//        descriptor = new VirtualEarthDescriptor()
+//        descriptor = new OpenZoomDescriptor(event.request.uri, new XML(event.data))
+//    	var renderer:MultiScaleImageRenderer =
+//    	       new MultiScaleImageRenderer(descriptor, container.loader,
+//    	                                   3872 * 0.5, 3872 * 0.5)//2592 * 0.5)
+//        renderer.x = 2200
+//        container.addChild(renderer)    	                                   
         
-        loader.addEventListener(Event.COMPLETE,
-                                loader_completeHandler,
-                                false, 0, true)
-        
-        var tileRequest:INetworkRequest
-        
-        for (var i:int = 0; i < descriptor.numLevels; i++)  // level
-        {
-            var level:IMultiScaleImageLevel = descriptor.getLevelAt(i)
-            
-            for (var j:int = 0; j < level.numColumns; j++)  // column
-            {
-                for (var k:int = 0; k < level.numRows; k++) // row
-                {
-                    tileRequest = loader.addRequest(descriptor.getTileURL(i, j, k), Bitmap)
-                    tileRequest.addEventListener(NetworkRequestEvent.COMPLETE,
-                                                 tileRequest_completeHandler)
-                }   
-            }
-        }
+//        loader.addEventListener(Event.COMPLETE,
+//                                loader_completeHandler,
+//                                false, 0, true)
+//        
+//        for (var i:int = 0; i < descriptor.numLevels; i++)  // level
+//        {
+//            var level:IMultiScaleImageLevel = descriptor.getLevelAt(i)
+//            
+//            for (var j:int = 0; j < level.numColumns; j++)  // column
+//            {
+//                for (var k:int = 0; k < level.numRows; k++) // row
+//                {
+//                	loadTile(descriptor.getTileURL(i, j, k))
+//                }   
+//            }
+//        }
+
+        initialized = true
     }
+    
+    public function loadTile(url:String):void
+    {
+    	tileCache[url] = Math.random() * 0xFFFFFF
+    	
+//    	if (pendingTiles[url] == true)
+//    	   return
+//    	
+//    	pendingTiles[url] = true
+//    	
+//        var tileRequest:INetworkRequest
+//            tileRequest = loader.addRequest(url, Bitmap)
+//            tileRequest.addEventListener(NetworkRequestEvent.COMPLETE,
+//                                         tileRequest_completeHandler)
+    	
+    }
+   
     
     private function tileRequest_completeHandler(event:NetworkRequestEvent):void
     {
-        event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
-                                          tileRequest_completeHandler)
-        tileCache[event.request.uri] = (event.data as Bitmap).bitmapData
+//        event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
+//                                          tileRequest_completeHandler)
+//        tileCache[event.request.uri] = (event.data as Bitmap).bitmapData
     }
     
     private function loader_completeHandler(event:Event):void
@@ -174,6 +197,7 @@ import org.openzoom.flash.renderers.Renderer;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.ISceneViewport;
 import org.openzoom.flash.viewport.SceneViewport;
+import flash.display.Bitmap;
 
 
 class NeoRenderer extends Renderer
@@ -186,6 +210,7 @@ class NeoRenderer extends Renderer
 	// Renderer is invalidated either when the viewport
 	// is transformed or when a new tile has loaded
 	private var invalidated:Boolean = true
+	private const DEBUG:Boolean = true
 	
 	/**
 	 * Constructor.
@@ -258,41 +283,61 @@ class NeoRenderer extends Renderer
         var index:int = clamp(level.index + 1, 0, app.descriptor.numLevels - 1)
         level = app.descriptor.getLevelAt(index)
         
-//        trace(stageBounds, level.width)
-                
-//        while (tileLayer.numChildren > 0)
-//            tileLayer.removeChildAt(0)
-            
         var g:Graphics = tileLayer.graphics
         g.clear()
         g.beginFill(0xFF6600)
         g.drawRect(0, 0, level.width, level.height)
         g.endFill()
         
-        for (var i:int = 0; i < level.numColumns; i++)
+        var sceneViewportBounds:Rectangle = sceneViewport.getBounds()
+        var localBounds:Rectangle = sceneBounds.intersection(sceneViewportBounds) 
+//        trace(localBounds, sceneViewportBounds)
+        
+//        var ratioL:Number = localBounds.left / sceneBounds.width
+//        var ratioR:Number = localBounds.right / sceneBounds.width
+//        var ratioT:Number = localBounds.top / sceneBounds.height
+//        var ratioB:Number = localBounds.bottom / sceneBounds.height
+//        trace(ratioL, ratioR, ratioT, ratioB)
+        var left:uint = Math.floor((localBounds.left * level.numColumns) / sceneBounds.width)
+        var right:uint = Math.ceil((localBounds.right * level.numColumns) / sceneBounds.width)
+        var top:uint = Math.floor((localBounds.top * level.numRows) / sceneBounds.height)
+        var bottom:uint = Math.ceil((localBounds.bottom * level.numRows) / sceneBounds.height)
+        
+        for (var i:int = left; i < right; i++)
         {
-            for (var j:int = 0; j < level.numRows; j++)
+            for (var j:int = top; j < bottom; j++)
             {
 		        var url:String = app.descriptor.getTileURL(index, i, j)
 		        var bounds:Rectangle = app.descriptor.getTileBounds(index, i, j)
 		        
-		        var bitmapData:BitmapData = app.tileCache[url] as BitmapData
-		        
+//		        var bitmapData:BitmapData = app.tileCache[url] as BitmapData
+//		        
 //		        if (!bitmapData)
+//		        {
+//		        	app.loadTile(url)
 //                    continue
+//                }
 		        
-		        var matrix:Matrix = new Matrix()
-		        matrix.tx = bounds.x
-		        matrix.ty = bounds.y
-//		        var tile:Shape = new Shape()
-//		        var g:Graphics = tile.graphics
-		        g.beginBitmapFill(bitmapData, matrix, false, true)
+		        if (!app.tileCache[url])
+		        {
+		        	app.loadTile(url)
+		        	continue
+		        }
+		        
+//		        if (DEBUG)
+//		        {
+                    g.beginFill(app.tileCache[url])	
+//		        }
+//		        else
+//		        {
+//			        var matrix:Matrix = new Matrix()
+//			        matrix.tx = bounds.x
+//			        matrix.ty = bounds.y
+//			        g.beginBitmapFill(bitmapData, matrix, false, true)
+//		        }
+		        
 		        g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height)
 		        g.endFill()
-		        
-//		        tile.x = bounds.x
-//		        tile.y = bounds.y
-//		        tileLayer.addChild(tile)
             }
         }
         
@@ -301,6 +346,6 @@ class NeoRenderer extends Renderer
         
         invalidated = false
         
-        trace((getTimer() - time) * app.numChildren)
+//        trace((getTimer() - time) * app.numChildren)
     }
 }
