@@ -187,6 +187,8 @@ public class TileLayer extends Sprite implements ITileLayer
 
 
         // TODO: Refactor
+        // FIXME: Causes security violation
+        // without crossdomain.xml policy file
         tileBitmap.smoothing = true
         tileBitmap.alpha = 0
 

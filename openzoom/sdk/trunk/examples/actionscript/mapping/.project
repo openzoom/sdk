@@ -17,8 +17,8 @@
 	<linkedResources>
 		<link>
 			<name>[source path] OpenZoom SDK</name>
-            <type>2</type>
-            <locationURI>OPENZOOM/src</locationURI>
+			<type>2</type>
+			<locationURI>OPENZOOM/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

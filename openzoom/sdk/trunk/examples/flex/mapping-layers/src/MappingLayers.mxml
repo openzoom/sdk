@@ -60,7 +60,6 @@
                 else
                     blueMarbleLayer = layerRenderer
 
-                layerRenderer.alpha = 0.5
                 container.addChild(layerRenderer)
             }
 
@@ -69,8 +68,10 @@
                 if (!osmLayer || !blueMarbleLayer)
                     return
 
-                osmLayer.alpha = layerAlphaSlider.value
-                blueMarbleLayer.alpha = 1 - layerAlphaSlider.value
+                if (container.getChildIndex(blueMarbleLayer) > container.getChildIndex(osmLayer)) 
+                    blueMarbleLayer.alpha = layerAlphaSlider.value
+                else
+                    osmLayer.alpha = layerAlphaSlider.value
             }
 
         ]]>
@@ -88,7 +89,7 @@
         </components:transformer>
         <components:controllers>
             <controllers:KeyboardController/>
-            <controllers:MouseController/>
+            <controllers:MouseController smoothPanning="false"/>
         </components:controllers>
     </components:MultiScaleContainer>
 
@@ -99,7 +100,7 @@
         right="20"
         minimum="0"
         maximum="1.0"
-        value="0.5"
+        value="1.0"
         snapInterval="0.05"
         liveDragging="true"
         height="40%"

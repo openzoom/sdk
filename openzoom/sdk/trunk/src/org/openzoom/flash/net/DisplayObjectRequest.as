@@ -31,9 +31,9 @@ import flash.events.IOErrorEvent;
 import flash.events.ProgressEvent;
 import flash.events.SecurityErrorEvent;
 import flash.net.URLRequest;
+import flash.system.LoaderContext;
 
 import org.openzoom.flash.events.NetworkRequestEvent;
-import org.openzoom.flash.renderers.images.Tile;
 
 /**
  * @private
@@ -115,7 +115,11 @@ internal class DisplayObjectRequest extends EventDispatcher
        var request:URLRequest = new URLRequest(url)
        loader = new Loader()
        addEventListeners(loader.contentLoaderInfo)
-       loader.load(request)
+       
+       var loaderContext:LoaderContext = new LoaderContext(true)
+       loader.load(request, loaderContext)
+
+//       loader.load(request)
     }
 
     //--------------------------------------------------------------------------
