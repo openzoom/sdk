@@ -42,8 +42,8 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_MAP_SIZE:uint = 2147483648
-    private static const DEFAULT_NUM_LEVELS:uint = 23
+    private static const DEFAULT_MAP_SIZE:uint = 67108864 //2147483648
+    private static const DEFAULT_NUM_LEVELS:uint = 18 //23
     private static const DEFAULT_TILE_SIZE:uint = 256
     private static const DEFAULT_TILE_FORMAT:String = "image/jpeg"
     private static const DEFAULT_TILE_OVERLAP:uint = 0

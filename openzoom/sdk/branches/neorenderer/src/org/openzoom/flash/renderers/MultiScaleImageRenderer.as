@@ -21,6 +21,8 @@
 package org.openzoom.flash.renderers
 {
 
+import com.flashdynamix.motion.TweensyZero;
+
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Graphics;
@@ -45,7 +47,6 @@ import org.openzoom.flash.renderers.images.RenderingMode;
 import org.openzoom.flash.renderers.images.Tile;
 import org.openzoom.flash.renderers.images.TileLayer;
 import org.openzoom.flash.utils.math.clamp;
-import com.flashdynamix.motion.TweensyZero;
 
 /**
  * @private

@@ -466,7 +466,7 @@ public final class MultiScaleContainer extends Sprite
 //      trace("ViewportEvent.TRANSFORM_END")
     }
     
-    private function enterFrameHandler(event:Event)
+    private function enterFrameHandler(event:Event):void
     {
         var v:INormalizedViewport = viewport
         var targetWidth:Number = v.viewportWidth / v.width
