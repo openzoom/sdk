@@ -8,6 +8,7 @@ import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
+import flash.geom.Point;
 import flash.utils.Dictionary;
 
 import org.openzoom.flash.components.MemoryMonitor;
@@ -39,10 +40,11 @@ public class LocalCachedTextureMapping extends Sprite
     public var initialized:Boolean = false
     public var descriptor:IMultiScaleImageDescriptor
     
+    private var renderers:Array = []
     private var memoryMonitor:MemoryMonitor
 
-    private const NUM_RENDERERS:uint = 400
-    private const NUM_COLUMNS:uint = 70
+    private const NUM_RENDERERS:uint = 1000
+    private const NUM_COLUMNS:uint = 40
 
     public const FRAMES_PER_SECOND:Number = 24
 
@@ -92,6 +94,7 @@ public class LocalCachedTextureMapping extends Sprite
             var renderer:NeoRenderer = new NeoRenderer(this, size, size / aspectRatio)
             renderer.x = (i % numColumns) * (size + padding)
             renderer.y = Math.floor(i / numColumns) * (size / aspectRatio + padding)
+            renderers.push(renderer)
             container.addChild(renderer)
         }
         addChild(container)
@@ -157,12 +160,17 @@ public class LocalCachedTextureMapping extends Sprite
     {
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           tileRequest_completeHandler)
-                                       
+                              
         var tile:Tile = new Tile()
-            tile.bitmapData = (event.data as Bitmap).bitmapData
+        
+        var t:BitmapData = (event.data as Bitmap).bitmapData         
+            tile.bitmapData = new BitmapData(t.width, t.height)
+            tile.bitmapData.copyPixels(t, t.rect, ZERO_POINT)
+            t.dispose()
+//            tile.bitmapData = t
             tile.uri = event.request.uri 
             
-        trace(tile.bitmapData.transparent)            
+//        trace(tile.bitmapData.transparent)            
         
         if (tiles.length < CACHE_SIZE)
         {   
@@ -171,19 +179,33 @@ public class LocalCachedTextureMapping extends Sprite
         }
         else
         {
+//	        trace("PRE:", tiles.length)
+//	        var index:int = Math.floor(Math.random() * (tiles.length - 1))
+//        	var oldTile:Tile = tiles[index] as Tile
+//        	tileCache[oldTile.uri] = null
+//        	oldTile.dispose()
+//        	
+//	        trace("INV:", tiles.length, Math.random())
+//	        
+//        	tiles[index] = tile
+//        	tileCache[tile.uri] = tile
+//	        trace("POST:", tiles.length)
+
 	        trace("PRE:", tiles.length)
-	        var index:int = Math.floor(Math.random() * (tiles.length - 1))
-        	var oldTile:Tile = tiles[index] as Tile
+        	var oldTile:Tile = tiles.shift() as Tile
         	tileCache[oldTile.uri] = null
+        	pendingTiles[oldTile.uri] = false
         	oldTile.dispose()
         	
 	        trace("INV:", tiles.length, Math.random())
 	        
-        	tiles[index] = tile
+        	tiles.push(tile)
         	tileCache[tile.uri] = tile
 	        trace("POST:", tiles.length)
         }
         
+        for each (var renderer:NeoRenderer in renderers)
+            renderer.invalidated = true
     }
 
     private function loader_completeHandler(event:Event):void
@@ -211,6 +233,8 @@ public class LocalCachedTextureMapping extends Sprite
         	memoryMonitor.y = stage.stageHeight - memoryMonitor.height - 10
         }
     }
+    
+    private static const ZERO_POINT:Point = new Point()
 }
 
 }
@@ -238,6 +262,7 @@ import flash.geom.Point;
 import flash.display.BlendMode;
 import flash.display.PixelSnapping;
 import org.openzoom.flash.renderers.images.Tile;
+import flash.display.BitmapDataChannel;
 
 
 class NeoRenderer extends Renderer
@@ -312,7 +337,7 @@ class NeoRenderer extends Renderer
 
     private function clickHandler(event:MouseEvent):void
     {
-        sceneViewport.fitToBounds(getBounds(scene.targetCoordinateSpace))
+//        sceneViewport.fitToBounds(getBounds(scene.targetCoordinateSpace))
     }
 
     private var counter:int = 0
@@ -390,26 +415,29 @@ class NeoRenderer extends Renderer
                     app.loadTile(url)
                     continue
                 }
-
+                
+//                var alphaMultiplier:uint = ((Math.random() * 0.5 + 0.5) * 0x100)
+//                ALPHA_MAP.fillRect(bitmapData.rect, alphaMultiplier | 0x00000000)
+//                bitmapData.copyChannel(ALPHA_MAP, bitmapData.rect, ZERO_POINT, BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA)
+                
                 var bitmapData:BitmapData = tile.bitmapData
                 
                 // Fading
 //                var fillData:BitmapData = new BitmapData(bitmapData.rect.width,
 //                                                         bitmapData.rect.height,
 //                                                         true)
-//                var alphaMultiplier:uint = 0x80 << 24//(Math.random() * 0x100) << 24
+//                var alphaMultiplier:uint = ((Math.random() * 0.5 + 0.5) * 0x100) << 24
 //                ALPHA_MAP.fillRect(bitmapData.rect, alphaMultiplier | 0x00000000)
 //                fillData.copyPixels(bitmapData,
 //                                    bitmapData.rect,
 //                                    ZERO_POINT,
 //                                    ALPHA_MAP)
 
-                                    
                 var matrix:Matrix = new Matrix()
                 matrix.tx = bounds.x
                 matrix.ty = bounds.y
-//                g.beginBitmapFill(fillData, matrix, false, true)
                 g.beginBitmapFill(bitmapData, matrix, false, true)
+//                g.beginBitmapFill(fillData, matrix, false, true)
                 g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height)
                 g.endFill()
                 
