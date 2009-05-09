@@ -11,6 +11,7 @@
 </sourceAttachmentPath>
 </compiler>
 <applications>
+<application path="MultiScaleImageRendererXTest.as"/>
 <application path="LocalCachedTextureMapping.as"/>
 <application path="TextureMapping.as"/>
 <application path="VirtualEarth.as"/>
