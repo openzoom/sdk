@@ -363,10 +363,10 @@ public class MultiScaleImageRenderer extends Renderer
             for (var row:int = minRow; row < maxRow; row++)
             {
                 var tile:Tile = new Tile(null,
-                                            level.index,
-                                            row,
-                                            column,
-                                            descriptor.tileOverlap)
+                                         level.index,
+                                         row,
+                                         column,
+                                         descriptor.tileOverlap)
 
                 var contained:Boolean = layer.containsTile(tile)
                 var exists:Boolean =

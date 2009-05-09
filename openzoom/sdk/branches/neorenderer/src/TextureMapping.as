@@ -2,6 +2,7 @@ package
 {
 
 import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Sprite;
 import flash.display.StageAlign;
@@ -29,7 +30,9 @@ public class TextureMapping extends Sprite
 {
     private var container:MultiScaleContainer
 
+    public const CACHE_SIZE:int = 100
     public var tileCache:Dictionary = new Dictionary()
+    public var tiles:Array = []
     public var pendingTiles:Dictionary = new Dictionary()
     public var loader:INetworkQueue
 
@@ -38,7 +41,7 @@ public class TextureMapping extends Sprite
     
     private var memoryMonitor:MemoryMonitor
 
-    private const NUM_RENDERERS:uint = 1600
+    private const NUM_RENDERERS:uint = 400
     private const NUM_COLUMNS:uint = 70
 
     public const FRAMES_PER_SECOND:Number = 24
@@ -166,7 +169,25 @@ public class TextureMapping extends Sprite
 
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           tileRequest_completeHandler)
-        tileCache[event.request.uri] = (event.data as Bitmap).bitmapData
+                                       
+        var tile:Tile = new Tile()
+            tile.bitmapData = (event.data as Bitmap).bitmapData
+            tile.uri = event.request.uri 
+        
+        if (tiles.length < CACHE_SIZE)
+        {   
+            tiles.push(tile)
+            tileCache[tile.uri] = tile
+        }
+        else
+        {
+        	var oldTile:Tile = tiles.shift() as Tile
+        	tileCache[oldTile.uri] = null
+        	oldTile.dispose()
+        	
+        	tiles.push(tile)
+        	tileCache[tile.uri] = tile
+        }
     }
 
     private function loader_completeHandler(event:Event):void
@@ -218,6 +239,9 @@ import org.openzoom.flash.viewport.ISceneViewport;
 import org.openzoom.flash.viewport.SceneViewport;
 import flash.events.MouseEvent;
 import flash.geom.Point;
+import flash.display.BlendMode;
+import flash.display.PixelSnapping;
+import org.openzoom.flash.renderers.images.Tile;
 
 
 class NeoRenderer extends Renderer
@@ -324,7 +348,10 @@ class NeoRenderer extends Renderer
 
         var sceneBounds:Rectangle = getBounds(scene.targetCoordinateSpace)
         if (!app.descriptor || !sceneViewport.intersects(sceneBounds))
-           return
+        {
+            tileLayer.graphics.clear()        	
+            return
+        }
 
         trace("[NeoRenderer] updateDisplayList")
 
@@ -347,7 +374,7 @@ class NeoRenderer extends Renderer
         var localBounds:Rectangle = sceneBounds.intersection(sceneViewportBounds)
         localBounds.offset(-sceneBounds.x, -sceneBounds.y)
 
-        var offset:int  = 1
+        var offset:int  = 0
         var left:uint   = Math.max(0,                Math.floor(localBounds.left   * level.numColumns / sceneBounds.width)  - offset)
         var right:uint  = Math.min(level.numColumns, Math.floor(localBounds.right  * level.numColumns / sceneBounds.width)  + offset)
         var top:uint    = Math.max(0,                Math.floor(localBounds.top    * level.numRows    / sceneBounds.height) - offset)
@@ -360,40 +387,33 @@ class NeoRenderer extends Renderer
                 var url:String = app.descriptor.getTileURL(index, i, j)
                 var bounds:Rectangle = app.descriptor.getTileBounds(index, i, j)
 
-                var bitmapData:BitmapData = app.tileCache[url] as BitmapData
+                var tile:Tile = app.tileCache[url] as Tile
 
-                if (!bitmapData)
+                if (!tile)
                 {
                     app.loadTile(url)
                     continue
                 }
 
-//                var t:BitmapData = new BitmapData(bitmapData.rect.width,
-//                                                  bitmapData.rect.height,
-//                                                  true)
-//                t.copyPixels(bitmapData, bitmapData.rect, new Point())
-
-//                if (!fill || !fill.rect.equals(bitmapData.rect))
-                var fillData:BitmapData = new BitmapData(bitmapData.rect.width, bitmapData.rect.height, true)
-//                fillData.fillRect(fillData.rect, 0xFFFF0000)
-//                fillData.fillRect(fillData.rect, 0x80FF0000)
+                var bitmapData:BitmapData = tile.bitmapData
                 
-//                fillData.merge(t, bitmapData.rect, new Point(),
-//                               0x100, 0x100, 0x100, 0x100)
+                // Fading
+//                var fillData:BitmapData = new BitmapData(bitmapData.rect.width,
+//                                                         bitmapData.rect.height,
+//                                                         true)
+//                var alphaMultiplier:uint = 0x80 << 24//(Math.random() * 0x100) << 24
+//                ALPHA_MAP.fillRect(bitmapData.rect, alphaMultiplier | 0x00000000)
+//                fillData.copyPixels(bitmapData,
+//                                    bitmapData.rect,
+//                                    ZERO_POINT,
+//                                    ALPHA_MAP)
 
-                var alphaMultiplier:uint = (Math.random() * 0x100) << 24
-                ALPHA_MAP.fillRect(bitmapData.rect, alphaMultiplier | 0)
-//                fillData.fillRect(FILL.rect, 0)
-                fillData.copyPixels(bitmapData,
-                                    bitmapData.rect,
-                                    ZERO_POINT,
-                                    ALPHA_MAP)
                                     
                 var matrix:Matrix = new Matrix()
                 matrix.tx = bounds.x
                 matrix.ty = bounds.y
-                g.beginBitmapFill(fillData, matrix, false, true)
-//                g.beginBitmapFill(bitmapData, matrix, false, true)
+//                g.beginBitmapFill(fillData, matrix, false, true)
+                g.beginBitmapFill(bitmapData, matrix, false, true)
                 g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height)
                 g.endFill()
                 
@@ -411,4 +431,22 @@ class NeoRenderer extends Renderer
     private static const ZERO_POINT:Point = new Point() 
 //    private static const FILL:BitmapData = new BitmapData(258, 258) 
 //    private static var fill:BitmapData
+}
+
+class Tile implements IDisposable
+{
+	public var bitmapData:BitmapData
+	public var uri:String
+	
+	public function dispose():void
+	{
+		bitmapData.dispose()
+		bitmapData = null
+		uri = null
+	}
+}
+
+interface IDisposable
+{
+	function dispose():void
 }

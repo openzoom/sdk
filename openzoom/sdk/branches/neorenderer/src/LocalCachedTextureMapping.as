@@ -44,7 +44,7 @@ public class LocalCachedTextureMapping extends Sprite
     private var memoryMonitor:MemoryMonitor
 
     private const NUM_RENDERERS:uint = 1000
-    private const NUM_COLUMNS:uint = 40
+    private const NUM_COLUMNS:uint = 38
 
     public const FRAMES_PER_SECOND:Number = 24
 
@@ -58,7 +58,8 @@ public class LocalCachedTextureMapping extends Sprite
                                false, 0, true)
 
         loader = new NetworkQueue()
-        var request:INetworkRequest = loader.addRequest("../resources/images/deepzoom/billions.xml", XML)
+//        var request:INetworkRequest = loader.addRequest("../resources/images/deepzoom/billions.xml", XML)
+        var request:INetworkRequest = loader.addRequest("http://static.gasi.ch/images/3229924166/image.dzi", XML)
         request.addEventListener(NetworkRequestEvent.COMPLETE,
                                  request_completeHandler)
 
@@ -80,7 +81,7 @@ public class LocalCachedTextureMapping extends Sprite
                                  contextMenuController]
 
         var aspectRatio:Number = 3872 / 2592
-        var size:Number = 100
+        var size:Number = 200
         var padding:Number = 10
 
         var numRenderers:int = NUM_RENDERERS
@@ -88,6 +89,10 @@ public class LocalCachedTextureMapping extends Sprite
 
         container.sceneWidth = (size + padding) * numColumns
         container.sceneHeight = (size / aspectRatio + padding) * Math.ceil(numRenderers / numColumns)
+
+//        var scaleConstraint:ScaleConstraint = new ScaleConstraint()
+//        scaleConstraint.maxScale = container.sceneWidth / size * 32
+//        container.constraint = scaleConstraint
 
         for (var i:int = 0; i < numRenderers; i++)
         {
@@ -121,23 +126,6 @@ public class LocalCachedTextureMapping extends Sprite
 //        renderer.x = 2200
 //        container.addChild(renderer)
 
-//        loader.addEventListener(Event.COMPLETE,
-//                                loader_completeHandler,
-//                                false, 0, true)
-//
-//        for (var i:int = 0; i < descriptor.numLevels; i++)  // level
-//        {
-//            var level:IMultiScaleImageLevel = descriptor.getLevelAt(i)
-//
-//            for (var j:int = 0; j < level.numColumns; j++)  // column
-//            {
-//                for (var k:int = 0; k < level.numRows; k++) // row
-//                {
-//                    loadTile(descriptor.getTileURL(i, j, k))
-//                }
-//            }
-//        }
-
         initialized = true
     }
 
@@ -152,7 +140,6 @@ public class LocalCachedTextureMapping extends Sprite
             tileRequest = loader.addRequest(url, Bitmap)
             tileRequest.addEventListener(NetworkRequestEvent.COMPLETE,
                                          tileRequest_completeHandler)
-
     }
 
 
@@ -162,16 +149,9 @@ public class LocalCachedTextureMapping extends Sprite
                                           tileRequest_completeHandler)
                               
         var tile:Tile = new Tile()
-        
-        var t:BitmapData = (event.data as Bitmap).bitmapData         
-            tile.bitmapData = new BitmapData(t.width, t.height)
-            tile.bitmapData.copyPixels(t, t.rect, ZERO_POINT)
-            t.dispose()
-//            tile.bitmapData = t
+            tile.bitmapData = (event.data as Bitmap).bitmapData
             tile.uri = event.request.uri 
             
-//        trace(tile.bitmapData.transparent)            
-        
         if (tiles.length < CACHE_SIZE)
         {   
             tiles.push(tile)
@@ -179,18 +159,6 @@ public class LocalCachedTextureMapping extends Sprite
         }
         else
         {
-//	        trace("PRE:", tiles.length)
-//	        var index:int = Math.floor(Math.random() * (tiles.length - 1))
-//        	var oldTile:Tile = tiles[index] as Tile
-//        	tileCache[oldTile.uri] = null
-//        	oldTile.dispose()
-//        	
-//	        trace("INV:", tiles.length, Math.random())
-//	        
-//        	tiles[index] = tile
-//        	tileCache[tile.uri] = tile
-//	        trace("POST:", tiles.length)
-
 	        trace("PRE:", tiles.length)
         	var oldTile:Tile = tiles.shift() as Tile
         	tileCache[oldTile.uri] = null
@@ -206,12 +174,6 @@ public class LocalCachedTextureMapping extends Sprite
         
         for each (var renderer:NeoRenderer in renderers)
             renderer.invalidated = true
-    }
-
-    private function loader_completeHandler(event:Event):void
-    {
-        trace("All tiles loaded.")
-        initialized = true
     }
 
     private function stage_resizeHandler(event:Event):void
@@ -367,8 +329,15 @@ class NeoRenderer extends Renderer
         if (!invalidated)
            return
 
-        var sceneBounds:Rectangle = getBounds(scene.targetCoordinateSpace)
-        if (!app.descriptor || !sceneViewport.intersects(sceneBounds))
+//        var sceneBounds:Rectangle = getBounds(scene.targetCoordinateSpace)
+        var normalizedBounds:Rectangle = getBounds(scene.targetCoordinateSpace)
+            normalizedBounds.x /= scene.sceneWidth
+            normalizedBounds.y /= scene.sceneHeight
+            normalizedBounds.width /= scene.sceneWidth
+            normalizedBounds.height /= scene.sceneHeight
+            
+//        if (!app.descriptor || !sceneViewport.intersects(vpBounds))
+        if (!app.descriptor || !viewport.intersects(normalizedBounds))
         {
             tileLayer.graphics.clear()        	
             return
@@ -391,19 +360,46 @@ class NeoRenderer extends Renderer
         g.drawRect(0, 0, level.width, level.height)
         g.endFill()
 
-        var sceneViewportBounds:Rectangle = sceneViewport.getBounds()
-        var localBounds:Rectangle = sceneBounds.intersection(sceneViewportBounds)
-        localBounds.offset(-sceneBounds.x, -sceneBounds.y)
+        var viewportBounds:Rectangle = viewport.getBounds()
+        var localBounds:Rectangle = normalizedBounds.intersection(viewportBounds)
+        localBounds.offset(-normalizedBounds.x, -normalizedBounds.y)
 
-        var offset:int  = 1
-        var left:uint   = Math.max(0,                Math.floor(localBounds.left   * level.numColumns / sceneBounds.width)  - offset)
-        var right:uint  = Math.min(level.numColumns, Math.floor(localBounds.right  * level.numColumns / sceneBounds.width)  + offset)
-        var top:uint    = Math.max(0,                Math.floor(localBounds.top    * level.numRows    / sceneBounds.height) - offset)
-        var bottom:uint = Math.min(level.numRows,    Math.floor(localBounds.bottom * level.numRows    / sceneBounds.height) + offset)
+        var url:String = app.descriptor.getTileURL(8, 0, 0)
+        var bounds:Rectangle = app.descriptor.getTileBounds(8, 0, 0)
 
-        for (var i:int = left; i < right; i++)
+        var tile:Tile = app.tileCache[url] as Tile
+        if (!tile)
         {
-            for (var j:int = top; j < bottom; j++)
+            app.loadTile(url)
+        }
+        else
+        {
+		    var s:Number = level.width / app.descriptor.getLevelAt(8).width
+		    var matrix:Matrix = new Matrix(s, 0, 0, s)
+		    matrix.tx = bounds.x * s
+		    matrix.ty = bounds.y * s
+		    g.beginBitmapFill(tile.bitmapData, matrix, false, true)
+		    g.drawRect(bounds.x * s, bounds.y * s, bounds.width * s, bounds.height * s)
+		    g.endFill()
+        }
+
+
+        trace(localBounds)
+        var offset:int  = 0
+        var left:uint   = Math.max(0,                Math.floor(localBounds.left   * level.numColumns / normalizedBounds.width)  - offset)
+        var right:uint  = Math.min(level.numColumns, Math.floor(localBounds.right  * level.numColumns / normalizedBounds.width)  + offset)
+        var top:uint    = Math.max(0,                Math.floor(localBounds.top    * level.numRows    / normalizedBounds.height) - offset)
+        var bottom:uint = Math.min(level.numRows,    Math.floor(localBounds.bottom * level.numRows    / normalizedBounds.height) + offset)
+
+        var tl:Point = app.descriptor.getTileAtPoint(index, localBounds.topLeft)
+        var br:Point = app.descriptor.getTileAtPoint(index, localBounds.bottomRight)
+        
+        trace(tl, br.add(new Point(1, 1)))
+        trace(left, top, right, bottom)
+
+        for (var i:int = tl.x; i <= br.x; i++)
+        {
+            for (var j:int = tl.y; j <= br.y; j++)
             {
                 var url:String = app.descriptor.getTileURL(index, i, j)
                 var bounds:Rectangle = app.descriptor.getTileBounds(index, i, j)

@@ -21,6 +21,7 @@
 package org.openzoom.flash.descriptors.deepzoom
 {
 
+import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
@@ -133,6 +134,20 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     {
         var path:String  = uri.substring(0, uri.length - 4) + "_files"
         return [path, "/", level, "/", column, "_", row, ".", extension].join("")
+    }
+
+    /**
+     * @inheritDoc
+     */
+    override public function getTileAtPoint(level:int, point:Point):Point
+    {
+    	var p:Point = new Point()
+    	
+    	var l:IMultiScaleImageLevel = getLevelAt(level)
+    	p.x = Math.floor((point.x * l.width) / tileWidth)
+    	p.y = Math.floor((point.y * l.height) / tileHeight)
+    	
+    	return p
     }
 
     /**

@@ -143,6 +143,16 @@ public interface IViewport extends IEventDispatcher
     //
     //--------------------------------------------------------------------------
 
+    //----------------------------------
+    //  transform
+    //----------------------------------
+
+    /**
+     * Transformation that is currently applied to the viewport
+     */
+    function get transform():IViewportTransform
+    function set transform(value:IViewportTransform):void
+
 //    //----------------------------------
 //    //  constraint
 //    //----------------------------------

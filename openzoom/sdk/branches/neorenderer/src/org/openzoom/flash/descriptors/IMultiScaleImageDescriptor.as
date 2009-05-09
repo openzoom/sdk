@@ -21,6 +21,7 @@
 package org.openzoom.flash.descriptors
 {
 
+import flash.geom.Point;
 import flash.geom.Rectangle;
 
 /**
@@ -152,12 +153,16 @@ public interface IMultiScaleImageDescriptor
      */
     function getTileURL(level:int, column:uint, row:uint):String
 
-
     /**
      * Returns the bounds (position and dimensions) of the tile specified
      * by the level, column and row.
      */
     function getTileBounds(level:int, column:uint, row:uint):Rectangle
+
+    /**
+     * Returns the tile at the given level under the given point.
+     */
+    function getTileAtPoint(level:int, point:Point):Point
 
     //--------------------------------------------------------------------------
     //

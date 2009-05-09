@@ -21,6 +21,7 @@
 package org.openzoom.flash.descriptors.virtualearth
 {
 
+import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
@@ -122,6 +123,20 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
         var tileURL:String = [baseURL, getQuadKey(level, column, row), extension].join("")
 
         return tileURL
+    }
+
+    /**
+     * @inheritDoc
+     */
+    override public function getTileAtPoint(level:int, point:Point):Point
+    {
+        var p:Point = new Point()
+        
+        var l:IMultiScaleImageLevel = getLevelAt(level)
+        p.x = Math.floor((point.x * l.width) / tileWidth)
+        p.y = Math.floor((point.y * l.height) / tileHeight)
+        
+        return p
     }
 
     /**

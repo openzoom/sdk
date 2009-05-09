@@ -71,7 +71,7 @@ public interface IViewportTransformer
      * Transform viewport to target transform.
      */
     function transform(target:IViewportTransform,
-                        immediately:Boolean = false):void
+                       immediately:Boolean = false):void
 
     /**
      * Stop viewport transformation.

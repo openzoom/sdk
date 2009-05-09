@@ -456,7 +456,6 @@ public final class MultiScaleContainer extends Sprite
     {
 //      trace("ViewportEvent.TRANSFORM_UPDATE")
         invalidated = true
-
     }
     
     private var invalidated:Boolean = true
@@ -467,6 +466,12 @@ public final class MultiScaleContainer extends Sprite
     }
     
     private function enterFrameHandler(event:Event):void
+    {
+    	if (invalidated)
+    	   updateDisplayList()
+    }
+    
+    private function updateDisplayList():void
     {
         var v:INormalizedViewport = viewport
         var targetWidth:Number = v.viewportWidth / v.width

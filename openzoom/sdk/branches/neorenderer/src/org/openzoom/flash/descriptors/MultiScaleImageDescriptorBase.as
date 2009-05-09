@@ -21,6 +21,8 @@
 package org.openzoom.flash.descriptors
 {
 
+import flash.errors.IllegalOperationError;
+import flash.geom.Point;
 import flash.geom.Rectangle;
 
 /**
@@ -223,6 +225,14 @@ public class MultiScaleImageDescriptorBase
     {
         // By default, all tiles exist
         return true
+    }
+
+    /**
+     * @copy IMultiScaleImageDescriptor#getTileAtPoint()
+     */
+    public function getTileAtPoint(level:int, point:Point):Point
+    {
+    	throw new IllegalOperationError("Not implemented.")
     }
 
     //--------------------------------------------------------------------------

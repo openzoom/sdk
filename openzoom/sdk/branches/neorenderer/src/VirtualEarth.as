@@ -19,6 +19,8 @@ import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.net.INetworkRequest;
 import org.openzoom.flash.net.NetworkQueue;
+import org.openzoom.flash.viewport.constraints.CompositeConstraint;
+import org.openzoom.flash.viewport.constraints.MappingConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
@@ -69,11 +71,11 @@ public class VirtualEarth extends Sprite
                                             viewport_transformUpdateHandler,
                                             false, 0, true)
         var transformer:TweenerTransformer = new TweenerTransformer()
-//        transformer.duration = 20
+//        transformer.duration = 0.8
 //        transformer.easing = "easeOutSine"
         container.transformer = transformer
         var mouseController:MouseController = new MouseController()
-//        mouseController.smoothPanning = false
+        mouseController.smoothPanning = false
 
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
@@ -90,11 +92,14 @@ public class VirtualEarth extends Sprite
 
         container.sceneWidth = size
         container.sceneHeight = size
+        var compositeConstraint:CompositeConstraint = new CompositeConstraint()
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
         scaleConstraint.maxScale = new VirtualEarthDescriptor().width / container.sceneWidth // 24 // VirtualEarth
 //        scaleConstraint.maxScale = 67108864 / container.sceneWidth // OpenStreetMap
 //        scaleConstraint.maxScale = 268435456 / container.sceneWidth // Google Satellite
-        container.constraint = scaleConstraint
+        var mappingConstraint:MappingConstraint = new MappingConstraint()
+        compositeConstraint.constraints = [scaleConstraint, mappingConstraint]
+        container.constraint = compositeConstraint
 
         renderer = new NeoRenderer(this, size, size / aspectRatio)
         renderer.width = container.sceneWidth
@@ -295,16 +300,17 @@ class NeoRenderer extends Renderer
         if (!app.initialized)
            return
 
-        var stageBounds:Rectangle = getBounds(stage)
-        var level:IMultiScaleImageLevel = app.descriptor.getLevelForSize(stageBounds.width, stageBounds.height)
-        var index:int = clamp(level.index, 0, app.descriptor.numLevels - 1)
-
         if (!invalidated)
            return
 
         var sceneBounds:Rectangle = getBounds(scene.targetCoordinateSpace)
         if (!sceneViewport.intersects(sceneBounds) || !app.descriptor)
            return
+
+        var stageBounds:Rectangle = getBounds(stage)
+        var level:IMultiScaleImageLevel = app.descriptor.getLevelForSize(stageBounds.width, stageBounds.height)
+        var index:int = clamp(level.index, 0, app.descriptor.numLevels - 1)
+        trace(stageBounds.width / app.descriptor.getLevelAt(index).width)
 
         var time:Number = getTimer()
 
@@ -355,7 +361,7 @@ class NeoRenderer extends Renderer
 //            }
 //        }
 
-        trace(viewport.getBounds())
+//        trace(viewport.getBounds())
 
         for (var i:int = left; i < right; i++)
         {
@@ -378,26 +384,26 @@ class NeoRenderer extends Renderer
 //                t.copyPixels(bitmapData, bitmapData.rect, new Point())
 
 //                if (!fill || !fill.rect.equals(bitmapData.rect))
-                var fillData:BitmapData = new BitmapData(bitmapData.rect.width, bitmapData.rect.height, true)
+//                var fillData:BitmapData = new BitmapData(bitmapData.rect.width, bitmapData.rect.height, true)
 //                fillData.fillRect(fillData.rect, 0xFFFF0000)
 //                fillData.fillRect(fillData.rect, 0x80FF0000)
                 
 //                fillData.merge(t, bitmapData.rect, new Point(),
 //                               0x100, 0x100, 0x100, 0x100)
 
-                var alphaMultiplier:uint = (Math.random() * 0x100) << 24
-                ALPHA_MAP.fillRect(bitmapData.rect, alphaMultiplier | 0)
-//                fillData.fillRect(FILL.rect, 0)
-                fillData.copyPixels(bitmapData,
-                                    bitmapData.rect,
-                                    ZERO_POINT,
-                                    ALPHA_MAP)
+//                var alphaMultiplier:uint = (Math.random() * 0x100) << 24
+//                ALPHA_MAP.fillRect(bitmapData.rect, alphaMultiplier | 0)
+////                fillData.fillRect(FILL.rect, 0)
+//                fillData.copyPixels(bitmapData,
+//                                    bitmapData.rect,
+//                                    ZERO_POINT,
+//                                    ALPHA_MAP)
                                     
                 var matrix:Matrix = new Matrix()
                 matrix.tx = bounds.x
                 matrix.ty = bounds.y
-                g.beginBitmapFill(fillData, matrix, false, true)
-//                g.beginBitmapFill(bitmapData, matrix, false, true)
+//                g.beginBitmapFill(fillData, matrix, false, true)
+                g.beginBitmapFill(bitmapData, matrix, false, true)
                 g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height)
                 g.endFill()
                 

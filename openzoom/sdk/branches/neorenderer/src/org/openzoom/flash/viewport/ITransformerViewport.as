@@ -36,11 +36,11 @@ public interface ITransformerViewport extends IViewport
     //  transform
     //----------------------------------
 
-    /**
-     * Transformation that is currently applied to the viewport
-     */
-    function get transform():IViewportTransform
-    function set transform(value:IViewportTransform):void
+//    /**
+//     * Transformation that is currently applied to the viewport
+//     */
+//    function get transform():IViewportTransform
+//    function set transform(value:IViewportTransform):void
 
     //--------------------------------------------------------------------------
     //
