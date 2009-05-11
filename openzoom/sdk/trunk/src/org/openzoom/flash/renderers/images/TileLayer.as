@@ -21,7 +21,7 @@
 package org.openzoom.flash.renderers.images
 {
 
-import com.flashdynamix.motion.TweensyZero;
+import caurina.transitions.Tweener;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
@@ -194,8 +194,7 @@ public class TileLayer extends Sprite implements ITileLayer
 
         addChild(tileBitmap)
 
-        // TODO: Remove dependency on TweensyZero
-        TweensyZero.to(tileBitmap, {alpha: 1}, DEFAULT_TILE_SHOW_DURATION)
+        Tweener.addTween(tileBitmap, {alpha: 1, time: DEFAULT_TILE_SHOW_DURATION})
 
         return tile
     }

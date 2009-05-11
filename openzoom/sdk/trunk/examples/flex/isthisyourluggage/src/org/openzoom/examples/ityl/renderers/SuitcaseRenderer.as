@@ -21,7 +21,7 @@
 package org.openzoom.examples.ityl.renderers
 {
 
-import com.flashdynamix.motion.TweensyZero;
+import caurina.transitions.Tweener;
 
 import flash.display.Bitmap;
 import flash.display.Loader;
@@ -101,7 +101,7 @@ public class SuitcaseRenderer extends Renderer
         if (!content)
            return
 
-        TweensyZero.to(suitcase, {alpha: 0}, 0.4)
+        Tweener.addTween(suitcase, {alpha: 0, time: 0.4})
     }
 
     private function close():void
@@ -109,7 +109,7 @@ public class SuitcaseRenderer extends Renderer
         if (!content)
            return
 
-        TweensyZero.to(suitcase, {alpha: 1}, 0.6)
+        Tweener.addTween(suitcase, {alpha: 0, time: 0.6})
     }
 
     //--------------------------------------------------------------------------
@@ -183,7 +183,7 @@ public class SuitcaseRenderer extends Renderer
 
     private function loader_completeHandler(event:Event):void
     {
-        TweensyZero.to(suitcase, {alpha: 0}, 1)
+        Tweener.addTween(suitcase, {alpha: 0, time: 1})
         content = loader.content as Bitmap
         loader.unload()
 
