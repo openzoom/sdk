@@ -5,12 +5,11 @@ import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
-import flash.utils.setTimeout;
 
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
-import org.openzoom.flash.renderers.MultiScaleImageRenderManager;
-import org.openzoom.flash.renderers.MultiScaleImageRendererX;
+import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
@@ -18,9 +17,9 @@ import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#222222")]
-public class MultiScaleImageRendererXTest extends Sprite
+public class ImagePyramidRendererTest extends Sprite
 {
-    public function MultiScaleImageRendererXTest()
+    public function ImagePyramidRendererTest()
     {
 
         stage.align = StageAlign.TOP_LEFT
@@ -43,12 +42,15 @@ public class MultiScaleImageRendererXTest extends Sprite
         memoryMonitor = new MemoryMonitor()
         addChild(memoryMonitor)
         
-        renderManager = new MultiScaleImageRenderManager(container.viewport,
-                                                         container.loader)
+        renderManager = new ImagePyramidRenderManager(container.scene,
+                                                      container.viewport,
+                                                      container.loader)
 
-        var renderer:MultiScaleImageRendererX = new MultiScaleImageRendererX()
-        renderer.width = 4096
-        renderer.height = 4096
+        var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
+        renderer.x = 1024
+        renderer.y = 1024
+        renderer.width = 2048
+        renderer.height = 2048
         renderManager.addRenderer(renderer)
         
         container.sceneWidth = 4096
@@ -57,13 +59,11 @@ public class MultiScaleImageRendererXTest extends Sprite
         addChild(container)
         
         layout()
-        
-//        setTimeout(function():void {renderer.height = 2048}, 2000)
     }
     
     private var container:MultiScaleContainer
     private var memoryMonitor:MemoryMonitor
-    private var renderManager:MultiScaleImageRenderManager
+    private var renderManager:ImagePyramidRenderManager
 
     private function stage_resizeHandler(event:Event):void
     {

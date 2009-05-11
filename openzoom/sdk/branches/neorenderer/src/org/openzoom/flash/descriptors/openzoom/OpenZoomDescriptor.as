@@ -25,10 +25,10 @@ import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
 import org.openzoom.flash.descriptors.IImageSourceDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 import org.openzoom.flash.descriptors.ImageSourceDescriptor;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.utils.uri.resolveURI;
 
@@ -36,8 +36,8 @@ import org.openzoom.flash.utils.uri.resolveURI;
  * OpenZoom Descriptor.
  * <a href="http://openzoom.org/specs/">http://openzoom.org/specs/</a>
  */
-public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
-                                implements IMultiScaleImageDescriptor
+public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
+                                implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -102,24 +102,24 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
      */
     public function getTileURL(level:int, column:uint, row:uint):String
     {
-        return IMultiScaleImageLevel(levels[level]).getTileURL(column, row)
+        return IImagePyramidLevel(levels[level]).getTileURL(column, row)
     }
 
     /**
      * @inheritDoc
      */
-    public function getLevelAt(index:int):IMultiScaleImageLevel
+    public function getLevelAt(index:int):IImagePyramidLevel
     {
-        return IMultiScaleImageLevel(levels[index])
+        return IImagePyramidLevel(levels[index])
     }
 
     /**
      * @inheritDoc
      */
     public function getLevelForSize(width:Number,
-                                    height:Number):IMultiScaleImageLevel
+                                    height:Number):IImagePyramidLevel
     {
-        var level:IMultiScaleImageLevel
+        var level:IImagePyramidLevel
 
         for (var i:int = numLevels - 1; i >= 0; i--)
         {
@@ -136,7 +136,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageDescriptor
+    public function clone():IImagePyramidDescriptor
     {
         return new OpenZoomDescriptor(uri, data.copy())
     }
@@ -152,7 +152,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
         bounds.x = (column * tileWidth) - offsetX
         bounds.y = (row * tileHeight) - offsetY
         
-        var l:IMultiScaleImageLevel = getLevelAt(level)
+        var l:IImagePyramidLevel = getLevelAt(level)
         var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
         var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
         bounds.width = Math.min(width, l.width - bounds.x)

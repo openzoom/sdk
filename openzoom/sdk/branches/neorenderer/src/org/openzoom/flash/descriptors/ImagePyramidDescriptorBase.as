@@ -31,7 +31,7 @@ import flash.geom.Rectangle;
  * Base class for classes implementing IMultiScaleImageDescriptor.
  * Provides the basic getter/setter skeletons.
  */
-public class MultiScaleImageDescriptorBase
+public class ImagePyramidDescriptorBase
 {
     //--------------------------------------------------------------------------
     //

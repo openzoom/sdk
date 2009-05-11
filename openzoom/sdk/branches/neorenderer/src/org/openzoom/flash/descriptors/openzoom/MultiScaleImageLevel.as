@@ -23,8 +23,9 @@ package org.openzoom.flash.descriptors.openzoom
 
 import flash.geom.Rectangle;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageLevelBase;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidLevelBase;
+import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.utils.uri.resolveURI;
 
 
@@ -32,8 +33,8 @@ import org.openzoom.flash.utils.uri.resolveURI;
  * Represents a single level of a multiscale
  * image pyramid described by an OpenZoom descriptor.
  */
-internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
-                                    implements IMultiScaleImageLevel
+internal class MultiScaleImageLevel extends ImagePyramidLevelBase
+                                    implements IImagePyramidLevel
 {
     //--------------------------------------------------------------------------
     //
@@ -48,8 +49,8 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
                                          index:int,
                                          width:uint,
                                          height:uint,
-                                         numColumns:uint,
-                                         numRows:uint,
+                                         numColumns:int,
+                                         numRows:int,
                                          uris:Array,
                                          pyramidOrigin:String="topLeft")
     {
@@ -70,7 +71,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     private var descriptor:OpenZoomDescriptor
     private var pyramidOrigin:String = PyramidOrigin.TOP_LEFT
 
-    private static var uriIndex:uint = 0
+    private static var uriIndex:int = 0
 
     //--------------------------------------------------------------------------
     //
@@ -81,17 +82,15 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTileURL(column:uint, row:uint):String
+    public function getTileURL(column:int, row:int):String
     {
         if (uris && uris.length > 0)
         {
-            if (++uriIndex >= uris.length)
-                uriIndex = 0
-
+            uriIndex = clamp(uriIndex + 1, 0, uris.length - 1)
             var uri:String =  String(uris[uriIndex])
 
-            var computedColumn:uint
-            var computedRow:uint
+            var computedColumn:int
+            var computedRow:int
 
             switch (pyramidOrigin)
             {
@@ -128,7 +127,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTileBounds(column:uint, row:uint):Rectangle
+    public function getTileBounds(column:int, row:int):Rectangle
     {
         return descriptor.getTileBounds(index, column, row)
     }
@@ -136,7 +135,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageLevel
+    public function clone():IImagePyramidLevel
     {
         return new MultiScaleImageLevel(OpenZoomDescriptor(descriptor.clone()),
                                         index, width, height,

@@ -23,18 +23,18 @@ package org.openzoom.flash.descriptors.gigapan
 
 import flash.utils.Dictionary;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
-import org.openzoom.flash.descriptors.MultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
  * Descriptor for the GigaPan.org project panoramas.
  * Copyright GigaPan.org, <a href="http://gigapan.org/">http://gigapan.org/</a>
  */
-public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
-                               implements IMultiScaleImageDescriptor
+public class GigaPanDescriptor extends ImagePyramidDescriptorBase
+                               implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -118,7 +118,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelAt(index:int):IMultiScaleImageLevel
+    public function getLevelAt(index:int):IImagePyramidLevel
     {
         return IMultiScaleImageLevel(levels[index])
     }
@@ -126,7 +126,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
+    public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
         var maxDimension:uint = Math.max(width, height)
         var level:uint = Math.floor(Math.log(maxDimension) / Math.LN2)
@@ -139,7 +139,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageDescriptor
+    public function clone():IImagePyramidDescriptor
     {
         return new GigaPanDescriptor(id, width, height)
     }
@@ -188,7 +188,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
 
         for (var index:int = numLevels - 1; index >= 0; index--)
         {
-            levels[index] = new MultiScaleImageLevel(this, index, width, height,
+            levels[index] = new ImagePyramidLevel(this, index, width, height,
                                                      Math.ceil(width / tileWidth),
                                                      Math.ceil(height / tileHeight))
             width = Math.ceil(width / 2)

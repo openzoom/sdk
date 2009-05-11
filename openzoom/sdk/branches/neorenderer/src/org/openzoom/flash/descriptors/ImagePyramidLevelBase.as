@@ -26,7 +26,7 @@ package org.openzoom.flash.descriptors
  *
  * Base class for MultiScaleImageLevel.
  */
-public class MultiScaleImageLevelBase
+public class ImagePyramidLevelBase
 {
     //--------------------------------------------------------------------------
     //
@@ -37,7 +37,7 @@ public class MultiScaleImageLevelBase
     /**
      * Constructor.
      */
-    public function MultiScaleImageLevelBase(index:int,
+    public function ImagePyramidLevelBase(index:int,
                                              width:uint, height:uint,
                                              numColumns:uint, numRows:uint)
     {
@@ -103,12 +103,12 @@ public class MultiScaleImageLevelBase
     //  numColumns
     //----------------------------------
 
-    private var _numColumns:uint
+    private var _numColumns:int
 
     /**
      * @copy org.openzoom.flash.descriptors.IMultiScaleImageLevel#numColumns
      */
-    public function get numColumns():uint
+    public function get numColumns():int
     {
         return _numColumns
     }
@@ -117,12 +117,12 @@ public class MultiScaleImageLevelBase
     //  numRows
     //----------------------------------
 
-    private var _numRows:uint
+    private var _numRows:int
 
     /**
      * @copy org.openzoom.flash.descriptors.IMultiScaleImageLevel#numRows
      */
-    public function get numRows():uint
+    public function get numRows():int
     {
         return _numRows
     }

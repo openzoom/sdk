@@ -24,18 +24,18 @@ package org.openzoom.flash.descriptors.virtualearth
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
-import org.openzoom.flash.descriptors.MultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
  * <a href="http://www.microsoft.com/virtualearth/">Microsoft VirtualEarth</a> descriptor.
  * @see http://msdn.microsoft.com/en-us/library/bb259689.aspx
  */
-public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
-                                    implements IMultiScaleImageDescriptor
+public class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
+                                    implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -72,8 +72,8 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
             var size:uint = uint(Math.pow(2, DEFAULT_BASE_LEVEL + i))
             var columns:uint = Math.ceil(size / tileWidth)
             var rows:uint = Math.ceil(size / tileHeight)
-            var level:IMultiScaleImageLevel =
-                    new MultiScaleImageLevel(this, i, size, size, columns, rows)
+            var level:IImagePyramidLevel =
+                    new ImagePyramidLevel(this, i, size, size, columns, rows)
             levels.push(level)
         }
     }
@@ -95,7 +95,7 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelAt(index:int):IMultiScaleImageLevel
+    public function getLevelAt(index:int):IImagePyramidLevel
     {
         var i:int = clamp(index, 0, numLevels - 1)
         return levels[i]
@@ -104,7 +104,7 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
+    public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
@@ -132,7 +132,7 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
     {
         var p:Point = new Point()
         
-        var l:IMultiScaleImageLevel = getLevelAt(level)
+        var l:IImagePyramidLevel = getLevelAt(level)
         p.x = Math.floor((point.x * l.width) / tileWidth)
         p.y = Math.floor((point.y * l.height) / tileHeight)
         
@@ -150,7 +150,7 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
         bounds.x = (column * tileWidth) - offsetX
         bounds.y = (row * tileHeight) - offsetY
         
-        var l:IMultiScaleImageLevel = getLevelAt(level)
+        var l:IImagePyramidLevel = getLevelAt(level)
         var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
         var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
         bounds.width = Math.min(width, l.width - bounds.x)
@@ -162,7 +162,7 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageDescriptor
+    public function clone():IImagePyramidDescriptor
     {
         return new VirtualEarthDescriptor()
     }

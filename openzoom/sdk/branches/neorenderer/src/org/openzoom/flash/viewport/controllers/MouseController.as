@@ -246,7 +246,7 @@ public class MouseController extends ViewportControllerBase
 
         // TODO: React appropriately to different platforms and/or browsers,
         // as they at times report completely different mouse wheel deltas.
-        var factor:Number = clamp(Math.pow(mouseWheelZoomFactor, event.delta), 0.2, 5)
+        var factor:Number = clamp(Math.pow(mouseWheelZoomFactor, event.delta), 0.25, 4)
 
         // TODO: Refactor
         if (factor < 1)

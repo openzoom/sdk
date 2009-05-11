@@ -13,8 +13,8 @@ import flash.utils.Dictionary;
 
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
 import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.events.NetworkRequestEvent;
@@ -40,7 +40,7 @@ public class VEBoundsChecking extends Sprite
     public var loader:INetworkQueue
 
     public var initialized:Boolean = false
-    public var descriptor:IMultiScaleImageDescriptor
+    public var descriptor:IImagePyramidDescriptor
     
     private var renderers:Array = []
     private var memoryMonitor:MemoryMonitor
@@ -70,11 +70,11 @@ public class VEBoundsChecking extends Sprite
                                             viewport_transformUpdateHandler,
                                             false, 0, true)
         var transformer:TweenerTransformer = new TweenerTransformer()
-//        transformer.duration = 0.5
+//        transformer.duration = 0.8
 //        transformer.easing = "easeOutSine"
         container.transformer = transformer
         var mouseController:MouseController = new MouseController()
-//        mouseController.smoothPanning = false
+        mouseController.smoothPanning = false
 
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
@@ -82,8 +82,8 @@ public class VEBoundsChecking extends Sprite
                                  keyboardController,
                                  contextMenuController]
 
-        var aspectRatio:Number = 1 // 3872 / 2592
-        var size:Number = 16384
+        var aspectRatio:Number = 3872 / 2592
+        var size:Number = 100
         var padding:Number = 0
 
         var numRenderers:int = NUM_RENDERERS
@@ -123,7 +123,7 @@ public class VEBoundsChecking extends Sprite
                                           request_completeHandler)
         descriptor = DZIDescriptor.fromXML(event.request.uri, new XML(event.data))
         
-        descriptor = new VirtualEarthDescriptor()
+//        descriptor = new VirtualEarthDescriptor()
 //        var renderer:MultiScaleImageRenderer =
 //               new MultiScaleImageRenderer(descriptor, container.loader,
 //                                           3872 * 0.5, 3872 * 0.5)//2592 * 0.5)
@@ -259,7 +259,7 @@ import flash.geom.Rectangle;
 import flash.utils.getTimer;
 import flash.utils.setInterval;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 import org.openzoom.flash.events.RendererEvent;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.renderers.Renderer;
@@ -393,7 +393,7 @@ class NeoRenderer extends Renderer
 //        trace("[NeoRenderer] updateDisplayList")
 
         var stageBounds:Rectangle = getBounds(stage)
-        var level:IMultiScaleImageLevel = app.descriptor.getLevelForSize(stageBounds.width, stageBounds.height)
+        var level:IImagePyramidLevel = app.descriptor.getLevelForSize(stageBounds.width, stageBounds.height)
         var index:int = clamp(level.index, 0, app.descriptor.numLevels - 1)
 
         var time:Number = getTimer()
@@ -420,6 +420,7 @@ class NeoRenderer extends Renderer
         var bounds:Rectangle = app.descriptor.getTileBounds(8, 0, 0)
 
         var tile:Tile = app.tileCache[url] as Tile
+        
         if (!tile)
         {
             app.loadTile(url)

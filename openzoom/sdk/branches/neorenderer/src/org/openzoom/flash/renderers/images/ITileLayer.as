@@ -21,7 +21,7 @@
 package org.openzoom.flash.renderers.images
 {
 
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 
 /**
  * @private
@@ -50,7 +50,7 @@ public interface ITileLayer
     //  level
     //----------------------------------
 
-    function get level():IMultiScaleImageLevel
+    function get level():IImagePyramidLevel
 
     //----------------------------------
     //  width

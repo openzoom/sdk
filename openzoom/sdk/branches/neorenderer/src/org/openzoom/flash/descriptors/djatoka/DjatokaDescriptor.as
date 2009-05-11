@@ -24,10 +24,10 @@ package org.openzoom.flash.descriptors.djatoka
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
-import org.openzoom.flash.descriptors.MultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
@@ -35,8 +35,8 @@ import org.openzoom.flash.utils.math.clamp;
  * <a href="http://african.lanl.gov/aDORe/projects/djatoka/">
  * djakota Image Server</a> by the Los Alamos National Library.
  */
-public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
-                               implements IMultiScaleImageDescriptor
+public class DjatokaDescriptor extends ImagePyramidDescriptorBase
+                               implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -80,8 +80,8 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
         {
             var levelWidth:Number = Math.ceil(getScale(index) * width)
             var levelHeight:Number = Math.ceil(getScale(index) * height)
-            var level:IMultiScaleImageLevel =
-                            new MultiScaleImageLevel(this,
+            var level:IImagePyramidLevel =
+                            new ImagePyramidLevel(this,
                                                      index,
                                                      levelWidth,
                                                      levelHeight,
@@ -108,12 +108,12 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    public function getLevelAt(index:int):IMultiScaleImageLevel
+    public function getLevelAt(index:int):IImagePyramidLevel
     {
         return levels[index]
     }
 
-    public function getLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
+    public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
         var maxLevel:uint = numLevels - 1
         var longestSide:Number = Math.max(width, height)
@@ -135,8 +135,8 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
         //       svc.region=1596,634,676,1320
 
         var tileBounds:Rectangle = getTileBounds(level, column, row)
-        var currentLevel:IMultiScaleImageLevel = getLevelAt(level)
-        var maxLevel:IMultiScaleImageLevel = getLevelAt(numLevels - 1)
+        var currentLevel:IImagePyramidLevel = getLevelAt(level)
+        var maxLevel:IImagePyramidLevel = getLevelAt(numLevels - 1)
         tileBounds.x = Math.ceil((tileBounds.x / currentLevel.width) * maxLevel.width)
         tileBounds.y = Math.ceil((tileBounds.y / currentLevel.height) * maxLevel.height)
         var region:String = [tileBounds.y, tileBounds.x, tileBounds.height, tileBounds.width].join(",")
@@ -155,7 +155,7 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
 
     override public function getTileBounds(level:int, column:uint, row:uint):Rectangle
     {
-        var currentLevel:IMultiScaleImageLevel = levels[level] as IMultiScaleImageLevel
+        var currentLevel:IImagePyramidLevel = levels[level] as IImagePyramidLevel
 
         var offsetX:uint = (column == 0) ? 0 : tileOverlap
         var offsetY:uint = (row == 0) ? 0 : tileOverlap
@@ -171,7 +171,7 @@ public class DjatokaDescriptor extends MultiScaleImageDescriptorBase
         return bounds
     }
 
-    public function clone():IMultiScaleImageDescriptor
+    public function clone():IImagePyramidDescriptor
     {
         return new DjatokaDescriptor(resolverURL, url,
                                      width, height,

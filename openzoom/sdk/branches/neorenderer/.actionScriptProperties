@@ -11,12 +11,12 @@
 </sourceAttachmentPath>
 </compiler>
 <applications>
-<application path="MultiScaleImageRendererXTest.as"/>
+<application path="ImagePyramidRendererTest.as"/>
 <application path="LocalCachedTextureMapping.as"/>
-<application path="TextureMapping.as"/>
-<application path="VirtualEarth.as"/>
-<application path="VEBoundsChecking.as"/>
 <application path="OpenZoomSDK.mxml"/>
+<application path="TextureMapping.as"/>
+<application path="VEBoundsChecking.as"/>
+<application path="VirtualEarth.as"/>
 </applications>
 <modules/>
 <buildCSSFiles/>

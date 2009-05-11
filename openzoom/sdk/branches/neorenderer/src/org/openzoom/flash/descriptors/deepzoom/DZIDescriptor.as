@@ -25,10 +25,10 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
-import org.openzoom.flash.descriptors.MultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
@@ -36,8 +36,8 @@ import org.openzoom.flash.utils.math.clamp;
  * <a href="http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx">
  * Microsoft Deep Zoom Image (DZI) format</a>.
  */
-public class DZIDescriptor extends MultiScaleImageDescriptorBase
-                           implements IMultiScaleImageDescriptor
+public class DZIDescriptor extends ImagePyramidDescriptorBase
+                           implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -118,7 +118,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
         bounds.x = (column * tileWidth) - offsetX
         bounds.y = (row * tileHeight) - offsetY
         
-        var l:IMultiScaleImageLevel = getLevelAt(level)
+        var l:IImagePyramidLevel = getLevelAt(level)
         var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
         var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
         bounds.width = Math.min(width, l.width - bounds.x)
@@ -143,7 +143,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     {
     	var p:Point = new Point()
     	
-    	var l:IMultiScaleImageLevel = getLevelAt(level)
+    	var l:IImagePyramidLevel = getLevelAt(level)
     	p.x = Math.floor((point.x * l.width) / tileWidth)
     	p.y = Math.floor((point.y * l.height) / tileHeight)
     	
@@ -153,7 +153,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelAt(index:int):IMultiScaleImageLevel
+    public function getLevelAt(index:int):IImagePyramidLevel
     {
         return levels[index]
     }
@@ -161,7 +161,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
+    public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
@@ -174,7 +174,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageDescriptor
+    public function clone():IImagePyramidDescriptor
     {
         return new DZIDescriptor(uri, width, height, tileWidth, tileOverlap, extension)
     }
@@ -273,7 +273,7 @@ public class DZIDescriptor extends MultiScaleImageDescriptorBase
 
         for (var index:int = numLevels - 1; index >= 0; index--)
         {
-            levels[index] = new MultiScaleImageLevel(this, index, width, height,
+            levels[index] = new ImagePyramidLevel(this, index, width, height,
                                                        Math.ceil(width / tileWidth),
                                                        Math.ceil(height / tileHeight))
             width = Math.ceil(width / 2)

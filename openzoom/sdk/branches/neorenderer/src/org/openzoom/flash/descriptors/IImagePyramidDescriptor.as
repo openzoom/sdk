@@ -25,9 +25,9 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 /**
- * Interface of a multiscale image descriptor.
+ * Interface of a multiscale image pyramid descriptor.
  */
-public interface IMultiScaleImageDescriptor
+public interface IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -129,13 +129,13 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns the image pyramid level that exists at the specified index.
      */
-    function getLevelAt(index:int):IMultiScaleImageLevel
+    function getLevelAt(index:int):IImagePyramidLevel
 
     /**
      * Returns the minimum pyramid level that has a greater or equal size
      * than specified by the arguments width and height.
      */
-    function getLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
+    function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
 
     //--------------------------------------------------------------------------
     //
@@ -173,7 +173,7 @@ public interface IMultiScaleImageDescriptor
     /**
      * Returns a copy of this object.
      */
-    function clone():IMultiScaleImageDescriptor
+    function clone():IImagePyramidDescriptor
 }
 
 }

@@ -28,8 +28,8 @@ import flash.geom.Rectangle;
  * multiscale image pyramid.
  * It is the default implementation of IMultiScaleImageLevel.
  */
-public class MultiScaleImageLevel extends MultiScaleImageLevelBase
-                                  implements IMultiScaleImageLevel
+public class ImagePyramidLevel extends ImagePyramidLevelBase
+                                  implements IImagePyramidLevel
 {
     //--------------------------------------------------------------------------
     //
@@ -40,9 +40,9 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * Constructor.
      */
-    public function MultiScaleImageLevel(descriptor:IMultiScaleImageDescriptor,
+    public function ImagePyramidLevel(descriptor:IImagePyramidDescriptor,
                                           index:int, width:uint, height:uint,
-                                          numColumns:uint, numRows:uint)
+                                          numColumns:int, numRows:int)
     {
         this.descriptor = descriptor
 
@@ -58,7 +58,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @private
      */
-    private var descriptor:IMultiScaleImageDescriptor
+    private var descriptor:IImagePyramidDescriptor
 
     //--------------------------------------------------------------------------
     //
@@ -69,7 +69,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTileURL(column:uint, row:uint):String
+    public function getTileURL(column:int, row:int):String
     {
         return descriptor.getTileURL(index, column, row)
     }
@@ -77,7 +77,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTileBounds(column:uint, row:uint):Rectangle
+    public function getTileBounds(column:int, row:int):Rectangle
     {
         return descriptor.getTileBounds(index, column, row)
     }
@@ -85,9 +85,9 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageLevel
+    public function clone():IImagePyramidLevel
     {
-        return new MultiScaleImageLevel(descriptor, index,
+        return new ImagePyramidLevel(descriptor, index,
                                         width, height,
                                         numColumns, numRows)
     }

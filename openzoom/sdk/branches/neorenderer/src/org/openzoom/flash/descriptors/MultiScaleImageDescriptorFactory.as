@@ -94,7 +94,7 @@ public class MultiScaleImageDescriptorFactory
      * @return An object of type IMultiScaleImageDescriptor or <code>null</code>
      *         if the factory couldn't create a descriptor from the given data.
      */
-    public function getDescriptor(uri:String, data:XML):IMultiScaleImageDescriptor
+    public function getDescriptor(uri:String, data:XML):IImagePyramidDescriptor
     {
         if (data.namespace().uri == OPENZOOM_NAMESPACE_URI)
             return new OpenZoomDescriptor(uri, data)

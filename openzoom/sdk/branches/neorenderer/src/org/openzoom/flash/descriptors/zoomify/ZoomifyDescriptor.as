@@ -23,18 +23,18 @@ package org.openzoom.flash.descriptors.zoomify
 
 import flash.utils.Dictionary;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
-import org.openzoom.flash.descriptors.MultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
  * Descriptor for the <a href="http://www.zoomify.com/">Zoomify</a>
  * multiscale image format.
  */
-public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
-                               implements IMultiScaleImageDescriptor
+public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
+                               implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -102,15 +102,15 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
+    public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
         // TODO: Adapt Deep Zoom algorithm
         // for finding optimal tile level
         var index:int = numLevels - 1
 
         while (index >= 0 &&
-               IMultiScaleImageLevel(levels[index]).width > width &&
-               IMultiScaleImageLevel(levels[index]).height > height)
+               IImagePyramidLevel(levels[index]).width > width &&
+               IImagePyramidLevel(levels[index]).height > height)
         {
             index--
         }
@@ -118,13 +118,13 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
         var maxLevel:uint = numLevels - 1
         index = clamp(index, 0, maxLevel)
 
-        return IMultiScaleImageLevel(levels[index]).clone()
+        return IImagePyramidLevel(levels[index]).clone()
     }
 
     /**
      * @inheritDoc
      */
-    public function getLevelAt(index:int):IMultiScaleImageLevel
+    public function getLevelAt(index:int):IImagePyramidLevel
     {
         return levels[index]
     }
@@ -132,7 +132,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageDescriptor
+    public function clone():IImagePyramidDescriptor
     {
         return new ZoomifyDescriptor(uri, data.copy())
     }
@@ -206,7 +206,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 
         for (var index:int = numLevels - 1; index >= 0; index--)
         {
-            levels[index] = new MultiScaleImageLevel(this, index, width, height,
+            levels[index] = new ImagePyramidLevel(this, index, width, height,
                                                      Math.ceil(width / tileWidth),
                                                      Math.ceil(height / tileHeight))
             width = Math.floor(width / 2)
@@ -223,7 +223,7 @@ public class ZoomifyDescriptor extends MultiScaleImageDescriptorBase
 
         for (var i:int = 1; i < numLevels; i++)
         {
-            var l:IMultiScaleImageLevel = IMultiScaleImageLevel(levels[i-1])
+            var l:IImagePyramidLevel = levels[i-1]
             levelTileCount.push(l.numColumns * l.numRows + levelTileCount[i-1])
         }
 

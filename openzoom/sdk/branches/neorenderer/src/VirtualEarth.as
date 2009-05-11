@@ -11,8 +11,8 @@ import flash.utils.Dictionary;
 
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.events.NetworkRequestEvent;
 import org.openzoom.flash.events.ViewportEvent;
@@ -37,7 +37,7 @@ public class VirtualEarth extends Sprite
     public var loader:INetworkQueue
 
     public var initialized:Boolean = false
-    public var descriptor:IMultiScaleImageDescriptor
+    public var descriptor:IImagePyramidDescriptor
 
     private var memoryMonitor:MemoryMonitor
 
@@ -214,7 +214,7 @@ import flash.geom.Rectangle;
 import flash.utils.getTimer;
 import flash.utils.setInterval;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 import org.openzoom.flash.events.RendererEvent;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.renderers.Renderer;
@@ -308,7 +308,7 @@ class NeoRenderer extends Renderer
            return
 
         var stageBounds:Rectangle = getBounds(stage)
-        var level:IMultiScaleImageLevel = app.descriptor.getLevelForSize(stageBounds.width, stageBounds.height)
+        var level:IImagePyramidLevel = app.descriptor.getLevelForSize(stageBounds.width, stageBounds.height)
         var index:int = clamp(level.index, 0, app.descriptor.numLevels - 1)
         trace(stageBounds.width / app.descriptor.getLevelAt(index).width)
 
