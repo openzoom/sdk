@@ -53,7 +53,7 @@ public class ImagePyramidRenderer extends Renderer
     //  source
     //----------------------------------
     
-    private var _source:* = null
+    private var _source:*
     
     public function get source():*
     {
@@ -62,7 +62,7 @@ public class ImagePyramidRenderer extends Renderer
     
     public function set source(value:*):void
     {
-    	if (_source !== value)
+    	if (_source === value)
     	   return
     	
     	_source = value

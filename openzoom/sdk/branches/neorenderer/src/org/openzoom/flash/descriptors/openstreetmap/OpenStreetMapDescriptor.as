@@ -18,7 +18,7 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.descriptors.virtualearth
+package org.openzoom.flash.descriptors.openstreetmap
 {
 
 import flash.geom.Point;
@@ -31,11 +31,10 @@ import org.openzoom.flash.descriptors.ImagePyramidLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
- * <a href="http://www.microsoft.com/virtualearth/">Microsoft VirtualEarth</a> descriptor.
- * @see http://msdn.microsoft.com/en-us/library/bb259689.aspx
+ * <a href="http://openstreetmap.org">OpenStreetMap</a> descriptor.
  */
-public class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
-                                    implements IImagePyramidDescriptor
+public class OpenStreetMapDescriptor extends ImagePyramidDescriptorBase
+                                     implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -43,12 +42,12 @@ public class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_MAP_SIZE:uint = 67108864 //2147483648
-    private static const DEFAULT_NUM_LEVELS:uint = 18 //23
+    private static const DEFAULT_MAP_SIZE:uint = 67108864
+    private static const DEFAULT_NUM_LEVELS:uint = 20
     private static const DEFAULT_TILE_SIZE:uint = 256
-    private static const DEFAULT_TILE_FORMAT:String = "image/jpeg"
+    private static const DEFAULT_TILE_FORMAT:String = "image/png"
     private static const DEFAULT_TILE_OVERLAP:uint = 0
-    private static const DEFAULT_BASE_LEVEL:uint = 9
+    private static const DEFAULT_BASE_LEVEL:uint = 8
 
     //--------------------------------------------------------------------------
     //
@@ -59,7 +58,7 @@ public class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
     /**
      * Constructor.
      */
-    public function VirtualEarthDescriptor()
+    public function OpenStreetMapDescriptor()
     {
         _width = _height = DEFAULT_MAP_SIZE
         _tileWidth = _tileHeight = DEFAULT_TILE_SIZE
@@ -74,11 +73,9 @@ public class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
             var rows:uint = Math.ceil(size / tileHeight)
             var level:IImagePyramidLevel =
                     new ImagePyramidLevel(this, i, size, size, columns, rows)
-                    
             addLevel(level)
         }
     }
-
 
     //--------------------------------------------------------------------------
     //
@@ -103,9 +100,8 @@ public class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
      */
     public function getTileURL(level:int, column:uint, row:uint):String
     {
-        var baseURL:String = "http://ecn.t2.tiles.virtualearth.net/tiles/h"
-        var extension:String = ".jpeg?g=282&mkt=en-us"
-        var tileURL:String = [baseURL, getQuadKey(level, column, row), extension].join("")
+        var baseURL:String = "http://tile.openstreetmap.org/"
+        var tileURL:String = [baseURL, level, "/", column, "/", row, ".png"].join("")
 
         return tileURL
     }
@@ -115,41 +111,7 @@ public class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
      */
     public function clone():IImagePyramidDescriptor
     {
-        return new VirtualEarthDescriptor()
-    }
-
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Helper
-    //
-    //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     */
-    private function getQuadKey(level:int, column:uint, row:uint):String
-    {
-        var quadKey:String = "";
-
-        for (var i:uint = level + 1; i > 0; i--)
-        {
-            var d:uint = 0;
-            var mask:uint = 1 << (i - 1)
-
-            if ((column & mask) != 0)
-            {
-                d++
-            }
-            if ((row & mask) != 0)
-            {
-                d++
-                d++
-            }
-
-            quadKey += d.toString()
-        }
-
-        return quadKey
+        return new OpenStreetMapDescriptor()
     }
 }
 

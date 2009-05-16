@@ -26,6 +26,8 @@ import flash.events.TimerEvent;
 import flash.geom.Rectangle;
 import flash.utils.Timer;
 
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.scene.IMultiScaleScene;
@@ -131,12 +133,33 @@ public class ImagePyramidRenderManager
         localBounds.width /= sceneBounds.width
         localBounds.height /= sceneBounds.height
         
-        // Render image pyramid
-        var g:Graphics = renderer.graphics
-        g.clear()
-        g.beginFill(Math.random() * 0xFFFFFF)
-        g.drawRect(0, 0, renderer.width, renderer.height)
-        g.endFill()
+        
+        // Determine optimal level
+        var descriptor:IImagePyramidDescriptor = renderer.source
+        var stageBounds:Rectangle = renderer.getBounds(renderer.stage)
+        var optimalLevel:IImagePyramidLevel = descriptor.getLevelForSize(stageBounds.width,
+                                                                         stageBounds.height)
+        trace(optimalLevel)
+        
+        // Render image pyramid from bottom up
+        var fromLevel:int = 0
+        var toLevel:int = optimalLevel.index
+    
+        for (var level:int = fromLevel; level <= toLevel; level++)
+        {
+//        var g:Graphics = renderer.graphics
+//        g.clear()
+//        g.beginFill(0xFF0000)
+//        g.drawRect(0, 0, renderer.width, renderer.height)
+//        g.endFill()
+//        
+//        g.beginFill(0x0088FF)
+//        g.drawRect(localBounds.x * renderer.width + 10,
+//                   localBounds.y * renderer.height + 10,
+//                   localBounds.width * renderer.width - 20,
+//                   localBounds.height * renderer.height - 20)
+//        g.endFill()
+        }
     }
     
     //--------------------------------------------------------------------------

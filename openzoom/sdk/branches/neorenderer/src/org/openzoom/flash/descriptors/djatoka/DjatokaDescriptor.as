@@ -64,7 +64,6 @@ public class DjatokaDescriptor extends ImagePyramidDescriptorBase
                                       type:String="image/jpeg")
     {
 
-        levels = new Dictionary()
         url = imageURL
         this.resolverURL = resolverURL
         _width = width
@@ -82,12 +81,12 @@ public class DjatokaDescriptor extends ImagePyramidDescriptorBase
             var levelHeight:Number = Math.ceil(getScale(index) * height)
             var level:IImagePyramidLevel =
                             new ImagePyramidLevel(this,
-                                                     index,
-                                                     levelWidth,
-                                                     levelHeight,
-                                                     Math.ceil(levelWidth / tileWidth),
-                                                     Math.ceil(levelHeight / tileHeight))
-            levels[index] = level
+                                                  index,
+                                                  levelWidth,
+                                                  levelHeight,
+                                                  Math.ceil(levelWidth / tileWidth),
+                                                  Math.ceil(levelHeight / tileHeight))
+            addLevel(level)
         }
     }
 
@@ -107,11 +106,6 @@ public class DjatokaDescriptor extends ImagePyramidDescriptorBase
     //  Methods
     //
     //--------------------------------------------------------------------------
-
-    public function getLevelAt(index:int):IImagePyramidLevel
-    {
-        return levels[index]
-    }
 
     public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
@@ -153,24 +147,6 @@ public class DjatokaDescriptor extends ImagePyramidDescriptorBase
         return url
     }
 
-    override public function getTileBounds(level:int, column:uint, row:uint):Rectangle
-    {
-        var currentLevel:IImagePyramidLevel = levels[level] as IImagePyramidLevel
-
-        var offsetX:uint = (column == 0) ? 0 : tileOverlap
-        var offsetY:uint = (row == 0) ? 0 : tileOverlap
-        var x:uint = (column * tileWidth)  - offsetX
-        var y:uint = (row * tileHeight) - offsetY
-
-        var w:uint = tileWidth +  (column == 0 ? 1 : 2) * tileOverlap
-        var h:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
-        w = Math.min(w, currentLevel.width - x)
-        h = Math.min(h, currentLevel.height - y)
-
-        var bounds:Rectangle = new Rectangle(x, y, w, h)
-        return bounds
-    }
-
     public function clone():IImagePyramidDescriptor
     {
         return new DjatokaDescriptor(resolverURL, url,
@@ -185,6 +161,9 @@ public class DjatokaDescriptor extends ImagePyramidDescriptorBase
     //
     //--------------------------------------------------------------------------
 
+    /**
+     * @private
+     */ 
     private function getScale(level:int):Number
     {
         var maxLevel:int = numLevels - 1

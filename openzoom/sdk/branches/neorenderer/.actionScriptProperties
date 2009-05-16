@@ -12,6 +12,7 @@
 </compiler>
 <applications>
 <application path="ImagePyramidRendererTest.as"/>
+<application path="OpenStreetMapTest.as"/>
 <application path="LocalCachedTextureMapping.as"/>
 <application path="OpenZoomSDK.mxml"/>
 <application path="TextureMapping.as"/>

@@ -63,15 +63,15 @@ public class DZIDescriptor extends ImagePyramidDescriptorBase
                                   tileOverlap:uint,
                                   format:String)
     {
-        this.uri = path
+        _uri = path
         _width = width
         _height = height
         extension = format
         _tileOverlap = tileOverlap
         _type = getType(format)
         _tileWidth = _tileHeight = tileSize
-        _numLevels = computeNumLevels(width, height)
-        levels = computeLevels(width, height, tileWidth, tileHeight, numLevels)
+        _numLevels = getNumLevels(width, height)
+        createLevels(width, height, tileWidth, tileHeight, numLevels)
     }
 
     /**
@@ -110,52 +110,10 @@ public class DZIDescriptor extends ImagePyramidDescriptorBase
     /**
      * @inheritDoc
      */
-    override public function getTileBounds(level:int, column:uint, row:uint):Rectangle
-    {
-        var bounds:Rectangle = new Rectangle()
-        var offsetX:uint = (column == 0) ? 0 : tileOverlap
-        var offsetY:uint = (row == 0) ? 0 : tileOverlap
-        bounds.x = (column * tileWidth) - offsetX
-        bounds.y = (row * tileHeight) - offsetY
-        
-        var l:IImagePyramidLevel = getLevelAt(level)
-        var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
-        var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
-        bounds.width = Math.min(width, l.width - bounds.x)
-        bounds.height = Math.min(height, l.height - bounds.y)
-                
-        return bounds
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getTileURL(level:int, column:uint, row:uint):String
     {
         var path:String  = uri.substring(0, uri.length - 4) + "_files"
         return [path, "/", level, "/", column, "_", row, ".", extension].join("")
-    }
-
-    /**
-     * @inheritDoc
-     */
-    override public function getTileAtPoint(level:int, point:Point):Point
-    {
-    	var p:Point = new Point()
-    	
-    	var l:IImagePyramidLevel = getLevelAt(level)
-    	p.x = Math.floor((point.x * l.width) / tileWidth)
-    	p.y = Math.floor((point.y * l.height) / tileHeight)
-    	
-    	return p
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getLevelAt(index:int):IImagePyramidLevel
-    {
-        return levels[index]
     }
 
     /**
@@ -252,7 +210,7 @@ public class DZIDescriptor extends ImagePyramidDescriptorBase
     /**
      * @private
      */
-    private function computeNumLevels(width:Number, height:Number):int
+    private function getNumLevels(width:Number, height:Number):int
     {
         return Math.ceil(Math.log(Math.max(width, height)) / Math.LN2) + 1
     }
@@ -260,30 +218,52 @@ public class DZIDescriptor extends ImagePyramidDescriptorBase
     /**
      * @private
      */
-    private function computeLevels(originalWidth:uint,
-                                   originalHeight:uint,
-                                   tileWidth:uint,
-                                   tileHeight:uint,
-                                   numLevels:int):Dictionary
+    private function createLevels(originalWidth:uint,
+                                  originalHeight:uint,
+                                  tileWidth:uint,
+                                  tileHeight:uint,
+                                  numLevels:int):void
     {
-        var levels:Dictionary = new Dictionary()
-
-        var width :uint = originalWidth
-        var height:uint = originalHeight
-
-        for (var index:int = numLevels - 1; index >= 0; index--)
+        var maxLevel:int = numLevels - 1
+        
+        for (var index:int = 0; index <= maxLevel; index++)
         {
-            levels[index] = new ImagePyramidLevel(this, index, width, height,
-                                                       Math.ceil(width / tileWidth),
-                                                       Math.ceil(height / tileHeight))
-            width = Math.ceil(width / 2)
-            height = Math.ceil(height / 2)
+        	var size:Point = getSize(index)
+        	var width:uint = size.x
+        	var height:uint = size.y
+        	var numColumns:int = Math.ceil(width / tileWidth)
+        	var numRows:int = Math.ceil(height / tileHeight)
+            var level:IImagePyramidLevel = new ImagePyramidLevel(this,
+                                                                 index,
+                                                                 width,
+                                                                 height,
+                                                                 numColumns,
+                                                                 numRows)
+            addLevel(level)
         }
-
-//        Twitter on 17.09.2008
-//        for (var i:int=max;i>=0;i--){levels[i]=new Level(w,h,Math.ceil(w/tileWidth),Math.ceil(h/tileHeight));w=Math.ceil(w/2);h=Math.ceil(h/2)}
-
-        return levels
+    }
+    
+    /**
+     * @private
+     */ 
+    private function getScale(level:int):Number
+    {
+    	var maxLevel:int = numLevels - 1
+    	// 1 / (1 << maxLevel - level)
+    	return Math.pow(0.5, maxLevel - level)
+    }
+    
+    /**
+     * @private
+     */ 
+    private function getSize(level:int):Point
+    {
+        var size:Point = new Point()
+        var scale:Number = getScale(level)
+        size.x = Math.ceil(width * scale)
+        size.y = Math.ceil(height * scale)
+        
+        return size
     }
 }
 

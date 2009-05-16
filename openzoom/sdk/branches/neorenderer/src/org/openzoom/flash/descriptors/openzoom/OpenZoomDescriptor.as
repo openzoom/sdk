@@ -62,7 +62,7 @@ public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
 
         this.data = data
 
-        this.uri = uri
+        _uri = uri
         parseXML(data)
     }
 
@@ -108,14 +108,6 @@ public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelAt(index:int):IImagePyramidLevel
-    {
-        return IImagePyramidLevel(levels[index])
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getLevelForSize(width:Number,
                                     height:Number):IImagePyramidLevel
     {
@@ -139,26 +131,6 @@ public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
     public function clone():IImagePyramidDescriptor
     {
         return new OpenZoomDescriptor(uri, data.copy())
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    override public function getTileBounds(level:int, column:uint, row:uint):Rectangle
-    {
-        var bounds:Rectangle = new Rectangle()
-        var offsetX:uint = (column == 0) ? 0 : tileOverlap
-        var offsetY:uint = (row == 0) ? 0 : tileOverlap
-        bounds.x = (column * tileWidth) - offsetX
-        bounds.y = (row * tileHeight) - offsetY
-        
-        var l:IImagePyramidLevel = getLevelAt(level)
-        var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
-        var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
-        bounds.width = Math.min(width, l.width - bounds.x)
-        bounds.height = Math.min(height, l.height - bounds.y)
-                
-        return bounds
     }
 
     //--------------------------------------------------------------------------

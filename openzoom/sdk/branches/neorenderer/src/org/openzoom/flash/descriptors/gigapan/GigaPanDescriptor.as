@@ -67,7 +67,7 @@ public class GigaPanDescriptor extends ImagePyramidDescriptorBase
 
         _type = "image/jpeg"
 
-        levels = computeLevels(width, height, DEFAULT_TILE_SIZE, numLevels)
+        createLevels(width, height, DEFAULT_TILE_SIZE, numLevels)
     }
 
     //--------------------------------------------------------------------------
@@ -78,7 +78,6 @@ public class GigaPanDescriptor extends ImagePyramidDescriptorBase
 
     private var id:uint
     private var extension:String = ".jpg"
-    private var levels:Dictionary
 
     //--------------------------------------------------------------------------
     //
@@ -178,24 +177,51 @@ public class GigaPanDescriptor extends ImagePyramidDescriptorBase
     /**
      * @private
      */
-    private function computeLevels(originalWidth:uint, originalHeight:uint,
-                                   tileSize:uint, numLevels:int):Dictionary
+    private function createLevels(originalWidth:uint,
+                                  originalHeight:uint,
+                                  tileSize:uint,
+                                  numLevels:int):void
     {
-        var levels:Dictionary = new Dictionary()
-
-        var width:uint = originalWidth
-        var height:uint = originalHeight
-
-        for (var index:int = numLevels - 1; index >= 0; index--)
+        var maxLevel:int = numLevels - 1
+        
+        for (var index:int = 0; index <= maxLevel; index++)
         {
-            levels[index] = new ImagePyramidLevel(this, index, width, height,
-                                                     Math.ceil(width / tileWidth),
-                                                     Math.ceil(height / tileHeight))
-            width = Math.ceil(width / 2)
-            height = Math.ceil(height / 2)
+            var size:Point = getSize(index)
+            var width:uint = size.x
+            var height:uint = size.y
+            var numColumns:int = Math.ceil(width / tileWidth)
+            var numRows:int = Math.ceil(height / tileHeight)
+            var level:IImagePyramidLevel = new ImagePyramidLevel(this,
+                                                                 index,
+                                                                 width,
+                                                                 height,
+                                                                 numColumns,
+                                                                 numRows)
+            addLevel(level)
         }
-
-        return levels
+    }
+    
+    /**
+     * @private
+     */ 
+    private function getScale(level:int):Number
+    {
+        var maxLevel:int = numLevels - 1
+        // 1 / (1 << maxLevel - level)
+        return Math.pow(0.5, maxLevel - level)
+    }
+    
+    /**
+     * @private
+     */ 
+    private function getSize(level:int):Point
+    {
+        var size:Point = new Point()
+        var scale:Number = getScale(level)
+        size.x = Math.ceil(width * scale)
+        size.y = Math.ceil(height * scale)
+        
+        return size
     }
 }
 

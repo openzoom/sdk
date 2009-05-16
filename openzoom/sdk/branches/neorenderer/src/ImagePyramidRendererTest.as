@@ -8,6 +8,7 @@ import flash.events.Event;
 
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
+import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
@@ -51,12 +52,14 @@ public class ImagePyramidRendererTest extends Sprite
         renderer.y = 1024
         renderer.width = 2048
         renderer.height = 2048
-        renderManager.addRenderer(renderer)
+        renderer.source = new VirtualEarthDescriptor()
         
         container.sceneWidth = 4096
         container.sceneHeight = 4096
         container.addChild(renderer)
         addChild(container)
+        
+        renderManager.addRenderer(renderer)
         
         layout()
     }
