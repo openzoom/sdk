@@ -15,7 +15,7 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
 import org.openzoom.flash.events.NetworkRequestEvent;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.INetworkQueue;
@@ -119,7 +119,7 @@ public class LocalCachedTextureMapping extends Sprite
     {
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           request_completeHandler)
-        descriptor = DZIDescriptor.fromXML(event.request.uri, new XML(event.data))
+        descriptor = DeepZoomImageDescriptor.fromXML(event.request.uri, new XML(event.data))
 //        var renderer:MultiScaleImageRenderer =
 //               new MultiScaleImageRenderer(descriptor, container.loader,
 //                                           3872 * 0.5, 3872 * 0.5)//2592 * 0.5)

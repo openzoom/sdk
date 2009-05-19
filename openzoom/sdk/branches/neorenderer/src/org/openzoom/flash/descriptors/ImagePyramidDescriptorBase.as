@@ -41,20 +41,20 @@ public class ImagePyramidDescriptorBase
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  uri
+    //  source
     //----------------------------------
 
     /**
      * @private
      */
-    protected var _uri:String
+    protected var _source:String
 
     /**
      * @private
      */
-    public function get uri():String
+    public function get source():String
     {
-        return _uri
+        return _source
     }
 
     //----------------------------------
@@ -296,7 +296,7 @@ public class ImagePyramidDescriptorBase
      */
     public function toString():String
     {
-        return "source:" + uri + "\n" +
+        return "source:" + source + "\n" +
                "width:" + width + "\n" +
                "height:" + height + "\n" +
                "tileWidth:" + tileWidth + "\n" +

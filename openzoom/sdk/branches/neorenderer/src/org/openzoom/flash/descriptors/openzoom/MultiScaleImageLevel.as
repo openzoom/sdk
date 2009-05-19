@@ -118,7 +118,7 @@ internal class MultiScaleImageLevel extends ImagePyramidLevelBase
             uri = uri.replace(/{column}/, computedColumn)
                      .replace(/{row}/, computedRow)
 
-            return resolveURI(descriptor.uri, uri)
+            return resolveURI(descriptor.source, uri)
         }
 
         return ""

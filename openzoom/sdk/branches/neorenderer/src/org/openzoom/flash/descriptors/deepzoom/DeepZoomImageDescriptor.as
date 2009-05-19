@@ -29,6 +29,7 @@ import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
 import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
 import org.openzoom.flash.descriptors.ImagePyramidLevel;
+import org.openzoom.flash.utils.MIMEUtil;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
@@ -36,8 +37,8 @@ import org.openzoom.flash.utils.math.clamp;
  * <a href="http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx">
  * Microsoft Deep Zoom Image (DZI) format</a>.
  */
-public class DZIDescriptor extends ImagePyramidDescriptorBase
-                           implements IImagePyramidDescriptor
+public class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
+                                     implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -56,19 +57,19 @@ public class DZIDescriptor extends ImagePyramidDescriptorBase
     /**
      * Constructor.
      */
-    public function DZIDescriptor(path:String,
-                                  width:uint,
-                                  height:uint,
-                                  tileSize:uint,
-                                  tileOverlap:uint,
-                                  format:String)
+    public function DeepZoomImageDescriptor(path:String,
+                                            width:uint,
+                                            height:uint,
+                                            tileSize:uint,
+                                            tileOverlap:uint,
+                                            format:String)
     {
-        _uri = path
+        _source = path
         _width = width
         _height = height
-        extension = format
+        _format = format
         _tileOverlap = tileOverlap
-        _type = getType(format)
+        _type = MIMEUtil.getContentType(format)
         _tileWidth = _tileHeight = tileSize
         _numLevels = getNumLevels(width, height)
         createLevels(width, height, tileWidth, tileHeight, numLevels)
@@ -77,30 +78,86 @@ public class DZIDescriptor extends ImagePyramidDescriptorBase
     /**
      * Create descriptor from XML.
      */
-    public static function fromXML(path:String, data:XML):DZIDescriptor
+    public static function fromXML(path:String, xml:XML):DeepZoomImageDescriptor
     {
         use namespace deepzoom
 
-        var width:uint = data.Size.@Width
-        var height:uint = data.Size.@Height
-        var tileSize:uint = data.@TileSize
-        var tileOverlap:uint = data.@Overlap
-        var format:String = data.@Format
+        var width:uint = xml.Size.@Width
+        var height:uint = xml.Size.@Height
+        var tileSize:uint = xml.@TileSize
+        var tileOverlap:uint = xml.@Overlap
+        var format:String = xml.@Format
 
-        return new DZIDescriptor(path, width, height,
-                                 tileSize, tileOverlap,
-                                 format)
+        return new DeepZoomImageDescriptor(path,
+                                           width,
+                                           height,
+                                           tileSize,
+                                           tileOverlap,
+                                           format)
     }
 
     //--------------------------------------------------------------------------
     //
-    //  Variables
+    //  Properties: Deep Zoom Image format specification
     //
     //--------------------------------------------------------------------------
 
-    private var extension:String
-    private var levels:Dictionary
+    //----------------------------------
+    //  mortonNumber
+    //----------------------------------
+    
+    private var _mortonNumber:uint = 0
+    
+    /**
+     * Returns the Morton number of this image within the collection.
+     * The Morton number is only valid if <code>collection</code> is not <code>null</code>.
+     */ 
+    public function get mortonNumber():uint
+    {
+    	return _mortonNumber
+    }
 
+    //----------------------------------
+    //  collection
+    //----------------------------------
+    
+    private var _collection:DeepZoomCollectionDescriptor
+    
+    /**
+     * Returns the collection this image belongs to or null
+     * if it does not belong to a collection.
+     */
+    public function get collection():DeepZoomCollectionDescriptor
+    {
+    	return _collection
+    }
+
+    //----------------------------------
+    //  tileSize
+    //----------------------------------
+
+    /**
+     * Returns the size of a single tile of the image pyramid in pixels.
+     */
+    public function get tileSize():uint
+    {
+        return _tileWidth
+    }
+    
+    //----------------------------------
+    //  format
+    //----------------------------------
+
+    private var _format:String
+
+    /**
+     * Returns the format of the image pyramid.
+     */
+    public function get format():String
+    {
+        return _format
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleImageDescriptor
@@ -112,8 +169,9 @@ public class DZIDescriptor extends ImagePyramidDescriptorBase
      */
     public function getTileURL(level:int, column:uint, row:uint):String
     {
-        var path:String  = uri.substring(0, uri.length - 4) + "_files"
-        return [path, "/", level, "/", column, "_", row, ".", extension].join("")
+    	var basePath:String = source.substring(0, source.lastIndexOf("."))
+        var path:String  = basePath + "_files"
+        return [path, "/", level, "/", column, "_", row, ".", format].join("")
     }
 
     /**
@@ -134,7 +192,12 @@ public class DZIDescriptor extends ImagePyramidDescriptorBase
      */
     public function clone():IImagePyramidDescriptor
     {
-        return new DZIDescriptor(uri, width, height, tileWidth, tileOverlap, extension)
+        return new DeepZoomImageDescriptor(source,
+                                           width,
+                                           height,
+                                           tileSize,
+                                           tileOverlap,
+                                           format)
     }
 
     //--------------------------------------------------------------------------
@@ -156,56 +219,6 @@ public class DZIDescriptor extends ImagePyramidDescriptorBase
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     */
-    private function getType(format:String):String
-    {
-        var type:String
-
-        switch (format)
-        {
-            case "jpg":
-               type = "image/jpeg"
-               break
-
-            case "png":
-               type = "image/png"
-               break
-
-            default:
-               throw new ArgumentError("Unknown extension: " + extension)
-               break
-        }
-
-        return type
-    }
-
-    /**
-     * @private
-     */
-    private function getFormat(type:String):String
-    {
-        var format:String
-
-        switch (type)
-        {
-            case "image/jpeg":
-               type = "jpg"
-               break
-
-            case "image/png":
-               type = "png"
-               break
-
-            default:
-               throw new ArgumentError("Unknown mime type: " + type)
-               break
-        }
-
-        return format
-    }
 
     /**
      * @private
@@ -291,9 +304,12 @@ class DisplayRect extends Rectangle
     /**
      * Constructor.
      */
-    public function DisplayRect(x:Number, y:Number,
-                                width:Number, height:Number,
-                                minLevel:int, maxLevel:int)
+    public function DisplayRect(x:Number,
+                                y:Number,
+                                width:Number,
+                                height:Number,
+                                minLevel:int,
+                                maxLevel:int)
     {
         super(x, y, width, height)
         _minLevel = minLevel

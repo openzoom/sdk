@@ -61,7 +61,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     public function ZoomifyDescriptor(source:String, data:XML)
     {
         this.data = data
-        _uri = source
+        _source = source
 
         parseXML(data)
         _numLevels = computeNumLevels(width, height, tileWidth, tileHeight)
@@ -91,10 +91,10 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      */
     public function getTileURL(level:int, column:uint, row:uint):String
     {
-        var length:Number = uri.length - DEFAULT_DESCRIPTOR_FILE_NAME.length
+        var length:Number = source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length
 
         var tileGroup:uint = getTileGroup(level, column, row)
-        var path:String = uri.substr(0, length) + DEFAULT_TILE_FOLDER_NAME + tileGroup
+        var path:String = source.substr(0, length) + DEFAULT_TILE_FOLDER_NAME + tileGroup
         var url:String =  [path, "/", level, "-", column, "-", row, ".", type].join("")
 
         return url
@@ -127,7 +127,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      */
     public function clone():IImagePyramidDescriptor
     {
-        return new ZoomifyDescriptor(uri, data.copy())
+        return new ZoomifyDescriptor(source, data.copy())
     }
 
     //--------------------------------------------------------------------------

@@ -54,7 +54,7 @@ public class ImagePyramidRenderManager
     //
     //--------------------------------------------------------------------------
     
-    private static const FRAMES_PER_SECOND:Number = 30
+    private static const FRAMES_PER_SECOND:Number = 60
     
     //--------------------------------------------------------------------------
     //
@@ -101,6 +101,8 @@ public class ImagePyramidRenderManager
     private var invalidateDisplayListFlag:Boolean = false
     
     openzoom_internal var tileBitmapDataCache:Dictionary /* of BitmapData */ = new Dictionary()
+    openzoom_internal var urlTileMap:Dictionary /* of Array of Tile2 */ = new Dictionary()
+
     private var pendingDownloads:Dictionary = new Dictionary()
     
     //--------------------------------------------------------------------------
@@ -154,8 +156,18 @@ public class ImagePyramidRenderManager
         
         // Render image pyramid from bottom up
         var fromLevel:int = 0
-        var toLevel:int = descriptor.numLevels - 1
+//        var toLevel:int = descriptor.numLevels - 1
+        var toLevel:int = optimalLevel.index
         
+        var tileLayer:Shape = renderer.openzoom_internal::tileLayer
+	    var g:Graphics = tileLayer.graphics
+        g.clear()
+        g.beginFill(0x000000, 0)
+        g.drawRect(0, 0, descriptor.width, descriptor.height)
+        g.endFill()
+        
+        tileLayer.width = renderer.width
+        tileLayer.height = renderer.height
     
         // levels
         for (var l:int = fromLevel; l <= toLevel; l++)
@@ -163,18 +175,18 @@ public class ImagePyramidRenderManager
         	var level:IImagePyramidLevel = descriptor.getLevelAt(l)
         	
         	// Prepare tile layer
-	        var tileLayer:Shape = renderer.openzoom_internal::tileLayers[l]
-	        var g:Graphics = tileLayer.graphics
-	        g.clear()
-	        g.beginFill(0x000000, 0)
-	        g.drawRect(0, 0, level.width, level.height)
-	        g.endFill()
-	        
-            tileLayer.width = renderer.width
-            tileLayer.height = renderer.height
-        	
-        	if (l > optimalLevel.index)
-        	   continue
+//	        var tileLayer:Shape = renderer.openzoom_internal::tileLayers[l]
+//	        var g:Graphics = tileLayer.graphics
+//	        g.clear()
+//	        g.beginFill(0x000000, 0)
+//	        g.drawRect(0, 0, level.width, level.height)
+//	        g.endFill()
+//	        
+//            tileLayer.width = renderer.width
+//            tileLayer.height = renderer.height
+//        	
+//        	if (l > optimalLevel.index + 1)
+//        	   continue
         	
         	// Load or draw visible tiles
         	var fromPoint:Point = new Point(localBounds.left * level.width,
@@ -184,22 +196,29 @@ public class ImagePyramidRenderManager
 	        var fromTile:Point = descriptor.getTileAtPoint(l, fromPoint)
 	        var toTile:Point = descriptor.getTileAtPoint(l, toPoint)
 	        
+            var tileDistance:Number = Point.distance(fromTile, toTile)	 
+                   
+	        if (tileDistance > 10)
+	        {
+                trace("[ImagePyramidRenderManager] updateDisplayList: Tile distance too large.", tileDistance)
+                continue
+	        }
+	        
 	        // columns
 	        for (var c:int = fromTile.x; c <= toTile.x; c++)
 	        {
 		        for (var r:int = fromTile.y; r <= toTile.y; r++)
 		        {
 		        	var tile:Tile2 = renderer.openzoom_internal::getTile(l, c, r)
-		        	var downloadPossible:Boolean = currentDownloads < MAX_CONCURRENT_DOWNLOADS
+		        	var downloadPossible:Boolean = numDownloads < MAX_CONCURRENT_DOWNLOADS
 		        	
-		        	if (!tile.loaded && !tile.loading && downloadPossible)
+		        	if (!tile.loaded && downloadPossible)
 		        	{
-		        		loadTile(tile)
+		        		if (!tile.loading)
+		        		    loadTile(tile)
+		        		    
 		        		continue
 		        	}
-		        	
-		        	if (!tile.loaded || tile.loading)
-                        continue
 		        	
 		        	if (!tile.bitmapData)
 		        	{
@@ -207,29 +226,32 @@ public class ImagePyramidRenderManager
                         continue		        		
 		        	}
 
+//		        	var matrix:Matrix = new Matrix()
+////		        	matrix.createBox(1, 1, 0, tile.bounds.x, tile.bounds.y)
+//                    matrix.tx = tile.bounds.x
+//                    matrix.ty = tile.bounds.y
+//		        	                 
+//		        	g.beginBitmapFill(tile.bitmapData, matrix, false, true)
+//		        	
+//		        	g.drawRect(tile.bounds.x,
+//		        	           tile.bounds.y,
+//		        	           tile.bounds.width,
+//		        	           tile.bounds.height)
+//		        		
+//                    g.endFill()
+                    
 		        	var matrix:Matrix = new Matrix()
-//		        	matrix.createBox(1, 1, 0, tile.bounds.x, tile.bounds.y)
-                    matrix.tx = tile.bounds.x
-                    matrix.ty = tile.bounds.y
+		        	var sx:Number = descriptor.width / level.width
+		        	var sy:Number = descriptor.height / level.height
+		        	matrix.createBox(sx, sx, 0, tile.bounds.x * sx, tile.bounds.y * sy)
+		        	                 
 		        	                 
 		        	g.beginBitmapFill(tile.bitmapData, matrix, false, true)
-		        	
-		        	g.drawRect(tile.bounds.x,
-		        	           tile.bounds.y,
-		        	           tile.bounds.width,
-		        	           tile.bounds.height)
-		        		
+		        	g.drawRect(tile.bounds.x * sx,
+		        	           tile.bounds.y * sy,
+		        	           tile.bounds.width * sx,
+		        	           tile.bounds.height * sy)
                     g.endFill()
-                    
-//		        	var matrix:Matrix = new Matrix()
-//		        	var s:Number = 1//descriptor.width / level.width
-//		        	matrix.createBox(s, s, 0, tile.bounds.x * s, tile.bounds.y * s)
-//		        	                 
-//		        	                 
-//		        	g.beginBitmapFill(tile.bitmapData, matrix, true, true)
-//		        	g.drawRect(tile.bounds.x * s, tile.bounds.y * s,
-//		        	           tile.bounds.width * s, tile.bounds.height * s)
-//                    g.endFill()
 		        }
 	        }
         }
@@ -242,14 +264,14 @@ public class ImagePyramidRenderManager
     //--------------------------------------------------------------------------
     
     private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
-    private var currentDownloads:uint = 0
+    private var numDownloads:uint = 0
     
     private function loadTile(tile:Tile2):void
     {
     	if (pendingDownloads[tile.url])
     	   return
     	
-    	currentDownloads++
+    	numDownloads++
     	
     	var request:INetworkRequest = loader.addRequest(tile.url, Bitmap, tile)
     	request.addEventListener(NetworkRequestEvent.COMPLETE,
@@ -262,12 +284,14 @@ public class ImagePyramidRenderManager
     
     private function request_completeHandler(event:NetworkRequestEvent):void
     {
-    	currentDownloads--
+    	numDownloads--
     	event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
     	                                  request_completeHandler)
     	                                  
     	var tile:Tile2 = event.context as Tile2
         var bitmapData:BitmapData = Bitmap(event.data).bitmapData
+        
+        openzoom_internal::tileBitmapDataCache[tile.url] = bitmapData 
         
         tile.bitmapData = bitmapData
         tile.loaded = true

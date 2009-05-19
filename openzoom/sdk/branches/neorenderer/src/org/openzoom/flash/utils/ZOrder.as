@@ -62,7 +62,7 @@ public final class ZOrder
             row |= rowValue << offset
         }
 
-        var position:Point = new Point( column, row)
+        var position:Point = new Point(column, row)
         return position
     }
 

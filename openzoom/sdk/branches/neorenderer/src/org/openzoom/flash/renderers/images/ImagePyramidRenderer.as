@@ -47,6 +47,8 @@ public class ImagePyramidRenderer extends Renderer
      */ 
     public function ImagePyramidRenderer()
     {
+    	openzoom_internal::tileLayer = new Shape()
+    	addChild(openzoom_internal::tileLayer)
     }
 
     //--------------------------------------------------------------------------
@@ -56,7 +58,8 @@ public class ImagePyramidRenderer extends Renderer
     //--------------------------------------------------------------------------
 
     private var tileCache:Dictionary /* of Tile2 */ = new Dictionary()
-    openzoom_internal var tileLayers:Array /* of Shape */
+//    openzoom_internal var tileLayers:Array /* of Shape */
+    openzoom_internal var tileLayer:Shape
 
     //--------------------------------------------------------------------------
     //
@@ -82,18 +85,18 @@ public class ImagePyramidRenderer extends Renderer
     	
     	_source = value
     	
-    	if (value is IImagePyramidDescriptor)
-    	{
-    		var descriptor:IImagePyramidDescriptor = IImagePyramidDescriptor(value) 
-	        openzoom_internal::tileLayers = []
-	        
-	        for (var i:int = 0; i < descriptor.numLevels; i++)
-	        {
-		        var layer:Shape = new Shape()
-		        openzoom_internal::tileLayers[i] = layer
-		        addChild(layer)
-            }
-    	}
+//    	if (value is IImagePyramidDescriptor)
+//    	{
+//    		var descriptor:IImagePyramidDescriptor = IImagePyramidDescriptor(value) 
+//	        openzoom_internal::tileLayers = []
+//	        
+//	        for (var i:int = 0; i < descriptor.numLevels; i++)
+//	        {
+//		        var layer:Shape = new Shape()
+//		        openzoom_internal::tileLayers[i] = layer
+//		        addChild(layer)
+//            }
+//    	}
     }
 
     //----------------------------------
@@ -180,12 +183,13 @@ public class ImagePyramidRenderer extends Renderer
     	if (!descriptor)
     	   trace("[ImagePyramidRenderer] getTile: Source undefined")
     	
-        var url:String = descriptor.getTileURL(level, column, row)
         var tile:Tile2 = tileCache[Tile2.getHashCode(level, column, row)]
         
         if (!tile)
         {
+	        var url:String = descriptor.getTileURL(level, column, row)
             var bounds:Rectangle = descriptor.getTileBounds(level, column, row)
+            
             tile = new Tile2(level, column, row, url, bounds)
             tileCache[tile.hashCode] = tile
         }

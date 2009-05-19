@@ -21,7 +21,7 @@
 package org.openzoom.flash.descriptors
 {
 
-import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
 import org.openzoom.flash.descriptors.openzoom.OpenZoomDescriptor;
 import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 
@@ -100,7 +100,7 @@ public class MultiScaleImageDescriptorFactory
             return new OpenZoomDescriptor(uri, data)
 
         if (data.namespace().uri == DEEPZOOM_NAMESPACE_URI)
-            return DZIDescriptor.fromXML(uri, data)
+            return DeepZoomImageDescriptor.fromXML(uri, data)
 
         if (data.name() == ZOOMIFY_ROOT_TAG_NAME)
             return new ZoomifyDescriptor(uri, data)

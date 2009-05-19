@@ -415,10 +415,10 @@ class NeoRenderer extends Renderer
 
         var levelWidth:uint = app.descriptor.getLevelAt(index).width
         var levelHeight:uint = app.descriptor.getLevelAt(index).width
-        var topleft = new Point(normalizedLocalBounds.left * levelWidth,
-                                normalizedLocalBounds.top * levelHeight)
-        var bottomRight = new Point(normalizedLocalBounds.right * levelWidth,
-                                    normalizedLocalBounds.bottom * levelHeight)
+        var topleft:Point = new Point(normalizedLocalBounds.left * levelWidth,
+                                      normalizedLocalBounds.top * levelHeight)
+        var bottomRight:Point = new Point(normalizedLocalBounds.right * levelWidth,
+                                          normalizedLocalBounds.bottom * levelHeight)
         var tl:Point = app.descriptor.getTileAtPoint(index, topleft)
         var br:Point = app.descriptor.getTileAtPoint(index, bottomRight)
         

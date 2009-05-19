@@ -9,7 +9,7 @@ import flash.events.Event;
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
 import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
@@ -51,15 +51,17 @@ public class ImagePyramidRendererTest extends Sprite
         var source:IImagePyramidDescriptor
 //        source = new DZIDescriptor("../resources/images/deepzoom/billions.xml",
 //                                   3872, 2592, 256, 1, "jpg")
-        source = new OpenStreetMapDescriptor()
+        source = new DeepZoomImageDescriptor("http://static.gasi.ch/images/3229924166/image.dzi",
+                                             3872, 2592, 256, 1, "jpg")
+//        source = new OpenStreetMapDescriptor()
         
         var numRenderers:int = 1
-        var numColumns:int = 1
-//        var width:Number = 3872
-//        var height:Number = 2592
-        var width:Number = 16384
-        var height:Number = 16384
-        var padding:Number = 100
+        var numColumns:int = 12
+        var width:Number = 387.2
+        var height:Number = 259.2
+//        var width:Number = 16384
+//        var height:Number = 16384
+        var padding:Number = width * 0.1
         
         var maxRight:Number = 0
         var maxBottom:Number = 0

@@ -15,7 +15,7 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
 import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.events.NetworkRequestEvent;
 import org.openzoom.flash.events.ViewportEvent;
@@ -121,7 +121,7 @@ public class VEBoundsChecking extends Sprite
     {
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           request_completeHandler)
-        descriptor = DZIDescriptor.fromXML(event.request.uri, new XML(event.data))
+        descriptor = DeepZoomImageDescriptor.fromXML(event.request.uri, new XML(event.data))
         
 //        descriptor = new VirtualEarthDescriptor()
 //        var renderer:MultiScaleImageRenderer =

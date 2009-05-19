@@ -62,7 +62,7 @@ public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
 
         this.data = data
 
-        _uri = uri
+        _source = uri
         parseXML(data)
     }
 
@@ -130,7 +130,7 @@ public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
      */
     public function clone():IImagePyramidDescriptor
     {
-        return new OpenZoomDescriptor(uri, data.copy())
+        return new OpenZoomDescriptor(source, data.copy())
     }
 
     //--------------------------------------------------------------------------
@@ -163,7 +163,7 @@ public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
         // Parse sources
         for each (var source:XML in data.source)
         {
-            var path:String = this.uri.substring(0, this.uri.lastIndexOf("/") + 1)
+            var path:String = this.source.substring(0, this.source.lastIndexOf("/") + 1)
             var sourceUri:String = resolveURI(path, source.@uri)
             var width:uint = source.@width
             var height:uint = source.@height
@@ -197,7 +197,7 @@ public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
             var uris:Array = []
 
             for each (var uri:XML in level.uri)
-                uris.push(uri.@template.toString())
+                uris.push(source.@template.toString())
 
             levels[index] = new MultiScaleImageLevel(this,
                                                      index,

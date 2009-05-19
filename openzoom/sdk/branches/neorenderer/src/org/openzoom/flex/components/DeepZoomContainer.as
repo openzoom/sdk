@@ -27,7 +27,7 @@ import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
-import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
 import org.openzoom.flash.events.NetworkRequestEvent;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.net.INetworkRequest;
@@ -195,9 +195,9 @@ public class DeepZoomContainer extends MultiScaleImageBase
         }
 
         // Descriptor
-        if (classOrString is DZIDescriptor)
+        if (classOrString is DeepZoomImageDescriptor)
         {
-            createImage(DZIDescriptor(classOrString))
+            createImage(DeepZoomImageDescriptor(classOrString))
         }
     }
 
@@ -266,7 +266,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
 //            if (!item.source || !item.data)
 //                continue
 
-            var descriptor:DZIDescriptor = DZIDescriptor.fromXML(item.source,
+            var descriptor:DeepZoomImageDescriptor = DeepZoomImageDescriptor.fromXML(item.source,
                                                                  item.data)
             var renderer:MultiScaleImageRenderer =
                                   new MultiScaleImageRenderer(descriptor,
@@ -287,7 +287,7 @@ public class DeepZoomContainer extends MultiScaleImageBase
     /**
      * @private
      */
-    private function createImage(descriptor:DZIDescriptor):void
+    private function createImage(descriptor:DeepZoomImageDescriptor):void
     {
         var aspectRatio:Number = descriptor.width / descriptor.height
 
@@ -347,8 +347,8 @@ public class DeepZoomContainer extends MultiScaleImageBase
         // Single image
         if (data.localName() == TYPE_IMAGE)
         {
-            var descriptor:DZIDescriptor =
-                    DZIDescriptor.fromXML(source.toString(), new XML(data))
+            var descriptor:DeepZoomImageDescriptor =
+                    DeepZoomImageDescriptor.fromXML(source.toString(), new XML(data))
             createImage(descriptor)
         }
     }
