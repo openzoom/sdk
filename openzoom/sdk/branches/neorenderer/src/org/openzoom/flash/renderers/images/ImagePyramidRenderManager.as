@@ -54,7 +54,7 @@ public class ImagePyramidRenderManager
     //
     //--------------------------------------------------------------------------
     
-    private static const FRAMES_PER_SECOND:Number = 60
+    private static const FRAMES_PER_SECOND:Number = 30
     
     //--------------------------------------------------------------------------
     //
@@ -101,6 +101,7 @@ public class ImagePyramidRenderManager
     private var invalidateDisplayListFlag:Boolean = false
     
     openzoom_internal var tileBitmapDataCache:Dictionary /* of BitmapData */ = new Dictionary()
+    private var pendingDownloads:Dictionary = new Dictionary()
     
     //--------------------------------------------------------------------------
     //
@@ -168,8 +169,9 @@ public class ImagePyramidRenderManager
 	        g.beginFill(0x000000, 0)
 	        g.drawRect(0, 0, level.width, level.height)
 	        g.endFill()
-	        tileLayer.width = renderer.width
-	        tileLayer.height = renderer.height
+	        
+            tileLayer.width = renderer.width
+            tileLayer.height = renderer.height
         	
         	if (l > optimalLevel.index)
         	   continue
@@ -204,16 +206,21 @@ public class ImagePyramidRenderManager
                         trace("[ImagePyramidRenderManager] updateDisplayList: Tile BitmapData missing.", tile.loaded, tile.loading)
                         continue		        		
 		        	}
-		        	
+
 		        	var matrix:Matrix = new Matrix()
-		        	matrix.createBox(1, 1, 0, tile.bounds.x, tile.bounds.y)
+//		        	matrix.createBox(1, 1, 0, tile.bounds.x, tile.bounds.y)
+                    matrix.tx = tile.bounds.x
+                    matrix.ty = tile.bounds.y
 		        	                 
-		        	g.beginBitmapFill(tile.bitmapData, matrix, true, true)
+		        	g.beginBitmapFill(tile.bitmapData, matrix, false, true)
+		        	
 		        	g.drawRect(tile.bounds.x,
 		        	           tile.bounds.y,
 		        	           tile.bounds.width,
 		        	           tile.bounds.height)
+		        		
                     g.endFill()
+                    
 //		        	var matrix:Matrix = new Matrix()
 //		        	var s:Number = 1//descriptor.width / level.width
 //		        	matrix.createBox(s, s, 0, tile.bounds.x * s, tile.bounds.y * s)
@@ -239,6 +246,9 @@ public class ImagePyramidRenderManager
     
     private function loadTile(tile:Tile2):void
     {
+    	if (pendingDownloads[tile.url])
+    	   return
+    	
     	currentDownloads++
     	
     	var request:INetworkRequest = loader.addRequest(tile.url, Bitmap, tile)
@@ -246,6 +256,8 @@ public class ImagePyramidRenderManager
     	                         request_completeHandler)
     	
     	tile.loading = true
+    	
+    	pendingDownloads[tile.url] = true
     }
     
     private function request_completeHandler(event:NetworkRequestEvent):void
@@ -260,6 +272,8 @@ public class ImagePyramidRenderManager
         tile.bitmapData = bitmapData
         tile.loaded = true
         tile.loading = false
+        
+        pendingDownloads[tile.url] = false
         
         invalidateDisplayList()
     }

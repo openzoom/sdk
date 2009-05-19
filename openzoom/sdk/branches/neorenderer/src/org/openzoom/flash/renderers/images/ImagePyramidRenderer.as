@@ -190,7 +190,6 @@ public class ImagePyramidRenderer extends Renderer
             tileCache[tile.hashCode] = tile
         }
         
-        
         if (!tile.bitmapData)
         {
         	var bitmapData:BitmapData = openzoom_internal::renderManager.openzoom_internal::tileBitmapDataCache[tile.url] as BitmapData

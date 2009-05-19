@@ -5,12 +5,12 @@ import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
-import flash.system.Security;
 
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
@@ -49,28 +49,44 @@ public class ImagePyramidRendererTest extends Sprite
                                                       container.loader)
 
         var source:IImagePyramidDescriptor
-//        source = new OpenStreetMapDescriptor()
-        source = new DZIDescriptor("../resources/images/deepzoom/billions.xml",
-                                   3872, 2592, 256, 1, "jpg")
+//        source = new DZIDescriptor("../resources/images/deepzoom/billions.xml",
+//                                   3872, 2592, 256, 1, "jpg")
+        source = new OpenStreetMapDescriptor()
         
-        var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
-//        renderer.width = 16384
-//        renderer.height = 16384
-        renderer.width = 3872
-        renderer.height = 2592
-        renderer.source = source
+        var numRenderers:int = 1
+        var numColumns:int = 1
+//        var width:Number = 3872
+//        var height:Number = 2592
+        var width:Number = 16384
+        var height:Number = 16384
+        var padding:Number = 100
+        
+        var maxRight:Number = 0
+        var maxBottom:Number = 0
+        
+        for (var i:int = 0; i < numRenderers; i++)
+        {
+	        var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
+	        renderer.x = (i % numColumns) * (width + padding)
+            renderer.y = Math.floor(i / numColumns) * (height + padding)
+	        renderer.width = width
+	        renderer.height = height
+	        renderer.source = source
 
-        container.sceneWidth = renderer.width
-        container.sceneHeight = renderer.height
+	        container.addChild(renderer)
+            renderManager.addRenderer(renderer)
+            
+            maxRight = Math.max(maxRight, renderer.x + renderer.width)
+            maxBottom = Math.max(maxBottom, renderer.y + renderer.height)
+        }
+
+        container.sceneWidth = maxRight
+        container.sceneHeight = maxBottom
         
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
         scaleConstraint.maxScale = source.width / container.sceneWidth
 //        container.constraint = scaleConstraint
-        
-        container.addChild(renderer)
         addChild(container)
-        
-        renderManager.addRenderer(renderer)
         
         memoryMonitor = new MemoryMonitor()
         addChild(memoryMonitor)
