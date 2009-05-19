@@ -94,16 +94,16 @@ public class MultiScaleImageDescriptorFactory
      * @return An object of type IMultiScaleImageDescriptor or <code>null</code>
      *         if the factory couldn't create a descriptor from the given data.
      */
-    public function getDescriptor(uri:String, data:XML):IImagePyramidDescriptor
+    public function getDescriptor(source:String, xml:XML):IImagePyramidDescriptor
     {
-        if (data.namespace().uri == OPENZOOM_NAMESPACE_URI)
-            return new OpenZoomDescriptor(uri, data)
+        if (xml.namespace().source == OPENZOOM_NAMESPACE_URI)
+            return new OpenZoomDescriptor(source, xml)
 
-        if (data.namespace().uri == DEEPZOOM_NAMESPACE_URI)
-            return DeepZoomImageDescriptor.fromXML(uri, data)
+        if (xml.namespace().source == DEEPZOOM_NAMESPACE_URI)
+            return DeepZoomImageDescriptor.fromXML(source, xml)
 
-        if (data.name() == ZOOMIFY_ROOT_TAG_NAME)
-            return new ZoomifyDescriptor(uri, data)
+        if (xml.name() == ZOOMIFY_ROOT_TAG_NAME)
+            return ZoomifyDescriptor.fromXML(source, xml)
 
         return null
     }

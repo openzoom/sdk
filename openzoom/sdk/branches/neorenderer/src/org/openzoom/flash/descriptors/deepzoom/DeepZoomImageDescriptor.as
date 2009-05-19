@@ -57,14 +57,14 @@ public class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     /**
      * Constructor.
      */
-    public function DeepZoomImageDescriptor(path:String,
+    public function DeepZoomImageDescriptor(source:String,
                                             width:uint,
                                             height:uint,
                                             tileSize:uint,
                                             tileOverlap:uint,
                                             format:String)
     {
-        _source = path
+        _source = source
         _width = width
         _height = height
         _format = format
@@ -78,7 +78,7 @@ public class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     /**
      * Create descriptor from XML.
      */
-    public static function fromXML(path:String, xml:XML):DeepZoomImageDescriptor
+    public static function fromXML(source:String, xml:XML):DeepZoomImageDescriptor
     {
         use namespace deepzoom
 
@@ -88,7 +88,7 @@ public class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         var tileOverlap:uint = xml.@Overlap
         var format:String = xml.@Format
 
-        return new DeepZoomImageDescriptor(path,
+        return new DeepZoomImageDescriptor(source,
                                            width,
                                            height,
                                            tileSize,
@@ -182,7 +182,7 @@ public class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
-        var index:int = clamp(Math.floor(log2), 0, maxLevel)
+        var index:int = clamp(Math.ceil(log2), 0, maxLevel)
         
         return getLevelAt(index)
     }

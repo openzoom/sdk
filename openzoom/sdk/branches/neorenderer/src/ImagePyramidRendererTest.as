@@ -10,7 +10,6 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
@@ -25,8 +24,6 @@ public class ImagePyramidRendererTest extends Sprite
 {
     public function ImagePyramidRendererTest()
     {
-//    	Security.loadPolicyFile("http://tile.openstreetmap.org/crossdomain.xml")
-
         stage.align = StageAlign.TOP_LEFT
         stage.scaleMode = StageScaleMode.NO_SCALE
         stage.addEventListener(Event.RESIZE,
@@ -49,18 +46,58 @@ public class ImagePyramidRendererTest extends Sprite
                                                       container.loader)
 
         var source:IImagePyramidDescriptor
-//        source = new DZIDescriptor("../resources/images/deepzoom/billions.xml",
-//                                   3872, 2592, 256, 1, "jpg")
-        source = new DeepZoomImageDescriptor("http://static.gasi.ch/images/3229924166/image.dzi",
-                                             3872, 2592, 256, 1, "jpg")
-//        source = new OpenStreetMapDescriptor()
+        var numRenderers:int
+        var numColumns:int
+        var width:Number
+        var height:Number
+        var path:String
+
+
+        // Deep Zoom
+        path = "http://static.gasi.ch/images/3229924166/image.dzi"
+//        path = "../resources/images/deepzoom/billions.xml"
+        source =
+            new org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor(path,
+                                                                                3872,
+                                                                                2592,
+                                                                                256, 
+                                                                                1,
+                                                                                "jpg")
+        numRenderers = 100
+        numColumns = 128
+        width = 387.2
+        height = 259.2
+
+//        // OpenStreetMap
+//        source = new org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor()
+//        numRenderers = 1
+//        numColumns = 1
+//        width = 16384
+//        height = 16384
+
+//        // Virtual Earth
+//        source = new org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor()
+//        numRenderers = 1
+//        numColumns = 1
+//        width = 16384
+//        height = 16384
+
+//        // Zoomify
+//        // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290"
+//        //  NUMTILES="169" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
+//        path = "../resources/images/zoomify/morocco/ImageProperties.xml"
+//        source = new org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor(path,
+//                                                                              2203,
+//                                                                              3290,
+//                                                                              169,
+//                                                                              256)
+//                                                                              
+//        numRenderers = 1000
+//        numColumns = 60
+//        width = 220.3
+//        height = 329.0
+
         
-        var numRenderers:int = 1
-        var numColumns:int = 12
-        var width:Number = 387.2
-        var height:Number = 259.2
-//        var width:Number = 16384
-//        var height:Number = 16384
         var padding:Number = width * 0.1
         
         var maxRight:Number = 0

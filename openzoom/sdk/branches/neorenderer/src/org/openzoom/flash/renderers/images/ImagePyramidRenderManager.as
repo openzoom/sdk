@@ -155,14 +155,13 @@ public class ImagePyramidRenderManager
                                                                          stageBounds.height)
         
         // Render image pyramid from bottom up
-        var fromLevel:int = 0
-//        var toLevel:int = descriptor.numLevels - 1
+        var fromLevel:int = Math.max(0, optimalLevel.index)
         var toLevel:int = optimalLevel.index
         
         var tileLayer:Shape = renderer.openzoom_internal::tileLayer
 	    var g:Graphics = tileLayer.graphics
         g.clear()
-        g.beginFill(0x000000, 0)
+        g.beginFill(0xFF0000)
         g.drawRect(0, 0, descriptor.width, descriptor.height)
         g.endFill()
         
@@ -173,20 +172,6 @@ public class ImagePyramidRenderManager
         for (var l:int = fromLevel; l <= toLevel; l++)
         {
         	var level:IImagePyramidLevel = descriptor.getLevelAt(l)
-        	
-        	// Prepare tile layer
-//	        var tileLayer:Shape = renderer.openzoom_internal::tileLayers[l]
-//	        var g:Graphics = tileLayer.graphics
-//	        g.clear()
-//	        g.beginFill(0x000000, 0)
-//	        g.drawRect(0, 0, level.width, level.height)
-//	        g.endFill()
-//	        
-//            tileLayer.width = renderer.width
-//            tileLayer.height = renderer.height
-//        	
-//        	if (l > optimalLevel.index + 1)
-//        	   continue
         	
         	// Load or draw visible tiles
         	var fromPoint:Point = new Point(localBounds.left * level.width,
@@ -212,9 +197,9 @@ public class ImagePyramidRenderManager
 		        	var tile:Tile2 = renderer.openzoom_internal::getTile(l, c, r)
 		        	var downloadPossible:Boolean = numDownloads < MAX_CONCURRENT_DOWNLOADS
 		        	
-		        	if (!tile.loaded && downloadPossible)
+		        	if (!tile.loaded)
 		        	{
-		        		if (!tile.loading)
+		        		if (!tile.loading && downloadPossible)
 		        		    loadTile(tile)
 		        		    
 		        		continue

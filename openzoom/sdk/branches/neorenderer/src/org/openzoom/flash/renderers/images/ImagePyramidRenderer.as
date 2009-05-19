@@ -58,7 +58,6 @@ public class ImagePyramidRenderer extends Renderer
     //--------------------------------------------------------------------------
 
     private var tileCache:Dictionary /* of Tile2 */ = new Dictionary()
-//    openzoom_internal var tileLayers:Array /* of Shape */
     openzoom_internal var tileLayer:Shape
 
     //--------------------------------------------------------------------------
@@ -84,19 +83,6 @@ public class ImagePyramidRenderer extends Renderer
     	   return
     	
     	_source = value
-    	
-//    	if (value is IImagePyramidDescriptor)
-//    	{
-//    		var descriptor:IImagePyramidDescriptor = IImagePyramidDescriptor(value) 
-//	        openzoom_internal::tileLayers = []
-//	        
-//	        for (var i:int = 0; i < descriptor.numLevels; i++)
-//	        {
-//		        var layer:Shape = new Shape()
-//		        openzoom_internal::tileLayers[i] = layer
-//		        addChild(layer)
-//            }
-//    	}
     }
 
     //----------------------------------
@@ -196,7 +182,8 @@ public class ImagePyramidRenderer extends Renderer
         
         if (!tile.bitmapData)
         {
-        	var bitmapData:BitmapData = openzoom_internal::renderManager.openzoom_internal::tileBitmapDataCache[tile.url] as BitmapData
+        	var cache:Dictionary = openzoom_internal::renderManager.openzoom_internal::tileBitmapDataCache
+        	var bitmapData:BitmapData = cache[tile.url] as BitmapData
         	
         	if (bitmapData)
         	{

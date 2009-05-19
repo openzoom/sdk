@@ -46,8 +46,12 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     private static const DEFAULT_DESCRIPTOR_FILE_NAME:String = "ImageProperties.xml"
     private static const DEFAULT_TILE_FOLDER_NAME:String = "TileGroup"
     private static const DEFAULT_TILE_FORMAT:String = "jpg"
+    private static const DEFAULT_TYPE:String = "image/jpeg"
     private static const DEFAULT_TILE_OVERLAP:uint = 0
     private static const DEFAULT_NUM_TILES_IN_FOLDER:uint = 256
+    
+    private static const DEFAULT_NUM_IMAGES:int = 1
+    private static const DEFAULT_VERSION:String = "1.8"
 
     //--------------------------------------------------------------------------
     //
@@ -58,15 +62,48 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     /**
      * Constructor.
      */
-    public function ZoomifyDescriptor(source:String, data:XML)
+    public function ZoomifyDescriptor(source:String,
+                                      width:uint,
+                                      height:uint,
+                                      numTiles:int,
+                                      tileSize:uint)
     {
-        this.data = data
         _source = source
 
-        parseXML(data)
+        _width = width
+        _height = height
+
+        _tileWidth = _tileHeight = tileSize
+        _tileOverlap = DEFAULT_TILE_OVERLAP
+
+        _type = DEFAULT_TYPE
+        format = DEFAULT_TILE_FORMAT
+
+        _numTiles = numTiles
+
         _numLevels = computeNumLevels(width, height, tileWidth, tileHeight)
-        createLevels(width, height, tileWidth, tileHeight, numLevels)
+        createLevels(width, height, tileSize, numLevels)
         tileCountUpToLevel = computeLevelTileCounts(numLevels)
+    }
+
+    /**
+     * Create descriptor from XML.
+     */
+    public static function fromXML(source:String, xml:XML):ZoomifyDescriptor
+    {
+        // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290" NUMTILES="169"
+        //        NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
+        
+        var width:uint = xml.@WIDTH
+        var height:uint = xml.@HEIGHT
+        var tileSize:uint = xml.@TILESIZE
+        var numTiles:uint = xml.@NUMTILES
+
+        return new ZoomifyDescriptor(source,
+                                     width,
+                                     height,
+                                     numTiles,
+                                     tileSize)
     }
 
     //--------------------------------------------------------------------------
@@ -75,11 +112,65 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private var data:XML
-    private var levels:Dictionary
     private var tileCountUpToLevel:Array = []
-    private var numTiles:uint
+    private var format:String
 
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Zoomify file format
+    //
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  tileSize
+    //----------------------------------
+
+    /**
+     * Returns the size of a single tile of the image pyramid in pixels.
+     */
+    public function get tileSize():uint
+    {
+        return _tileWidth
+    }
+
+//    //----------------------------------
+//    //  numImages
+//    //----------------------------------
+//
+//    /**
+//     * Returns the number of images as specified in the file format.
+//     */
+//    public function get numImages():int
+//    {
+//        return DEFAULT_NUM_IMAGES
+//    }
+//
+//    //----------------------------------
+//    //  version
+//    //----------------------------------
+//
+//    /**
+//     * Returns the number of images as specified in the file format.
+//     */
+//    public function get version():String
+//    {
+//        return DEFAULT_VERSION
+//    }
+
+    //----------------------------------
+    //  numTiles
+    //----------------------------------
+
+    private var _numTiles:int
+    
+    /**
+     * Returns the number of tiles as specified in the file format.
+     */
+    public function get numTiles():int
+    {
+        return _numTiles
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleImageDescriptor
@@ -95,7 +186,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
 
         var tileGroup:uint = getTileGroup(level, column, row)
         var path:String = source.substr(0, length) + DEFAULT_TILE_FOLDER_NAME + tileGroup
-        var url:String =  [path, "/", level, "-", column, "-", row, ".", type].join("")
+        var url:String = [path, "/", level, "-", column, "-", row, ".", format].join("")
 
         return url
     }
@@ -105,21 +196,12 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      */
     public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
-        // TODO: Adapt Deep Zoom algorithm
-        // for finding optimal tile level
-        var index:int = numLevels - 1
-
-        while (index >= 0 &&
-               IImagePyramidLevel(levels[index]).width > width &&
-               IImagePyramidLevel(levels[index]).height > height)
-        {
-            index--
-        }
-
+        var longestSide:Number = Math.max(width, height)
+        var log2:Number = (Math.log(longestSide) - Math.log(tileSize)) / Math.LN2 
         var maxLevel:uint = numLevels - 1
-        index = clamp(index, 0, maxLevel)
-
-        return IImagePyramidLevel(levels[index]).clone()
+        var index:int = clamp(Math.ceil(log2), 0, maxLevel)
+        
+        return getLevelAt(index)
     }
 
     /**
@@ -127,7 +209,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      */
     public function clone():IImagePyramidDescriptor
     {
-        return new ZoomifyDescriptor(source, data.copy())
+        return new ZoomifyDescriptor(source, width, height, numTiles, tileSize)
     }
 
     //--------------------------------------------------------------------------
@@ -153,23 +235,6 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     /**
      * @private
      */
-    private function parseXML(data:XML):void
-    {
-        // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290" NUMTILES="169"
-        //        NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
-        _width = data.@WIDTH
-        _height = data.@HEIGHT
-        _tileWidth = _tileHeight = data.@TILESIZE
-
-        _type = DEFAULT_TILE_FORMAT
-        _tileOverlap = DEFAULT_TILE_OVERLAP
-
-        numTiles = data.@NUMTILES
-    }
-
-    /**
-     * @private
-     */
     private function computeNumLevels(width:uint, height:uint,
                                       tileWidth:uint, tileHeight:uint):uint
     {
@@ -190,8 +255,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      */
     private function createLevels(originalWidth:uint,
                                   originalHeight:uint,
-                                  tileWidth:uint,
-                                  tileHeight:uint,
+                                  tileSize:uint,
                                   numLevels:int):void
     {
         var maxLevel:int = numLevels - 1
@@ -201,8 +265,8 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
             var size:Point = getSize(index)
             var width:uint = size.x
             var height:uint = size.y
-            var numColumns:int = Math.ceil(width / tileWidth)
-            var numRows:int = Math.ceil(height / tileHeight)
+            var numColumns:int = Math.ceil(width / tileSize)
+            var numRows:int = Math.ceil(height / tileSize)
             var level:IImagePyramidLevel = new ImagePyramidLevel(this,
                                                                  index,
                                                                  width,
@@ -220,7 +284,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
 
         for (var i:int = 1; i < numLevels; i++)
         {
-            var l:IImagePyramidLevel = levels[i-1]
+            var l:IImagePyramidLevel = getLevelAt(i-1)
             levelTileCount.push(l.numColumns * l.numRows + levelTileCount[i-1])
         }
 
