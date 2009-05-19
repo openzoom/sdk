@@ -21,15 +21,24 @@
 package org.openzoom.flash.renderers.images
 {
 
+import flash.display.Bitmap;
+import flash.display.BitmapData;
 import flash.display.Graphics;
+import flash.display.Shape;
 import flash.events.TimerEvent;
+import flash.geom.Matrix;
+import flash.geom.Point;
 import flash.geom.Rectangle;
+import flash.utils.Dictionary;
 import flash.utils.Timer;
 
+import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.events.NetworkRequestEvent;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.INetworkQueue;
+import org.openzoom.flash.net.INetworkRequest;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
@@ -45,7 +54,7 @@ public class ImagePyramidRenderManager
     //
     //--------------------------------------------------------------------------
     
-    private static const FRAMES_PER_SECOND:Number = 20
+    private static const FRAMES_PER_SECOND:Number = 60
     
     //--------------------------------------------------------------------------
     //
@@ -90,6 +99,8 @@ public class ImagePyramidRenderManager
     private var loader:INetworkQueue
 
     private var invalidateDisplayListFlag:Boolean = false
+    
+    openzoom_internal var tileBitmapDataCache:Dictionary /* of BitmapData */ = new Dictionary()
     
     //--------------------------------------------------------------------------
     //
@@ -139,27 +150,118 @@ public class ImagePyramidRenderManager
         var stageBounds:Rectangle = renderer.getBounds(renderer.stage)
         var optimalLevel:IImagePyramidLevel = descriptor.getLevelForSize(stageBounds.width,
                                                                          stageBounds.height)
-        trace(optimalLevel)
         
         // Render image pyramid from bottom up
         var fromLevel:int = 0
-        var toLevel:int = optimalLevel.index
+        var toLevel:int = descriptor.numLevels - 1
+        
     
-        for (var level:int = fromLevel; level <= toLevel; level++)
+        // levels
+        for (var l:int = fromLevel; l <= toLevel; l++)
         {
-//        var g:Graphics = renderer.graphics
-//        g.clear()
-//        g.beginFill(0xFF0000)
-//        g.drawRect(0, 0, renderer.width, renderer.height)
-//        g.endFill()
-//        
-//        g.beginFill(0x0088FF)
-//        g.drawRect(localBounds.x * renderer.width + 10,
-//                   localBounds.y * renderer.height + 10,
-//                   localBounds.width * renderer.width - 20,
-//                   localBounds.height * renderer.height - 20)
-//        g.endFill()
+        	var level:IImagePyramidLevel = descriptor.getLevelAt(l)
+        	
+        	// Prepare tile layer
+	        var tileLayer:Shape = renderer.openzoom_internal::tileLayers[l]
+	        var g:Graphics = tileLayer.graphics
+	        g.clear()
+	        g.beginFill(0x000000, 0)
+	        g.drawRect(0, 0, level.width, level.height)
+	        g.endFill()
+	        tileLayer.width = renderer.width
+	        tileLayer.height = renderer.height
+        	
+        	if (l > optimalLevel.index)
+        	   continue
+        	
+        	// Load or draw visible tiles
+        	var fromPoint:Point = new Point(localBounds.left * level.width,
+        	                                localBounds.top * level.height)
+        	var toPoint:Point = new Point(localBounds.right * level.width,
+        	                              localBounds.bottom * level.height)
+	        var fromTile:Point = descriptor.getTileAtPoint(l, fromPoint)
+	        var toTile:Point = descriptor.getTileAtPoint(l, toPoint)
+	        
+	        // columns
+	        for (var c:int = fromTile.x; c <= toTile.x; c++)
+	        {
+		        for (var r:int = fromTile.y; r <= toTile.y; r++)
+		        {
+		        	var tile:Tile2 = renderer.openzoom_internal::getTile(l, c, r)
+		        	var downloadPossible:Boolean = currentDownloads < MAX_CONCURRENT_DOWNLOADS
+		        	
+		        	if (!tile.loaded && !tile.loading && downloadPossible)
+		        	{
+		        		loadTile(tile)
+		        		continue
+		        	}
+		        	
+		        	if (!tile.loaded || tile.loading)
+                        continue
+		        	
+		        	if (!tile.bitmapData)
+		        	{
+                        trace("[ImagePyramidRenderManager] updateDisplayList: Tile BitmapData missing.", tile.loaded, tile.loading)
+                        continue		        		
+		        	}
+		        	
+		        	var matrix:Matrix = new Matrix()
+		        	matrix.createBox(1, 1, 0, tile.bounds.x, tile.bounds.y)
+		        	                 
+		        	g.beginBitmapFill(tile.bitmapData, matrix, true, true)
+		        	g.drawRect(tile.bounds.x,
+		        	           tile.bounds.y,
+		        	           tile.bounds.width,
+		        	           tile.bounds.height)
+                    g.endFill()
+//		        	var matrix:Matrix = new Matrix()
+//		        	var s:Number = 1//descriptor.width / level.width
+//		        	matrix.createBox(s, s, 0, tile.bounds.x * s, tile.bounds.y * s)
+//		        	                 
+//		        	                 
+//		        	g.beginBitmapFill(tile.bitmapData, matrix, true, true)
+//		        	g.drawRect(tile.bounds.x * s, tile.bounds.y * s,
+//		        	           tile.bounds.width * s, tile.bounds.height * s)
+//                    g.endFill()
+		        }
+	        }
         }
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Tile Cache
+    //
+    //--------------------------------------------------------------------------
+    
+    private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
+    private var currentDownloads:uint = 0
+    
+    private function loadTile(tile:Tile2):void
+    {
+    	currentDownloads++
+    	
+    	var request:INetworkRequest = loader.addRequest(tile.url, Bitmap, tile)
+    	request.addEventListener(NetworkRequestEvent.COMPLETE,
+    	                         request_completeHandler)
+    	
+    	tile.loading = true
+    }
+    
+    private function request_completeHandler(event:NetworkRequestEvent):void
+    {
+    	currentDownloads--
+    	event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
+    	                                  request_completeHandler)
+    	                                  
+    	var tile:Tile2 = event.context as Tile2
+        var bitmapData:BitmapData = Bitmap(event.data).bitmapData
+        
+        tile.bitmapData = bitmapData
+        tile.loaded = true
+        tile.loading = false
+        
+        invalidateDisplayList()
     }
     
     //--------------------------------------------------------------------------
@@ -224,6 +326,7 @@ public class ImagePyramidRenderManager
         if (renderers.indexOf(renderer) != -1)
             throw new ArgumentError("Renderer already added.")
 
+        renderer.openzoom_internal::renderManager = this
         renderers.push(renderer)
         invalidateDisplayList()
         
@@ -240,6 +343,7 @@ public class ImagePyramidRenderManager
             throw new ArgumentError("Renderer does not exist.")
 
         renderers.splice(index, 1)
+        renderer.openzoom_internal::renderManager = null
         
         return renderer
     }

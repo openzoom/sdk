@@ -5,12 +5,15 @@ import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
+import flash.system.Security;
 
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
-import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
+import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
@@ -22,6 +25,7 @@ public class ImagePyramidRendererTest extends Sprite
 {
     public function ImagePyramidRendererTest()
     {
+//    	Security.loadPolicyFile("http://tile.openstreetmap.org/crossdomain.xml")
 
         stage.align = StageAlign.TOP_LEFT
         stage.scaleMode = StageScaleMode.NO_SCALE
@@ -39,27 +43,37 @@ public class ImagePyramidRendererTest extends Sprite
         container.controllers = [mouseController,
                                  keyboardController,
                                  contextMenuController]
-                                 
-        memoryMonitor = new MemoryMonitor()
-        addChild(memoryMonitor)
         
         renderManager = new ImagePyramidRenderManager(container.scene,
                                                       container.viewport,
                                                       container.loader)
 
-        var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
-        renderer.x = 1024
-        renderer.y = 1024
-        renderer.width = 2048
-        renderer.height = 2048
-        renderer.source = new VirtualEarthDescriptor()
+        var source:IImagePyramidDescriptor
+//        source = new OpenStreetMapDescriptor()
+        source = new DZIDescriptor("../resources/images/deepzoom/billions.xml",
+                                   3872, 2592, 256, 1, "jpg")
         
-        container.sceneWidth = 4096
-        container.sceneHeight = 4096
+        var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
+//        renderer.width = 16384
+//        renderer.height = 16384
+        renderer.width = 3872
+        renderer.height = 2592
+        renderer.source = source
+
+        container.sceneWidth = renderer.width
+        container.sceneHeight = renderer.height
+        
+        var scaleConstraint:ScaleConstraint = new ScaleConstraint()
+        scaleConstraint.maxScale = source.width / container.sceneWidth
+//        container.constraint = scaleConstraint
+        
         container.addChild(renderer)
         addChild(container)
         
         renderManager.addRenderer(renderer)
+        
+        memoryMonitor = new MemoryMonitor()
+        addChild(memoryMonitor)
         
         layout()
     }

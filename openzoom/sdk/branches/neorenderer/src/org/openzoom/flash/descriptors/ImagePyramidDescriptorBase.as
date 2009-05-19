@@ -21,9 +21,10 @@
 package org.openzoom.flash.descriptors
 {
 
-import flash.errors.IllegalOperationError;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+
+import org.openzoom.flash.utils.math.clamp;
 
 /**
  * @private
@@ -246,8 +247,9 @@ public class ImagePyramidDescriptorBase
     {
         var p:Point = new Point()
 
-        p.x = Math.floor(point.x / tileWidth)
-        p.y = Math.floor(point.y / tileHeight)
+        var l:IImagePyramidLevel = getLevelAt(level)
+        p.x = clamp(Math.floor(point.x / tileWidth), 0, l.numColumns - 1) 
+        p.y = clamp(Math.floor(point.y / tileHeight), 0, l.numRows - 1)
         
         return p
     }

@@ -21,8 +21,14 @@
 package org.openzoom.flash.renderers.images
 {
 
+import flash.display.BitmapData;
 import flash.display.Graphics;
+import flash.display.Shape;
+import flash.geom.Rectangle;
+import flash.utils.Dictionary;
 
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.renderers.Renderer;
 
 /**
@@ -42,6 +48,15 @@ public class ImagePyramidRenderer extends Renderer
     public function ImagePyramidRenderer()
     {
     }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Variables
+    //
+    //--------------------------------------------------------------------------
+
+    private var tileCache:Dictionary /* of Tile2 */ = new Dictionary()
+    openzoom_internal var tileLayers:Array /* of Shape */
 
     //--------------------------------------------------------------------------
     //
@@ -66,6 +81,19 @@ public class ImagePyramidRenderer extends Renderer
     	   return
     	
     	_source = value
+    	
+    	if (value is IImagePyramidDescriptor)
+    	{
+    		var descriptor:IImagePyramidDescriptor = IImagePyramidDescriptor(value) 
+	        openzoom_internal::tileLayers = []
+	        
+	        for (var i:int = 0; i < descriptor.numLevels; i++)
+	        {
+		        var layer:Shape = new Shape()
+		        openzoom_internal::tileLayers[i] = layer
+		        addChild(layer)
+            }
+    	}
     }
 
     //----------------------------------
@@ -123,6 +151,59 @@ public class ImagePyramidRenderer extends Renderer
     	g.beginFill(0x000000, 0)
     	g.drawRect(0, 0, _width, _height)
     	g.endFill()
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Internal
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     */
+    openzoom_internal var renderManager:ImagePyramidRenderManager
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Internal
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     */     
+    openzoom_internal function getTile(level:int, column:int, row:int):Tile2
+    {
+    	var descriptor:IImagePyramidDescriptor = _source as IImagePyramidDescriptor
+    	
+    	if (!descriptor)
+    	   trace("[ImagePyramidRenderer] getTile: Source undefined")
+    	
+        var url:String = descriptor.getTileURL(level, column, row)
+        var tile:Tile2 = tileCache[Tile2.getHashCode(level, column, row)]
+        
+        if (!tile)
+        {
+            var bounds:Rectangle = descriptor.getTileBounds(level, column, row)
+            tile = new Tile2(level, column, row, url, bounds)
+            tileCache[tile.hashCode] = tile
+        }
+        
+        
+        if (!tile.bitmapData)
+        {
+        	var bitmapData:BitmapData = openzoom_internal::renderManager.openzoom_internal::tileBitmapDataCache[tile.url] as BitmapData
+        	
+        	if (bitmapData)
+        	{
+	        	tile.bitmapData = bitmapData 
+	        	tile.loaded = true
+	        	tile.loading = false
+        	}
+        }
+        
+        return tile
     }
 }
 
