@@ -121,7 +121,7 @@ public class VEBoundsChecking extends Sprite
     {
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           request_completeHandler)
-        descriptor = DeepZoomImageDescriptor.fromXML(event.request.uri, new XML(event.data))
+        descriptor = DeepZoomImageDescriptor.fromXML(event.request.url, new XML(event.data))
         
 //        descriptor = new VirtualEarthDescriptor()
 //        var renderer:MultiScaleImageRenderer =
@@ -177,7 +177,7 @@ public class VEBoundsChecking extends Sprite
             tile.bitmapData.copyPixels(t, t.rect, ZERO_POINT)
             t.dispose()
 //            tile.bitmapData = t
-            tile.uri = event.request.uri 
+            tile.uri = event.request.url 
             
 //        trace(tile.bitmapData.transparent)            
         

@@ -47,7 +47,7 @@ import org.openzoom.flash.viewport.INormalizedViewport;
 /**
  * Manages the rendering of all image pyramid renderers on stage.
  */
-public class ImagePyramidRenderManager
+public final class ImagePyramidRenderManager
 {
     //--------------------------------------------------------------------------
     //
@@ -160,12 +160,16 @@ public class ImagePyramidRenderManager
         // Render image pyramid from bottom up
         var currentTime:int = getTimer()
         
-        var quality:int = 4
+        var quality:int = 32
         var fromLevel:int
-//        fromLevel = Math.max(0, optimalLevel.index - quality)
-        fromLevel = 0
-        var toLevel:int = optimalLevel.index
+        var toLevel:int
         
+        fromLevel = Math.max(0, optimalLevel.index - quality)
+        toLevel = optimalLevel.index
+//        fromLevel = 0
+//        toLevel = 0
+        
+        // Prepare tile layer
         var tileLayer:Shape = renderer.openzoom_internal::tileLayer
 	    var g:Graphics = tileLayer.graphics
         g.clear()
@@ -176,7 +180,7 @@ public class ImagePyramidRenderManager
         tileLayer.width = renderer.width
         tileLayer.height = renderer.height
     
-        // levels
+        // Iterate over levels
         for (var l:int = fromLevel; l <= toLevel; l++)
         {
         	var level:IImagePyramidLevel = descriptor.getLevelAt(l)
@@ -197,9 +201,10 @@ public class ImagePyramidRenderManager
                 continue
 	        }
 	        
-	        // columns
+	        // Iterate over columns
 	        for (var c:int = fromTile.x; c <= toTile.x; c++)
 	        {
+	        	// Iterate over rows
 		        for (var r:int = fromTile.y; r <= toTile.y; r++)
 		        {
 		        	var tile:Tile2 = renderer.openzoom_internal::getTile(l, c, r)
@@ -223,8 +228,14 @@ public class ImagePyramidRenderManager
                     // Prepare alpha bitmap
                     if (tile.fadeStart == 0)
                     	tile.fadeStart = currentTime
-                    	
-                    var currentAlpha:Number = (currentTime - tile.fadeStart) / TILE_SHOW_DURATION
+                    
+                    var duration:Number = TILE_SHOW_DURATION
+                    
+                    // Fade lowest level quicker
+//                    if (tile.level == 0)
+//                        duration = 100         
+
+                    var currentAlpha:Number = (currentTime - tile.fadeStart) / duration
                 	tile.alpha = Math.min(1, currentAlpha) 
                     	
                 	var textureMap:BitmapData
@@ -236,7 +247,7 @@ public class ImagePyramidRenderManager
 	                	textureMap = new BitmapData(tile.bitmapData.width,
                                                     tile.bitmapData.height)
 	                	                                           
-	                    var alphaMultiplier:uint = (tile.alpha * 0x100) << 24
+	                    var alphaMultiplier:uint = (tile.alpha * 256) << 24
 	                    var alphaMap:BitmapData = new BitmapData(tile.bitmapData.width,
 	                                                             tile.bitmapData.height,
 	                                                             true,
@@ -286,6 +297,8 @@ public class ImagePyramidRenderManager
     {
     	if (pendingDownloads[tile.url])
     	   return
+
+    	pendingDownloads[tile.url] = true
     	
     	numDownloads++
     	
@@ -295,7 +308,6 @@ public class ImagePyramidRenderManager
     	
     	tile.loading = true
     	
-    	pendingDownloads[tile.url] = true
     }
     
     private function request_completeHandler(event:NetworkRequestEvent):void
@@ -434,6 +446,9 @@ public class ImagePyramidRenderManager
 import flash.utils.Dictionary;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
+import org.openzoom.flash.utils.IDisposable;
+import org.openzoom.flash.utils.IComparable;
+import flash.errors.IllegalOperationError;
 
 class TileCache
 {
@@ -444,14 +459,64 @@ class TileCache
     
     private var cache:Dictionary
     
-    public function getTile(url:String):BitmapData
+    public function get(url:String):TileCacheEntry
     {
-    	var tile:BitmapData = cache[url]
-    	return tile
+    	var entry:TileCacheEntry = cache[url]
+    	return entry
     }
     
-    public function addTile(url:String, bitmapData:BitmapData):void
+    public function put(url:String,
+                        bitmapData:BitmapData,
+                        lowLevel:Boolean=false,
+                        shared:Boolean=false):void
     {
         cache[url] = bitmapData
     }
+}
+
+class TileCacheEntry implements IDisposable,
+                                IComparable
+{
+    public function TileCacheEntry(url:String,
+                                   bitmapData:BitmapData,
+                                   level:int,
+                                   shared:Boolean=false)
+    {
+    	this.url = url
+    	this.bitmapData = bitmapData
+    	this.level = level
+    	this.shared = shared
+    }
+    
+    public var url:String
+    public var bitmapData:BitmapData
+    public var level:int
+    public var shared:Boolean
+    
+    public var lastAccessTime:int = 0
+    
+    public function dispose():void
+    {
+    	bitmapData = null
+    }
+    
+    public function compareTo(other:*):int
+    {
+    	var entry:TileCacheEntry = other as TileCacheEntry
+    	
+    	if (!entry)
+    	   throw new ArgumentError("[TileCacheEntry] Object to compare has wrong type.")
+
+        // Shared tiles have higher order
+        if (shared && !entry.shared)
+            return 1
+
+        // Otherwise newer tiles have higher order
+        if (entry.lastAccessTime > lastAccessTime)
+            return -1
+        else if (entry.lastAccessTime == lastAccessTime)
+            return 0
+        else
+            return 1
+    }   	
 }

@@ -28,12 +28,24 @@ package org.openzoom.flash.descriptors.openzoom
  *
  * @see http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification
  */
-internal class PyramidOrigin
+internal final class ImagePyramidOrigin
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Class constants
+    //
+    //--------------------------------------------------------------------------
+    
     public static const TOP_LEFT:String = "topLeft"
     public static const TOP_RIGHT:String = "topRight"
     public static const BOTTOM_RIGHT:String = "bottomRight"
     public static const BOTTOM_LEFT:String = "bottomLeft"
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Class methods
+    //
+    //--------------------------------------------------------------------------
 
     /**
      * Returns <code>true</code> if <code>value</code> is one of the
@@ -41,10 +53,10 @@ internal class PyramidOrigin
      */
     public static function isValid(value:String):Boolean
     {
-        return value == PyramidOrigin.TOP_LEFT ||
-               value == PyramidOrigin.TOP_RIGHT ||
-               value == PyramidOrigin.BOTTOM_RIGHT ||
-               value == PyramidOrigin.BOTTOM_LEFT
+        return value == ImagePyramidOrigin.TOP_LEFT ||
+               value == ImagePyramidOrigin.TOP_RIGHT ||
+               value == ImagePyramidOrigin.BOTTOM_RIGHT ||
+               value == ImagePyramidOrigin.BOTTOM_LEFT
     }
 }
 

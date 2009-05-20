@@ -24,7 +24,7 @@ package org.openzoom.flash.descriptors
 /**
  * Basic implementation of the IImageSourceDescriptor interface.
  */
-public class ImageSourceDescriptor implements IImageSourceDescriptor
+public final class ImageSourceDescriptor implements IImageSourceDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -35,12 +35,12 @@ public class ImageSourceDescriptor implements IImageSourceDescriptor
     /**
      * Constructor.
      */
-    public function ImageSourceDescriptor(uri:String,
+    public function ImageSourceDescriptor(url:String,
                                           width:uint,
                                           height:uint,
                                           type:String)
     {
-        _uri = uri
+        _url = url
         _width = width
         _height = height
         _type = type
@@ -84,14 +84,14 @@ public class ImageSourceDescriptor implements IImageSourceDescriptor
     //  uri
     //----------------------------------
 
-    private var _uri:String
+    private var _url:String
 
     /**
      * @inheritDoc
      */
-    public function get uri():String
+    public function get url():String
     {
-        return _uri
+        return _url
     }
 
     //----------------------------------
@@ -119,7 +119,7 @@ public class ImageSourceDescriptor implements IImageSourceDescriptor
      */
     public function clone():IImageSourceDescriptor
     {
-        return new ImageSourceDescriptor(uri, width, height, type)
+        return new ImageSourceDescriptor(url, width, height, type)
     }
 }
 

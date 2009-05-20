@@ -36,8 +36,8 @@ import org.openzoom.flash.utils.uri.resolveURI;
  * OpenZoom Descriptor.
  * <a href="http://openzoom.org/specs/">http://openzoom.org/specs/</a>
  */
-public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
-                                implements IImagePyramidDescriptor
+public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
+                                      implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -188,7 +188,7 @@ public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
 
         _numLevels = data.pyramid.level.length()
 
-        if (PyramidOrigin.isValid(pyramid.@origin))
+        if (ImagePyramidOrigin.isValid(pyramid.@origin))
             _origin = pyramid.@origin
 
         for (var index:int = 0; index < numLevels; index++)
@@ -199,7 +199,7 @@ public class OpenZoomDescriptor extends ImagePyramidDescriptorBase
             for each (var uri:XML in level.uri)
                 uris.push(source.@template.toString())
 
-            levels[index] = new MultiScaleImageLevel(this,
+            levels[index] = new ImagePyramidLevel(this,
                                                      index,
                                                      level.@width,
                                                      level.@height,

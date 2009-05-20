@@ -33,8 +33,8 @@ import org.openzoom.flash.utils.math.clamp;
 /**
  * <a href="http://openstreetmap.org">OpenStreetMap</a> descriptor.
  */
-public class OpenStreetMapDescriptor extends ImagePyramidDescriptorBase
-                                     implements IImagePyramidDescriptor
+public final class OpenStreetMapDescriptor extends ImagePyramidDescriptorBase
+                                           implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //

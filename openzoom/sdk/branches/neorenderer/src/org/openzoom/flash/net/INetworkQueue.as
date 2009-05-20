@@ -24,6 +24,8 @@ package org.openzoom.flash.net
 import flash.events.IEventDispatcher;
 
 /**
+ * @private
+ * 
  * Interface for loading items in a queue.
  */
 public interface INetworkQueue extends IEventDispatcher
@@ -32,8 +34,8 @@ public interface INetworkQueue extends IEventDispatcher
      * Add request to network queue.
      *
      * @param url URL of the request.
-     * @param type Content type of the item to load.
-     * @param context Arbitrary data attached to the item for later identification.
+     * @param type Content type of the request to load.
+     * @param context Arbitrary data attached to the request for later identification.
      */
     function addRequest(url:String, type:Class, context:*=null):INetworkRequest
 }

@@ -34,8 +34,8 @@ import org.openzoom.flash.events.NetworkRequestEvent;
  *
  * Basic loading queue for image tiles.
  */
-public class NetworkQueue extends EventDispatcher
-                          implements INetworkQueue
+public final class NetworkQueue extends EventDispatcher
+                                implements INetworkQueue
 {
     //--------------------------------------------------------------------------
     //
@@ -80,7 +80,7 @@ public class NetworkQueue extends EventDispatcher
         var request:INetworkRequest
 
         // TODO
-//        if (type == URLVariables)
+//      if (type == URLVariables)
 
         // TODO
 //      if (type == Sound)
@@ -92,7 +92,7 @@ public class NetworkQueue extends EventDispatcher
             request = new DisplayObjectRequest(url, context)
 
         if (type == String || type == XML)
-            request = new URIRequest(url, context)
+            request = new URLRequest(url, context)
 
         if (!request)
             throw new ArgumentError("Type " + type.toString() + " not supported.")
@@ -171,7 +171,8 @@ public class NetworkQueue extends EventDispatcher
             bytesTotal += request.bytesTotal
         }
 
-        var progressEvent:ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS)
+        var progressEvent:ProgressEvent =
+                new ProgressEvent(ProgressEvent.PROGRESS)
         progressEvent.bytesLoaded = bytesLoaded
         progressEvent.bytesTotal = bytesTotal
         dispatchEvent(progressEvent)

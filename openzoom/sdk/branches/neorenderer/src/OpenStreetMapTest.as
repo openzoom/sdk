@@ -152,7 +152,7 @@ public class OpenStreetMapTest extends Sprite
             tile.bitmapData.copyPixels(t, t.rect, ZERO_POINT)
             t.dispose()
 //            tile.bitmapData = t
-            tile.uri = event.request.uri 
+            tile.uri = event.request.url 
             
 //        trace(tile.bitmapData.transparent)            
         

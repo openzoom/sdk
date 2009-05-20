@@ -34,8 +34,8 @@ import org.openzoom.flash.utils.math.clamp;
  * <a href="http://www.microsoft.com/virtualearth/">Microsoft VirtualEarth</a> descriptor.
  * @see http://msdn.microsoft.com/en-us/library/bb259689.aspx
  */
-public class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
-                                    implements IImagePyramidDescriptor
+public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
+                                          implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //

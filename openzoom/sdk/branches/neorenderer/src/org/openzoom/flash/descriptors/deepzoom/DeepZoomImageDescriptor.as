@@ -37,8 +37,8 @@ import org.openzoom.flash.utils.math.clamp;
  * <a href="http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx">
  * Microsoft Deep Zoom Image (DZI) format</a>.
  */
-public class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
-                                     implements IImagePyramidDescriptor
+public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
+                                           implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -182,7 +182,7 @@ public class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
-        var index:int = clamp(Math.ceil(log2), 0, maxLevel)
+        var index:int = clamp(Math.round(log2), 0, maxLevel)
         
         return getLevelAt(index)
     }

@@ -34,7 +34,7 @@ import org.openzoom.flash.renderers.Renderer;
 /**
  * Image pyramid renderer.
  */
-public class ImagePyramidRenderer extends Renderer
+public final class ImagePyramidRenderer extends Renderer
 {
     //--------------------------------------------------------------------------
     //
@@ -83,6 +83,20 @@ public class ImagePyramidRenderer extends Renderer
     	   return
     	
     	_source = value
+    	
+//    	var descriptor:IImagePyramidDescriptor = value as IImagePyramidDescriptor
+//    	
+//    	if (descriptor)
+//    	{
+//    		var tileLayer:Shape = openzoom_internal::tileLayer
+//	    	var g:Graphics = tileLayer.graphics 
+//	    	g.clear()
+//	    	g.beginFill(0x000000, 0)
+//	    	g.drawRect(0, 0, descriptor.width, descriptor.height)
+//	    	g.endFill()
+//	    	
+//	    	updateDisplayList()
+//    	}
     }
 
     //----------------------------------
@@ -140,6 +154,10 @@ public class ImagePyramidRenderer extends Renderer
     	g.beginFill(0x000000, 0)
     	g.drawRect(0, 0, _width, _height)
     	g.endFill()
+    	
+//    	var tileLayer:Shape = openzoom_internal::tileLayer
+//	    tileLayer.width = _width
+//	    tileLayer.height = _width
     }
 
     //--------------------------------------------------------------------------

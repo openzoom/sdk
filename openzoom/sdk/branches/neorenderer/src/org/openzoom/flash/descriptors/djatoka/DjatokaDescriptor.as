@@ -35,8 +35,8 @@ import org.openzoom.flash.utils.math.clamp;
  * <a href="http://african.lanl.gov/aDORe/projects/djatoka/">
  * djakota Image Server</a> by the Los Alamos National Library.
  */
-public class DjatokaDescriptor extends ImagePyramidDescriptorBase
-                               implements IImagePyramidDescriptor
+public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
+                                     implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //

@@ -22,7 +22,6 @@ package org.openzoom.flash.descriptors.zoomify
 {
 
 import flash.geom.Point;
-import flash.utils.Dictionary;
 
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
@@ -66,7 +65,9 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
                                       width:uint,
                                       height:uint,
                                       numTiles:int,
-                                      tileSize:uint)
+                                      tileSize:uint,
+                                      numImages:int=1,
+                                      version:String="1.8")
     {
         _source = source
 
@@ -80,6 +81,9 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
         format = DEFAULT_TILE_FORMAT
 
         _numTiles = numTiles
+        
+        _version = version
+        _numImages = numImages
 
         _numLevels = computeNumLevels(width, height, tileWidth, tileHeight)
         createLevels(width, height, tileSize, numLevels)
@@ -97,13 +101,17 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
         var width:uint = xml.@WIDTH
         var height:uint = xml.@HEIGHT
         var tileSize:uint = xml.@TILESIZE
-        var numTiles:uint = xml.@NUMTILES
+        var numTiles:int = xml.@NUMTILES
+        var numImages:int = xml.@NUMIMAGES
+        var version:String = xml.@VERSION
 
         return new ZoomifyDescriptor(source,
                                      width,
                                      height,
                                      numTiles,
-                                     tileSize)
+                                     tileSize,
+                                     numImages,
+                                     version)
     }
 
     //--------------------------------------------------------------------------
@@ -133,29 +141,33 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
         return _tileWidth
     }
 
-//    //----------------------------------
-//    //  numImages
-//    //----------------------------------
-//
-//    /**
-//     * Returns the number of images as specified in the file format.
-//     */
-//    public function get numImages():int
-//    {
-//        return DEFAULT_NUM_IMAGES
-//    }
-//
-//    //----------------------------------
-//    //  version
-//    //----------------------------------
-//
-//    /**
-//     * Returns the number of images as specified in the file format.
-//     */
-//    public function get version():String
-//    {
-//        return DEFAULT_VERSION
-//    }
+    //----------------------------------
+    //  numImages
+    //----------------------------------
+
+    private var _numImages:int = DEFAULT_NUM_IMAGES
+
+    /**
+     * Returns the number of images as specified in the file format.
+     */
+    public function get numImages():int
+    {
+        return _numImages
+    }
+
+    //----------------------------------
+    //  version
+    //----------------------------------
+
+    private var _version:String = DEFAULT_VERSION
+
+    /**
+     * Returns the number of images as specified in the file format.
+     */
+    public function get version():String
+    {
+        return _version
+    }
 
     //----------------------------------
     //  numTiles
@@ -199,7 +211,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
         var longestSide:Number = Math.max(width, height)
         var log2:Number = (Math.log(longestSide) - Math.log(tileSize)) / Math.LN2 
         var maxLevel:uint = numLevels - 1
-        var index:int = clamp(Math.ceil(log2), 0, maxLevel)
+        var index:int = clamp(Math.round(log2), 0, maxLevel)
         
         return getLevelAt(index)
     }
@@ -322,6 +334,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      */ 
     private function getSize(level:int):Point
     {
+    	// TODO: Test whether floor/ceil dimensions
         var size:Point = new Point()
         var scale:Number = getScale(level)
         size.x = Math.floor(width * scale)

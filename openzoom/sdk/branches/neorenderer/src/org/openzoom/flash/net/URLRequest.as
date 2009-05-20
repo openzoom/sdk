@@ -36,10 +36,10 @@ import org.openzoom.flash.events.NetworkRequestEvent;
 /**
  * @private
  *
- * Represents a single item to load from a URI.
+ * Represents a single request to load from an URL.
  */
-internal class URIRequest extends EventDispatcher
-                          implements INetworkRequest
+internal final class URLRequest extends EventDispatcher
+                                implements INetworkRequest
 {
     //--------------------------------------------------------------------------
     //
@@ -50,9 +50,9 @@ internal class URIRequest extends EventDispatcher
     /**
      * Constructor.
      */
-    public function URIRequest(url:String, context:*=null)
+    public function URLRequest(url:String, context:*=null)
     {
-        this.url = url
+        _url = url
         this.context = context
     }
 
@@ -64,7 +64,6 @@ internal class URIRequest extends EventDispatcher
 
     private var context:*
     private var loader:URLLoader
-    private var url:String
 
     //--------------------------------------------------------------------------
     //
@@ -91,12 +90,14 @@ internal class URIRequest extends EventDispatcher
     }
 
     //----------------------------------
-    //  uri
+    //  url
     //----------------------------------
+    
+    private var _url:String
 
-    public function get uri():String
+    public function get url():String
     {
-        return url
+        return _url
     }
 
     //--------------------------------------------------------------------------
@@ -110,7 +111,7 @@ internal class URIRequest extends EventDispatcher
      */
     public function start():void
     {
-       var request:URLRequest = new URLRequest(url)
+       var request:flash.net.URLRequest = new flash.net.URLRequest(url)
        loader = new URLLoader()
        addEventListeners(loader)
        loader.load(request)
@@ -129,14 +130,13 @@ internal class URIRequest extends EventDispatcher
     {
         var data:String = loader.data
 
-        cleanUp()
+        disposeLoader()
 
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.COMPLETE)
             requestEvent.request = this
             requestEvent.data = data
             requestEvent.context = context
-//            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
@@ -146,14 +146,7 @@ internal class URIRequest extends EventDispatcher
      */
     private function request_httpStatusHandler(event:HTTPStatusEvent):void
     {
-        // FIXME
-//        cleanUp()
-
-//        var requestEvent:NetworkRequestEvent =
-//                new NetworkRequestEvent(NetworkRequestEvent.ERROR)
-//            requestEvent.item = this
-//
-//        dispatchEvent(requestEvent)
+    	// TODO
     }
 
     /**
@@ -161,13 +154,14 @@ internal class URIRequest extends EventDispatcher
      */
     private function request_ioErrorHandler(event:IOErrorEvent):void
     {
-        // FIXME
-//        cleanUp()
-
+        trace("[URLRequest]", "IO error")
+        
+        // TODO: Test
+        disposeLoader()
+        
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
-//            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
@@ -177,13 +171,14 @@ internal class URIRequest extends EventDispatcher
      */
     private function request_securityErrorHandler(event:SecurityErrorEvent):void
     {
-        // FIXME
-//        cleanUp()
+        trace("[URLRequest]", "Security error")
+        
+        // TODO: Test
+        disposeLoader()
 
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
-//            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
@@ -204,10 +199,26 @@ internal class URIRequest extends EventDispatcher
     //--------------------------------------------------------------------------
 
     /**
-     * @private
+     * @inheritDoc
      */
-    private function cleanUp():void
+    public function dispose():void
     {
+    	disposeLoader()
+    	context = null
+        _url = null
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Internal
+    //
+    //--------------------------------------------------------------------------
+
+    private function disposeLoader():void
+    {
+        if (!loader)
+           return
+           
         removeEventListeners(loader)
         loader = null
     }
@@ -220,9 +231,9 @@ internal class URIRequest extends EventDispatcher
        target.addEventListener(Event.COMPLETE,
                                request_completeHandler,
                                false, 0, true)
-       target.addEventListener(HTTPStatusEvent.HTTP_STATUS,
-                               request_httpStatusHandler,
-                               false, 0, true)
+//       target.addEventListener(HTTPStatusEvent.HTTP_STATUS,
+//                               request_httpStatusHandler,
+//                               false, 0, true)
        target.addEventListener(IOErrorEvent.IO_ERROR,
                                request_ioErrorHandler,
                                false, 0, true)
@@ -241,8 +252,8 @@ internal class URIRequest extends EventDispatcher
     {
         target.removeEventListener(Event.COMPLETE,
                                    request_completeHandler)
-        target.removeEventListener(HTTPStatusEvent.HTTP_STATUS,
-                                   request_httpStatusHandler)
+//        target.removeEventListener(HTTPStatusEvent.HTTP_STATUS,
+//                                   request_httpStatusHandler)
         target.removeEventListener(IOErrorEvent.IO_ERROR,
                                    request_ioErrorHandler)
         target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,

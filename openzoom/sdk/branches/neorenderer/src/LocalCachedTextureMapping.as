@@ -119,7 +119,8 @@ public class LocalCachedTextureMapping extends Sprite
     {
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           request_completeHandler)
-        descriptor = DeepZoomImageDescriptor.fromXML(event.request.uri, new XML(event.data))
+        descriptor = DeepZoomImageDescriptor.fromXML(event.request.url,
+                                                     new XML(event.data))
 //        var renderer:MultiScaleImageRenderer =
 //               new MultiScaleImageRenderer(descriptor, container.loader,
 //                                           3872 * 0.5, 3872 * 0.5)//2592 * 0.5)
@@ -150,7 +151,7 @@ public class LocalCachedTextureMapping extends Sprite
                               
         var tile:Tile = new Tile()
             tile.bitmapData = (event.data as Bitmap).bitmapData
-            tile.uri = event.request.uri 
+            tile.uri = event.request.url 
             
         if (tiles.length < CACHE_SIZE)
         {   

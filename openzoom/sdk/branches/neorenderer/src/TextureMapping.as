@@ -120,7 +120,7 @@ public class TextureMapping extends Sprite
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           request_completeHandler)
 //        descriptor = new DZIDescriptor("http://static.gasi.ch/images/3229924166/image.dzi", Math.pow(2, 32) - 1, Math.pow(2, 32) - 1, 256, 1, "jpg")//3872 * 1000000, 2592 * 1000000, 256, 1, "jpg")
-        descriptor = DeepZoomImageDescriptor.fromXML(event.request.uri, new XML(event.data))
+        descriptor = DeepZoomImageDescriptor.fromXML(event.request.url, new XML(event.data))
 //        descriptor = new OpenZoomDescriptor(event.request.uri, new XML(event.data))
 //        var renderer:MultiScaleImageRenderer =
 //               new MultiScaleImageRenderer(descriptor, container.loader,
@@ -172,7 +172,7 @@ public class TextureMapping extends Sprite
                                        
         var tile:Tile = new Tile()
             tile.bitmapData = (event.data as Bitmap).bitmapData
-            tile.uri = event.request.uri 
+            tile.uri = event.request.url
         
         if (tiles.length < CACHE_SIZE)
         {   

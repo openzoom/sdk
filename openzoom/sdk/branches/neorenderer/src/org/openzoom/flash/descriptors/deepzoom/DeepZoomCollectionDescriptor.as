@@ -28,7 +28,7 @@ import flash.geom.Rectangle;
  * <a href="http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx">
  * Microsoft Deep Zoom Collection (DZC) format</a>.
  */
-public class DeepZoomCollectionDescriptor
+public final class DeepZoomCollectionDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -47,11 +47,11 @@ public class DeepZoomCollectionDescriptor
     /**
      * Constructor.
      */
-    public function DeepZoomCollectionDescriptor(path:String, xml:XML)
+    public function DeepZoomCollectionDescriptor(source:String, xml:XML)
     {
     	use namespace deepzoom
     	
-    	// TODO
+        this.source = source
     }
 
     //--------------------------------------------------------------------------
@@ -67,6 +67,15 @@ public class DeepZoomCollectionDescriptor
     //  Properties
     //
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  numItems
+    //----------------------------------
+
+    public function get numItems():int
+    {
+    	return 0
+    }
 
     //----------------------------------
     //  maxLevel
@@ -132,6 +141,16 @@ public class DeepZoomCollectionDescriptor
     public function getTileBounds(mortonNumber:uint, level:int):Rectangle
     {
     	return new Rectangle()
+    }
+    
+    public function getItemBounds(mortonNumber:uint):Rectangle
+    {
+    	return new Rectangle()
+    }
+    
+    public function getDescriptor(mortonNumber:uint):DeepZoomImageDescriptor
+    {
+        return null	
     }
 }
 

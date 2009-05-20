@@ -18,28 +18,21 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.net
+package org.openzoom.flash.utils
 {
 
 /**
- * @private
- * 
- * Interface for types that need a loader to work.
+ * Interface for types with an inherent order.
  */
-public interface ILoaderClient
+public interface IComparable
 {
-    //--------------------------------------------------------------------------
-    //
-    //  Properties
-    //
-    //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  loader
-    //----------------------------------
-
-    function get loader():INetworkQueue
-    function set loader(value:INetworkQueue):void
+    /**
+     * Compares this object with the specified object for order.
+     * Returns a negative integer, zero, or a positive integer
+     * as this object is less than, equal to, or greater than
+     * the specified object.
+     */
+    function compareTo(other:*):int
 }
 
 }

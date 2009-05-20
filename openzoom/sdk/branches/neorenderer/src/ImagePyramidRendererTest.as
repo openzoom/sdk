@@ -1,3 +1,23 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+//  OpenZoom
+//
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
+//
+//  OpenZoom is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  OpenZoom is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
+//
+////////////////////////////////////////////////////////////////////////////////
 package
 {
 
@@ -10,7 +30,8 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
+import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
+import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
@@ -23,7 +44,7 @@ import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 
-[SWF(width="960", height="600", frameRate="60", backgroundColor="#222222")]
+[SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class ImagePyramidRendererTest extends Sprite
 {
     public function ImagePyramidRendererTest()
@@ -63,22 +84,39 @@ public class ImagePyramidRendererTest extends Sprite
 
 
         // Deep Zoom
-        path = "http://static.gasi.ch/images/3229924166/image.dzi"
-//        path = "../resources/images/deepzoom/billions.xml"
-        source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
-        numRenderers = 1
-        numColumns = 1
-        width = 3872
-        height = 2592
+//        path = "http://static.gasi.ch/images/3229924166/image.dzi"
+////        path = "../resources/images/deepzoom/billions.xml"
+//        source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
+//        numRenderers = 1
+//        numColumns = 1
+//        width = 3872
+//        height = 2592
+//        
+//        // Deep Zoom: Carina Nebula
+//        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
+//        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height 
+//        width = 16384
+//        height = 16384 / aspectRatio
         
-        // Deep Zoom: Carina Nebula
-        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
-        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
-        numRenderers = 1
-        numColumns = 1
+        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
+        source = new DeepZoomImageDescriptor(path, 3627, 2424, 256,  1, "jpg")
+        numRenderers = 300
+        numColumns = 24
         aspectRatio = source.width / source.height 
-        width = 16384
-        height = 16384 / aspectRatio
+        width = 163.84
+        height = width / aspectRatio
+        
+        // Deep Zoom: World wide music scene
+//        path = "http://seadragon.com/content/images/lastfm.dzi"
+//        source = new DeepZoomImageDescriptor(path, 20000, 15000, 254,  1, "jpg")
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height 
+//        width = 16384
+//        height = 16384 / aspectRatio
         
 //        // Deep Zoom: Obama
 //        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
@@ -97,22 +135,31 @@ public class ImagePyramidRendererTest extends Sprite
 //        aspectRatio = source.width / source.height 
 //        width = 16384
 //        height = 16384 / aspectRatio
-//        
-//        // Deep Zoom: Hanauma Bay
+
+        // Deep Zoom: Hanauma Bay
 //        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
 //        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
 //        numRenderers = 400
 //        numColumns = 12
 //        aspectRatio = source.width / source.height 
-//        width = 2048
-//        height = 2048 / aspectRatio
+//        width = 512
+//        height = width / aspectRatio
 
-        // OpenStreetMap
-        source = new OpenStreetMapDescriptor()
+        // Zoomify
+        path = "http://shutter.gigapixelphotography.com/images/vancouver-yaletown-condos/ImageProperties.xml"
+        source = new ZoomifyDescriptor(path, 46953, 22255, 21420, 256)
         numRenderers = 1
         numColumns = 1
+        aspectRatio = source.width / source.height 
         width = 16384
-        height = 16384
+        height = 16384 / aspectRatio
+
+        // OpenStreetMap
+//        source = new OpenStreetMapDescriptor()
+//        numRenderers = 1
+//        numColumns = 1
+//        width = 16384
+//        height = 16384
 
 //        // Virtual Earth
 //        source = new VirtualEarthDescriptor()
@@ -159,7 +206,7 @@ public class ImagePyramidRendererTest extends Sprite
         
         
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
-        scaleConstraint.maxScale = source.width / container.sceneWidth
+        scaleConstraint.maxScale = source.width / container.sceneWidth * 4
 //        container.constraint = scaleConstraint
 
         var mappingConstraint:MappingConstraint = new MappingConstraint()

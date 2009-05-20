@@ -18,28 +18,20 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.net
+package org.openzoom.flash.utils
 {
 
 /**
- * @private
- * 
- * Interface for types that need a loader to work.
+ * Interface for types that can release the resources they hold on to
+ * and make themselves eligible for garbage collection.
  */
-public interface ILoaderClient
+public interface IDisposable
 {
-    //--------------------------------------------------------------------------
-    //
-    //  Properties
-    //
-    //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  loader
-    //----------------------------------
-
-    function get loader():INetworkQueue
-    function set loader(value:INetworkQueue):void
+    /**
+     * Releases all resources this object holds on to.
+     * Do not use object after calling dispose.
+     */
+    function dispose():void
 }
 
 }

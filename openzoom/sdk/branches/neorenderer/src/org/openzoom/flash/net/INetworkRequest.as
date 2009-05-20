@@ -23,31 +23,62 @@ package org.openzoom.flash.net
 
 import flash.events.IEventDispatcher;
 
-/**
- *  Dispatched when an item successfully finished loading.
- *
- *  @eventType org.openzoom.events.LoadingItemEvent.COMPLETE
- */
-[Event(name="complete", type="org.openzoom.events.LoadingItemEvent")]
+import org.openzoom.flash.utils.IDisposable;
 
 /**
- *  Dispatched when an item caused an error during loading.
+ *  Dispatched when a request successfully finished loading.
  *
- *  @eventType org.openzoom.events.LoadingItemEvent.ERROR
+ *  @eventType org.openzoom.events.NetworkRequestEvent.COMPLETE
  */
-[Event(name="error", type="org.openzoom.events.LoadingItemEvent")]
+[Event(name="complete", type="org.openzoom.events.NetworkRequestEvent")]
 
 /**
- * Interface for loading items.
+ *  Dispatched when a request caused an error during loading.
+ *
+ *  @eventType org.openzoom.events.NetworkRequestEvent.ERROR
  */
-public interface INetworkRequest extends IEventDispatcher
+[Event(name="error", type="org.openzoom.events.NetworkRequestEvent")]
+
+/**
+ * @private
+ * 
+ * Interface for network requests.
+ */
+public interface INetworkRequest extends IEventDispatcher,
+                                         IDisposable
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+
     function start():void
 //  function stop():void
 
+    //--------------------------------------------------------------------------
+    //
+    //  Properties
+    //
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  bytesLoaded
+    //----------------------------------
+    
     function get bytesLoaded():uint
+    
+    //----------------------------------
+    //  bytesTotal
+    //----------------------------------
+    
     function get bytesTotal():uint
-    function get uri():String
+    
+    //----------------------------------
+    //  url
+    //----------------------------------
+    
+    function get url():String
 }
 
 }

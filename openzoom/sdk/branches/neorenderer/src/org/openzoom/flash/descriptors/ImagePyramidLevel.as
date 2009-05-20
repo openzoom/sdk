@@ -28,8 +28,8 @@ import flash.geom.Rectangle;
  * multiscale image pyramid.
  * It is the default implementation of IMultiScaleImageLevel.
  */
-public class ImagePyramidLevel extends ImagePyramidLevelBase
-                                  implements IImagePyramidLevel
+public final class ImagePyramidLevel extends ImagePyramidLevelBase
+                                     implements IImagePyramidLevel
 {
     //--------------------------------------------------------------------------
     //
@@ -41,11 +41,13 @@ public class ImagePyramidLevel extends ImagePyramidLevelBase
      * Constructor.
      */
     public function ImagePyramidLevel(descriptor:IImagePyramidDescriptor,
-                                          index:int, width:uint, height:uint,
-                                          numColumns:int, numRows:int)
+                                      index:int,
+                                      width:uint,
+                                      height:uint,
+                                      numColumns:int,
+                                      numRows:int)
     {
         this.descriptor = descriptor
-
         super(index, width, height, numColumns, numRows)
     }
 
@@ -87,9 +89,12 @@ public class ImagePyramidLevel extends ImagePyramidLevelBase
      */
     public function clone():IImagePyramidLevel
     {
-        return new ImagePyramidLevel(descriptor, index,
-                                        width, height,
-                                        numColumns, numRows)
+        return new ImagePyramidLevel(descriptor,
+                                     index,
+                                     width,
+                                     height,
+                                     numColumns,
+                                     numRows)
     }
 
     //--------------------------------------------------------------------------
@@ -103,7 +108,7 @@ public class ImagePyramidLevel extends ImagePyramidLevelBase
      */
     override public function toString():String
     {
-        return "[MultiScaleImageLevel]" + "\n" + super.toString()
+        return "[ImagePyramidLevel]" + "\n" + super.toString()
     }
 }
 

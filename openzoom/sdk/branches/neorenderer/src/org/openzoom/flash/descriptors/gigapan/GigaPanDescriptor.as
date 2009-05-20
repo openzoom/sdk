@@ -33,8 +33,8 @@ import org.openzoom.flash.utils.math.clamp;
  * Descriptor for the GigaPan.org project panoramas.
  * Copyright GigaPan.org, <a href="http://gigapan.org/">http://gigapan.org/</a>
  */
-public class GigaPanDescriptor extends ImagePyramidDescriptorBase
-                               implements IImagePyramidDescriptor
+public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
+                                     implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //

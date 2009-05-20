@@ -170,7 +170,7 @@ public class VirtualEarth extends Sprite
 
         event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
                                           tileRequest_completeHandler)
-        tileCache[event.request.uri] = (event.data as Bitmap).bitmapData
+        tileCache[event.request.url] = (event.data as Bitmap).bitmapData
     }
 
     private function loader_completeHandler(event:Event):void

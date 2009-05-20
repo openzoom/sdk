@@ -28,7 +28,7 @@ import org.openzoom.flash.viewport.IViewportTransform;
 /**
  * Viewport event class.
  */
-public class ViewportEvent extends Event
+public final class ViewportEvent extends Event
 {
     //--------------------------------------------------------------------------
     //
