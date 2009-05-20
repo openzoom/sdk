@@ -9,10 +9,13 @@ import flash.events.Event;
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
+import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
+import org.openzoom.flash.viewport.constraints.CompositeConstraint;
+import org.openzoom.flash.viewport.constraints.MappingConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
+import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
@@ -35,6 +38,10 @@ public class ImagePyramidRendererTest extends Sprite
         container.transformer = transformer
         
         var mouseController:MouseController = new MouseController()
+        mouseController.minMouseWheelZoomInFactor = 2.01
+        mouseController.minMouseWheelZoomOutFactor = 0.45
+        mouseController.smoothPanning = false
+        
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
         container.controllers = [mouseController,
@@ -54,46 +61,36 @@ public class ImagePyramidRendererTest extends Sprite
 
 
         // Deep Zoom
-        path = "http://static.gasi.ch/images/3229924166/image.dzi"
-//        path = "../resources/images/deepzoom/billions.xml"
-        source =
-            new org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor(path,
-                                                                                3872,
-                                                                                2592,
-                                                                                256, 
-                                                                                1,
-                                                                                "jpg")
-        numRenderers = 100
-        numColumns = 128
-        width = 387.2
-        height = 259.2
+//        path = "http://static.gasi.ch/images/3229924166/image.dzi"
+////        path = "../resources/images/deepzoom/billions.xml"
+//        source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
+//        numRenderers = 100
+//        numColumns = 16
+//        width = 387.2
+//        height = 259.2
 
 //        // OpenStreetMap
-//        source = new org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor()
+//        source = new OpenStreetMapDescriptor()
 //        numRenderers = 1
 //        numColumns = 1
 //        width = 16384
 //        height = 16384
 
-//        // Virtual Earth
-//        source = new org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor()
-//        numRenderers = 1
-//        numColumns = 1
-//        width = 16384
-//        height = 16384
+        // Virtual Earth
+        source = new VirtualEarthDescriptor()
+        numRenderers = 1
+        numColumns = 1
+        width = 16384
+        height = 16384
 
-//        // Zoomify
-//        // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290"
-//        //  NUMTILES="169" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
+        // Zoomify
+        // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290"
+        //  NUMTILES="169" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
 //        path = "../resources/images/zoomify/morocco/ImageProperties.xml"
-//        source = new org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor(path,
-//                                                                              2203,
-//                                                                              3290,
-//                                                                              169,
-//                                                                              256)
+//        source = new ZoomifyDescriptor(path, 2203, 3290, 169, 256)
 //                                                                              
-//        numRenderers = 1000
-//        numColumns = 60
+//        numRenderers = 4000
+//        numColumns = 128
 //        width = 220.3
 //        height = 329.0
 
@@ -122,9 +119,24 @@ public class ImagePyramidRendererTest extends Sprite
         container.sceneWidth = maxRight
         container.sceneHeight = maxBottom
         
+        
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
         scaleConstraint.maxScale = source.width / container.sceneWidth
 //        container.constraint = scaleConstraint
+
+        var mappingConstraint:MappingConstraint = new MappingConstraint()
+        var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
+        visibilityContraint.visibilityRatio = 0.5
+        
+        var compositeContraint:CompositeConstraint = new CompositeConstraint()
+        compositeContraint.constraints = [scaleConstraint]
+//        compositeContraint.constraints = [scaleConstraint,
+//                                          mappingConstraint]
+//        compositeContraint.constraints = [scaleConstraint,
+//                                          visibilityContraint,
+//                                          mappingConstraint]
+        container.constraint = compositeContraint
+        
         addChild(container)
         
         memoryMonitor = new MemoryMonitor()

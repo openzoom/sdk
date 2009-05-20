@@ -191,6 +191,10 @@ public class ImagePyramidRenderer extends Renderer
 	        	tile.loaded = true
 	        	tile.loading = false
         	}
+        	else
+        	{
+        		tile.loaded = false
+        	}
         }
         
         return tile
