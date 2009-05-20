@@ -31,6 +31,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 import flash.utils.Timer;
+import flash.utils.getTimer;
 
 import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
@@ -54,7 +55,8 @@ public class ImagePyramidRenderManager
     //
     //--------------------------------------------------------------------------
     
-    private static const FRAMES_PER_SECOND:Number = 60
+    private static const FRAMES_PER_SECOND:Number = 30
+    private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
     
     //--------------------------------------------------------------------------
     //
@@ -156,14 +158,18 @@ public class ImagePyramidRenderManager
                                                                          stageBounds.height)
         
         // Render image pyramid from bottom up
+        var currentTime:int = getTimer()
+        
         var quality:int = 4
-        var fromLevel:int = 0//Math.max(0, optimalLevel.index - quality)
+        var fromLevel:int
+//        fromLevel = Math.max(0, optimalLevel.index - quality)
+        fromLevel = 0
         var toLevel:int = optimalLevel.index
         
         var tileLayer:Shape = renderer.openzoom_internal::tileLayer
 	    var g:Graphics = tileLayer.graphics
         g.clear()
-        g.beginFill(0xFF0000)
+        g.beginFill(0xFF0000, 0)
         g.drawRect(0, 0, descriptor.width, descriptor.height)
         g.endFill()
         
@@ -214,13 +220,45 @@ public class ImagePyramidRenderManager
                         continue		        		
 		        	}
 
+                    // Prepare alpha bitmap
+                    if (tile.fadeStart == 0)
+                    	tile.fadeStart = currentTime
+                    	
+                    var currentAlpha:Number = (currentTime - tile.fadeStart) / TILE_SHOW_DURATION
+                	tile.alpha = Math.min(1, currentAlpha) 
+                    	
+                	var textureMap:BitmapData
+                	
+                	if (tile.alpha < 1)
+                	{
+                		invalidateDisplayList()
+                		
+	                	textureMap = new BitmapData(tile.bitmapData.width,
+                                                    tile.bitmapData.height)
+	                	                                           
+	                    var alphaMultiplier:uint = (tile.alpha * 0x100) << 24
+	                    var alphaMap:BitmapData = new BitmapData(tile.bitmapData.width,
+	                                                             tile.bitmapData.height,
+	                                                             true,
+	                                                             alphaMultiplier | 0x00000000)
+	                                                             
+	                    textureMap.copyPixels(tile.bitmapData,
+	                                          tile.bitmapData.rect,
+	                                          new Point(),
+	                                          alphaMap)
+                    }
+                    else
+                    {
+                    	textureMap = tile.bitmapData
+                    }
+                
                     // Draw tiles
 		        	var matrix:Matrix = new Matrix()
 		        	var sx:Number = descriptor.width / level.width
 		        	var sy:Number = descriptor.height / level.height
 		        	matrix.createBox(sx, sx, 0, tile.bounds.x * sx, tile.bounds.y * sy)
 		        	                 
-		        	g.beginBitmapFill(tile.bitmapData,
+		        	g.beginBitmapFill(textureMap,
 		        	                  matrix,
 		        	                  false, /* repeat */
 		        	                  true /* smoothing */)
@@ -344,12 +382,13 @@ public class ImagePyramidRenderManager
     {
         if (invalidateDisplayListFlag)
         {
+            // Mark as validated
+            invalidateDisplayListFlag = false
+            
             // TODO: Validate renderers from the transformation origin outwards
             for each (var renderer:ImagePyramidRenderer in renderers)
                 updateDisplayList(renderer)
                 
-            // Mark as validated
-            invalidateDisplayListFlag = false
         }
     }
     

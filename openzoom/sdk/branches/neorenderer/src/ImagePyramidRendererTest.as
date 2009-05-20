@@ -9,7 +9,8 @@ import flash.events.Event;
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
+import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
@@ -38,9 +39,9 @@ public class ImagePyramidRendererTest extends Sprite
         container.transformer = transformer
         
         var mouseController:MouseController = new MouseController()
-        mouseController.minMouseWheelZoomInFactor = 2.01
-        mouseController.minMouseWheelZoomOutFactor = 0.45
-        mouseController.smoothPanning = false
+//        mouseController.minMouseWheelZoomInFactor = 2.01
+//        mouseController.minMouseWheelZoomOutFactor = 0.45
+//        mouseController.smoothPanning = false
         
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
@@ -58,30 +59,67 @@ public class ImagePyramidRendererTest extends Sprite
         var width:Number
         var height:Number
         var path:String
+        var aspectRatio:Number
 
 
         // Deep Zoom
-//        path = "http://static.gasi.ch/images/3229924166/image.dzi"
-////        path = "../resources/images/deepzoom/billions.xml"
-//        source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
-//        numRenderers = 100
-//        numColumns = 16
-//        width = 387.2
-//        height = 259.2
-
-//        // OpenStreetMap
-//        source = new OpenStreetMapDescriptor()
+        path = "http://static.gasi.ch/images/3229924166/image.dzi"
+//        path = "../resources/images/deepzoom/billions.xml"
+        source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
+        numRenderers = 1
+        numColumns = 1
+        width = 3872
+        height = 2592
+        
+        // Deep Zoom: Carina Nebula
+        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
+        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height 
+        width = 16384
+        height = 16384 / aspectRatio
+        
+//        // Deep Zoom: Obama
+//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
+//        source = new DeepZoomImageDescriptor(path, 59783, 24658, 256, 0, "jpg")
 //        numRenderers = 1
 //        numColumns = 1
+//        aspectRatio = source.width / source.height 
 //        width = 16384
-//        height = 16384
+//        height = 16384 / aspectRatio
+//        
+//        // Deep Zoom: CMU
+//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/23379.dzi"
+//        source = new DeepZoomImageDescriptor(path, 79433, 17606, 256, 0, "jpg")
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height 
+//        width = 16384
+//        height = 16384 / aspectRatio
+//        
+//        // Deep Zoom: Hanauma Bay
+//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
+//        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
+//        numRenderers = 400
+//        numColumns = 12
+//        aspectRatio = source.width / source.height 
+//        width = 2048
+//        height = 2048 / aspectRatio
 
-        // Virtual Earth
-        source = new VirtualEarthDescriptor()
+        // OpenStreetMap
+        source = new OpenStreetMapDescriptor()
         numRenderers = 1
         numColumns = 1
         width = 16384
         height = 16384
+
+//        // Virtual Earth
+//        source = new VirtualEarthDescriptor()
+//        numRenderers = 1
+//        numColumns = 1
+//        width = 16384
+//        height = 16384
 
         // Zoomify
         // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290"
@@ -135,7 +173,7 @@ public class ImagePyramidRendererTest extends Sprite
 //        compositeContraint.constraints = [scaleConstraint,
 //                                          visibilityContraint,
 //                                          mappingConstraint]
-        container.constraint = compositeContraint
+//        container.constraint = compositeContraint
         
         addChild(container)
         

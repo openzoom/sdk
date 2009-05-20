@@ -121,7 +121,7 @@ public class Tile2
     //  fadeStart
     //----------------------------------
     
-    public var fadeStart:int
+    public var fadeStart:int = 0
 
     //----------------------------------
     //  alpha
