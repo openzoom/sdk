@@ -23,7 +23,6 @@ package org.openzoom.flash.descriptors.deepzoom
 
 import flash.geom.Point;
 import flash.geom.Rectangle;
-import flash.utils.Dictionary;
 
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
@@ -62,7 +61,9 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
                                             height:uint,
                                             tileSize:uint,
                                             tileOverlap:uint,
-                                            format:String)
+                                            format:String,
+                                            mortonNumber:uint=0,
+                                            collection:DeepZoomCollectionDescriptor=null)
     {
         _source = source
         _width = width
@@ -73,6 +74,10 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         _tileWidth = _tileHeight = tileSize
         _numLevels = getNumLevels(width, height)
         createLevels(width, height, tileWidth, tileHeight, numLevels)
+        
+        // Collection
+        _mortonNumber = mortonNumber
+        _collection = collection
     }
 
     /**

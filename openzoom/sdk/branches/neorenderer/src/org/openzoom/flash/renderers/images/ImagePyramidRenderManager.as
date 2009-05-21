@@ -42,6 +42,7 @@ import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.net.INetworkRequest;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+import org.openzoom.flash.utils.Cache;
 import org.openzoom.flash.viewport.INormalizedViewport;
 
 /**
@@ -57,6 +58,7 @@ public final class ImagePyramidRenderManager
     
     private static const FRAMES_PER_SECOND:Number = 30
     private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
+    private static const MAX_CACHE_SIZE:uint = 100
     
     //--------------------------------------------------------------------------
     //
@@ -79,6 +81,8 @@ public final class ImagePyramidRenderManager
                                        false, 0, true)
 
         this.loader = loader
+        
+        openzoom_internal::tileCache = new Cache(MAX_CACHE_SIZE)
 
         timer = new Timer(1000 / FRAMES_PER_SECOND)
         timer.addEventListener(TimerEvent.TIMER,
@@ -101,6 +105,8 @@ public final class ImagePyramidRenderManager
     private var loader:INetworkQueue
 
     private var invalidateDisplayListFlag:Boolean = false
+    
+    openzoom_internal var tileCache:Cache
     
     openzoom_internal var tileBitmapDataCache:Dictionary /* of BitmapData */ = new Dictionary()
     openzoom_internal var tileBitmapData:Array /* of BitmapData */ = []
@@ -160,13 +166,13 @@ public final class ImagePyramidRenderManager
         // Render image pyramid from bottom up
         var currentTime:int = getTimer()
         
-        var quality:int = 32
+        var quality:int = 2
         var fromLevel:int
         var toLevel:int
         
         fromLevel = Math.max(0, optimalLevel.index - quality)
         toLevel = optimalLevel.index
-//        fromLevel = 0
+        fromLevel = 0
 //        toLevel = 0
         
         // Prepare tile layer

@@ -91,23 +91,24 @@ public class ImagePyramidRendererTest extends Sprite
 //        numColumns = 1
 //        width = 3872
 //        height = 2592
-//        
-//        // Deep Zoom: Carina Nebula
-//        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
-//        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height 
-//        width = 16384
-//        height = 16384 / aspectRatio
-        
-        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
-        source = new DeepZoomImageDescriptor(path, 3627, 2424, 256,  1, "jpg")
-        numRenderers = 300
-        numColumns = 24
+
+        // Deep Zoom: Carina Nebula
+        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
+        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
+        numRenderers = 1
+        numColumns = 1
         aspectRatio = source.width / source.height 
-        width = 163.84
-        height = width / aspectRatio
+        width = 16384
+        height = 16384 / aspectRatio
+        
+//        // Deep Zoom: Inline Multiscale Image Replacement
+//        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
+//        source = new DeepZoomImageDescriptor(path, 3627, 2424, 256,  1, "jpg")
+//        numRenderers = 300
+//        numColumns = 24
+//        aspectRatio = source.width / source.height 
+//        width = 163.84
+//        height = width / aspectRatio
         
         // Deep Zoom: World wide music scene
 //        path = "http://seadragon.com/content/images/lastfm.dzi"
@@ -139,20 +140,20 @@ public class ImagePyramidRendererTest extends Sprite
         // Deep Zoom: Hanauma Bay
 //        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
 //        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
-//        numRenderers = 400
-//        numColumns = 12
+//        numRenderers = 1//400
+//        numColumns = 1//12
 //        aspectRatio = source.width / source.height 
-//        width = 512
+//        width = 16384
 //        height = width / aspectRatio
 
         // Zoomify
-        path = "http://shutter.gigapixelphotography.com/images/vancouver-yaletown-condos/ImageProperties.xml"
-        source = new ZoomifyDescriptor(path, 46953, 22255, 21420, 256)
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height 
-        width = 16384
-        height = 16384 / aspectRatio
+//        path = "http://shutter.gigapixelphotography.com/images/vancouver-yaletown-condos/ImageProperties.xml"
+//        source = new ZoomifyDescriptor(path, 46953, 22255, 21420, 256)
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height 
+//        width = 16384
+//        height = 16384 / aspectRatio
 
         // OpenStreetMap
 //        source = new OpenStreetMapDescriptor()
@@ -174,8 +175,8 @@ public class ImagePyramidRendererTest extends Sprite
 //        path = "../resources/images/zoomify/morocco/ImageProperties.xml"
 //        source = new ZoomifyDescriptor(path, 2203, 3290, 169, 256)
 //                                                                              
-//        numRenderers = 4000
-//        numColumns = 128
+//        numRenderers = 360
+//        numColumns = 36
 //        width = 220.3
 //        height = 329.0
 

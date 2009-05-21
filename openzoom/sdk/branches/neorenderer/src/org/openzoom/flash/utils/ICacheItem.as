@@ -24,8 +24,8 @@ package org.openzoom.flash.utils
 /**
  * Interface for a type that can stored in a cache.
  */
-public interface ICacheItem implements IComparable,
-                                       IDisposable
+public interface ICacheItem extends IComparable,
+                                    IDisposable
 {
 }
 
