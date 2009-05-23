@@ -29,7 +29,7 @@ import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 /**
  * Factory for creating multiscale image descriptor from given data.
  */
-public class MultiScaleImageDescriptorFactory
+public class ImagePyramidDescriptorFactory
 {
     //--------------------------------------------------------------------------
     //
@@ -49,7 +49,7 @@ public class MultiScaleImageDescriptorFactory
     //
     //--------------------------------------------------------------------------
 
-    private static var instance:MultiScaleImageDescriptorFactory
+    private static var instance:ImagePyramidDescriptorFactory
 
     //--------------------------------------------------------------------------
     //
@@ -60,7 +60,7 @@ public class MultiScaleImageDescriptorFactory
     /**
      * Constructor.
      */
-    public function MultiScaleImageDescriptorFactory(lock:SingletonLock):void
+    public function ImagePyramidDescriptorFactory(lock:SingletonLock):void
     {
     }
 
@@ -73,10 +73,10 @@ public class MultiScaleImageDescriptorFactory
     /**
      * Returns an instance of this MultiScaleImageDescriptorFactory.
      */
-    public static function getInstance():MultiScaleImageDescriptorFactory
+    public static function getInstance():ImagePyramidDescriptorFactory
     {
         if (!instance)
-            instance = new MultiScaleImageDescriptorFactory(new SingletonLock())
+            instance = new ImagePyramidDescriptorFactory(new SingletonLock())
 
         return instance
     }

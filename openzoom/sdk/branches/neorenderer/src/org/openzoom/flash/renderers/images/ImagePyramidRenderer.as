@@ -182,28 +182,28 @@ public final class ImagePyramidRenderer extends Renderer
     /**
      * @private
      */     
-    openzoom_internal function getTile(level:int, column:int, row:int):Tile2
+    openzoom_internal function getTile(level:int, column:int, row:int):ImagePyramidTile
     {
     	var descriptor:IImagePyramidDescriptor = _source as IImagePyramidDescriptor
     	
     	if (!descriptor)
     	   trace("[ImagePyramidRenderer] getTile: Source undefined")
     	
-        var tile:Tile2 = tileCache[Tile2.getHashCode(level, column, row)]
+        var tile:ImagePyramidTile = tileCache[ImagePyramidTile.getHashCode(level, column, row)]
         
         if (!tile)
         {
 	        var url:String = descriptor.getTileURL(level, column, row)
             var bounds:Rectangle = descriptor.getTileBounds(level, column, row)
             
-            tile = new Tile2(level, column, row, url, bounds)
+            tile = new ImagePyramidTile(level, column, row, url, bounds)
             tileCache[tile.hashCode] = tile
         }
         
         if (!tile.item)
         {
         	var cache:Cache = openzoom_internal::renderManager.openzoom_internal::tileCache
-        	var cacheEntry:TileCacheEntry = cache.get(tile.url) as TileCacheEntry
+        	var cacheEntry:SharedTile = cache.get(tile.url) as SharedTile
         	
         	if (cacheEntry)
         	{

@@ -33,7 +33,7 @@ import org.openzoom.flash.utils.math.clamp;
 /**
  * Descriptor for the
  * <a href="http://african.lanl.gov/aDORe/projects/djatoka/">
- * djakota Image Server</a> by the Los Alamos National Library.
+ * djatoka Image Server</a> by the Los Alamos National Library.
  */
 public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
                                      implements IImagePyramidDescriptor
@@ -59,8 +59,8 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
                                       imageURL:String,
                                       width:uint,
                                       height:uint,
-                                      tileSize:uint = 256,
-                                      tileOverlap:uint = 0,
+                                      tileSize:uint=256,
+                                      tileOverlap:uint=0,
                                       type:String="image/jpeg")
     {
 
@@ -103,7 +103,7 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
 
     //--------------------------------------------------------------------------
     //
-    //  Methods
+    //  Methods: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
 

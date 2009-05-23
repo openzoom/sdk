@@ -29,7 +29,7 @@ import org.openzoom.flash.utils.IDisposable;
 /**
  * Tile of an image pyramid.
  */
-public class Tile2 implements IDisposable
+public class ImagePyramidTile implements IDisposable
 {
     //--------------------------------------------------------------------------
     //
@@ -40,11 +40,11 @@ public class Tile2 implements IDisposable
     /**
      * Constructor.
      */
-    public function Tile2(level:int,
-                          column:int,
-                          row:int,
-                          url:String,
-                          bounds:Rectangle)
+    public function ImagePyramidTile(level:int,
+                                     column:int,
+                                     row:int,
+                                     url:String,
+                                     bounds:Rectangle)
     {
     	this.level = level
     	this.column = column
@@ -91,6 +91,7 @@ public class Tile2 implements IDisposable
     {
     	if (item)
     	   return item.bitmapData
+    	   
         return null
     }
 
@@ -141,8 +142,26 @@ public class Tile2 implements IDisposable
     //  Properties: Caching
     //
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  item
+    //----------------------------------
     
-    public var item:TileCacheEntry
+    public var item:SharedTile
+    
+    //----------------------------------
+    //  lastAccessTime
+    //----------------------------------
+    
+    public function get lastAccessTime():int
+    {
+	   return item.lastAccessTime
+    }
+    
+    public function set lastAccessTime(value:int):void
+    {
+    	item.lastAccessTime = value 
+    }
     
     //--------------------------------------------------------------------------
     //
@@ -152,7 +171,7 @@ public class Tile2 implements IDisposable
     
     public function get hashCode():int
     {
-    	return Tile2.getHashCode(level, column, row)
+    	return ImagePyramidTile.getHashCode(level, column, row)
     }
     
     //--------------------------------------------------------------------------

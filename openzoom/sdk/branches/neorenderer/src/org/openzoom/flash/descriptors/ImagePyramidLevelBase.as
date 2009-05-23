@@ -38,8 +38,10 @@ public class ImagePyramidLevelBase
      * Constructor.
      */
     public function ImagePyramidLevelBase(index:int,
-                                             width:uint, height:uint,
-                                             numColumns:uint, numRows:uint)
+                                          width:uint,
+                                          height:uint,
+                                          numColumns:int,
+                                          numRows:int)
     {
         _index = index
 

@@ -77,7 +77,7 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
 
     //--------------------------------------------------------------------------
     //
-    //  Properties: IMultiScaleImageDescriptor
+    //  Properties: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
     
@@ -93,7 +93,7 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageDescriptor
+    //  Methods: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
 

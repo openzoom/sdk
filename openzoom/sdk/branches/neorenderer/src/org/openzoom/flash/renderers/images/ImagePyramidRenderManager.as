@@ -220,7 +220,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 	        	// Iterate over rows
 		        for (var r:int = fromTile.y; r <= toTile.y; r++)
 		        {
-		        	var tile:Tile2 = renderer.openzoom_internal::getTile(l, c, r)
+		        	var tile:ImagePyramidTile = renderer.openzoom_internal::getTile(l, c, r)
 		        	
                     if (!renderer.ready && tile.level > 0)
                         return
@@ -308,7 +308,7 @@ public final class ImagePyramidRenderManager implements IDisposable
     
     private var numDownloads:uint = 0
     
-    private function loadTile(tile:Tile2):void
+    private function loadTile(tile:ImagePyramidTile):void
     {
     	if (pendingDownloads[tile.url])
     	   return
@@ -331,10 +331,10 @@ public final class ImagePyramidRenderManager implements IDisposable
     	event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
     	                                  request_completeHandler)
     	                                  
-    	var tile:Tile2 = event.context as Tile2
+    	var tile:ImagePyramidTile = event.context as ImagePyramidTile
         var bitmapData:BitmapData = Bitmap(event.data).bitmapData
         
-        var cacheItem:TileCacheEntry = new TileCacheEntry(tile.url,
+        var cacheItem:SharedTile = new SharedTile(tile.url,
                                                           bitmapData,
                                                           tile.level)
         cacheItem.lastAccessTime = getTimer()

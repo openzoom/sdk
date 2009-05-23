@@ -81,7 +81,7 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageDescriptor
+    //  Methods: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
 

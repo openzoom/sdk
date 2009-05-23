@@ -18,21 +18,13 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.renderers
+package org.openzoom.flash.descriptors
 {
 
-import flash.display.DisplayObject;
-import flash.geom.Rectangle;
-
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.viewport.INormalizedViewport;
-
 /**
- * @private
- *
- * Interface for a renderer that is multiscalar.
+ * Interface for describing a multiscale image.
  */
-public interface IRenderer
+public interface IMultiScaleImageDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -41,35 +33,32 @@ public interface IRenderer
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  scene
+    //  sources
     //----------------------------------
     
     /**
-     * The scene this renderer is attached to.
-     */
-    function get scene():IReadonlyMultiScaleScene
-    function set scene(value:IReadonlyMultiScaleScene):void
+     * Returns an array of IImageSourceDescriptor objects.
+     * Returns empty array in case there are no descriptors.
+     */ 
+    function get sources():Array
 
     //----------------------------------
     //  width
     //----------------------------------
-    
-    /**
-     * The viewport this renderer is viewed in.
-     */
-    function get viewport():INormalizedViewport
-    function set viewport(value:INormalizedViewport):void
 
-    //--------------------------------------------------------------------------
-    //
-    //  Methods
-    //
-    //--------------------------------------------------------------------------
-    
     /**
-     * Bounds of this renderer.
+     * Returns the intrinsic width of the image in pixels.
      */
-    function getBounds(targetCoordinateSpace:DisplayObject):Rectangle
+    function get width():uint
+
+    //----------------------------------
+    //  height
+    //----------------------------------
+
+    /**
+     * Returns the intrinsic height of the image in pixels.
+     */
+    function get height():uint
 }
 
 }

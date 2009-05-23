@@ -28,7 +28,7 @@ import org.openzoom.flash.utils.ICacheItem;
 /**
  * Cache entry for bitmaps that could or could not be shared by several tiles.
  */ 	
-internal final class TileCacheEntry implements ICacheItem
+internal final class SharedTile implements ICacheItem
 {
     //--------------------------------------------------------------------------
     //
@@ -39,10 +39,10 @@ internal final class TileCacheEntry implements ICacheItem
     /**
      * Constructor.
      */
-    public function TileCacheEntry(url:String,
-                                   bitmapData:BitmapData,
-                                   level:int,
-                                   shared:Boolean=false)
+    public function SharedTile(url:String,
+                               bitmapData:BitmapData,
+                               level:int,
+                               shared:Boolean=false)
     {
         this.url = url
         this.bitmapData = bitmapData
@@ -82,7 +82,7 @@ internal final class TileCacheEntry implements ICacheItem
      */
     public function dispose():void
     {
-        for each (var tile:Tile2 in owners)
+        for each (var tile:ImagePyramidTile in owners)
             tile.dispose()
             
         url = null
@@ -98,10 +98,10 @@ internal final class TileCacheEntry implements ICacheItem
      */
     public function compareTo(other:*):int
     {
-        var entry:TileCacheEntry = other as TileCacheEntry
+        var entry:SharedTile = other as SharedTile
 
         if (!entry)
-           throw new ArgumentError("[TileCacheEntry] Object to compare has wrong type.")
+           throw new ArgumentError("[SharedTile] Object to compare has wrong type.")
 
         // Shared tiles have higher order
         if (shared && !entry.shared)
@@ -127,7 +127,7 @@ internal final class TileCacheEntry implements ICacheItem
     
     public function toString():String
     {
-    	return "[TileCacheEntry]" + "\n" +
+    	return "[SharedTile]" + "\n" +
     	       "url: " + url  + "\n" +
     	       "level: " + level  + "\n" +
     	       "lastAccessTime: " + lastAccessTime

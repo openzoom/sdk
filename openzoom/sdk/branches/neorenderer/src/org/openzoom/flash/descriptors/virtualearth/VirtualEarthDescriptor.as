@@ -82,7 +82,7 @@ public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageDescriptor
+    //  Methods: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
 
@@ -116,6 +116,20 @@ public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
     public function clone():IImagePyramidDescriptor
     {
         return new VirtualEarthDescriptor()
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Debug
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * @inheritDoc
+     */
+    override public function toString():String
+    {
+        return "[VirtualEarthDescriptor]" + "\n" + super.toString()
     }
 
     //--------------------------------------------------------------------------

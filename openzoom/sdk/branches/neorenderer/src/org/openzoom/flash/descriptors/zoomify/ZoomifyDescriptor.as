@@ -64,10 +64,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     public function ZoomifyDescriptor(source:String,
                                       width:uint,
                                       height:uint,
-                                      numTiles:int, // eliminate
-                                      tileSize:uint,
-                                      numImages:int=1,
-                                      version:String="1.8")
+                                      tileSize:uint)
     {
         _source = source
 
@@ -79,11 +76,6 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
 
         _type = DEFAULT_TYPE
         format = DEFAULT_TILE_FORMAT
-
-        _numTiles = numTiles
-        
-        _version = version
-        _numImages = numImages
 
         _numLevels = computeNumLevels(width, height, tileWidth, tileHeight)
         createLevels(width, height, tileSize, numLevels)
@@ -101,17 +93,14 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
         var width:uint = xml.@WIDTH
         var height:uint = xml.@HEIGHT
         var tileSize:uint = xml.@TILESIZE
-        var numTiles:int = xml.@NUMTILES
-        var numImages:int = xml.@NUMIMAGES
-        var version:String = xml.@VERSION
+//        var numTiles:int = xml.@NUMTILES
+//        var numImages:int = xml.@NUMIMAGES
+//        var version:String = xml.@VERSION
 
         return new ZoomifyDescriptor(source,
                                      width,
                                      height,
-                                     numTiles,
-                                     tileSize,
-                                     numImages,
-                                     version)
+                                     tileSize)
     }
 
     //--------------------------------------------------------------------------
@@ -141,51 +130,9 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
         return _tileWidth
     }
 
-    //----------------------------------
-    //  numImages
-    //----------------------------------
-
-    private var _numImages:int = DEFAULT_NUM_IMAGES
-
-    /**
-     * Returns the number of images as specified in the file format.
-     */
-    public function get numImages():int
-    {
-        return _numImages
-    }
-
-    //----------------------------------
-    //  version
-    //----------------------------------
-
-    private var _version:String = DEFAULT_VERSION
-
-    /**
-     * Returns the number of images as specified in the file format.
-     */
-    public function get version():String
-    {
-        return _version
-    }
-
-    //----------------------------------
-    //  numTiles
-    //----------------------------------
-
-    private var _numTiles:int
-    
-    /**
-     * Returns the number of tiles as specified in the file format.
-     */
-    public function get numTiles():int
-    {
-        return _numTiles
-    }
-    
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageDescriptor
+    //  Methods: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
 
@@ -221,7 +168,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      */
     public function clone():IImagePyramidDescriptor
     {
-        return new ZoomifyDescriptor(source, width, height, numTiles, tileSize)
+        return new ZoomifyDescriptor(source, width, height, tileSize)
     }
 
     //--------------------------------------------------------------------------

@@ -79,7 +79,7 @@ public final class OpenStreetMapDescriptor extends ImagePyramidDescriptorBase
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageDescriptor
+    //  Methods: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
 
@@ -106,12 +106,32 @@ public final class OpenStreetMapDescriptor extends ImagePyramidDescriptorBase
         return tileURL
     }
 
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IMultiScaleImageDescriptor
+    //
+    //--------------------------------------------------------------------------
+
     /**
      * @inheritDoc
      */
     public function clone():IImagePyramidDescriptor
     {
         return new OpenStreetMapDescriptor()
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Debug
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * @inheritDoc
+     */
+    override public function toString():String
+    {
+        return "[OpenStreetMapDescriptor]" + "\n" + super.toString()
     }
 }
 

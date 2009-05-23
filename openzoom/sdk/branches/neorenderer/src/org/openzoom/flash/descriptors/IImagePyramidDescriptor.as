@@ -27,41 +27,13 @@ import flash.geom.Rectangle;
 /**
  * Interface of a multiscale image pyramid descriptor.
  */
-public interface IImagePyramidDescriptor
+public interface IImagePyramidDescriptor extends IMultiScaleImageDescriptor
 {
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  sources
-    //----------------------------------
-    
-    /**
-     * Returns an array of IImageSourceDescriptor objects.
-     * Returns empty array in case there are no descriptors.
-     */ 
-    function get sources():Array
-
-    //----------------------------------
-    //  width
-    //----------------------------------
-
-    /**
-     * Returns the intrinsic width of the image in pixels.
-     */
-    function get width():uint
-
-    //----------------------------------
-    //  height
-    //----------------------------------
-
-    /**
-     * Returns the intrinsic height of the image in pixels.
-     */
-    function get height():uint
 
     //----------------------------------
     //  numLevels

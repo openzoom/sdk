@@ -216,7 +216,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
      */
     override public function toString():String
     {
-        return "[DZIDescriptor]" + "\n" + super.toString()
+        return "[DeepZoomImageDescriptor]" + "\n" + super.toString()
     }
 
     //--------------------------------------------------------------------------

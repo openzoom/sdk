@@ -28,7 +28,7 @@ import flash.net.URLLoader;
 import flash.net.URLRequest;
 
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorFactory;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 
 /**
@@ -209,8 +209,8 @@ public final class MultiScaleImage extends MultiScaleImageBase
             return
 
         var data:XML = new XML(urlLoader.data)
-        var factory:MultiScaleImageDescriptorFactory =
-                          MultiScaleImageDescriptorFactory.getInstance()
+        var factory:ImagePyramidDescriptorFactory =
+                          ImagePyramidDescriptorFactory.getInstance()
         var descriptor:IImagePyramidDescriptor =
                              factory.getDescriptor(url, data)
 

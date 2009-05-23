@@ -75,7 +75,7 @@ internal final class ImagePyramidLevel extends ImagePyramidLevelBase
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageLevel
+    //  Methods: IImagePyramidLevel
     //
     //--------------------------------------------------------------------------
 
@@ -153,7 +153,7 @@ internal final class ImagePyramidLevel extends ImagePyramidLevelBase
      */
     override public function toString():String
     {
-        return "[OpenZoomLevel]" + "\n" + super.toString()
+        return "[ImagePyramidLevel]" + "\n" + super.toString()
     }
 }
 

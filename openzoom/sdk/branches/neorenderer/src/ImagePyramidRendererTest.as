@@ -30,10 +30,10 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
-import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
+import org.openzoom.flash.utils.ExternalMouseWheel;
+import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
 import org.openzoom.flash.viewport.constraints.MappingConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
@@ -55,6 +55,8 @@ public class ImagePyramidRendererTest extends Sprite
                                stage_resizeHandler,
                                false, 0, true)
 
+        ExternalMouseWheel.initialize(stage)
+
         container = new MultiScaleContainer()
         var transformer:TweenerTransformer = new TweenerTransformer()
         container.transformer = transformer
@@ -62,7 +64,7 @@ public class ImagePyramidRendererTest extends Sprite
         var mouseController:MouseController = new MouseController()
 //        mouseController.minMouseWheelZoomInFactor = 2.01
 //        mouseController.minMouseWheelZoomOutFactor = 0.45
-//        mouseController.smoothPanning = false
+        mouseController.smoothPanning = false
         
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
@@ -224,8 +226,12 @@ public class ImagePyramidRendererTest extends Sprite
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
         visibilityContraint.visibilityRatio = 0.5
         
+        var centerConstraint:CenterConstraint = new CenterConstraint()
+        
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
-        compositeContraint.constraints = [scaleConstraint]
+        compositeContraint.constraints = [scaleConstraint,
+                                          centerConstraint,
+                                          visibilityContraint]
 //        compositeContraint.constraints = [scaleConstraint,
 //                                          mappingConstraint]
 //        compositeContraint.constraints = [scaleConstraint,

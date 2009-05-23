@@ -49,7 +49,7 @@ public class MouseController extends ViewportControllerBase
     private static const DEFAULT_CLICK_ZOOM_IN_FACTOR:Number = 2.0
     private static const DEFAULT_CLICK_ZOOM_OUT_FACTOR:Number = 0.3
 
-    private static const DEFAULT_MOUSE_WHEEL_ZOOM_FACTOR:Number = 1.2
+    private static const DEFAULT_MOUSE_WHEEL_ZOOM_FACTOR:Number = 1.12
 
     //--------------------------------------------------------------------------
     //
@@ -246,7 +246,7 @@ public class MouseController extends ViewportControllerBase
 
         // TODO: React appropriately to different platforms and/or browsers,
         // as they at times report completely different mouse wheel deltas.
-        var factor:Number = clamp(Math.pow(mouseWheelZoomFactor, event.delta), 0.25, 4)
+        var factor:Number = clamp(Math.pow(mouseWheelZoomFactor, event.delta), 0.5, 3)
 
         // TODO: Refactor
         if (factor < 1)
@@ -315,11 +315,16 @@ public class MouseController extends ViewportControllerBase
         // update view drag vector
         viewDragVector.bottomRight = new Point(view.mouseX, view.mouseY)
 
-        var distanceX:Number = viewDragVector.width / viewport.viewportWidth
-        var distanceY:Number = viewDragVector.height / viewport.viewportHeight
+        var distanceX:Number
+        var distanceY:Number
+        var targetX:Number
+        var targetY:Number
+        
+        distanceX = viewDragVector.width / viewport.viewportWidth
+        distanceY = viewDragVector.height / viewport.viewportHeight
 
-        var targetX:Number = viewportDragVector.x - (distanceX * viewport.width)
-        var targetY:Number = viewportDragVector.y - (distanceY * viewport.height)
+        targetX = viewportDragVector.x - (distanceX * viewport.width)
+        targetY = viewportDragVector.y - (distanceY * viewport.height)
 
         viewport.panTo(targetX, targetY, !smoothPanning)
     }
