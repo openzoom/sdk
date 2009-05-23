@@ -123,6 +123,8 @@ public final class Cache implements IDisposable
     			}
     		}
     		
+    		trace(worstItem)
+    		
     		// Dispose worst item
     		worstItem.dispose()
     		
@@ -140,6 +142,7 @@ public final class Cache implements IDisposable
     	if (contains(key))
         {
         	var item:ICacheItem = cache[key]
+        	items.splice(items.indexOf(item), 1)
         	item.dispose()
             cache[key] = null
             

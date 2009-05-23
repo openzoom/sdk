@@ -25,12 +25,12 @@ import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Shape;
-import flash.events.TimerEvent;
+import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
-import flash.utils.Timer;
 import flash.utils.getTimer;
 
 import org.openzoom.flash.core.openzoom_internal;
@@ -43,12 +43,13 @@ import org.openzoom.flash.net.INetworkRequest;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.utils.Cache;
+import org.openzoom.flash.utils.IDisposable;
 import org.openzoom.flash.viewport.INormalizedViewport;
 
 /**
  * Manages the rendering of all image pyramid renderers on stage.
  */
-public final class ImagePyramidRenderManager
+public final class ImagePyramidRenderManager implements IDisposable
 {
     //--------------------------------------------------------------------------
     //
@@ -56,9 +57,11 @@ public final class ImagePyramidRenderManager
     //
     //--------------------------------------------------------------------------
     
-    private static const FRAMES_PER_SECOND:Number = 30
+//    private static const FRAMES_PER_SECOND:Number = 30
     private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
-    private static const MAX_CACHE_SIZE:uint = 100
+    private static const MAX_CACHE_SIZE:uint = 500
+    
+    private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
     
     //--------------------------------------------------------------------------
     //
@@ -69,7 +72,8 @@ public final class ImagePyramidRenderManager
     /**
      * Constructor.
      */
-    public function ImagePyramidRenderManager(scene:IMultiScaleScene,
+    public function ImagePyramidRenderManager(owner:Sprite,
+                                              scene:IMultiScaleScene,
                                               viewport:INormalizedViewport,
                                               loader:INetworkQueue)
     {
@@ -84,11 +88,16 @@ public final class ImagePyramidRenderManager
         
         openzoom_internal::tileCache = new Cache(MAX_CACHE_SIZE)
 
-        timer = new Timer(1000 / FRAMES_PER_SECOND)
-        timer.addEventListener(TimerEvent.TIMER,
-                               timer_timerHandler,
+        this.owner = owner
+        owner.addEventListener(Event.ENTER_FRAME,
+                               enterFrameHandler,
                                false, 0, true)
-        timer.start()
+
+//        timer = new Timer(1000 / FRAMES_PER_SECOND)
+//        timer.addEventListener(TimerEvent.TIMER,
+//                               timer_timerHandler,
+//                               false, 0, true)
+//        timer.start()
     }
     
     //--------------------------------------------------------------------------
@@ -99,7 +108,9 @@ public final class ImagePyramidRenderManager
 
     private var renderers:Array /* of ImagePyramidRenderer */ = []
 
-    private var timer:Timer
+//    private var timer:Timer
+
+    private var owner:Sprite
     private var viewport:INormalizedViewport
     private var scene:IMultiScaleScene
     private var loader:INetworkQueue
@@ -107,11 +118,6 @@ public final class ImagePyramidRenderManager
     private var invalidateDisplayListFlag:Boolean = false
     
     openzoom_internal var tileCache:Cache
-    
-    openzoom_internal var tileBitmapDataCache:Dictionary /* of BitmapData */ = new Dictionary()
-    openzoom_internal var tileBitmapData:Array /* of BitmapData */ = []
-    openzoom_internal var urlTileMap:Dictionary /* of Array of Tile2 */ = new Dictionary()
-
     private var pendingDownloads:Dictionary = new Dictionary()
     
     //--------------------------------------------------------------------------
@@ -186,6 +192,7 @@ public final class ImagePyramidRenderManager
         tileLayer.width = renderer.width
         tileLayer.height = renderer.height
     
+    
         // Iterate over levels
         for (var l:int = fromLevel; l <= toLevel; l++)
         {
@@ -215,12 +222,15 @@ public final class ImagePyramidRenderManager
 		        {
 		        	var tile:Tile2 = renderer.openzoom_internal::getTile(l, c, r)
 		        	
+                    if (!renderer.ready && tile.level > 0)
+                        return
+		        	
 		        	if (!tile.loaded)
 		        	{
                         var downloadPossible:Boolean = numDownloads < MAX_CONCURRENT_DOWNLOADS
                         
 		        		if (!tile.loading && downloadPossible)
-		        		    loadTile(tile)
+                            loadTile(tile)
 		        		    
 		        		continue
 		        	}
@@ -235,15 +245,15 @@ public final class ImagePyramidRenderManager
                     if (tile.fadeStart == 0)
                     	tile.fadeStart = currentTime
                     
-                    var duration:Number = TILE_SHOW_DURATION
+                    tile.item.lastAccessTime = currentTime
                     
-                    // Fade lowest level quicker
-//                    if (tile.level == 0)
-//                        duration = 100         
-
+                    var duration:Number = TILE_SHOW_DURATION
                     var currentAlpha:Number = (currentTime - tile.fadeStart) / duration
                 	tile.alpha = Math.min(1, currentAlpha) 
-                    	
+                    
+                    if (tile.level == 0 && tile.alpha == 1)
+                        renderer.ready = true
+
                 	var textureMap:BitmapData
                 	
                 	if (tile.alpha < 1)
@@ -266,6 +276,7 @@ public final class ImagePyramidRenderManager
                     }
                     else
                     {
+                    	
                     	textureMap = tile.bitmapData
                     }
                 
@@ -295,8 +306,6 @@ public final class ImagePyramidRenderManager
     //
     //--------------------------------------------------------------------------
     
-    private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
-    private static const MAX_CACHE_ITEMS:uint = 1000
     private var numDownloads:uint = 0
     
     private function loadTile(tile:Tile2):void
@@ -325,34 +334,17 @@ public final class ImagePyramidRenderManager
     	var tile:Tile2 = event.context as Tile2
         var bitmapData:BitmapData = Bitmap(event.data).bitmapData
         
-        // Cache not full
-//        if (openzoom_internal::tileBitmapData.length < MAX_CACHE_ITEMS)
-        {
-	        openzoom_internal::tileBitmapDataCache[tile.url] = bitmapData 
-        	openzoom_internal::tileBitmapData.push(bitmapData)
-        }
-//        // Cache full
-//        else
-//        {
-//            // Evict oldest tile with highest level
-//        	
-//        	
-//            trace("PRE:", openzoom_internal::tileBitmapData.length)
-//            
-//            var oldEntry:BitmapData = openzoom_internal::tileBitmapData.shift()
-//            openzoom_internal::tileBitmapDataCache[tile.url] = null
-//            oldEntry.dispose()
-//            
-//            trace("INV:", openzoom_internal::tileBitmapData.length, Math.random())
-//            
-//            openzoom_internal::tileBitmapData.push(bitmapData)
-//            openzoom_internal::tileBitmapDataCache[tile.url] = bitmapData
-//            
-//            trace("POST:", openzoom_internal::tileBitmapData.length)
-//        	
-//        }
+        var cacheItem:TileCacheEntry = new TileCacheEntry(tile.url,
+                                                          bitmapData,
+                                                          tile.level)
+        cacheItem.lastAccessTime = getTimer()
+	    openzoom_internal::tileCache.put(tile.url, cacheItem)
         
-        tile.bitmapData = bitmapData
+        // Add this tile as owner of the tile bitmap
+        if (cacheItem.owners.indexOf(tile) == -1)
+            cacheItem.owners.push(tile)
+
+        tile.item = cacheItem        
         tile.loaded = true
         tile.loading = false
         
@@ -370,7 +362,16 @@ public final class ImagePyramidRenderManager
     /**
      * @private
      */
-    private function timer_timerHandler(event:TimerEvent):void
+//    private function timer_timerHandler(event:TimerEvent):void
+//    {
+//        // Rendering loop
+//        validateDisplayList()
+//    }
+    
+    /**
+     * @private
+     */
+    private function enterFrameHandler(event:Event):void
     {
         // Rendering loop
         validateDisplayList()
@@ -445,84 +446,87 @@ public final class ImagePyramidRenderManager
         
         return renderer
     }
-}
-
-}
-
-import flash.utils.Dictionary;
-import flash.display.Bitmap;
-import flash.display.BitmapData;
-import org.openzoom.flash.utils.IDisposable;
-import org.openzoom.flash.utils.IComparable;
-import flash.errors.IllegalOperationError;
-
-class TileCache
-{
-    public function TileCache(size:uint)
-    {
-    	cache = new Dictionary()
-    }
     
-    private var cache:Dictionary
-    
-    public function get(url:String):TileCacheEntry
-    {
-    	var entry:TileCacheEntry = cache[url]
-    	return entry
-    }
-    
-    public function put(url:String,
-                        bitmapData:BitmapData,
-                        lowLevel:Boolean=false,
-                        shared:Boolean=false):void
-    {
-        cache[url] = bitmapData
-    }
-}
-
-class TileCacheEntry implements IDisposable,
-                                IComparable
-{
-    public function TileCacheEntry(url:String,
-                                   bitmapData:BitmapData,
-                                   level:int,
-                                   shared:Boolean=false)
-    {
-    	this.url = url
-    	this.bitmapData = bitmapData
-    	this.level = level
-    	this.shared = shared
-    }
-    
-    public var url:String
-    public var bitmapData:BitmapData
-    public var level:int
-    public var shared:Boolean
-    
-    public var lastAccessTime:int = 0
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
     
     public function dispose():void
     {
-    	bitmapData = null
+        // Remove render loop 
+    	owner.removeEventListener(Event.ENTER_FRAME,
+    	                          enterFrameHandler)
+    	                          
+    	// Remove render manager from all its renderers
+    	for each (var renderer:ImagePyramidRenderer in renderers)
+    	   renderer.openzoom_internal::renderManager = null
+    	   
+        owner = null
+        scene = null
+        viewport = null
+        loader = null
+        
+        openzoom_internal::tileCache.dispose()
+        openzoom_internal::tileCache = null
+    }
+}
+
+}
+
+/**
+ * @private
+ * 
+ * Manages the overlap of an image pyramid for efficient rendering.
+ */
+class ImagePyramidOverlap
+{
+    //--------------------------------------------------------------------------
+    //
+    //  Constructor
+    //
+    //--------------------------------------------------------------------------
+    
+	/**
+	 * Constructor.
+	 */
+    public function ImagePyramidOverlap()
+    {
+    	overlap = []
     }
     
-    public function compareTo(other:*):int
+    //--------------------------------------------------------------------------
+    //
+    //  Variables
+    //
+    //--------------------------------------------------------------------------
+    
+    private var overlap:Array = []
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+    
+    public function getTileOverlap(level:int, column:int, row:int):Boolean
     {
-    	var entry:TileCacheEntry = other as TileCacheEntry
-    	
-    	if (!entry)
-    	   throw new ArgumentError("[TileCacheEntry] Object to compare has wrong type.")
-
-        // Shared tiles have higher order
-        if (shared && !entry.shared)
-            return 1
-
-        // Otherwise newer tiles have higher order
-        if (entry.lastAccessTime > lastAccessTime)
-            return -1
-        else if (entry.lastAccessTime == lastAccessTime)
-            return 0
-        else
-            return 1
-    }   	
+    	return overlap[level][column][row]
+    }
+    
+    public function setTileOverlap(level:int, column:int, row:int, value:Boolean):void
+    {
+    	overlap[level][column][row] = value
+    }
+    
+    public function isLevelOverlapped(level:int):Boolean
+    {
+    	return false
+    }
+    
+    public function reset():void
+    {
+    	overlap = []
+    }
 }

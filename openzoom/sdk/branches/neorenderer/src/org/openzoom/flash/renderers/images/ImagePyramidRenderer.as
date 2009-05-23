@@ -21,7 +21,6 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.geom.Rectangle;
@@ -30,6 +29,7 @@ import flash.utils.Dictionary;
 import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.renderers.Renderer;
+import org.openzoom.flash.utils.Cache;
 
 /**
  * Image pyramid renderer.
@@ -56,6 +56,8 @@ public final class ImagePyramidRenderer extends Renderer
     //  Variables
     //
     //--------------------------------------------------------------------------
+
+    public var ready:Boolean = false
 
     private var tileCache:Dictionary /* of Tile2 */ = new Dictionary()
     openzoom_internal var tileLayer:Shape
@@ -198,14 +200,18 @@ public final class ImagePyramidRenderer extends Renderer
             tileCache[tile.hashCode] = tile
         }
         
-        if (!tile.bitmapData)
+        if (!tile.item)
         {
-        	var cache:Dictionary = openzoom_internal::renderManager.openzoom_internal::tileBitmapDataCache
-        	var bitmapData:BitmapData = cache[tile.url] as BitmapData
+        	var cache:Cache = openzoom_internal::renderManager.openzoom_internal::tileCache
+        	var cacheEntry:TileCacheEntry = cache.get(tile.url) as TileCacheEntry
         	
-        	if (bitmapData)
+        	if (cacheEntry)
         	{
-	        	tile.bitmapData = bitmapData 
+	        	// Add this tile as owner of the tile bitmap
+	        	if (cacheEntry.owners.indexOf(tile) == -1)
+                    cacheEntry.owners.push(tile)
+                
+                tile.item = cacheEntry
 	        	tile.loaded = true
 	        	tile.loading = false
         	}

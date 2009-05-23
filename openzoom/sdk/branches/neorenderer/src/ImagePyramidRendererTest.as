@@ -70,7 +70,8 @@ public class ImagePyramidRendererTest extends Sprite
                                  keyboardController,
                                  contextMenuController]
         
-        renderManager = new ImagePyramidRenderManager(container.scene,
+        renderManager = new ImagePyramidRenderManager(container,
+                                                      container.scene,
                                                       container.viewport,
                                                       container.loader)
 
@@ -101,7 +102,7 @@ public class ImagePyramidRendererTest extends Sprite
         width = 16384
         height = 16384 / aspectRatio
         
-//        // Deep Zoom: Inline Multiscale Image Replacement
+        // Deep Zoom: Inline Multiscale Image Replacement
 //        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
 //        source = new DeepZoomImageDescriptor(path, 3627, 2424, 256,  1, "jpg")
 //        numRenderers = 300
@@ -119,16 +120,16 @@ public class ImagePyramidRendererTest extends Sprite
 //        width = 16384
 //        height = 16384 / aspectRatio
         
-//        // Deep Zoom: Obama
-//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
-//        source = new DeepZoomImageDescriptor(path, 59783, 24658, 256, 0, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height 
-//        width = 16384
-//        height = 16384 / aspectRatio
-//        
-//        // Deep Zoom: CMU
+        // Deep Zoom: Obama
+        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
+        source = new DeepZoomImageDescriptor(path, 59783, 24658, 256, 0, "jpg")
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height 
+        width = 16384
+        height = 16384 / aspectRatio
+
+        // Deep Zoom: CMU
 //        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/23379.dzi"
 //        source = new DeepZoomImageDescriptor(path, 79433, 17606, 256, 0, "jpg")
 //        numRenderers = 1
@@ -155,6 +156,15 @@ public class ImagePyramidRendererTest extends Sprite
 //        width = 16384
 //        height = 16384 / aspectRatio
 
+        // Zoomify
+//        path = "http://shutter.gigapixelphotography.com/images/garibaldi-park-snowshoe/ImageProperties.xml"
+//        source = new ZoomifyDescriptor(path, 22761, 14794, 6941, 256)
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height 
+//        width = 16384
+//        height = 16384 / aspectRatio
+
         // OpenStreetMap
 //        source = new OpenStreetMapDescriptor()
 //        numRenderers = 1
@@ -162,7 +172,7 @@ public class ImagePyramidRendererTest extends Sprite
 //        width = 16384
 //        height = 16384
 
-//        // Virtual Earth
+        // Virtual Earth
 //        source = new VirtualEarthDescriptor()
 //        numRenderers = 1
 //        numColumns = 1
@@ -176,7 +186,7 @@ public class ImagePyramidRendererTest extends Sprite
 //        source = new ZoomifyDescriptor(path, 2203, 3290, 169, 256)
 //                                                                              
 //        numRenderers = 360
-//        numColumns = 36
+//        numColumns = 32
 //        width = 220.3
 //        height = 329.0
 

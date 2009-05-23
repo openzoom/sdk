@@ -24,10 +24,12 @@ package org.openzoom.flash.renderers.images
 import flash.display.BitmapData;
 import flash.geom.Rectangle;
 
+import org.openzoom.flash.utils.IDisposable;
+
 /**
  * Tile of an image pyramid.
  */
-public class Tile2
+public class Tile2 implements IDisposable
 {
     //--------------------------------------------------------------------------
     //
@@ -85,7 +87,12 @@ public class Tile2
     //  bitmapData
     //----------------------------------
     
-    public var bitmapData:BitmapData
+    public function get bitmapData():BitmapData
+    {
+    	if (item)
+    	   return item.bitmapData
+        return null
+    }
 
     //----------------------------------
     //  url
@@ -131,6 +138,14 @@ public class Tile2
     
     //--------------------------------------------------------------------------
     //
+    //  Properties: Caching
+    //
+    //--------------------------------------------------------------------------
+    
+    public var item:TileCacheEntry
+    
+    //--------------------------------------------------------------------------
+    //
     //  Properties: Hash
     //
     //--------------------------------------------------------------------------
@@ -150,6 +165,24 @@ public class Tile2
     {
     	return parseInt([level, column, row].join(""))
     }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function dispose():void
+    {
+        item = null
+        
+    	loading = false
+    	loaded = false
+    	
+    	alpha = 0
+    	fadeStart = 0
+    }
+    
 }
 
 }
