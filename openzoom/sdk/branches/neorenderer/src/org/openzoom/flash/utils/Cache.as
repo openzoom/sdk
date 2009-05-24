@@ -34,16 +34,16 @@ public final class Cache implements IDisposable
     //  Constructor
     //
     //--------------------------------------------------------------------------
-	/**
-	 * Constructor.
-	 */
+    /**
+     * Constructor.
+     */
     public function Cache(size:int, weakKeys:Boolean=false)
     {
         _size = size
         cache = new Dictionary(weakKeys)
         items = []
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
@@ -52,7 +52,7 @@ public final class Cache implements IDisposable
 
     private var cache:Dictionary
     private var items:Array
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties
@@ -63,22 +63,22 @@ public final class Cache implements IDisposable
 
     /**
      * Returns the size of the cache.
-     */ 
+     */
     public function get size():int
     {
         return _size
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Returns <code>true</code> if cache has item at key
      * and otherwise <code>false</code>
-     */ 
+     */
     public function contains(key:*):Boolean
     {
         if (cache[key])
@@ -89,87 +89,82 @@ public final class Cache implements IDisposable
 
     /**
      * Returns cache item at key.
-     */ 
+     */
     public function get(key:*):ICacheItem
     {
-    	var item:ICacheItem = cache[key]
-    	
-    	if (!item)
-    	   throw new ArgumentError("[Cache] Item does not exist.")
-    	
+        var item:ICacheItem = cache[key]
+
+        if (!item)
+           throw new ArgumentError("[Cache] Item does not exist.")
+
         return item
     }
 
     /**
      * Put item into cache at key.
-     */ 
+     */
     public function put(key:*, item:ICacheItem):void
     {
-    	if (!item)
-    	   throw new ArgumentError("[Cache] Item cannot be null.")
-    	
-    	if (items.length < _size)
-    	{
-	    	items.push(item)
-	        cache[key] = item
-    	}
-    	else
-    	{
-    		// Assume first item is the worst
-    		var worstItemIndex:int = 0
-    		var worstItem:ICacheItem = items[worstItemIndex]
-    		
-    		// Find worst of all items
-			var candidate:ICacheItem
-    		for (var i:int = 1; i < items.length; ++i)
-    		{
-    			candidate = items[i]
-    			
-    			if (candidate.compareTo(worstItem) < 0)
-    			{
+        if (!item)
+           throw new ArgumentError("[Cache] Item cannot be null.")
+
+        if (items.length < _size)
+        {
+            items.push(item)
+            cache[key] = item
+        }
+        else
+        {
+            // Assume first item is the worst
+            var worstItemIndex:int = 0
+            var worstItem:ICacheItem = items[worstItemIndex]
+
+            // Find worst of all items
+            var candidate:ICacheItem
+            for (var i:int = 1; i < items.length; ++i)
+            {
+                candidate = items[i]
+
+                if (candidate.compareTo(worstItem) < 0)
+                {
                     worstItemIndex = i
                     worstItem = candidate
-    			}
-    		}
+                }
+            }
 
-            // TODO: Remove traces
-            trace("New:", item)
-            trace()
-    		trace("Old:", worstItem)
-    		
-    		// Dispose worst item
-    		worstItem.dispose()
-    		
-    		// Add new item at the spot of the previously worst item
-    		items[worstItemIndex] = item
-	        cache[key] = item
-    	}
+            // Dispose worst item
+            worstItem.dispose()
+
+            // Add new item at the spot of the previously worst item
+            items[worstItemIndex] = item
+            cache[key] = item
+        }
     }
 
     /**
      * Remove item from cache at key.
-     */ 
+     */
     public function remove(key:*):ICacheItem
     {
         var item:ICacheItem = get(key)
-    	items.splice(items.indexOf(item), 1)
+        items.splice(items.indexOf(item), 1)
         cache[key] = null
-            
+
         return item
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     public function dispose():void
     {
-    	items = []
+        items = []
         cache = null
     }
 }

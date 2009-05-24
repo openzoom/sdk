@@ -741,7 +741,7 @@ public final class MultiScaleContainer extends UIComponent
     private var zoomChanged:Boolean = false
 
    ;[Bindable(event="transformUpdate")]
-
+    // FIXME
     /**
      * @copy org.openzoom.flash.viewport.IViewport#zoom
      */
@@ -768,13 +768,14 @@ public final class MultiScaleContainer extends UIComponent
     private var scaleChanged:Boolean = false
 
    ;[Bindable(event="transformUpdate")]
-
+   
+    // FIXME
     /**
      * @copy org.openzoom.flash.viewport.IViewport#scale
      */
     public function get scale():Number
     {
-        return _scale
+        return  _scale
     }
 
     public function set scale(value:Number):void

@@ -27,7 +27,7 @@ import org.openzoom.flash.utils.ICacheItem;
 
 /**
  * Cache entry for bitmaps that could or could not be shared by several tiles.
- */ 	
+ */
 internal final class SharedTile implements ICacheItem
 {
     //--------------------------------------------------------------------------
@@ -59,25 +59,25 @@ internal final class SharedTile implements ICacheItem
     public var url:String
     public var bitmapData:BitmapData
     public var level:int
-    
+
     // True for collection tiles, e.g. Deep Zoom collections
     public var shared:Boolean = false
 
     public var lastAccessTime:int = 0
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: Ownership
     //
     //--------------------------------------------------------------------------
-    
+
     private var owners:Array = []
-    
+
     public function addOwner(owner:ImagePyramidTile):void
     {
         if (owners.indexOf(owner) > 0)
             throw new ArgumentError("[SharedTile] Owner already added.")
-            
+
         owners.push(owner)
     }
 
@@ -94,7 +94,7 @@ internal final class SharedTile implements ICacheItem
     {
         for each (var tile:ImagePyramidTile in owners)
             tile.dispose()
-            
+
         url = null
         bitmapData = null
         level = 0
@@ -124,35 +124,35 @@ internal final class SharedTile implements ICacheItem
         // Level 0 tiles always win
         if (level > 0 && otherTile.level == 0)
             return -1
-            
+
         if (level == 0 && otherTile.level > 0)
             return 1
-                    	
-        
+
+
         // Fresher tiles have higher order
         if (lastAccessTime > otherTile.lastAccessTime)
             return 1
-        
+
         if (lastAccessTime < otherTile.lastAccessTime)
             return -1
 
         return 0
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: ICacheItem
     //
     //--------------------------------------------------------------------------
-    
+
     public function toString():String
     {
-    	return "[SharedTile]" + "\n" +
-    	       "url: " + url  + "\n" +
-    	       "level: " + level  + "\n" +
-    	       "lastAccessTime: " + lastAccessTime
+        return "[SharedTile]" + "\n" +
+               "url: " + url  + "\n" +
+               "level: " + level  + "\n" +
+               "lastAccessTime: " + lastAccessTime
     }
-    
+
 }
 
 }

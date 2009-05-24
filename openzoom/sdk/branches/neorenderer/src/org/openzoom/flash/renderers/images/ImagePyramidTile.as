@@ -39,7 +39,7 @@ public class ImagePyramidTile implements IDisposable,
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
      */
@@ -49,15 +49,15 @@ public class ImagePyramidTile implements IDisposable,
                                      url:String,
                                      bounds:Rectangle)
     {
-    	this.level = level
-    	this.column = column
-    	this.row = row
-    	this.url = url
-    	this.bounds = bounds
-    	
-    	_hashCode = ImagePyramidTile.getHashCode(level, column, row)
-    } 
-    
+        this.level = level
+        this.column = column
+        this.row = row
+        this.url = url
+        this.bounds = bounds
+
+        _hashCode = ImagePyramidTile.getHashCode(level, column, row)
+    }
+
     //--------------------------------------------------------------------------
     //
     //  Properties: Image pyramid
@@ -67,45 +67,45 @@ public class ImagePyramidTile implements IDisposable,
     //----------------------------------
     //  level
     //----------------------------------
-    
+
     public var level:int
 
     //----------------------------------
     //  column
     //----------------------------------
-    
+
     public var column:int
 
     //----------------------------------
     //  row
     //----------------------------------
-    
+
     public var row:int
 
     //----------------------------------
     //  bounds
     //----------------------------------
-    
+
     public var bounds:Rectangle
 
     //----------------------------------
     //  bitmapData
     //----------------------------------
-    
+
     public function get bitmapData():BitmapData
     {
-    	if (source)
-    	   return source.bitmapData
-    	   
+        if (source)
+           return source.bitmapData
+
         return null
     }
 
     //----------------------------------
     //  url
     //----------------------------------
-    
+
     public var url:String
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: Loading
@@ -115,21 +115,21 @@ public class ImagePyramidTile implements IDisposable,
     //----------------------------------
     //  loading
     //----------------------------------
-    
+
     public var loading:Boolean = false
 
     //----------------------------------
     //  loaded
     //----------------------------------
-    
+
     public function get loaded():Boolean
     {
-    	if (bitmapData)
-    	   return true
-    	   
+        if (bitmapData)
+           return true
+
         return false
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: Rendering
@@ -139,15 +139,15 @@ public class ImagePyramidTile implements IDisposable,
     //----------------------------------
     //  fadeStart
     //----------------------------------
-    
+
     public var fadeStart:int = 0
 
     //----------------------------------
     //  alpha
     //----------------------------------
-    
+
     public var alpha:Number = 0
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: Caching
@@ -157,102 +157,102 @@ public class ImagePyramidTile implements IDisposable,
     //----------------------------------
     //  source
     //----------------------------------
-    
+
     private var _source:SharedTile
-    
+
     public function get source():SharedTile
     {
-    	return _source
+        return _source
     }
-    
+
     public function set source(value:SharedTile):void
     {
-    	if (!value)
-    	   throw new ArgumentError("[ImagePyramidTile] Source cannot be null.")
-    	
-    	_source = value
+        if (!value)
+           throw new ArgumentError("[ImagePyramidTile] Source cannot be null.")
+
+        _source = value
         _source.addOwner(this)
     }
-    
+
     //----------------------------------
     //  lastAccessTime
     //----------------------------------
-    
+
     public function get lastAccessTime():int
     {
         if (!source)
             throw new IllegalOperationError("[ImagePyramidTile] Source missing.")
-    	
+
         return source.lastAccessTime
     }
-    
+
     public function set lastAccessTime(value:int):void
     {
         if (!source)
             throw new IllegalOperationError("[ImagePyramidTile] Source missing.")
-            
-    	source.lastAccessTime = value 
+
+        source.lastAccessTime = value
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: Hash
     //
     //--------------------------------------------------------------------------
-    
+
     private var _hashCode:int
-    
+
     public function get hashCode():int
     {
-    	return _hashCode
+        return _hashCode
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Hash
     //
     //--------------------------------------------------------------------------
-    
+
     public static function getHashCode(level:int, column:int, row:int):int
     {
-    	return parseInt([level, column, row].join(""))
+        return parseInt([level, column, row].join(""))
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
         _source = null
-        
-    	loading = false
-    	
-    	alpha = 0
-    	fadeStart = 0
+
+        loading = false
+
+        alpha = 0
+        fadeStart = 0
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IComparable
     //
     //--------------------------------------------------------------------------
-    
+
     public function compareTo(other:*):int
     {
-    	var tile:ImagePyramidTile = other as ImagePyramidTile
-    	
-    	if (!tile)
-    	   throw new ArgumentError("[ImagePyramidTile] Object to compare has wrong type.")
+        var tile:ImagePyramidTile = other as ImagePyramidTile
+
+        if (!tile)
+           throw new ArgumentError("[ImagePyramidTile] Object to compare has wrong type.")
 
         if (level < tile.level)
             return 1
-            
+
         if (level > tile.level)
             return -1
-        
+
         return 0
     }
 }

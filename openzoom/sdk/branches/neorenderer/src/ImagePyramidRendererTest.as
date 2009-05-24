@@ -60,22 +60,23 @@ public class ImagePyramidRendererTest extends Sprite
         container = new MultiScaleContainer()
         var transformer:TweenerTransformer = new TweenerTransformer()
         container.transformer = transformer
-        
+
         var mouseController:MouseController = new MouseController()
 //        mouseController.minMouseWheelZoomInFactor = 2.01
 //        mouseController.minMouseWheelZoomOutFactor = 0.45
         mouseController.smoothPanning = false
-        
+
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
         container.controllers = [mouseController,
                                  keyboardController,
                                  contextMenuController]
-        
+
         renderManager = new ImagePyramidRenderManager(container,
                                                       container.scene,
                                                       container.viewport,
                                                       container.loader)
+
         var source:IImagePyramidDescriptor
         var numRenderers:int
         var numColumns:int
@@ -99,34 +100,34 @@ public class ImagePyramidRendererTest extends Sprite
         source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
         numRenderers = 1
         numColumns = 1
-        aspectRatio = source.width / source.height 
+        aspectRatio = source.width / source.height
         width = 16384
         height = 16384 / aspectRatio
-        
+
         // Deep Zoom: Inline Multiscale Image Replacement
 //        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
 //        source = new DeepZoomImageDescriptor(path, 3627, 2424, 256,  1, "jpg")
 //        numRenderers = 300
 //        numColumns = 24
-//        aspectRatio = source.width / source.height 
+//        aspectRatio = source.width / source.height
 //        width = 163.84
 //        height = width / aspectRatio
-        
+
         // Deep Zoom: World wide music scene
 //        path = "http://seadragon.com/content/images/lastfm.dzi"
 //        source = new DeepZoomImageDescriptor(path, 20000, 15000, 254,  1, "jpg")
 //        numRenderers = 1
 //        numColumns = 1
-//        aspectRatio = source.width / source.height 
+//        aspectRatio = source.width / source.height
 //        width = 16384
 //        height = 16384 / aspectRatio
-        
+
         // Deep Zoom: Obama
         path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
         source = new DeepZoomImageDescriptor(path, 59783, 24658, 256, 0, "jpg")
         numRenderers = 1
         numColumns = 1
-        aspectRatio = source.width / source.height 
+        aspectRatio = source.width / source.height
         width = 16384
         height = 16384 / aspectRatio
 
@@ -135,7 +136,7 @@ public class ImagePyramidRendererTest extends Sprite
 //        source = new DeepZoomImageDescriptor(path, 79433, 17606, 256, 0, "jpg")
 //        numRenderers = 1
 //        numColumns = 1
-//        aspectRatio = source.width / source.height 
+//        aspectRatio = source.width / source.height
 //        width = 16384
 //        height = 16384 / aspectRatio
 
@@ -144,7 +145,7 @@ public class ImagePyramidRendererTest extends Sprite
 //        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
 //        numRenderers = 1//400
 //        numColumns = 1//12
-//        aspectRatio = source.width / source.height 
+//        aspectRatio = source.width / source.height
 //        width = 16384
 //        height = width / aspectRatio
 
@@ -153,7 +154,7 @@ public class ImagePyramidRendererTest extends Sprite
 //        source = new ZoomifyDescriptor(path, 46953, 22255, 21420, 256)
 //        numRenderers = 1
 //        numColumns = 1
-//        aspectRatio = source.width / source.height 
+//        aspectRatio = source.width / source.height
 //        width = 16384
 //        height = 16384 / aspectRatio
 
@@ -162,7 +163,7 @@ public class ImagePyramidRendererTest extends Sprite
 //        source = new ZoomifyDescriptor(path, 22761, 14794, 6941, 256)
 //        numRenderers = 1
 //        numColumns = 1
-//        aspectRatio = source.width / source.height 
+//        aspectRatio = source.width / source.height
 //        width = 16384
 //        height = 16384 / aspectRatio
 
@@ -185,37 +186,37 @@ public class ImagePyramidRendererTest extends Sprite
         //  NUMTILES="169" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
 //        path = "../resources/images/zoomify/morocco/ImageProperties.xml"
 //        source = new ZoomifyDescriptor(path, 2203, 3290, 169, 256)
-//                                                                              
+//
 //        numRenderers = 360
 //        numColumns = 32
 //        width = 220.3
 //        height = 329.0
 
-        
+
         var padding:Number = width * 0.1
-        
+
         var maxRight:Number = 0
         var maxBottom:Number = 0
-        
+
         for (var i:int = 0; i < numRenderers; i++)
         {
-	        var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
-	        renderer.x = (i % numColumns) * (width + padding)
+            var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
+            renderer.x = (i % numColumns) * (width + padding)
             renderer.y = Math.floor(i / numColumns) * (height + padding)
-	        renderer.width = width
-	        renderer.height = height
-	        renderer.source = source
+            renderer.width = width
+            renderer.height = height
+            renderer.source = source
 
-	        container.addChild(renderer)
+            container.addChild(renderer)
             renderManager.addRenderer(renderer)
-            
+
             maxRight = Math.max(maxRight, renderer.x + renderer.width)
             maxBottom = Math.max(maxBottom, renderer.y + renderer.height)
         }
 
         container.sceneWidth = maxRight
         container.sceneHeight = maxBottom
-        
+
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
         scaleConstraint.maxScale = source.width / container.sceneWidth * 4
 //        container.constraint = scaleConstraint
@@ -223,9 +224,9 @@ public class ImagePyramidRendererTest extends Sprite
         var mappingConstraint:MappingConstraint = new MappingConstraint()
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
         visibilityContraint.visibilityRatio = 0.5
-        
+
         var centerConstraint:CenterConstraint = new CenterConstraint()
-        
+
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
         compositeContraint.constraints = [scaleConstraint,
                                           centerConstraint,
@@ -236,19 +237,19 @@ public class ImagePyramidRendererTest extends Sprite
 //                                          visibilityContraint,
 //                                          mappingConstraint]
         container.constraint = compositeContraint
-        
+
         addChild(container)
-        
+
         memoryMonitor = new MemoryMonitor()
         addChild(memoryMonitor)
-        
+
         layout()
     }
-    
+
     private var container:MultiScaleContainer
     private var memoryMonitor:MemoryMonitor
     private var renderManager:ImagePyramidRenderManager
-    
+
     private function stage_resizeHandler(event:Event):void
     {
         layout()
@@ -261,7 +262,7 @@ public class ImagePyramidRendererTest extends Sprite
             container.width = stage.stageWidth
             container.height = stage.stageHeight
         }
-        
+
         if (memoryMonitor)
         {
             memoryMonitor.x = stage.stageWidth - memoryMonitor.width - 10

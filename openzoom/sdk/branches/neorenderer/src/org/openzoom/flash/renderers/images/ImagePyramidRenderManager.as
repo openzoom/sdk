@@ -56,19 +56,18 @@ public final class ImagePyramidRenderManager implements IDisposable
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
-    private static const FRAMES_PER_SECOND:Number = 60
+
     private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
     private static const MAX_CACHE_SIZE:uint = 100
-    
+
     private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
      */
@@ -77,15 +76,15 @@ public final class ImagePyramidRenderManager implements IDisposable
                                               viewport:INormalizedViewport,
                                               loader:INetworkQueue)
     {
-    	this.scene = scene
-    	
+        this.scene = scene
+
         this.viewport = viewport
         this.viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
                                        viewport_transformUpdateHandler,
                                        false, 0, true)
 
         this.loader = loader
-        
+
         openzoom_internal::tileCache = new Cache(MAX_CACHE_SIZE)
 
         this.owner = owner
@@ -93,7 +92,7 @@ public final class ImagePyramidRenderManager implements IDisposable
                                enterFrameHandler,
                                false, 0, true)
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
@@ -108,10 +107,10 @@ public final class ImagePyramidRenderManager implements IDisposable
     private var loader:INetworkQueue
 
     private var invalidateDisplayListFlag:Boolean = false
-    
+
     openzoom_internal var tileCache:Cache
     private var pendingDownloads:Dictionary = new Dictionary()
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -124,19 +123,19 @@ public final class ImagePyramidRenderManager implements IDisposable
     private function updateDisplayList(renderer:ImagePyramidRenderer):void
     {
         var descriptor:IImagePyramidDescriptor = renderer.source
-        
+
         // Abort if we have no descriptor
         if (!descriptor)
             return
-    	
-    	var viewport:INormalizedViewport = renderer.viewport
-    	var scene:IReadonlyMultiScaleScene = renderer.scene
-            
-            
-    	// Is renderer on scene?
+
+        var viewport:INormalizedViewport = renderer.viewport
+        var scene:IReadonlyMultiScaleScene = renderer.scene
+
+
+        // Is renderer on scene?
         if (!viewport)
             return
-        
+
         // Compute normalized scene bounds of renderer
         var sceneBounds:Rectangle = renderer.getBounds(scene.targetCoordinateSpace)
             sceneBounds.x /= scene.sceneWidth
@@ -146,13 +145,13 @@ public final class ImagePyramidRenderManager implements IDisposable
 
         // Visibility test
         var visible:Boolean = viewport.intersects(sceneBounds)
-        
+
         if (!visible)
             return
 
         // Get viewport bounds (normalized)
         var viewportBounds:Rectangle = viewport.getBounds()
-        
+
         // Compute normalized visible bounds in renderer coordinate system
         var localBounds:Rectangle = sceneBounds.intersection(viewportBounds)
         localBounds.offset(-sceneBounds.x, -sceneBounds.y)
@@ -160,25 +159,25 @@ public final class ImagePyramidRenderManager implements IDisposable
         localBounds.y /= sceneBounds.height
         localBounds.width /= sceneBounds.width
         localBounds.height /= sceneBounds.height
-        
+
         // Determine optimal level
         var stageBounds:Rectangle = renderer.getBounds(renderer.stage)
         var optimalLevel:IImagePyramidLevel = descriptor.getLevelForSize(stageBounds.width,
                                                                          stageBounds.height)
-        
+
         // Render image pyramid from bottom up
         var currentTime:int = getTimer()
-        
+
         var fromLevel:int
         var toLevel:int
-        
+
         // FIXME: For collections it's too much work
         // to render from bottom of the image pyramid
 //        var quality:int = 2
 //        fromLevel = Math.max(0, optimalLevel.index - quality)
         fromLevel = 0
         toLevel = optimalLevel.index
-        
+
         // Prepare tile layer
         var tileLayer:Shape = renderer.openzoom_internal::tileLayer
         var g:Graphics = tileLayer.graphics
@@ -186,185 +185,187 @@ public final class ImagePyramidRenderManager implements IDisposable
         g.beginFill(0xFF0000, 0)
         g.drawRect(0, 0, descriptor.width, descriptor.height)
         g.endFill()
-        
+
         tileLayer.width = renderer.width
         tileLayer.height = renderer.height
 
         // Iterate over levels
         for (var l:int = fromLevel; l <= toLevel; l++)
         {
-        	var level:IImagePyramidLevel = descriptor.getLevelAt(l)
-        	
-        	// Load or draw visible tiles
-        	var fromPoint:Point = new Point(localBounds.left * level.width,
-        	                                localBounds.top * level.height)
-        	var toPoint:Point = new Point(localBounds.right * level.width,
-        	                              localBounds.bottom * level.height)
-	        var fromTile:Point = descriptor.getTileAtPoint(l, fromPoint)
-	        var toTile:Point = descriptor.getTileAtPoint(l, toPoint)
-	        
-            var tileDistance:Number = Point.distance(fromTile, toTile)	 
-                   
+            var level:IImagePyramidLevel = descriptor.getLevelAt(l)
+
+            // Load or draw visible tiles
+            var fromPoint:Point = new Point(localBounds.left * level.width,
+                                            localBounds.top * level.height)
+            var toPoint:Point = new Point(localBounds.right * level.width,
+                                          localBounds.bottom * level.height)
+            var fromTile:Point = descriptor.getTileAtPoint(l, fromPoint)
+            var toTile:Point = descriptor.getTileAtPoint(l, toPoint)
+
+            var tileDistance:Number = Point.distance(fromTile, toTile)
+
             // FIXME: Safety
-	        if (tileDistance > 15)
-	        {
-                trace("[ImagePyramidRenderManager] updateDisplayList: " + 
-                	  "Tile distance too large.", tileDistance)
+            if (tileDistance > 20)
+            {
+                trace("[ImagePyramidRenderManager] updateDisplayList: " +
+                      "Tile distance too large.", tileDistance)
                 continue
-	        }
-	     
-	        // Iterate over columns
-	        for (var c:int = fromTile.x; c <= toTile.x; c++)
-	        {
-	        	// Iterate over rows
-		        for (var r:int = fromTile.y; r <= toTile.y; r++)
-		        {
-		        	var tile:ImagePyramidTile = renderer.openzoom_internal::getTile(l, c, r)
-		        	
+            }
+
+            // Iterate over columns
+            for (var c:int = fromTile.x; c <= toTile.x; c++)
+            {
+                // Iterate over rows
+                for (var r:int = fromTile.y; r <= toTile.y; r++)
+                {
+                    var tile:ImagePyramidTile = renderer.openzoom_internal::getTile(l, c, r)
+
                     if (!renderer.ready && tile.level > 0)
                         return
-		        	
-		        	if (!tile.loaded)
-		        	{
+
+                    if (!tile.loaded)
+                    {
                         var downloadPossible:Boolean = numDownloads < MAX_CONCURRENT_DOWNLOADS
-                        
-		        		if (!tile.loading && downloadPossible)
+
+                        if (!tile.loading && downloadPossible)
                             loadTile(tile)
-		        		    
-		        		continue
-		        	}
-		        	
-		        	 // FIXME: Safety
-		        	if (!tile.bitmapData)
-		        	{
-                        trace("[ImagePyramidRenderManager] updateDisplayList: " + 
-                        		"Tile BitmapData missing.", tile.loaded, tile.loading)
-                        continue		        		
-		        	}
+
+                        continue
+                    }
+
+                     // FIXME: Safety
+                    if (!tile.bitmapData)
+                    {
+                        trace("[ImagePyramidRenderManager] updateDisplayList: " +
+                                "Tile BitmapData missing.", tile.loaded, tile.loading)
+                        continue
+                    }
 
                     // Prepare alpha bitmap
                     if (tile.fadeStart == 0)
-                    	tile.fadeStart = currentTime
-                    
+                        tile.fadeStart = currentTime
+
                     tile.source.lastAccessTime = currentTime
-                    
+
                     var duration:Number = TILE_SHOW_DURATION
                     var currentAlpha:Number = (currentTime - tile.fadeStart) / duration
-                	tile.alpha = Math.min(1, currentAlpha) 
-                    
+                    tile.alpha = Math.min(1, currentAlpha)
+
                     if (tile.level == 0 && tile.alpha == 1)
                         renderer.ready = true
 
-                	var textureMap:BitmapData
-                	
-                	if (tile.alpha < 1)
-                	{
-                		invalidateDisplayList()
-                		
-	                	textureMap = new BitmapData(tile.bitmapData.width,
+                    var textureMap:BitmapData
+
+                    if (tile.alpha < 1)
+                    {
+                        invalidateDisplayList()
+
+                        textureMap = new BitmapData(tile.bitmapData.width,
                                                     tile.bitmapData.height)
-	                	                                           
-	                    var alphaMultiplier:uint = (tile.alpha * 256) << 24
-	                    var alphaMap:BitmapData = new BitmapData(tile.bitmapData.width,
-	                                                             tile.bitmapData.height,
-	                                                             true,
-	                                                             alphaMultiplier | 0x00000000)
-	                                                             
-	                    textureMap.copyPixels(tile.bitmapData,
-	                                          tile.bitmapData.rect,
-	                                          new Point(),
-	                                          alphaMap)
+
+                        var alphaMultiplier:uint = (tile.alpha * 256) << 24
+                        var alphaMap:BitmapData = new BitmapData(tile.bitmapData.width,
+                                                                 tile.bitmapData.height,
+                                                                 true,
+                                                                 alphaMultiplier | 0x00000000)
+
+                        textureMap.copyPixels(tile.bitmapData,
+                                              tile.bitmapData.rect,
+                                              new Point(),
+                                              alphaMap)
                     }
                     else
                     {
-                    	
-                    	textureMap = tile.bitmapData
+
+                        textureMap = tile.bitmapData
                     }
-                
+
                     // Draw tiles
-		        	var matrix:Matrix = new Matrix()
-		        	var sx:Number = descriptor.width / level.width
-		        	var sy:Number = descriptor.height / level.height
-		        	matrix.createBox(sx, sx, 0, tile.bounds.x * sx, tile.bounds.y * sy)
-		        	                 
-		        	g.beginBitmapFill(textureMap,
-		        	                  matrix,
-		        	                  false, /* repeat */
-		        	                  true /* smoothing */)
-		        	g.drawRect(tile.bounds.x * sx,
-		        	           tile.bounds.y * sy,
-		        	           tile.bounds.width * sx,
-		        	           tile.bounds.height * sy)
+                    var matrix:Matrix = new Matrix()
+                    var sx:Number = descriptor.width / level.width
+                    var sy:Number = descriptor.height / level.height
+                    matrix.createBox(sx, sx, 0, tile.bounds.x * sx, tile.bounds.y * sy)
+
+                    g.beginBitmapFill(textureMap,
+                                      matrix,
+                                      false, /* repeat */
+                                      true /* smoothing */)
+                    g.drawRect(tile.bounds.x * sx,
+                               tile.bounds.y * sy,
+                               tile.bounds.width * sx,
+                               tile.bounds.height * sy)
                     g.endFill()
-		        }
-	        }
+                }
+            }
         }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Tile Cache
     //
     //--------------------------------------------------------------------------
-    
+
     private var numDownloads:uint = 0
-    
+
     private function loadTile(tile:ImagePyramidTile):void
     {
-    	if (pendingDownloads[tile.url])
-    	   return
+        if (pendingDownloads[tile.url])
+           return
 
-    	pendingDownloads[tile.url] = true
-    	
-    	numDownloads++
-    	
-    	var request:INetworkRequest = loader.addRequest(tile.url, Bitmap, tile)
-    	
-    	request.addEventListener(NetworkRequestEvent.COMPLETE,
-    	                         request_completeHandler,
+        pendingDownloads[tile.url] = true
+
+        numDownloads++
+
+        var request:INetworkRequest = loader.addRequest(tile.url, Bitmap, tile)
+
+        request.addEventListener(NetworkRequestEvent.COMPLETE,
+                                 request_completeHandler,
                                  false, 0, true)
-                                 
+
         request.addEventListener(NetworkRequestEvent.ERROR,
                                  request_errorHandler,
                                  false, 0, true)
-    	
-    	tile.loading = true
-    	
+
+        tile.loading = true
+
     }
-    
+
     private function request_completeHandler(event:NetworkRequestEvent):void
     {
-    	numDownloads--
+        numDownloads--
 
-    	var tile:ImagePyramidTile = event.context as ImagePyramidTile
+        var tile:ImagePyramidTile = event.context as ImagePyramidTile
         var bitmapData:BitmapData = Bitmap(event.data).bitmapData
-        
+
         var sourceTile:SharedTile = new SharedTile(tile.url,
                                                           bitmapData,
                                                           tile.level)
         sourceTile.lastAccessTime = getTimer()
-	    openzoom_internal::tileCache.put(tile.url, sourceTile)
-        tile.source = sourceTile        
+        openzoom_internal::tileCache.put(tile.url, sourceTile)
+        tile.source = sourceTile
         tile.loading = false
-        
+
         pendingDownloads[tile.url] = false
-        
+
         invalidateDisplayList()
     }
-    
+
     private function request_errorHandler(event:NetworkRequestEvent):void
     {
-    	trace("[ImagePyramidRenderManager] Tile failed to load:", event.request.url)
+        trace("[ImagePyramidRenderManager] Tile failed to load:",
+              event.request.url)
+
         numDownloads--
         invalidateDisplayList()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Validation/Invalidation
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * @private
      */
@@ -373,7 +374,7 @@ public final class ImagePyramidRenderManager implements IDisposable
         // Rendering loop
         validateDisplayList()
     }
-    
+
     /**
      * @private
      */
@@ -390,23 +391,23 @@ public final class ImagePyramidRenderManager implements IDisposable
         if (!invalidateDisplayListFlag)
             invalidateDisplayListFlag = true
     }
-    
+
     /**
      * @private
-     */ 
+     */
     public function validateDisplayList():void
     {
         if (invalidateDisplayListFlag)
         {
             // Mark as validated
             invalidateDisplayListFlag = false
-            
+
             // TODO: Validate renderers from the transformation origin outwards
             for each (var renderer:ImagePyramidRenderer in renderers)
                 updateDisplayList(renderer)
         }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Renderer management
@@ -415,23 +416,23 @@ public final class ImagePyramidRenderManager implements IDisposable
 
     /**
      * @private
-     */ 
+     */
     public function addRenderer(renderer:ImagePyramidRenderer):ImagePyramidRenderer
     {
         if (renderers.indexOf(renderer) != -1)
-            throw new ArgumentError("[ImagePyramidRenderManager] " + 
-            		                "Renderer already added.")
+            throw new ArgumentError("[ImagePyramidRenderManager] " +
+                                    "Renderer already added.")
 
         if (renderers.length == 0)
-	        owner.addEventListener(Event.ENTER_FRAME,
-	                               enterFrameHandler,
-	                               false, 0, true)
+            owner.addEventListener(Event.ENTER_FRAME,
+                                   enterFrameHandler,
+                                   false, 0, true)
 
         renderer.openzoom_internal::renderManager = this
         renderers.push(renderer)
-        
+
         invalidateDisplayList()
-        
+
         return renderer
     }
 
@@ -442,40 +443,40 @@ public final class ImagePyramidRenderManager implements IDisposable
     {
         var index:int = renderers.indexOf(renderer)
         if (index == -1)
-            throw new ArgumentError("[ImagePyramidRenderManager] " + 
-            		                "Renderer does not exist.")
+            throw new ArgumentError("[ImagePyramidRenderManager] " +
+                                    "Renderer does not exist.")
 
         renderers.splice(index, 1)
         renderer.openzoom_internal::renderManager = null
-        
+
         if (renderers.length == 0)
-	        owner.removeEventListener(Event.ENTER_FRAME,
-	                                  enterFrameHandler)
-        
+            owner.removeEventListener(Event.ENTER_FRAME,
+                                      enterFrameHandler)
+
         return renderer
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
-        // Remove render loop 
-    	owner.removeEventListener(Event.ENTER_FRAME,
-    	                          enterFrameHandler)
-    	                          
-    	// Remove render manager from all its renderers
-    	for each (var renderer:ImagePyramidRenderer in renderers)
+        // Remove render loop
+        owner.removeEventListener(Event.ENTER_FRAME,
+                                  enterFrameHandler)
+
+        // Remove render manager from all its renderers
+        for each (var renderer:ImagePyramidRenderer in renderers)
             renderer.openzoom_internal::renderManager = null
-    	   
+
         owner = null
         scene = null
         viewport = null
         loader = null
-        
+
         openzoom_internal::tileCache.dispose()
         openzoom_internal::tileCache = null
     }

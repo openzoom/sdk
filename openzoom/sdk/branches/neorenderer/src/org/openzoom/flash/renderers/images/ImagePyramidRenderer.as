@@ -41,14 +41,14 @@ public final class ImagePyramidRenderer extends Renderer
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
-     */ 
+     */
     public function ImagePyramidRenderer()
     {
-    	openzoom_internal::tileLayer = new Shape()
-    	addChild(openzoom_internal::tileLayer)
+        openzoom_internal::tileLayer = new Shape()
+        addChild(openzoom_internal::tileLayer)
     }
 
     //--------------------------------------------------------------------------
@@ -67,66 +67,66 @@ public final class ImagePyramidRenderer extends Renderer
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  source
     //----------------------------------
-    
+
     private var _source:*
-    
+
     public function get source():*
     {
-    	return _source
+        return _source
     }
-    
+
     public function set source(value:*):void
     {
-    	if (_source === value)
-    	   return
-    	
-    	_source = value
+        if (_source === value)
+           return
+
+        _source = value
     }
 
     //----------------------------------
     //  width
     //----------------------------------
-    
+
     private var _width:Number = 0
-    
+
     override public function get width():Number
     {
         return _width
     }
-    
+
     override public function set width(value:Number):void
     {
-    	if (value === _width)
-    	   return
-    	   
+        if (value === _width)
+           return
+
         _width = value
-        
+
         updateDisplayList()
     }
 
     //----------------------------------
     //  height
     //----------------------------------
-    
+
     private var _height:Number = 0
-    
+
     override public function get height():Number
     {
         return _height
     }
-    
+
     override public function set height(value:Number):void
     {
-    	if (value === _height)
-    	   return
-    	   
+        if (value === _height)
+           return
+
         _height = value
-        
-        updateDisplayList()    
+
+        updateDisplayList()
     }
 
     //--------------------------------------------------------------------------
@@ -134,14 +134,14 @@ public final class ImagePyramidRenderer extends Renderer
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     private function updateDisplayList():void
     {
-    	var g:Graphics = graphics
-    	g.clear()
-    	g.beginFill(0x000000, 0)
-    	g.drawRect(0, 0, _width, _height)
-    	g.endFill()
+        var g:Graphics = graphics
+        g.clear()
+        g.beginFill(0x000000, 0)
+        g.drawRect(0, 0, _width, _height)
+        g.endFill()
     }
 
     //--------------------------------------------------------------------------
@@ -154,7 +154,7 @@ public final class ImagePyramidRenderer extends Renderer
      * @private
      */
     openzoom_internal var renderManager:ImagePyramidRenderManager
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Internal
@@ -163,37 +163,37 @@ public final class ImagePyramidRenderer extends Renderer
 
     /**
      * @private
-     */     
+     */
     openzoom_internal function getTile(level:int, column:int, row:int):ImagePyramidTile
     {
-    	var descriptor:IImagePyramidDescriptor = _source as IImagePyramidDescriptor
-    	
-    	if (!descriptor)
-    	   trace("[ImagePyramidRenderer] getTile: Source undefined")
-    	
+        var descriptor:IImagePyramidDescriptor = _source as IImagePyramidDescriptor
+
+        if (!descriptor)
+           trace("[ImagePyramidRenderer] getTile: Source undefined")
+
         var tile:ImagePyramidTile = tileCache[ImagePyramidTile.getHashCode(level, column, row)]
-        
+
         if (!tile)
         {
-	        var url:String = descriptor.getTileURL(level, column, row)
+            var url:String = descriptor.getTileURL(level, column, row)
             var bounds:Rectangle = descriptor.getTileBounds(level, column, row)
-            
+
             tile = new ImagePyramidTile(level, column, row, url, bounds)
             tileCache[tile.hashCode] = tile
         }
-        
+
         if (!tile.source)
         {
-        	var cache:Cache = openzoom_internal::renderManager.openzoom_internal::tileCache
-        	
-        	if (cache.contains(tile.url))
-        	{
+            var cache:Cache = openzoom_internal::renderManager.openzoom_internal::tileCache
+
+            if (cache.contains(tile.url))
+            {
                 var sourceTile:SharedTile = cache.get(tile.url) as SharedTile
                 tile.source = sourceTile
-	        	tile.loading = false
-        	}
+                tile.loading = false
+            }
         }
-        
+
         return tile
     }
 }
