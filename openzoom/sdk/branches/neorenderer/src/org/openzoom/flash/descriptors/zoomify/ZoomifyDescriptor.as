@@ -281,7 +281,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      */ 
     private function getSize(level:int):Point
     {
-    	// TODO: Test whether floor/ceil dimensions
+    	// TODO: Test whether to floor or ceil dimensions
         var size:Point = new Point()
         var scale:Number = getScale(level)
         size.x = Math.floor(width * scale)

@@ -57,9 +57,9 @@ public final class ImagePyramidRenderManager implements IDisposable
     //
     //--------------------------------------------------------------------------
     
-//    private static const FRAMES_PER_SECOND:Number = 30
+    private static const FRAMES_PER_SECOND:Number = 60
     private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
-    private static const MAX_CACHE_SIZE:uint = 500
+    private static const MAX_CACHE_SIZE:uint = 100
     
     private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
     
@@ -92,12 +92,6 @@ public final class ImagePyramidRenderManager implements IDisposable
         owner.addEventListener(Event.ENTER_FRAME,
                                enterFrameHandler,
                                false, 0, true)
-
-//        timer = new Timer(1000 / FRAMES_PER_SECOND)
-//        timer.addEventListener(TimerEvent.TIMER,
-//                               timer_timerHandler,
-//                               false, 0, true)
-//        timer.start()
     }
     
     //--------------------------------------------------------------------------
@@ -107,8 +101,6 @@ public final class ImagePyramidRenderManager implements IDisposable
     //--------------------------------------------------------------------------
 
     private var renderers:Array /* of ImagePyramidRenderer */ = []
-
-//    private var timer:Timer
 
     private var owner:Sprite
     private var viewport:INormalizedViewport
@@ -131,9 +123,16 @@ public final class ImagePyramidRenderManager implements IDisposable
      */
     private function updateDisplayList(renderer:ImagePyramidRenderer):void
     {
+        var descriptor:IImagePyramidDescriptor = renderer.source
+        
+        // Abort if we have no descriptor
+        if (!descriptor)
+            return
+    	
     	var viewport:INormalizedViewport = renderer.viewport
     	var scene:IReadonlyMultiScaleScene = renderer.scene
-    	
+            
+            
     	// Is renderer on scene?
         if (!viewport)
             return
@@ -162,9 +161,7 @@ public final class ImagePyramidRenderManager implements IDisposable
         localBounds.width /= sceneBounds.width
         localBounds.height /= sceneBounds.height
         
-        
         // Determine optimal level
-        var descriptor:IImagePyramidDescriptor = renderer.source
         var stageBounds:Rectangle = renderer.getBounds(renderer.stage)
         var optimalLevel:IImagePyramidLevel = descriptor.getLevelForSize(stageBounds.width,
                                                                          stageBounds.height)
@@ -172,18 +169,19 @@ public final class ImagePyramidRenderManager implements IDisposable
         // Render image pyramid from bottom up
         var currentTime:int = getTimer()
         
-        var quality:int = 2
         var fromLevel:int
         var toLevel:int
         
-        fromLevel = Math.max(0, optimalLevel.index - quality)
-        toLevel = optimalLevel.index
+        // FIXME: For collections it's too much work
+        // to render from bottom of the image pyramid
+//        var quality:int = 2
+//        fromLevel = Math.max(0, optimalLevel.index - quality)
         fromLevel = 0
-//        toLevel = 0
+        toLevel = optimalLevel.index
         
         // Prepare tile layer
         var tileLayer:Shape = renderer.openzoom_internal::tileLayer
-	    var g:Graphics = tileLayer.graphics
+        var g:Graphics = tileLayer.graphics
         g.clear()
         g.beginFill(0xFF0000, 0)
         g.drawRect(0, 0, descriptor.width, descriptor.height)
@@ -191,8 +189,7 @@ public final class ImagePyramidRenderManager implements IDisposable
         
         tileLayer.width = renderer.width
         tileLayer.height = renderer.height
-    
-    
+
         // Iterate over levels
         for (var l:int = fromLevel; l <= toLevel; l++)
         {
@@ -208,12 +205,14 @@ public final class ImagePyramidRenderManager implements IDisposable
 	        
             var tileDistance:Number = Point.distance(fromTile, toTile)	 
                    
-	        if (tileDistance > 10)
+            // FIXME: Safety
+	        if (tileDistance > 15)
 	        {
-                trace("[ImagePyramidRenderManager] updateDisplayList: Tile distance too large.", tileDistance)
+                trace("[ImagePyramidRenderManager] updateDisplayList: " + 
+                	  "Tile distance too large.", tileDistance)
                 continue
 	        }
-	        
+	     
 	        // Iterate over columns
 	        for (var c:int = fromTile.x; c <= toTile.x; c++)
 	        {
@@ -235,9 +234,11 @@ public final class ImagePyramidRenderManager implements IDisposable
 		        		continue
 		        	}
 		        	
+		        	 // FIXME: Safety
 		        	if (!tile.bitmapData)
 		        	{
-                        trace("[ImagePyramidRenderManager] updateDisplayList: Tile BitmapData missing.", tile.loaded, tile.loading)
+                        trace("[ImagePyramidRenderManager] updateDisplayList: " + 
+                        		"Tile BitmapData missing.", tile.loaded, tile.loading)
                         continue		        		
 		        	}
 
@@ -245,7 +246,7 @@ public final class ImagePyramidRenderManager implements IDisposable
                     if (tile.fadeStart == 0)
                     	tile.fadeStart = currentTime
                     
-                    tile.item.lastAccessTime = currentTime
+                    tile.source.lastAccessTime = currentTime
                     
                     var duration:Number = TILE_SHOW_DURATION
                     var currentAlpha:Number = (currentTime - tile.fadeStart) / duration
@@ -318,8 +319,14 @@ public final class ImagePyramidRenderManager implements IDisposable
     	numDownloads++
     	
     	var request:INetworkRequest = loader.addRequest(tile.url, Bitmap, tile)
+    	
     	request.addEventListener(NetworkRequestEvent.COMPLETE,
-    	                         request_completeHandler)
+    	                         request_completeHandler,
+                                 false, 0, true)
+                                 
+        request.addEventListener(NetworkRequestEvent.ERROR,
+                                 request_errorHandler,
+                                 false, 0, true)
     	
     	tile.loading = true
     	
@@ -328,28 +335,27 @@ public final class ImagePyramidRenderManager implements IDisposable
     private function request_completeHandler(event:NetworkRequestEvent):void
     {
     	numDownloads--
-    	event.request.removeEventListener(NetworkRequestEvent.COMPLETE,
-    	                                  request_completeHandler)
-    	                                  
+
     	var tile:ImagePyramidTile = event.context as ImagePyramidTile
         var bitmapData:BitmapData = Bitmap(event.data).bitmapData
         
-        var cacheItem:SharedTile = new SharedTile(tile.url,
+        var sourceTile:SharedTile = new SharedTile(tile.url,
                                                           bitmapData,
                                                           tile.level)
-        cacheItem.lastAccessTime = getTimer()
-	    openzoom_internal::tileCache.put(tile.url, cacheItem)
-        
-        // Add this tile as owner of the tile bitmap
-        if (cacheItem.owners.indexOf(tile) == -1)
-            cacheItem.owners.push(tile)
-
-        tile.item = cacheItem        
-        tile.loaded = true
+        sourceTile.lastAccessTime = getTimer()
+	    openzoom_internal::tileCache.put(tile.url, sourceTile)
+        tile.source = sourceTile        
         tile.loading = false
         
         pendingDownloads[tile.url] = false
         
+        invalidateDisplayList()
+    }
+    
+    private function request_errorHandler(event:NetworkRequestEvent):void
+    {
+    	trace("[ImagePyramidRenderManager] Tile failed to load:", event.request.url)
+        numDownloads--
         invalidateDisplayList()
     }
     
@@ -358,15 +364,6 @@ public final class ImagePyramidRenderManager implements IDisposable
     //  Methods: Validation/Invalidation
     //
     //--------------------------------------------------------------------------
-    
-    /**
-     * @private
-     */
-//    private function timer_timerHandler(event:TimerEvent):void
-//    {
-//        // Rendering loop
-//        validateDisplayList()
-//    }
     
     /**
      * @private
@@ -407,7 +404,6 @@ public final class ImagePyramidRenderManager implements IDisposable
             // TODO: Validate renderers from the transformation origin outwards
             for each (var renderer:ImagePyramidRenderer in renderers)
                 updateDisplayList(renderer)
-                
         }
     }
     
@@ -423,10 +419,17 @@ public final class ImagePyramidRenderManager implements IDisposable
     public function addRenderer(renderer:ImagePyramidRenderer):ImagePyramidRenderer
     {
         if (renderers.indexOf(renderer) != -1)
-            throw new ArgumentError("Renderer already added.")
+            throw new ArgumentError("[ImagePyramidRenderManager] " + 
+            		                "Renderer already added.")
+
+        if (renderers.length == 0)
+	        owner.addEventListener(Event.ENTER_FRAME,
+	                               enterFrameHandler,
+	                               false, 0, true)
 
         renderer.openzoom_internal::renderManager = this
         renderers.push(renderer)
+        
         invalidateDisplayList()
         
         return renderer
@@ -439,10 +442,15 @@ public final class ImagePyramidRenderManager implements IDisposable
     {
         var index:int = renderers.indexOf(renderer)
         if (index == -1)
-            throw new ArgumentError("Renderer does not exist.")
+            throw new ArgumentError("[ImagePyramidRenderManager] " + 
+            		                "Renderer does not exist.")
 
         renderers.splice(index, 1)
         renderer.openzoom_internal::renderManager = null
+        
+        if (renderers.length == 0)
+	        owner.removeEventListener(Event.ENTER_FRAME,
+	                                  enterFrameHandler)
         
         return renderer
     }
@@ -461,7 +469,7 @@ public final class ImagePyramidRenderManager implements IDisposable
     	                          
     	// Remove render manager from all its renderers
     	for each (var renderer:ImagePyramidRenderer in renderers)
-    	   renderer.openzoom_internal::renderManager = null
+            renderer.openzoom_internal::renderManager = null
     	   
         owner = null
         scene = null
@@ -473,60 +481,4 @@ public final class ImagePyramidRenderManager implements IDisposable
     }
 }
 
-}
-
-/**
- * @private
- * 
- * Manages the overlap of an image pyramid for efficient rendering.
- */
-class ImagePyramidOverlap
-{
-    //--------------------------------------------------------------------------
-    //
-    //  Constructor
-    //
-    //--------------------------------------------------------------------------
-    
-	/**
-	 * Constructor.
-	 */
-    public function ImagePyramidOverlap()
-    {
-    	overlap = []
-    }
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Variables
-    //
-    //--------------------------------------------------------------------------
-    
-    private var overlap:Array = []
-    
-    //--------------------------------------------------------------------------
-    //
-    //  Methods
-    //
-    //--------------------------------------------------------------------------
-    
-    public function getTileOverlap(level:int, column:int, row:int):Boolean
-    {
-    	return overlap[level][column][row]
-    }
-    
-    public function setTileOverlap(level:int, column:int, row:int, value:Boolean):void
-    {
-    	overlap[level][column][row] = value
-    }
-    
-    public function isLevelOverlapped(level:int):Boolean
-    {
-    	return false
-    }
-    
-    public function reset():void
-    {
-    	overlap = []
-    }
 }

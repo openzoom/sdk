@@ -76,7 +76,6 @@ public class ImagePyramidRendererTest extends Sprite
                                                       container.scene,
                                                       container.viewport,
                                                       container.loader)
-
         var source:IImagePyramidDescriptor
         var numRenderers:int
         var numColumns:int
@@ -217,7 +216,6 @@ public class ImagePyramidRendererTest extends Sprite
         container.sceneWidth = maxRight
         container.sceneHeight = maxBottom
         
-        
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
         scaleConstraint.maxScale = source.width / container.sceneWidth * 4
 //        container.constraint = scaleConstraint
@@ -237,7 +235,7 @@ public class ImagePyramidRendererTest extends Sprite
 //        compositeContraint.constraints = [scaleConstraint,
 //                                          visibilityContraint,
 //                                          mappingConstraint]
-//        container.constraint = compositeContraint
+        container.constraint = compositeContraint
         
         addChild(container)
         
@@ -250,7 +248,7 @@ public class ImagePyramidRendererTest extends Sprite
     private var container:MultiScaleContainer
     private var memoryMonitor:MemoryMonitor
     private var renderManager:ImagePyramidRenderManager
-
+    
     private function stage_resizeHandler(event:Event):void
     {
         layout()

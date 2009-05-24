@@ -22,14 +22,17 @@ package org.openzoom.flash.renderers.images
 {
 
 import flash.display.BitmapData;
+import flash.errors.IllegalOperationError;
 import flash.geom.Rectangle;
 
+import org.openzoom.flash.utils.IComparable;
 import org.openzoom.flash.utils.IDisposable;
 
 /**
  * Tile of an image pyramid.
  */
-public class ImagePyramidTile implements IDisposable
+public class ImagePyramidTile implements IDisposable,
+                                         IComparable
 {
     //--------------------------------------------------------------------------
     //
@@ -51,6 +54,8 @@ public class ImagePyramidTile implements IDisposable
     	this.row = row
     	this.url = url
     	this.bounds = bounds
+    	
+    	_hashCode = ImagePyramidTile.getHashCode(level, column, row)
     } 
     
     //--------------------------------------------------------------------------
@@ -89,8 +94,8 @@ public class ImagePyramidTile implements IDisposable
     
     public function get bitmapData():BitmapData
     {
-    	if (item)
-    	   return item.bitmapData
+    	if (source)
+    	   return source.bitmapData
     	   
         return null
     }
@@ -117,7 +122,13 @@ public class ImagePyramidTile implements IDisposable
     //  loaded
     //----------------------------------
     
-    public var loaded:Boolean = false
+    public function get loaded():Boolean
+    {
+    	if (bitmapData)
+    	   return true
+    	   
+        return false
+    }
     
     //--------------------------------------------------------------------------
     //
@@ -144,10 +155,24 @@ public class ImagePyramidTile implements IDisposable
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  item
+    //  source
     //----------------------------------
     
-    public var item:SharedTile
+    private var _source:SharedTile
+    
+    public function get source():SharedTile
+    {
+    	return _source
+    }
+    
+    public function set source(value:SharedTile):void
+    {
+    	if (!value)
+    	   throw new ArgumentError("[ImagePyramidTile] Source cannot be null.")
+    	
+    	_source = value
+        _source.addOwner(this)
+    }
     
     //----------------------------------
     //  lastAccessTime
@@ -155,12 +180,18 @@ public class ImagePyramidTile implements IDisposable
     
     public function get lastAccessTime():int
     {
-	   return item.lastAccessTime
+        if (!source)
+            throw new IllegalOperationError("[ImagePyramidTile] Source missing.")
+    	
+        return source.lastAccessTime
     }
     
     public function set lastAccessTime(value:int):void
     {
-    	item.lastAccessTime = value 
+        if (!source)
+            throw new IllegalOperationError("[ImagePyramidTile] Source missing.")
+            
+    	source.lastAccessTime = value 
     }
     
     //--------------------------------------------------------------------------
@@ -169,9 +200,11 @@ public class ImagePyramidTile implements IDisposable
     //
     //--------------------------------------------------------------------------
     
+    private var _hashCode:int
+    
     public function get hashCode():int
     {
-    	return ImagePyramidTile.getHashCode(level, column, row)
+    	return _hashCode
     }
     
     //--------------------------------------------------------------------------
@@ -193,15 +226,35 @@ public class ImagePyramidTile implements IDisposable
     
     public function dispose():void
     {
-        item = null
+        _source = null
         
     	loading = false
-    	loaded = false
     	
     	alpha = 0
     	fadeStart = 0
     }
     
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IComparable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function compareTo(other:*):int
+    {
+    	var tile:ImagePyramidTile = other as ImagePyramidTile
+    	
+    	if (!tile)
+    	   throw new ArgumentError("[ImagePyramidTile] Object to compare has wrong type.")
+
+        if (level < tile.level)
+            return 1
+            
+        if (level > tile.level)
+            return -1
+        
+        return 0
+    }
 }
 
 }

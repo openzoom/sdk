@@ -287,7 +287,7 @@ public interface IViewportTransform
      * object; that is, a rectangle with its x, y, width, and height properties set to 0.
      */
     function intersection(toIntersect:Rectangle):Rectangle
-
+    
     //--------------------------------------------------------------------------
     //
     //  Properties: flash.geom.Rectangle

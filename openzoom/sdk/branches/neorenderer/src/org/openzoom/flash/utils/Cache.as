@@ -92,7 +92,12 @@ public final class Cache implements IDisposable
      */ 
     public function get(key:*):ICacheItem
     {
-        return cache[key]
+    	var item:ICacheItem = cache[key]
+    	
+    	if (!item)
+    	   throw new ArgumentError("[Cache] Item does not exist.")
+    	
+        return item
     }
 
     /**
@@ -100,6 +105,9 @@ public final class Cache implements IDisposable
      */ 
     public function put(key:*, item:ICacheItem):void
     {
+    	if (!item)
+    	   throw new ArgumentError("[Cache] Item cannot be null.")
+    	
     	if (items.length < _size)
     	{
 	    	items.push(item)
@@ -111,19 +119,23 @@ public final class Cache implements IDisposable
     		var worstItemIndex:int = 0
     		var worstItem:ICacheItem = items[worstItemIndex]
     		
-    		// Find worst item in items
+    		// Find worst of all items
 			var candidate:ICacheItem
-    		for (var i:int = 1; i < items.length; i++)
+    		for (var i:int = 1; i < items.length; ++i)
     		{
-    			candidate = items[1]
+    			candidate = items[i]
+    			
     			if (candidate.compareTo(worstItem) < 0)
     			{
                     worstItemIndex = i
-                    worstItem = candidate    				
+                    worstItem = candidate
     			}
     		}
-    		
-    		trace(worstItem)
+
+            // TODO: Remove traces
+            trace("New:", item)
+            trace()
+    		trace("Old:", worstItem)
     		
     		// Dispose worst item
     		worstItem.dispose()
@@ -137,19 +149,13 @@ public final class Cache implements IDisposable
     /**
      * Remove item from cache at key.
      */ 
-    public function remove(key:*):Boolean
+    public function remove(key:*):ICacheItem
     {
-    	if (contains(key))
-        {
-        	var item:ICacheItem = cache[key]
-        	items.splice(items.indexOf(item), 1)
-        	item.dispose()
-            cache[key] = null
+        var item:ICacheItem = get(key)
+    	items.splice(items.indexOf(item), 1)
+        cache[key] = null
             
-            return true
-        }
-        
-        return false
+        return item
     }
     
     //--------------------------------------------------------------------------

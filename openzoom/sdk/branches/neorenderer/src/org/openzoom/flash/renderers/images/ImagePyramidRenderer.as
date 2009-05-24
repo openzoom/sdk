@@ -59,7 +59,7 @@ public final class ImagePyramidRenderer extends Renderer
 
     public var ready:Boolean = false
 
-    private var tileCache:Dictionary /* of Tile2 */ = new Dictionary()
+    private var tileCache:Dictionary /* of ImagePyramidTile */ = new Dictionary()
     openzoom_internal var tileLayer:Shape
 
     //--------------------------------------------------------------------------
@@ -85,20 +85,6 @@ public final class ImagePyramidRenderer extends Renderer
     	   return
     	
     	_source = value
-    	
-//    	var descriptor:IImagePyramidDescriptor = value as IImagePyramidDescriptor
-//    	
-//    	if (descriptor)
-//    	{
-//    		var tileLayer:Shape = openzoom_internal::tileLayer
-//	    	var g:Graphics = tileLayer.graphics 
-//	    	g.clear()
-//	    	g.beginFill(0x000000, 0)
-//	    	g.drawRect(0, 0, descriptor.width, descriptor.height)
-//	    	g.endFill()
-//	    	
-//	    	updateDisplayList()
-//    	}
     }
 
     //----------------------------------
@@ -156,10 +142,6 @@ public final class ImagePyramidRenderer extends Renderer
     	g.beginFill(0x000000, 0)
     	g.drawRect(0, 0, _width, _height)
     	g.endFill()
-    	
-//    	var tileLayer:Shape = openzoom_internal::tileLayer
-//	    tileLayer.width = _width
-//	    tileLayer.height = _width
     }
 
     //--------------------------------------------------------------------------
@@ -200,24 +182,15 @@ public final class ImagePyramidRenderer extends Renderer
             tileCache[tile.hashCode] = tile
         }
         
-        if (!tile.item)
+        if (!tile.source)
         {
         	var cache:Cache = openzoom_internal::renderManager.openzoom_internal::tileCache
-        	var cacheEntry:SharedTile = cache.get(tile.url) as SharedTile
         	
-        	if (cacheEntry)
+        	if (cache.contains(tile.url))
         	{
-	        	// Add this tile as owner of the tile bitmap
-	        	if (cacheEntry.owners.indexOf(tile) == -1)
-                    cacheEntry.owners.push(tile)
-                
-                tile.item = cacheEntry
-	        	tile.loaded = true
+                var sourceTile:SharedTile = cache.get(tile.url) as SharedTile
+                tile.source = sourceTile
 	        	tile.loading = false
-        	}
-        	else
-        	{
-        		tile.loaded = false
         	}
         }
         

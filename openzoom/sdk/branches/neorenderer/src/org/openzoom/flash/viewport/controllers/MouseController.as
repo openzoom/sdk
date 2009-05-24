@@ -326,6 +326,7 @@ public class MouseController extends ViewportControllerBase
         targetX = viewportDragVector.x - (distanceX * viewport.width)
         targetY = viewportDragVector.y - (distanceY * viewport.height)
 
+        // FIXME: Zoom skipping when smoothPanning = false
         viewport.panTo(targetX, targetY, !smoothPanning)
     }
 

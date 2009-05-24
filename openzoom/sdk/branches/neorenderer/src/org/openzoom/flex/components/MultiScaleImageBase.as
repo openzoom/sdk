@@ -30,6 +30,7 @@ import flash.geom.Rectangle;
 import mx.core.UIComponent;
 
 import org.openzoom.flash.components.IMultiScaleContainer;
+import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
@@ -77,6 +78,8 @@ public class MultiScaleImageBase extends UIComponent
 
    ;[Bindable(event="containerChanged")]
     protected var container:MultiScaleContainer
+    
+    protected var renderManager:ImagePyramidRenderManager
 
     //--------------------------------------------------------------------------
     //
@@ -255,6 +258,14 @@ public class MultiScaleImageBase extends UIComponent
 
             dispatchEvent(new Event("containerChanged"))
             dispatchEvent(new Event("viewportChanged"))
+        }
+        
+        if (!renderManager)
+        {
+	        renderManager = new ImagePyramidRenderManager(this,
+	                                                      container.scene,
+	                                                      container.viewport,
+	                                                      container.loader)
         }
     }
 

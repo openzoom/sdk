@@ -59,6 +59,8 @@ internal final class SharedTile implements ICacheItem
     public var url:String
     public var bitmapData:BitmapData
     public var level:int
+    
+    // True for collection tiles, e.g. Deep Zoom collections
     public var shared:Boolean = false
 
     public var lastAccessTime:int = 0
@@ -69,7 +71,15 @@ internal final class SharedTile implements ICacheItem
     //
     //--------------------------------------------------------------------------
     
-    public var owners:Array = []
+    private var owners:Array = []
+    
+    public function addOwner(owner:ImagePyramidTile):void
+    {
+        if (owners.indexOf(owner) > 0)
+            throw new ArgumentError("[SharedTile] Owner already added.")
+            
+        owners.push(owner)
+    }
 
     //--------------------------------------------------------------------------
     //
@@ -90,7 +100,6 @@ internal final class SharedTile implements ICacheItem
         level = 0
         shared = false
         lastAccessTime = 0
-        
     }
 
     /**
@@ -98,25 +107,36 @@ internal final class SharedTile implements ICacheItem
      */
     public function compareTo(other:*):int
     {
-        var entry:SharedTile = other as SharedTile
+        var otherTile:SharedTile = other as SharedTile
 
-        if (!entry)
+        if (!otherTile)
            throw new ArgumentError("[SharedTile] Object to compare has wrong type.")
 
+
         // Shared tiles have higher order
-        if (shared && !entry.shared)
+        if (shared && !otherTile.shared)
             return 1
 
-        if (level == 0 && entry.level > 0)
-            return 1
-
-        // Otherwise newer tiles have higher order
-        if (lastAccessTime < entry.lastAccessTime)
+        if (!shared && otherTile.shared)
             return -1
-        else if (entry.lastAccessTime == lastAccessTime)
-            return 0
-        else
+
+
+        // Level 0 tiles always win
+        if (level > 0 && otherTile.level == 0)
+            return -1
+            
+        if (level == 0 && otherTile.level > 0)
             return 1
+                    	
+        
+        // Fresher tiles have higher order
+        if (lastAccessTime > otherTile.lastAccessTime)
+            return 1
+        
+        if (lastAccessTime < otherTile.lastAccessTime)
+            return -1
+
+        return 0
     }
     
     //--------------------------------------------------------------------------
