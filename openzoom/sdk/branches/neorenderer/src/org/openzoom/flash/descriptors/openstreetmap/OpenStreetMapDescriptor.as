@@ -32,6 +32,7 @@ import org.openzoom.flash.utils.math.clamp;
 
 /**
  * <a href="http://openstreetmap.org">OpenStreetMap</a> descriptor.
+ * For educational purposes only. Please respect the project's copyright.
  */
 public final class OpenStreetMapDescriptor extends ImagePyramidDescriptorBase
                                            implements IImagePyramidDescriptor

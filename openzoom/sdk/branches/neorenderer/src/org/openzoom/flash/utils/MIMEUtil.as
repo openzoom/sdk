@@ -47,6 +47,10 @@ public final class MIMEUtil
                type = "image/png"
                break
 
+            case "gif":
+               type = "image/gif"
+               break
+
             default:
                throw new ArgumentError("Unknown extension: " + extension)
                break

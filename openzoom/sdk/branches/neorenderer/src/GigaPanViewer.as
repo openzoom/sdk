@@ -30,15 +30,14 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.rosettaproject.RosettaDiskFrontDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
 import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
-import org.openzoom.flash.viewport.constraints.MappingConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
+import org.openzoom.flash.viewport.constraints.ZoomConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
@@ -46,9 +45,9 @@ import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
-public class ImagePyramidRendererTest extends Sprite
+public class GigaPanViewer extends Sprite
 {
-    public function ImagePyramidRendererTest()
+    public function GigaPanViewer()
     {
         stage.align = StageAlign.TOP_LEFT
         stage.scaleMode = StageScaleMode.NO_SCALE
@@ -63,9 +62,6 @@ public class ImagePyramidRendererTest extends Sprite
         container.transformer = transformer
 
         var mouseController:MouseController = new MouseController()
-//        mouseController.minMouseWheelZoomInFactor = 2.01
-//        mouseController.minMouseWheelZoomOutFactor = 0.45
-        mouseController.smoothPanning = false
 
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
@@ -97,13 +93,13 @@ public class ImagePyramidRendererTest extends Sprite
 //        height = 2592
 
         // Deep Zoom: Carina Nebula
-        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
-        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = 16384 / aspectRatio
+//        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
+//        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = 16384 / aspectRatio
 
         // Deep Zoom: Inline Multiscale Image Replacement
 //        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
@@ -142,13 +138,13 @@ public class ImagePyramidRendererTest extends Sprite
 //        height = 16384 / aspectRatio
 
         // Deep Zoom: Hanauma Bay
-//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
-//        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
-//        numRenderers = 1//400
-//        numColumns = 1//12
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = width / aspectRatio
+        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
+        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height
+        width = 16384
+        height = width / aspectRatio
 
         // Zoomify
 //        path = "http://shutter.gigapixelphotography.com/images/vancouver-yaletown-condos/ImageProperties.xml"
@@ -193,14 +189,6 @@ public class ImagePyramidRendererTest extends Sprite
 //        width = 220.3
 //        height = 329.0
 
-        // Deep Zoom: Obama
-        source = new RosettaDiskFrontDescriptor()
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = 16384 / aspectRatio
-
 
         var padding:Number = width * 0.1
 
@@ -226,25 +214,22 @@ public class ImagePyramidRendererTest extends Sprite
         container.sceneWidth = maxRight
         container.sceneHeight = maxBottom
 
+        // Constraints
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
         scaleConstraint.maxScale = source.width / container.sceneWidth * 4
-//        container.constraint = scaleConstraint
 
-        var mappingConstraint:MappingConstraint = new MappingConstraint()
-        var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
-        visibilityContraint.visibilityRatio = 0.5
-
+        var zoomConstraint:ZoomConstraint = new ZoomConstraint()
+        zoomConstraint.minZoom = 0.4
+        
         var centerConstraint:CenterConstraint = new CenterConstraint()
+        
+        var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
 
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
         compositeContraint.constraints = [scaleConstraint,
                                           centerConstraint,
+                                          zoomConstraint,
                                           visibilityContraint]
-//        compositeContraint.constraints = [scaleConstraint,
-//                                          mappingConstraint]
-//        compositeContraint.constraints = [scaleConstraint,
-//                                          visibilityContraint,
-//                                          mappingConstraint]
         container.constraint = compositeContraint
 
         addChild(container)
