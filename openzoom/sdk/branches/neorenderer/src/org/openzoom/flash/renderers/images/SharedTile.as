@@ -76,7 +76,11 @@ internal final class SharedTile implements ICacheItem
     public function addOwner(owner:ImagePyramidTile):void
     {
         if (owners.indexOf(owner) > 0)
-            throw new ArgumentError("[SharedTile] Owner already added.")
+        {
+        	return
+        	// FIXME
+//            throw new ArgumentError("[SharedTile] Owner already added.")
+        }
 
         owners.push(owner)
     }

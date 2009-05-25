@@ -24,7 +24,11 @@ package
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
+import flash.events.ContextMenuEvent;
 import flash.events.Event;
+import flash.net.URLRequest;
+import flash.net.navigateToURL;
+import flash.ui.ContextMenuItem;
 
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
@@ -47,6 +51,10 @@ import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#FFFFFF")]
 public class RosettaProjectViewer extends Sprite
 {
+    // Attribution
+    private static const ABOUT_CAPTION:String = "About OpenZoom..."
+    private static const ABOUT_URL:String = "http://openzoom.org/"
+            
     public function RosettaProjectViewer()
     {
         stage.align = StageAlign.TOP_LEFT
@@ -131,6 +139,15 @@ public class RosettaProjectViewer extends Sprite
 
         memoryMonitor = new MemoryMonitor()
         addChild(memoryMonitor)
+                                                    
+        // Credits where credits are due
+        var aboutMenu:ContextMenuItem =
+                new ContextMenuItem(ABOUT_CAPTION,
+                                    true /* Separator */)
+        aboutMenu.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+                                   aboutMenu_menuItemSelectHandler,
+                                   false, 0, true)
+        container.contextMenu.customItems.push(aboutMenu)
 
         layout()
     }
@@ -157,6 +174,11 @@ public class RosettaProjectViewer extends Sprite
             memoryMonitor.x = stage.stageWidth - memoryMonitor.width - 10
             memoryMonitor.y = stage.stageHeight - memoryMonitor.height - 10
         }
+    }
+        
+    private function aboutMenu_menuItemSelectHandler(event:ContextMenuEvent):void
+    {
+        navigateToURL(new URLRequest(ABOUT_URL), "_blank")
     }
 }
 

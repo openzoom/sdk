@@ -30,7 +30,8 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.rosettaproject.RosettaDiskFrontDescriptor;
+import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
+import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
@@ -65,7 +66,7 @@ public class ImagePyramidRendererTest extends Sprite
         var mouseController:MouseController = new MouseController()
 //        mouseController.minMouseWheelZoomInFactor = 2.01
 //        mouseController.minMouseWheelZoomOutFactor = 0.45
-        mouseController.smoothPanning = false
+//        mouseController.smoothPanning = false
 
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
@@ -88,22 +89,32 @@ public class ImagePyramidRendererTest extends Sprite
 
 
         // Deep Zoom
-//        path = "http://static.gasi.ch/images/3229924166/image.dzi"
-////        path = "../resources/images/deepzoom/billions.xml"
-//        source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        width = 3872
-//        height = 2592
+        path = "http://static.gasi.ch/images/3229924166/image.dzi"
+        path = "../resources/images/deepzoom/billions.xml"
+        path = "../resources/images/deepzoom/2.xml"
+        source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
+        numRenderers = 263
+        numColumns = 36
+        aspectRatio = source.width / source.height
+        width = 512
+        height = width / aspectRatio
 
         // Deep Zoom: Carina Nebula
-        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
-        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = 16384 / aspectRatio
+//        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
+//        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = 16384 / aspectRatio
+//        
+//        path = "http://gasi.ch/indupart/indupart-9-gaussian-12-jpg-lq.dzi"
+//        source = new DeepZoomImageDescriptor(path, 2895, 4095, 254, 1, "jpg")
+//        numRenderers = 1//120
+//        numColumns = 1//36
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = 16384 / aspectRatio
 
         // Deep Zoom: Inline Multiscale Image Replacement
 //        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
@@ -124,13 +135,13 @@ public class ImagePyramidRendererTest extends Sprite
 //        height = 16384 / aspectRatio
 
         // Deep Zoom: Obama
-        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
-        source = new DeepZoomImageDescriptor(path, 59783, 24658, 256, 0, "jpg")
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = 16384 / aspectRatio
+//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
+//        source = new DeepZoomImageDescriptor(path, 59783, 24658, 256, 0, "jpg")
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = 16384 / aspectRatio
 
         // Deep Zoom: CMU
 //        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/23379.dzi"
@@ -152,7 +163,7 @@ public class ImagePyramidRendererTest extends Sprite
 
         // Zoomify
 //        path = "http://shutter.gigapixelphotography.com/images/vancouver-yaletown-condos/ImageProperties.xml"
-//        source = new ZoomifyDescriptor(path, 46953, 22255, 21420, 256)
+//        source = new ZoomifyDescriptor(path, 46953, 22255, 256)
 //        numRenderers = 1
 //        numColumns = 1
 //        aspectRatio = source.width / source.height
@@ -161,7 +172,7 @@ public class ImagePyramidRendererTest extends Sprite
 
         // Zoomify
 //        path = "http://shutter.gigapixelphotography.com/images/garibaldi-park-snowshoe/ImageProperties.xml"
-//        source = new ZoomifyDescriptor(path, 22761, 14794, 6941, 256)
+//        source = new ZoomifyDescriptor(path, 22761, 14794, 256)
 //        numRenderers = 1
 //        numColumns = 1
 //        aspectRatio = source.width / source.height
@@ -193,14 +204,6 @@ public class ImagePyramidRendererTest extends Sprite
 //        width = 220.3
 //        height = 329.0
 
-        // Deep Zoom: Obama
-        source = new RosettaDiskFrontDescriptor()
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = 16384 / aspectRatio
-
 
         var padding:Number = width * 0.1
 
@@ -227,18 +230,16 @@ public class ImagePyramidRendererTest extends Sprite
         container.sceneHeight = maxBottom
 
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
-        scaleConstraint.maxScale = source.width / container.sceneWidth * 4
-//        container.constraint = scaleConstraint
+        scaleConstraint.maxScale = source.width / container.sceneWidth * numColumns * 4
 
         var mappingConstraint:MappingConstraint = new MappingConstraint()
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
-        visibilityContraint.visibilityRatio = 0.5
 
-        var centerConstraint:CenterConstraint = new CenterConstraint()
+//        var centerConstraint:CenterConstraint = new CenterConstraint()
 
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
         compositeContraint.constraints = [scaleConstraint,
-                                          centerConstraint,
+                                          //centerConstraint,
                                           visibilityContraint]
 //        compositeContraint.constraints = [scaleConstraint,
 //                                          mappingConstraint]

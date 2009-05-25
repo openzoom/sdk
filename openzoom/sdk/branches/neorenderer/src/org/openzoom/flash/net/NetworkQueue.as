@@ -153,7 +153,7 @@ public final class NetworkQueue extends EventDispatcher
      */
     private function request_errorHandler(event:NetworkRequestEvent):void
     {
-        trace("[NetworkQueue] item_errorHandler")
+        trace("[NetworkQueue] Error")
         request_completeHandler(event)
     }
 

@@ -21,7 +21,7 @@
 package org.openzoom.flash.descriptors.gigapan
 {
 
-import flash.utils.Dictionary;
+import flash.geom.Point;
 
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
@@ -42,8 +42,8 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_BASE_LEVEL:uint = 8
     private static const DEFAULT_TILE_SIZE:uint = 256
+    private static const DEFAULT_BASE_LEVEL:uint = 8
 
     //--------------------------------------------------------------------------
     //
@@ -117,18 +117,10 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelAt(index:int):IImagePyramidLevel
-    {
-        return IMultiScaleImageLevel(levels[index])
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
         var maxDimension:uint = Math.max(width, height)
-        var level:uint = Math.floor(Math.log(maxDimension) / Math.LN2)
+        var level:uint = Math.round(Math.log(maxDimension) / Math.LN2)
         var actualLevel:uint = level - DEFAULT_BASE_LEVEL
         var index:int = clamp(actualLevel, 0, numLevels - 1)
         

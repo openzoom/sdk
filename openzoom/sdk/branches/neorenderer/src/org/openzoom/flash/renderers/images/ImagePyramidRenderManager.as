@@ -122,6 +122,8 @@ public final class ImagePyramidRenderManager implements IDisposable
      */
     private function updateDisplayList(renderer:ImagePyramidRenderer):void
     {
+//    	var before:int = getTimer()
+    	
         var descriptor:IImagePyramidDescriptor = renderer.source
 
         // Abort if we have no descriptor
@@ -173,8 +175,8 @@ public final class ImagePyramidRenderManager implements IDisposable
 
         // FIXME: For collections it's too much work
         // to render from bottom of the image pyramid
-//        var quality:int = 2
-//        fromLevel = Math.max(0, optimalLevel.index - quality)
+        var quality:int = 0
+        fromLevel = Math.max(0, optimalLevel.index - quality)
         fromLevel = 0
         toLevel = optimalLevel.index
 
@@ -220,7 +222,7 @@ public final class ImagePyramidRenderManager implements IDisposable
                 {
                     var tile:ImagePyramidTile = renderer.openzoom_internal::getTile(l, c, r)
 
-                    if (!renderer.ready && tile.level > 0)
+                    if (fromLevel == 0 && !renderer.ready && tile.level > 0)
                         return
 
                     if (!tile.loaded)
@@ -298,6 +300,8 @@ public final class ImagePyramidRenderManager implements IDisposable
                 }
             }
         }
+        
+//        trace("Render cycle:", getTimer() - before)
     }
 
     //--------------------------------------------------------------------------

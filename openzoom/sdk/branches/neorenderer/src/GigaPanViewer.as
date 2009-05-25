@@ -30,6 +30,7 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
+import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
@@ -82,43 +83,6 @@ public class GigaPanViewer extends Sprite
         var path:String
         var aspectRatio:Number
 
-
-        // Deep Zoom
-//        path = "http://static.gasi.ch/images/3229924166/image.dzi"
-////        path = "../resources/images/deepzoom/billions.xml"
-//        source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        width = 3872
-//        height = 2592
-
-        // Deep Zoom: Carina Nebula
-//        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
-//        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-
-        // Deep Zoom: Inline Multiscale Image Replacement
-//        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
-//        source = new DeepZoomImageDescriptor(path, 3627, 2424, 256,  1, "jpg")
-//        numRenderers = 300
-//        numColumns = 24
-//        aspectRatio = source.width / source.height
-//        width = 163.84
-//        height = width / aspectRatio
-
-        // Deep Zoom: World wide music scene
-//        path = "http://seadragon.com/content/images/lastfm.dzi"
-//        source = new DeepZoomImageDescriptor(path, 20000, 15000, 254,  1, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-
         // Deep Zoom: Obama
         path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
         source = new DeepZoomImageDescriptor(path, 59783, 24658, 256, 0, "jpg")
@@ -145,51 +109,24 @@ public class GigaPanViewer extends Sprite
         aspectRatio = source.width / source.height
         width = 16384
         height = width / aspectRatio
-
-        // Zoomify
-//        path = "http://shutter.gigapixelphotography.com/images/vancouver-yaletown-condos/ImageProperties.xml"
-//        source = new ZoomifyDescriptor(path, 46953, 22255, 21420, 256)
+        
+        // GigaPan: Twin Peaks (San Francisco)
+        source = new GigaPanDescriptor(1155, 141812, 25730)
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height
+        width = 16384
+        height = width / aspectRatio
+        
+        // Deep Zoom: Twin Peaks (San Francisco)
+//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/1155.dzi"
+//        source = new DeepZoomImageDescriptor(path, 141812, 25730, 256, 0, "jpg")
 //        numRenderers = 1
 //        numColumns = 1
 //        aspectRatio = source.width / source.height
 //        width = 16384
-//        height = 16384 / aspectRatio
-
-        // Zoomify
-//        path = "http://shutter.gigapixelphotography.com/images/garibaldi-park-snowshoe/ImageProperties.xml"
-//        source = new ZoomifyDescriptor(path, 22761, 14794, 6941, 256)
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-
-        // OpenStreetMap
-//        source = new OpenStreetMapDescriptor()
-//        numRenderers = 1
-//        numColumns = 1
-//        width = 16384
-//        height = 16384
-
-        // Virtual Earth
-//        source = new VirtualEarthDescriptor()
-//        numRenderers = 1
-//        numColumns = 1
-//        width = 16384
-//        height = 16384
-
-        // Zoomify
-        // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290"
-        //  NUMTILES="169" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
-//        path = "../resources/images/zoomify/morocco/ImageProperties.xml"
-//        source = new ZoomifyDescriptor(path, 2203, 3290, 169, 256)
-//
-//        numRenderers = 360
-//        numColumns = 32
-//        width = 220.3
-//        height = 329.0
-
-
+//        height = width / aspectRatio
+        
         var padding:Number = width * 0.1
 
         var maxRight:Number = 0
@@ -219,7 +156,7 @@ public class GigaPanViewer extends Sprite
         scaleConstraint.maxScale = source.width / container.sceneWidth * 4
 
         var zoomConstraint:ZoomConstraint = new ZoomConstraint()
-        zoomConstraint.minZoom = 0.4
+        zoomConstraint.minZoom = 1
         
         var centerConstraint:CenterConstraint = new CenterConstraint()
         
