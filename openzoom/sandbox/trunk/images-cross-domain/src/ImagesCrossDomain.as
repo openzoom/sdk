@@ -1,7 +1,6 @@
 package
 {
 
-import flash.display.Bitmap;
 import flash.display.Loader;
 import flash.display.Sprite;
 import flash.events.Event;

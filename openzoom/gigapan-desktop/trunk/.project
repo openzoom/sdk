@@ -30,7 +30,7 @@
 		<link>
 			<name>[source path] as3corelib</name>
 			<type>2</type>
-			<locationURI>OPENZOOM/trunk/projects/sdk/trunk/lib/as3corelib/src</locationURI>
+			<locationURI>OPENZOOM/lib/as3corelib/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

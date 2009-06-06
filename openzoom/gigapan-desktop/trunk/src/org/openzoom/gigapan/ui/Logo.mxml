@@ -3,7 +3,22 @@
     backgroundColor="#000000"
     horizontalAlign="center"
     verticalAlign="middle"
+    click="clickHandler(event)"
+    mouseChildren="false"
+    buttonMode="true"
     >
+    <mx:Script>
+    	<![CDATA[
+    	
+    		import flash.net.navigateToURL;
+    		
+    		private function clickHandler(event:MouseEvent):void
+    		{
+    			navigateToURL(new URLRequest("http://gigapan.org/"), "_blank")
+    		}
+    		
+    	]]>
+    </mx:Script>
     <mx:Image
         source="@Embed('../assets/app/gigapan.png')"
         width="76"
