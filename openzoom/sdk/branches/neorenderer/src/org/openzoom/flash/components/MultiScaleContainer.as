@@ -113,12 +113,12 @@ public final class MultiScaleContainer extends Sprite
     //  viewport
     //----------------------------------
 
-    private var _viewport:INormalizedViewportContainer
+    private var _viewport:NormalizedViewport
 
     /**
      * Viewport of this container.
      */
-    public function get viewport():INormalizedViewport
+    public function get viewport():NormalizedViewport
     {
         return _viewport
     }

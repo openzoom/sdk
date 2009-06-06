@@ -49,10 +49,6 @@ public class ViewportTransform implements IViewportTransform,
                                       sceneWidth:Number,
                                       sceneHeight:Number)
     {
-//        _x = x
-//        _y = y
-//        _width = width
-//        _height = height
         bounds.x = x
         bounds.y = y
         bounds.width = width
@@ -258,6 +254,15 @@ public class ViewportTransform implements IViewportTransform,
     public function getBounds():Rectangle
     {
         return new Rectangle(x, y, width, height)
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getCenter():Point
+    {
+        return new Point(bounds.x + bounds.width / 2,
+                         bounds.y + bounds.height / 2)
     }
 
     /**

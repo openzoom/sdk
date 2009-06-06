@@ -258,6 +258,12 @@ public class ImagePyramidTile implements IDisposable,
 
         if (level > tile.level)
             return -1
+            
+        if (distance < tile.distance)
+            return 1
+            
+        if (distance > tile.distance)
+            return -1
 
         return 0
     }

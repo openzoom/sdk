@@ -58,11 +58,11 @@ public final class ImagePyramidRenderManager implements IDisposable
     //--------------------------------------------------------------------------
 
     private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
-    private static const MAX_CACHE_SIZE:uint = 120
+    private static const MAX_CACHE_SIZE:uint = 100
 
     private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
 
-    private static const QUALITY:uint = 32
+    private static const QUALITY:uint = 8
     
     //--------------------------------------------------------------------------
     //
@@ -192,7 +192,7 @@ public final class ImagePyramidRenderManager implements IDisposable
         tileLayer.width = renderer.width
         tileLayer.height = renderer.height
 
-        var loadingQueue:Array = []
+//        var loadingQueue:Array = []
 
         // Iterate over levels
         for (var l:int = fromLevel; l <= toLevel; l++)
@@ -218,8 +218,8 @@ public final class ImagePyramidRenderManager implements IDisposable
             }
             
             
-            var center:Point = new Point((fromTile.x + toTile.x) / 2,
-                                         (fromTile.y + toTile.y) / 2)
+//            var center:Point = new Point((fromTile.x + toTile.x) / 2,
+//                                         (fromTile.y + toTile.y) / 2)
             
 
             // Iterate over columns
@@ -230,21 +230,21 @@ public final class ImagePyramidRenderManager implements IDisposable
                 {
                     var tile:ImagePyramidTile = renderer.openzoom_internal::getTile(l, c, r)
 
-//                    if (fromLevel == 0 && !renderer.ready && tile.level > 0)
-//                        return
+                    if (fromLevel == 0 && !renderer.ready && tile.level > 0)
+                        return
 
-	                var dx:Number = Math.abs(tile.column - center.x)
-	                var dy:Number = Math.abs(tile.row - center.y)
-	                var distance:Number = dx * dx + dy * dy
-                    tile.distance = distance
+//	                var dx:Number = Math.abs(tile.column - center.x)
+//	                var dy:Number = Math.abs(tile.row - center.y)
+//	                var distance:Number = dx * dx + dy * dy
+//                    tile.distance = distance
 
                     if (!tile.loaded)
                     {
                         var downloadPossible:Boolean = numDownloads < MAX_CONCURRENT_DOWNLOADS
 
                         if (!tile.loading && downloadPossible)
-                        	loadingQueue.push(tile)
-//                            loadTile(tile)
+                            loadTile(tile)
+//                        	loadingQueue.push(tile)
 
                         continue
                     }
@@ -326,10 +326,13 @@ public final class ImagePyramidRenderManager implements IDisposable
                 }
             }
             
-	        loadingQueue.sort(compareTiles, Array.DESCENDING)
+//	        loadingQueue.sort(compareTiles, Array.DESCENDING)
 	        
-	        while (loadingQueue.length > 0)
-	            loadTile(loadingQueue.shift())
+//	        while (loadingQueue.length > 0)
+//	            loadTile(loadingQueue.shift())
+            
+//            if (loadingQueue.length > 0)
+//                loadTile(loadingQueue[0])
         }
         
 //        trace("Render cycle:", getTimer() - before)

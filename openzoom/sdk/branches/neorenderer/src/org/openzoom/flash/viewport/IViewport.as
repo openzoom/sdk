@@ -144,33 +144,6 @@ public interface IViewport extends IEventDispatcher
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  transform
-    //----------------------------------
-
-    /**
-     * Transformation that is currently applied to the viewport
-     */
-    function get transform():IViewportTransform
-    function set transform(value:IViewportTransform):void
-
-//    //----------------------------------
-//    //  constraint
-//    //----------------------------------
-//
-//    function get constraint():IViewportConstraint
-//    function set constraint(value:IViewportConstraint):void
-
-    //----------------------------------
-    //  transformer
-    //----------------------------------
-
-    /**
-     * Transforms the IViewport object after its state has been changed.
-     */
-    function get transformer():IViewportTransformer
-    function set transformer(value:IViewportTransformer):void
-
-    //----------------------------------
     //  scene
     //----------------------------------
 
@@ -200,6 +173,50 @@ public interface IViewport extends IEventDispatcher
     function get zoom():Number
     function set zoom(value:Number):void
 
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Transform
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  transform
+    //----------------------------------
+
+    /**
+     * Transformation that is currently applied to the viewport
+     */
+    function get transform():IViewportTransform
+    function set transform(value:IViewportTransform):void
+
+    //----------------------------------
+    //  transformer
+    //----------------------------------
+
+    /**
+     * Transforms the IViewport object after its state has been changed.
+     */
+    function get transformer():IViewportTransformer
+    function set transformer(value:IViewportTransformer):void
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Transform
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * Dispatch <code>transformStart</code> event to
+     * let all listeners know that a viewport transition has started.
+     */
+    function beginTransform():void
+
+    /**
+     * Dispatch <code>transformEnd</code> event to
+     * let all listeners know that a viewport transition has finished.
+     */
+    function endTransform():void
+    
     //--------------------------------------------------------------------------
     //
     //  Methods: Zooming
@@ -284,6 +301,11 @@ public interface IViewport extends IEventDispatcher
      * Returns a Rectangle object with the bounds of the viewport.
      */
     function getBounds():Rectangle
+
+    /**
+     * Returns the center of the viewport.
+     */
+    function getCenter():Point
 
     //--------------------------------------------------------------------------
     //

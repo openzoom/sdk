@@ -219,6 +219,11 @@ public interface IViewportTransform
      * Returns the origin of the transform.
      */
     function getOrigin():Point
+
+    /**
+     * Returns the center of the transform.
+     */
+    function getCenter():Point
      
     //--------------------------------------------------------------------------
     //
