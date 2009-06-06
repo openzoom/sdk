@@ -96,7 +96,9 @@ public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
         var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
-        return getLevelAt(index)
+        var level:IImagePyramidLevel = getLevelAt(index)
+        
+        return level
     }
 
     /**

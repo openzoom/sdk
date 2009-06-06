@@ -43,8 +43,8 @@ public final class OpenStreetMapDescriptor extends ImagePyramidDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_MAP_SIZE:uint = 67108864
-    private static const DEFAULT_NUM_LEVELS:uint = 20
+    private static const DEFAULT_MAP_SIZE:uint = 67108864 // 2^26
+    private static const DEFAULT_NUM_LEVELS:uint = 19
     private static const DEFAULT_TILE_SIZE:uint = 256
     private static const DEFAULT_TILE_FORMAT:String = "image/png"
     private static const DEFAULT_TILE_OVERLAP:uint = 0
@@ -93,7 +93,9 @@ public final class OpenStreetMapDescriptor extends ImagePyramidDescriptorBase
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
         var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
-        return getLevelAt(index)
+        var level:IImagePyramidLevel = getLevelAt(index)
+        
+        return level
     }
 
     /**

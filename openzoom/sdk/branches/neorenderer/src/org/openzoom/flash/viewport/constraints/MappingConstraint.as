@@ -39,7 +39,7 @@ public class MappingConstraint implements IViewportConstraint
     //
     //--------------------------------------------------------------------------
 
-    private static const LOG2_3:Number = 1.5849625007211563
+    private static const LOG2_1_5:Number = 0.5849625007211563
 
     //--------------------------------------------------------------------------
     //
@@ -64,7 +64,7 @@ public class MappingConstraint implements IViewportConstraint
      * @inheritDoc
      */
     public function validate(transform:IViewportTransform,
-                              target:IViewportTransform):IViewportTransform
+                             target:IViewportTransform):IViewportTransform
     {
         transform.scale = roundToNearestPowerOf2(transform.scale)
         return transform
@@ -84,16 +84,13 @@ public class MappingConstraint implements IViewportConstraint
         var r:Number = exp - Math.floor(exp)
 
         var n:Number
-        if (r < LOG2_3 - 1)
+        if (r < LOG2_1_5)
             n = Math.floor(exp)
         else
             n = Math.ceil(exp)
 
-        if (n == 0)
-            n = 1
-
-//        trace(value, result)
         var result:Number = Math.pow(2, n)
+        
         return result
     }
 }

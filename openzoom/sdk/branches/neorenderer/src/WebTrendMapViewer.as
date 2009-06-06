@@ -23,8 +23,10 @@ package
 
 import flash.display.Sprite;
 import flash.display.StageAlign;
+import flash.display.StageDisplayState;
 import flash.display.StageScaleMode;
 import flash.events.Event;
+import flash.events.KeyboardEvent;
 import flash.utils.setTimeout;
 
 import org.openzoom.flash.components.MemoryMonitor;
@@ -46,14 +48,19 @@ import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
-public class GigaPanViewer extends Sprite
+public class WebTrendMapViewer extends Sprite
 {
-    public function GigaPanViewer()
+	private static const DEFAULT_SCALE_FACTOR:Number = 1.0
+	
+    public function WebTrendMapViewer()
     {
         stage.align = StageAlign.TOP_LEFT
         stage.scaleMode = StageScaleMode.NO_SCALE
         stage.addEventListener(Event.RESIZE,
                                stage_resizeHandler,
+                               false, 0, true)
+        stage.addEventListener(KeyboardEvent.KEY_DOWN,
+                               stage_keyDownHandler,
                                false, 0, true)
 
         ExternalMouseWheel.initialize(stage)
@@ -83,84 +90,27 @@ public class GigaPanViewer extends Sprite
         var path:String
         var aspectRatio:Number
 
-        // Deep Zoom: Obama
-        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
-        source = new DeepZoomImageDescriptor(path, 59783, 24658, 256, 0, "jpg")
-        numRenderers = 1
-        numColumns = 1
+//        path = "http://openzoom.org/webtrendmap/webtrendmap.dzi"
+        path = "webtrendmap.dzi"
+        source = new DeepZoomImageDescriptor(path, 6740, 4768, 254, 1, "png")
         aspectRatio = source.width / source.height
-        width = 16384
-        height = 16384 / aspectRatio
-
-        // Deep Zoom: CMU
-//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/23379.dzi"
-//        source = new DeepZoomImageDescriptor(path, 79433, 17606, 256, 0, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-
-        // Deep Zoom: Hanauma Bay
-        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
-        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
+        width = 8192
         height = width / aspectRatio
 
-//        source = new GigaPanDescriptor(5322, 154730, 36408)
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = width / aspectRatio
-        
-        // GigaPan: Twin Peaks (San Francisco)
-//        source = new GigaPanDescriptor(1155, 141812, 25730)
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = width / aspectRatio
-        
-        // Deep Zoom: Twin Peaks (San Francisco)
-//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/1155.dzi"
-//        source = new DeepZoomImageDescriptor(path, 141812, 25730, 256, 0, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = width / aspectRatio
-        
-        var padding:Number = width * 0.1
+        var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
+        renderer.width = width
+        renderer.height = height
+        renderer.source = source
 
-        var maxRight:Number = 0
-        var maxBottom:Number = 0
+        container.addChild(renderer)
+        renderManager.addRenderer(renderer)
 
-        for (var i:int = 0; i < numRenderers; i++)
-        {
-            var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
-            renderer.x = (i % numColumns) * (width + padding)
-            renderer.y = Math.floor(i / numColumns) * (height + padding)
-            renderer.width = width
-            renderer.height = height
-            renderer.source = source
-
-            container.addChild(renderer)
-            renderManager.addRenderer(renderer)
-
-            maxRight = Math.max(maxRight, renderer.x + renderer.width)
-            maxBottom = Math.max(maxBottom, renderer.y + renderer.height)
-        }
-
-        container.sceneWidth = maxRight
-        container.sceneHeight = maxBottom
+        container.sceneWidth = renderer.width
+        container.sceneHeight = renderer.height
 
         // Constraints
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
-        scaleConstraint.maxScale = source.width / container.sceneWidth * 4
+        scaleConstraint.maxScale = source.width / container.sceneWidth * DEFAULT_SCALE_FACTOR
 
         var zoomConstraint:ZoomConstraint = new ZoomConstraint()
         zoomConstraint.minZoom = 1
@@ -175,20 +125,23 @@ public class GigaPanViewer extends Sprite
                                           zoomConstraint,
                                           visibilityContraint]
         container.constraint = compositeContraint
-
         addChild(container)
 
-        memoryMonitor = new MemoryMonitor()
-        addChild(memoryMonitor)
+        attributionLabel = new AttributionLabel()
+        addChild(attributionLabel)
 
+        // Layout
         layout()
         
-        setTimeout(container.showAll, 500)
+        // Refresh source
+        setTimeout(container.showAll, 500, true)
     }
 
     private var container:MultiScaleContainer
     private var memoryMonitor:MemoryMonitor
     private var renderManager:ImagePyramidRenderManager
+
+    private var attributionLabel:AttributionLabel
 
     private function stage_resizeHandler(event:Event):void
     {
@@ -202,13 +155,128 @@ public class GigaPanViewer extends Sprite
             container.width = stage.stageWidth
             container.height = stage.stageHeight
         }
-
-        if (memoryMonitor)
+        
+        if (attributionLabel)
         {
-            memoryMonitor.x = stage.stageWidth - memoryMonitor.width - 10
-            memoryMonitor.y = stage.stageHeight - memoryMonitor.height - 10
+            attributionLabel.x = stage.stageWidth - attributionLabel.width
+            attributionLabel.y = stage.stageHeight - attributionLabel.height
         }
+    }
+
+    private function stage_keyDownHandler(event:KeyboardEvent):void
+    {
+        if (event.keyCode == 70)
+            toggleFullScreen()
+    }
+    
+    private function toggleFullScreen():void
+    {
+        if (stage.displayState == StageDisplayState.NORMAL)
+            stage.displayState = StageDisplayState.FULL_SCREEN
+        else
+            stage.displayState = StageDisplayState.NORMAL
     }
 }
 
+}
+
+import flash.display.Graphics;
+import flash.display.Shape;
+import flash.display.Sprite;
+import flash.events.Event;
+import flash.system.System;
+import flash.text.AntiAliasType;
+import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
+import flash.text.TextFormatAlign;
+import flash.events.MouseEvent;
+import flash.net.navigateToURL;
+import flash.net.URLRequest;
+
+class AttributionLabel extends Sprite
+{
+    //--------------------------------------------------------------------------
+    //
+    //  Constructor
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     *  Constructor.
+     */
+    public function AttributionLabel():void
+    {
+        createBackground()
+        createLabel()
+        layout()
+
+        mouseEnabled = true
+        mouseChildren = false
+        buttonMode = true
+                
+        addEventListener(MouseEvent.CLICK,
+                         clickHandler,
+                         false, 0, true)
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Children
+    //
+    //--------------------------------------------------------------------------
+
+    private var label:TextField
+    private var background:Shape
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+
+    private function createBackground():void
+    {
+        background = new Shape()
+
+        var g:Graphics = background.graphics
+        g.beginFill(0x101010)
+        g.drawRoundRect(0, 0, 250, 22, 0)
+        g.endFill()
+
+        addChildAt(background, 0)
+    }
+
+    private function createLabel():void
+    {
+        label = new TextField()
+
+        var textFormat:TextFormat = new TextFormat()
+        textFormat.size = 10
+        textFormat.font = "Arial"
+        textFormat.bold = true
+        textFormat.align = TextFormatAlign.CENTER
+        textFormat.color = 0xFFFFFF
+
+        label.defaultTextFormat = textFormat
+        label.antiAliasType = AntiAliasType.ADVANCED
+        label.autoSize = TextFieldAutoSize.LEFT
+        label.selectable = false
+
+        label.htmlText = "Web Trend Map 4 by <font color='#FF0000'>Information Architects Inc</font>"
+        
+        addChild(label)
+    }
+
+    private function layout():void
+    {
+        // center label
+        label.x = (background.width - label.width) / 2
+        label.y = (background.height - label.height) / 2
+    }
+    
+    private function clickHandler(event:MouseEvent):void
+    {
+    	navigateToURL(new URLRequest("http://informationarchitects.jp/"), "_blank")
+    }
 }

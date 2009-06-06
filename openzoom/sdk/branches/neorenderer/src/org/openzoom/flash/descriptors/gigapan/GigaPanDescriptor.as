@@ -119,12 +119,13 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
      */
     public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
-        var maxDimension:uint = Math.max(width, height)
-        var level:uint = Math.round(Math.log(maxDimension) / Math.LN2)
-        var actualLevel:uint = level - DEFAULT_BASE_LEVEL
-        var index:int = clamp(actualLevel, 0, numLevels - 1)
+        var longestSide:Number = Math.max(width, height)
+        var log2:Number = Math.log(longestSide) / Math.LN2
+        var maxLevel:uint = numLevels - 1
+        var index:uint = clamp(Math.ceil(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
+        var level:IImagePyramidLevel = getLevelAt(index)
         
-        return getLevelAt(index)
+        return level
     }
 
     /**
@@ -210,8 +211,8 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
     {
         var size:Point = new Point()
         var scale:Number = getScale(level)
-        size.x = Math.ceil(width * scale)
-        size.y = Math.ceil(height * scale)
+        size.x = Math.floor(width * scale)
+        size.y = Math.floor(height * scale)
         
         return size
     }

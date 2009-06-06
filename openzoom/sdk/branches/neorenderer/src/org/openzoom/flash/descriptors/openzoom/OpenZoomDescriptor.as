@@ -21,14 +21,13 @@
 package org.openzoom.flash.descriptors.openzoom
 {
 
-import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
-import org.openzoom.flash.descriptors.IImageSourceDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.ImageSourceDescriptor;
+import org.openzoom.flash.descriptors.IImageSourceDescriptor;
 import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImageSourceDescriptor;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.utils.uri.resolveURI;
 
@@ -111,18 +110,20 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
     public function getLevelForSize(width:Number,
                                     height:Number):IImagePyramidLevel
     {
-        var level:IImagePyramidLevel
+        var currentLevel:IImagePyramidLevel
 
         for (var i:int = numLevels - 1; i >= 0; i--)
         {
-            level = getLevelAt(i)
-            if (level.width <= width || level.height <= height)
+            currentLevel = getLevelAt(i)
+            if (currentLevel.width <= width || currentLevel.height <= height)
                 break
         }
 
         var maxLevel:uint = numLevels - 1
-        var index:int = level.index
-        return getLevelAt(clamp(index, 0, maxLevel))
+        var index:int = clamp(index, 0, maxLevel)
+        var level:IImagePyramidLevel = getLevelAt(index)
+        
+        return level
     }
 
     /**

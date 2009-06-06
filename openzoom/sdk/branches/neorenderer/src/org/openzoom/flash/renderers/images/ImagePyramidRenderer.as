@@ -61,6 +61,8 @@ public final class ImagePyramidRenderer extends Renderer
 
     private var tileCache:Dictionary /* of ImagePyramidTile */ = new Dictionary()
     openzoom_internal var tileLayer:Shape
+    
+    public var smoothing:Boolean = true
 
     //--------------------------------------------------------------------------
     //

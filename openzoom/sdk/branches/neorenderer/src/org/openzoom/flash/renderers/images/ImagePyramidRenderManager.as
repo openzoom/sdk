@@ -58,10 +58,12 @@ public final class ImagePyramidRenderManager implements IDisposable
     //--------------------------------------------------------------------------
 
     private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
-    private static const MAX_CACHE_SIZE:uint = 100
+    private static const MAX_CACHE_SIZE:uint = 120
 
     private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
 
+    private static const QUALITY:uint = 32
+    
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -175,9 +177,8 @@ public final class ImagePyramidRenderManager implements IDisposable
 
         // FIXME: For collections it's too much work
         // to render from bottom of the image pyramid
-        var quality:int = 0
-        fromLevel = Math.max(0, optimalLevel.index - quality)
-        fromLevel = 0
+        fromLevel = Math.max(0, optimalLevel.index - QUALITY)
+//        fromLevel = 0
         toLevel = optimalLevel.index
 
         // Prepare tile layer
@@ -190,6 +191,8 @@ public final class ImagePyramidRenderManager implements IDisposable
 
         tileLayer.width = renderer.width
         tileLayer.height = renderer.height
+
+        var loadingQueue:Array = []
 
         // Iterate over levels
         for (var l:int = fromLevel; l <= toLevel; l++)
@@ -213,6 +216,11 @@ public final class ImagePyramidRenderManager implements IDisposable
                       "Tile distance too large.", tileDistance)
                 continue
             }
+            
+            
+            var center:Point = new Point((fromTile.x + toTile.x) / 2,
+                                         (fromTile.y + toTile.y) / 2)
+            
 
             // Iterate over columns
             for (var c:int = fromTile.x; c <= toTile.x; c++)
@@ -222,15 +230,21 @@ public final class ImagePyramidRenderManager implements IDisposable
                 {
                     var tile:ImagePyramidTile = renderer.openzoom_internal::getTile(l, c, r)
 
-                    if (fromLevel == 0 && !renderer.ready && tile.level > 0)
-                        return
+//                    if (fromLevel == 0 && !renderer.ready && tile.level > 0)
+//                        return
+
+	                var dx:Number = Math.abs(tile.column - center.x)
+	                var dy:Number = Math.abs(tile.row - center.y)
+	                var distance:Number = dx * dx + dy * dy
+                    tile.distance = distance
 
                     if (!tile.loaded)
                     {
                         var downloadPossible:Boolean = numDownloads < MAX_CONCURRENT_DOWNLOADS
 
                         if (!tile.loading && downloadPossible)
-                            loadTile(tile)
+                        	loadingQueue.push(tile)
+//                            loadTile(tile)
 
                         continue
                     }
@@ -266,10 +280,17 @@ public final class ImagePyramidRenderManager implements IDisposable
                                                     tile.bitmapData.height)
 
                         var alphaMultiplier:uint = (tile.alpha * 256) << 24
-                        var alphaMap:BitmapData = new BitmapData(tile.bitmapData.width,
-                                                                 tile.bitmapData.height,
-                                                                 true,
-                                                                 alphaMultiplier | 0x00000000)
+                        var alphaMap:BitmapData
+                        
+//                        if (!ALPHA_MAP.rect.containsRect(tile.bitmapData.rect))
+//                            ALPHA_MAP = new BitmapData(tile.bitmapData.width,
+//                                                       tile.bitmapData.height,
+//                                                       true)
+//                        ALPHA_MAP.fillRect(tile.bitmapData.rect, alphaMultiplier | 0x00000000)
+                        alphaMap = new BitmapData(tile.bitmapData.width,
+                                                  tile.bitmapData.height,
+                                                  true,
+                                                  alphaMultiplier | 0x00000000)
 
                         textureMap.copyPixels(tile.bitmapData,
                                               tile.bitmapData.rect,
@@ -288,10 +309,15 @@ public final class ImagePyramidRenderManager implements IDisposable
                     var sy:Number = descriptor.height / level.height
                     matrix.createBox(sx, sx, 0, tile.bounds.x * sx, tile.bounds.y * sy)
 
+                    var smoothing:Boolean = renderer.smoothing
+                    
+                    if (l != toLevel)
+                        smoothing = true
+                    
                     g.beginBitmapFill(textureMap,
                                       matrix,
                                       false, /* repeat */
-                                      true /* smoothing */)
+                                      smoothing /* smoothing */)
                     g.drawRect(tile.bounds.x * sx,
                                tile.bounds.y * sy,
                                tile.bounds.width * sx,
@@ -299,9 +325,41 @@ public final class ImagePyramidRenderManager implements IDisposable
                     g.endFill()
                 }
             }
+            
+	        loadingQueue.sort(compareTiles, Array.DESCENDING)
+	        
+	        while (loadingQueue.length > 0)
+	            loadTile(loadingQueue.shift())
         }
         
 //        trace("Render cycle:", getTimer() - before)
+    }
+    
+    private static var ALPHA_MAP:BitmapData = new BitmapData(256, 256, true)
+
+    //--------------------------------------------------------------------------
+    //
+    //  Comparator
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     */ 
+    private function compareTiles(tile1:ImagePyramidTile,
+                                  tile2:ImagePyramidTile):int
+    {
+//        if (tile1.level < tile2.level)
+//           return -1
+//        if (tile1.level > tile2.level)
+//           return 1
+    	
+        if (tile1.distance < tile2.distance)
+           return -1
+        if (tile1.distance > tile2.distance)
+           return 1
+        else
+           return 0
     }
 
     //--------------------------------------------------------------------------

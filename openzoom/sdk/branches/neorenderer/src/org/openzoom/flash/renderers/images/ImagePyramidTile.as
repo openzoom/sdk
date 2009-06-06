@@ -148,6 +148,12 @@ public class ImagePyramidTile implements IDisposable,
 
     public var alpha:Number = 0
 
+    //----------------------------------
+    //  distance
+    //----------------------------------
+
+    public var distance:Number = 0
+
     //--------------------------------------------------------------------------
     //
     //  Properties: Caching

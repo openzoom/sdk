@@ -30,12 +30,9 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
-import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
-import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
 import org.openzoom.flash.viewport.constraints.MappingConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
@@ -46,7 +43,7 @@ import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 
-[SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
+[SWF(width="960", height="600", frameRate="60", backgroundColor="#CCCCCCC")]
 public class ImagePyramidRendererTest extends Sprite
 {
     public function ImagePyramidRendererTest()
@@ -91,7 +88,6 @@ public class ImagePyramidRendererTest extends Sprite
         // Deep Zoom
         path = "http://static.gasi.ch/images/3229924166/image.dzi"
         path = "../resources/images/deepzoom/billions.xml"
-        path = "../resources/images/deepzoom/2.xml"
         source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
         numRenderers = 263
         numColumns = 36
@@ -108,13 +104,16 @@ public class ImagePyramidRendererTest extends Sprite
 //        width = 16384
 //        height = 16384 / aspectRatio
 //        
-//        path = "http://gasi.ch/indupart/indupart-9-gaussian-12-jpg-lq.dzi"
-//        source = new DeepZoomImageDescriptor(path, 2895, 4095, 254, 1, "jpg")
-//        numRenderers = 1//120
-//        numColumns = 1//36
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
+        path = "http://gasi.ch/indupart/indupart-9-gaussian-12-jpg-lq.dzi"
+        path = "../resources/images/indupart/test/jpg/indupart-200/image.dzi"
+        source = new DeepZoomImageDescriptor(path, 2896, 4096, 254, 1, "jpg")
+//        path = "../resources/images/indupart/test/png/indupart-200/image.dzi"
+//        source = new DeepZoomImageDescriptor(path, 2896, 4096, 254, 1, "png")
+        numRenderers = 268//120
+        numColumns = 36//36
+        aspectRatio = source.width / source.height
+        width = 512
+        height = 512 / aspectRatio
 
         // Deep Zoom: Inline Multiscale Image Replacement
 //        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
@@ -186,6 +185,13 @@ public class ImagePyramidRendererTest extends Sprite
 //        width = 16384
 //        height = 16384
 
+        // OpenStreetMap
+        source = new AwhereDescriptor()
+        numRenderers = 1
+        numColumns = 1
+        width = 16384
+        height = 16384
+
         // Virtual Earth
 //        source = new VirtualEarthDescriptor()
 //        numRenderers = 1
@@ -217,6 +223,7 @@ public class ImagePyramidRendererTest extends Sprite
             renderer.y = Math.floor(i / numColumns) * (height + padding)
             renderer.width = width
             renderer.height = height
+            
             renderer.source = source
 
             container.addChild(renderer)

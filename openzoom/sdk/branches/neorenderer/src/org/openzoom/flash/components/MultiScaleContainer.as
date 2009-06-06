@@ -468,7 +468,7 @@ public final class MultiScaleContainer extends Sprite
     private function enterFrameHandler(event:Event):void
     {
     	if (invalidated)
-    	   updateDisplayList()
+            updateDisplayList()
     }
     
     private function updateDisplayList():void
