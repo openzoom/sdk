@@ -41,9 +41,9 @@ import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
-import org.openzoom.flash.viewport.transformers.SmoothTransformer;
+import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
-[SWF(width="960", height="600", frameRate="60", backgroundColor="#CCCCCCC")]
+[SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class ImagePyramidRendererTest extends Sprite
 {
     public function ImagePyramidRendererTest()
@@ -57,9 +57,8 @@ public class ImagePyramidRendererTest extends Sprite
         ExternalMouseWheel.initialize(stage)
 
         container = new MultiScaleContainer()
-//        var transformer:TweenerTransformer = new TweenerTransformer()
-        var transformer:SmoothTransformer = new SmoothTransformer()
-//        container.transformer = transformer
+        var transformer:TweenerTransformer = new TweenerTransformer()
+        container.transformer = transformer
 
         var mouseController:MouseController = new MouseController()
 //        mouseController.minMouseWheelZoomInFactor = 2.01
@@ -97,24 +96,24 @@ public class ImagePyramidRendererTest extends Sprite
         height = width / aspectRatio
 
         // Deep Zoom: Carina Nebula
-//        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
-//        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-//        
-        path = "http://gasi.ch/indupart/indupart-9-gaussian-12-jpg-lq.dzi"
-        path = "../resources/images/indupart/test/jpg/indupart-200/image.dzi"
-        source = new DeepZoomImageDescriptor(path, 2896, 4096, 254, 1, "jpg")
-//        path = "../resources/images/indupart/test/png/indupart-200/image.dzi"
-//        source = new DeepZoomImageDescriptor(path, 2896, 4096, 254, 1, "png")
-        numRenderers = 268//120
-        numColumns = 36//36
+        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
+        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
+        numRenderers = 1
+        numColumns = 1
         aspectRatio = source.width / source.height
-        width = 512
-        height = 512 / aspectRatio
+        width = 16384
+        height = 16384 / aspectRatio
+//        
+//        path = "http://gasi.ch/indupart/indupart-9-gaussian-12-jpg-lq.dzi"
+//        path = "../resources/images/indupart/test/jpg/indupart-200/image.dzi"
+//        source = new DeepZoomImageDescriptor(path, 2896, 4096, 254, 1, "jpg")
+////        path = "../resources/images/indupart/test/png/indupart-200/image.dzi"
+////        source = new DeepZoomImageDescriptor(path, 2896, 4096, 254, 1, "png")
+//        numRenderers = 268//120
+//        numColumns = 36//36
+//        aspectRatio = source.width / source.height
+//        width = 512
+//        height = 512 / aspectRatio
 
         // Deep Zoom: Inline Multiscale Image Replacement
 //        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
@@ -194,11 +193,11 @@ public class ImagePyramidRendererTest extends Sprite
 //        height = 16384
 
         // Virtual Earth
-        source = new VirtualEarthDescriptor()
-        numRenderers = 1
-        numColumns = 1
-        width = 16384
-        height = 16384
+//        source = new VirtualEarthDescriptor()
+//        numRenderers = 1
+//        numColumns = 1
+//        width = 16384
+//        height = 16384
 
         // Zoomify
         // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290"

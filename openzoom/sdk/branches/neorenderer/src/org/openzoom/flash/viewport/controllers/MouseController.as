@@ -44,7 +44,7 @@ public class MouseController extends ViewportControllerBase
     //--------------------------------------------------------------------------
 
     private static const CLICK_THRESHOLD_DURATION:Number = 500 // milliseconds
-    private static const CLICK_THRESHOLD_DISTANCE:Number = 8   // pixels
+    private static const CLICK_THRESHOLD_DISTANCE:Number = 8 // pixels
 
     private static const DEFAULT_CLICK_ZOOM_IN_FACTOR:Number = 2.0
     private static const DEFAULT_CLICK_ZOOM_OUT_FACTOR:Number = 0.3

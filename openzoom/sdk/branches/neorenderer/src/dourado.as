@@ -69,8 +69,7 @@ public class dourado extends Sprite
 
         container = new MultiScaleContainer()
         var transformer:TweenerTransformer = new TweenerTransformer()
-//        transformer.duration = 0.2
-        transformer.duration = 0.1
+        transformer.duration = 0.2
         container.transformer = transformer
 
         var mouseController:MouseController = new MouseController()
@@ -130,9 +129,10 @@ public class dourado extends Sprite
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
         compositeContraint.constraints = [scaleConstraint,
                                           centerConstraint,
-                                          zoomConstraint,
                                           visibilityContraint,
-                                          mappingConstraint]
+                                          mappingConstraint,
+                                          zoomConstraint,
+                                          ]
         container.constraint = compositeContraint
         addChild(container)
 
@@ -178,7 +178,7 @@ public class dourado extends Sprite
     
     private function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
-    	trace(container.viewport.scale)
+//    	trace(container.viewport.scale)
     }
 
     private function stage_keyDownHandler(event:KeyboardEvent):void

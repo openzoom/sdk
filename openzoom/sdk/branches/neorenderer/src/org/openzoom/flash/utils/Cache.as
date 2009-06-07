@@ -22,12 +22,13 @@ package org.openzoom.flash.utils
 {
 
 import flash.utils.Dictionary;
+import flash.utils.getTimer;
 
 /**
  * Basic implementation of a cache that evicts lowest item in order
  * in case its capacity has been reached.
  */
-public final class Cache implements IDisposable
+public final class Cache implements ICache
 {
     //--------------------------------------------------------------------------
     //
@@ -62,7 +63,7 @@ public final class Cache implements IDisposable
     private var _size:int
 
     /**
-     * Returns the size of the cache.
+     * @inheritDoc
      */
     public function get size():int
     {
@@ -76,8 +77,7 @@ public final class Cache implements IDisposable
     //--------------------------------------------------------------------------
 
     /**
-     * Returns <code>true</code> if cache has item at key
-     * and otherwise <code>false</code>
+     * @inheritDoc
      */
     public function contains(key:*):Boolean
     {
@@ -88,7 +88,7 @@ public final class Cache implements IDisposable
     }
 
     /**
-     * Returns cache item at key.
+     * @inheritDoc
      */
     public function get(key:*):ICacheItem
     {
@@ -101,7 +101,7 @@ public final class Cache implements IDisposable
     }
 
     /**
-     * Put item into cache at key.
+     * @inheritDoc
      */
     public function put(key:*, item:ICacheItem):void
     {
@@ -115,34 +115,38 @@ public final class Cache implements IDisposable
         }
         else
         {
-            // Assume first item is the worst
-            var worstItemIndex:int = 0
-            var worstItem:ICacheItem = items[worstItemIndex]
+//            var s:int = getTimer()
+            
+            // Assume first item is the minimal
+            var evictedItemIndex:int = 0
+            var evictedItem:ICacheItem = items[evictedItemIndex]
 
-            // Find worst of all items
+            // Find minimum of all items
             var candidate:ICacheItem
             for (var i:int = 1; i < items.length; ++i)
             {
                 candidate = items[i]
 
-                if (candidate.compareTo(worstItem) < 0)
+                if (candidate.compareTo(evictedItem) < 0)
                 {
-                    worstItemIndex = i
-                    worstItem = candidate
+                    evictedItemIndex = i
+                    evictedItem = candidate
                 }
             }
 
-            // Dispose worst item
-            worstItem.dispose()
+            // Dispose minimum item
+            evictedItem.dispose()
 
-            // Add new item at the spot of the previously worst item
-            items[worstItemIndex] = item
+            // Add new item at the spot of the previously minimal item
+            items[evictedItemIndex] = item
             cache[key] = item
+            
+//            trace("[Cache] put:", getTimer() - s)
         }
     }
 
     /**
-     * Remove item from cache at key.
+     * @inheritDoc
      */
     public function remove(key:*):ICacheItem
     {

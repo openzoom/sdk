@@ -27,6 +27,12 @@ package org.openzoom.flash.utils
  */
 public interface IDisposable
 {
+    //--------------------------------------------------------------------------
+    //
+    //  Methods
+    //
+    //--------------------------------------------------------------------------
+    
     /**
      * Releases all resources this object holds on to.
      * Do not use object after calling dispose.

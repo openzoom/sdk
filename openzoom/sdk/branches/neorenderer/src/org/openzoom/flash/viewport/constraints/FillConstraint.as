@@ -18,66 +18,50 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.viewport
+package org.openzoom.flash.viewport.constraints
 {
+
+import org.openzoom.flash.viewport.IViewportConstraint;
+import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
- * Interface for viewport transformers.
+ * Ensures that the scene always entirely fills the viewport.
  */
-public interface IViewportTransformer
+public class FillConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
     //
-    //  Properties
-    //
-    //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  viewport
-    //----------------------------------
-
-    /**
-     * Target viewport to transform.
-     */
-    function get viewport():INormalizedViewport
-    function set viewport(value:INormalizedViewport):void
-
-    //----------------------------------
-    //  target
-    //----------------------------------
-
-    /**
-     * Target viewport transform.
-     */
-    function get target():IViewportTransform
-    function set target(value:IViewportTransform):void
-
-    //----------------------------------
-    //  constraint
-    //----------------------------------
-
-    /**
-     * Constraint for target transform.
-     */
-    function get constraint():IViewportConstraint
-    function set constraint(value:IViewportConstraint):void
-
-    //--------------------------------------------------------------------------
-    //
-    //  Methods
+    //  Constructor
     //
     //--------------------------------------------------------------------------
 
     /**
-     * Transform viewport to target transform.
+     * Constructor.
      */
-    function transform(target:IViewportTransform,
-                       immediately:Boolean=false):void
+    public function FillConstraint()
+    {
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IViewportConstraint
+    //
+    //--------------------------------------------------------------------------
 
     /**
-     * Stop viewport transformation.
+     * @inheritDoc
      */
-    function stop():void
+    public function validate(transform:IViewportTransform,
+                             target:IViewportTransform):IViewportTransform
+    {
+        if (transform.width > 1)
+            transform.width = 1
+
+        if (transform.height > 1)
+            transform.height = 1
+
+        return transform
+    }
 }
 
 }

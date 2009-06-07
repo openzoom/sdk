@@ -36,6 +36,7 @@ import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
 import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
+import org.openzoom.flash.viewport.constraints.FillConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
 import org.openzoom.flash.viewport.constraints.ZoomConstraint;
@@ -43,7 +44,6 @@ import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
-
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class GigaPanViewer extends Sprite
@@ -168,6 +168,7 @@ public class GigaPanViewer extends Sprite
         var centerConstraint:CenterConstraint = new CenterConstraint()
         
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
+//        visibilityContraint.visibilityRatio = 1
 
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
         compositeContraint.constraints = [scaleConstraint,

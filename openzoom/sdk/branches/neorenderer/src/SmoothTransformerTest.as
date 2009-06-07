@@ -31,13 +31,16 @@ import flash.geom.Rectangle;
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
 import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
 import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
+import org.openzoom.flash.viewport.constraints.FillConstraint;
 import org.openzoom.flash.viewport.constraints.MappingConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
@@ -61,11 +64,13 @@ public class SmoothTransformerTest extends Sprite
         ExternalMouseWheel.initialize(stage)
 
         container = new MultiScaleContainer()
+        container.transformer = new TweenerTransformer()
+        
+        // Smooth transformer
         transformer = new SmoothTransformer()
         transformer.viewport = container.viewport
-        
-//        container.transformer = new TweenerTransformer()
 
+        // Controllers
         var mouseController:MouseController = new MouseController()
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
@@ -87,14 +92,13 @@ public class SmoothTransformerTest extends Sprite
         var aspectRatio:Number
 
         // Deep Zoom: Carina Nebula
-//        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
-//        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-//        
+        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
+        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height
+        width = 16384
+        height = 16384 / aspectRatio
 
         // Virtual Earth
         source = new VirtualEarthDescriptor()
@@ -102,6 +106,15 @@ public class SmoothTransformerTest extends Sprite
         numColumns = 1
         width = 16384
         height = 16384
+
+//        // Deep Zoom: Hanauma Bay
+//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
+//        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = width / aspectRatio
 
         var padding:Number = width * 0.1
 
@@ -133,19 +146,24 @@ public class SmoothTransformerTest extends Sprite
 
         var mappingConstraint:MappingConstraint = new MappingConstraint()
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
+//        visibilityContraint.visibilityRatio = 1.0
 
-//        var centerConstraint:CenterConstraint = new CenterConstraint()
+        var centerConstraint:CenterConstraint = new CenterConstraint()
+        var fillConstraint:FillConstraint = new FillConstraint()
 
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
-        compositeContraint.constraints = [scaleConstraint,
+        compositeContraint.constraints = [
+                                          scaleConstraint,
                                           //centerConstraint,
-                                          visibilityContraint]
+                                          visibilityContraint,
+//                                          fillConstraint,
+                                          ]
 //        compositeContraint.constraints = [scaleConstraint,
 //                                          mappingConstraint]
 //        compositeContraint.constraints = [scaleConstraint,
 //                                          visibilityContraint,
 //                                          mappingConstraint]
-//        container.constraint = compositeContraint
+        container.constraint = compositeContraint
 
         addChild(container)
 
@@ -195,27 +213,29 @@ public class SmoothTransformerTest extends Sprite
             return
         
         var target:IViewportTransform = container.viewport.transform
-        
-//        var w:Number = Math.random()
-//        var center:Point = new Point(w - Math.random(), w - Math.random())
-//        target.panCenterTo(center.x, center.y)
-//        target.width = w
-        
-        target.fitToBounds(new Rectangle(0.5 + Math.random() * 0.4,
-                                         0.3 + Math.random() * 0.4,
-                                         0.00004,
-                                         0.00004))
-//        target.fitToBounds(new Rectangle(0.5234956109333568,
-//                                         0.35019891395599395,
+//        target.fitToBounds(new Rectangle(0.1 + Math.random() * 0.8,
+//                                         0.1 + Math.random() * 0.8,
+//                                         0.0005,
+//                                         0.0005))
+//        target.fitToBounds(new Rectangle(0.45 + Math.random() * 0.1,
+//                                         0.45 + Math.random() * 0.1,
+//                                         0.01,
+//                                         0.01))
+//        target.fitToBounds(new Rectangle(0.5 + Math.random() * 0.4,
+//                                         0.3 + Math.random() * 0.4,
 //                                         0.00004,
 //                                         0.00004))
+        target.fitToBounds(new Rectangle(0.5234956109333568,
+                                         0.35019891395599395,
+                                         0.00004,
+                                         0.00004))
         
         transformer.transform(target)
     }
     
     private function viewport_targetUpdateHandler(event:ViewportEvent):void
     {
-        transformer.stop()   
+        transformer.stop()
     }
 }
 

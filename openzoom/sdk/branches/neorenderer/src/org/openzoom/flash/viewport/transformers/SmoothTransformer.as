@@ -76,6 +76,8 @@ public class SmoothTransformer extends ViewportTransformerBase
     
     private var timer:Timer
     
+    private var running:Boolean = false
+    
     //--------------------------------------------------------------------------
     //
     //  Methods: IViewportTransformer
@@ -95,7 +97,15 @@ public class SmoothTransformer extends ViewportTransformerBase
         
         u0 = 0
         u1 = Point.distance(c0, c1)
-    
+        
+        if (Math.abs(u0 - u1) < 0.0000001)
+        {
+            viewport.beginTransform()
+            viewport.transform = target
+            viewport.endTransform()
+            return
+        }
+        
         b0 = b(0)
         b1 = b(1)
         r0 = r(b0)
@@ -104,6 +114,7 @@ public class SmoothTransformer extends ViewportTransformerBase
         
         timer.reset()
         
+        running = true
         viewport.beginTransform()
         
 //        trace("c0:", c0,
@@ -127,9 +138,16 @@ public class SmoothTransformer extends ViewportTransformerBase
 
     public function stop():void
     {
+        if (!running)
+            return
+        
         timer.stop()
         timer.reset()
+                                      
+        viewport.transformer.target = viewport.transform
         viewport.endTransform()
+        
+        running = false
     }
     
     private var startTime:int = 0
@@ -150,7 +168,8 @@ public class SmoothTransformer extends ViewportTransformerBase
             timer.stop()
             timer.removeEventListener(TimerEvent.TIMER,
                                       timer_timerHandler)
-            viewport.endTransform()
+            stop()
+            return
         }
         
         var s:Number = V * t
@@ -161,6 +180,7 @@ public class SmoothTransformer extends ViewportTransformerBase
         var center:Point = c(s)
         transform.panCenterTo(center.x, center.y)
         
+        viewport.transformer.target = transform
         viewport.transform = transform
     }
     

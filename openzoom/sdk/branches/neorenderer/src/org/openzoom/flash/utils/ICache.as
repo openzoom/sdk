@@ -18,66 +18,51 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.viewport
+package org.openzoom.flash.utils
 {
 
 /**
- * Interface for viewport transformers.
+ * Interface for cache implementations.
  */
-public interface IViewportTransformer
+public interface ICache extends IDisposable
 {
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  viewport
-    //----------------------------------
-
+    
     /**
-     * Target viewport to transform.
+     * Returns the size of the cache.
      */
-    function get viewport():INormalizedViewport
-    function set viewport(value:INormalizedViewport):void
-
-    //----------------------------------
-    //  target
-    //----------------------------------
-
-    /**
-     * Target viewport transform.
-     */
-    function get target():IViewportTransform
-    function set target(value:IViewportTransform):void
-
-    //----------------------------------
-    //  constraint
-    //----------------------------------
-
-    /**
-     * Constraint for target transform.
-     */
-    function get constraint():IViewportConstraint
-    function set constraint(value:IViewportConstraint):void
-
+    function get size():int
+    
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
+    
+    /**
+     * Returns <code>true</code> if cache has item at key
+     * and otherwise <code>false</code>
+     */
+    function contains(key:*):Boolean
 
     /**
-     * Transform viewport to target transform.
+     * Returns cache item at key.
      */
-    function transform(target:IViewportTransform,
-                       immediately:Boolean=false):void
+    function get(key:*):ICacheItem
 
     /**
-     * Stop viewport transformation.
+     * Put item into cache at key.
      */
-    function stop():void
+    function put(key:*, item:ICacheItem):void
+
+    /**
+     * Remove item from cache at key.
+     */
+    function remove(key:*):ICacheItem
 }
 
 }

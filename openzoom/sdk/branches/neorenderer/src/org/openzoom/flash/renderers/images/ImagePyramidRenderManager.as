@@ -62,7 +62,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 
     private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
 
-    private static const QUALITY:uint = 8
+    private static const QUALITY:uint = 32
     
     //--------------------------------------------------------------------------
     //

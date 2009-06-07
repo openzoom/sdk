@@ -29,7 +29,7 @@ import flash.utils.Dictionary;
 import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.renderers.Renderer;
-import org.openzoom.flash.utils.Cache;
+import org.openzoom.flash.utils.ICache;
 
 /**
  * Image pyramid renderer.
@@ -186,7 +186,7 @@ public final class ImagePyramidRenderer extends Renderer
 
         if (!tile.source)
         {
-            var cache:Cache = openzoom_internal::renderManager.openzoom_internal::tileCache
+            var cache:ICache = openzoom_internal::renderManager.openzoom_internal::tileCache
 
             if (cache.contains(tile.url))
             {
