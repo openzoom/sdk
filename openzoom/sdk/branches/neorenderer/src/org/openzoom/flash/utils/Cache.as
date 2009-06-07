@@ -115,8 +115,6 @@ public final class Cache implements ICache
         }
         else
         {
-//            var s:int = getTimer()
-            
             // Assume first item is the minimal
             var evictedItemIndex:int = 0
             var evictedItem:ICacheItem = items[evictedItemIndex]
@@ -140,8 +138,6 @@ public final class Cache implements ICache
             // Add new item at the spot of the previously minimal item
             items[evictedItemIndex] = item
             cache[key] = item
-            
-//            trace("[Cache] put:", getTimer() - s)
         }
     }
 

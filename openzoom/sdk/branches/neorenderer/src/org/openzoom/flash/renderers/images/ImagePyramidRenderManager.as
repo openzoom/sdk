@@ -21,7 +21,6 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.display.Shape;
@@ -30,16 +29,13 @@ import flash.events.Event;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
-import flash.utils.Dictionary;
 import flash.utils.getTimer;
 
 import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.events.NetworkRequestEvent;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.net.INetworkQueue;
-import org.openzoom.flash.net.INetworkRequest;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.utils.Cache;
@@ -86,13 +82,17 @@ public final class ImagePyramidRenderManager implements IDisposable
                                        false, 0, true)
 
         this.loader = loader
-
-        openzoom_internal::tileCache = new Cache(MAX_CACHE_SIZE)
-
+        tileCache = new Cache(MAX_CACHE_SIZE)
         this.owner = owner
+        tileLoader = new TileLoader(this,
+                                    loader,
+                                    tileCache,
+                                    MAX_CONCURRENT_DOWNLOADS)
+         
         owner.addEventListener(Event.ENTER_FRAME,
                                enterFrameHandler,
                                false, 0, true)
+                               
     }
 
     //--------------------------------------------------------------------------
@@ -107,11 +107,11 @@ public final class ImagePyramidRenderManager implements IDisposable
     private var viewport:INormalizedViewport
     private var scene:IMultiScaleScene
     private var loader:INetworkQueue
+    private var tileLoader:TileLoader
 
     private var invalidateDisplayListFlag:Boolean = false
 
-    openzoom_internal var tileCache:Cache
-    private var pendingDownloads:Dictionary = new Dictionary()
+    private var tileCache:Cache
 
     //--------------------------------------------------------------------------
     //
@@ -218,9 +218,12 @@ public final class ImagePyramidRenderManager implements IDisposable
             }
             
             
-//            var center:Point = new Point((fromTile.x + toTile.x) / 2,
-//                                         (fromTile.y + toTile.y) / 2)
+            // FIXME: Currently center, calculate origin
+//            trace(viewport.transform.getOrigin())
+            var origin:Point = new Point((fromTile.x + toTile.x) / 2,
+                                         (fromTile.y + toTile.y) / 2)
             
+            var nextTile:ImagePyramidTile
 
             // Iterate over columns
             for (var c:int = fromTile.x; c <= toTile.x; c++)
@@ -229,23 +232,37 @@ public final class ImagePyramidRenderManager implements IDisposable
                 for (var r:int = fromTile.y; r <= toTile.y; r++)
                 {
                     var tile:ImagePyramidTile = renderer.openzoom_internal::getTile(l, c, r)
+                    
+                    if (!tile.source)
+                    {
+                        if (tileCache.contains(tile.url))
+                        {
+                            var sourceTile:SharedTile = tileCache.get(tile.url) as SharedTile
+                            tile.source = sourceTile
+                            tile.loading = false
+                        }
+                    }
 
                     if (fromLevel == 0 && !renderer.ready && tile.level > 0)
                         return
 
-//	                var dx:Number = Math.abs(tile.column - center.x)
-//	                var dy:Number = Math.abs(tile.row - center.y)
-//	                var distance:Number = dx * dx + dy * dy
-//                    tile.distance = distance
+	                var dx:Number = Math.abs(tile.column - origin.x)
+	                var dy:Number = Math.abs(tile.row - origin.y)
+	                var distance:Number = dx * dx + dy * dy
+                    tile.distance = distance
 
                     if (!tile.loaded)
                     {
-                        var downloadPossible:Boolean = numDownloads < MAX_CONCURRENT_DOWNLOADS
-
-                        if (!tile.loading && downloadPossible)
-                            loadTile(tile)
-//                        	loadingQueue.push(tile)
-
+                        if (!nextTile && !tile.loading)
+                        {
+                            nextTile = tile
+                            continue                            
+                        }
+                        
+                        if (!tile.loading && tile.compareTo(nextTile) >= 0)
+                            nextTile = tile
+                            
+                        invalidateDisplayList()
                         continue
                     }
 
@@ -282,11 +299,6 @@ public final class ImagePyramidRenderManager implements IDisposable
                         var alphaMultiplier:uint = (tile.alpha * 256) << 24
                         var alphaMap:BitmapData
                         
-//                        if (!ALPHA_MAP.rect.containsRect(tile.bitmapData.rect))
-//                            ALPHA_MAP = new BitmapData(tile.bitmapData.width,
-//                                                       tile.bitmapData.height,
-//                                                       true)
-//                        ALPHA_MAP.fillRect(tile.bitmapData.rect, alphaMultiplier | 0x00000000)
                         alphaMap = new BitmapData(tile.bitmapData.width,
                                                   tile.bitmapData.height,
                                                   true,
@@ -326,103 +338,11 @@ public final class ImagePyramidRenderManager implements IDisposable
                 }
             }
             
-//	        loadingQueue.sort(compareTiles, Array.DESCENDING)
-	        
-//	        while (loadingQueue.length > 0)
-//	            loadTile(loadingQueue.shift())
-            
-//            if (loadingQueue.length > 0)
-//                loadTile(loadingQueue[0])
+            if (nextTile)
+                tileLoader.loadTile(nextTile)
         }
         
 //        trace("Render cycle:", getTimer() - before)
-    }
-    
-    private static var ALPHA_MAP:BitmapData = new BitmapData(256, 256, true)
-
-    //--------------------------------------------------------------------------
-    //
-    //  Comparator
-    //
-    //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     */ 
-    private function compareTiles(tile1:ImagePyramidTile,
-                                  tile2:ImagePyramidTile):int
-    {
-//        if (tile1.level < tile2.level)
-//           return -1
-//        if (tile1.level > tile2.level)
-//           return 1
-    	
-        if (tile1.distance < tile2.distance)
-           return -1
-        if (tile1.distance > tile2.distance)
-           return 1
-        else
-           return 0
-    }
-
-    //--------------------------------------------------------------------------
-    //
-    //  Methods: Tile Cache
-    //
-    //--------------------------------------------------------------------------
-
-    private var numDownloads:uint = 0
-
-    private function loadTile(tile:ImagePyramidTile):void
-    {
-        if (pendingDownloads[tile.url])
-           return
-
-        pendingDownloads[tile.url] = true
-
-        numDownloads++
-
-        var request:INetworkRequest = loader.addRequest(tile.url, Bitmap, tile)
-
-        request.addEventListener(NetworkRequestEvent.COMPLETE,
-                                 request_completeHandler,
-                                 false, 0, true)
-
-        request.addEventListener(NetworkRequestEvent.ERROR,
-                                 request_errorHandler,
-                                 false, 0, true)
-
-        tile.loading = true
-
-    }
-
-    private function request_completeHandler(event:NetworkRequestEvent):void
-    {
-        numDownloads--
-
-        var tile:ImagePyramidTile = event.context as ImagePyramidTile
-        var bitmapData:BitmapData = Bitmap(event.data).bitmapData
-
-        var sourceTile:SharedTile = new SharedTile(tile.url,
-                                                          bitmapData,
-                                                          tile.level)
-        sourceTile.lastAccessTime = getTimer()
-        openzoom_internal::tileCache.put(tile.url, sourceTile)
-        tile.source = sourceTile
-        tile.loading = false
-
-        pendingDownloads[tile.url] = false
-
-        invalidateDisplayList()
-    }
-
-    private function request_errorHandler(event:NetworkRequestEvent):void
-    {
-        trace("[ImagePyramidRenderManager] Tile failed to load:",
-              event.request.url)
-
-        numDownloads--
-        invalidateDisplayList()
     }
 
     //--------------------------------------------------------------------------
@@ -493,9 +413,7 @@ public final class ImagePyramidRenderManager implements IDisposable
                                    enterFrameHandler,
                                    false, 0, true)
 
-        renderer.openzoom_internal::renderManager = this
         renderers.push(renderer)
-
         invalidateDisplayList()
 
         return renderer
@@ -512,7 +430,6 @@ public final class ImagePyramidRenderManager implements IDisposable
                                     "Renderer does not exist.")
 
         renderers.splice(index, 1)
-        renderer.openzoom_internal::renderManager = null
 
         if (renderers.length == 0)
             owner.removeEventListener(Event.ENTER_FRAME,

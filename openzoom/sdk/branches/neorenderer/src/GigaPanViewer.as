@@ -25,24 +25,30 @@ import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
+import flash.events.KeyboardEvent;
+import flash.geom.Rectangle;
 import flash.utils.setTimeout;
 
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
+import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
+import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
 import org.openzoom.flash.viewport.constraints.FillConstraint;
+import org.openzoom.flash.viewport.constraints.MappingConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
 import org.openzoom.flash.viewport.constraints.ZoomConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
+import org.openzoom.flash.viewport.transformers.SmoothTransformer;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
@@ -59,11 +65,14 @@ public class GigaPanViewer extends Sprite
         ExternalMouseWheel.initialize(stage)
 
         container = new MultiScaleContainer()
-        var transformer:TweenerTransformer = new TweenerTransformer()
-        container.transformer = transformer
+        container.transformer = new TweenerTransformer()
+        
+        // Smooth transformer
+        transformer = new SmoothTransformer()
+        transformer.viewport = container.viewport
 
+        // Controllers
         var mouseController:MouseController = new MouseController()
-
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
         container.controllers = [mouseController,
@@ -83,24 +92,6 @@ public class GigaPanViewer extends Sprite
         var path:String
         var aspectRatio:Number
 
-        // Deep Zoom: Obama
-        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
-        source = new DeepZoomImageDescriptor(path, 59783, 24658, 256, 0, "jpg")
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = 16384 / aspectRatio
-
-        // Deep Zoom: CMU
-//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/23379.dzi"
-//        source = new DeepZoomImageDescriptor(path, 79433, 17606, 256, 0, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-
         // Deep Zoom: Hanauma Bay
         path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
         source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
@@ -110,30 +101,6 @@ public class GigaPanViewer extends Sprite
         width = 16384
         height = width / aspectRatio
 
-//        source = new GigaPanDescriptor(5322, 154730, 36408)
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = width / aspectRatio
-        
-        // GigaPan: Twin Peaks (San Francisco)
-//        source = new GigaPanDescriptor(1155, 141812, 25730)
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = width / aspectRatio
-        
-        // Deep Zoom: Twin Peaks (San Francisco)
-//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/1155.dzi"
-//        source = new DeepZoomImageDescriptor(path, 141812, 25730, 256, 0, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = width / aspectRatio
-        
         var padding:Number = width * 0.1
 
         var maxRight:Number = 0
@@ -146,6 +113,7 @@ public class GigaPanViewer extends Sprite
             renderer.y = Math.floor(i / numColumns) * (height + padding)
             renderer.width = width
             renderer.height = height
+            
             renderer.source = source
 
             container.addChild(renderer)
@@ -158,23 +126,25 @@ public class GigaPanViewer extends Sprite
         container.sceneWidth = maxRight
         container.sceneHeight = maxBottom
 
-        // Constraints
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
-        scaleConstraint.maxScale = source.width / container.sceneWidth * 4
+        scaleConstraint.maxScale = source.width / container.sceneWidth * numColumns * 4
+
+        var mappingConstraint:MappingConstraint = new MappingConstraint()
+        var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
 
         var zoomConstraint:ZoomConstraint = new ZoomConstraint()
         zoomConstraint.minZoom = 1
-        
+
         var centerConstraint:CenterConstraint = new CenterConstraint()
-        
-        var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
-//        visibilityContraint.visibilityRatio = 1
+        var fillConstraint:FillConstraint = new FillConstraint()
 
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
-        compositeContraint.constraints = [scaleConstraint,
-                                          centerConstraint,
+        compositeContraint.constraints = [
+                                          scaleConstraint,
                                           zoomConstraint,
-                                          visibilityContraint]
+                                          centerConstraint,
+                                          visibilityContraint,
+                                          ]
         container.constraint = compositeContraint
 
         addChild(container)
@@ -184,12 +154,22 @@ public class GigaPanViewer extends Sprite
 
         layout()
         
-        setTimeout(container.showAll, 500)
+        container.viewport.addEventListener(ViewportEvent.TARGET_UPDATE,
+                                            viewport_targetUpdateHandler,
+                                            false, 0, true)
+                           
+        stage.addEventListener(KeyboardEvent.KEY_DOWN,
+                               keyDownHandler,
+                               false, 0, true)
+                               
+        setTimeout(container.showAll, 500, true)
     }
 
     private var container:MultiScaleContainer
-    private var memoryMonitor:MemoryMonitor
     private var renderManager:ImagePyramidRenderManager
+    private var transformer:SmoothTransformer
+    
+    private var memoryMonitor:MemoryMonitor
 
     private function stage_resizeHandler(event:Event):void
     {
@@ -209,6 +189,24 @@ public class GigaPanViewer extends Sprite
             memoryMonitor.x = stage.stageWidth - memoryMonitor.width - 10
             memoryMonitor.y = stage.stageHeight - memoryMonitor.height - 10
         }
+    }
+    
+    private function keyDownHandler(event:KeyboardEvent):void
+    {
+        if (event.keyCode != 76) // L
+            return
+        
+        var target:IViewportTransform = container.viewport.transform
+        target.fitToBounds(new Rectangle(0.45 + Math.random() * 0.05,
+                                         0.45 + Math.random() * 0.2,
+                                         0.01,
+                                         0.01))
+        transformer.transform(target)
+    }
+    
+    private function viewport_targetUpdateHandler(event:ViewportEvent):void
+    {
+        transformer.stop()
     }
 }
 

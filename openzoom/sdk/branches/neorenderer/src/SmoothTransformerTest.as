@@ -44,6 +44,7 @@ import org.openzoom.flash.viewport.constraints.FillConstraint;
 import org.openzoom.flash.viewport.constraints.MappingConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
+import org.openzoom.flash.viewport.constraints.ZoomConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
@@ -108,13 +109,13 @@ public class SmoothTransformerTest extends Sprite
         height = 16384
 
 //        // Deep Zoom: Hanauma Bay
-//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
-//        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = width / aspectRatio
+        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
+        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height
+        width = 16384
+        height = width / aspectRatio
 
         var padding:Number = width * 0.1
 
@@ -148,13 +149,17 @@ public class SmoothTransformerTest extends Sprite
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
 //        visibilityContraint.visibilityRatio = 1.0
 
+        var zoomConstraint:ZoomConstraint = new ZoomConstraint()
+        zoomConstraint.minZoom = 1
+
         var centerConstraint:CenterConstraint = new CenterConstraint()
         var fillConstraint:FillConstraint = new FillConstraint()
 
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
         compositeContraint.constraints = [
                                           scaleConstraint,
-                                          //centerConstraint,
+                                          zoomConstraint,
+                                          centerConstraint,
                                           visibilityContraint,
 //                                          fillConstraint,
                                           ]
@@ -217,18 +222,18 @@ public class SmoothTransformerTest extends Sprite
 //                                         0.1 + Math.random() * 0.8,
 //                                         0.0005,
 //                                         0.0005))
-//        target.fitToBounds(new Rectangle(0.45 + Math.random() * 0.1,
-//                                         0.45 + Math.random() * 0.1,
-//                                         0.01,
-//                                         0.01))
+        target.fitToBounds(new Rectangle(0.45 + Math.random() * 0.05,
+                                         0.45 + Math.random() * 0.2,
+                                         0.01,
+                                         0.01))
 //        target.fitToBounds(new Rectangle(0.5 + Math.random() * 0.4,
 //                                         0.3 + Math.random() * 0.4,
 //                                         0.00004,
 //                                         0.00004))
-        target.fitToBounds(new Rectangle(0.5234956109333568,
-                                         0.35019891395599395,
-                                         0.00004,
-                                         0.00004))
+//        target.fitToBounds(new Rectangle(0.5234956109333568,
+//                                         0.35019891395599395,
+//                                         0.00004,
+//                                         0.00004))
         
         transformer.transform(target)
     }

@@ -43,7 +43,6 @@ public class SmoothTransformer extends ViewportTransformerBase
      */
     public function SmoothTransformer()
     {
-        timer = new Timer(0)
     }
 
     //--------------------------------------------------------------------------
@@ -112,8 +111,6 @@ public class SmoothTransformer extends ViewportTransformerBase
         r1 = r(b1)
         S = (r1 - r0) / rho
         
-        timer.reset()
-        
         running = true
         viewport.beginTransform()
         
@@ -129,11 +126,14 @@ public class SmoothTransformer extends ViewportTransformerBase
 //              "u0:", u0,
 //              "u1:", u1)
         
+        if (!timer)
+            timer = new Timer(1000 / 60)
+            
         timer.addEventListener(TimerEvent.TIMER,
                                timer_timerHandler,
                                false, 0, true)
-        timer.start()
         startTime = getTimer()
+        timer.start()
     }
 
     public function stop():void
@@ -143,6 +143,8 @@ public class SmoothTransformer extends ViewportTransformerBase
         
         timer.stop()
         timer.reset()
+        
+        timer = null
                                       
         viewport.transformer.target = viewport.transform
         viewport.endTransform()
@@ -151,6 +153,7 @@ public class SmoothTransformer extends ViewportTransformerBase
     }
     
     private var startTime:int = 0
+    private var endTime:Number = 0
     
     //--------------------------------------------------------------------------
     //
@@ -160,7 +163,7 @@ public class SmoothTransformer extends ViewportTransformerBase
     
     private function timer_timerHandler(event:TimerEvent):void
     {
-        var endTime:Number = S / V
+        endTime = S / V
         var t:Number = Math.min(getTimer() - startTime, endTime)
         
         if (t == endTime)

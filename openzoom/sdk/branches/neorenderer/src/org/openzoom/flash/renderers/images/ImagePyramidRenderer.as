@@ -148,17 +148,6 @@ public final class ImagePyramidRenderer extends Renderer
 
     //--------------------------------------------------------------------------
     //
-    //  Properties: Internal
-    //
-    //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     */
-    openzoom_internal var renderManager:ImagePyramidRenderManager
-
-    //--------------------------------------------------------------------------
-    //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
@@ -182,18 +171,6 @@ public final class ImagePyramidRenderer extends Renderer
 
             tile = new ImagePyramidTile(level, column, row, url, bounds)
             tileCache[tile.hashCode] = tile
-        }
-
-        if (!tile.source)
-        {
-            var cache:ICache = openzoom_internal::renderManager.openzoom_internal::tileCache
-
-            if (cache.contains(tile.url))
-            {
-                var sourceTile:SharedTile = cache.get(tile.url) as SharedTile
-                tile.source = sourceTile
-                tile.loading = false
-            }
         }
 
         return tile
