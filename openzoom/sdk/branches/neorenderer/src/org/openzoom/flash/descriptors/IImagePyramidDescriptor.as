@@ -118,18 +118,18 @@ public interface IImagePyramidDescriptor extends IMultiScaleImageDescriptor
     /**
      * Returns a Boolean indicating if the tile at the given level, row and column exists.
      */
-    function existsTile(level:int, column:uint, row:uint):Boolean
+    function existsTile(level:int, column:int, row:int):Boolean
 
     /**
      * Returns the URL of the tile specified by its level, column and row.
      */
-    function getTileURL(level:int, column:uint, row:uint):String
+    function getTileURL(level:int, column:int, row:int):String
 
     /**
      * Returns the bounds (position and dimensions) of the tile specified
      * by the level, column and row.
      */
-    function getTileBounds(level:int, column:uint, row:uint):Rectangle
+    function getTileBounds(level:int, column:int, row:int):Rectangle
 
     /**
      * Returns the tile at the given level under the given point.

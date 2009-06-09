@@ -101,7 +101,7 @@ public final class OpenStreetMapDescriptor extends ImagePyramidDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
         var baseURL:String = "http://tile.openstreetmap.org/"
         var tileURL:String = [baseURL, level, "/", column, "/", row, ".png"].join("")

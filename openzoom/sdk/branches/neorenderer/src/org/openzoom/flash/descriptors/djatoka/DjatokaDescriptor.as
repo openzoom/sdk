@@ -22,7 +22,6 @@ package org.openzoom.flash.descriptors.djatoka
 {
 
 import flash.geom.Rectangle;
-import flash.utils.Dictionary;
 
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
@@ -44,7 +43,8 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_BASE_LEVEL:uint = 6 // 2^6 = 64
+    // http://apps.sourceforge.net/mediawiki/djatoka/index.php?title=Djatoka_Level_Logic
+    private static const DEFAULT_BASE_DIMENSION:Number = 96
 
     //--------------------------------------------------------------------------
     //
@@ -61,15 +61,26 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
                                       height:uint,
                                       tileSize:uint=256,
                                       tileOverlap:uint=0,
-                                      type:String="image/jpeg")
+                                      type:String="image/jpeg",
+                                      dwtLevels:int=-1)
     {
 
-        url = imageURL
+        this.imageURL = imageURL
         this.resolverURL = resolverURL
         _width = width
         _height = height
-        _numLevels = clamp(Math.ceil(Math.log(Math.max(width, height)) / Math.LN2)
-                            - DEFAULT_BASE_LEVEL + 1, 0, int.MAX_VALUE)
+
+        var side:uint = Math.max(width, height)
+
+        if (dwtLevels > 0) // != -1
+        {
+            this.dwtLevels = dwtLevels
+            var computedBaseDimension:uint = Math.ceil(side * Math.pow(0.5, dwtLevels))
+            baseDimension = Math.max(DEFAULT_BASE_DIMENSION, computedBaseDimension)
+        }
+
+        var log2:Number = (Math.log(side / baseDimension)) / Math.LN2
+        _numLevels = clamp(Math.ceil(log2) + 1, 0, int.MAX_VALUE)
 
         _tileWidth = _tileHeight = tileSize
         _tileOverlap = tileOverlap
@@ -90,6 +101,45 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
         }
     }
 
+
+    /**
+     * Constructor.
+     */
+    public static function fromJSONMetadata(resolverURL:String,
+                                            imageURL:String,
+                                            jsonString:String,
+                                            tileSize:uint=256,
+                                            tileOverlap:uint=0,
+                                            type:String="image/jpeg"):DjatokaDescriptor
+    {
+        var widthPattern:RegExp = /(\Dwidth\D*:\D*)(\d+)/
+        var heightPattern:RegExp = /(\Dheight\D*:\D*)(\d+)/
+        var dwtLevelsPattern:RegExp = /(\DdwtLevels\D*:\D*)(\d+)/
+
+        try
+        {
+            var width:uint = widthPattern.exec(jsonString)[2]
+            var height:uint = heightPattern.exec(jsonString)[2]
+            var dwtLevels:int = dwtLevelsPattern.exec(jsonString)[2]
+        }
+        catch (error:Error)
+        {
+            throw new ArgumentError("Failed to parse Djatoka Metadata JSON.")
+        }
+
+        var descriptor:DjatokaDescriptor = new DjatokaDescriptor(resolverURL,
+                                                                 imageURL,
+                                                                 width,
+                                                                 height,
+                                                                 tileSize,
+                                                                 tileOverlap,
+                                                                 type,
+                                                                 dwtLevels)
+
+        return descriptor
+    }
+
+
     //--------------------------------------------------------------------------
     //
     //  Variables
@@ -97,9 +147,10 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
     //--------------------------------------------------------------------------
 
     private var resolverURL:String
+    private var imageURL:String
 
-    private var url:String
-    private var levels:Dictionary
+    private var dwtLevels:int = -1
+    private var baseDimension:Number = DEFAULT_BASE_DIMENSION
 
     //--------------------------------------------------------------------------
     //
@@ -111,12 +162,13 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
     {
         var maxLevel:uint = numLevels - 1
         var longestSide:Number = Math.max(width, height)
-        var log2:Number = Math.log(longestSide) / Math.LN2
-        var index:int = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
+        var log2:Number = Math.log(longestSide / baseDimension) / Math.LN2
+        var index:int = clamp(Math.ceil(log2), 0, maxLevel)
+
         return getLevelAt(index)
     }
 
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
         //http://localhost/adore-djatoka/resolver?
         //       url_ver=Z39.88-2004 &
@@ -137,22 +189,25 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
 
         var url:String =  resolverURL + "?" +
                                "url_ver=Z39.88-2004&" +
-                               "rft_id=" + url + "&" +
+                               "rft_id=" + imageURL + "&" +
                                "svc_id=info:lanl-repo/svc/getRegion&" +
                                "svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000&" +
                                "svc.format=" + type + "&" +
                                "svc.level=" + level + "&" +
-                               "svc.rotate=0&" +
                                "svc.region=" + region
         return url
     }
 
     public function clone():IImagePyramidDescriptor
     {
-        return new DjatokaDescriptor(resolverURL, url,
-                                     width, height,
-                                     tileWidth, tileOverlap,
-                                     type)
+        return new DjatokaDescriptor(resolverURL,
+                                     imageURL,
+                                     width,
+                                     height,
+                                     tileWidth,
+                                     tileOverlap,
+                                     type,
+                                     dwtLevels)
     }
 
     //--------------------------------------------------------------------------
@@ -163,7 +218,7 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
 
     /**
      * @private
-     */ 
+     */
     private function getScale(level:int):Number
     {
         var maxLevel:int = numLevels - 1

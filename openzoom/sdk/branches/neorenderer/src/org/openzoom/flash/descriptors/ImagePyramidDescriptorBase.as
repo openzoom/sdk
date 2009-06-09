@@ -214,7 +214,7 @@ public class ImagePyramidDescriptorBase
     /**
      * @copy IImagePyramidDescriptor#getTileBounds()
      */
-    public function getTileBounds(level:int, column:uint, row:uint):Rectangle
+    public function getTileBounds(level:int, column:int, row:int):Rectangle
     {
         var bounds:Rectangle = new Rectangle()
         var offsetX:uint = (column == 0) ? 0 : tileOverlap
@@ -234,7 +234,7 @@ public class ImagePyramidDescriptorBase
     /**
      * @copy IImagePyramidDescriptor#existsTile()
      */
-    public function existsTile(level:int, column:uint, row:uint):Boolean
+    public function existsTile(level:int, column:int, row:int):Boolean
     {
         // By default, all tiles exist
         return true

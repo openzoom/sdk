@@ -93,9 +93,6 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
         var width:uint = xml.@WIDTH
         var height:uint = xml.@HEIGHT
         var tileSize:uint = xml.@TILESIZE
-//        var numTiles:int = xml.@NUMTILES
-//        var numImages:int = xml.@NUMIMAGES
-//        var version:String = xml.@VERSION
 
         return new ZoomifyDescriptor(source,
                                      width,
@@ -139,7 +136,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
         var length:Number = source.length - DEFAULT_DESCRIPTOR_FILE_NAME.length
 
@@ -258,7 +255,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      * There's probably a more efficient way to do this.
      * Correctness has a higher priority for now, so I didn't bother.
      */
-    private function getTileGroup(level:int, column:uint, row:uint):uint
+    private function getTileGroup(level:int, column:int, row:int):int
     {
         var numColumns:uint = getLevelAt(level).numColumns
         var tileIndex:uint = column + row * numColumns + tileCountUpToLevel[level]
@@ -269,7 +266,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     
     /**
      * @private
-     */ 
+     */
     private function getScale(level:int):Number
     {
         var maxLevel:int = numLevels - 1
@@ -285,8 +282,8 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     	// TODO: Test whether to floor or ceil dimensions
         var size:Point = new Point()
         var scale:Number = getScale(level)
-        size.x = Math.floor(width * scale)
-        size.y = Math.floor(height * scale)
+        size.x = Math.ceil(width * scale)
+        size.y = Math.ceil(height * scale)
         
         return size
     }

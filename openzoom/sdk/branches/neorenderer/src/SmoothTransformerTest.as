@@ -32,8 +32,8 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
+import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor;
 import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
-import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
@@ -68,8 +68,7 @@ public class SmoothTransformerTest extends Sprite
         container.transformer = new TweenerTransformer()
         
         // Smooth transformer
-        transformer = new SmoothTransformer()
-        transformer.viewport = container.viewport
+        smoothTransformer = SmoothTransformer.getInstance(container.viewport)
 
         // Controllers
         var mouseController:MouseController = new MouseController()
@@ -109,8 +108,47 @@ public class SmoothTransformerTest extends Sprite
         height = 16384
 
 //        // Deep Zoom: Hanauma Bay
-        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
-        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
+//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
+//        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = width / aspectRatio
+
+        // Djatoka
+        source = new DjatokaDescriptor("http://african.lanl.gov/adore-djatoka/resolver",
+                                       "info:lanl-repo/ds/5aa182c2-c092-4596-af6e-e95d2e263de3&",
+                                       5120,
+                                       3372)
+                                       
+        source = new DjatokaDescriptor("http://african.lanl.gov/adore-djatoka/resolver",
+                                       "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
+                                       5056, 11264, 256, 0, "image/jpeg", 5)
+                                       
+        source = DjatokaDescriptor.fromJSONMetadata("http://african.lanl.gov/adore-djatoka/resolver",
+                                                    "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
+                                                    '{\n"identifier": "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",\n' + 
+                                                    '"imagefile": "/home/rchute/tomcat/temp/cache160035104950802.jp2",\n' + 
+                                                    '"width": "5056",\n' + 
+                                                    '"height": "11264",\n' + 
+                                                    '"dwtLevels": "5",\n' + 
+                                                    '"levels": "5",\n' + 
+                                                    '"compositingLayerCount": "1"\n' + 
+                                                    '}')
+                                                    
+//        var jsonString:String = '{"identifier": "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",' + 
+//                                                    '"imagefile": "/home/rchute/tomcat/temp/cache160035104950802.jp2",' + 
+//                                                    '"width": "5056",' + 
+//                                                    '"height": "11264",' + 
+//                                                    '"dwtLevels": "5",' + 
+//                                                    '"levels": "5",' + 
+//                                                    '"compositingLayerCount": "1"' + 
+//                                                    '}'
+//        source = DjatokaDescriptor.fromJSONMetadata("http://african.lanl.gov/adore-djatoka/resolver",
+//                                                    "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
+//                                                    jsonString)
+
         numRenderers = 1
         numColumns = 1
         aspectRatio = source.width / source.height
@@ -176,10 +214,6 @@ public class SmoothTransformerTest extends Sprite
         addChild(memoryMonitor)
 
         layout()
-        
-        container.viewport.addEventListener(ViewportEvent.TARGET_UPDATE,
-                                            viewport_targetUpdateHandler,
-                                            false, 0, true)
                            
         stage.addEventListener(KeyboardEvent.KEY_DOWN,
                                keyDownHandler,
@@ -190,7 +224,7 @@ public class SmoothTransformerTest extends Sprite
     private var memoryMonitor:MemoryMonitor
     private var renderManager:ImagePyramidRenderManager
 
-    private var transformer:SmoothTransformer
+    private var smoothTransformer:SmoothTransformer
 
     private function stage_resizeHandler(event:Event):void
     {
@@ -235,12 +269,7 @@ public class SmoothTransformerTest extends Sprite
 //                                         0.00004,
 //                                         0.00004))
         
-        transformer.transform(target)
-    }
-    
-    private function viewport_targetUpdateHandler(event:ViewportEvent):void
-    {
-        transformer.stop()
+        smoothTransformer.transform(target)
     }
 }
 

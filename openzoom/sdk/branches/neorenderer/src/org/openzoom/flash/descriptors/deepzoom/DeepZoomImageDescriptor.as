@@ -172,7 +172,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
     	var basePath:String = source.substring(0, source.lastIndexOf("."))
         var path:String  = basePath + "_files"

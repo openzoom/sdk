@@ -98,7 +98,7 @@ public final class RosettaDiskBackDescriptor extends ImagePyramidDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
     	var l:IImagePyramidLevel = getLevelAt(level)
         var baseURL:String = "http://dvd.rosettaproject.org/1.0.0/disk_back/"

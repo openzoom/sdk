@@ -88,7 +88,7 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
         var url:String = "http://share.gigapan.org/gigapans0/" + id + "/tiles"
         var name:String = "r"

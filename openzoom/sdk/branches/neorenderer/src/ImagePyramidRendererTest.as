@@ -161,17 +161,17 @@ public class ImagePyramidRendererTest extends Sprite
 //        height = width / aspectRatio
 
         // Zoomify
-//        path = "http://shutter.gigapixelphotography.com/images/vancouver-yaletown-condos/ImageProperties.xml"
-//        source = new ZoomifyDescriptor(path, 46953, 22255, 256)
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-
-        // Zoomify
         path = "http://shutter.gigapixelphotography.com/images/garibaldi-park-snowshoe/ImageProperties.xml"
         source = new ZoomifyDescriptor(path, 22761, 14794, 256)
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height
+        width = 16384
+        height = 16384 / aspectRatio
+
+        // Zoomify
+        path = "http://shutter.gigapixelphotography.com/images/vancouver-yaletown-condos/ImageProperties.xml"
+        source = new ZoomifyDescriptor(path, 46953, 22255, 256)
         numRenderers = 1
         numColumns = 1
         aspectRatio = source.width / source.height

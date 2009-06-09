@@ -33,6 +33,7 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
+import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
@@ -68,8 +69,8 @@ public class GigaPanViewer extends Sprite
         container.transformer = new TweenerTransformer()
         
         // Smooth transformer
-        transformer = new SmoothTransformer()
-        transformer.viewport = container.viewport
+//        transformer = new SmoothTransformer()
+//        transformer.viewport = container.viewport
 
         // Controllers
         var mouseController:MouseController = new MouseController()
@@ -100,6 +101,15 @@ public class GigaPanViewer extends Sprite
         aspectRatio = source.width / source.height
         width = 16384
         height = width / aspectRatio
+        
+        
+        source = new GigaPanDescriptor(5322, 154730, 36408)
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height
+        width = 16384
+        height = width / aspectRatio
+
 
         var padding:Number = width * 0.1
 
@@ -131,6 +141,7 @@ public class GigaPanViewer extends Sprite
 
         var mappingConstraint:MappingConstraint = new MappingConstraint()
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
+        visibilityContraint.visibilityRatio = 1.0
 
         var zoomConstraint:ZoomConstraint = new ZoomConstraint()
         zoomConstraint.minZoom = 1
@@ -141,9 +152,9 @@ public class GigaPanViewer extends Sprite
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
         compositeContraint.constraints = [
                                           scaleConstraint,
+                                          visibilityContraint,
                                           zoomConstraint,
                                           centerConstraint,
-                                          visibilityContraint,
                                           ]
         container.constraint = compositeContraint
 
@@ -197,16 +208,20 @@ public class GigaPanViewer extends Sprite
             return
         
         var target:IViewportTransform = container.viewport.transform
-        target.fitToBounds(new Rectangle(0.45 + Math.random() * 0.05,
-                                         0.45 + Math.random() * 0.2,
-                                         0.01,
-                                         0.01))
-        transformer.transform(target)
+        var bounds:Rectangle = new Rectangle(0.45 + Math.random() * 0.05,
+                                             0.45 + Math.random() * 0.2,
+                                             0.01,
+                                             0.01)
+        target.fitToBounds(bounds)
+
+        if (transformer)
+            transformer.transform(target)
     }
     
     private function viewport_targetUpdateHandler(event:ViewportEvent):void
     {
-        transformer.stop()
+        if (transformer)
+            transformer.stop()
     }
 }
 

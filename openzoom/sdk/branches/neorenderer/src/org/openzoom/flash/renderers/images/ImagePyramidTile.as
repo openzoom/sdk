@@ -31,7 +31,7 @@ import org.openzoom.flash.utils.IDisposable;
 /**
  * Tile of an image pyramid.
  */
-public class ImagePyramidTile implements IDisposable,
+internal class ImagePyramidTile implements IDisposable,
                                          IComparable
 {
     //--------------------------------------------------------------------------
@@ -152,7 +152,7 @@ public class ImagePyramidTile implements IDisposable,
     //  distance
     //----------------------------------
 
-    public var distance:Number = 0
+    public var distance:Number = Number.MAX_VALUE
 
     //--------------------------------------------------------------------------
     //
@@ -263,6 +263,14 @@ public class ImagePyramidTile implements IDisposable,
             return 1
             
         if (distance > tile.distance)
+            return -1
+
+        // Tiles in the upper part of the image seem
+        // more important than those in the lower part
+        if (row < tile.row)
+            return 1
+            
+        if (row > tile.row)
             return -1
 
         return 0

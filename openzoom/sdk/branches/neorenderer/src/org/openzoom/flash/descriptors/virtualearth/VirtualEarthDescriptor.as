@@ -104,7 +104,7 @@ public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
         var baseURL:String = "http://ecn.t2.tiles.virtualearth.net/tiles/h"
         var extension:String = ".jpeg?g=282&mkt=en-us"
