@@ -64,7 +64,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     public function ZoomifyDescriptor(source:String,
                                       width:uint,
                                       height:uint,
-                                      tileSize:uint)
+                                      tileSize:uint=256)
     {
         _source = source
 

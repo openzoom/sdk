@@ -56,10 +56,10 @@ public final class ImagePyramidRenderManager implements IDisposable
     private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
     private static const MAX_CACHE_SIZE:uint = 100
 
-    private static const MAX_CONCURRENT_DOWNLOADS:uint = 3
+    private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
 
     private static const QUALITY:uint = 32
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -88,11 +88,10 @@ public final class ImagePyramidRenderManager implements IDisposable
                                     loader,
                                     tileCache,
                                     MAX_CONCURRENT_DOWNLOADS)
-         
+
         owner.addEventListener(Event.ENTER_FRAME,
                                enterFrameHandler,
                                false, 0, true)
-                               
     }
 
     //--------------------------------------------------------------------------
@@ -124,8 +123,6 @@ public final class ImagePyramidRenderManager implements IDisposable
      */
     private function updateDisplayList(renderer:ImagePyramidRenderer):void
     {
-//    	var before:int = getTimer()
-    	
         var descriptor:IImagePyramidDescriptor = renderer.source
 
         // Abort if we have no descriptor
@@ -178,7 +175,6 @@ public final class ImagePyramidRenderManager implements IDisposable
         // FIXME: For collections it's too much work
         // to render from bottom of the image pyramid
         fromLevel = Math.max(0, optimalLevel.index - QUALITY)
-//        fromLevel = 0
         toLevel = optimalLevel.index
 
         // Prepare tile layer
@@ -191,8 +187,6 @@ public final class ImagePyramidRenderManager implements IDisposable
 
         tileLayer.width = renderer.width
         tileLayer.height = renderer.height
-
-//        var loadingQueue:Array = []
 
         // Iterate over levels
         for (var l:int = fromLevel; l <= toLevel; l++)
@@ -216,13 +210,12 @@ public final class ImagePyramidRenderManager implements IDisposable
                       "Tile distance too large.", tileDistance)
                 continue
             }
-            
-            
+
             // FIXME: Currently center, calculate origin
-//            trace(viewport.transform.getOrigin())
-            var origin:Point = new Point((fromTile.x + toTile.x) / 2,
-                                         (fromTile.y + toTile.y) / 2)
-            
+            var t:Point = new Point(0.5, 0.5) // viewport.transform.origin
+            var origin:Point = new Point((1 - t.x) * fromTile.x + t.x * toTile.x,
+                                         (1 - t.y) * fromTile.y + t.y * toTile.y)
+
             var nextTile:ImagePyramidTile
 
             // Iterate over columns
@@ -232,12 +225,12 @@ public final class ImagePyramidRenderManager implements IDisposable
                 for (var r:int = fromTile.y; r <= toTile.y; r++)
                 {
                     var tile:ImagePyramidTile = renderer.openzoom_internal::getTile(l, c, r)
-                    
+
                     if (!tile.source)
                     {
                         if (tileCache.contains(tile.url))
                         {
-                            var sourceTile:SharedTile = tileCache.get(tile.url) as SharedTile
+                            var sourceTile:SourceTile = tileCache.get(tile.url) as SourceTile
                             tile.source = sourceTile
                             tile.loading = false
                         }
@@ -246,9 +239,9 @@ public final class ImagePyramidRenderManager implements IDisposable
                     if (fromLevel == 0 && !renderer.ready && tile.level > 0)
                         return
 
-	                var dx:Number = Math.abs(tile.column - origin.x)
-	                var dy:Number = Math.abs(tile.row - origin.y)
-	                var distance:Number = dx * dx + dy * dy
+                    var dx:Number = tile.column - origin.x
+                    var dy:Number = tile.row - origin.y
+                    var distance:Number = dx * dx + dy * dy
                     tile.distance = distance
 
                     if (!tile.loaded)
@@ -256,13 +249,12 @@ public final class ImagePyramidRenderManager implements IDisposable
                         if (!nextTile && !tile.loading)
                         {
                             nextTile = tile
-                            continue                            
+                            continue
                         }
-                        
+
                         if (!tile.loading && tile.compareTo(nextTile) >= 0)
                             nextTile = tile
-                            
-                        invalidateDisplayList()
+
                         continue
                     }
 
@@ -298,7 +290,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 
                         var alphaMultiplier:uint = (tile.alpha * 256) << 24
                         var alphaMap:BitmapData
-                        
+
                         alphaMap = new BitmapData(tile.bitmapData.width,
                                                   tile.bitmapData.height,
                                                   true,
@@ -322,10 +314,10 @@ public final class ImagePyramidRenderManager implements IDisposable
                     matrix.createBox(sx, sx, 0, tile.bounds.x * sx, tile.bounds.y * sy)
 
                     var smoothing:Boolean = renderer.smoothing
-                    
+
                     if (l != toLevel)
                         smoothing = true
-                    
+
                     g.beginBitmapFill(textureMap,
                                       matrix,
                                       false, /* repeat */
@@ -337,12 +329,10 @@ public final class ImagePyramidRenderManager implements IDisposable
                     g.endFill()
                 }
             }
-            
+
             if (nextTile)
                 tileLoader.loadTile(nextTile)
         }
-        
-//        trace("Render cycle:", getTimer() - before)
     }
 
     //--------------------------------------------------------------------------

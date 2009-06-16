@@ -28,7 +28,7 @@ import org.openzoom.flash.utils.ICacheItem;
 /**
  * Cache entry for bitmaps that could or could not be shared by several tiles.
  */
-internal final class SharedTile implements ICacheItem
+internal final class SourceTile implements ICacheItem
 {
     //--------------------------------------------------------------------------
     //
@@ -39,7 +39,7 @@ internal final class SharedTile implements ICacheItem
     /**
      * Constructor.
      */
-    public function SharedTile(url:String,
+    public function SourceTile(url:String,
                                bitmapData:BitmapData,
                                level:int,
                                shared:Boolean=false)
@@ -111,7 +111,7 @@ internal final class SharedTile implements ICacheItem
      */
     public function compareTo(other:*):int
     {
-        var otherTile:SharedTile = other as SharedTile
+        var otherTile:SourceTile = other as SourceTile
 
         if (!otherTile)
            throw new ArgumentError("[SharedTile] Object to compare has wrong type.")

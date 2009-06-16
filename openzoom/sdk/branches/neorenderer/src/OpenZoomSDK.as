@@ -21,7 +21,7 @@
 package
 {
 
-import flash.display.Sprite
+import flash.display.Sprite;
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#222222")]
 /**

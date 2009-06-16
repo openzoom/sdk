@@ -164,14 +164,14 @@ internal class ImagePyramidTile implements IDisposable,
     //  source
     //----------------------------------
 
-    private var _source:SharedTile
+    private var _source:SourceTile
 
-    public function get source():SharedTile
+    public function get source():SourceTile
     {
         return _source
     }
 
-    public function set source(value:SharedTile):void
+    public function set source(value:SourceTile):void
     {
         if (!value)
            throw new ArgumentError("[ImagePyramidTile] Source cannot be null.")

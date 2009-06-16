@@ -302,11 +302,6 @@ public interface IViewport extends IEventDispatcher
      */
     function getBounds():Rectangle
 
-    /**
-     * Returns the center of the viewport.
-     */
-    function getCenter():Point
-
     //--------------------------------------------------------------------------
     //
     //  Methods: Coordinate transformations
@@ -431,6 +426,15 @@ public interface IViewport extends IEventDispatcher
      * determined by the values of the right and bottom properties.
      */
     function get bottomRight():Point
+
+    //----------------------------------
+    //  center
+    //----------------------------------
+
+    /**
+     * Returns the center of the viewport.
+     */
+    function get center():Point
 }
 
 }

@@ -117,7 +117,7 @@ internal class TileLoader extends EventDispatcher
         var tile:ImagePyramidTile = event.context as ImagePyramidTile
         var bitmapData:BitmapData = Bitmap(event.data).bitmapData
 
-        var sourceTile:SharedTile = new SharedTile(tile.url,
+        var sourceTile:SourceTile = new SourceTile(tile.url,
                                                    bitmapData,
                                                    tile.level)
         sourceTile.lastAccessTime = getTimer()

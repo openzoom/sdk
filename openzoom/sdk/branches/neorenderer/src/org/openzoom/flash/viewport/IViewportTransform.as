@@ -138,6 +138,24 @@ public interface IViewportTransform
     function get zoom():Number
     function set zoom(value:Number):void
 
+    //----------------------------------
+    //  origin
+    //----------------------------------
+
+    /**
+     * Returns the origin of the transform.
+     */
+    function get origin():Point
+
+    //----------------------------------
+    //  center
+    //----------------------------------
+
+    /**
+     * Returns the center of the transform.
+     */
+    function get center():Point
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Zooming
@@ -214,16 +232,6 @@ public interface IViewportTransform
      * Returns a Rectangle object with the bounds of the viewport.
      */
     function getBounds():Rectangle
-
-    /**
-     * Returns the origin of the transform.
-     */
-    function getOrigin():Point
-
-    /**
-     * Returns the center of the transform.
-     */
-    function getCenter():Point
      
     //--------------------------------------------------------------------------
     //

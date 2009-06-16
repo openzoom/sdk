@@ -124,7 +124,7 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
         }
         catch (error:Error)
         {
-            throw new ArgumentError("Failed to parse Djatoka Metadata JSON.")
+            throw new ArgumentError("Failed to parse djatoka metadata JSON.")
         }
 
         var descriptor:DjatokaDescriptor = new DjatokaDescriptor(resolverURL,

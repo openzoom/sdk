@@ -32,7 +32,7 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor;
+import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
 import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
@@ -50,6 +50,7 @@ import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.SmoothTransformer;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
+import org.openzoom.flash.viewport.transformers.TweensyZeroTransformer;
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class SmoothTransformerTest extends Sprite
@@ -65,7 +66,9 @@ public class SmoothTransformerTest extends Sprite
         ExternalMouseWheel.initialize(stage)
 
         container = new MultiScaleContainer()
-        container.transformer = new TweenerTransformer()
+        var tweenerTransformer:TweenerTransformer = new TweenerTransformer()
+        tweenerTransformer.duration = 0.00002
+        container.transformer = new TweensyZeroTransformer()//tweenerTransformer
         
         // Smooth transformer
         smoothTransformer = SmoothTransformer.getInstance(container.viewport)
@@ -108,46 +111,20 @@ public class SmoothTransformerTest extends Sprite
         height = 16384
 
 //        // Deep Zoom: Hanauma Bay
-//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
-//        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = width / aspectRatio
+        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
+        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height
+        width = 16384
+        height = width / aspectRatio
 
-        // Djatoka
-        source = new DjatokaDescriptor("http://african.lanl.gov/adore-djatoka/resolver",
-                                       "info:lanl-repo/ds/5aa182c2-c092-4596-af6e-e95d2e263de3&",
-                                       5120,
-                                       3372)
-                                       
-        source = new DjatokaDescriptor("http://african.lanl.gov/adore-djatoka/resolver",
-                                       "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
-                                       5056, 11264, 256, 0, "image/jpeg", 5)
-                                       
-        source = DjatokaDescriptor.fromJSONMetadata("http://african.lanl.gov/adore-djatoka/resolver",
-                                                    "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
-                                                    '{\n"identifier": "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",\n' + 
-                                                    '"imagefile": "/home/rchute/tomcat/temp/cache160035104950802.jp2",\n' + 
-                                                    '"width": "5056",\n' + 
-                                                    '"height": "11264",\n' + 
-                                                    '"dwtLevels": "5",\n' + 
-                                                    '"levels": "5",\n' + 
-                                                    '"compositingLayerCount": "1"\n' + 
-                                                    '}')
-                                                    
-//        var jsonString:String = '{"identifier": "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",' + 
-//                                                    '"imagefile": "/home/rchute/tomcat/temp/cache160035104950802.jp2",' + 
-//                                                    '"width": "5056",' + 
-//                                                    '"height": "11264",' + 
-//                                                    '"dwtLevels": "5",' + 
-//                                                    '"levels": "5",' + 
-//                                                    '"compositingLayerCount": "1"' + 
-//                                                    '}'
-//        source = DjatokaDescriptor.fromJSONMetadata("http://african.lanl.gov/adore-djatoka/resolver",
-//                                                    "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
-//                                                    jsonString)
+        source = GigaPanDescriptor.fromID(14766, 125440, 39680)
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height
+        width = 16384
+        height = width / aspectRatio
 
         numRenderers = 1
         numColumns = 1
@@ -252,14 +229,14 @@ public class SmoothTransformerTest extends Sprite
             return
         
         var target:IViewportTransform = container.viewport.transform
-//        target.fitToBounds(new Rectangle(0.1 + Math.random() * 0.8,
-//                                         0.1 + Math.random() * 0.8,
-//                                         0.0005,
-//                                         0.0005))
-        target.fitToBounds(new Rectangle(0.45 + Math.random() * 0.05,
-                                         0.45 + Math.random() * 0.2,
-                                         0.01,
-                                         0.01))
+        target.fitToBounds(new Rectangle(0.1 + Math.random() * 0.8,
+                                         0.1 + Math.random() * 0.8,
+                                         0.005,
+                                         0.005))
+//        target.fitToBounds(new Rectangle(0.45 + Math.random() * 0.05,
+//                                         0.45 + Math.random() * 0.2,
+//                                         0.01,
+//                                         0.01))
 //        target.fitToBounds(new Rectangle(0.5 + Math.random() * 0.4,
 //                                         0.3 + Math.random() * 0.4,
 //                                         0.00004,

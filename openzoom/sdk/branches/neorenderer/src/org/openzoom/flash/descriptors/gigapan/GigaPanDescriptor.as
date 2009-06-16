@@ -54,9 +54,9 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
     /**
      * Constructor.
      */
-    public function GigaPanDescriptor(id:uint, width:uint, height:uint)
+    public function GigaPanDescriptor(source:String, width:uint, height:uint)
     {
-        this.id = id
+        _source = source
 
         _width = width
         _height = height
@@ -69,6 +69,14 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
 
         createLevels(width, height, DEFAULT_TILE_SIZE, numLevels)
     }
+    
+    public static function fromID(id:uint, width:uint, height:uint):GigaPanDescriptor
+    {
+        var path:String = "http://share.gigapan.org/gigapans0/" + id + "/tiles"
+        var descriptor:GigaPanDescriptor = new GigaPanDescriptor(path, width, height)
+        
+        return descriptor
+    }
 
     //--------------------------------------------------------------------------
     //
@@ -76,7 +84,6 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private var id:uint
     private var extension:String = ".jpg"
 
     //--------------------------------------------------------------------------
@@ -90,7 +97,7 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
      */
     public function getTileURL(level:int, column:int, row:int):String
     {
-        var url:String = "http://share.gigapan.org/gigapans0/" + id + "/tiles"
+        var url:String = source
         var name:String = "r"
         var z:int = level
         var bit:int = (1 << z) >> 1
@@ -133,7 +140,7 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
      */
     public function clone():IImagePyramidDescriptor
     {
-        return new GigaPanDescriptor(id, width, height)
+        return new GigaPanDescriptor(source, width, height)
     }
 
     //--------------------------------------------------------------------------
@@ -164,6 +171,7 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
         var maxDimension:uint = Math.max(width, height)
         var actualLevels:uint = Math.ceil(Math.log(maxDimension) / Math.LN2)
         var numLevels:uint = Math.max(0, actualLevels - DEFAULT_BASE_LEVEL + 1)
+        
         return numLevels
     }
      

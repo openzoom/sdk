@@ -44,6 +44,7 @@ public class ViewportTransform implements IViewportTransform,
                                       width:Number,
                                       height:Number,
                                       zoom:Number,
+                                      origin:Point,
                                       viewportWidth:Number,
                                       viewportHeight:Number,
                                       sceneWidth:Number,
@@ -54,12 +55,13 @@ public class ViewportTransform implements IViewportTransform,
         bounds.width = width
         bounds.height = height
         _zoom = zoom
-
-        _sceneWidth = sceneWidth
-        _sceneHeight = sceneHeight
-
+        _origin = origin.clone()
+        
         _viewportWidth = viewportWidth
         _viewportHeight = viewportHeight
+        
+        _sceneWidth = sceneWidth
+        _sceneHeight = sceneHeight
     }
 
     /**
@@ -71,6 +73,7 @@ public class ViewportTransform implements IViewportTransform,
                                       width:Number,
                                       height:Number,
                                       zoom:Number,
+                                      origin:Point,
                                       viewportWidth:Number,
                                       viewportHeight:Number,
                                       sceneWidth:Number,
@@ -81,13 +84,15 @@ public class ViewportTransform implements IViewportTransform,
                                                                width,
                                                                height,
                                                                zoom,
+                                                               origin,
                                                                viewportWidth,
                                                                viewportHeight,
                                                                sceneWidth,
                                                                sceneHeight)
         // initialize
         instance.zoomTo(zoom)
-
+        // FIXME
+//        instance.zoomTo2(zoom, origin.x, origin.y, true)
         return instance
     }
 
@@ -138,7 +143,6 @@ public class ViewportTransform implements IViewportTransform,
 
     public function set scale(value:Number):void
     {
-//        width = viewportWidth / (value * _sceneWidth)
         var targetWidth:Number = viewportWidth / (value * _sceneWidth)
         zoomTo(getZoomForWidth(targetWidth))
     }
@@ -157,20 +161,36 @@ public class ViewportTransform implements IViewportTransform,
                            transformX:Number=0.5,
                            transformY:Number=0.5):void
     {
-        _zoom = zoom
+        zoomTo2(zoom, transformX, transformY)
+    }
 
+    /**
+     * @inheritDoc
+     */
+    private function zoomTo2(zoom:Number,
+                            transformX:Number=0.5,
+                            transformY:Number=0.5,
+                            keepOrigin:Boolean=false):void
+    {
+        _zoom = zoom
+        
+        if (!keepOrigin)
+        {
+//            trace("PRE", _origin)
+            _origin.x = x + transformX * width
+            _origin.y = y + transformY * height
+//            trace("POST", _origin)
+        }
+        
         // remember old origin
         var oldOrigin:Point = getViewportOrigin(transformX, transformY)
 
         var bounds:Point = getBoundsForZoom(zoom)
-        this.bounds.width  = bounds.x
+        this.bounds.width = bounds.x
         this.bounds.height = bounds.y
 
         // move new origin to old origin
         panOriginTo(oldOrigin.x, oldOrigin.y, transformX, transformY)
-        
-    	origin.x = oldOrigin.x
-    	origin.y = oldOrigin.y
     }
 
     /**
@@ -254,25 +274,6 @@ public class ViewportTransform implements IViewportTransform,
     public function getBounds():Rectangle
     {
         return new Rectangle(x, y, width, height)
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function getCenter():Point
-    {
-        return new Point(bounds.x + bounds.width / 2,
-                         bounds.y + bounds.height / 2)
-    }
-
-    /**
-     * @inheritDoc
-     */
-    private var origin:Point = new Point()
-     
-    public function getOrigin():Point
-    {
-    	return origin.clone()
     }
 
     /**
@@ -385,7 +386,7 @@ public class ViewportTransform implements IViewportTransform,
 
     public function set width(value:Number):void
     {
-        zoomTo(getZoomForWidth(value), 0, 0)
+        zoomTo2(getZoomForWidth(value), 0, 0, true)
     }
 
     //----------------------------------
@@ -402,7 +403,7 @@ public class ViewportTransform implements IViewportTransform,
 
     public function set height(value:Number):void
     {
-        zoomTo(getZoomForHeight(value), 0, 0)
+        zoomTo2(getZoomForHeight(value), 0, 0, true)
     }
 
     //----------------------------------
@@ -566,7 +567,7 @@ public class ViewportTransform implements IViewportTransform,
     {
         var copy:ViewportTransform =
                         new ViewportTransform(bounds.x, bounds.y,
-                                              bounds.width, bounds.height, _zoom,
+                                              bounds.width, bounds.height, _zoom, _origin.clone(),
                                               _viewportWidth, _viewportHeight,
                                               _sceneWidth, _sceneHeight)
 
@@ -714,6 +715,36 @@ public class ViewportTransform implements IViewportTransform,
     public function get bottomRight():Point
     {
         return new Point(right, bottom)
+    }
+
+    //----------------------------------
+    //  center
+    //----------------------------------
+    
+    /**
+     * @inheritDoc
+     */
+    public function get center():Point
+    {
+        return new Point(bounds.x + bounds.width / 2,
+                         bounds.y + bounds.height / 2)
+    }
+
+    //----------------------------------
+    //  origin
+    //----------------------------------
+
+    /**
+     * @inheritDoc
+     */
+     
+     
+    private var _origin:Point = new Point()
+    
+    public function get origin():Point
+    {
+//        return _origin.clone()
+        return new Point(0.5, 0.5)
     }
 }
 

@@ -45,7 +45,7 @@ public class SmoothTransformer extends ViewportTransformerBase
     //
     //--------------------------------------------------------------------------
     
-    private static const DEFAULT_RHO:Number = 1.2
+    private static const DEFAULT_RHO:Number = Math.SQRT2
     private static const DEFAULT_V:Number = 0.0011
     
     //--------------------------------------------------------------------------
@@ -167,8 +167,8 @@ public class SmoothTransformer extends ViewportTransformerBase
     {
         super.transform(target, immediately)
 
-        c0 = viewport.getCenter()
-        c1 = target.getCenter()
+        c0 = viewport.center
+        c1 = target.center
 
         w0 = viewport.width
         w1 = target.width
