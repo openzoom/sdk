@@ -138,14 +138,14 @@ public interface IViewportTransform
     function get zoom():Number
     function set zoom(value:Number):void
 
-    //----------------------------------
-    //  origin
-    //----------------------------------
-
-    /**
-     * Returns the origin of the transform.
-     */
-    function get origin():Point
+//    //----------------------------------
+//    //  origin
+//    //----------------------------------
+//
+//    /**
+//     * Returns the origin of the transform.
+//     */
+//    function get origin():Point
 
     //----------------------------------
     //  center

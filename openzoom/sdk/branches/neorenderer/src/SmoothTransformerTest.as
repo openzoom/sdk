@@ -23,6 +23,7 @@ package
 
 import flash.display.Sprite;
 import flash.display.StageAlign;
+import flash.display.StageQuality;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
@@ -34,6 +35,7 @@ import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
 import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
 import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
+import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
@@ -50,7 +52,6 @@ import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.SmoothTransformer;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
-import org.openzoom.flash.viewport.transformers.TweensyZeroTransformer;
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class SmoothTransformerTest extends Sprite
@@ -67,11 +68,19 @@ public class SmoothTransformerTest extends Sprite
 
         container = new MultiScaleContainer()
         var tweenerTransformer:TweenerTransformer = new TweenerTransformer()
-        tweenerTransformer.duration = 0.00002
-        container.transformer = new TweensyZeroTransformer()//tweenerTransformer
+//        tweenerTransformer.duration = 0.8
+        container.transformer = tweenerTransformer
+
+//        container.viewport.addEventListener(ViewportEvent.TRANSFORM_START,
+//                                            viewport_transformStartHandler,
+//                                            false, 0, true)
+//        container.viewport.addEventListener(ViewportEvent.TRANSFORM_END,
+//                                            viewport_transformEndHandler,
+//                                            false, 0, true)
         
         // Smooth transformer
         smoothTransformer = SmoothTransformer.getInstance(container.viewport)
+//        smoothTransformer.speed = 1.6
 
         // Controllers
         var mouseController:MouseController = new MouseController()
@@ -119,18 +128,13 @@ public class SmoothTransformerTest extends Sprite
         width = 16384
         height = width / aspectRatio
 
-        source = GigaPanDescriptor.fromID(14766, 125440, 39680)
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = width / aspectRatio
+//        source = GigaPanDescriptor.fromID(14766, 125440, 39680)
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = width / aspectRatio
 
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = width / aspectRatio
 
         var padding:Number = width * 0.1
 
@@ -191,7 +195,7 @@ public class SmoothTransformerTest extends Sprite
         addChild(memoryMonitor)
 
         layout()
-                           
+                                                
         stage.addEventListener(KeyboardEvent.KEY_DOWN,
                                keyDownHandler,
                                false, 0, true)
@@ -247,6 +251,16 @@ public class SmoothTransformerTest extends Sprite
 //                                         0.00004))
         
         smoothTransformer.transform(target)
+    }
+    
+    private function viewport_transformStartHandler(event:ViewportEvent):void
+    {
+        stage.quality = StageQuality.LOW
+    }
+    
+    private function viewport_transformEndHandler(event:ViewportEvent):void
+    {
+        stage.quality = StageQuality.BEST
     }
 }
 

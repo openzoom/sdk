@@ -44,7 +44,7 @@ public class ViewportTransform implements IViewportTransform,
                                       width:Number,
                                       height:Number,
                                       zoom:Number,
-                                      origin:Point,
+                                      //origin:Point,
                                       viewportWidth:Number,
                                       viewportHeight:Number,
                                       sceneWidth:Number,
@@ -55,7 +55,7 @@ public class ViewportTransform implements IViewportTransform,
         bounds.width = width
         bounds.height = height
         _zoom = zoom
-        _origin = origin.clone()
+        //_origin = origin.clone()
         
         _viewportWidth = viewportWidth
         _viewportHeight = viewportHeight
@@ -73,7 +73,7 @@ public class ViewportTransform implements IViewportTransform,
                                       width:Number,
                                       height:Number,
                                       zoom:Number,
-                                      origin:Point,
+//                                      origin:Point,
                                       viewportWidth:Number,
                                       viewportHeight:Number,
                                       sceneWidth:Number,
@@ -84,7 +84,7 @@ public class ViewportTransform implements IViewportTransform,
                                                                width,
                                                                height,
                                                                zoom,
-                                                               origin,
+//                                                               origin,
                                                                viewportWidth,
                                                                viewportHeight,
                                                                sceneWidth,
@@ -169,18 +169,18 @@ public class ViewportTransform implements IViewportTransform,
      */
     private function zoomTo2(zoom:Number,
                             transformX:Number=0.5,
-                            transformY:Number=0.5,
-                            keepOrigin:Boolean=false):void
+                            transformY:Number=0.5/*,
+                            keepOrigin:Boolean=false*/):void
     {
         _zoom = zoom
         
-        if (!keepOrigin)
-        {
-//            trace("PRE", _origin)
-            _origin.x = x + transformX * width
-            _origin.y = y + transformY * height
-//            trace("POST", _origin)
-        }
+//        if (!keepOrigin)
+//        {
+////            trace("PRE", _origin)
+//            _origin.x = x + transformX * width
+//            _origin.y = y + transformY * height
+////            trace("POST", _origin)
+//        }
         
         // remember old origin
         var oldOrigin:Point = getViewportOrigin(transformX, transformY)
@@ -386,7 +386,8 @@ public class ViewportTransform implements IViewportTransform,
 
     public function set width(value:Number):void
     {
-        zoomTo2(getZoomForWidth(value), 0, 0, true)
+        zoomTo(getZoomForWidth(value), 0, 0)
+//        zoomTo2(getZoomForWidth(value), 0, 0, true)
     }
 
     //----------------------------------
@@ -403,7 +404,8 @@ public class ViewportTransform implements IViewportTransform,
 
     public function set height(value:Number):void
     {
-        zoomTo2(getZoomForHeight(value), 0, 0, true)
+        zoomTo(getZoomForHeight(value), 0, 0)
+//        zoomTo2(getZoomForHeight(value), 0, 0, true)
     }
 
     //----------------------------------
@@ -567,7 +569,7 @@ public class ViewportTransform implements IViewportTransform,
     {
         var copy:ViewportTransform =
                         new ViewportTransform(bounds.x, bounds.y,
-                                              bounds.width, bounds.height, _zoom, _origin.clone(),
+                                              bounds.width, bounds.height, _zoom, /*_origin.clone(),*/
                                               _viewportWidth, _viewportHeight,
                                               _sceneWidth, _sceneHeight)
 
@@ -739,13 +741,13 @@ public class ViewportTransform implements IViewportTransform,
      */
      
      
-    private var _origin:Point = new Point()
-    
-    public function get origin():Point
-    {
-//        return _origin.clone()
-        return new Point(0.5, 0.5)
-    }
+//    private var _origin:Point = new Point()
+//    
+//    public function get origin():Point
+//    {
+////        return _origin.clone()
+//        return new Point(0.5, 0.5)
+//    }
 }
 
 }

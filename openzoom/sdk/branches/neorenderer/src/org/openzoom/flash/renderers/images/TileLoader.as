@@ -68,8 +68,8 @@ internal class TileLoader extends EventDispatcher
     private var loader:INetworkQueue
     private var cache:ICache
     
+    public var maxDownloads:int
     private var numDownloads:int
-    private var maxDownloads:int
     private var pending:Dictionary = new Dictionary()
 
     //--------------------------------------------------------------------------

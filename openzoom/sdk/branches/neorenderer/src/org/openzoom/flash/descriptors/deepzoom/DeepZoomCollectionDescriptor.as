@@ -21,9 +21,11 @@
 package org.openzoom.flash.descriptors.deepzoom
 {
 
+import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.flash.utils.MIMEUtil;
+import org.openzoom.flash.utils.MortonOrder;
 
 /**
  * Descriptor for the
@@ -62,7 +64,7 @@ public final class DeepZoomCollectionDescriptor
         var item:CollectionItem
         for each (var itemXML:XML in xml.Items.*)
         {
-            item = CollectionItem.fromXML(itemXML)
+            item = CollectionItem.fromXML(source, itemXML)
             items.push(item)
         }
     }
@@ -156,7 +158,15 @@ public final class DeepZoomCollectionDescriptor
      */
     public function getTileURL(mortonNumber:uint, level:int):String
     {
-    	return ""
+        var basePath:String = source.substring(0, source.lastIndexOf("."))
+        var path:String = basePath + "_files"
+        
+        var position:Point = MortonOrder.getPosition(mortonNumber)
+        var size:uint = Math.pow(2, level)
+        var column:int = Math.floor((position.x * size) / tileSize)
+        var row:int = Math.floor((position.y * size) / tileSize)
+        
+        return [path, "/", level, "/", column, "_", row, ".", format].join("")
     }
     
     /**
@@ -217,8 +227,9 @@ public final class DeepZoomCollectionDescriptor
 }
 
 }
-	import flash.geom.Rectangle;
-	
+
+import flash.geom.Rectangle;
+import org.openzoom.flash.utils.uri.resolveURI;
 
 //------------------------------------------------------------------------------
 //
@@ -256,7 +267,7 @@ class CollectionItem
 	/**
 	 * Create collection item from XML
 	 */
-	public static function fromXML(xml:XML):CollectionItem
+	public static function fromXML(source:String, xml:XML):CollectionItem
 	{
         use namespace deepzoom
 	   
@@ -264,7 +275,7 @@ class CollectionItem
 
         item.id = xml.@Id
         item.n = xml.@N
-        item.source = xml.@Source
+        item.source = resolveURI(source, xml.@Source)
         item.width = xml.Size.@Width
         item.height = xml.Size.@Height
         

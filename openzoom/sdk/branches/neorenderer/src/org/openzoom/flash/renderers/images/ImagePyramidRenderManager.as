@@ -30,6 +30,7 @@ import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.getTimer;
+import flash.utils.setInterval;
 
 import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
@@ -54,9 +55,10 @@ public final class ImagePyramidRenderManager implements IDisposable
     //--------------------------------------------------------------------------
 
     private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
-    private static const MAX_CACHE_SIZE:uint = 100
+    private static const MAX_CACHE_SIZE:uint = 200
 
-    private static const MAX_CONCURRENT_DOWNLOADS:uint = 4
+    private static const MAX_DOWNLOADS_STATIC:uint = 4
+    private static const MAX_DOWNLOADS_DYNAMIC:uint = 1
 
     private static const QUALITY:uint = 32
 
@@ -77,9 +79,6 @@ public final class ImagePyramidRenderManager implements IDisposable
         this.scene = scene
 
         this.viewport = viewport
-        this.viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
-                                       viewport_transformUpdateHandler,
-                                       false, 0, true)
 
         this.loader = loader
         tileCache = new Cache(MAX_CACHE_SIZE)
@@ -87,11 +86,27 @@ public final class ImagePyramidRenderManager implements IDisposable
         tileLoader = new TileLoader(this,
                                     loader,
                                     tileCache,
-                                    MAX_CONCURRENT_DOWNLOADS)
+                                    MAX_DOWNLOADS_DYNAMIC)
+
 
         owner.addEventListener(Event.ENTER_FRAME,
                                enterFrameHandler,
                                false, 0, true)
+
+//        setInterval(enterFrameHandler, 1000, null)
+
+        
+        this.viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
+                                       viewport_transformUpdateHandler,
+                                       false, 0, true)
+                                       
+        this.viewport.addEventListener(ViewportEvent.TRANSFORM_START,
+                                       viewport_transformStartHandler,
+                                       false, 0, true)
+                                       
+        this.viewport.addEventListener(ViewportEvent.TRANSFORM_END,
+                                       viewport_transformEndHandler,
+                                       false, 0, true)
     }
 
     //--------------------------------------------------------------------------
@@ -169,29 +184,23 @@ public final class ImagePyramidRenderManager implements IDisposable
         // Render image pyramid from bottom up
         var currentTime:int = getTimer()
 
-        var fromLevel:int
-        var toLevel:int
+        var lowestLevel:int
+        var highestLevel:int
 
         // FIXME: For collections it's too much work
         // to render from bottom of the image pyramid
-        fromLevel = Math.max(0, optimalLevel.index - QUALITY)
-        toLevel = optimalLevel.index
+        lowestLevel = Math.max(0, optimalLevel.index - QUALITY)
+        highestLevel = optimalLevel.index
 
-        // Prepare tile layer
-        var tileLayer:Shape = renderer.openzoom_internal::tileLayer
-        var g:Graphics = tileLayer.graphics
-        g.clear()
-        g.beginFill(0xFF0000, 0)
-        g.drawRect(0, 0, descriptor.width, descriptor.height)
-        g.endFill()
-
-        tileLayer.width = renderer.width
-        tileLayer.height = renderer.height
-
+        var level:IImagePyramidLevel
+        var nextTile:ImagePyramidTile
+        var renderingQueue:Array = []
+        
         // Iterate over levels
-        for (var l:int = fromLevel; l <= toLevel; l++)
+        for (var l:int = highestLevel; l >= lowestLevel; --l)
         {
-            var level:IImagePyramidLevel = descriptor.getLevelAt(l)
+            var done:Boolean = true
+            level = descriptor.getLevelAt(l)
 
             // Load or draw visible tiles
             var fromPoint:Point = new Point(localBounds.left * level.width,
@@ -216,8 +225,6 @@ public final class ImagePyramidRenderManager implements IDisposable
             var origin:Point = new Point((1 - t.x) * fromTile.x + t.x * toTile.x,
                                          (1 - t.y) * fromTile.y + t.y * toTile.y)
 
-            var nextTile:ImagePyramidTile
-
             // Iterate over columns
             for (var c:int = fromTile.x; c <= toTile.x; c++)
             {
@@ -236,8 +243,8 @@ public final class ImagePyramidRenderManager implements IDisposable
                         }
                     }
 
-                    if (fromLevel == 0 && !renderer.ready && tile.level > 0)
-                        return
+//                    if (lowestLevel == 0 && !renderer.ready && tile.level > 0)
+//                        return
 
                     var dx:Number = tile.column - origin.x
                     var dy:Number = tile.row - origin.y
@@ -246,15 +253,10 @@ public final class ImagePyramidRenderManager implements IDisposable
 
                     if (!tile.loaded)
                     {
-                        if (!nextTile && !tile.loading)
-                        {
-                            nextTile = tile
-                            continue
-                        }
-
-                        if (!tile.loading && tile.compareTo(nextTile) >= 0)
+                        if (!tile.loading && (!nextTile || tile.compareTo(nextTile) >= 0))
                             nextTile = tile
 
+                        done = false
                         continue
                     }
 
@@ -276,62 +278,83 @@ public final class ImagePyramidRenderManager implements IDisposable
                     var currentAlpha:Number = (currentTime - tile.fadeStart) / duration
                     tile.alpha = Math.min(1, currentAlpha)
 
-                    if (tile.level == 0 && tile.alpha == 1)
-                        renderer.ready = true
-
-                    var textureMap:BitmapData
-
                     if (tile.alpha < 1)
-                    {
-                        invalidateDisplayList()
+                        done = false
+                    
+//                    if (tile.level == 0 && tile.alpha == 1)
+//                        renderer.ready = true
 
-                        textureMap = new BitmapData(tile.bitmapData.width,
-                                                    tile.bitmapData.height)
+                    renderingQueue.push(tile)
+               }
+            }
+            
+            if (done)
+                break
+        }
 
-                        var alphaMultiplier:uint = (tile.alpha * 256) << 24
-                        var alphaMap:BitmapData
+        if (nextTile)
+            tileLoader.loadTile(nextTile)
+            
 
-                        alphaMap = new BitmapData(tile.bitmapData.width,
-                                                  tile.bitmapData.height,
-                                                  true,
-                                                  alphaMultiplier | 0x00000000)
+        // Prepare tile layer
+        var tileLayer:Shape = renderer.openzoom_internal::tileLayer
+        var g:Graphics = tileLayer.graphics
+        g.clear()
+        g.beginFill(0xFF0000, 0)
+        g.drawRect(0, 0, descriptor.width, descriptor.height)
+        g.endFill()
 
-                        textureMap.copyPixels(tile.bitmapData,
-                                              tile.bitmapData.rect,
-                                              new Point(),
-                                              alphaMap)
-                    }
-                    else
-                    {
+        tileLayer.width = renderer.width
+        tileLayer.height = renderer.height
+        
+        while (renderingQueue.length > 0)
+        {
+            tile = renderingQueue.pop()
 
-                        textureMap = tile.bitmapData
-                    }
+            var textureMap:BitmapData
 
-                    // Draw tiles
-                    var matrix:Matrix = new Matrix()
-                    var sx:Number = descriptor.width / level.width
-                    var sy:Number = descriptor.height / level.height
-                    matrix.createBox(sx, sx, 0, tile.bounds.x * sx, tile.bounds.y * sy)
+            if (tile.alpha < 1)
+            {
+                invalidateDisplayList()
 
-                    var smoothing:Boolean = renderer.smoothing
+                textureMap = new BitmapData(tile.bitmapData.width,
+                                            tile.bitmapData.height)
 
-                    if (l != toLevel)
-                        smoothing = true
+                var alphaMultiplier:uint = (tile.alpha * 256) << 24
+                var alphaMap:BitmapData
 
-                    g.beginBitmapFill(textureMap,
-                                      matrix,
-                                      false, /* repeat */
-                                      smoothing /* smoothing */)
-                    g.drawRect(tile.bounds.x * sx,
-                               tile.bounds.y * sy,
-                               tile.bounds.width * sx,
-                               tile.bounds.height * sy)
-                    g.endFill()
-                }
+                alphaMap = new BitmapData(tile.bitmapData.width,
+                                          tile.bitmapData.height,
+                                          true,
+                                          alphaMultiplier | 0x00000000)
+
+                textureMap.copyPixels(tile.bitmapData,
+                                      tile.bitmapData.rect,
+                                      new Point(),
+                                      alphaMap)
+            }
+            else
+            {
+
+                textureMap = tile.bitmapData
             }
 
-            if (nextTile)
-                tileLoader.loadTile(nextTile)
+            // Draw tiles
+            level = descriptor.getLevelAt(tile.level)
+            var matrix:Matrix = new Matrix()
+            var sx:Number = descriptor.width / level.width
+            var sy:Number = descriptor.height / level.height
+            matrix.createBox(sx, sx, 0, tile.bounds.x * sx, tile.bounds.y * sy)
+
+            g.beginBitmapFill(textureMap,
+                              matrix,
+                              false, /* repeat */
+                              true /* smoothing */)
+            g.drawRect(tile.bounds.x * sx,
+                       tile.bounds.y * sy,
+                       tile.bounds.width * sx,
+                       tile.bounds.height * sy)
+            g.endFill()
         }
     }
 
@@ -361,6 +384,26 @@ public final class ImagePyramidRenderManager implements IDisposable
     /**
      * @private
      */
+    private function viewport_transformStartHandler(event:ViewportEvent):void
+    {
+        if (tileLoader)
+            tileLoader.maxDownloads = MAX_DOWNLOADS_DYNAMIC
+    }
+
+    /**
+     * @private
+     */
+    private function viewport_transformEndHandler(event:ViewportEvent):void
+    {
+        if (tileLoader)
+            tileLoader.maxDownloads = MAX_DOWNLOADS_STATIC
+
+        invalidateDisplayList()
+    }
+
+    /**
+     * @private
+     */
     public function invalidateDisplayList():void
     {
         if (!invalidateDisplayListFlag)
@@ -376,7 +419,7 @@ public final class ImagePyramidRenderManager implements IDisposable
         {
             // Mark as validated
             invalidateDisplayListFlag = false
-
+            
             // TODO: Validate renderers from the transformation origin outwards
             for each (var renderer:ImagePyramidRenderer in renderers)
                 updateDisplayList(renderer)

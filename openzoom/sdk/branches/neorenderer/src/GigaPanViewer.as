@@ -123,6 +123,15 @@ public class GigaPanViewer extends Sprite
         aspectRatio = source.width / source.height
         width = 16384
         height = width / aspectRatio
+        
+        
+        source = GigaPanDescriptor.fromID(25701, 41315, 11548)
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height
+        width = 16384
+        height = width / aspectRatio
+
 
         var padding:Number = width * 0.1
 
