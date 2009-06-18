@@ -24,6 +24,7 @@ package
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageDisplayState;
+import flash.display.StageQuality;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
@@ -48,7 +49,6 @@ import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
-
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class dourado extends Sprite
 {
@@ -64,6 +64,7 @@ public class dourado extends Sprite
         stage.addEventListener(KeyboardEvent.KEY_DOWN,
                                stage_keyDownHandler,
                                false, 0, true)
+        stage.quality = StageQuality.LOW
 
         ExternalMouseWheel.initialize(stage)
 
@@ -106,7 +107,7 @@ public class dourado extends Sprite
         renderer.width = width
         renderer.height = height
         renderer.source = source
-        renderer.smoothing = false
+//        renderer.smoothing = false
 
         container.addChild(renderer)
         renderManager.addRenderer(renderer)

@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="OpenZoomSDK.mxml" version="3">
-<compiler additionalCompilerArguments="-locale en_US" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
-<compilerSourcePath/>
-<libraryPath defaultLinkType="1">
-<libraryPathEntry kind="4" path=""/>
-<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/lib"/>
-</libraryPath>
-<sourceAttachmentPath>
-<sourceAttachmentPathEntry kind="3" linkType="1" path="${OPENZOOM}/lib/TweensyZeroCS4.swc" sourcepath="${OPENZOOM}/lib/Tweensy 0.2.2/releases/source/cs4/zero" useDefaultLinkType="false"/>
-</sourceAttachmentPath>
-</compiler>
-<applications>
-<application path="VirtualEarth.as"/>
-<application path="TextureMapping.as"/>
-<application path="OpenZoomSDK.mxml"/>
-<application path="LocalCachedTextureMapping.as"/>
-<application path="OpenStreetMapTest.as"/>
-<application path="ImagePyramidRendererTest.as"/>
-<application path="VEBoundsChecking.as"/>
-<application path="GigaPanViewer.as"/>
-<application path="RosettaProjectViewer.as"/>
-<application path="InduPartViewer.as"/>
-<application path="LayerRendererTest.as"/>
-<application path="WebTrendMapViewer.as"/>
-<application path="dourado.as"/>
-</applications>
-<modules/>
-<buildCSSFiles/>
+<actionScriptProperties mainApplicationPath="DjatokaTest.as" projectUUID="f222f997-dd29-4bec-b342-6c6ea17dc4fa" version="6">
+  <compiler additionalCompilerArguments="-use-network=false" autoRSLOrdering="true" copyDependentFiles="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+    <compilerSourcePath/>
+    <libraryPath defaultLinkType="0">
+      <libraryPathEntry kind="4" path="">
+        <excludedEntries>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/netmon.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_agent.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/sparkskins.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="1" linkType="1" path="${PROJECT_FRAMEWORKS}/locale/{locale}"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/charts.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/videoPlayer.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_dmv.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_air.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/qtp_air.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/framework.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_flashflexkit.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/qtp.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/framework_textLayout.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/rpc.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/automation_charts.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/datavisualization.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex4.swc" useDefaultLinkType="false"/>
+        </excludedEntries>
+      </libraryPathEntry>
+      <libraryPathEntry kind="1" linkType="1" path="lib"/>
+    </libraryPath>
+    <sourceAttachmentPath/>
+  </compiler>
+  <applications>
+    <application path="DjatokaTest.as"/>
+    <application path="KoelnGigapixel.as"/>
+    <application path="GigaPanViewer.as"/>
+    <application path="SmoothTransformerTest.as"/>
+    <application path="RosettaProjectViewer.as"/>
+    <application path="WebTrendMapViewer.as"/>
+    <application path="dourado.as"/>
+    <application path="ImagePyramidRendererTest.as"/>
+    <application path="OpenZoomSDK.as"/>
+    <application path="InduPartViewer.as"/>
+  </applications>
+  <modules/>
+  <buildCSSFiles/>
 </actionScriptProperties>

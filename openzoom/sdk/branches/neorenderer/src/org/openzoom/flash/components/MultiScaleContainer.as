@@ -38,7 +38,6 @@ import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.INormalizedViewportContainer;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.IViewportTransformer;
@@ -367,6 +366,16 @@ public final class MultiScaleContainer extends Sprite
     override public function getChildAt(index:int):DisplayObject
     {
         return _scene.getChildAt(index)
+    }
+    
+    override public function getChildIndex(child:DisplayObject):int
+    {
+        return _scene.getChildIndex(child)
+    }
+    
+    override public function getChildByName(name:String):DisplayObject
+    {
+        return _scene.getChildByName(name)   
     }
 
     //--------------------------------------------------------------------------

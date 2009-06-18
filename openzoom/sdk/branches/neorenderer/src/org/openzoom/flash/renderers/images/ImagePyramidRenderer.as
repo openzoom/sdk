@@ -29,7 +29,6 @@ import flash.utils.Dictionary;
 import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.renderers.Renderer;
-import org.openzoom.flash.utils.ICache;
 
 /**
  * Image pyramid renderer.
@@ -61,6 +60,7 @@ public final class ImagePyramidRenderer extends Renderer
 
     private var tileCache:Dictionary /* of ImagePyramidTile */ = new Dictionary()
     openzoom_internal var tileLayer:Shape
+    openzoom_internal var distance:Number
     
 //    public var smoothing:Boolean = true
 

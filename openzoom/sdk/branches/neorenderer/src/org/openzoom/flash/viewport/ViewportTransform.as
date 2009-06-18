@@ -44,7 +44,6 @@ public class ViewportTransform implements IViewportTransform,
                                       width:Number,
                                       height:Number,
                                       zoom:Number,
-                                      //origin:Point,
                                       viewportWidth:Number,
                                       viewportHeight:Number,
                                       sceneWidth:Number,
@@ -55,7 +54,6 @@ public class ViewportTransform implements IViewportTransform,
         bounds.width = width
         bounds.height = height
         _zoom = zoom
-        //_origin = origin.clone()
         
         _viewportWidth = viewportWidth
         _viewportHeight = viewportHeight
@@ -73,7 +71,6 @@ public class ViewportTransform implements IViewportTransform,
                                       width:Number,
                                       height:Number,
                                       zoom:Number,
-//                                      origin:Point,
                                       viewportWidth:Number,
                                       viewportHeight:Number,
                                       sceneWidth:Number,
@@ -84,15 +81,13 @@ public class ViewportTransform implements IViewportTransform,
                                                                width,
                                                                height,
                                                                zoom,
-//                                                               origin,
                                                                viewportWidth,
                                                                viewportHeight,
                                                                sceneWidth,
                                                                sceneHeight)
         // initialize
         instance.zoomTo(zoom)
-        // FIXME
-//        instance.zoomTo2(zoom, origin.x, origin.y, true)
+        
         return instance
     }
 
@@ -161,26 +156,7 @@ public class ViewportTransform implements IViewportTransform,
                            transformX:Number=0.5,
                            transformY:Number=0.5):void
     {
-        zoomTo2(zoom, transformX, transformY)
-    }
-
-    /**
-     * @inheritDoc
-     */
-    private function zoomTo2(zoom:Number,
-                            transformX:Number=0.5,
-                            transformY:Number=0.5/*,
-                            keepOrigin:Boolean=false*/):void
-    {
         _zoom = zoom
-        
-//        if (!keepOrigin)
-//        {
-////            trace("PRE", _origin)
-//            _origin.x = x + transformX * width
-//            _origin.y = y + transformY * height
-////            trace("POST", _origin)
-//        }
         
         // remember old origin
         var oldOrigin:Point = getViewportOrigin(transformX, transformY)
@@ -387,7 +363,6 @@ public class ViewportTransform implements IViewportTransform,
     public function set width(value:Number):void
     {
         zoomTo(getZoomForWidth(value), 0, 0)
-//        zoomTo2(getZoomForWidth(value), 0, 0, true)
     }
 
     //----------------------------------
@@ -405,7 +380,6 @@ public class ViewportTransform implements IViewportTransform,
     public function set height(value:Number):void
     {
         zoomTo(getZoomForHeight(value), 0, 0)
-//        zoomTo2(getZoomForHeight(value), 0, 0, true)
     }
 
     //----------------------------------
@@ -731,23 +705,6 @@ public class ViewportTransform implements IViewportTransform,
         return new Point(bounds.x + bounds.width / 2,
                          bounds.y + bounds.height / 2)
     }
-
-    //----------------------------------
-    //  origin
-    //----------------------------------
-
-    /**
-     * @inheritDoc
-     */
-     
-     
-//    private var _origin:Point = new Point()
-//    
-//    public function get origin():Point
-//    {
-////        return _origin.clone()
-//        return new Point(0.5, 0.5)
-//    }
 }
 
 }

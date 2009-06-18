@@ -35,7 +35,7 @@ import org.openzoom.flash.utils.ICache;
 /**
  * @private
  */
-internal class TileLoader extends EventDispatcher
+internal final class TileLoader extends EventDispatcher
 {
     //--------------------------------------------------------------------------
     //

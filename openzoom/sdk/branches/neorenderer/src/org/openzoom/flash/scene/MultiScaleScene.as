@@ -136,7 +136,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
      */
     override public function getChildIndex(child:DisplayObject):int
     {
-        return super.getChildIndex(child) + 1
+        return super.getChildIndex(child) - 1
     }
 
     //--------------------------------------------------------------------------
