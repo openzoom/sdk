@@ -34,6 +34,7 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
+import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
@@ -64,7 +65,8 @@ public class dourado extends Sprite
         stage.addEventListener(KeyboardEvent.KEY_DOWN,
                                stage_keyDownHandler,
                                false, 0, true)
-        stage.quality = StageQuality.LOW
+                               
+//        stage.quality = StageQuality.LOW
 
         ExternalMouseWheel.initialize(stage)
 
@@ -97,8 +99,8 @@ public class dourado extends Sprite
         var path:String
         var aspectRatio:Number
 
-//        source = new VirtualEarthDescriptor()
         source = new OpenStreetMapDescriptor()
+        source = new VirtualEarthDescriptor()
         aspectRatio = source.width / source.height
         width = 16384 * 2
         height = width / aspectRatio

@@ -30,16 +30,16 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="DjatokaTest.as"/>
-    <application path="KoelnGigapixel.as"/>
+    <application path="CatalogViewer.as"/>
     <application path="GigaPanViewer.as"/>
     <application path="SmoothTransformerTest.as"/>
     <application path="RosettaProjectViewer.as"/>
+    <application path="DjatokaTest.as"/>
     <application path="WebTrendMapViewer.as"/>
-    <application path="dourado.as"/>
     <application path="ImagePyramidRendererTest.as"/>
+    <application path="dourado.as"/>
+    <application path="KoelnGigapixel.as"/>
     <application path="OpenZoomSDK.as"/>
-    <application path="InduPartViewer.as"/>
   </applications>
   <modules/>
   <buildCSSFiles/>

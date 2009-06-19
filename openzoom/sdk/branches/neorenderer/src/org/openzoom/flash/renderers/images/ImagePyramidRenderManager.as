@@ -56,6 +56,7 @@ public final class ImagePyramidRenderManager implements IDisposable
     //--------------------------------------------------------------------------
 
     private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
+    
     private static const MAX_CACHE_SIZE:uint = 200
 
     private static const MAX_DOWNLOADS_STATIC:uint = 4
@@ -360,7 +361,10 @@ public final class ImagePyramidRenderManager implements IDisposable
         }
 
         if (nextTile)
+        {
             tileLoader.loadTile(nextTile)
+            invalidateDisplayList()
+        }
 
         // Prepare tile layer
         var tileLayer:Shape = renderer.openzoom_internal::tileLayer
