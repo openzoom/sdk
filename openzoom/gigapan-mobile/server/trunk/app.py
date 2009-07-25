@@ -27,6 +27,7 @@ from google.appengine.api.images import Image
 import google.appengine.api.images
 import math
 import simplejson as json
+import xml.dom.minidom
 
 
 xml = """\
@@ -61,6 +62,22 @@ class EchoRequestHandler(webapp.RequestHandler):
     def get(self):
         self.response.headers["Content-Type"] = "text/plain"
         self.response.out.write(self.request.headers["User-Agent"])
+        
+class FeedRequestHandler(webapp.RequestHandler):
+    def get(self):
+        self.response.headers["Content-Type"] = "application/rss+xml"
+        
+        doc = xml.dom.minidom.Document()
+        rss = doc.createElement("rss")
+        rss.setAttribute("version", "2.0")
+        
+        channel = doc.createElement("channel")
+        title = doc.createElement("title")
+        
+        rss.appendChild(channel)
+        doc.appendChild(rss)
+        
+        self.response.out.write(doc.toxml(encoding="UTF-8"))
     
 class DescriptorRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
@@ -162,7 +179,8 @@ class TileRequestHandler(webapp.RequestHandler):
 
 
 application = webapp.WSGIApplication([("/", MainRequestHandler),
-                                      ("/echo", EchoRequestHandler),
+                                      ("/echo/?", EchoRequestHandler),
+                                      ("/feed/?", FeedRequestHandler),
                                       (r"^/gigapan/([0-9]+).dzi$", DescriptorRequestHandler),
                                       (r"^/gigapan/([0-9]+)_files/([0-9]+)/([0-9]+)_([0-9]+).jpg$", TileRequestHandler)],
                                       debug=True)

@@ -1,13 +1,9 @@
 application: gigapan-mobile
-version: 7
+version: 8
 runtime: python
 api_version: 1
 
-handlers:
-- url: /feed/?
-  static_files: static/feed.xml
-  upload: static/feed.xml
-  
+handlers:  
 - url: /static/images/(.*\.(gif|png|jpg))
   static_files: static/images/\1
   upload: static/images/(.*\.(gif|png|jpg))
