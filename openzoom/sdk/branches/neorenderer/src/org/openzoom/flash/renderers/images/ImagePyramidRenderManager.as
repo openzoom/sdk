@@ -60,7 +60,7 @@ public final class ImagePyramidRenderManager implements IDisposable
     private static const MAX_CACHE_SIZE:uint = 200
 
     private static const MAX_DOWNLOADS_STATIC:uint = 4
-    private static const MAX_DOWNLOADS_DYNAMIC:uint = 0
+//    private static const MAX_DOWNLOADS_DYNAMIC:uint = 4
 
     //--------------------------------------------------------------------------
     //
@@ -88,23 +88,23 @@ public final class ImagePyramidRenderManager implements IDisposable
                                     tileCache,
                                     MAX_DOWNLOADS_STATIC)
 
-
         this.viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
                                        viewport_transformUpdateHandler,
                                        false, 0, true)
 
-        this.viewport.addEventListener(ViewportEvent.TRANSFORM_START,
-                                       viewport_transformStartHandler,
-                                       false, 0, true)
-
-        this.viewport.addEventListener(ViewportEvent.TRANSFORM_END,
-                                       viewport_transformEndHandler,
-                                       false, 0, true)
+//        this.viewport.addEventListener(ViewportEvent.TRANSFORM_START,
+//                                       viewport_transformStartHandler,
+//                                       false, 0, true)
+//
+//        this.viewport.addEventListener(ViewportEvent.TRANSFORM_END,
+//                                       viewport_transformEndHandler,
+//                                       false, 0, true)
 
         // Render loop
         owner.addEventListener(Event.ENTER_FRAME,
                                enterFrameHandler,
                                false, 0, true)
+
 //        setInterval(enterFrameHandler, 500, null)
     }
 
@@ -347,7 +347,10 @@ public final class ImagePyramidRenderManager implements IDisposable
 
                     var duration:Number = TILE_SHOW_DURATION
                     var currentAlpha:Number = (currentTime - tile.fadeStart) / duration
-                    tile.alpha = Math.min(1, currentAlpha)
+                    var levelAlpha:Number = 1.0//Math.min(1, stageBounds.width / level.width)
+//                    trace(level.width / stageBounds.width, l)
+//                    trace(stageBounds)
+                    tile.alpha = Math.min(1, currentAlpha) * levelAlpha
 
                     if (tile.alpha < 1)
                         done = false
@@ -476,25 +479,25 @@ public final class ImagePyramidRenderManager implements IDisposable
         invalidateDisplayList()
     }
 
-    /**
-     * @private
-     */
-    private function viewport_transformStartHandler(event:ViewportEvent):void
-    {
-        if (tileLoader)
-            tileLoader.maxDownloads = MAX_DOWNLOADS_DYNAMIC
-    }
-
-    /**
-     * @private
-     */
-    private function viewport_transformEndHandler(event:ViewportEvent):void
-    {
-        if (tileLoader)
-            tileLoader.maxDownloads = MAX_DOWNLOADS_STATIC
-
-        invalidateDisplayList()
-    }
+//    /**
+//     * @private
+//     */
+//    private function viewport_transformStartHandler(event:ViewportEvent):void
+//    {
+//        if (tileLoader)
+//            tileLoader.maxDownloads = MAX_DOWNLOADS_DYNAMIC
+//    }
+//
+//    /**
+//     * @private
+//     */
+//    private function viewport_transformEndHandler(event:ViewportEvent):void
+//    {
+//        if (tileLoader)
+//            tileLoader.maxDownloads = MAX_DOWNLOADS_STATIC
+//
+//        invalidateDisplayList()
+//    }
 
     //--------------------------------------------------------------------------
     //

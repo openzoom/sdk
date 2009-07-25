@@ -65,14 +65,15 @@ public class dourado extends Sprite
         stage.addEventListener(KeyboardEvent.KEY_DOWN,
                                stage_keyDownHandler,
                                false, 0, true)
-                               
+                      
+        // FIXME         
 //        stage.quality = StageQuality.LOW
 
         ExternalMouseWheel.initialize(stage)
 
         container = new MultiScaleContainer()
         var transformer:TweenerTransformer = new TweenerTransformer()
-        transformer.duration = 0.2
+//        transformer.duration = 0.2
         container.transformer = transformer
 
         var mouseController:MouseController = new MouseController()
@@ -133,7 +134,7 @@ public class dourado extends Sprite
         compositeContraint.constraints = [scaleConstraint,
                                           centerConstraint,
                                           visibilityContraint,
-                                          mappingConstraint,
+//                                          mappingConstraint,
                                           zoomConstraint,
                                           ]
         container.constraint = compositeContraint

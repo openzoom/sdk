@@ -128,19 +128,19 @@ public class SmoothTransformerTest extends Sprite
         width = 16384
         height = width / aspectRatio
 
-//        source = GigaPanDescriptor.fromID(14766, 125440, 39680)
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = width / aspectRatio
-        
-        source = GigaPanDescriptor.fromID(6568, 180504, 27837)
+        source = GigaPanDescriptor.fromID(14766, 125440, 39680)
         numRenderers = 1
         numColumns = 1
         aspectRatio = source.width / source.height
         width = 16384
         height = width / aspectRatio
+        
+//        source = GigaPanDescriptor.fromID(6568, 180504, 27837)
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = width / aspectRatio
 
 
         var padding:Number = width * 0.1

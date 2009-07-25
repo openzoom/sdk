@@ -23,6 +23,7 @@ package
 
 import flash.display.Sprite;
 import flash.display.StageAlign;
+import flash.display.StageQuality;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
@@ -57,6 +58,9 @@ public class GigaPanViewer extends Sprite
 {
     public function GigaPanViewer()
     {
+        // FIXME
+        stage.quality = StageQuality.HIGH
+        
         stage.align = StageAlign.TOP_LEFT
         stage.scaleMode = StageScaleMode.NO_SCALE
         stage.addEventListener(Event.RESIZE,

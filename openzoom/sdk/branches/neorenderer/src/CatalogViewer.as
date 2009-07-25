@@ -52,7 +52,6 @@ import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
-
 [SWF(width="960", height="540", frameRate="60", backgroundColor="#000000")]
 public class CatalogViewer extends Sprite
 {
@@ -234,7 +233,10 @@ public class CatalogViewer extends Sprite
 //                                          zoomConstraint,
                                           visibilityContraint]
         container.constraint = compositeContraint
-
+        
+//        focusIndex = 0
+//        focusRenderer(container.getChildAt(0) as ImagePyramidRenderer, 1.0, true)
+        
         addChild(container)
 
         memoryMonitor = new MemoryMonitor()
@@ -243,7 +245,6 @@ public class CatalogViewer extends Sprite
         stage.addEventListener(KeyboardEvent.KEY_DOWN,
                                stage_keyDownHandler,
                                false, 0, true)
-
         layout()
     }
     
@@ -300,14 +301,16 @@ public class CatalogViewer extends Sprite
         }
     }
     
-    private function focusRenderer(renderer:ImagePyramidRenderer):void
+    private function focusRenderer(renderer:ImagePyramidRenderer,
+                                   scale:Number=0.8,
+                                   immediately:Boolean=false):void
     {
         if (renderer == focusedRenderer && renderer.zoom > 0.5)
             return
             
         var sceneViewport:ISceneViewport = SceneViewport.getInstance(container.viewport)
         var bounds:Rectangle = renderer.getBounds(container.scene.targetCoordinateSpace)
-        sceneViewport.fitToBounds(bounds, 0.8)
+        sceneViewport.fitToBounds(bounds, scale, immediately)
     }
 
     private function stage_resizeHandler(event:Event):void

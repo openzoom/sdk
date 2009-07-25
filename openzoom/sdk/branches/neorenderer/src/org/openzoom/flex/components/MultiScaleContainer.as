@@ -936,7 +936,8 @@ public final class MultiScaleContainer extends UIComponent
     /**
      * @copy org.openzoom.flash.viewport.IViewport#panBy()
      */
-    public function panBy(deltaX:Number, deltaY:Number,
+    public function panBy(deltaX:Number,
+                          deltaY:Number,
                           immediately:Boolean=false):void
     {
         viewport.panBy(deltaX, deltaY, immediately)
@@ -946,7 +947,7 @@ public final class MultiScaleContainer extends UIComponent
      * @copy org.openzoom.flash.viewport.IViewport#fitToBounds()
      */
     public function fitToBounds(bounds:Rectangle,
-                                scale:Number = 1.0,
+                                scale:Number=1.0,
                                 immediately:Boolean=false):void
     {
         viewport.fitToBounds(bounds, scale, immediately)
