@@ -24,10 +24,13 @@ from google.appengine.api.urlfetch import fetch
 from google.appengine.api.images import crop
 from google.appengine.api.images import Image
 
+from xml.sax import saxutils
+
 import google.appengine.api.images
 import math
+import random
 import simplejson as json
-import uuid
+#import uuid
 import xml.dom.minidom
 
 DZI_URL = "http://gigapan-mobile.appspot.com/gigapan/%d.dzi"
@@ -41,7 +44,7 @@ API_MOST_POPULAR = "http://api.gigapan.org/beta/gigapans/most_popular.json"
 API_MOST_RECENT = "http://api.gigapan.org/beta/gigapans/most_recent.json"
 API_GIGAPAN = "http://api.gigapan.org/beta/gigapans/%d.json"
 API_GIGAPAN_USER = "http://gigapan.org/viewProfile.php?userid=%d"
-FEED_ICON_URL = "http://gigapan-mobile.appspot.com/static/images/gigapan.jpg"
+FEED_ICON_URL = "http://gigapan-mobile.appspot.com/static/images/feed-icon.jpg"
 
 def get_gigapan(id):
     gigapan = db.Query(GigaPan).filter("id=", id).get()
@@ -60,7 +63,7 @@ class GigaPan(db.Model):
     width = db.IntegerProperty(required=True)
     height = db.IntegerProperty(required=True)
 
-class Feed(db.Model):
+class FeedContent(db.Model):
     content = db.TextProperty()
 
 class MainRequestHandler(webapp.RequestHandler):
@@ -77,12 +80,24 @@ class FeedRequestHandler(webapp.RequestHandler):
     def get(self):
         self.response.headers["Content-Type"] = "application/xml"
         
-        feed = db.Query(Feed).get()
+        feed = db.Query(FeedContent).get()
         if feed:
             self.response.out.write(feed.content)
         else:
             self.error(404)
             return
+    
+def sanitize(s, default="unknown"):
+#    s = unicode(s, "utf-8")
+    try:
+        saxutils.escape(msg).encode('UTF-8')
+    except:
+        pass
+    s = "".join([x for x in s if x.isalpha() or x.isdigit() or x.isspace()])
+    s = s.strip()
+    if not s:
+        s = default
+    return s
 
 def create_feed(doc, node, url, heading):
     data_json = fetch(url, deadline=10)
@@ -90,10 +105,10 @@ def create_feed(doc, node, url, heading):
     
     for item in data["items"]:
         gigapan_id = item[1]["id"]
-        gigapan_title = item[1]["name"].strip()
+        gigapan_title = sanitize(item[1]["name"], "Untitled")
         gigapan_author = item[1]["owner"]["first_name"] + " " + item[1]["owner"]["last_name"]
-        gigapan_author = gigapan_author.strip()
-        gigapan_author_id = item[1]["owner"]["id"]
+        gigapan_author = sanitize(gigapan_author, "unknown")
+        gigapan_author_id = int(item[1]["owner"]["id"])
 
         item = doc.createElement("item")
         
@@ -108,8 +123,8 @@ def create_feed(doc, node, url, heading):
         item.appendChild(title)
         
         guid = doc.createElement("guid")
-#        guid_text = doc.createTextNode(DZI_URL%gigapan_id)
-        guid_text = doc.createTextNode(str(uuid.uuid1()))
+        guid_text = doc.createTextNode(DZI_URL%gigapan_id)
+#        guid_text = doc.createTextNode(str(uuid.uuid1()))
         guid.appendChild(guid_text)
         item.appendChild(guid)
         
@@ -134,64 +149,69 @@ def create_feed(doc, node, url, heading):
         node.appendChild(item)
         
 class FeedTaskRequestHandler(webapp.RequestHandler):
-    doc = xml.dom.minidom.Document()
+    def get(self):
+        doc = xml.dom.minidom.Document()
+        
+        # RSS
+        rss = doc.createElement("rss")
+        rss.setAttribute("version", "2.0")
+        
+        channel = doc.createElement("channel")
+        
+        title = doc.createElement("title")
+        title_text = doc.createTextNode("GigaPan")
+        title.appendChild(title_text)
+        channel.appendChild(title)
+        
+        link = doc.createElement("link")
+        link_text = doc.createTextNode("http://gigapan.org")
+        link.appendChild(link_text)
+        channel.appendChild(link)
+        
+        image = doc.createElement("image")
     
-    # RSS
-    rss = doc.createElement("rss")
-    rss.setAttribute("version", "2.0")
+        title = doc.createElement("title")
+        title_text = doc.createTextNode("GigaPan")
+        title.appendChild(title_text)
+        image.appendChild(title)
+        
+        url = doc.createElement("url")
+        url_text = doc.createTextNode(FEED_ICON_URL)
+        url.appendChild(url_text)
+        image.appendChild(url)
+        
+        link = doc.createElement("link")
+        link_text = doc.createTextNode("http://gigapan.org")
+        link.appendChild(link_text)
+        image.appendChild(link)
+        
+        channel.appendChild(image)
     
-    channel = doc.createElement("channel")
-    
-    title = doc.createElement("title")
-    title_text = doc.createTextNode("GigaPan")
-    title.appendChild(title_text)
-    channel.appendChild(title)
-    
-    link = doc.createElement("link")
-    link_text = doc.createTextNode("http://gigapan.org")
-    link.appendChild(link_text)
-    channel.appendChild(link)
-    
-    image = doc.createElement("image")
-
-    title = doc.createElement("title")
-    title_text = doc.createTextNode("GigaPan")
-    title.appendChild(title_text)
-    image.appendChild(title)
-    
-    url = doc.createElement("url")
-    url_text = doc.createTextNode(FEED_ICON_URL)
-    url.appendChild(url_text)
-    image.appendChild(url)
-    
-    link = doc.createElement("link")
-    link_text = doc.createTextNode("http://gigapan.org")
-    link.appendChild(link_text)
-    image.appendChild(link)
-    
-    channel.appendChild(image)
-
-    description = doc.createElement("description")
-    description_text = doc.createTextNode("Photos from GigaPan.org")
-    description.appendChild(description_text)
-    channel.appendChild(description)
-    
-    language = doc.createElement("language")
-    language_text = doc.createTextNode("en-us")
-    language.appendChild(language_text)
-    channel.appendChild(language)
-    
-    create_feed(doc, channel, API_MOST_POPULAR, "Most Popular")
-    create_feed(doc, channel, API_MOST_RECENT, "Most Recent")
-    
-    rss.appendChild(channel)
-    doc.appendChild(rss)
-    
-    feed = db.Query(Feed).get()
-    if not feed:
-        feed = Feed()
-    feed.content = db.Text(doc.toxml("utf-8"))
-    feed.put()
+        description = doc.createElement("description")
+        description_text = doc.createTextNode("Photos from GigaPan.org")
+        description.appendChild(description_text)
+        channel.appendChild(description)
+        
+        language = doc.createElement("language")
+        language_text = doc.createTextNode("en-us")
+        language.appendChild(language_text)
+        channel.appendChild(language)
+        
+        create_feed(doc, channel, API_MOST_POPULAR, "Most Popular")
+        create_feed(doc, channel, API_MOST_RECENT, "Most Recent")
+        
+        rss.appendChild(channel)
+        doc.appendChild(rss)
+        
+        feed = db.Query(FeedContent).get()
+        feed_content = db.Text(doc.toxml("utf-8"))
+        if not feed:
+            feed = FeedContent(content=feed_content)
+        else:
+            feed.content = feed_content
+        feed.put()
+        
+        self.response.out.write(self.request.headers["User-Agent"] + str(random.random()))
 
 class DescriptorRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
