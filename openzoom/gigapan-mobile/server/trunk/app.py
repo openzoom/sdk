@@ -17,32 +17,31 @@
 #  You should have received a copy of the GNU General Public License
 #  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 
+from google.appengine.api.images import Image
+from google.appengine.api.images import crop
+from google.appengine.api.urlfetch import fetch
 from google.appengine.ext import db
 from google.appengine.ext import webapp
+from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.api.urlfetch import fetch
-from google.appengine.api.images import crop
-from google.appengine.api.images import Image
 
 from xml.sax import saxutils
 
 import google.appengine.api.images
 import math
+import os
 import random
 import simplejson as json
 #import uuid
 import xml.dom.minidom
 
 DZI_URL = "http://gigapan-mobile.appspot.com/gigapan/%d.dzi"
-DZI_TEMPLATE = """\
-<?xml version="1.0" encoding="UTF-8"?>
-<Image TileSize="256" Overlap="0" Format="jpg" xmlns="http://schemas.microsoft.com/deepzoom/2008">
-    <Size Width="%(width)s" Height="%(height)s"/>
-</Image>"""
+DZI_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?><Image TileSize="256" Overlap="0" Format="jpg" xmlns="http://schemas.microsoft.com/deepzoom/2008"><Size Width="%(width)s" Height="%(height)s"/></Image>"""
 
 API_MOST_POPULAR = "http://api.gigapan.org/beta/gigapans/most_popular.json"
 API_MOST_RECENT = "http://api.gigapan.org/beta/gigapans/most_recent.json"
 API_GIGAPAN = "http://api.gigapan.org/beta/gigapans/%d.json"
+API_GIGAPAN_TILE_URL = "http://tile%(tileserver)s.gigapan.org/gigapans0/%(id)d/tiles"
 API_GIGAPAN_USER = "http://gigapan.org/viewProfile.php?userid=%d"
 FEED_ICON_URL = "http://gigapan-mobile.appspot.com/static/images/feed-icon.jpg"
 
@@ -68,17 +67,70 @@ class FeedContent(db.Model):
 
 class MainRequestHandler(webapp.RequestHandler):
     def get(self):
-        self.response.headers["Content-Type"] = "text/plain"
-        self.response.out.write("Welcome to GigaPan Mobile. Powered by OpenZoom.org. Developed by Daniel Gasienica (daniel@gasienica.ch)")
+        template_values = {}
+        path = os.path.join(os.path.dirname(__file__), "index.html")
+        self.response.out.write(template.render(path, template_values))
 
-class EchoRequestHandler(webapp.RequestHandler):
+class RecentRequestHandler(webapp.RequestHandler):
     def get(self):
-        self.response.headers["Content-Type"] = "text/plain"
-        self.response.out.write(self.request.headers["User-Agent"])
+        data_json = fetch(API_MOST_RECENT, deadline=10)
+        data = json.loads(data_json.content)
         
+        gigapans = []
+        for item in data["items"]:
+            gigapans.append({"id": item[1]["id"], "title": smart_truncate(item[1]["name"], 26)})
+        
+        template_values = {
+            "gigapans": gigapans
+        }
+        
+        path = os.path.join(os.path.dirname(__file__), "gigapans.html")
+        self.response.out.write(template.render(path, template_values))
+
+class PopularRequestHandler(webapp.RequestHandler):
+    def get(self):
+        data_json = fetch(API_MOST_POPULAR, deadline=10)
+        data = json.loads(data_json.content)
+        
+        gigapans = []
+        for item in data["items"]:
+            gigapans.append({"id": item[1]["id"], "title": smart_truncate(item[1]["name"], 26)})
+        
+        template_values = {
+            "gigapans": gigapans
+        }
+        
+        
+        path = os.path.join(os.path.dirname(__file__), "gigapans.html")
+        self.response.out.write(template.render(path, template_values))
+        
+def smart_truncate(content, length=40, suffix='...'):
+    if len(content) <= length:
+        return content
+    else:
+        return ' '.join(content[:length+1].split(' ')[0:-1]) + suffix
+        
+class GigaPanRequestHandler(webapp.RequestHandler):
+    def get(self, *groups):
+        id = int(groups[0])
+        try:
+            gigapan = get_gigapan(id)
+        except:
+            self.error(404)
+            return
+        
+        dzi = DZI_TEMPLATE%{"width": gigapan.width, "height": gigapan.height}
+        template_values = {
+          "id": id,
+          "dzi": dzi
+          }
+    
+        path = os.path.join(os.path.dirname(__file__), "gigapan.html")
+        self.response.out.write(template.render(path, template_values))
+
 class FeedRequestHandler(webapp.RequestHandler):
     def get(self):
-        self.response.headers["Content-Type"] = "application/xml"
+        self.response.headers["Content-Type"] = "application/rss+xml"
         
         feed = db.Query(FeedContent).get()
         if feed:
@@ -88,9 +140,8 @@ class FeedRequestHandler(webapp.RequestHandler):
             return
     
 def sanitize(s, default="unknown"):
-#    s = unicode(s, "utf-8")
     try:
-        saxutils.escape(msg).encode('UTF-8')
+        saxutils.escape(msg).encode("UTF-8")
     except:
         pass
     s = "".join([x for x in s if x.isalpha() or x.isdigit() or x.isspace()])
@@ -223,7 +274,7 @@ class DescriptorRequestHandler(webapp.RequestHandler):
             return
         self.response.headers["Content-Type"] = "application/xml"
         self.response.out.write(DZI_TEMPLATE%{"width": gigapan.width, "height": gigapan.height})
-   
+
 class TileRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
         id = int(groups[0])
@@ -243,7 +294,9 @@ class TileRequestHandler(webapp.RequestHandler):
         self.tile_size = 256
         self._num_levels = None
         
-        url ="http://share.gigapan.org/gigapans0/" + str(id) + "/tiles"
+#        url = "http://share.gigapan.org/gigapans0/%d/tiles"%id
+        tileserver = str(int(math.floor(id / 1000.0))).zfill(2)
+        url = API_GIGAPAN_TILE_URL%{"tileserver": tileserver, "id": id}
         name = "r"
         z = max(0, level - 8)
         bit = (1 << z) >> 1
@@ -313,9 +366,11 @@ class TileRequestHandler(webapp.RequestHandler):
 
 
 application = webapp.WSGIApplication([("/", MainRequestHandler),
-                                      ("/echo/?", EchoRequestHandler),
+                                      ("/recent/?", RecentRequestHandler),
+                                      ("/popular/?", PopularRequestHandler),
                                       ("/feed/?", FeedRequestHandler),
                                       ("/tasks/feed/?", FeedTaskRequestHandler),
+                                      (r"^/gigapan/([0-9]+)/?", GigaPanRequestHandler),
                                       (r"^/gigapan/([0-9]+).dzi$", DescriptorRequestHandler),
                                       (r"^/gigapan/([0-9]+)_files/([0-9]+)/([0-9]+)_([0-9]+).jpg$", TileRequestHandler)],
                                       debug=True)
@@ -325,4 +380,4 @@ def main():
     run_wsgi_app(application)
 
 if __name__ == "__main__":
-    main()  
+    main()

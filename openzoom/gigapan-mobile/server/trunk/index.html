@@ -3,68 +3,33 @@
     <head>
         <title>GigaPan</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
         <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
         <meta name="apple-mobile-web-app-capable" content="yes" />
-		<link rel="apple-touch-icon" href="static/images/apple-touch-icon.png"/>
-
-        <script type="text/javascript" src="http://seadragon.com/ajax/0.8/seadragon-min.js"></script>
-        <script type="text/javascript">
-			var viewer;
-            
-            function init()
-			{
-                viewer = new Seadragon.Viewer("container");
-                viewer.openDzi("/gigapan/15374.dzi");
-            }
-            
-            Seadragon.Utils.addEvent(window, "load", init);
-        </script>
-        <style type="text/css">
-            html, body {
-                padding: 0;
-                margin: 0;
-                height: 100%;
-            }
-            
-            #nav {
-                background-color: #08F;
-                color: #999;
-                font-family: Helvetica, Arial;
-                font-weight: bold;
-                font-size: 0.9em;
-                padding: 2px 0;
-                margin: 0;
-                text-align: center;
-                width: 100%;
-            }
-            
-            #nav a {
-                text-decoration: none;
-                color: #EEE;
-            }
-			
-            #container {
-                width: 100%;
-                height: 100%;
-                background-color: black;
-                border: 1px solid black;
-                color: #FFF;
-                padding: 0;
-                margin: 0;
-            }
-        </style>
+        <link rel="apple-touch-icon" href="static/images/apple-touch-icon.png"/>
+        <link href="static/style/style.css" media="screen" rel="stylesheet" type="text/css">
+        </link>
     </head>
     <body>
-        <!-- 320x356px -->
-        <!-- 480x208px -->
-        <div id="nav">
-            <a href="deepzoom://gigapan-mobile.appspot.com/gigapan/15374.dzi">View in Seadragon Mobile</a> | <a href="http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=299655981&mt=8">Get it!</a>
+        <div id="header">
+            <a id="logo" href="/"><img src="static/images/logo.png" alt="GigaPan Mobile"/></a>
         </div>
-        <div id="container"></div>
-        <!--
-        <script type="text/javascript" src="http://seadragon.com/ajax/embed.js"></script>
-        <script type="text/javascript">Seadragon.embed("100%", "100%", "http://gigapan-mobile.appspot.com/gigapan/15374.dzi", 59783, 24658, 256, 0, "jpg");</script>
-        -->
+        <div id="content">
+            <ul>
+                <li>
+                    <h2><a class="indicator" href="/recent">Most Recent</a></h2>
+                </li>
+                <li>
+                    <h2><a class="indicator" href="/popular">Most Popular</a></h2>
+                </li>
+                <li>
+                    <h2><a style="color: #C00" href="http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=299655981&mt=8">Get Seadragon Mobile</a></h2>
+                </li>
+                <li>
+                    <h2><a style="color: #444" href="mailto:daniel@gasienica.ch?subject=Feedback: GigaPan Mobile">Feedback</a></h2>
+                </li>
+            </ul>
+            <p style="padding: 12px 12px 6px;">For the ultimate gigapixel browsing experience get <a style="color: #C00" href="http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=299655981&mt=8">Seadragon Mobile</a>.</p>
+			<p style="font-size: 10px; padding: 6px 12px;">Developed by <a href="http://gasi.ch">Daniel Gasienica</a>.<br/>Brought to you by the <a href="http://openzoom.org/">OpenZoom</a> project.</p>
+        </div>
     </body>
 </html>
