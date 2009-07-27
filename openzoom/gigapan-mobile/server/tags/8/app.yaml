@@ -1,0 +1,24 @@
+application: gigapan-mobile
+version: 8
+runtime: python
+api_version: 1
+
+handlers:
+- url: /
+  static_files: index.html
+  upload: index.html
+
+- url: /tasks/feed
+  script: app.py
+  login: admin
+  
+- url: /static/images/(.*\.(gif|png|jpg))
+  static_files: static/images/\1
+  upload: static/images/(.*\.(gif|png|jpg))
+
+- url: /crossdomain.xml
+  static_files: crossdomain.xml
+  upload: crossdomain.xml
+  
+- url: /.*
+  script: app.py
