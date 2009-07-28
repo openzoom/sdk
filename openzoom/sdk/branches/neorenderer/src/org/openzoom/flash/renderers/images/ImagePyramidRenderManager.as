@@ -30,6 +30,7 @@ import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.getTimer;
+import flash.utils.setInterval;
 
 import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
@@ -55,12 +56,12 @@ public final class ImagePyramidRenderManager implements IDisposable
     //
     //--------------------------------------------------------------------------
 
-    private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
+    private static const TILE_SHOW_DURATION:Number = 250 // milliseconds
     
-    private static const MAX_CACHE_SIZE:uint = 200
+    private static const MAX_CACHE_SIZE:uint = 120
 
     private static const MAX_DOWNLOADS_STATIC:uint = 4
-//    private static const MAX_DOWNLOADS_DYNAMIC:uint = 4
+    private static const MAX_DOWNLOADS_DYNAMIC:uint = 2
 
     //--------------------------------------------------------------------------
     //
@@ -76,13 +77,13 @@ public final class ImagePyramidRenderManager implements IDisposable
                                               viewport:INormalizedViewport,
                                               loader:INetworkQueue)
     {
-        this.scene = scene
-
-        this.viewport = viewport
-
-        this.loader = loader
-        tileCache = new Cache(MAX_CACHE_SIZE)
         this.owner = owner
+        this.scene = scene
+        this.viewport = viewport
+        this.loader = loader
+        
+        tileCache = new Cache(MAX_CACHE_SIZE)
+        
         tileLoader = new TileLoader(this,
                                     loader,
                                     tileCache,
@@ -92,13 +93,13 @@ public final class ImagePyramidRenderManager implements IDisposable
                                        viewport_transformUpdateHandler,
                                        false, 0, true)
 
-//        this.viewport.addEventListener(ViewportEvent.TRANSFORM_START,
-//                                       viewport_transformStartHandler,
-//                                       false, 0, true)
-//
-//        this.viewport.addEventListener(ViewportEvent.TRANSFORM_END,
-//                                       viewport_transformEndHandler,
-//                                       false, 0, true)
+        this.viewport.addEventListener(ViewportEvent.TRANSFORM_START,
+                                       viewport_transformStartHandler,
+                                       false, 0, true)
+
+        this.viewport.addEventListener(ViewportEvent.TRANSFORM_END,
+                                       viewport_transformEndHandler,
+                                       false, 0, true)
 
         // Render loop
         owner.addEventListener(Event.ENTER_FRAME,
@@ -148,57 +149,10 @@ public final class ImagePyramidRenderManager implements IDisposable
     {
         if (invalidateDisplayListFlag)
         {
-//            // TODO: Validate renderers from the transformation origin outwards
-//            var nextRenderer:ImagePyramidRenderer
-//
-//            var center:Point = viewport.center
-//            center.x *= scene.sceneWidth
-//            center.y *= scene.sceneHeight
-//
-//            for each (var renderer:ImagePyramidRenderer in renderers)
-//            {
-//                var dx:Number = renderer.x - center.x
-//                var dy:Number = renderer.y - center.y
-//                var distance:Number = dx*dx + dy*dy
-//                renderer.openzoom_internal::distance =  distance
-//                
-//                if (!nextRenderer && !validated[renderer])
-//                    nextRenderer = renderer
-//    
-//                if (!validated[renderer] && distance <= nextRenderer.openzoom_internal::distance)
-//                    nextRenderer = renderer
-//            }
-//    
-//            if (nextRenderer)
-//            {
-//                updateDisplayList(nextRenderer)
-//                validated[nextRenderer] = true
-//                invalidateDisplayList()
-//            }
-//            else
-//            {
-//                // Mark as validated
-//                invalidateDisplayListFlag = false
-//                validated = new Dictionary()
-//            }
-
-//            for each (var renderer:ImagePyramidRenderer in renderers)
-//                updateDisplayList(renderer)
-
-            var numRenderers:int = renderers.length
-            for (var i:int = 0; i < numRenderers; i++)
-                updateDisplayList(renderers[i])
-
-//            for (var i:int = currentIndex; i < Math.min(currentIndex + 100, renderers.length); i++)
-//                updateDisplayList(renderers[i])
-//            
-//            currentIndex = (currentIndex + 100) % renderers.length    
-
+            for each (var renderer:ImagePyramidRenderer in renderers)
+                updateDisplayList(renderer)
         }
     }
-    
-//    private var currentIndex:int = 0
-//    private var validated:Dictionary = new Dictionary()
     
     //--------------------------------------------------------------------------
     //
@@ -347,10 +301,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 
                     var duration:Number = TILE_SHOW_DURATION
                     var currentAlpha:Number = (currentTime - tile.fadeStart) / duration
-                    var levelAlpha:Number = 1.0//Math.min(1, stageBounds.width / level.width)
-//                    trace(level.width / stageBounds.width, l)
-//                    trace(stageBounds)
-                    tile.alpha = Math.min(1, currentAlpha) * levelAlpha
+                    tile.alpha = Math.min(1, currentAlpha)
 
                     if (tile.alpha < 1)
                         done = false
@@ -429,15 +380,13 @@ public final class ImagePyramidRenderManager implements IDisposable
             }
             else
             {
-                var levelSize:uint = 1 << tile.level // Math.pow(2, tile.level)
+                var levelSize:uint = 1 << tile.level
                 var position:Point = MortonOrder.getPosition(dziDescriptor.mortonNumber)
                 var tileSize:uint = dziDescriptor.collection.tileSize
                 var offsetX:uint = (position.x * levelSize) % tileSize
                 var offsetY:uint = (position.y * levelSize) % tileSize
                 sx = descriptor.width / level.width
                 sy = descriptor.height / level.height
-//                matrix.translate(-offsetX, -offsetY)
-//                matrix.scale(sx, sy)
                 matrix.createBox(sx, sy, 0, -offsetX * sx, -offsetY * sy)
             }
 
@@ -479,25 +428,25 @@ public final class ImagePyramidRenderManager implements IDisposable
         invalidateDisplayList()
     }
 
-//    /**
-//     * @private
-//     */
-//    private function viewport_transformStartHandler(event:ViewportEvent):void
-//    {
-//        if (tileLoader)
-//            tileLoader.maxDownloads = MAX_DOWNLOADS_DYNAMIC
-//    }
-//
-//    /**
-//     * @private
-//     */
-//    private function viewport_transformEndHandler(event:ViewportEvent):void
-//    {
-//        if (tileLoader)
-//            tileLoader.maxDownloads = MAX_DOWNLOADS_STATIC
-//
-//        invalidateDisplayList()
-//    }
+    /**
+     * @private
+     */
+    private function viewport_transformStartHandler(event:ViewportEvent):void
+    {
+        if (tileLoader)
+            tileLoader.maxDownloads = MAX_DOWNLOADS_DYNAMIC
+    }
+
+    /**
+     * @private
+     */
+    private function viewport_transformEndHandler(event:ViewportEvent):void
+    {
+        if (tileLoader)
+            tileLoader.maxDownloads = MAX_DOWNLOADS_STATIC
+
+        invalidateDisplayList()
+    }
 
     //--------------------------------------------------------------------------
     //

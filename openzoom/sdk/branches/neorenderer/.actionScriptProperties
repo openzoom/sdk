@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="LayerRendererTest.as" projectUUID="f222f997-dd29-4bec-b342-6c6ea17dc4fa" version="6">
+<actionScriptProperties mainApplicationPath="OpenZoomDescriptorTest.as" projectUUID="f222f997-dd29-4bec-b342-6c6ea17dc4fa" version="6">
   <compiler additionalCompilerArguments="-use-network=false" autoRSLOrdering="true" copyDependentFiles="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
@@ -30,6 +30,7 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
+    <application path="OpenZoomDescriptorTest.as"/>
     <application path="LayerRendererTest.as"/>
     <application path="CatalogViewer.as"/>
     <application path="GigaPanViewer.as"/>

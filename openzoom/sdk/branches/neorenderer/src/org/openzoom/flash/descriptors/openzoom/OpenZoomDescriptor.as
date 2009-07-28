@@ -72,7 +72,6 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
     //--------------------------------------------------------------------------
 
     private var data:XML
-    private var levels:Dictionary = new Dictionary()
 
     //--------------------------------------------------------------------------
     //
@@ -99,9 +98,9 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
-        return IImagePyramidLevel(levels[level]).getTileURL(column, row)
+        return getLevelAt(level).getTileURL(column, row)
     }
 
     /**
@@ -120,9 +119,9 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
         }
 
         var maxLevel:uint = numLevels - 1
-        var index:int = clamp(index, 0, maxLevel)
+        var index:int = clamp(i, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
-        
+
         return level
     }
 
@@ -198,16 +197,16 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
             var uris:Array = []
 
             for each (var uri:XML in level.uri)
-                uris.push(source.@template.toString())
+                uris.push(uri.@template.toString())
 
-            levels[index] = new ImagePyramidLevel(this,
-                                                     index,
-                                                     level.@width,
-                                                     level.@height,
-                                                     level.@columns,
-                                                     level.@rows,
-                                                     uris,
-                                                     origin)
+            addLevel(new ImagePyramidLevel(this,
+                                           index,
+                                           level.@width,
+                                           level.@height,
+                                           level.@columns,
+                                           level.@rows,
+                                           uris,
+                                           origin))
         }
     }
 }
