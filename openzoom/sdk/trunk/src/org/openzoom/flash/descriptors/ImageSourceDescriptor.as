@@ -89,7 +89,7 @@ public class ImageSourceDescriptor implements IImageSourceDescriptor
     /**
      * @inheritDoc
      */
-    public function get uri():String
+    public function get url():String
     {
         return _uri
     }
@@ -119,7 +119,7 @@ public class ImageSourceDescriptor implements IImageSourceDescriptor
      */
     public function clone():IImageSourceDescriptor
     {
-        return new ImageSourceDescriptor(uri, width, height, type)
+        return new ImageSourceDescriptor(url, width, height, type)
     }
 }
 

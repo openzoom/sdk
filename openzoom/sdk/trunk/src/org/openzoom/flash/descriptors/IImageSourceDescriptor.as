@@ -55,9 +55,9 @@ public interface IImageSourceDescriptor
     //----------------------------------
 
     /**
-     * Absolute URI to the image source.
+     * Absolute URL to the image source.
      */
-    function get uri():String
+    function get url():String
 
     //----------------------------------
     //  type

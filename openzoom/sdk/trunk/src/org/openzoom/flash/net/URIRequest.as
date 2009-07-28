@@ -136,7 +136,7 @@ internal class URIRequest extends EventDispatcher
             requestEvent.request = this
             requestEvent.data = data
             requestEvent.context = context
-            requestEvent.uri = uri
+            requestEvent.uri = url
 
         dispatchEvent(requestEvent)
     }
@@ -167,7 +167,7 @@ internal class URIRequest extends EventDispatcher
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
-            requestEvent.uri = uri
+            requestEvent.uri = url
 
         dispatchEvent(requestEvent)
     }
@@ -183,7 +183,7 @@ internal class URIRequest extends EventDispatcher
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
-            requestEvent.uri = uri
+            requestEvent.uri = url
 
         dispatchEvent(requestEvent)
     }

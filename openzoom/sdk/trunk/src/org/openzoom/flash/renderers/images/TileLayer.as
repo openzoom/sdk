@@ -151,13 +151,13 @@ public class TileLayer extends Sprite implements ITileLayer
         // Crop tiles that are too large
         if (horizontalOverflow || verticalOverflow)
         {
-            trace("[TileLayer]: Overflow")
-
-            if (horizontalOverflow)
-                trace("[TileLayer]: horizontalOverflow:", level.width, tileBitmapRight, tile.toString(), bounds)
-
-            if (verticalOverflow)
-                trace("[TileLayer]: verticalOverflow:", level.height, tileBitmapBottom, tile.toString(), bounds)
+//            trace("[TileLayer]: Overflow")
+//
+//            if (horizontalOverflow)
+//                trace("[TileLayer]: horizontalOverflow:", level.width, tileBitmapRight, tile.toString(), bounds)
+//
+//            if (verticalOverflow)
+//                trace("[TileLayer]: verticalOverflow:", level.height, tileBitmapBottom, tile.toString(), bounds)
 
             // TODO: Check bounds with new descriptor API
             var cropBitmapData:BitmapData =

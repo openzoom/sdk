@@ -54,7 +54,7 @@ internal class DisplayObjectRequest extends EventDispatcher
      */
     public function DisplayObjectRequest(url:String, context:*=null)
     {
-        this.url = url
+        _url = url
         this.context = context
     }
 
@@ -66,7 +66,6 @@ internal class DisplayObjectRequest extends EventDispatcher
 
     private var context:*
     private var loader:Loader
-    private var url:String
 
     //--------------------------------------------------------------------------
     //
@@ -93,12 +92,14 @@ internal class DisplayObjectRequest extends EventDispatcher
     }
 
     //----------------------------------
-    //  uri
+    //  url
     //----------------------------------
+    
+    private var _url:String
 
     public function get uri():String
     {
-        return url
+        return _url
     }
 
     //--------------------------------------------------------------------------
@@ -112,14 +113,12 @@ internal class DisplayObjectRequest extends EventDispatcher
      */
     public function start():void
     {
-       var request:URLRequest = new URLRequest(url)
+       var request:URLRequest = new URLRequest(uri)
        loader = new Loader()
        addEventListeners(loader.contentLoaderInfo)
        
        var loaderContext:LoaderContext = new LoaderContext(true)
        loader.load(request, loaderContext)
-
-//       loader.load(request)
     }
 
     //--------------------------------------------------------------------------
@@ -142,7 +141,7 @@ internal class DisplayObjectRequest extends EventDispatcher
             requestEvent.request = this
             requestEvent.data = bitmap
             requestEvent.context = context
-            requestEvent.uri = url
+            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
@@ -167,14 +166,15 @@ internal class DisplayObjectRequest extends EventDispatcher
      */
     private function request_ioErrorHandler(event:IOErrorEvent):void
     {
+        trace("[DisplayObjectRequest]", "IO error")
+        
         // FIXME
 //      cleanUp()
 
-        trace("[DisplayObjectRequest]", "request_ioErrorHandler")
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
-            requestEvent.uri = url
+            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
@@ -184,14 +184,15 @@ internal class DisplayObjectRequest extends EventDispatcher
      */
     private function request_securityErrorHandler(event:SecurityErrorEvent):void
     {
+        trace("[DisplayObjectRequest]", "Security error")
+        
         // FIXME
 //      cleanUp()
 
-        trace("[DisplayObjectRequest]", "request_securityErrorHandler")
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
-            requestEvent.uri = url
+            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
