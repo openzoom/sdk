@@ -1,4 +1,4 @@
 cron:
-- description: most recent/popular feed
-  url: /tasks/feed
-  schedule: every 10 minutes
+- description: sync most recent feed
+  url: /tasks/sync
+  schedule: every 3 minutes

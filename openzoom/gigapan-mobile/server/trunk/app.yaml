@@ -1,10 +1,10 @@
 application: gigapan-mobile
-version: 9
+version: live
 runtime: python
 api_version: 1
 
 handlers:
-- url: /tasks/feed
+- url: /tasks/sync
   script: app.py
   login: admin
 

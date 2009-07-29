@@ -5,7 +5,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <!--<meta name="apple-mobile-web-app-status-bar-style" content="black">-->
         <link rel="apple-touch-icon" href="../static/images/apple-touch-icon.png"/>
         <script type="text/javascript" src="http://seadragon.com/ajax/0.8/seadragon-min.js">
         </script>
@@ -13,12 +12,13 @@
             var viewer;
             
             function init(){
-                updateOrientation();
+                if (navigator.userAgent.indexOf("iPhone") != -1 || navigator.userAgent.indexOf("iPod") != -1) {
+                    updateOrientation();
+                    setTimeout(window.scrollTo(0, 1), 100);
+                }
                 
                 viewer = new Seadragon.Viewer("container");
                 viewer.openDzi("http://gigapan-mobile.appspot.com/gigapan/{{ id }}.dzi", '{{ dzi }}');
-                
-                setTimeout(window.scrollTo(0, 1), 100);
             }
             
             function updateOrientation(){
@@ -46,6 +46,7 @@
                         break;
                 }
                 
+                document.getElementById("header").setAttribute("class", "visible");
                 document.getElementById("container").setAttribute("class", contentType);
             }
             
@@ -80,6 +81,13 @@
             } #container {
                 background-color: #000;
                 color: #FFF;
+            } .normal {
+                width: 100%;
+                height: 100%;
+            } .visible {
+                display: block;
+            } .invisible {
+                display: none;
             } .show_normal, .show_flipped {
                 width: 320px;
                 height: 333px; /*356px;*/
@@ -101,11 +109,23 @@
         </style>
     </head>
     <body onorientationchange="updateOrientation();">
-        <div id="header">
-            <a id="back" href="javascript:window.history.back()"><img src="../static/images/back-red.png"/></a>
-			<a href="deepzoom://gigapan-mobile.appspot.com/gigapan/{{ id }}.dzi">View in Seadragon Mobile</a>
+        <div id="header" class="invisible">
+            <a id="back" href="javascript:window.history.back()"><img src="../static/images/back-red.png"/></a><a href="deepzoom://gigapan-mobile.appspot.com/gigapan/{{ id }}.dzi">View in Seadragon Mobile</a>
         </div>
-        <div id="container" class="show_standalone_normal">
+        <div id="container" class="normal">
         </div>
+        <!-- Tracker -->
+        <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+            try {
+                var pageTracker = _gat._getTracker("UA-5667667-4");
+                pageTracker._trackPageview();
+            } 
+            catch (err) {
+            }
+        </script>
     </body>
 </html>

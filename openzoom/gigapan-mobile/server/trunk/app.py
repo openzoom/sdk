@@ -25,14 +25,13 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-from xml.sax import saxutils
+from datetime import datetime
 
 import google.appengine.api.images
 import math
 import os
 import random
 import simplejson as json
-#import uuid
 import xml.dom.minidom
 
 DZI_URL = "http://gigapan-mobile.appspot.com/gigapan/%d.dzi"
@@ -45,71 +44,146 @@ API_GIGAPAN_TILE_URL = "http://tile%(tileserver)s.gigapan.org/gigapans0/%(id)d/t
 API_GIGAPAN_USER = "http://gigapan.org/viewProfile.php?userid=%d"
 FEED_ICON_URL = "http://gigapan-mobile.appspot.com/static/images/feed-icon.jpg"
 
-def get_gigapan(id):
-    gigapan = db.Query(GigaPan).filter("id=", id).get()
-    if not gigapan:
-        descriptor_json = fetch(API_GIGAPAN%id)
-        descriptor = json.loads(descriptor_json.content)
-        width = descriptor["width"]
-        height = descriptor["height"]
-        gigapan = GigaPan(id=id, width=width, height=height)
-        gigapan.put()
-    return gigapan
-
+# Data Model
+class GigaPanUser(db.Model):
+    id = db.IntegerProperty(required=True)
+    username = db.StringProperty(required=True)
+    first_name = db.StringProperty()
+    last_name = db.StringProperty()
 
 class GigaPan(db.Model):
     id = db.IntegerProperty(required=True)
     width = db.IntegerProperty(required=True)
     height = db.IntegerProperty(required=True)
 
-class FeedContent(db.Model):
-    content = db.TextProperty()
+    name = db.StringProperty()
+    description = db.TextProperty()
+    gigapixels = db.FloatProperty()
+    explore_score = db.IntegerProperty()
+    views = db.IntegerProperty()
 
+    taken = db.DateTimeProperty()
+    uploaded = db.DateTimeProperty()
+    updated = db.DateTimeProperty()
+
+    location = db.GeoPtProperty()
+    altitude = db.FloatProperty()
+    owner = db.ReferenceProperty(GigaPanUser)
+
+def get_gigapan(id):
+    gigapan = db.Query(GigaPan).filter("id =", id).get()
+    if not gigapan:
+        descriptor_json = fetch(API_GIGAPAN%id, deadline=10)
+        descriptor = json.loads(descriptor_json.content)
+
+        if not descriptor["id"]:
+            raise
+
+        width = int(descriptor["width"])
+        height = int(descriptor["height"])
+        name = descriptor["name"]
+        description = descriptor["description"]
+        gigapixels = float(descriptor["gigapixels"])
+        explore_score = int(descriptor["explore_score"])
+        views = int(descriptor["views"])
+        taken = datetime.strptime(str(descriptor["taken"]), "%Y-%m-%d %H:%M:%S")
+        uploaded = datetime.strptime(str(descriptor["uploaded"]), "%Y-%m-%d %H:%M:%S")
+        updated = datetime.strptime(str(descriptor["updated"]), "%Y-%m-%d %H:%M:%S")
+
+        gigapan = GigaPan(id=id, width=width, height=height)
+        gigapan.name = name
+        gigapan.description = db.Text(description)
+        gigapan.gigapixels = gigapixels
+        gigapan.explore_score = explore_score
+        gigapan.views = views
+        gigapan.taken = taken
+        gigapan.updated = updated
+        gigapan.uploaded = uploaded
+
+        try:
+            if descriptor["location"]:
+                lat = float(descriptor["location"]["latitude"])
+                lon = float(descriptor["location"]["longitude"])
+                alt = float(descriptor["location"]["altitude"])
+                gigapan.location = db.GeoPt(lat, lon)
+                gigapan.altitude = alt
+        except:
+            pass
+
+        if descriptor["owner"]:
+            user_id = int(descriptor["owner"]["id"])
+            username = descriptor["owner"]["username"]
+            user = db.Query(GigaPanUser).filter("id =", user_id).get()
+            if not user:
+                user = GigaPanUser(id=user_id, username=username)
+                user.first_name = descriptor["owner"]["first_name"]
+                user.last_name = descriptor["owner"]["last_name"]
+                user.put()
+            gigapan.owner = user.key()
+
+        gigapan.put()
+
+    return gigapan
+
+# Requests
 class MainRequestHandler(webapp.RequestHandler):
     def get(self):
         template_values = {}
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
 
-class RecentRequestHandler(webapp.RequestHandler):
+class RecentGigaPansRequestHandler(webapp.RequestHandler):
     def get(self):
-        data_json = fetch(API_MOST_RECENT, deadline=10)
-        data = json.loads(data_json.content)
-        
-        gigapans = []
-        for item in data["items"]:
-            gigapans.append({"id": item[1]["id"], "title": smart_truncate(item[1]["name"], 26)})
-        
-        template_values = {
-            "gigapans": gigapans
-        }
-        
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan ORDER BY id DESC").fetch(25)
+        for gigapan in gigapans:
+            gigapan.name = smart_truncate(gigapan.name, 26)
+        template_values = {"gigapans": gigapans}
         path = os.path.join(os.path.dirname(__file__), "gigapans.html")
         self.response.out.write(template.render(path, template_values))
 
-class PopularRequestHandler(webapp.RequestHandler):
+class PopularGigaPansRequestHandler(webapp.RequestHandler):
     def get(self):
-        data_json = fetch(API_MOST_POPULAR, deadline=10)
-        data = json.loads(data_json.content)
-        
-        gigapans = []
-        for item in data["items"]:
-            gigapans.append({"id": item[1]["id"], "title": smart_truncate(item[1]["name"], 26)})
-        
-        template_values = {
-            "gigapans": gigapans
-        }
-        
-        
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan ORDER BY explore_score DESC").fetch(25)
+        for gigapan in gigapans:
+            gigapan.name = smart_truncate(gigapan.name, 26)
+        template_values = {"gigapans": gigapans}
         path = os.path.join(os.path.dirname(__file__), "gigapans.html")
         self.response.out.write(template.render(path, template_values))
-        
-def smart_truncate(content, length=40, suffix='...'):
-    if len(content) <= length:
-        return content
-    else:
-        return ' '.join(content[:length+1].split(' ')[0:-1]) + suffix
-        
+
+class UsersRequestHandler(webapp.RequestHandler):
+    def get(self):
+        users = db.GqlQuery("SELECT * FROM GigaPanUser ORDER BY username ASC").fetch(250)
+        template_values = {"users": users}
+        path = os.path.join(os.path.dirname(__file__), "users.html")
+        self.response.out.write(template.render(path, template_values))
+
+class UserRequestHandler(webapp.RequestHandler):
+    def get(self, *groups):
+        id = int(groups[0])
+        user = db.Query(GigaPanUser).filter("id =", id).get()
+        if not user:
+            self.error(404)
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan WHERE owner = :1", user.key()).fetch(50)
+        for gigapan in gigapans:
+            gigapan.name = smart_truncate(gigapan.name, 26)
+        template_values = {"gigapans": gigapans}
+        path = os.path.join(os.path.dirname(__file__), "gigapans.html")
+        self.response.out.write(template.render(path, template_values))
+
+class UserFeedRequestHandler(webapp.RequestHandler):
+    def get(self, *groups):
+        id = int(groups[0])
+        user = db.Query(GigaPanUser).filter("id =", id).get()
+        if not user:
+            self.error(404)
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan WHERE owner = :1", user.key()).fetch(100)
+        heading = "GigaPans (%s)"%user.username
+        doc = create_feed_skeleton(heading)
+        create_feed(doc, gigapans, heading)
+
+        self.response.headers["Content-Type"] = "application/rss+xml"
+        self.response.out.write(doc.toxml("utf-8"))
+
 class GigaPanRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
         id = int(groups[0])
@@ -118,153 +192,151 @@ class GigaPanRequestHandler(webapp.RequestHandler):
         except:
             self.error(404)
             return
-        
         dzi = DZI_TEMPLATE%{"width": gigapan.width, "height": gigapan.height}
-        template_values = {
-          "id": id,
-          "dzi": dzi
-          }
-    
+        template_values = {"id": id, "dzi": dzi}
         path = os.path.join(os.path.dirname(__file__), "gigapan.html")
         self.response.out.write(template.render(path, template_values))
 
-class FeedRequestHandler(webapp.RequestHandler):
+class HighlightsFeedRequestHandler(webapp.RequestHandler):
     def get(self):
+        doc = create_feed_skeleton("GigaPan Highlights")
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan ORDER BY id DESC").fetch(20)
+        create_feed(doc, gigapans, "Most Recent")
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan ORDER BY explore_score DESC").fetch(20)
+        create_feed(doc, gigapans, "Most Popular")
+
         self.response.headers["Content-Type"] = "application/rss+xml"
-        
-        feed = db.Query(FeedContent).get()
-        if feed:
-            self.response.out.write(feed.content)
-        else:
-            self.error(404)
-            return
-    
+        self.response.out.write(doc.toxml("utf-8"))
+
+# String Helpers
 def sanitize(s, default="unknown"):
-    try:
-        saxutils.escape(msg).encode("UTF-8")
-    except:
-        pass
-    s = "".join([x for x in s if x.isalpha() or x.isdigit() or x.isspace()])
+    s = "".join([x for x in s if x.isalnum() or x.isspace()])
     s = s.strip()
     if not s:
         s = default
     return s
 
-def create_feed(doc, node, url, heading):
-    data_json = fetch(url, deadline=10)
-    data = json.loads(data_json.content)
-    
-    for item in data["items"]:
-        gigapan_id = item[1]["id"]
-        gigapan_title = sanitize(item[1]["name"], "Untitled")
-        gigapan_author = item[1]["owner"]["first_name"] + " " + item[1]["owner"]["last_name"]
-        gigapan_author = sanitize(gigapan_author, "unknown")
-        gigapan_author_id = int(item[1]["owner"]["id"])
+def smart_truncate(content, length=40, suffix="..."):
+    if len(content) <= length:
+        return content
+    else:
+        return " ".join(content[:length+1].split(" ")[0:-1]) + suffix
+
+# RSS 2.0 Feed Helpers
+def create_feed_skeleton(heading):
+    doc = xml.dom.minidom.Document()
+
+    rss = doc.createElement("rss")
+    rss.setAttribute("version", "2.0")
+
+    channel = doc.createElement("channel")
+
+    title = doc.createElement("title")
+    title_text = doc.createTextNode(heading)
+    title.appendChild(title_text)
+    channel.appendChild(title)
+
+    link = doc.createElement("link")
+    link_text = doc.createTextNode("http://gigapan.org")
+    link.appendChild(link_text)
+    channel.appendChild(link)
+
+    image = doc.createElement("image")
+
+    title = doc.createElement("title")
+    title_text = doc.createTextNode(heading)
+    title.appendChild(title_text)
+    image.appendChild(title)
+
+    url = doc.createElement("url")
+    url_text = doc.createTextNode(FEED_ICON_URL)
+    url.appendChild(url_text)
+    image.appendChild(url)
+
+    link = doc.createElement("link")
+    link_text = doc.createTextNode("http://gigapan.org")
+    link.appendChild(link_text)
+    image.appendChild(link)
+
+    channel.appendChild(image)
+
+    description = doc.createElement("description")
+    description_text = doc.createTextNode("Photos from GigaPan.org")
+    description.appendChild(description_text)
+    channel.appendChild(description)
+
+    language = doc.createElement("language")
+    language_text = doc.createTextNode("en-us")
+    language.appendChild(language_text)
+    channel.appendChild(language)
+
+    rss.appendChild(channel)
+    doc.appendChild(rss)
+
+    return doc
+
+def create_feed(doc, gigapans, heading):
+    channel = doc.getElementsByTagName("channel")[0]
+    for gigapan in gigapans:
+        gigapan_id = gigapan.id
+        gigapan_title = sanitize(gigapan.name, "Untitled")
+        gigapan_author = gigapan.owner.first_name + " " + gigapan.owner.last_name
+        gigapan_author = sanitize(gigapan_author, gigapan.owner.username)
+        gigapan_author_id = gigapan.owner.id
 
         item = doc.createElement("item")
-        
+
         category = doc.createElement("category")
         category_text = doc.createTextNode(heading)
         category.appendChild(category_text)
         item.appendChild(category)
-        
+
         title = doc.createElement("title")
         title_text = doc.createTextNode(gigapan_title)
         title.appendChild(title_text)
         item.appendChild(title)
-        
+
         guid = doc.createElement("guid")
         guid_text = doc.createTextNode(DZI_URL%gigapan_id)
-#        guid_text = doc.createTextNode(str(uuid.uuid1()))
         guid.appendChild(guid_text)
         item.appendChild(guid)
-        
+
         source = doc.createElement("source")
         source.setAttribute("url", API_GIGAPAN_USER%gigapan_author_id)
         source_text = doc.createTextNode(gigapan_author)
         source.appendChild(source_text)
         item.appendChild(source)
-        
+
         enclosure = doc.createElement("enclosure")
         enclosure.setAttribute("type", "text/xml")
         enclosure.setAttribute("length", "0")
         enclosure.setAttribute("url", DZI_URL%gigapan_id)
         item.appendChild(enclosure)
-        
+
         enclosure = doc.createElement("enclosure")
         enclosure.setAttribute("type", "image/jpeg")
         enclosure.setAttribute("length", "0")
         enclosure.setAttribute("url", FEED_ICON_URL)
         item.appendChild(enclosure)
-        
-        node.appendChild(item)
-        
-class FeedTaskRequestHandler(webapp.RequestHandler):
-    def get(self):
-        doc = xml.dom.minidom.Document()
-        
-        # RSS
-        rss = doc.createElement("rss")
-        rss.setAttribute("version", "2.0")
-        
-        channel = doc.createElement("channel")
-        
-        title = doc.createElement("title")
-        title_text = doc.createTextNode("GigaPan")
-        title.appendChild(title_text)
-        channel.appendChild(title)
-        
-        link = doc.createElement("link")
-        link_text = doc.createTextNode("http://gigapan.org")
-        link.appendChild(link_text)
-        channel.appendChild(link)
-        
-        image = doc.createElement("image")
-    
-        title = doc.createElement("title")
-        title_text = doc.createTextNode("GigaPan")
-        title.appendChild(title_text)
-        image.appendChild(title)
-        
-        url = doc.createElement("url")
-        url_text = doc.createTextNode(FEED_ICON_URL)
-        url.appendChild(url_text)
-        image.appendChild(url)
-        
-        link = doc.createElement("link")
-        link_text = doc.createTextNode("http://gigapan.org")
-        link.appendChild(link_text)
-        image.appendChild(link)
-        
-        channel.appendChild(image)
-    
-        description = doc.createElement("description")
-        description_text = doc.createTextNode("Photos from GigaPan.org")
-        description.appendChild(description_text)
-        channel.appendChild(description)
-        
-        language = doc.createElement("language")
-        language_text = doc.createTextNode("en-us")
-        language.appendChild(language_text)
-        channel.appendChild(language)
-        
-        create_feed(doc, channel, API_MOST_POPULAR, "Most Popular")
-        create_feed(doc, channel, API_MOST_RECENT, "Most Recent")
-        
-        rss.appendChild(channel)
-        doc.appendChild(rss)
-        
-        feed = db.Query(FeedContent).get()
-        feed_content = db.Text(doc.toxml("utf-8"))
-        if not feed:
-            feed = FeedContent(content=feed_content)
-        else:
-            feed.content = feed_content
-        feed.put()
-        
-        self.response.out.write(self.request.headers["User-Agent"] + str(random.random()))
 
-class DescriptorRequestHandler(webapp.RequestHandler):
+        channel.appendChild(item)
+
+# Cron
+class SyncTaskRequestHandler(webapp.RequestHandler):
+    def get(self):
+        data_json = fetch(API_MOST_RECENT, deadline=10)
+        data = json.loads(data_json.content)
+
+        for item in data["items"]:
+            id = item[1]["id"]
+            try:
+                gigapan = get_gigapan(id)
+            except:
+                continue
+        self.response.out.write(str(random.random()))
+
+# DZI Interface
+class DeepZoomImageDescriptorRequestHandler(webapp.RequestHandler):
     def get(self, *groups):
         id = int(groups[0])
         try:
@@ -281,20 +353,19 @@ class TileRequestHandler(webapp.RequestHandler):
         level = int(groups[1])
         column = int(groups[2])
         row = int(groups[3])
-        
+
         try:
             gigapan = get_gigapan(id)
         except:
             self.error(404)
             return
-        
+
         self.width = gigapan.width
         self.height = gigapan.height
         self.tile_overlap = 0
         self.tile_size = 256
         self._num_levels = None
-        
-#        url = "http://share.gigapan.org/gigapans0/%d/tiles"%id
+
         tileserver = str(int(math.floor(id / 1000.0))).zfill(2)
         url = API_GIGAPAN_TILE_URL%{"tileserver": tileserver, "id": id}
         name = "r"
@@ -302,16 +373,16 @@ class TileRequestHandler(webapp.RequestHandler):
         bit = (1 << z) >> 1
         x = column
         y = row
-        
+
         while bit > 0:
             name += str((1 if (x & bit) else 0) + (2 if (y & bit) else 0))
             bit = bit >> 1
-            
+
         i = 0
         while i < (len(name) - 3):
             url = url + "/" + name[i:i+3]
             i = i + 3
-            
+
         tile_url = url + "/" + name + ".jpg"
         tile_request = fetch(tile_url)
         image_data = tile_request.content
@@ -332,13 +403,13 @@ class TileRequestHandler(webapp.RequestHandler):
             if tile_right > w or tile_bottom > h:
                 factor = float(self.tile_size)
                 tile_width = min(w - tile_x, self.tile_size)
-                tile_height = min(h - tile_y, self.tile_size) 
+                tile_height = min(h - tile_y, self.tile_size)
                 image.crop(0.0, 0.0, tile_width / factor, tile_height / factor)
                 modified = True
 
         if modified:
             image_data = image.execute_transforms(output_encoding=google.appengine.api.images.JPEG)
-            
+
         self.response.headers["Content-Type"] = "image/jpeg"
         self.response.out.write(image_data)
 
@@ -365,16 +436,19 @@ class TileRequestHandler(webapp.RequestHandler):
         return self._num_levels
 
 
+
 application = webapp.WSGIApplication([("/", MainRequestHandler),
-                                      ("/recent/?", RecentRequestHandler),
-                                      ("/popular/?", PopularRequestHandler),
-                                      ("/feed/?", FeedRequestHandler),
-                                      ("/tasks/feed/?", FeedTaskRequestHandler),
+                                      (r"^/feed/?", HighlightsFeedRequestHandler),
+                                      (r"^/tasks/sync/?", SyncTaskRequestHandler),
+                                      (r"^/gigapans/recent/?", RecentGigaPansRequestHandler),
+                                      (r"^/gigapans/popular/?", PopularGigaPansRequestHandler),
                                       (r"^/gigapan/([0-9]+)/?", GigaPanRequestHandler),
-                                      (r"^/gigapan/([0-9]+).dzi$", DescriptorRequestHandler),
+                                      (r"^/users/?", UsersRequestHandler),
+                                      (r"^/user/([0-9]+)/feed/?", UserFeedRequestHandler),
+                                      (r"^/user/([0-9]+)/?", UserRequestHandler),
+                                      (r"^/gigapan/([0-9]+).dzi$", DeepZoomImageDescriptorRequestHandler),
                                       (r"^/gigapan/([0-9]+)_files/([0-9]+)/([0-9]+)_([0-9]+).jpg$", TileRequestHandler)],
                                       debug=True)
-
 
 def main():
     run_wsgi_app(application)
