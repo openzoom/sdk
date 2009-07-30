@@ -76,7 +76,6 @@ public class CatalogViewer extends Sprite
         
         include "config.as"
         
-        
         loader = new URLLoader()
         loader.addEventListener(Event.COMPLETE,
                                 loader_completeHandler,

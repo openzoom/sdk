@@ -284,12 +284,12 @@ public final class ImagePyramidRenderManager implements IDisposable
                         done = false
                         continue
                     }
-
+                    
                      // FIXME: Safety
                     if (!tile.bitmapData)
                     {
                         trace("[ImagePyramidRenderManager] updateDisplayList: " +
-                                "Tile BitmapData missing.", tile.loaded, tile.loading)
+                              "Tile BitmapData missing.", tile.loaded, tile.loading)
                         continue
                     }
 
@@ -305,7 +305,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 
                     if (tile.alpha < 1)
                         done = false
-
+                        
                     renderingQueue.push(tile)
                }
             }
@@ -336,7 +336,7 @@ public final class ImagePyramidRenderManager implements IDisposable
             tile = renderingQueue.pop()
 
             var textureMap:BitmapData
-
+            
             if (tile.alpha < 1)
             {
                 invalidateDisplayList()

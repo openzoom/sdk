@@ -57,8 +57,6 @@ public final class ImagePyramidRenderer extends Renderer implements IDisposable
     //
     //--------------------------------------------------------------------------
 
-    public var ready:Boolean = false
-
     private var tileCache:Dictionary /* of ImagePyramidTile */ = new Dictionary()
     openzoom_internal var tileLayer:Shape
 
@@ -183,7 +181,6 @@ public final class ImagePyramidRenderer extends Renderer implements IDisposable
     public function dispose():void
     {
         tileCache = null
-        ready = false
         removeChild(openzoom_internal::tileLayer)
         openzoom_internal::tileLayer = null
     }

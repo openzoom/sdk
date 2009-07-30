@@ -97,11 +97,17 @@ public final class NetworkQueue extends EventDispatcher
         if (!request)
             throw new ArgumentError("Type " + type.toString() + " not supported.")
 
-        request.addEventListener(ProgressEvent.PROGRESS, request_progressHandler)
-        request.addEventListener(NetworkRequestEvent.COMPLETE, request_completeHandler)
-        request.addEventListener(NetworkRequestEvent.ERROR, request_errorHandler)
+        request.addEventListener(ProgressEvent.PROGRESS,
+                                 request_progressHandler)
+        request.addEventListener(NetworkRequestEvent.COMPLETE,
+                                 request_completeHandler)
+        request.addEventListener(NetworkRequestEvent.ERROR,
+                                 request_errorHandler)
 
         // Add item to front (LIFO)
+        if (queue.length == 0 && connections.length == 0)
+            dispatchEvent(new Event(Event.INIT))
+
         queue.unshift(request)
         processQueue()
         return request

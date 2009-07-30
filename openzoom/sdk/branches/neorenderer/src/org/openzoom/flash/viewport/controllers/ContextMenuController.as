@@ -845,13 +845,20 @@ public class ContextMenuController extends ViewportControllerBase
         try
         {
             if (view.stage.displayState == StageDisplayState.NORMAL)
-                view.stage.displayState = StageDisplayState.FULL_SCREEN
+            {
+                var mode:String = StageDisplayState.FULL_SCREEN
+                
+                if (Capabilities.playerType == "Desktop")
+                    mode = "fullScreenInteractive"
+                    
+                view.stage.displayState = mode
+            }
             else
                 view.stage.displayState = StageDisplayState.NORMAL
         }
         catch(error:Error)
         {
-            // Do nothing, what else? ;)
+            // Nothing we can do...
         }
     }
 

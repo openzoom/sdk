@@ -181,7 +181,7 @@ public final class MultiScaleImage2 extends MultiScaleImageBase2
         }
 
         // resize scene
-        container.sceneWidth  = sceneWidth
+        container.sceneWidth = sceneWidth
         container.sceneHeight = sceneHeight
 
         // create renderer

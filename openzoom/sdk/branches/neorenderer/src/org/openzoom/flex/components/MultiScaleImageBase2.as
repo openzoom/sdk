@@ -30,7 +30,7 @@ import flash.geom.Rectangle;
 import mx.core.UIComponent;
 
 import org.openzoom.flash.components.IMultiScaleContainer;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
+import org.openzoom.flash.components.MultiScaleContainer2;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
@@ -249,9 +249,15 @@ public class MultiScaleImageBase2 extends UIComponent
         if (!container)
         {
             container = new MultiScaleContainer2()
-            container.addEventListener(ProgressEvent.PROGRESS,
-                                       container_progressHandler,
-                                       false, 0, true)
+            container.loader.addEventListener(Event.INIT,
+                                              container_eventHandler,
+                                              false, 0, true)
+            container.loader.addEventListener(ProgressEvent.PROGRESS,
+                                              container_eventHandler,
+                                              false, 0, true)
+            container.loader.addEventListener(Event.COMPLETE,
+                                              container_eventHandler,
+                                              false, 0, true)
             super.addChild(container)
 
             dispatchEvent(new Event("containerChanged"))
@@ -343,9 +349,9 @@ public class MultiScaleImageBase2 extends UIComponent
     //
     //--------------------------------------------------------------------------
 
-    private function container_progressHandler(event:ProgressEvent):void
+    private function container_eventHandler(event:Event):void
     {
-        dispatchEvent(event)
+        dispatchEvent(event.clone())
     }
 
     //--------------------------------------------------------------------------
