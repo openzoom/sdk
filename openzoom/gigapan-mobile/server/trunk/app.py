@@ -35,7 +35,10 @@ import simplejson as json
 import xml.dom.minidom
 
 DZI_URL = "http://gigapan-mobile.appspot.com/gigapan/%d.dzi"
-DZI_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?><Image TileSize="256" Overlap="0" Format="jpg" xmlns="http://schemas.microsoft.com/deepzoom/2008"><Size Width="%(width)s" Height="%(height)s"/></Image>"""
+DZI_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>\
+<Image TileSize="256" Overlap="0" Format="jpg" xmlns="http://schemas.microsoft.com/deepzoom/2008">\
+<Size Width="%(width)s" Height="%(height)s"/>\
+</Image>"""
 
 API_MOST_POPULAR = "http://api.gigapan.org/beta/gigapans/most_popular.json"
 API_MOST_RECENT = "http://api.gigapan.org/beta/gigapans/most_recent.json"
@@ -163,7 +166,7 @@ class UserRequestHandler(webapp.RequestHandler):
         user = db.Query(GigaPanUser).filter("id =", id).get()
         if not user:
             self.error(404)
-        gigapans = db.GqlQuery("SELECT * FROM GigaPan WHERE owner = :1", user.key()).fetch(50)
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan WHERE owner = :1 ORDER BY id DESC", user.key()).fetch(50)
         for gigapan in gigapans:
             gigapan.name = smart_truncate(gigapan.name, 26)
         template_values = {"gigapans": gigapans}
@@ -176,7 +179,7 @@ class UserFeedRequestHandler(webapp.RequestHandler):
         user = db.Query(GigaPanUser).filter("id =", id).get()
         if not user:
             self.error(404)
-        gigapans = db.GqlQuery("SELECT * FROM GigaPan WHERE owner = :1", user.key()).fetch(100)
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan WHERE owner = :1 ORDER BY id DESC", user.key()).fetch(50)
         heading = "GigaPans (%s)"%user.username
         doc = create_feed_skeleton(heading)
         create_feed(doc, gigapans, heading)
@@ -295,6 +298,11 @@ def create_feed(doc, gigapans, heading):
         title_text = doc.createTextNode(gigapan_title)
         title.appendChild(title_text)
         item.appendChild(title)
+        
+        link = doc.createElement("link")
+        link_text = doc.createTextNode("http://gigapan.org/viewGigapan.php?id=%d"%gigapan_id)
+        link.appendChild(link_text)
+        item.appendChild(link)
 
         guid = doc.createElement("guid")
         guid_text = doc.createTextNode(DZI_URL%gigapan_id)

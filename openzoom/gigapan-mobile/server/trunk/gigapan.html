@@ -8,6 +8,8 @@
         <link rel="apple-touch-icon" href="../static/images/apple-touch-icon.png"/>
         <script type="text/javascript" src="http://seadragon.com/ajax/0.8/seadragon-min.js">
         </script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.1/swfobject.js">
+        </script>
         <script type="text/javascript">
             var viewer;
             
@@ -15,10 +17,23 @@
                 if (navigator.userAgent.indexOf("iPhone") != -1 || navigator.userAgent.indexOf("iPod") != -1) {
                     updateOrientation();
                     setTimeout(window.scrollTo(0, 1), 100);
+                    viewer = new Seadragon.Viewer("container");
+                    viewer.openDzi("http://gigapan-mobile.appspot.com/gigapan/{{ id }}.dzi", '{{ dzi }}');
                 }
-                
-                viewer = new Seadragon.Viewer("container");
-                viewer.openDzi("http://gigapan-mobile.appspot.com/gigapan/{{ id }}.dzi", '{{ dzi }}');
+                else {
+                    var flashvars = {};
+                    flashvars.source = "{{ id }}.dzi";
+                    
+                    var params = {};
+                    params.bgcolor = "#000000";
+                    params.allowfullscreen = "true";
+                    
+                    var attributes = {};
+                    attributes.id = "ozViewer";
+                    attributes.name = "ozViewer";
+                    
+                    swfobject.embedSWF("../static/OpenZoomViewer.swf", "container", "100%", "100%", "9.0.0", false, flashvars, params, attributes);
+                }
             }
             
             function updateOrientation(){
@@ -61,6 +76,7 @@
             
             html, body {
                 height: 100%;
+				overflow: hidden;
             } #header {
                 background-color: #900;
                 color: #999;
