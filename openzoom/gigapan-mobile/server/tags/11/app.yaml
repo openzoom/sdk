@@ -1,0 +1,19 @@
+application: gigapan-mobile
+version: live
+runtime: python
+api_version: 1
+
+handlers:
+- url: /tasks/sync
+  script: app.py
+  login: admin
+
+- url: /static
+  static_dir: static
+
+- url: /crossdomain.xml
+  static_files: crossdomain.xml
+  upload: crossdomain.xml
+  
+- url: /.*
+  script: app.py

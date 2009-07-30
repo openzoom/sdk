@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+    <head>
+        <title>GigaPan</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link rel="apple-touch-icon" href="../static/images/apple-touch-icon.png"/>
+        <link href="../static/style/style.css" media="screen" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div id="header">
+			<a id="back" href="javascript:window.history.back()"><img src="../static/images/back.png"/></a>
+            <a id="logo_wb" href="/"><img src="../static/images/logo.png" alt="GigaPan Mobile"/></a>
+        </div>
+        <div id="content">
+            <ul>
+			    {% for gigapan in gigapans %}
+                <li>
+                    <h2><a href="../gigapan/{{ gigapan.id }}">{{ gigapan.name }}</a></h2>
+                </li>
+			    {% endfor %}
+            </ul>
+        </div>
+        <!-- Tracker -->
+        <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("UA-5667667-4");
+        pageTracker._trackPageview();
+        } catch(err) {}</script>
+    </body>
+</html>
