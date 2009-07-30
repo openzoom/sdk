@@ -40,8 +40,8 @@ import org.openzoom.flash.viewport.IViewportTransformer;
  *
  * Base class for MultiScaleImage and DeepZoomContainer.
  */
-public class MultiScaleImageBase extends UIComponent
-                                 implements IMultiScaleContainer
+public class MultiScaleImageBase2 extends UIComponent
+                                  implements IMultiScaleContainer
 {
     //--------------------------------------------------------------------------
     //
@@ -66,7 +66,7 @@ public class MultiScaleImageBase extends UIComponent
     /**
      * Constructor.
      */
-    public function MultiScaleImageBase()
+    public function MultiScaleImageBase2()
     {
     }
 
@@ -77,7 +77,7 @@ public class MultiScaleImageBase extends UIComponent
     //--------------------------------------------------------------------------
 
    ;[Bindable(event="containerChanged")]
-    protected var container:MultiScaleContainer
+    protected var container:MultiScaleContainer2
 
     //--------------------------------------------------------------------------
     //
@@ -248,7 +248,7 @@ public class MultiScaleImageBase extends UIComponent
 
         if (!container)
         {
-            container = new MultiScaleContainer()
+            container = new MultiScaleContainer2()
             container.addEventListener(ProgressEvent.PROGRESS,
                                        container_progressHandler,
                                        false, 0, true)

@@ -34,6 +34,8 @@ import org.openzoom.flash.net.ILoaderClient;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.net.NetworkQueue;
 import org.openzoom.flash.renderers.IRenderer;
+import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
@@ -48,7 +50,7 @@ import org.openzoom.flash.viewport.NormalizedViewport;
  *
  * Flash component for creating Zoomable User Interfaces.
  */
-public final class MultiScaleContainer extends Sprite
+public final class MultiScaleContainer2 extends Sprite
                                        implements ILoaderClient
 {
     //--------------------------------------------------------------------------
@@ -74,7 +76,7 @@ public final class MultiScaleContainer extends Sprite
     /**
      * Constructor.
      */
-    public function MultiScaleContainer()
+    public function MultiScaleContainer2()
     {
         createChildren()
     }
@@ -87,6 +89,7 @@ public final class MultiScaleContainer extends Sprite
 
     private var mouseCatcher:Sprite
     private var contentMask:Shape
+    private var renderManager:ImagePyramidRenderManager
 
     //--------------------------------------------------------------------------
     //
@@ -275,6 +278,9 @@ public final class MultiScaleContainer extends Sprite
 
         if (!loader)
             createLoader()
+            
+        if (!renderManager)
+            createRenderManager()
     }
 
     //--------------------------------------------------------------------------
@@ -307,25 +313,33 @@ public final class MultiScaleContainer extends Sprite
     override public function addChildAt(child:DisplayObject,
                                         index:int):DisplayObject
     {
-        child = _scene.addChildAt(child, index)
-
-        if (child is IRenderer)
+        var renderer:IRenderer = child as IRenderer
+        if (renderer)
         {
-            IRenderer(child).viewport = viewport
-            IRenderer(child).scene = IReadonlyMultiScaleScene(scene)
+            renderer.viewport = _viewport
+            renderer.scene = IReadonlyMultiScaleScene(_scene)
+            
+            var imagePyramidRenderer:ImagePyramidRenderer = renderer as ImagePyramidRenderer
+            if (imagePyramidRenderer)
+                renderManager.addRenderer(imagePyramidRenderer)
         }
 
-        return child
+        return _scene.addChildAt(child, index)
     }
 
     override public function removeChildAt(index:int):DisplayObject
     {
         var child:DisplayObject = _scene.getChildAt(index)
 
-        if (child is IRenderer)
+        var renderer:IRenderer = child as IRenderer
+        if (renderer)
         {
-            IRenderer(child).scene = null
-            IRenderer(child).viewport = null
+            var imagePyramidRenderer:ImagePyramidRenderer = renderer as ImagePyramidRenderer
+            if (imagePyramidRenderer)
+                renderManager.removeRenderer(imagePyramidRenderer)
+                
+            renderer.scene = null
+            renderer.viewport = null
         }
 
         return _scene.removeChildAt(index)
@@ -434,6 +448,11 @@ public final class MultiScaleContainer extends Sprite
     private function createLoader():void
     {
         _loader = new NetworkQueue()
+    }
+
+    private function createRenderManager():void
+    {
+        renderManager = new ImagePyramidRenderManager(this, scene, viewport, loader)
     }
 
     //--------------------------------------------------------------------------
