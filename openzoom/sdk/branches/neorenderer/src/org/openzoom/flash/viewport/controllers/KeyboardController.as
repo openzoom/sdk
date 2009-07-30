@@ -21,6 +21,7 @@
 package org.openzoom.flash.viewport.controllers
 {
 
+import flash.display.StageDisplayState;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.TimerEvent;
@@ -46,17 +47,18 @@ public class KeyboardController extends ViewportControllerBase
     private static const DEFAULT_ZOOM_IN_FACTOR:Number = 2.0
     private static const DEFAULT_ZOOM_OUT_FACTOR:Number = 0.7
     private static const DEFAULT_PAN_FACTOR:Number = 0.1
-    private static const DEFAULT_ACCELERATION_FACTOR:Number = 15
+    private static const DEFAULT_BOOST_FACTOR:Number = 12
 
-    private static const DEFAULT_UP_KEY_CODE:uint = 87       // W
-    private static const DEFAULT_RIGHT_KEY_CODE:uint = 68    // D
-    private static const DEFAULT_DOWN_KEY_CODE:uint = 83     // S
-    private static const DEFAULT_LEFT_KEY_CODE:uint = 65     // A
+    private static const DEFAULT_FULL_SCREEN_KEY_CODE:uint = 70 // F
+    private static const DEFAULT_UP_KEY_CODE:uint = 87          // W
+    private static const DEFAULT_RIGHT_KEY_CODE:uint = 68       // D
+    private static const DEFAULT_DOWN_KEY_CODE:uint = 83        // S
+    private static const DEFAULT_LEFT_KEY_CODE:uint = 65        // A
 
-    private static const DEFAULT_ZOOM_IN_KEY_CODE:uint = 73  // I
-    private static const DEFAULT_ZOOM_OUT_KEY_CODE:uint = 79 // 0
+    private static const DEFAULT_ZOOM_IN_KEY_CODE:uint = 73     // I
+    private static const DEFAULT_ZOOM_OUT_KEY_CODE:uint = 79    // 0
 
-    private static const DEFAULT_SHOW_ALL_KEY_CODE:uint = 72 // H
+    private static const DEFAULT_SHOW_ALL_KEY_CODE:uint = 72    // H
 
     //--------------------------------------------------------------------------
     //
@@ -79,7 +81,7 @@ public class KeyboardController extends ViewportControllerBase
 
     private var keyboardTimer:Timer
 
-    private var accelerationActivated:Boolean
+    private var boosterActivated:Boolean
 
     private var upActivated:Boolean
     private var downActivated:Boolean
@@ -137,9 +139,177 @@ public class KeyboardController extends ViewportControllerBase
 
     //--------------------------------------------------------------------------
     //
-    //  Properties
+    //  Properties: Settings
     //
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  acceleration
+    //----------------------------------
+
+    public var booster:Boolean = true
+
+    //----------------------------------
+    //  fullScreen
+    //----------------------------------
+
+    public var fullScreen:Boolean = true
+
+    //----------------------------------
+    //  showAll
+    //----------------------------------
+    
+    public var showAll:Boolean = true
+
+    //----------------------------------
+    //  zoomIn
+    //----------------------------------
+    
+    public var zoomIn:Boolean = true
+
+    //----------------------------------
+    //  zoomOut
+    //----------------------------------
+    
+    public var zoomOut:Boolean = true
+
+    //----------------------------------
+    //  panUp
+    //----------------------------------
+    
+    public var panUp:Boolean = true
+
+    //----------------------------------
+    //  panRight
+    //----------------------------------
+    
+    public var panRight:Boolean = true
+
+    //----------------------------------
+    //  panDown
+    //----------------------------------
+    
+    public var panDown:Boolean = true
+
+    //----------------------------------
+    //  panLeft
+    //----------------------------------
+    
+    public var panLeft:Boolean = true
+
+    //----------------------------------
+    //  home
+    //----------------------------------
+    
+    public var home:Boolean = true
+
+    //----------------------------------
+    //  end
+    //----------------------------------
+    
+    public var end:Boolean = true
+
+    //----------------------------------
+    //  pageUp
+    //----------------------------------
+    
+    public var pageUp:Boolean = true
+
+    //----------------------------------
+    //  pageDown
+    //----------------------------------
+    
+    public var pageDown:Boolean = true
+
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: Key settings
+    //
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  fullScreenKey
+    //----------------------------------
+
+    private var fullScreenKeyCode:uint = DEFAULT_FULL_SCREEN_KEY_CODE
+
+    /**
+     * Key for panning the viewport up.
+     *
+     * @default W
+     */
+    public function get fullScreenKey():String
+    {
+        return String.fromCharCode(fullScreenKeyCode)
+    }
+
+    public function set fullScreenKey(value:String):void
+    {
+        fullScreenKeyCode = value.toUpperCase().charCodeAt(0)
+    }
+
+    //----------------------------------
+    //  showAllKey
+    //----------------------------------
+
+    private var showAllKeyCode:uint = DEFAULT_SHOW_ALL_KEY_CODE
+
+    /**
+     * Key for fitting the entire scene into the viewport.
+     *
+     * @default H
+     */
+    public function get showAllKey():String
+    {
+        return String.fromCharCode(showAllKeyCode)
+    }
+
+    public function set showAllKey(value:String):void
+    {
+        showAllKeyCode = value.toUpperCase().charCodeAt(0)
+    }
+
+    //----------------------------------
+    //  zoomInKey
+    //----------------------------------
+
+    private var zoomInKeyCode:uint = DEFAULT_ZOOM_IN_KEY_CODE
+
+    /**
+     * Key for zooming into the scene.
+     *
+     * @default I
+     */
+    public function get zoomInKey():String
+    {
+        return String.fromCharCode(zoomInKeyCode)
+    }
+
+    public function set zoomInKey(value:String):void
+    {
+        zoomInKeyCode = value.toUpperCase().charCodeAt(0)
+    }
+
+    //----------------------------------
+    //  zoomOutKey
+    //----------------------------------
+
+    private var zoomOutKeyCode:uint = DEFAULT_ZOOM_OUT_KEY_CODE
+
+    /**
+     * Key for zooming out of the scene.
+     *
+     * @default 0
+     */
+    public function get zoomOutKey():String
+    {
+        return String.fromCharCode(zoomOutKeyCode)
+    }
+
+    public function set zoomOutKey(value:String):void
+    {
+        zoomOutKeyCode = value.toUpperCase().charCodeAt(0)
+    }
 
     //----------------------------------
     //  upKey
@@ -226,69 +396,6 @@ public class KeyboardController extends ViewportControllerBase
     }
 
     //----------------------------------
-    //  zoomInKey
-    //----------------------------------
-
-    private var zoomInKeyCode:uint = DEFAULT_ZOOM_IN_KEY_CODE
-
-    /**
-     * Key for zooming into the scene.
-     *
-     * @default I
-     */
-    public function get zoomInKey():String
-    {
-        return String.fromCharCode(zoomInKeyCode)
-    }
-
-    public function set zoomInKey(value:String):void
-    {
-        zoomInKeyCode = value.toUpperCase().charCodeAt(0)
-    }
-
-    //----------------------------------
-    //  zoomOutKey
-    //----------------------------------
-
-    private var zoomOutKeyCode:uint = DEFAULT_ZOOM_OUT_KEY_CODE
-
-    /**
-     * Key for zooming out of the scene.
-     *
-     * @default 0
-     */
-    public function get zoomOutKey():String
-    {
-        return String.fromCharCode(zoomOutKeyCode)
-    }
-
-    public function set zoomOutKey(value:String):void
-    {
-        zoomOutKeyCode = value.toUpperCase().charCodeAt(0)
-    }
-
-    //----------------------------------
-    //  showAllKey
-    //----------------------------------
-
-    private var showAllKeyCode:uint = DEFAULT_SHOW_ALL_KEY_CODE
-
-    /**
-     * Key for fitting the entire scene into the viewport.
-     *
-     * @default H
-     */
-    public function get showAllKey():String
-    {
-        return String.fromCharCode(showAllKeyCode)
-    }
-
-    public function set showAllKey(value:String):void
-    {
-        showAllKeyCode = value.toUpperCase().charCodeAt(0)
-    }
-
-    //----------------------------------
     //  zoomInFactor
     //----------------------------------
 
@@ -352,6 +459,12 @@ public class KeyboardController extends ViewportControllerBase
         _panFactor = value
     }
 
+    //----------------------------------
+    //  boostFactor
+    //----------------------------------
+
+    public var boostFactor:Number = DEFAULT_BOOST_FACTOR
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers: Keyboard
@@ -364,6 +477,9 @@ public class KeyboardController extends ViewportControllerBase
     private function keyDownHandler(event:KeyboardEvent):void
     {
         updateFlags(event, true)
+        
+        if (fullScreen && event.keyCode == fullScreenKeyCode)
+            toggleFullScreen()
     }
 
     /**
@@ -384,7 +500,7 @@ public class KeyboardController extends ViewportControllerBase
         {
             // booster
             case Keyboard.SHIFT:
-                accelerationActivated = value
+                boosterActivated = value
                 break
 
             // panning
@@ -450,47 +566,62 @@ public class KeyboardController extends ViewportControllerBase
         var deltaX:Number = viewport.width * panFactor
         var deltaY:Number = viewport.height * panFactor
 
-        if (accelerationActivated)
+        if (booster && boosterActivated)
         {
-            deltaX *= DEFAULT_ACCELERATION_FACTOR
-            deltaY *= DEFAULT_ACCELERATION_FACTOR
+            deltaX *= boostFactor
+            deltaY *= boostFactor
         }
 
         // panning
-        if (upActivated)
+        if (panUp && upActivated)
             viewport.panBy(0, -deltaY)
 
-        if (downActivated)
+        if (panDown && downActivated)
             viewport.panBy(0,  deltaY)
 
-        if (leftActivated)
+        if (panLeft && leftActivated)
             viewport.panBy(-deltaX, 0)
 
-        if (rightActivated)
+        if (panRight && rightActivated)
             viewport.panBy(deltaX, 0)
 
         // quick navigation
-        if (pageUpActivated)
+        if (pageUp && pageUpActivated)
             viewport.panTo(viewport.x, 0)
 
-        if (pageDownActivated)
+        if (pageDown && pageDownActivated)
             viewport.panTo(viewport.x, 1)
 
-        if (homeActivated)
+        if (home && homeActivated)
             viewport.panTo(0, viewport.y)
 
-        if (endActivated)
+        if (end && endActivated)
             viewport.panTo(1, viewport.y)
 
-        if (showAllActivated)
+        if (showAll && showAllActivated)
             viewport.showAll()
 
         // zooming
-        if (zoomInActivated)
+        if (zoomIn && zoomInActivated)
             viewport.zoomBy(zoomInFactor)
 
-        if (zoomOutActivated)
+        if (zoomOut && zoomOutActivated)
             viewport.zoomBy(zoomOutFactor)
+    }
+    
+    private function toggleFullScreen():void
+    {
+        try
+        {
+            if (view.stage.displayState == StageDisplayState.NORMAL)
+                view.stage.displayState = StageDisplayState.FULL_SCREEN
+            else
+                view.stage.displayState = StageDisplayState.NORMAL
+        }
+        catch(error:Error)
+        {
+            // Nothing we can do...
+        }
     }
 }
 

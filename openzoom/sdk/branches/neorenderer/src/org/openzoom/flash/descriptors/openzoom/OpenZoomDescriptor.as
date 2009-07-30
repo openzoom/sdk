@@ -21,8 +21,6 @@
 package org.openzoom.flash.descriptors.openzoom
 {
 
-import flash.utils.Dictionary;
-
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.IImagePyramidLevel;
 import org.openzoom.flash.descriptors.IImageSourceDescriptor;
@@ -61,7 +59,7 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
 
         this.data = data
 
-        _source = uri
+        this.source = uri
         parseXML(data)
     }
 
@@ -72,7 +70,7 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
     //--------------------------------------------------------------------------
 
     private var data:XML
-
+    
     //--------------------------------------------------------------------------
     //
     //  Properties: IImagePyramidDescriptor
@@ -119,8 +117,15 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
         }
 
         var maxLevel:uint = numLevels - 1
-        var index:int = clamp(i, 0, maxLevel)
+        var index:int = clamp(i + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
+        
+        // FIXME
+        if (width / level.width < 0.5)
+            level = getLevelAt(Math.max(0, index - 1))
+        
+        if (width / level.width < 0.5)
+            trace("[OpenZoomDescriptor] getLevelForSize():", width / level.width)
 
         return level
     }
@@ -200,6 +205,7 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
                 uris.push(uri.@template.toString())
 
             addLevel(new ImagePyramidLevel(this,
+                                           this.source,
                                            index,
                                            level.@width,
                                            level.@height,

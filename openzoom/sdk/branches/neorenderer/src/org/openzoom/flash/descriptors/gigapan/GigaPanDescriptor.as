@@ -56,7 +56,7 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
      */
     public function GigaPanDescriptor(source:String, width:uint, height:uint)
     {
-        _source = source
+        this.source = source
 
         _width = width
         _height = height
@@ -70,9 +70,18 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
         createLevels(width, height, DEFAULT_TILE_SIZE, numLevels)
     }
     
+    /**
+     * Constructor.
+     */
     public static function fromID(id:uint, width:uint, height:uint):GigaPanDescriptor
     {
-        var path:String = "http://share.gigapan.org/gigapans0/" + id + "/tiles"
+        // FIXME: Legacy
+//        var path:String = "http://share.gigapan.org/gigapans0/" + id + "/tiles"
+
+        var tileServer:uint = Math.floor(id / 1000.0)
+        var zeroPaddedTileServer:String = tileServer <= 9 ? "0" + tileServer : tileServer.toString()
+        var path:String = "http://tile" + zeroPaddedTileServer + ".gigapan.org/gigapans0/" + id + "/tiles"
+        
         var descriptor:GigaPanDescriptor = new GigaPanDescriptor(path, width, height)
         
         return descriptor
@@ -129,8 +138,15 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
-        var index:uint = clamp(Math.ceil(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
+        var index:uint = clamp(Math.ceil(log2) - DEFAULT_BASE_LEVEL + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
+        
+        // FIXME
+        if (width / level.width < 0.5)
+            level = getLevelAt(Math.max(0, index - 1))
+
+        if (width / level.width < 0.5)
+            trace("[GigaPanDescriptor] getLevelForSize():", width / level.width)
         
         return level
     }

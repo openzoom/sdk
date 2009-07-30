@@ -59,7 +59,7 @@ public class GigaPanViewer extends Sprite
     public function GigaPanViewer()
     {
         // FIXME
-        stage.quality = StageQuality.HIGH
+//        stage.quality = StageQuality.HIGH
         
         stage.align = StageAlign.TOP_LEFT
         stage.scaleMode = StageScaleMode.NO_SCALE
@@ -73,8 +73,8 @@ public class GigaPanViewer extends Sprite
         container.transformer = new TweenerTransformer()
         
         // Smooth transformer
-//        transformer = new SmoothTransformer()
-//        transformer.viewport = container.viewport
+        transformer = new SmoothTransformer()
+        transformer.viewport = container.viewport
 
         // Controllers
         var mouseController:MouseController = new MouseController()
@@ -98,14 +98,13 @@ public class GigaPanViewer extends Sprite
         var aspectRatio:Number
 
         // Deep Zoom: Hanauma Bay
-        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
+        path = "http://gigapan-mobile.appspot.com/gigapan/5322.dzi"
         source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
         numRenderers = 1
         numColumns = 1
         aspectRatio = source.width / source.height
         width = 16384
         height = width / aspectRatio
-        
         
         source = GigaPanDescriptor.fromID(5322, 154730, 36408)
         numRenderers = 1
@@ -114,34 +113,34 @@ public class GigaPanViewer extends Sprite
         width = 16384
         height = width / aspectRatio
 
-//        source = GigaPanDescriptor.fromID(23611, 204600, 47202)
+        source = GigaPanDescriptor.fromID(23611, 204600, 47202)
+        numRenderers = 1
+        numColumns = 1
+        aspectRatio = source.width / source.height
+        width = 16384
+        height = width / aspectRatio
+
+//        source = GigaPanDescriptor.fromID(14766, 125440, 39680)
 //        numRenderers = 1
 //        numColumns = 1
 //        aspectRatio = source.width / source.height
 //        width = 16384
 //        height = width / aspectRatio
-
-        source = GigaPanDescriptor.fromID(14766, 125440, 39680)
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = width / aspectRatio
+//        
+//        
+//        source = GigaPanDescriptor.fromID(25701, 41315, 11548)
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = width / aspectRatio
         
-        
-        source = GigaPanDescriptor.fromID(25701, 41315, 11548)
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = width / aspectRatio
-        
-        source = GigaPanDescriptor.fromID(6568, 180504, 27837)
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = width / aspectRatio
+//        source = GigaPanDescriptor.fromID(6568, 180504, 27837)
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = width / aspectRatio
 
 
         var padding:Number = width * 0.1
@@ -241,8 +240,8 @@ public class GigaPanViewer extends Sprite
             return
         
         var target:IViewportTransform = container.viewport.transform
-        var bounds:Rectangle = new Rectangle(0.45 + Math.random() * 0.05,
-                                             0.45 + Math.random() * 0.2,
+        var bounds:Rectangle = new Rectangle(0.1 + Math.random() * 0.8,
+                                             0.1 + Math.random() * 0.8,
                                              0.01,
                                              0.01)
         target.fitToBounds(bounds)

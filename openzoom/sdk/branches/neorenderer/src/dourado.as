@@ -34,7 +34,6 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
-import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
@@ -57,18 +56,15 @@ public class dourado extends Sprite
 	
     public function dourado()
     {
+        // FIXME
+        stage.quality = StageQuality.HIGH
+        
         stage.align = StageAlign.TOP_LEFT
         stage.scaleMode = StageScaleMode.NO_SCALE
         stage.addEventListener(Event.RESIZE,
                                stage_resizeHandler,
                                false, 0, true)
-        stage.addEventListener(KeyboardEvent.KEY_DOWN,
-                               stage_keyDownHandler,
-                               false, 0, true)
                       
-        // FIXME         
-//        stage.quality = StageQuality.LOW
-
         ExternalMouseWheel.initialize(stage)
 
         container = new MultiScaleContainer()
@@ -101,7 +97,7 @@ public class dourado extends Sprite
         var aspectRatio:Number
 
         source = new OpenStreetMapDescriptor()
-        source = new VirtualEarthDescriptor()
+//        source = new VirtualEarthDescriptor()
         aspectRatio = source.width / source.height
         width = 16384 * 2
         height = width / aspectRatio
@@ -183,20 +179,6 @@ public class dourado extends Sprite
     private function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
 //    	trace(container.viewport.scale)
-    }
-
-    private function stage_keyDownHandler(event:KeyboardEvent):void
-    {
-        if (event.keyCode == 70)
-            toggleFullScreen()
-    }
-    
-    private function toggleFullScreen():void
-    {
-        if (stage.displayState == StageDisplayState.NORMAL)
-            stage.displayState = StageDisplayState.FULL_SCREEN
-        else
-            stage.displayState = StageDisplayState.NORMAL
     }
 }
 

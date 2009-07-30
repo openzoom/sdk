@@ -65,7 +65,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
                                             mortonNumber:uint=0,
                                             collection:DeepZoomCollectionDescriptor=null)
     {
-        _source = source
+        this.source = source
         _width = width
         _height = height
         _format = format
@@ -190,8 +190,15 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
-        var index:int = clamp(Math.ceil(log2), 0, maxLevel)
+        var index:int = clamp(Math.ceil(log2) + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
+        
+        // FIXME
+        if (width / level.width < 0.5)
+            level = getLevelAt(Math.max(0, index - 1))
+        
+        if (width / level.width < 0.5)
+            trace("[DeepZoomImageDescriptor] getLevelForSize():", width / level.width)
         
         return level
     }

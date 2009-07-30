@@ -47,15 +47,7 @@ public class ImagePyramidDescriptorBase
     /**
      * @private
      */
-    protected var _source:String
-
-    /**
-     * @private
-     */
-    public function get source():String
-    {
-        return _source
-    }
+    protected var source:String
 
     //----------------------------------
     //  sources

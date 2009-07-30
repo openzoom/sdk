@@ -28,13 +28,12 @@ import org.openzoom.flash.descriptors.ImagePyramidLevelBase;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.utils.uri.resolveURI;
 
-
 /**
  * Represents a single level of a multiscale
  * image pyramid described by an OpenZoom descriptor.
  */
 internal final class ImagePyramidLevel extends ImagePyramidLevelBase
-                                          implements IImagePyramidLevel
+                                       implements IImagePyramidLevel
 {
     //--------------------------------------------------------------------------
     //
@@ -46,15 +45,17 @@ internal final class ImagePyramidLevel extends ImagePyramidLevelBase
      * Constructor.
      */
     public function ImagePyramidLevel(descriptor:OpenZoomDescriptor,
-                                         index:int,
-                                         width:uint,
-                                         height:uint,
-                                         numColumns:int,
-                                         numRows:int,
-                                         uris:Array,
-                                         pyramidOrigin:String="topLeft")
+                                      source:String,
+                                      index:int,
+                                      width:uint,
+                                      height:uint,
+                                      numColumns:int,
+                                      numRows:int,
+                                      uris:Array,
+                                      pyramidOrigin:String="topLeft")
     {
         this.descriptor = descriptor
+        this.source = source
         this.uris = uris
         this.pyramidOrigin = pyramidOrigin
 
@@ -70,6 +71,8 @@ internal final class ImagePyramidLevel extends ImagePyramidLevelBase
     private var uris:Array /* of String */
     private var descriptor:OpenZoomDescriptor
     private var pyramidOrigin:String = ImagePyramidOrigin.TOP_LEFT
+
+    private var source:String
 
     private static var uriIndex:int = 0
 
@@ -118,7 +121,7 @@ internal final class ImagePyramidLevel extends ImagePyramidLevelBase
             uri = uri.replace(/{column}/, computedColumn)
                      .replace(/{row}/, computedRow)
 
-            return resolveURI(descriptor.source, uri)
+            return resolveURI(source, uri)
         }
 
         return ""
@@ -138,8 +141,8 @@ internal final class ImagePyramidLevel extends ImagePyramidLevelBase
     public function clone():IImagePyramidLevel
     {
         return new ImagePyramidLevel(OpenZoomDescriptor(descriptor.clone()),
-                                        index, width, height,
-                                        numColumns, numRows, uris.slice())
+                                     source, index, width, height,
+                                     numColumns, numRows, uris.slice())
     }
 
     //--------------------------------------------------------------------------

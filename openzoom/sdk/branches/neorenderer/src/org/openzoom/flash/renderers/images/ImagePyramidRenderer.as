@@ -29,11 +29,12 @@ import flash.utils.Dictionary;
 import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.renderers.Renderer;
+import org.openzoom.flash.utils.IDisposable;
 
 /**
  * Image pyramid renderer.
  */
-public final class ImagePyramidRenderer extends Renderer
+public final class ImagePyramidRenderer extends Renderer implements IDisposable
 {
     //--------------------------------------------------------------------------
     //
@@ -60,9 +61,6 @@ public final class ImagePyramidRenderer extends Renderer
 
     private var tileCache:Dictionary /* of ImagePyramidTile */ = new Dictionary()
     openzoom_internal var tileLayer:Shape
-    openzoom_internal var distance:Number
-    
-//    public var smoothing:Boolean = true
 
     //--------------------------------------------------------------------------
     //
@@ -174,6 +172,20 @@ public final class ImagePyramidRenderer extends Renderer
         }
 
         return tile
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function dispose():void
+    {
+        tileCache = null
+        ready = false
+        removeChild(openzoom_internal::tileLayer)
+        openzoom_internal::tileLayer = null
     }
 }
 

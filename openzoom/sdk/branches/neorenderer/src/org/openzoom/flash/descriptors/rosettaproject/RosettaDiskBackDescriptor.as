@@ -91,8 +91,17 @@ public final class RosettaDiskBackDescriptor extends ImagePyramidDescriptorBase
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
-        var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
-        return getLevelAt(index)
+        var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL + 1, 0, maxLevel)
+        var level:IImagePyramidLevel = getLevelAt(index)
+        
+        // FIXME
+        if (width / level.width < 0.5)
+            level = getLevelAt(Math.max(0, index - 1))
+
+        if (width / level.width < 0.5)
+            trace("[RosettaDiskBackDescriptor] getLevelForSize():", width / level.width)
+        
+        return level
     }
 
     /**
