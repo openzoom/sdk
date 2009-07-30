@@ -25,6 +25,7 @@ import flash.display.StageDisplayState;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.TimerEvent;
+import flash.system.Capabilities;
 import flash.ui.Keyboard;
 import flash.utils.Timer;
 
@@ -614,7 +615,14 @@ public class KeyboardController extends ViewportControllerBase
         try
         {
             if (view.stage.displayState == StageDisplayState.NORMAL)
-                view.stage.displayState = StageDisplayState.FULL_SCREEN
+            {
+                var mode:String = StageDisplayState.FULL_SCREEN
+                
+                if (Capabilities.playerType == "Desktop")
+                    mode = "fullScreenInteractive"
+                    
+                view.stage.displayState = mode
+            }
             else
                 view.stage.displayState = StageDisplayState.NORMAL
         }
