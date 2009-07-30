@@ -335,6 +335,7 @@ public final class MultiScaleContainer2 extends Sprite
         if (renderer)
         {
             var imagePyramidRenderer:ImagePyramidRenderer = renderer as ImagePyramidRenderer
+            
             if (imagePyramidRenderer)
                 renderManager.removeRenderer(imagePyramidRenderer)
                 

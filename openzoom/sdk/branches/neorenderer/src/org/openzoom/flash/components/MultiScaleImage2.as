@@ -219,8 +219,7 @@ public final class MultiScaleImage2 extends MultiScaleImageBase2
         var data:XML = new XML(urlLoader.data)
         var factory:ImagePyramidDescriptorFactory =
                                   ImagePyramidDescriptorFactory.getInstance()
-        var descriptor:IImagePyramidDescriptor =
-                                              factory.getDescriptor(url, data)
+        var descriptor:IImagePyramidDescriptor = factory.getDescriptor(url, data)
 
         _source = descriptor
         addImage(descriptor)

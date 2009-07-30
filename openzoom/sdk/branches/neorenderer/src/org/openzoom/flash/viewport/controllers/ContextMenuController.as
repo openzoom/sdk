@@ -854,7 +854,9 @@ public class ContextMenuController extends ViewportControllerBase
                 view.stage.displayState = mode
             }
             else
+            {
                 view.stage.displayState = StageDisplayState.NORMAL
+            }
         }
         catch(error:Error)
         {

@@ -624,7 +624,9 @@ public class KeyboardController extends ViewportControllerBase
                 view.stage.displayState = mode
             }
             else
+            {
                 view.stage.displayState = StageDisplayState.NORMAL
+            }
         }
         catch(error:Error)
         {
