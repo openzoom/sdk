@@ -147,7 +147,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
 
         if (value is IImagePyramidDescriptor)
         {
-            _source = IMultiScaleImageDescriptor(value)
+            _source = IImagePyramidDescriptor(value)
             addImage(_source)
         }
     }

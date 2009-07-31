@@ -186,6 +186,7 @@ public final class MultiScaleImage2 extends MultiScaleImageBase2
                             sceneHeight)
 
         container.addChild(image)
+        dispatchEvent(new Event(Event.COMPLETE))
     }
 
     /**
@@ -225,8 +226,6 @@ public final class MultiScaleImage2 extends MultiScaleImageBase2
         addImage(descriptor)
 
         viewport.showAll(true)
-
-        dispatchEvent(event)
     }
 
     /**

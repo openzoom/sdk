@@ -37,8 +37,10 @@ public class ImagePyramidDescriptorFactory
     //
     //--------------------------------------------------------------------------
 
-    private static const DEEPZOOM_NAMESPACE_URI:String =
+    private static const DEEPZOOM_2008_NAMESPACE_URI:String =
                             "http://schemas.microsoft.com/deepzoom/2008"
+    private static const DEEPZOOM_2009_NAMESPACE_URI:String =
+                            "http://schemas.microsoft.com/deepzoom/2009"
     private static const OPENZOOM_NAMESPACE_URI:String =
                             "http://ns.openzoom.org/openzoom/2008"
     private static const ZOOMIFY_ROOT_TAG_NAME:String = "IMAGE_PROPERTIES"
@@ -96,13 +98,17 @@ public class ImagePyramidDescriptorFactory
      */
     public function getDescriptor(source:String, xml:XML):IImagePyramidDescriptor
     {
-        if (xml.namespace().source == OPENZOOM_NAMESPACE_URI)
+        if (xml.namespace().toString() == OPENZOOM_NAMESPACE_URI)
             return new OpenZoomDescriptor(source, xml)
 
-        if (xml.namespace().source == DEEPZOOM_NAMESPACE_URI)
+        if (xml.namespace().toString() == DEEPZOOM_2008_NAMESPACE_URI)
             return DeepZoomImageDescriptor.fromXML(source, xml)
 
-        if (xml.name() == ZOOMIFY_ROOT_TAG_NAME)
+        if (xml.namespace().toString() == DEEPZOOM_2009_NAMESPACE_URI)
+            return DeepZoomImageDescriptor.fromXML(source, xml)
+            
+
+        if (xml.name().toString() == ZOOMIFY_ROOT_TAG_NAME)
             return ZoomifyDescriptor.fromXML(source, xml)
 
         return null

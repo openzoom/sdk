@@ -45,7 +45,8 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    namespace deepzoom = "http://schemas.microsoft.com/deepzoom/2008"
+    namespace deepzoom2008 = "http://schemas.microsoft.com/deepzoom/2008"
+    namespace deepzoom2009 = "http://schemas.microsoft.com/deepzoom/2009"
 
     //--------------------------------------------------------------------------
     //
@@ -85,10 +86,13 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
      */
     public static function fromXML(source:String, xml:XML):DeepZoomImageDescriptor
     {
-        use namespace deepzoom
+    	var ns:Namespace = deepzoom2008
+    	
+    	if (xml.namespace() == deepzoom2009)
+            ns = deepzoom2009;
 
-        var width:uint = xml.Size.@Width
-        var height:uint = xml.Size.@Height
+        var width:uint = xml.ns::Size.@Width
+        var height:uint = xml.ns::Size.@Height
         var tileSize:uint = xml.@TileSize
         var tileOverlap:uint = xml.@Overlap
         var format:String = xml.@Format
@@ -193,12 +197,9 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         var index:int = clamp(Math.ceil(log2) + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
         
-        // FIXME
-        if (width / level.width < 0.5)
+        var pixelRatio:Number = width / level.width
+        if (pixelRatio < 0.5)
             level = getLevelAt(Math.max(0, index - 1))
-        
-        if (width / level.width < 0.5)
-            trace("[DeepZoomImageDescriptor] getLevelForSize():", width / level.width)
         
         return level
     }

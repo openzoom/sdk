@@ -27,6 +27,8 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.ui.ContextMenu;
 
+import org.openzoom.flash.net.ILoaderClient;
+import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
@@ -36,7 +38,9 @@ import org.openzoom.flash.viewport.IViewportTransformer;
  *
  * Base class for MultiScaleImage and DeepZoomContainer.
  */
-public class MultiScaleImageBase2 extends Sprite implements IMultiScaleContainer
+public class MultiScaleImageBase2 extends Sprite
+                                  implements IMultiScaleContainer,
+                                             ILoaderClient
 {
     //--------------------------------------------------------------------------
     //
@@ -71,6 +75,29 @@ public class MultiScaleImageBase2 extends Sprite implements IMultiScaleContainer
 
     protected var container:MultiScaleContainer2
 
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: ILoaderClient
+    //
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    //  loader
+    //----------------------------------
+
+    private var _loader:INetworkQueue
+
+    public function get loader():INetworkQueue
+    {
+        return container ? container.loader : null
+    }
+
+    public function set loader(value:INetworkQueue):void
+    {
+    	if (container)
+            container.loader = value
+    }
+    
     //--------------------------------------------------------------------------
     //
     //  Properties: Scene

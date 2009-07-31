@@ -58,7 +58,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 
     private static const TILE_SHOW_DURATION:Number = 400 // milliseconds
     
-    private static const MAX_CACHE_SIZE:uint = 120
+    private static const MAX_CACHE_SIZE:uint = 125
 
     private static const MAX_DOWNLOADS_STATIC:uint = 4
     private static const MAX_DOWNLOADS_DYNAMIC:uint = 2
