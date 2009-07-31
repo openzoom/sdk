@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actionScriptProperties mainApplicationPath="GigaPanDesktop.mxml" version="3">
-<compiler additionalCompilerArguments="-locale en_US" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="true" verifyDigests="true" warn="true">
+<compiler additionalCompilerArguments="-locale en_US -default-background-color #121212" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="true" verifyDigests="true" warn="true">
 <compilerSourcePath>
-<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/src"/>
-<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/lib/as3corelib/src"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM_SDK}/src"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM_SDK}/lib/as3corelib/src"/>
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path=""/>
-<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/lib"/>
+<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM_SDK}/lib"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>

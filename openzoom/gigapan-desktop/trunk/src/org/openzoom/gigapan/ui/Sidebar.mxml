@@ -7,7 +7,7 @@
     verticalGap="8"
     backgroundAlpha="0"
     backgroundColor="#000000"
-    horizontalScrollPolicy="off"
+    verticalScrollPolicy="off"
     >
 
     <mx:Metadata>
@@ -16,44 +16,58 @@
 
     <mx:Script>
         <![CDATA[
-            import mx.events.FlexEvent;
 
+            import mx.events.FlexEvent;
             import mx.events.ListEvent;
             import mx.collections.ArrayCollection;
 
+        	import org.openzoom.gigapan.GigaPan;
+        	
             private static const PROMPT:String = "GigaPan ID"
 
            ;[Bindable]
-            public var previousWidth:Number = 180
+            public var previousHeight:Number = 240
 
            ;[Bindable]
-            public var mostRecent:ArrayCollection
+            public var mostRecentCollection:ArrayCollection
 
            ;[Bindable]
-            public var mostPopular:ArrayCollection
+            public var mostPopularCollection:ArrayCollection
+            
+           ;[Bindable]
+            public var curratedCollection:ArrayCollection
 
            ;[Bindable]
-            public var selectedItem:Object
+            public var selectedItem:GigaPan
+
 
             private function mostRecentList_itemClickHandler(event:ListEvent):void
             {
                 handleListSelection(mostRecentList)
             }
 
-//            private function mostPopularList_itemClickHandler(event:ListEvent):void
-//            {
-//                handleListSelection(mostPopularList)
-//            }
+            private function mostPopularList_itemClickHandler(event:ListEvent):void
+            {
+                handleListSelection(mostPopularList)
+            }
+
+            private function curratedList_itemClickHandler(event:ListEvent):void
+            {
+                handleListSelection(curratedList)
+            }
 
             private function handleListSelection(list:List):void
             {
-                selectedItem = list.selectedItem
+                selectedItem = list.selectedItem as GigaPan
                 dispatchEvent(new Event("itemSelected"))
             }
 
             private function goButton_clickHandler(event:Event):void
             {
-                selectedItem = {id: uint(idInput.text)}
+            	var gigapan:GigaPan = new GigaPan()
+            	gigapan.id = parseInt(idInput.text)
+            	
+                selectedItem = gigapan
                 dispatchEvent(new Event("itemSelected"))
             }
 
@@ -66,69 +80,85 @@
         ]]>
     </mx:Script>
 
-    <mx:VBox
+    <mx:HBox
         width="100%"
         styleName="sideBarBox"
+        horizontalAlign="center"
         >
-        <mx:Label text="BROWSE"/>
-        <mx:HBox
+        <ui:PromptInput
+            id="idInput"
+            prompt="{PROMPT}"
+            tabIndex="1"
+            width="240"
+            restrict="0-9"
+            keyDown="idInput_keyDownHandler(event)"
+            />
+        <mx:Button
+            id="goButton"
+            width="48"
+            label="GO"
+            tabIndex="2"
+            click="goButton_clickHandler(event)"
+            enabled="{idInput.text != PROMPT &amp;&amp; idInput.text.length > 0}"
+            />
+    </mx:HBox>
+    <mx:HBox
+        width="100%"
+        height="100%"
+        >
+        <mx:VBox
             width="100%"
+            height="100%"
             styleName="sideBarBox"
             >
-            <ui:PromptInput
-                id="idInput"
-                prompt="{PROMPT}"
-                tabIndex="1"
+            <mx:Label text="CURRATED"/>
+            <mx:List
+                id="curratedList"
                 width="100%"
-                restrict="0-9"
-                keyDown="idInput_keyDownHandler(event)"
+                height="100%"
+                styleName="plainList"
+                dataProvider="{curratedCollection}"
+                itemClick="curratedList_itemClickHandler(event)"
+                itemRenderer="org.openzoom.gigapan.ui.itemRenderers.ImageRenderer"
+                rowHeight="24"
+                verticalScrollPolicy="off"
                 />
-            <mx:Button
-                id="goButton"
-                width="48"
-                label="GO"
-                tabIndex="2"
-                click="goButton_clickHandler(event)"
-                enabled="{idInput.text != PROMPT &amp;&amp; idInput.text.length > 0}"
-                />
-        </mx:HBox>
-    </mx:VBox>
-
-    <mx:VBox
-        width="100%"
-        height="100%"
-        minHeight="400"
-        styleName="sideBarBox"
-        >
-        <mx:Label text="MOST RECENT"/>
-        <mx:List
-            id="mostRecentList"
+        </mx:VBox>
+        <mx:VBox
             width="100%"
             height="100%"
-            styleName="plainList"
-            dataProvider="{mostRecent}"
-            itemClick="mostRecentList_itemClickHandler(event)"
-            itemRenderer="org.openzoom.gigapan.ui.itemRenderers.ImageRenderer"
-            rowHeight="36"
-            />
-    </mx:VBox>
-<!--
-    <mx:VBox
-        width="100%"
-        height="100%"
-        styleName="sideBarBox"
-        >
-        <mx:Label text="MOST POPULAR"/>
-        <mx:List
-            id="mostPopularList"
-            width="100%"
-            height="100%"
-            styleName="plainList"
-            dataProvider="{mostPopular}"
-            itemClick="mostPopularList_itemClickHandler(event)"
-            itemRenderer="org.openzoom.gigapan.ui.itemRenderers.ImageRenderer"
-            rowHeight="24"
-            />
-    </mx:VBox>
--->
+            styleName="sideBarBox"
+            >
+            <mx:Label text="MOST POPULAR"/>
+            <mx:List
+                id="mostPopularList"
+                width="100%"
+                height="100%"
+                styleName="plainList"
+                dataProvider="{mostPopularCollection}"
+                itemClick="mostPopularList_itemClickHandler(event)"
+                itemRenderer="org.openzoom.gigapan.ui.itemRenderers.ImageRenderer"
+                rowHeight="24"
+                verticalScrollPolicy="off"
+                />
+        </mx:VBox>
+	    <mx:VBox
+	        width="100%"
+	        height="100%"
+	        styleName="sideBarBox"
+	        >
+	        <mx:Label text="MOST RECENT"/>
+	        <mx:List
+	            id="mostRecentList"
+	            width="100%"
+	            height="100%"
+	            styleName="plainList"
+	            dataProvider="{mostRecentCollection}"
+	            itemClick="mostRecentList_itemClickHandler(event)"
+	            itemRenderer="org.openzoom.gigapan.ui.itemRenderers.ImageRenderer"
+	            rowHeight="24"
+	            verticalScrollPolicy="off"
+	            />
+	    </mx:VBox>
+    </mx:HBox>
 </mx:VBox>

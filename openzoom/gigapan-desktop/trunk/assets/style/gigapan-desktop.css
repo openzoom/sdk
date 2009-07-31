@@ -35,8 +35,8 @@ global {
 }
 
 Application {
-    background-gradient-colors: #090909, #090909;
-    background-color: #090909;
+    background-gradient-colors: #121212, #121212;
+    background-color: #121212;
 }
 
 Button {
@@ -52,8 +52,8 @@ List {
     background-alpha: 0;
     border-alpha: 0;
     border-color: #000000;
-    item-roll-over-color: #111111;
-    item-selection-color: #222222;
+    item-roll-over-color: #090909;
+    item-selection-color: #090909;
 }
 
 Label {

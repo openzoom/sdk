@@ -24,6 +24,7 @@ package org.openzoom.gigapan
 import com.adobe.serialization.json.JSON;
 
 	
+[Bindable]
 /**
  * The GigaPan class holds information about a GigaPan image.
  */
@@ -53,7 +54,6 @@ public class GigaPan
     	
     	gigapan.width = data.width
     	gigapan.height = data.height
-    	gigapan.levels = data.levels
     	
     	gigapan.views = data.views
     	gigapan.gigapixels = data.gigapixels
@@ -71,13 +71,12 @@ public class GigaPan
     public var name:String
     public var description:String
     
-    public var dateUploaded:Date
-    public var dateUpdated:Date
-    public var dateTaken:Date
+//    public var dateUploaded:Date
+//    public var dateUpdated:Date
+//    public var dateTaken:Date
     
-    public var width:uint
-    public var height:uint
-    public var levels:uint
+    public var width:uint = 0
+    public var height:uint = 0
     
     public var views:int
     public var gigapixels:Number

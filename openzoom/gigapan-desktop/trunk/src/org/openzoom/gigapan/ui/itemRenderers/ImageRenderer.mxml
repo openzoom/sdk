@@ -7,5 +7,5 @@
     horizontalScrollPolicy="off"
     verticalScrollPolicy="off"
     >
-    <mx:Image source="{'http://api.gigapan.org/beta/gigapans/' + data.id + '-600x32.jpg'}" height="32"/>
+    <mx:Image source="{'http://api.gigapan.org/beta/gigapans/' + data.id + '-320x24.jpg'}" height="24"/>
 </mx:HBox>

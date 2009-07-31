@@ -21,11 +21,13 @@
     minHeight="480"
     width="960"
     height="600"
+    showFlexChrome="false"
     applicationComplete="applicationCompleteHandler(event)"
     >
     <mx:Style source="../assets/style/gigapan-desktop.css"/>
     <mx:Script>
         <![CDATA[
+        	import org.openzoom.gigapan.GigaPan;
         
         	import flash.utils.setTimeout;
         
@@ -46,16 +48,20 @@
             private static const API_POLICY_URI:String = "http://api.gigapan.org/crossdomain.xml" 
             private static const MOST_RECENT_URI:String = API_ENDPOINT_URI + "most_recent.json"
             private static const MOST_POPULAR_URI:String = API_ENDPOINT_URI + "most_popular.json"
+            private static const CURRATED_URI:String = API_ENDPOINT_URI + "currated.json"
 
             // Obama Inauguration            
-            private static const DEFAULT_DESCRIPTOR:GigaPanDescriptor = new GigaPanDescriptor(15374, 59783, 24658)
+//            private static const DEFAULT_DESCRIPTOR:GigaPanDescriptor = GigaPanDescriptor.fromID(17217, 56646, 27788)
             
-            private static const LOGO_HIDE_DELAY:Number = 2000
-            private static const SIDEBAR_HIDE_DELAY:Number = 3000
+            // Apollo
+            private static const DEFAULT_DESCRIPTOR:GigaPanDescriptor = GigaPanDescriptor.fromID(25500, 33620, 3416)
+            
+            private static const UI_HIDE_DELAY:Number = 2000
+            private static const SIDEBAR_HIDE_DELAY:Number = 2500
             
             private var hiddenSideBarEnabled:Boolean = false
             private var loader:INetworkQueue
-            
+            private var uiTimer:Timer
             
             private function applicationCompleteHandler(event:FlexEvent):void
             {
@@ -64,18 +70,20 @@
                 initSideBar()
             }
             
-            
             private function initApplication():void
             {
                 Security.loadPolicyFile(API_POLICY_URI)
                 
-                stage.addEventListener(KeyboardEvent.KEY_DOWN,
-                                       stage_keyDownHandler,
-                                       false, 0, true)
                 stage.addEventListener(MouseEvent.MOUSE_MOVE,
                                        stage_mouseMoveHandler,
                                        false, 0, true)
-                                       
+                
+                uiTimer = new Timer(UI_HIDE_DELAY, 1)
+                uiTimer.addEventListener(TimerEvent.TIMER_COMPLETE,
+                                         uiTimer_completeHandler,
+                                         false, 0, true)
+                uiTimer.start()
+
                 setTimeout(sideBarDelayClosure, SIDEBAR_HIDE_DELAY)
             }
             
@@ -86,7 +94,31 @@
             
             private function initViewer():void
             {
+            	viewer.image.addEventListener(Event.INIT,
+            	                              image_initHandler,
+            	                              false, 0, true)
+            	viewer.image.addEventListener(ProgressEvent.PROGRESS,
+            	                              image_progressHandler,
+            	                              false, 0, true)
+            	viewer.image.addEventListener(Event.COMPLETE,
+            	                              image_completeHandler,
+            	                              false, 0, true)
             	viewer.loadDescriptor(DEFAULT_DESCRIPTOR)
+            }
+            
+            private function image_initHandler(event:Event):void
+            {
+            	imageSpinner.visible = true
+            }
+            
+            private function image_progressHandler(event:ProgressEvent):void
+            {
+                imageSpinner.visible = true
+            }
+            
+            private function image_completeHandler(event:Event):void
+            {
+            	imageSpinner.visible = false
             }
             
             private function initSideBar():void
@@ -99,58 +131,75 @@
                                          request_completeHandler,
                                          false, 0, true)
                                      
-                // TODO
-//                request = loader.addRequest(MOST_POPULAR_URI, String, MOST_POPULAR_URI)
-//                request.addEventListener(Event.COMPLETE,
-//                                         request_completeHandler,
-//                                         false, 0, true)
+                request = loader.addRequest(MOST_POPULAR_URI, String, MOST_POPULAR_URI)
+                request.addEventListener(Event.COMPLETE,
+                                         request_completeHandler,
+                                         false, 0, true)
+                                     
+                request = loader.addRequest(CURRATED_URI, String, CURRATED_URI)
+                request.addEventListener(Event.COMPLETE,
+                                         request_completeHandler,
+                                         false, 0, true)
             }
             
             private function request_completeHandler(event:NetworkRequestEvent):void
             {
             	var data:Object = JSON.decode(event.data)
+            	var collection:Array = []
+            	
+            	for each (var item:Object in data.items)
+            	{
+            		var gigapan:GigaPan = new GigaPan()
+            		gigapan.id = item[1].id
+            		gigapan.width = item[1].width
+            		gigapan.height = item[1].height
+            		collection.push(gigapan)
+            	}
+            	
             	if (event.context == MOST_RECENT_URI)
-                    sideBar.mostRecent = new ArrayCollection(data.items)
-            	else
-                    sideBar.mostPopular = new ArrayCollection(data.items)
+                    sideBar.mostRecentCollection = new ArrayCollection(collection)
+                    
+            	if (event.context == MOST_POPULAR_URI)
+                    sideBar.mostPopularCollection = new ArrayCollection(collection)
+                    
+            	if (event.context == CURRATED_URI)
+                    sideBar.curratedCollection = new ArrayCollection(collection)
             }
             
             private function sideBar_itemSelectedHandler(event:Event):void
             {
-                var item:Object = sideBar.selectedItem
+                var gigapan:GigaPan = sideBar.selectedItem as GigaPan
                 
-                if (item.hasOwnProperty("width") && item.hasOwnProperty("height"))
+                if (gigapan.width == 0 || gigapan.height == 0)
                 {
-                    var descriptor:GigaPanDescriptor
-                    descriptor = new GigaPanDescriptor(item.id, item.width, item.height)
-                
-	            	viewer.loadDescriptor(descriptor)
+                	viewer.loadId(gigapan.id)
                 }
                 else
                 {
-                	viewer.loadId(item.id)
+                    var descriptor:GigaPanDescriptor
+                    descriptor = GigaPanDescriptor.fromID(gigapan.id, gigapan.width, gigapan.height)
+	            	viewer.loadDescriptor(descriptor)
                 }
             }
             
-            private function stage_keyDownHandler(event:KeyboardEvent):void
+            private function uiTimer_completeHandler(event:TimerEvent):void
             {
-                if (event.keyCode == 70) // F
-                {
-                    if (stage.displayState == StageDisplayState.NORMAL)
-                        stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE
-                    else
-                        stage.displayState = StageDisplayState.NORMAL
-                } 
+            	hideUI()
             }
             
             private function stage_mouseMoveHandler(event:MouseEvent):void
             {
+            	uiTimer.reset()
+            	uiTimer.start()
+            	showUI()
+            	
             	if (!hiddenSideBarEnabled)
             	   return
             	   
-            	if (event.stageX > stage.stageWidth - 64)
+            	if (event.stageY > stage.stageHeight - 64)
             		showSideBar()
-                if (sideBar.visible && event.stageX < stage.stageWidth - sideBar.width - 64)
+            		
+                if (sideBar.visible && event.stageY < stage.stageHeight - sideBar.height - 64)
                     hideSideBar()
             }
             
@@ -163,6 +212,24 @@
             {
             	currentState = "full"
             }
+            
+            private function showUI():void
+            {
+            	if (!logo.visible)
+            	{
+            	   logo.visible = true
+            	   Mouse.show()
+            	}
+            }
+            
+            private function hideUI():void
+            {
+            	if (logo.visible)
+            	{
+	            	logo.visible = false
+	            	Mouse.hide()
+            	}
+            }
        ]]>
     </mx:Script>
     
@@ -173,20 +240,20 @@
     <mx:transitions>
         <mx:Transition fromState="" toState="full">
             <mx:Sequence target="{sideBar}">
-                <mx:SetPropertyAction name="previousWidth" value="{sideBar.width}"/>
-                <mx:Resize widthTo="0" duration="800"/>
+                <mx:SetPropertyAction name="previousHeight" value="{sideBar.height}"/>
+                <mx:Resize heightTo="0" duration="800"/>
                 <mx:SetPropertyAction name="includeInLayout" value="false"/>
             </mx:Sequence>
         </mx:Transition>
         <mx:Transition fromState="full" toState="">
             <mx:Sequence target="{sideBar}">
                 <mx:SetPropertyAction name="includeInLayout" value="true"/>
-                <mx:Resize widthTo="{sideBar.previousWidth}" duration="600"/>
+                <mx:Resize heightTo="{sideBar.previousHeight}" duration="600"/>
             </mx:Sequence>
         </mx:Transition>
     </mx:transitions>
     
-    <mx:HDividedBox
+    <mx:VDividedBox
         top="0"
         right="0"
         bottom="0"
@@ -198,11 +265,10 @@
 	        height="100%"
             backgroundColor="#000000"
 	        >
-		    <ui:StatusMessage
-		    	message="Loading…"
-		        horizontalCenter="0"
-		        verticalCenter="0"
-		        />
+		    <ui:Spinner
+                horizontalCenter="0"
+                verticalCenter="0"
+                />
 		    <ui:Viewer
 		        id="viewer"
 		        top="0"
@@ -210,17 +276,35 @@
 		        bottom="0"
 		        left="0"
 		        />
+		    <ui:Spinner
+		    	id="imageSpinner"
+		        radius="4"
+		        right="20"
+		        top="20"
+	            showEffect="Fade"
+	            hideEffect="Fade"
+		        />
         </mx:Canvas>
+        
 	    <ui:Sidebar
 	    	id="sideBar"
-	    	width="180"
-	        maxWidth="320"
-	        minWidth="140"
-	    	height="100%"
+	    	height="320"
+	        maxHeight="480"
+	        minHeight="320"
+	    	width="100%"
 	    	itemSelected="sideBar_itemSelectedHandler(event)"
 	    	showEffect="Fade"
 	    	hideEffect="Fade"
 	    	/>
-    </mx:HDividedBox>
-    <ui:Logo width="94" height="32" x="5"/>
+    </mx:VDividedBox>
+    
+    <ui:Logo
+    	id="logo"
+    	width="94"
+    	height="32"
+    	x="5"
+    	showEffect="Fade"
+    	hideEffect="Fade"
+    	/>
+    
 </mx:WindowedApplication>

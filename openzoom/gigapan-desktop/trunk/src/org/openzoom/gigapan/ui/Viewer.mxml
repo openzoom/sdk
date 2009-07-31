@@ -49,8 +49,6 @@
 
             private function loader_completeHandler(event:Event):void
             {
-                trace("INFO: loader_completeHandler")
-
                 var gigapan:GigaPan
                 try
                 {
@@ -58,13 +56,12 @@
                 }
                 catch (error:Error)
                 {
-                    trace("ERROR: loader_completeHandler")
                     return
                 }
 
-                var descriptor:GigaPanDescriptor = new GigaPanDescriptor(gigapan.id,
-                                                                         gigapan.width,
-                                                                         gigapan.height)
+                var descriptor:GigaPanDescriptor = GigaPanDescriptor.fromID(gigapan.id,
+                                                                            gigapan.width,
+                                                                            gigapan.height)
                 loadDescriptor(descriptor)
             }
 
@@ -80,7 +77,7 @@
 
         ]]>
     </mx:Script>
-    <openzoom:MultiScaleImage
+    <openzoom:MultiScaleImage2
         id="image"
         top="0"
         right="0"
@@ -103,5 +100,5 @@
                 <constraints:VisibilityConstraint/>
             </constraints:CompositeConstraint>
         </openzoom:constraint>
-    </openzoom:MultiScaleImage>
+    </openzoom:MultiScaleImage2>
 </mx:Canvas>
