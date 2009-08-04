@@ -160,6 +160,9 @@ public final class ImagePyramidRenderer extends Renderer implements IDisposable
 
         var tile:ImagePyramidTile = tileCache[ImagePyramidTile.getHashCode(level, column, row)]
 
+        if (!descriptor.existsTile(level, column, row))
+            return null
+
         if (!tile)
         {
             var url:String = descriptor.getTileURL(level, column, row)

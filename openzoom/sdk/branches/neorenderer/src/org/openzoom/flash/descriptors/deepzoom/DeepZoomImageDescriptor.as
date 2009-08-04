@@ -63,6 +63,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
                                             tileSize:uint,
                                             tileOverlap:uint,
                                             format:String,
+                                            displayRects:Array=null,
                                             mortonNumber:uint=0,
                                             collection:DeepZoomCollectionDescriptor=null)
     {
@@ -75,10 +76,27 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         _tileWidth = _tileHeight = tileSize
         _numLevels = getNumLevels(width, height)
         createLevels(width, height, tileWidth, tileHeight, numLevels)
-        
+
         // Collection
         _mortonNumber = mortonNumber
         _collection = collection
+
+        // Display Rects
+        if (!displayRects)
+            return
+
+        for (var i:int = displayRects.length - 1; i >= 0; i--)
+        {
+            var rect:DisplayRect = displayRects[i] as DisplayRect
+
+            for (var level:int = rect.minLevel; level <= rect.maxLevel; level++)
+            {
+                if (!levelRects[level])
+                    levelRects[level] = []
+
+                levelRects[level].push(rect)
+            }
+        }
     }
 
     /**
@@ -89,7 +107,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     	var ns:Namespace = deepzoom2008
     	
     	if (xml.namespace() == deepzoom2009)
-            ns = deepzoom2009;
+            ns = deepzoom2009
 
         var width:uint = xml.ns::Size.@Width
         var height:uint = xml.ns::Size.@Height
@@ -97,12 +115,30 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         var tileOverlap:uint = xml.@Overlap
         var format:String = xml.@Format
 
-        return new DeepZoomImageDescriptor(source,
-                                           width,
-                                           height,
-                                           tileSize,
-                                           tileOverlap,
-                                           format)
+        var numDisplayRects:int = xml.ns::DisplayRects.ns::DisplayRect.length()
+        var displayRects:Array = []
+
+        for (var i:int = 0; i < numDisplayRects; i++)
+        {
+            var displayRect:XML = xml.ns::DisplayRects.ns::DisplayRect[i]
+            displayRects.push(new DisplayRect(displayRect.ns::Rect.@X,
+                                              displayRect.ns::Rect.@Y,
+                                              displayRect.ns::Rect.@Width,
+                                              displayRect.ns::Rect.@Height,
+                                              displayRect.@MinLevel,
+                                              displayRect.@MaxLevel))	
+        }
+
+        var descriptor:DeepZoomImageDescriptor =
+                new DeepZoomImageDescriptor(source,
+                                            width,
+                                            height,
+                                            tileSize,
+                                            tileOverlap,
+                                            format,
+                                            displayRects)
+
+        return descriptor
     }
 
     //--------------------------------------------------------------------------
@@ -112,15 +148,21 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     //--------------------------------------------------------------------------
 
     //----------------------------------
+    //  displayRects
+    //----------------------------------
+
+    private var levelRects:Object = {}
+
+    //----------------------------------
     //  mortonNumber
     //----------------------------------
-    
+
     private var _mortonNumber:uint = 0
-    
+
     /**
      * Returns the Morton number of this image within the collection.
      * The Morton number is only valid if <code>collection</code> is not <code>null</code>.
-     */ 
+     */
     public function get mortonNumber():uint
     {
     	return _mortonNumber
@@ -129,9 +171,9 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     //----------------------------------
     //  collection
     //----------------------------------
-    
+
     private var _collection:DeepZoomCollectionDescriptor
-    
+
     /**
      * Returns the collection this image belongs to or null
      * if it does not belong to a collection.
@@ -152,7 +194,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     {
         return _tileWidth
     }
-    
+
     //----------------------------------
     //  format
     //----------------------------------
@@ -166,7 +208,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     {
         return _format
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IMultiScaleImageDescriptor
@@ -180,10 +222,47 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     {
         if (collection && level <= collection.maxLevel)
             return collection.getTileURL(mortonNumber, level)
-        
+
     	var basePath:String = source.substring(0, source.lastIndexOf("."))
         var path:String = basePath + "_files"
         return [path, "/", level, "/", column, "_", row, ".", format].join("")
+    }
+
+    /**
+     * @inheritDoc
+     */
+    override public function existsTile(level:int, column:int, row:int):Boolean
+    {
+        var displayRects:Array = levelRects[level] as Array
+
+        if (!displayRects)
+            return true
+
+        for (var i:int = displayRects.length - 1; i >= 0; i--)
+        {
+            var displayRect:DisplayRect = displayRects[i] as DisplayRect
+
+            if (!(displayRect.minLevel <= level && level <= displayRect.maxLevel))
+                continue
+
+            var scale:Number = getScale(level)
+            var minColunm:int = displayRect.x * scale
+            var minRow:int = displayRect.y * scale
+            var maxColumn:int = minColunm + displayRect.width * scale
+            var maxRow:int = minRow + displayRect.height * scale
+            minColunm = Math.floor(minColunm / tileSize)
+            minRow = Math.floor(minRow / tileSize)
+            maxColumn = Math.ceil(maxColumn / tileSize)
+            maxRow = Math.ceil(maxRow / tileSize)
+
+            var validHorizontal:Boolean = minColunm <= column && column < maxColumn
+            var validVertical:Boolean = minRow <= row && row < maxRow
+
+            if (validHorizontal && validVertical)
+                return true
+        }
+
+        return false
     }
 
     /**
@@ -196,11 +275,11 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         var maxLevel:uint = numLevels - 1
         var index:int = clamp(Math.ceil(log2) + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
-        
+
         var pixelRatio:Number = width / level.width
         if (pixelRatio < 0.5)
             level = getLevelAt(Math.max(0, index - 1))
-        
+
         return level
     }
 
@@ -255,7 +334,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
                                   numLevels:int):void
     {
         var maxLevel:int = numLevels - 1
-        
+
         for (var index:int = 0; index <= maxLevel; index++)
         {
         	var size:Point = getSize(index)
@@ -272,27 +351,27 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
             addLevel(level)
         }
     }
-    
+
     /**
      * @private
-     */ 
+     */
     private function getScale(level:int):Number
     {
     	var maxLevel:int = numLevels - 1
     	// 1 / (1 << maxLevel - level)
     	return Math.pow(0.5, maxLevel - level)
     }
-    
+
     /**
      * @private
-     */ 
+     */
     private function getSize(level:int):Point
     {
         var size:Point = new Point()
         var scale:Number = getScale(level)
         size.x = Math.ceil(width * scale)
         size.y = Math.ceil(height * scale)
-        
+
         return size
     }
 }
@@ -329,8 +408,8 @@ class DisplayRect extends Rectangle
                                 maxLevel:int)
     {
         super(x, y, width, height)
-        _minLevel = minLevel
-        _maxLevel = maxLevel
+        this.minLevel = minLevel
+        this.maxLevel = maxLevel
     }
 
     //--------------------------------------------------------------------------
@@ -346,12 +425,7 @@ class DisplayRect extends Rectangle
     /**
      * @private
      */
-    private var _minLevel:int
-
-    public function get minLevel():int
-    {
-        return _minLevel
-    }
+    public var minLevel:int
 
     //----------------------------------
     //  maxLevel
@@ -360,10 +434,5 @@ class DisplayRect extends Rectangle
     /**
      * @private
      */
-    private var _maxLevel:int
-
-    public function get maxLevel():int
-    {
-        return _maxLevel
-    }
+    public var maxLevel:int
 }

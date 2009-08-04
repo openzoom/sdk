@@ -32,6 +32,7 @@ import flash.system.Capabilities;
 import flash.ui.ContextMenu;
 import flash.ui.ContextMenuItem;
 
+import org.openzoom.flash.utils.FullScreenUtil;
 import org.openzoom.flash.viewport.IViewportController;
 
 /**
@@ -748,7 +749,7 @@ public class ContextMenuController extends ViewportControllerBase
      */
     private function fullScreenMenu_menuItemSelectHandler(event:ContextMenuEvent):void
     {
-        toggleFullScreen()
+        FullScreenUtil.toggleFullScreen(view.stage)
     }
 
     // Zooming
@@ -836,33 +837,6 @@ public class ContextMenuController extends ViewportControllerBase
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     */
-    private function toggleFullScreen():void
-    {
-        try
-        {
-            if (view.stage.displayState == StageDisplayState.NORMAL)
-            {
-                var mode:String = StageDisplayState.FULL_SCREEN
-                
-                if (Capabilities.playerType == "Desktop")
-                    mode = "fullScreenInteractive"
-                    
-                view.stage.displayState = mode
-            }
-            else
-            {
-                view.stage.displayState = StageDisplayState.NORMAL
-            }
-        }
-        catch(error:Error)
-        {
-            // Nothing we can do...
-        }
-    }
 
     /**
      * @private

@@ -30,7 +30,6 @@ import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.getTimer;
-import flash.utils.setInterval;
 
 import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
@@ -105,8 +104,6 @@ public final class ImagePyramidRenderManager implements IDisposable
         owner.addEventListener(Event.ENTER_FRAME,
                                enterFrameHandler,
                                false, 0, true)
-
-//        setInterval(enterFrameHandler, 500, null)
     }
 
     //--------------------------------------------------------------------------
@@ -123,8 +120,6 @@ public final class ImagePyramidRenderManager implements IDisposable
     private var loader:INetworkQueue
     private var tileLoader:TileLoader
 
-    private var invalidateDisplayListFlag:Boolean = true
-
     private var tileCache:Cache
 
     //--------------------------------------------------------------------------
@@ -132,6 +127,8 @@ public final class ImagePyramidRenderManager implements IDisposable
     //  Methods: Validation/Invalidation
     //
     //--------------------------------------------------------------------------
+
+    private var invalidateDisplayListFlag:Boolean = true
     
     /**
      * @private
@@ -238,17 +235,7 @@ public final class ImagePyramidRenderManager implements IDisposable
             var fromTile:Point = descriptor.getTileAtPoint(l, fromPoint)
             var toTile:Point = descriptor.getTileAtPoint(l, toPoint)
 
-            var tileDistance:Number = Point.distance(fromTile, toTile)
-
-            // FIXME: Safety
-            if (tileDistance > 20)
-            {
-                trace("[ImagePyramidRenderManager] updateDisplayList: " +
-                      "Tile distance too large.", tileDistance)
-                continue
-            }
-
-            // FIXME: Currently center, calculate origin
+            // FIXME: Currently center, calculate true origin
             var t:Point = new Point(0.5, 0.5) // viewport.transform.origin
             var origin:Point = new Point((1 - t.x) * fromTile.x + t.x * toTile.x,
                                          (1 - t.y) * fromTile.y + t.y * toTile.y)
@@ -260,6 +247,9 @@ public final class ImagePyramidRenderManager implements IDisposable
                 for (var r:int = fromTile.y; r <= toTile.y; r++)
                 {
                     var tile:ImagePyramidTile = renderer.openzoom_internal::getTile(l, c, r)
+                    
+                    if (!tile)
+                       continue
 
                     if (!tile.source)
                     {
@@ -285,14 +275,6 @@ public final class ImagePyramidRenderManager implements IDisposable
                         continue
                     }
                     
-                     // FIXME: Safety
-                    if (!tile.bitmapData)
-                    {
-                        trace("[ImagePyramidRenderManager] updateDisplayList: " +
-                              "Tile BitmapData missing.", tile.loaded, tile.loading)
-                        continue
-                    }
-
                     // Prepare alpha bitmap
                     if (tile.fadeStart == 0)
                         tile.fadeStart = currentTime
@@ -376,7 +358,9 @@ public final class ImagePyramidRenderManager implements IDisposable
             {
                 sx = descriptor.width / level.width
                 sy = descriptor.height / level.height
-                matrix.createBox(sx, sy, 0, tile.bounds.x * sx, tile.bounds.y * sy)
+                var w:Number = tile.bounds.x * sx
+                var h:Number = tile.bounds.y * sy
+                matrix.createBox(sx, sy, 0, w, h)
             }
             else
             {
@@ -389,7 +373,6 @@ public final class ImagePyramidRenderManager implements IDisposable
                 sy = descriptor.height / level.height
                 matrix.createBox(sx, sy, 0, -offsetX * sx, -offsetY * sy)
             }
-
 
             g.beginBitmapFill(textureMap,
                               matrix,

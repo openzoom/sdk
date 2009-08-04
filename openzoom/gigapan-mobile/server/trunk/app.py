@@ -46,6 +46,8 @@ API_GIGAPAN = "http://api.gigapan.org/beta/gigapans/%d.json"
 API_GIGAPAN_TILE_URL = "http://tile%(tileserver)s.gigapan.org/gigapans0/%(id)d/tiles"
 API_GIGAPAN_USER = "http://gigapan.org/viewProfile.php?userid=%d"
 FEED_ICON_URL = "http://gigapan-mobile.appspot.com/static/images/feed-icon.jpg"
+#VIEW_GIGAPAN_URL = "http://gigapan.org/viewGigapan.php?id=%d"
+VIEW_GIGAPAN_URL = "http://gigapan-mobile.appspot.com/gigapan/%d"
 
 # Data Model
 class GigaPanUser(db.Model):
@@ -300,12 +302,12 @@ def create_feed(doc, gigapans, heading):
         item.appendChild(title)
         
         link = doc.createElement("link")
-        link_text = doc.createTextNode("http://gigapan.org/viewGigapan.php?id=%d"%gigapan_id)
+        link_text = doc.createTextNode(VIEW_GIGAPAN_URL%gigapan_id)
         link.appendChild(link_text)
         item.appendChild(link)
 
         guid = doc.createElement("guid")
-        guid_text = doc.createTextNode(DZI_URL%gigapan_id)
+        guid_text = doc.createTextNode(VIEW_GIGAPAN_URL%gigapan_id)
         guid.appendChild(guid_text)
         item.appendChild(guid)
 

@@ -49,7 +49,7 @@ public class MouseController extends ViewportControllerBase
     private static const DEFAULT_CLICK_ZOOM_IN_FACTOR:Number = 2.0
     private static const DEFAULT_CLICK_ZOOM_OUT_FACTOR:Number = 0.3
 
-    private static const DEFAULT_MOUSE_WHEEL_ZOOM_FACTOR:Number = 1.12
+    private static const DEFAULT_MOUSE_WHEEL_ZOOM_FACTOR:Number = 1.11
 
     //--------------------------------------------------------------------------
     //
@@ -384,7 +384,7 @@ public class MouseController extends ViewportControllerBase
     {
         // unregister from mouse move events
         // FIXME
-        if (view && view.hasEventListener(MouseEvent.MOUSE_MOVE))
+        if (view)
             view.removeEventListener(MouseEvent.MOUSE_MOVE,
                                      view_mouseMoveHandler)
 

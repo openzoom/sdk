@@ -21,14 +21,13 @@
 package org.openzoom.flash.viewport.controllers
 {
 
-import flash.display.StageDisplayState;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.TimerEvent;
-import flash.system.Capabilities;
 import flash.ui.Keyboard;
 import flash.utils.Timer;
 
+import org.openzoom.flash.utils.FullScreenUtil;
 import org.openzoom.flash.viewport.IViewportController;
 
 /**
@@ -480,7 +479,7 @@ public class KeyboardController extends ViewportControllerBase
         updateFlags(event, true)
         
         if (fullScreen && event.keyCode == fullScreenKeyCode)
-            toggleFullScreen()
+            FullScreenUtil.toggleFullScreen(view.stage)
     }
 
     /**
@@ -608,30 +607,6 @@ public class KeyboardController extends ViewportControllerBase
 
         if (zoomOut && zoomOutActivated)
             viewport.zoomBy(zoomOutFactor)
-    }
-    
-    private function toggleFullScreen():void
-    {
-        try
-        {
-            if (view.stage.displayState == StageDisplayState.NORMAL)
-            {
-                var mode:String = StageDisplayState.FULL_SCREEN
-                
-                if (Capabilities.playerType == "Desktop")
-                    mode = "fullScreenInteractive"
-                    
-                view.stage.displayState = mode
-            }
-            else
-            {
-                view.stage.displayState = StageDisplayState.NORMAL
-            }
-        }
-        catch(error:Error)
-        {
-            // Nothing we can do...
-        }
     }
 }
 

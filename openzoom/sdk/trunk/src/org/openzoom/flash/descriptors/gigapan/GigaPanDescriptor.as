@@ -129,7 +129,7 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
     {
         var maxDimension:uint = Math.max(width, height)
-        var level:uint = Math.floor(Math.log(maxDimension) / Math.LN2)
+        var level:uint = Math.round(Math.log(maxDimension) / Math.LN2)
         var actualLevel:uint = level - DEFAULT_BASE_LEVEL
         var index:int = clamp(actualLevel, 0, numLevels - 1)
         
