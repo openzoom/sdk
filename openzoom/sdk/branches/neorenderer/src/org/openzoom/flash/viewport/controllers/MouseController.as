@@ -260,6 +260,9 @@ public class MouseController extends ViewportControllerBase
 
         // transform viewport
         viewport.zoomBy(factor, originX, originY)
+        
+        // TODO
+        event.updateAfterEvent()
     }
 
     //--------------------------------------------------------------------------

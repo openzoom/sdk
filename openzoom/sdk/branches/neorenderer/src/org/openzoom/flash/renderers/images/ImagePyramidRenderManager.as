@@ -148,6 +148,8 @@ public final class ImagePyramidRenderManager implements IDisposable
     {
         if (invalidateDisplayListFlag)
         {
+            invalidateDisplayListFlag = false
+            
             for each (var renderer:ImagePyramidRenderer in renderers)
                 updateDisplayList(renderer)
         }

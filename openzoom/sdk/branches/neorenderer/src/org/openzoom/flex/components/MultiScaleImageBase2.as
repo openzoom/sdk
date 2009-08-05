@@ -23,17 +23,15 @@ package org.openzoom.flex.components
 
 import flash.display.DisplayObject;
 import flash.events.Event;
-import flash.events.ProgressEvent;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import mx.core.UIComponent;
 
 import org.openzoom.flash.components.IMultiScaleContainer;
-import org.openzoom.flash.components.MultiScaleContainer2;
-import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
+import org.openzoom.flash.viewport.NormalizedViewport;
 
 /**
  * @private
@@ -41,7 +39,7 @@ import org.openzoom.flash.viewport.IViewportTransformer;
  * Base class for MultiScaleImage and DeepZoomContainer.
  */
 public class MultiScaleImageBase2 extends UIComponent
-                                  implements IMultiScaleContainer
+                                  /*implements IMultiScaleContainer*/
 {
     //--------------------------------------------------------------------------
     //
@@ -124,7 +122,7 @@ public class MultiScaleImageBase2 extends UIComponent
     /**
      * Viewport of this image.
      */
-    public function get viewport():INormalizedViewport
+    public function get viewport():NormalizedViewport
     {
         return container ? container.viewport : null
     }
@@ -249,16 +247,17 @@ public class MultiScaleImageBase2 extends UIComponent
         if (!container)
         {
             container = new MultiScaleContainer2()
-            container.loader.addEventListener(Event.INIT,
-                                              container_eventHandler,
-                                              false, 0, true)
-            container.loader.addEventListener(ProgressEvent.PROGRESS,
-                                              container_eventHandler,
-                                              false, 0, true)
-            container.loader.addEventListener(Event.COMPLETE,
-                                              container_eventHandler,
-                                              false, 0, true)
             super.addChild(container)
+            
+//            container.loader.addEventListener(Event.INIT,
+//                                              container_eventHandler,
+//                                              false, 0, true)
+//            container.loader.addEventListener(ProgressEvent.PROGRESS,
+//                                              container_eventHandler,
+//                                              false, 0, true)
+//            container.loader.addEventListener(Event.COMPLETE,
+//                                              container_eventHandler,
+//                                              false, 0, true)
 
             dispatchEvent(new Event("containerChanged"))
             dispatchEvent(new Event("viewportChanged"))
