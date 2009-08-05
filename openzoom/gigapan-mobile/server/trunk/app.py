@@ -168,7 +168,7 @@ class UserRequestHandler(webapp.RequestHandler):
         user = db.Query(GigaPanUser).filter("id =", id).get()
         if not user:
             self.error(404)
-        gigapans = db.GqlQuery("SELECT * FROM GigaPan WHERE owner = :1 ORDER BY id DESC", user.key()).fetch(50)
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan WHERE owner = :1 ORDER BY id DESC", user.key()).fetch(100)
         for gigapan in gigapans:
             gigapan.name = smart_truncate(gigapan.name, 26)
         template_values = {"gigapans": gigapans}
@@ -205,9 +205,9 @@ class GigaPanRequestHandler(webapp.RequestHandler):
 class HighlightsFeedRequestHandler(webapp.RequestHandler):
     def get(self):
         doc = create_feed_skeleton("GigaPan Highlights")
-        gigapans = db.GqlQuery("SELECT * FROM GigaPan ORDER BY id DESC").fetch(20)
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan ORDER BY id DESC").fetch(40)
         create_feed(doc, gigapans, "Most Recent")
-        gigapans = db.GqlQuery("SELECT * FROM GigaPan ORDER BY explore_score DESC").fetch(20)
+        gigapans = db.GqlQuery("SELECT * FROM GigaPan ORDER BY explore_score DESC").fetch(10)
         create_feed(doc, gigapans, "Most Popular")
 
         self.response.headers["Content-Type"] = "application/rss+xml"
@@ -305,6 +305,23 @@ def create_feed(doc, gigapans, heading):
         link_text = doc.createTextNode(VIEW_GIGAPAN_URL%gigapan_id)
         link.appendChild(link_text)
         item.appendChild(link)
+
+        description = doc.createElement("description")
+        description_template = """<a href="%(link)s"><img src="http://www.gigapan.org/gigapans/%(id)d-%(width)dx%(height)d.jpg" width="%(width)d" height="%(height)d" border="0"/></a>"""
+        aspect_ratio = gigapan.width / float(gigapan.height)
+
+        # Fit in 800x160px bounding box
+        h = 160
+        w = int(math.floor(h * aspect_ratio))
+        
+        if w > 800:
+            w = 800
+            h = int(math.floor(w / aspect_ratio))
+        
+        description_text = doc.createTextNode(description_template%{"id": gigapan_id, "width": w, "height": h,
+                                                                    "link": VIEW_GIGAPAN_URL%gigapan_id})
+        description.appendChild(description_text)
+        item.appendChild(description)
 
         guid = doc.createElement("guid")
         guid_text = doc.createTextNode(VIEW_GIGAPAN_URL%gigapan_id)
