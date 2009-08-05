@@ -45,6 +45,8 @@ import org.openzoom.flash.utils.MortonOrder;
 import org.openzoom.flash.viewport.INormalizedViewport;
 
 /**
+ * @private
+ * 
  * Manages the rendering of all image pyramid renderers on stage.
  */
 public final class ImagePyramidRenderManager implements IDisposable
@@ -263,7 +265,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 
                     var dx:Number = tile.column - origin.x
                     var dy:Number = tile.row - origin.y
-                    var distance:Number = dx * dx + dy * dy
+                    var distance:Number = dx*dx + dy*dy
                     tile.distance = distance
 
                     if (!tile.loaded)
@@ -352,18 +354,11 @@ public final class ImagePyramidRenderManager implements IDisposable
             var sy:Number
             var dziDescriptor:DeepZoomImageDescriptor = descriptor as DeepZoomImageDescriptor
 
-            if (!(dziDescriptor &&
-                  dziDescriptor.collection &&
-                  tile.level <= dziDescriptor.collection.maxLevel))
+            if (dziDescriptor &&
+                dziDescriptor.collection &&
+                tile.level <= dziDescriptor.collection.maxLevel)
             {
-                sx = descriptor.width / level.width
-                sy = descriptor.height / level.height
-                var w:Number = tile.bounds.x * sx
-                var h:Number = tile.bounds.y * sy
-                matrix.createBox(sx, sy, 0, w, h)
-            }
-            else
-            {
+            	// Deep Zoom collection
                 var levelSize:uint = 1 << tile.level
                 var position:Point = MortonOrder.getPosition(dziDescriptor.mortonNumber)
                 var tileSize:uint = dziDescriptor.collection.tileSize
@@ -372,6 +367,15 @@ public final class ImagePyramidRenderManager implements IDisposable
                 sx = descriptor.width / level.width
                 sy = descriptor.height / level.height
                 matrix.createBox(sx, sy, 0, -offsetX * sx, -offsetY * sy)
+            }
+            else
+            {
+            	// Normal
+                sx = descriptor.width / level.width
+                sy = descriptor.height / level.height
+                var w:Number = tile.bounds.x * sx
+                var h:Number = tile.bounds.y * sy
+                matrix.createBox(sx, sy, 0, w, h)
             }
 
             g.beginBitmapFill(textureMap,

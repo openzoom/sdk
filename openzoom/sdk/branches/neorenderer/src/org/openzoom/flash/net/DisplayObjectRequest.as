@@ -146,13 +146,13 @@ internal final class DisplayObjectRequest extends EventDispatcher
         dispatchEvent(requestEvent)
     }
 
-    /**
-     * @private
-     */
-    private function request_httpStatusHandler(event:HTTPStatusEvent):void
-    {
-    	// TODO
-    }
+//    /**
+//     * @private
+//     */
+//    private function request_httpStatusHandler(event:HTTPStatusEvent):void
+//    {
+//    	// TODO
+//    }
 
     /**
      * @private

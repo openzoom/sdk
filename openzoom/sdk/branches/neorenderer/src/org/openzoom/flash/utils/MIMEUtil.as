@@ -27,7 +27,8 @@ package org.openzoom.flash.utils
 public final class MIMEUtil
 {
 	/**
-	 * Returns the official MIME type for the given file extension without a dot.
+	 * Returns the official MIME type for the
+	 * given file extension without a leading dot.
 	 */
     public static function getContentType(extension:String):String
     {

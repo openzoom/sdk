@@ -23,7 +23,6 @@ package org.openzoom.flash.utils
 
 import flash.geom.Point;
 
-
 /**
  * Utility class for doing computations with the Morton-order (Z-order) which
  * is a space-filling curve. For example, the Morton-order is used by Deep Zoom for
@@ -76,12 +75,12 @@ public final class MortonOrder
      */
     public static function getValue(column:int, row:int):uint
     {
-        var zOrder:uint
+        var mortonOrder:uint
 
         for (var i:int = 0; i < 32; i++)
-            zOrder |= (column & 1 << i) << i | (row & 1 << i) << (i + 1)
+            mortonOrder |= (column & 1 << i) << i | (row & 1 << i) << (i + 1)
 
-        return zOrder
+        return mortonOrder
     }
 }
 

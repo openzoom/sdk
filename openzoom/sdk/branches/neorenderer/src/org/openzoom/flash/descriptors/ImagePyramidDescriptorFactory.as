@@ -106,7 +106,6 @@ public class ImagePyramidDescriptorFactory
 
         if (xml.namespace().toString() == DEEPZOOM_2009_NAMESPACE_URI)
             return DeepZoomImageDescriptor.fromXML(source, xml)
-            
 
         if (xml.name().toString() == ZOOMIFY_ROOT_TAG_NAME)
             return ZoomifyDescriptor.fromXML(source, xml)

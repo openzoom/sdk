@@ -74,7 +74,7 @@ public class CatalogViewer extends Sprite
         ExternalMouseWheel.initialize(stage)
         
         
-        include "config.as"
+//        include "config.as"
         
         loader = new URLLoader()
         loader.addEventListener(Event.COMPLETE,
@@ -194,7 +194,7 @@ public class CatalogViewer extends Sprite
             renderer.height = height
             
             var s:String = IMAGE_PATH + (i + 1) + "/image.dzi"
-            renderer.source = new DeepZoomImageDescriptor(s, 2896, 4096, 254, 1, "png", i, collection)
+            renderer.source = new DeepZoomImageDescriptor(s, 2896, 4096, 254, 1, "png", [], i, collection)
 
             container.addChild(renderer)
             renderManager.addRenderer(renderer)

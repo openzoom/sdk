@@ -34,7 +34,8 @@ import org.openzoom.flash.utils.IDisposable;
 /**
  * Image pyramid renderer.
  */
-public final class ImagePyramidRenderer extends Renderer implements IDisposable
+public final class ImagePyramidRenderer extends Renderer
+                                        implements IDisposable
 {
     //--------------------------------------------------------------------------
     //
