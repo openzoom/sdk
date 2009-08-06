@@ -51,9 +51,13 @@ public class MemoryMonitor extends Sprite
         createBackground()
         createLabel()
         layout()
-
-        addEventListener(Event.ENTER_FRAME,
-                         enterFrameHandler,
+        
+        addEventListener(Event.ADDED_TO_STAGE,
+                         addedToStageHandler,
+                         false, 0, true)
+                         
+        addEventListener(Event.REMOVED_FROM_STAGE,
+                         removedFromStageHandler,
                          false, 0, true)
     }
 
@@ -115,6 +119,19 @@ public class MemoryMonitor extends Sprite
     //  Event Handlers
     //
     //--------------------------------------------------------------------------
+
+    private function addedToStageHandler(event:Event):void
+    {
+        addEventListener(Event.ENTER_FRAME,
+                         enterFrameHandler,
+                         false, 0, true)
+    }
+    
+    private function removedFromStageHandler(event:Event):void
+    {
+    	removeEventListener(Event.ENTER_FRAME,
+    	                    enterFrameHandler)
+    }
 
     private function enterFrameHandler(event:Event):void
     {
