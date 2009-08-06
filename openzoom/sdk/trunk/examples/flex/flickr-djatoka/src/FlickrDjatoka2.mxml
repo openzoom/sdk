@@ -65,8 +65,7 @@
             private static const IMAGE_SIZE:Number = 1024
             private static const IMAGE_SUFFIX:String = "_b"
 
-            private static const NUM_PHOTOS:uint = 10
-            private static const DEFAULT_PAGE:uint = 3
+            private static const NUM_PHOTOS:uint = 500
 
             //------------------------------------------------------------------
             //
@@ -96,7 +95,7 @@
                 flickr.addEventListener(FlickrResultEvent.PEOPLE_GET_PUBLIC_PHOTOS,
                                         flickr_peopleGetPublicPhotosHandler,
                                         false, 0, true)
-                flickr.people.getPublicPhotos(USER_ID, EXTRAS, NUM_PHOTOS, DEFAULT_PAGE)
+                flickr.people.getPublicPhotos(USER_ID, EXTRAS, NUM_PHOTOS, 3)
 
                 numColumns = container.sceneWidth / (IMAGE_SIZE * spacing)
             }
@@ -120,7 +119,7 @@
 
                 trace("Page", page, "of", numPages)
 
-//                if (page < numPages)
+//                if (page < 3)//numPages)
 //	                flickr.people.getPublicPhotos(USER_ID, EXTRAS, NUM_PHOTOS, page + 1)
 //	            else
 	               trace("Done.")
@@ -172,21 +171,33 @@
 
                     var photoDescriptor:IMultiScaleImageDescriptor
 
-                    photoDescriptor = new DjatokaDescriptor(DJAKOTA_RESOLVER_URL,
-                                                            url,
-                                                            imageWidth,
-                                                            imageHeight,
-                                                            256,
-                                                            1)
+//                    photoDescriptor = new DjatokaDescriptor(DJAKOTA_RESOLVER_URL,
+//                                                            url,
+//                                                            imageWidth,
+//                                                            imageHeight,
+//                                                            256,
+//                                                            1)
 
+                    // http://static.gasi.ch/images/3128884923/image.xml 
+                    var descriptorXML:XML = <Image TileSize="256" Overlap="1" Format="jpg" xmlns="http://schemas.microsoft.com/deepzoom/2008">
+                                                  <Size Width={imageWidth} Height={imageHeight}/>
+                                              </Image>;
 
-                    var scale:Number = 0.2
+                    var path:String = "http://static.gasi.ch/images/" + photo.id + "/image.dzi"
+                    photoDescriptor = DZIDescriptor.fromXML(path, descriptorXML)
+
+                    var scale:Number = 0.2//1 // 0.2
                     var renderer:Sprite
                     renderer = new MultiScaleImageRenderer(photoDescriptor,
                                                            container.loader,
                                                            imageWidth * scale,
                                                            imageHeight * scale)
 
+//                  renderer = new Sprite()
+//                  var g:Graphics = renderer.graphics
+//                  g.beginFill(Math.random() * 0xFFFFFF)
+//                  g.drawRect(0, 0, imageWidth * scale, imageHeight * scale)
+//                  g.endFill()
                    
                     var size:Number = IMAGE_SIZE
                     var position:Point = new Point()
