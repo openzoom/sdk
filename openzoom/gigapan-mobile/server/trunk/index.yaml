@@ -1,7 +1,0 @@
-indexes:
-    - kind: GigaPan
-      properties:
-      - name: owner
-      - name: id
-        direction: desc
-

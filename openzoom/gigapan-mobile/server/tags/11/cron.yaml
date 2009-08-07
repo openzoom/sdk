@@ -1,4 +1,0 @@
-cron:
-- description: sync most recent feed
-  url: /tasks/sync
-  schedule: every 3 minutes

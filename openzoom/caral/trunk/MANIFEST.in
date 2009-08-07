@@ -1,4 +1,0 @@
-include README.txt
-include LICENSE.txt
-include openzoom.py
-include setup.py

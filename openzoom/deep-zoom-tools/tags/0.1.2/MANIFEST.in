@@ -1,5 +1,0 @@
-include README.txt
-include LICENSE.txt
-include deepzoom.py
-include setup.py
-recursive-include examples *
