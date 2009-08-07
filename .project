@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>openzoom</name>
+	<name>OpenZoomSDK</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -10,8 +10,15 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 		<nature>org.python.pydev.pythonNature</nature>
 	</natures>
 </projectDescription>
