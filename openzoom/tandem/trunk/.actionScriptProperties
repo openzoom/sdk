@@ -2,9 +2,9 @@
 <actionScriptProperties mainApplicationPath="tandem.mxml" version="3">
 <compiler additionalCompilerArguments="-locale en_US" copyDependentFiles="false" enableModuleDebug="true" flexSDK="Flex 4.0" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="10.0.0" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath>
-<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/src"/>
-<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/lib/as3corelib/src"/>
-<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM}/lib/as3flickrlib/src"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM_HOME}/src"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM_HOME}/lib/as3corelib/src"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM_HOME}/lib/as3flickrlib/src"/>
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path="">
@@ -17,11 +17,9 @@
 </libraryPathEntry>
 </modifiedEntries>
 </libraryPathEntry>
-<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/lib"/>
+<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM_HOME}/lib"/>
 </libraryPath>
-<sourceAttachmentPath>
-<sourceAttachmentPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex4.swc" sourcepath="${DOCUMENTS}/flex4/trunk/frameworks/projects/flex4/src" useDefaultLinkType="false"/>
-</sourceAttachmentPath>
+<sourceAttachmentPath/>
 </compiler>
 <applications>
 <application path="tandem.mxml"/>
