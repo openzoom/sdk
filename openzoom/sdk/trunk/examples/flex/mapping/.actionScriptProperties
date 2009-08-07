@@ -6,7 +6,7 @@
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path=""/>
-<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM}/lib"/>
+<libraryPathEntry kind="1" linkType="1" path="${OPENZOOM_HOME}/lib"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>
