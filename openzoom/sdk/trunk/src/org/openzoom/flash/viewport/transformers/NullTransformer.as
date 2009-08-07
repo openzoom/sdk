@@ -64,10 +64,7 @@ public class NullTransformer extends ViewportTransformerBase
     override public function transform(target:IViewportTransform,
                                        immediately:Boolean=false):void
     {
-        super.transform(target,immediately)
-
-        // copy targetTransform
-        _target = target.clone()
+        super.transform(target, immediately)
 
         viewport.beginTransform()
         viewport.transform = _target

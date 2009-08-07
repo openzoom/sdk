@@ -23,6 +23,7 @@ package org.openzoom.flash.net
 
 import flash.display.Bitmap;
 import flash.display.DisplayObject;
+import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.ProgressEvent;
 
@@ -33,8 +34,8 @@ import org.openzoom.flash.events.NetworkRequestEvent;
  *
  * Basic loading queue for image tiles.
  */
-public class NetworkQueue extends EventDispatcher
-                          implements INetworkQueue
+public final class NetworkQueue extends EventDispatcher
+                                implements INetworkQueue
 {
     //--------------------------------------------------------------------------
     //
@@ -79,7 +80,7 @@ public class NetworkQueue extends EventDispatcher
         var request:INetworkRequest
 
         // TODO
-//        if (type == URLVariables)
+//      if (type == URLVariables)
 
         // TODO
 //      if (type == Sound)
@@ -91,16 +92,22 @@ public class NetworkQueue extends EventDispatcher
             request = new DisplayObjectRequest(url, context)
 
         if (type == String || type == XML)
-            request = new URIRequest(url, context)
+            request = new URLRequest(url, context)
 
         if (!request)
             throw new ArgumentError("Type " + type.toString() + " not supported.")
 
-        request.addEventListener(ProgressEvent.PROGRESS, request_progressHandler)
-        request.addEventListener(NetworkRequestEvent.COMPLETE, request_completeHandler)
-        request.addEventListener(NetworkRequestEvent.ERROR, request_errorHandler)
+        request.addEventListener(ProgressEvent.PROGRESS,
+                                 request_progressHandler)
+        request.addEventListener(NetworkRequestEvent.COMPLETE,
+                                 request_completeHandler)
+        request.addEventListener(NetworkRequestEvent.ERROR,
+                                 request_errorHandler)
 
         // Add item to front (LIFO)
+        if (queue.length == 0 && connections.length == 0)
+            dispatchEvent(new Event(Event.INIT))
+
         queue.unshift(request)
         processQueue()
         return request
@@ -138,10 +145,13 @@ public class NetworkQueue extends EventDispatcher
     {
         var index:int = connections.indexOf(event.request)
 
-        if (index > 0)
+        if (index >= 0)
            connections.splice(index, 1)
-
+        
         processQueue()
+
+        if (queue.length == 0 && connections.length == 0)
+            dispatchEvent(new Event(Event.COMPLETE))
     }
 
     /**
@@ -149,7 +159,7 @@ public class NetworkQueue extends EventDispatcher
      */
     private function request_errorHandler(event:NetworkRequestEvent):void
     {
-        trace("[NetworkQueue] item_errorHandler")
+        trace("[NetworkQueue] Error")
         request_completeHandler(event)
     }
 
@@ -167,7 +177,8 @@ public class NetworkQueue extends EventDispatcher
             bytesTotal += request.bytesTotal
         }
 
-        var progressEvent:ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS)
+        var progressEvent:ProgressEvent =
+                new ProgressEvent(ProgressEvent.PROGRESS)
         progressEvent.bytesLoaded = bytesLoaded
         progressEvent.bytesTotal = bytesTotal
         dispatchEvent(progressEvent)

@@ -21,13 +21,11 @@
 package org.openzoom.flash.descriptors.openzoom
 {
 
-import flash.utils.Dictionary;
-
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 import org.openzoom.flash.descriptors.IImageSourceDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
 import org.openzoom.flash.descriptors.ImageSourceDescriptor;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
 import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.utils.uri.resolveURI;
 
@@ -35,8 +33,8 @@ import org.openzoom.flash.utils.uri.resolveURI;
  * OpenZoom Descriptor.
  * <a href="http://openzoom.org/specs/">http://openzoom.org/specs/</a>
  */
-public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
-                                implements IMultiScaleImageDescriptor
+public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
+                                      implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -61,7 +59,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
 
         this.data = data
 
-        this.uri = uri
+        this.source = uri
         parseXML(data)
     }
 
@@ -72,11 +70,10 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
     //--------------------------------------------------------------------------
 
     private var data:XML
-    private var levels:Dictionary = new Dictionary()
-
+    
     //--------------------------------------------------------------------------
     //
-    //  Properties: IMultiScaleImageDescriptor
+    //  Properties: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
     
@@ -92,52 +89,53 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageDescriptor
+    //  Methods: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
 
     /**
      * @inheritDoc
      */
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
-        return IMultiScaleImageLevel(levels[level]).getTileURL(column, row)
+        return getLevelAt(level).getTileURL(column, row)
     }
 
     /**
      * @inheritDoc
      */
-    public function getLevelAt(index:int):IMultiScaleImageLevel
+    public function getLevelForSize(width:Number,
+                                    height:Number):IImagePyramidLevel
     {
-        return IMultiScaleImageLevel(levels[index])
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMinLevelForSize(width:Number,
-                                       height:Number):IMultiScaleImageLevel
-    {
-        var level:IMultiScaleImageLevel
+        var currentLevel:IImagePyramidLevel
 
         for (var i:int = numLevels - 1; i >= 0; i--)
         {
-            level = getLevelAt(i)
-            if (level.width <= width || level.height <= height)
+            currentLevel = getLevelAt(i)
+            if (currentLevel.width <= width || currentLevel.height <= height)
                 break
         }
 
         var maxLevel:uint = numLevels - 1
-        var index:int = level.index
-        return getLevelAt(clamp(index, 0, maxLevel))
+        var index:int = clamp(i + 1, 0, maxLevel)
+        var level:IImagePyramidLevel = getLevelAt(index)
+        
+        // FIXME
+        if (width / level.width < 0.5)
+            level = getLevelAt(Math.max(0, index - 1))
+        
+        if (width / level.width < 0.5)
+            trace("[OpenZoomDescriptor] getLevelForSize():", width / level.width)
+
+        return level
     }
 
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageDescriptor
+    public function clone():IImagePyramidDescriptor
     {
-        return new OpenZoomDescriptor(uri, data.copy())
+        return new OpenZoomDescriptor(source, data.copy())
     }
 
     //--------------------------------------------------------------------------
@@ -170,7 +168,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
         // Parse sources
         for each (var source:XML in data.source)
         {
-            var path:String = this.uri.substring(0, this.uri.lastIndexOf("/") + 1)
+            var path:String = this.source.substring(0, this.source.lastIndexOf("/") + 1)
             var sourceUri:String = resolveURI(path, source.@uri)
             var width:uint = source.@width
             var height:uint = source.@height
@@ -195,7 +193,7 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
 
         _numLevels = data.pyramid.level.length()
 
-        if (PyramidOrigin.isValid(pyramid.@origin))
+        if (ImagePyramidOrigin.isValid(pyramid.@origin))
             _origin = pyramid.@origin
 
         for (var index:int = 0; index < numLevels; index++)
@@ -206,14 +204,15 @@ public class OpenZoomDescriptor extends MultiScaleImageDescriptorBase
             for each (var uri:XML in level.uri)
                 uris.push(uri.@template.toString())
 
-            levels[index] = new MultiScaleImageLevel(this,
-                                                     index,
-                                                     level.@width,
-                                                     level.@height,
-                                                     level.@columns,
-                                                     level.@rows,
-                                                     uris,
-                                                     origin)
+            addLevel(new ImagePyramidLevel(this,
+                                           this.source,
+                                           index,
+                                           level.@width,
+                                           level.@height,
+                                           level.@columns,
+                                           level.@rows,
+                                           uris,
+                                           origin))
         }
     }
 }

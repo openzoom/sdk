@@ -30,6 +30,7 @@ import flash.geom.Rectangle;
 import mx.core.UIComponent;
 
 import org.openzoom.flash.components.IMultiScaleContainer;
+import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;

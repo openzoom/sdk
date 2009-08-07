@@ -23,24 +23,23 @@ package org.openzoom.flash.utils
 
 import flash.geom.Point;
 
-
 /**
- * Utility class for doing computations with the Z-order (Morton-order) which
- * is a space-filling curve. For example, the Z-order is used by Deep Zoom for
+ * Utility class for doing computations with the Morton-order (Z-order) which
+ * is a space-filling curve. For example, the Morton-order is used by Deep Zoom for
  * laying out tiles in collections. Creates beautiful fractal layouts.
  *
  * @see http://en.wikipedia.org/wiki/Z-order_(curve)
  * @see http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx#Collections
  * @see http://graphics.stanford.edu/~seander/bithacks.html#InterleaveTableObvious
  */
-public final class ZOrder
+public final class MortonOrder
 {
     /**
-     * Returns the position (column, row) of a given Morton number.
+     * Returns the position (column, row) for a given Morton number.
      *
-     * @param value Z-order (Morton number)
+     * @param value Morton number (Z-order)
      *
-     * @return Position of the Z-order in space (column, row)
+     * @return Position of the Morton number in space (column, row)
      */
     public static function getPosition(value:uint):Point
     {
@@ -62,26 +61,26 @@ public final class ZOrder
             row |= rowValue << offset
         }
 
-        var position:Point = new Point( column, row)
+        var position:Point = new Point(column, row)
         return position
     }
 
     /**
-     * Returns Z-order (Morton number) for the given position (column, row).
+     * Returns Morton number for the given position (column, row).
      *
      * @param column Column of the position
      * @param row Row of the position
      *
-     * @return Z-order (Morton number) for the given coordinates.
+     * @return Morton number for the given coordinates.
      */
-    public static function getValue(column:uint, row:uint):uint
+    public static function getValue(column:int, row:int):uint
     {
-        var zOrder:uint
+        var mortonOrder:uint
 
         for (var i:int = 0; i < 32; i++)
-            zOrder |= (column & 1 << i) << i | (row & 1 << i) << (i + 1)
+            mortonOrder |= (column & 1 << i) << i | (row & 1 << i) << (i + 1)
 
-        return zOrder
+        return mortonOrder
     }
 }
 

@@ -27,8 +27,8 @@ import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorFactory;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorFactory;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 import org.openzoom.flash.utils.uri.resolveURI;
@@ -78,8 +78,8 @@ public final class MultiScaleImage extends MultiScaleImageBase
     {
         super()
 
-//      tabEnabled = false
-//      tabChildren = true
+        tabEnabled = false
+        tabChildren = true
     }
 
     //--------------------------------------------------------------------------
@@ -103,7 +103,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
     //  source
     //----------------------------------
 
-    private var _source:IMultiScaleImageDescriptor
+    private var _source:IImagePyramidDescriptor
 
     /**
      * Source of this image. Either a URL as String or an
@@ -145,9 +145,9 @@ public final class MultiScaleImage extends MultiScaleImageBase
                                        false, 0, true )
         }
 
-        if (value is IMultiScaleImageDescriptor)
+        if (value is IImagePyramidDescriptor)
         {
-            _source = IMultiScaleImageDescriptor(value)
+            _source = IImagePyramidDescriptor(value)
             addImage(_source)
         }
     }
@@ -161,7 +161,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
     /**
      * @private
      */
-    private function addImage(descriptor:IMultiScaleImageDescriptor):void
+    private function addImage(descriptor:IImagePyramidDescriptor):void
     {
         var aspectRatio:Number = descriptor.width / descriptor.height
         var sceneWidth:Number
@@ -194,7 +194,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
     /**
      * @private
      */
-    private function createImage(descriptor:IMultiScaleImageDescriptor,
+    private function createImage(descriptor:IImagePyramidDescriptor,
                                  loader:INetworkQueue,
                                  width:Number,
                                  height:Number):MultiScaleImageRenderer
@@ -219,9 +219,9 @@ public final class MultiScaleImage extends MultiScaleImageBase
             return
 
         var data:XML = new XML(urlLoader.data)
-        var factory:MultiScaleImageDescriptorFactory =
-                                  MultiScaleImageDescriptorFactory.getInstance()
-        var descriptor:IMultiScaleImageDescriptor =
+        var factory:ImagePyramidDescriptorFactory =
+                                  ImagePyramidDescriptorFactory.getInstance()
+        var descriptor:IImagePyramidDescriptor =
                                               factory.getDescriptor(url, data)
 
         _source = descriptor

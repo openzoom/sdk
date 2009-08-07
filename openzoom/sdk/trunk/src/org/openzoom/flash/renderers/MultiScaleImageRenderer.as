@@ -34,8 +34,8 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Timer;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 import org.openzoom.flash.events.NetworkRequestEvent;
 import org.openzoom.flash.events.RendererEvent;
 import org.openzoom.flash.events.ViewportEvent;
@@ -74,7 +74,7 @@ public class MultiScaleImageRenderer extends Renderer
     /**
      * Constructor.
      */
-    public function MultiScaleImageRenderer(descriptor:IMultiScaleImageDescriptor,
+    public function MultiScaleImageRenderer(descriptor:IImagePyramidDescriptor,
                                             loader:INetworkQueue,
                                             width:Number, height:Number)
     {
@@ -110,7 +110,7 @@ public class MultiScaleImageRenderer extends Renderer
 
     private var updateDisplayListTimer:Timer
 
-    private var descriptor:IMultiScaleImageDescriptor
+    private var descriptor:IImagePyramidDescriptor
     private var backgroundLoader:Loader
 
     private var layers:Array /* of ITileLayer */ = []
@@ -246,11 +246,11 @@ public class MultiScaleImageRenderer extends Renderer
     /**
      * @private
      */
-    private function createLayers(descriptor:IMultiScaleImageDescriptor, width:Number, height:Number):void
+    private function createLayers(descriptor:IImagePyramidDescriptor, width:Number, height:Number):void
     {
         for (var i:int = 0; i < descriptor.numLevels; i++)
         {
-            var level:IMultiScaleImageLevel = descriptor.getLevelAt(i)
+            var level:IImagePyramidLevel = descriptor.getLevelAt(i)
             var layer:TileLayer = new TileLayer(level.width, level.height, level)
 //          var layer:TileLayer = new TileLayer(frame.width, frame.height, level)
             layers[i] = layer
@@ -316,7 +316,7 @@ public class MultiScaleImageRenderer extends Renderer
 //        drawVisibleRegion(visibleRegion)
         
         var scale:Number = viewport.scale
-        var level:IMultiScaleImageLevel = descriptor.getMinLevelForSize(width * scale, height * scale)
+        var level:IImagePyramidLevel = descriptor.getLevelForSize(width * scale, height * scale)
 
         // TODO: remove all tiles from loading queue
 
@@ -329,7 +329,7 @@ public class MultiScaleImageRenderer extends Renderer
         {
             for (var l:int = 0; l <= level.index; l++)
             {
-                var currentLevel:IMultiScaleImageLevel = descriptor.getLevelAt(l)
+                var currentLevel:IImagePyramidLevel = descriptor.getLevelAt(l)
                 loadTiles(currentLevel, visibleRegion)
                 
                 // TODO: Phase loading of layers
@@ -345,7 +345,7 @@ public class MultiScaleImageRenderer extends Renderer
     /**
      * @private
      */
-    private function loadTiles(level:IMultiScaleImageLevel, area:Rectangle):void
+    private function loadTiles(level:IImagePyramidLevel, area:Rectangle):void
     {
         // FIXME
         var minColumn:int = Math.max(0, Math.floor(area.left * level.numColumns / unscaledWidth) - 1)
@@ -363,10 +363,10 @@ public class MultiScaleImageRenderer extends Renderer
             for (var row:int = minRow; row < maxRow; row++)
             {
                 var tile:Tile = new Tile(null,
-                                            level.index,
-                                            row,
-                                            column,
-                                            descriptor.tileOverlap)
+                                         level.index,
+                                         row,
+                                         column,
+                                         descriptor.tileOverlap)
 
                 var contained:Boolean = layer.containsTile(tile)
                 var exists:Boolean =
@@ -446,7 +446,7 @@ public class MultiScaleImageRenderer extends Renderer
     {
         backgroundTile = event.data as Bitmap
 
-        var level:IMultiScaleImageLevel = descriptor.getLevelAt(getHighestSingleTileLevel())
+        var level:IImagePyramidLevel = descriptor.getLevelAt(getHighestSingleTileLevel())
         var tooWide:Boolean = backgroundTile.width > level.width
         var tooHigh:Boolean = backgroundTile.height > level.height
 
@@ -514,7 +514,7 @@ public class MultiScaleImageRenderer extends Renderer
      */
     private function getHighestSingleTileLevel():int
     {
-        var level:IMultiScaleImageLevel
+        var level:IImagePyramidLevel
 
         for (var i:int = 0; i < descriptor.numLevels; i++)
         {

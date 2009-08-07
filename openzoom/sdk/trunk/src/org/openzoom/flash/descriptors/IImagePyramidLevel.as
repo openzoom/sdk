@@ -26,7 +26,7 @@ import flash.geom.Rectangle;
 /**
  * Interface of a level of a multiscale image pyramid.
  */
-public interface IMultiScaleImageLevel
+public interface IImagePyramidLevel
 {
     //--------------------------------------------------------------------------
     //
@@ -68,7 +68,7 @@ public interface IMultiScaleImageLevel
     /**
      * Returns the number of columns of tiles for this level.
      */
-    function get numColumns():uint
+    function get numColumns():int
 
     //----------------------------------
     //  numRows
@@ -77,7 +77,7 @@ public interface IMultiScaleImageLevel
     /**
      * Returns the number of rows of tiles for this level.
      */
-    function get numRows():uint
+    function get numRows():int
 
     //--------------------------------------------------------------------------
     //
@@ -88,17 +88,17 @@ public interface IMultiScaleImageLevel
     /**
      * Returns the URL of the tile at the specified position.
      */
-    function getTileURL(column:uint, row:uint):String
+    function getTileURL(column:int, row:int):String
 
     /**
      * Returns the bounds of the specified tile.
      */
-    function getTileBounds(column:uint, row:uint):Rectangle
+    function getTileBounds(column:int, row:int):Rectangle
 
     /**
      * Returns a copy of this object.
      */
-    function clone():IMultiScaleImageLevel
+    function clone():IImagePyramidLevel
 }
 
 }

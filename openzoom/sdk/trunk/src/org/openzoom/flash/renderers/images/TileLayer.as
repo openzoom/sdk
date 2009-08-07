@@ -32,7 +32,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.utils.Dictionary;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 
 /**
  * @private
@@ -59,7 +59,7 @@ public class TileLayer extends Sprite implements ITileLayer
      * Constructor.
      */
     public function TileLayer(width:Number, height:Number,
-                              level:IMultiScaleImageLevel)
+                              level:IImagePyramidLevel)
     {
         _level = level
 
@@ -81,7 +81,7 @@ public class TileLayer extends Sprite implements ITileLayer
 
     // TODO: Consider using Sprite because of event propagation.
     private var frame:Shape
-    private var data:IMultiScaleImageLevel
+    private var data:IImagePyramidLevel
     private var scaleFactorX:Number = 1
     private var scaleFactorY:Number = 1
 
@@ -93,9 +93,9 @@ public class TileLayer extends Sprite implements ITileLayer
     //
     //--------------------------------------------------------------------------
 
-    private var _level:IMultiScaleImageLevel
+    private var _level:IImagePyramidLevel
 
-    public function get level():IMultiScaleImageLevel
+    public function get level():IImagePyramidLevel
     {
         return _level
     }
@@ -151,13 +151,13 @@ public class TileLayer extends Sprite implements ITileLayer
         // Crop tiles that are too large
         if (horizontalOverflow || verticalOverflow)
         {
-//            trace("[TileLayer]: Overflow")
-//
-//            if (horizontalOverflow)
-//                trace("[TileLayer]: horizontalOverflow:", level.width, tileBitmapRight, tile.toString(), bounds)
-//
-//            if (verticalOverflow)
-//                trace("[TileLayer]: verticalOverflow:", level.height, tileBitmapBottom, tile.toString(), bounds)
+            trace("[TileLayer]: Overflow")
+
+            if (horizontalOverflow)
+                trace("[TileLayer]: horizontalOverflow:", level.width, tileBitmapRight, tile.toString(), bounds)
+
+            if (verticalOverflow)
+                trace("[TileLayer]: verticalOverflow:", level.height, tileBitmapBottom, tile.toString(), bounds)
 
             // TODO: Check bounds with new descriptor API
             var cropBitmapData:BitmapData =
@@ -187,13 +187,12 @@ public class TileLayer extends Sprite implements ITileLayer
 
 
         // TODO: Refactor
-        // FIXME: Causes security violation
-        // without crossdomain.xml policy file
         tileBitmap.smoothing = true
         tileBitmap.alpha = 0
 
         addChild(tileBitmap)
 
+        // TODO: Remove dependency on Tweener
         Tweener.addTween(tileBitmap, {alpha: 1, time: DEFAULT_TILE_SHOW_DURATION})
 
         return tile

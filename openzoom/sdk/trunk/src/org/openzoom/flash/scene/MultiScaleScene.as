@@ -32,9 +32,7 @@ import flash.events.Event;
  */
 [Event(name="resize", type="flash.events.Event")]
 
-
 [ExcludeClass]
-
 /**
  * Basic implementation of IMultiScaleScene
  */
@@ -136,7 +134,7 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
      */
     override public function getChildIndex(child:DisplayObject):int
     {
-        return super.getChildIndex(child) + 1
+        return super.getChildIndex(child) - 1
     }
 
     //--------------------------------------------------------------------------
@@ -233,7 +231,6 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
         frame = new Shape()
         var g:Graphics = frame.graphics
             g.beginFill(backgroundColor, backgroundAlpha)
-//          g.beginFill(0x0088FF, 0.2)
             g.drawRect(0, 0, 100, 100)
             g.endFill()
         addChild(frame)

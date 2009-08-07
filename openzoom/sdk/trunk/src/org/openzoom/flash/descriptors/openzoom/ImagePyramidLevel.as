@@ -23,17 +23,17 @@ package org.openzoom.flash.descriptors.openzoom
 
 import flash.geom.Rectangle;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageLevelBase;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidLevelBase;
+import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.utils.uri.resolveURI;
-
 
 /**
  * Represents a single level of a multiscale
  * image pyramid described by an OpenZoom descriptor.
  */
-internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
-                                    implements IMultiScaleImageLevel
+internal final class ImagePyramidLevel extends ImagePyramidLevelBase
+                                       implements IImagePyramidLevel
 {
     //--------------------------------------------------------------------------
     //
@@ -44,16 +44,18 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * Constructor.
      */
-    public function MultiScaleImageLevel(descriptor:OpenZoomDescriptor,
-                                         index:int,
-                                         width:uint,
-                                         height:uint,
-                                         numColumns:uint,
-                                         numRows:uint,
-                                         uris:Array,
-                                         pyramidOrigin:String="topLeft")
+    public function ImagePyramidLevel(descriptor:OpenZoomDescriptor,
+                                      source:String,
+                                      index:int,
+                                      width:uint,
+                                      height:uint,
+                                      numColumns:int,
+                                      numRows:int,
+                                      uris:Array,
+                                      pyramidOrigin:String="topLeft")
     {
         this.descriptor = descriptor
+        this.source = source
         this.uris = uris
         this.pyramidOrigin = pyramidOrigin
 
@@ -68,49 +70,49 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
 
     private var uris:Array /* of String */
     private var descriptor:OpenZoomDescriptor
-    private var pyramidOrigin:String = PyramidOrigin.TOP_LEFT
+    private var pyramidOrigin:String = ImagePyramidOrigin.TOP_LEFT
 
-    private static var uriIndex:uint = 0
+    private var source:String
+
+    private static var uriIndex:int = 0
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageLevel
+    //  Methods: IImagePyramidLevel
     //
     //--------------------------------------------------------------------------
 
     /**
      * @inheritDoc
      */
-    public function getTileURL(column:uint, row:uint):String
+    public function getTileURL(column:int, row:int):String
     {
         if (uris && uris.length > 0)
         {
-            if (++uriIndex >= uris.length)
-                uriIndex = 0
-
+            uriIndex = clamp(uriIndex + 1, 0, uris.length - 1)
             var uri:String =  String(uris[uriIndex])
 
-            var computedColumn:uint
-            var computedRow:uint
+            var computedColumn:int
+            var computedRow:int
 
             switch (pyramidOrigin)
             {
-                case PyramidOrigin.TOP_LEFT:
+                case ImagePyramidOrigin.TOP_LEFT:
                     computedColumn = column
                     computedRow = row
                     break
 
-                case PyramidOrigin.TOP_RIGHT:
+                case ImagePyramidOrigin.TOP_RIGHT:
                     computedColumn = numColumns - column
                     computedRow = row
                     break
 
-                case PyramidOrigin.BOTTOM_RIGHT:
+                case ImagePyramidOrigin.BOTTOM_RIGHT:
                     computedColumn = numColumns - column
                     computedRow = numRows - row
                     break
 
-                case PyramidOrigin.BOTTOM_LEFT:
+                case ImagePyramidOrigin.BOTTOM_LEFT:
                     computedColumn = column
                     computedRow = numRows - row
                     break
@@ -119,7 +121,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
             uri = uri.replace(/{column}/, computedColumn)
                      .replace(/{row}/, computedRow)
 
-            return resolveURI(descriptor.uri, uri)
+            return resolveURI(source, uri)
         }
 
         return ""
@@ -128,7 +130,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTileBounds(column:uint, row:uint):Rectangle
+    public function getTileBounds(column:int, row:int):Rectangle
     {
         return descriptor.getTileBounds(index, column, row)
     }
@@ -136,11 +138,11 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageLevel
+    public function clone():IImagePyramidLevel
     {
-        return new MultiScaleImageLevel(OpenZoomDescriptor(descriptor.clone()),
-                                        index, width, height,
-                                        numColumns, numRows, uris.slice())
+        return new ImagePyramidLevel(OpenZoomDescriptor(descriptor.clone()),
+                                     source, index, width, height,
+                                     numColumns, numRows, uris.slice())
     }
 
     //--------------------------------------------------------------------------
@@ -154,7 +156,7 @@ internal class MultiScaleImageLevel extends MultiScaleImageLevelBase
      */
     override public function toString():String
     {
-        return "[OpenZoomLevel]" + "\n" + super.toString()
+        return "[ImagePyramidLevel]" + "\n" + super.toString()
     }
 }
 

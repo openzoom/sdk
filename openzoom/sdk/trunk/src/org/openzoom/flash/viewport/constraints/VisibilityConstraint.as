@@ -95,7 +95,7 @@ public class VisibilityConstraint implements IViewportConstraint
         var x:Number = transform.x
         var y:Number = transform.y
 
-        // content is wider than viewport
+        // scene is wider than viewport
         if (transform.width < 1)
         {
             // horizontal bounds checking:

@@ -43,6 +43,7 @@ public interface IRenderer
     //----------------------------------
     //  scene
     //----------------------------------
+    
     /**
      * The scene this renderer is attached to.
      */
@@ -52,6 +53,7 @@ public interface IRenderer
     //----------------------------------
     //  width
     //----------------------------------
+    
     /**
      * The viewport this renderer is viewed in.
      */
@@ -63,6 +65,7 @@ public interface IRenderer
     //  Methods
     //
     //--------------------------------------------------------------------------
+    
     /**
      * Bounds of this renderer.
      */

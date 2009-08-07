@@ -44,12 +44,12 @@ public class MouseController extends ViewportControllerBase
     //--------------------------------------------------------------------------
 
     private static const CLICK_THRESHOLD_DURATION:Number = 500 // milliseconds
-    private static const CLICK_THRESHOLD_DISTANCE:Number = 8   // pixels
+    private static const CLICK_THRESHOLD_DISTANCE:Number = 8 // pixels
 
     private static const DEFAULT_CLICK_ZOOM_IN_FACTOR:Number = 2.0
     private static const DEFAULT_CLICK_ZOOM_OUT_FACTOR:Number = 0.3
 
-    private static const DEFAULT_MOUSE_WHEEL_ZOOM_FACTOR:Number = 1.16
+    private static const DEFAULT_MOUSE_WHEEL_ZOOM_FACTOR:Number = 1.11
 
     //--------------------------------------------------------------------------
     //
@@ -244,12 +244,12 @@ public class MouseController extends ViewportControllerBase
         if (panning)
             return
 
-        // TODO: Supposedly prevents unwanted scrolling in browsers
+        // FIXME: Supposedly prevents unwanted scrolling in browsers
         event.stopPropagation()
 
         // TODO: React appropriately to different platforms and/or browsers,
         // as they at times report completely different mouse wheel deltas.
-        var factor:Number = clamp(Math.pow(mouseWheelZoomFactor, event.delta), 0.2, 5)
+        var factor:Number = clamp(Math.pow(mouseWheelZoomFactor, event.delta), 0.5, 3)
 
         // TODO: Refactor
         if (factor < 1)
@@ -263,6 +263,9 @@ public class MouseController extends ViewportControllerBase
 
         // transform viewport
         viewport.zoomBy(factor, originX, originY)
+        
+        // TODO
+        event.updateAfterEvent()
     }
 
     //--------------------------------------------------------------------------
@@ -318,12 +321,18 @@ public class MouseController extends ViewportControllerBase
         // update view drag vector
         viewDragVector.bottomRight = new Point(view.mouseX, view.mouseY)
 
-        var distanceX:Number = viewDragVector.width / viewport.viewportWidth
-        var distanceY:Number = viewDragVector.height / viewport.viewportHeight
+        var distanceX:Number
+        var distanceY:Number
+        var targetX:Number
+        var targetY:Number
+        
+        distanceX = viewDragVector.width / viewport.viewportWidth
+        distanceY = viewDragVector.height / viewport.viewportHeight
 
-        var targetX:Number = viewportDragVector.x - (distanceX * viewport.width)
-        var targetY:Number = viewportDragVector.y - (distanceY * viewport.height)
+        targetX = viewportDragVector.x - (distanceX * viewport.width)
+        targetY = viewportDragVector.y - (distanceY * viewport.height)
 
+        // FIXME: Zoom skipping when smoothPanning = false
         viewport.panTo(targetX, targetY, !smoothPanning)
     }
 
@@ -381,7 +390,7 @@ public class MouseController extends ViewportControllerBase
     {
         // unregister from mouse move events
         // FIXME
-        if (view && view.hasEventListener(MouseEvent.MOUSE_MOVE))
+        if (view)
             view.removeEventListener(MouseEvent.MOUSE_MOVE,
                                      view_mouseMoveHandler)
 

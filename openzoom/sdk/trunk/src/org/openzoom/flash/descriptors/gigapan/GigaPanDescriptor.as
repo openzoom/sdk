@@ -21,20 +21,20 @@
 package org.openzoom.flash.descriptors.gigapan
 {
 
-import flash.utils.Dictionary;
+import flash.geom.Point;
 
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
-import org.openzoom.flash.descriptors.MultiScaleImageLevel;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
- * Descriptor for the GigaPan.org project panoramas.
- * Copyright GigaPan.org, <a href="http://gigapan.org/">http://gigapan.org/</a>
+ * Descriptor for the <a href="http://gigapan.org/">GigaPan.org</a> project panoramas.
+ * For educational purposes only. Please respect the project's copyright.
  */
-public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
-                               implements IMultiScaleImageDescriptor
+public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
+                                     implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -42,8 +42,8 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_BASE_LEVEL:uint = 8
     private static const DEFAULT_TILE_SIZE:uint = 256
+    private static const DEFAULT_BASE_LEVEL:uint = 8
 
     //--------------------------------------------------------------------------
     //
@@ -54,9 +54,9 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     /**
      * Constructor.
      */
-    public function GigaPanDescriptor(id:uint, width:uint, height:uint)
+    public function GigaPanDescriptor(source:String, width:uint, height:uint)
     {
-        this.id = id
+        this.source = source
 
         _width = width
         _height = height
@@ -67,7 +67,24 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
 
         _type = "image/jpeg"
 
-        levels = computeLevels(width, height, DEFAULT_TILE_SIZE, numLevels)
+        createLevels(width, height, DEFAULT_TILE_SIZE, numLevels)
+    }
+    
+    /**
+     * Constructor.
+     */
+    public static function fromID(id:uint, width:uint, height:uint):GigaPanDescriptor
+    {
+        // FIXME: Legacy
+//        var path:String = "http://share.gigapan.org/gigapans0/" + id + "/tiles"
+
+        var tileServer:uint = Math.floor(id / 1000.0)
+        var zeroPaddedTileServer:String = tileServer <= 9 ? "0" + tileServer : tileServer.toString()
+        var path:String = "http://tile" + zeroPaddedTileServer + ".gigapan.org/gigapans0/" + id + "/tiles"
+        
+        var descriptor:GigaPanDescriptor = new GigaPanDescriptor(path, width, height)
+        
+        return descriptor
     }
 
     //--------------------------------------------------------------------------
@@ -76,22 +93,20 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private var id:uint
     private var extension:String = ".jpg"
-    private var levels:Dictionary
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageDescriptor
+    //  Methods: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
 
     /**
      * @inheritDoc
      */
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
-        var url:String = "http://share.gigapan.org/gigapans0/" + id + "/tiles"
+        var url:String = source
         var name:String = "r"
         var z:int = level
         var bit:int = (1 << z) >> 1
@@ -118,30 +133,30 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function getLevelAt(index:int):IMultiScaleImageLevel
+    public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
-        return IMultiScaleImageLevel(levels[index])
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
-    {
-        var maxDimension:uint = Math.max(width, height)
-        var level:uint = Math.round(Math.log(maxDimension) / Math.LN2)
-        var actualLevel:uint = level - DEFAULT_BASE_LEVEL
-        var index:int = clamp(actualLevel, 0, numLevels - 1)
+        var longestSide:Number = Math.max(width, height)
+        var log2:Number = Math.log(longestSide) / Math.LN2
+        var maxLevel:uint = numLevels - 1
+        var index:uint = clamp(Math.ceil(log2) - DEFAULT_BASE_LEVEL + 1, 0, maxLevel)
+        var level:IImagePyramidLevel = getLevelAt(index)
         
-        return getLevelAt(index)
+        // FIXME
+        if (width / level.width < 0.5)
+            level = getLevelAt(Math.max(0, index - 1))
+
+        if (width / level.width < 0.5)
+            trace("[GigaPanDescriptor] getLevelForSize():", width / level.width)
+        
+        return level
     }
 
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageDescriptor
+    public function clone():IImagePyramidDescriptor
     {
-        return new GigaPanDescriptor(id, width, height)
+        return new GigaPanDescriptor(source, width, height)
     }
 
     //--------------------------------------------------------------------------
@@ -172,30 +187,58 @@ public class GigaPanDescriptor extends MultiScaleImageDescriptorBase
         var maxDimension:uint = Math.max(width, height)
         var actualLevels:uint = Math.ceil(Math.log(maxDimension) / Math.LN2)
         var numLevels:uint = Math.max(0, actualLevels - DEFAULT_BASE_LEVEL + 1)
+        
         return numLevels
     }
      
     /**
      * @private
      */
-    private function computeLevels(originalWidth:uint, originalHeight:uint,
-                                   tileSize:uint, numLevels:int):Dictionary
+    private function createLevels(originalWidth:uint,
+                                  originalHeight:uint,
+                                  tileSize:uint,
+                                  numLevels:int):void
     {
-        var levels:Dictionary = new Dictionary()
-
-        var width:uint = originalWidth
-        var height:uint = originalHeight
-
-        for (var index:int = numLevels - 1; index >= 0; index--)
+        var maxLevel:int = numLevels - 1
+        
+        for (var index:int = 0; index <= maxLevel; index++)
         {
-            levels[index] = new MultiScaleImageLevel(this, index, width, height,
-                                                     Math.ceil(width / tileWidth),
-                                                     Math.ceil(height / tileHeight))
-            width = Math.ceil(width / 2)
-            height = Math.ceil(height / 2)
+            var size:Point = getSize(index)
+            var width:uint = size.x
+            var height:uint = size.y
+            var numColumns:int = Math.ceil(width / tileWidth)
+            var numRows:int = Math.ceil(height / tileHeight)
+            var level:IImagePyramidLevel = new ImagePyramidLevel(this,
+                                                                 index,
+                                                                 width,
+                                                                 height,
+                                                                 numColumns,
+                                                                 numRows)
+            addLevel(level)
         }
-
-        return levels
+    }
+    
+    /**
+     * @private
+     */ 
+    private function getScale(level:int):Number
+    {
+        var maxLevel:int = numLevels - 1
+        // 1 / (1 << maxLevel - level)
+        return Math.pow(0.5, maxLevel - level)
+    }
+    
+    /**
+     * @private
+     */ 
+    private function getSize(level:int):Point
+    {
+        var size:Point = new Point()
+        var scale:Number = getScale(level)
+        size.x = Math.floor(width * scale)
+        size.y = Math.floor(height * scale)
+        
+        return size
     }
 }
 

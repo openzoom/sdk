@@ -21,14 +21,15 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import org.openzoom.flash.viewport.ITransformerViewport;
+import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.constraints.NullConstraint;
 
 /**
- * Base class for implementations of IViewportTransformer providing basic
- * getters and setters.
+ * Base class for implementations of IViewportTransformer
+ * providing a basic getter and setter skeleton.
  */
 public class ViewportTransformerBase
 {
@@ -63,17 +64,17 @@ public class ViewportTransformerBase
     //  viewport
     //----------------------------------
 
-    private var _viewport:ITransformerViewport
+    private var _viewport:INormalizedViewport
 
     /**
      * @inheritDoc
      */
-    public function get viewport():ITransformerViewport
+    public function get viewport():INormalizedViewport
     {
         return _viewport
     }
 
-    public function set viewport(value:ITransformerViewport):void
+    public function set viewport(value:INormalizedViewport):void
     {
         _viewport = value
 
@@ -117,6 +118,11 @@ public class ViewportTransformerBase
     public function get target():IViewportTransform
     {
         return _target.clone()
+    }
+    
+    public function set target(value:IViewportTransform):void
+    {
+        _target = value
     }
 
     //--------------------------------------------------------------------------

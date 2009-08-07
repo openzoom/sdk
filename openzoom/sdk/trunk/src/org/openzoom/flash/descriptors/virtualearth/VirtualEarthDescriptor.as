@@ -21,18 +21,22 @@
 package org.openzoom.flash.descriptors.virtualearth
 {
 
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
-import org.openzoom.flash.descriptors.MultiScaleImageDescriptorBase;
-import org.openzoom.flash.descriptors.MultiScaleImageLevel;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidLevel;
 import org.openzoom.flash.utils.math.clamp;
 
 /**
  * <a href="http://www.microsoft.com/virtualearth/">Microsoft VirtualEarth</a> descriptor.
  * @see http://msdn.microsoft.com/en-us/library/bb259689.aspx
+ * For educational purposes only. Please respect the owner's copyright.
  */
-public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
-                                    implements IMultiScaleImageDescriptor
+public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
+                                          implements IImagePyramidDescriptor
 {
     //--------------------------------------------------------------------------
     //
@@ -40,8 +44,8 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
     //
     //--------------------------------------------------------------------------
 
-    private static const DEFAULT_MAP_SIZE:uint = 2147483648
-    private static const DEFAULT_NUM_LEVELS:uint = 23
+    private static const DEFAULT_MAP_SIZE:uint = 67108864 //2147483648
+    private static const DEFAULT_NUM_LEVELS:uint = 18 //23
     private static const DEFAULT_TILE_SIZE:uint = 256
     private static const DEFAULT_TILE_FORMAT:String = "image/jpeg"
     private static const DEFAULT_TILE_OVERLAP:uint = 0
@@ -69,51 +73,38 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
             var size:uint = uint(Math.pow(2, DEFAULT_BASE_LEVEL + i))
             var columns:uint = Math.ceil(size / tileWidth)
             var rows:uint = Math.ceil(size / tileHeight)
-            var level:IMultiScaleImageLevel =
-                    new MultiScaleImageLevel(this, i, size, size, columns, rows)
-            levels.push(level)
+            var level:IImagePyramidLevel =
+                    new ImagePyramidLevel(this, i, size, size, columns, rows)
+                    
+            addLevel(level)
         }
     }
 
-    //--------------------------------------------------------------------------
-    //
-    //  Variables
-    //
-    //--------------------------------------------------------------------------
-
-    private var levels:Array = []
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageDescriptor
+    //  Methods: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
 
     /**
      * @inheritDoc
      */
-    public function getLevelAt(index:int):IMultiScaleImageLevel
-    {
-        var i:int = clamp(index, 0, numLevels - 1)
-        return levels[i]
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMinLevelForSize(width:Number, height:Number):IMultiScaleImageLevel
+    public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
         var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
-        return getLevelAt(index)
+        var level:IImagePyramidLevel = getLevelAt(index)
+        
+        return level
     }
 
     /**
      * @inheritDoc
      */
-    public function getTileURL(level:int, column:uint, row:uint):String
+    public function getTileURL(level:int, column:int, row:int):String
     {
         var baseURL:String = "http://ecn.t2.tiles.virtualearth.net/tiles/h"
         var extension:String = ".jpeg?g=282&mkt=en-us"
@@ -125,9 +116,23 @@ public class VirtualEarthDescriptor extends MultiScaleImageDescriptorBase
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageDescriptor
+    public function clone():IImagePyramidDescriptor
     {
         return new VirtualEarthDescriptor()
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Debug
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * @inheritDoc
+     */
+    override public function toString():String
+    {
+        return "[VirtualEarthDescriptor]" + "\n" + super.toString()
     }
 
     //--------------------------------------------------------------------------

@@ -25,10 +25,11 @@ import caurina.transitions.Tweener;
 
 import org.openzoom.flash.viewport.IViewportTransform;
 
+[ExcludeClass]
 /**
  * @private
  */
-public class TweenerTransformShortcuts
+internal final class TweenerTransformShortcuts
 {
 
     public function TweenerTransformShortcuts()

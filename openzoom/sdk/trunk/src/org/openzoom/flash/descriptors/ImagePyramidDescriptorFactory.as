@@ -21,7 +21,7 @@
 package org.openzoom.flash.descriptors
 {
 
-import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
 import org.openzoom.flash.descriptors.openzoom.OpenZoomDescriptor;
 import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 
@@ -29,7 +29,7 @@ import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 /**
  * Factory for creating multiscale image descriptor from given data.
  */
-public class MultiScaleImageDescriptorFactory
+public class ImagePyramidDescriptorFactory
 {
     //--------------------------------------------------------------------------
     //
@@ -37,8 +37,10 @@ public class MultiScaleImageDescriptorFactory
     //
     //--------------------------------------------------------------------------
 
-    private static const DEEPZOOM_NAMESPACE_URI:String =
+    private static const DEEPZOOM_2008_NAMESPACE_URI:String =
                             "http://schemas.microsoft.com/deepzoom/2008"
+    private static const DEEPZOOM_2009_NAMESPACE_URI:String =
+                            "http://schemas.microsoft.com/deepzoom/2009"
     private static const OPENZOOM_NAMESPACE_URI:String =
                             "http://ns.openzoom.org/openzoom/2008"
     private static const ZOOMIFY_ROOT_TAG_NAME:String = "IMAGE_PROPERTIES"
@@ -49,7 +51,7 @@ public class MultiScaleImageDescriptorFactory
     //
     //--------------------------------------------------------------------------
 
-    private static var instance:MultiScaleImageDescriptorFactory
+    private static var instance:ImagePyramidDescriptorFactory
 
     //--------------------------------------------------------------------------
     //
@@ -60,7 +62,7 @@ public class MultiScaleImageDescriptorFactory
     /**
      * Constructor.
      */
-    public function MultiScaleImageDescriptorFactory(lock:SingletonLock):void
+    public function ImagePyramidDescriptorFactory(lock:SingletonLock):void
     {
     }
 
@@ -73,10 +75,10 @@ public class MultiScaleImageDescriptorFactory
     /**
      * Returns an instance of this MultiScaleImageDescriptorFactory.
      */
-    public static function getInstance():MultiScaleImageDescriptorFactory
+    public static function getInstance():ImagePyramidDescriptorFactory
     {
         if (!instance)
-            instance = new MultiScaleImageDescriptorFactory(new SingletonLock())
+            instance = new ImagePyramidDescriptorFactory(new SingletonLock())
 
         return instance
     }
@@ -94,16 +96,19 @@ public class MultiScaleImageDescriptorFactory
      * @return An object of type IMultiScaleImageDescriptor or <code>null</code>
      *         if the factory couldn't create a descriptor from the given data.
      */
-    public function getDescriptor(uri:String, data:XML):IMultiScaleImageDescriptor
+    public function getDescriptor(source:String, xml:XML):IImagePyramidDescriptor
     {
-        if (data.namespace().uri == OPENZOOM_NAMESPACE_URI)
-            return new OpenZoomDescriptor(uri, data)
+        if (xml.namespace().toString() == OPENZOOM_NAMESPACE_URI)
+            return new OpenZoomDescriptor(source, xml)
 
-        if (data.namespace().uri == DEEPZOOM_NAMESPACE_URI)
-            return DZIDescriptor.fromXML(uri, data)
+        if (xml.namespace().toString() == DEEPZOOM_2008_NAMESPACE_URI)
+            return DeepZoomImageDescriptor.fromXML(source, xml)
 
-        if (data.name() == ZOOMIFY_ROOT_TAG_NAME)
-            return new ZoomifyDescriptor(uri, data)
+        if (xml.namespace().toString() == DEEPZOOM_2009_NAMESPACE_URI)
+            return DeepZoomImageDescriptor.fromXML(source, xml)
+
+        if (xml.name().toString() == ZOOMIFY_ROOT_TAG_NAME)
+            return ZoomifyDescriptor.fromXML(source, xml)
 
         return null
     }

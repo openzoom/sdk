@@ -21,15 +21,18 @@
 package org.openzoom.flash.descriptors
 {
 
+import flash.geom.Point;
 import flash.geom.Rectangle;
+
+import org.openzoom.flash.utils.math.clamp;
 
 /**
  * @private
  *
- * Base class for classes implementing IMultiScaleImageDescriptor.
+ * Base class for classes implementing IImagePyramidDescriptor.
  * Provides the basic getter/setter skeletons.
  */
-public class MultiScaleImageDescriptorBase
+public class ImagePyramidDescriptorBase
 {
     //--------------------------------------------------------------------------
     //
@@ -38,20 +41,20 @@ public class MultiScaleImageDescriptorBase
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  uri
+    //  source
     //----------------------------------
 
     /**
      * @private
      */
-    public var uri:String
+    protected var source:String
 
     //----------------------------------
     //  sources
     //----------------------------------
 
     /**
-     * @copy IMultiScaleImageDescriptor#sources
+     * @copy IImagePyramidDescriptor#sources
      */
     public function get sources():Array
     {
@@ -68,7 +71,7 @@ public class MultiScaleImageDescriptorBase
     protected var _width:uint
 
     /**
-     * @copy IMultiScaleImageDescriptor#width
+     * @copy IImagePyramidDescriptor#width
      */
     public function get width():uint
     {
@@ -85,7 +88,7 @@ public class MultiScaleImageDescriptorBase
     protected var _height:uint
 
     /**
-     * @copy IMultiScaleImageDescriptor#height
+     * @copy IImagePyramidDescriptor#height
      */
     public function get height():uint
     {
@@ -102,7 +105,7 @@ public class MultiScaleImageDescriptorBase
     protected var _numLevels:int
 
     /**
-     * @copy IMultiScaleImageDescriptor#numLevels
+     * @copy IImagePyramidDescriptor#numLevels
      */
     public function get numLevels():int
     {
@@ -119,7 +122,7 @@ public class MultiScaleImageDescriptorBase
     protected var _tileWidth:uint
 
     /**
-     * @copy IMultiScaleImageDescriptor#tileWidth
+     * @copy IImagePyramidDescriptor#tileWidth
      */
     public function get tileWidth():uint
     {
@@ -136,7 +139,7 @@ public class MultiScaleImageDescriptorBase
     protected var _tileHeight:uint
 
     /**
-     * @copy IMultiScaleImageDescriptor#tileHeight
+     * @copy IImagePyramidDescriptor#tileHeight
      */
     public function get tileHeight():uint
     {
@@ -153,7 +156,7 @@ public class MultiScaleImageDescriptorBase
     protected var _tileOverlap:uint = 0
 
     /**
-     * @copy IMultiScaleImageDescriptor#tileOverlap
+     * @copy IImagePyramidDescriptor#tileOverlap
      */
     public function get tileOverlap():uint
     {
@@ -170,7 +173,7 @@ public class MultiScaleImageDescriptorBase
     protected var _type:String
 
     /**
-     * @copy IMultiScaleImageDescriptor#type
+     * @copy IImagePyramidDescriptor#type
      */
     public function get type():String
     {
@@ -187,7 +190,7 @@ public class MultiScaleImageDescriptorBase
     protected var _origin:String = "topLeft"
 
     /**
-     * @copy IMultiScaleImageDescriptor#origin
+     * @copy IImagePyramidDescriptor#origin
      */
     public function get origin():String
     {
@@ -196,33 +199,82 @@ public class MultiScaleImageDescriptorBase
 
     //--------------------------------------------------------------------------
     //
-    //  Methods: IMultiScaleImageDescriptor
+    //  Methods: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
 
     /**
-     * @copy IMultiScaleImageDescriptor#getTileBounds()
+     * @copy IImagePyramidDescriptor#getTileBounds()
      */
-    public function getTileBounds(level:int, column:uint, row:uint):Rectangle
+    public function getTileBounds(level:int, column:int, row:int):Rectangle
     {
         var bounds:Rectangle = new Rectangle()
-
         var offsetX:uint = (column == 0) ? 0 : tileOverlap
         var offsetY:uint = (row == 0) ? 0 : tileOverlap
-
         bounds.x = (column * tileWidth) - offsetX
         bounds.y = (row * tileHeight) - offsetY
-
+        
+        var l:IImagePyramidLevel = getLevelAt(level)
+        var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
+        var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
+        bounds.width = Math.min(width, l.width - bounds.x)
+        bounds.height = Math.min(height, l.height - bounds.y)
+                
         return bounds
     }
 
     /**
-     * @copy IMultiScaleImageDescriptor#existsTile()
+     * @copy IImagePyramidDescriptor#existsTile()
      */
-    public function existsTile(level:int, column:uint, row:uint):Boolean
+    public function existsTile(level:int, column:int, row:int):Boolean
     {
         // By default, all tiles exist
         return true
+    }
+
+    /**
+     * @copy IImagePyramidDescriptor#getTileAtPoint()
+     */
+    public function getTileAtPoint(level:int, point:Point):Point
+    {
+        var p:Point = new Point()
+
+        var l:IImagePyramidLevel = getLevelAt(level)
+        p.x = clamp(Math.floor(point.x / tileWidth), 0, l.numColumns - 1) 
+        p.y = clamp(Math.floor(point.y / tileHeight), 0, l.numRows - 1)
+        
+        return p
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Level management
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     */
+    private var levels:Array = []
+
+    /**
+     * @private
+     */
+    protected function addLevel(level:IImagePyramidLevel):IImagePyramidLevel
+    {
+    	levels.push(level)
+    	return level
+    }
+
+    /**
+     * @copy IImagePyramidDescriptor#getLevelAt()
+     */
+    public function getLevelAt(index:int):IImagePyramidLevel
+    {
+    	if (index < 0 || index >= numLevels)
+    	   throw new ArgumentError("[ImagePyramidDescriptorBase] Illegal level index.")
+    	
+    	return levels[index]
     }
 
     //--------------------------------------------------------------------------
@@ -236,7 +288,7 @@ public class MultiScaleImageDescriptorBase
      */
     public function toString():String
     {
-        return "source:" + uri + "\n" +
+        return "source:" + source + "\n" +
                "width:" + width + "\n" +
                "height:" + height + "\n" +
                "tileWidth:" + tileWidth + "\n" +

@@ -39,8 +39,8 @@ public interface IViewportTransformer
     /**
      * Target viewport to transform.
      */
-    function get viewport():ITransformerViewport
-    function set viewport(value:ITransformerViewport):void
+    function get viewport():INormalizedViewport
+    function set viewport(value:INormalizedViewport):void
 
     //----------------------------------
     //  target
@@ -50,6 +50,7 @@ public interface IViewportTransformer
      * Target viewport transform.
      */
     function get target():IViewportTransform
+    function set target(value:IViewportTransform):void
 
     //----------------------------------
     //  constraint
@@ -71,7 +72,7 @@ public interface IViewportTransformer
      * Transform viewport to target transform.
      */
     function transform(target:IViewportTransform,
-                        immediately:Boolean = false):void
+                       immediately:Boolean=false):void
 
     /**
      * Stop viewport transformation.

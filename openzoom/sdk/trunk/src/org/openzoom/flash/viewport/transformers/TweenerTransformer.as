@@ -33,8 +33,8 @@ import org.openzoom.flash.viewport.constraints.NullConstraint;
  * fantastic animation library <a href="http://tweener.googlecode.com/">Tweener</a>.
  * It let's you specify the duration and easing of the animation.
  */
-public class TweenerTransformer extends ViewportTransformerBase
-                                implements IViewportTransformer
+public final class TweenerTransformer extends ViewportTransformerBase
+                                      implements IViewportTransformer
 {
     //--------------------------------------------------------------------------
     //

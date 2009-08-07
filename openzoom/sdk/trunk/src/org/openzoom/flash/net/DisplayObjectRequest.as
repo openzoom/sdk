@@ -21,7 +21,7 @@
 package org.openzoom.flash.net
 {
 
-import flash.display.Bitmap;
+import flash.display.DisplayObject;
 import flash.display.Loader;
 import flash.events.Event;
 import flash.events.EventDispatcher;
@@ -40,8 +40,8 @@ import org.openzoom.flash.events.NetworkRequestEvent;
  *
  * Represents a single DisplayObject item to load.
  */
-internal class DisplayObjectRequest extends EventDispatcher
-                                    implements INetworkRequest
+internal final class DisplayObjectRequest extends EventDispatcher
+                                          implements INetworkRequest
 {
     //--------------------------------------------------------------------------
     //
@@ -97,7 +97,7 @@ internal class DisplayObjectRequest extends EventDispatcher
     
     private var _url:String
 
-    public function get uri():String
+    public function get url():String
     {
         return _url
     }
@@ -113,10 +113,11 @@ internal class DisplayObjectRequest extends EventDispatcher
      */
     public function start():void
     {
-       var request:URLRequest = new URLRequest(uri)
+       var request:flash.net.URLRequest = new flash.net.URLRequest(url)
        loader = new Loader()
        addEventListeners(loader.contentLoaderInfo)
        
+       // TODO: Does this incur an overhead?
        var loaderContext:LoaderContext = new LoaderContext(true)
        loader.load(request, loaderContext)
     }
@@ -132,34 +133,26 @@ internal class DisplayObjectRequest extends EventDispatcher
      */
     private function request_completeHandler(event:Event):void
     {
-        var bitmap:Bitmap = loader.content as Bitmap
+        var displayObject:DisplayObject = loader.content as DisplayObject
 
-        cleanUp()
+        disposeLoader()
 
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.COMPLETE)
             requestEvent.request = this
-            requestEvent.data = bitmap
+            requestEvent.data = displayObject
             requestEvent.context = context
-            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
 
-    /**
-     * @private
-     */
-    private function request_httpStatusHandler(event:HTTPStatusEvent):void
-    {
-        // FIXME
-//        cleanUp()
-
-//        var requestEvent:NetworkRequestEvent =
-//                new NetworkRequestEvent(NetworkRequestEvent.ERROR)
-//            requestEvent.item = this
-//
-//        dispatchEvent(requestEvent)
-    }
+//    /**
+//     * @private
+//     */
+//    private function request_httpStatusHandler(event:HTTPStatusEvent):void
+//    {
+//      // TODO
+//    }
 
     /**
      * @private
@@ -168,13 +161,11 @@ internal class DisplayObjectRequest extends EventDispatcher
     {
         trace("[DisplayObjectRequest]", "IO error")
         
-        // FIXME
-//      cleanUp()
-
+        // TODO: Test
+        disposeLoader()     
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
-            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
@@ -186,13 +177,12 @@ internal class DisplayObjectRequest extends EventDispatcher
     {
         trace("[DisplayObjectRequest]", "Security error")
         
-        // FIXME
-//      cleanUp()
-
+        // TODO: Test
+        disposeLoader()
+        
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
-            requestEvent.uri = uri
 
         dispatchEvent(requestEvent)
     }
@@ -207,6 +197,22 @@ internal class DisplayObjectRequest extends EventDispatcher
 
     //--------------------------------------------------------------------------
     //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * @inheritDoc
+     */
+    public function dispose():void
+    {
+        disposeLoader()
+        context = null
+        _url = null
+    }
+
+    //--------------------------------------------------------------------------
+    //
     //  Methods: Internal
     //
     //--------------------------------------------------------------------------
@@ -214,8 +220,11 @@ internal class DisplayObjectRequest extends EventDispatcher
     /**
      * @private
      */
-    private function cleanUp():void
+    private function disposeLoader():void
     {
+        if (!loader)
+           return
+        
         // Use Flash Player 10 API for unloading
         // @see mx.controls.SWFLoader#load() (1315)
         var useUnloadAndStop:Boolean = true
@@ -228,7 +237,7 @@ internal class DisplayObjectRequest extends EventDispatcher
 
         removeEventListeners(loader.contentLoaderInfo)
         loader = null
-    }
+    } 
 
     /**
      * @private
@@ -238,17 +247,17 @@ internal class DisplayObjectRequest extends EventDispatcher
        target.addEventListener(Event.COMPLETE,
                                request_completeHandler,
                                false, 0, true)
-       target.addEventListener(HTTPStatusEvent.HTTP_STATUS,
-                               request_httpStatusHandler,
+       target.addEventListener(ProgressEvent.PROGRESS,
+                               request_progressHandler,
                                false, 0, true)
+//       target.addEventListener(HTTPStatusEvent.HTTP_STATUS,
+//                               request_httpStatusHandler,
+//                               false, 0, true)
        target.addEventListener(IOErrorEvent.IO_ERROR,
                                request_ioErrorHandler,
                                false, 0, true)
        target.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
                                request_securityErrorHandler,
-                               false, 0, true)
-       target.addEventListener(ProgressEvent.PROGRESS,
-                               request_progressHandler,
                                false, 0, true)
     }
 
@@ -259,14 +268,14 @@ internal class DisplayObjectRequest extends EventDispatcher
     {
         target.removeEventListener(Event.COMPLETE,
                                    request_completeHandler)
-        target.removeEventListener(HTTPStatusEvent.HTTP_STATUS,
-                                   request_httpStatusHandler)
+        target.removeEventListener(ProgressEvent.PROGRESS,
+                                   request_progressHandler)
+//        target.removeEventListener(HTTPStatusEvent.HTTP_STATUS,
+//                                   request_httpStatusHandler)
         target.removeEventListener(IOErrorEvent.IO_ERROR,
                                    request_ioErrorHandler)
         target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,
                                    request_securityErrorHandler)
-        target.removeEventListener(SecurityErrorEvent.SECURITY_ERROR,
-                                   request_progressHandler)
     }
 }
 

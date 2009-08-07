@@ -26,7 +26,7 @@ import flash.events.Event;
 /**
  * Renderer event class.
  */
-public class RendererEvent extends Event
+public final class RendererEvent extends Event
 {
     //--------------------------------------------------------------------------
     //

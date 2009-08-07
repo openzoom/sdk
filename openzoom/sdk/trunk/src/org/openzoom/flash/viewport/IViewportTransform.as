@@ -138,6 +138,24 @@ public interface IViewportTransform
     function get zoom():Number
     function set zoom(value:Number):void
 
+//    //----------------------------------
+//    //  origin
+//    //----------------------------------
+//
+//    /**
+//     * Returns the origin of the transform.
+//     */
+//    function get origin():Point
+
+    //----------------------------------
+    //  center
+    //----------------------------------
+
+    /**
+     * Returns the center of the transform.
+     */
+    function get center():Point
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Zooming
@@ -210,6 +228,11 @@ public interface IViewportTransform
      */
     function showAll():void
 
+    /**
+     * Returns a Rectangle object with the bounds of the viewport.
+     */
+    function getBounds():Rectangle
+     
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -233,6 +256,51 @@ public interface IViewportTransform
      */
     function equals(other:IViewportTransform):Boolean
 
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: flash.geom.Rectangle
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * Determines whether the specified point is contained within this Viewport object.
+     *
+     * @param x The x coordinate (horizontal position) of the point.
+     * @param y The y coordinate (vertical position) of the point.
+     *
+     * @return true if this Viewport object contains the specified
+     * point; otherwise false.
+     */
+    function contains(x:Number, y:Number):Boolean
+
+    /**
+     * Determines whether the object specified in the toIntersect parameter
+     * intersects with this Viewport object. This method checks the x, y, width,
+     * and height properties of the specified Rectangle object to see if it
+     * intersects with this Viewport object.
+     *
+     * @param toIntersect The Rectangle object to compare against this Viewport object.
+     *
+     * @return true if the specified object intersects with this Viewport
+     * object; otherwise false.
+     */
+    function intersects(toIntersect:Rectangle):Boolean
+
+    /**
+     * If the Rectangle object specified in the toIntersect parameter intersects
+     * with this Viewport object, returns the area of intersection as a Rectangle
+     * object. If the objects do not intersect, this method returns an empty
+     * Rectangle object with its properties set to 0.
+     *
+     * @param toIntersect The Rectangle object to compare against to see if it
+     * intersects with this Viewport object.
+     *
+     * @return A Rectangle object that equals the area of intersection.
+     * If the rectangles do not intersect, this method returns an empty Rectangle
+     * object; that is, a rectangle with its x, y, width, and height properties set to 0.
+     */
+    function intersection(toIntersect:Rectangle):Rectangle
+    
     //--------------------------------------------------------------------------
     //
     //  Properties: flash.geom.Rectangle

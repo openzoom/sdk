@@ -25,6 +25,7 @@ import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.display.Shape;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
@@ -37,7 +38,6 @@ import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
 import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.INormalizedViewportContainer;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportController;
 import org.openzoom.flash.viewport.IViewportTransformer;
@@ -112,12 +112,12 @@ public final class MultiScaleContainer extends Sprite
     //  viewport
     //----------------------------------
 
-    private var _viewport:INormalizedViewportContainer
+    private var _viewport:NormalizedViewport
 
     /**
      * Viewport of this container.
      */
-    public function get viewport():INormalizedViewport
+    public function get viewport():NormalizedViewport
     {
         return _viewport
     }
@@ -296,26 +296,12 @@ public final class MultiScaleContainer extends Sprite
 
     override public function addChild(child:DisplayObject):DisplayObject
     {
-        child = _scene.addChild(child)
-
-        if (child is IRenderer)
-        {
-            IRenderer(child).viewport = viewport
-            IRenderer(child).scene = IReadonlyMultiScaleScene(scene)
-        }
-
-        return child
+        return addChildAt(child, numChildren)
     }
 
     override public function removeChild(child:DisplayObject):DisplayObject
     {
-        if (child is IRenderer)
-        {
-            IRenderer(child).scene = null
-            IRenderer(child).viewport = null
-        }
-
-        return _scene.removeChild(child)
+        return removeChildAt(getChildIndex(child))
     }
 
     override public function addChildAt(child:DisplayObject,
@@ -366,6 +352,16 @@ public final class MultiScaleContainer extends Sprite
     override public function getChildAt(index:int):DisplayObject
     {
         return _scene.getChildAt(index)
+    }
+    
+    override public function getChildIndex(child:DisplayObject):int
+    {
+        return _scene.getChildIndex(child)
+    }
+    
+    override public function getChildByName(name:String):DisplayObject
+    {
+        return _scene.getChildByName(name)   
     }
 
     //--------------------------------------------------------------------------
@@ -420,6 +416,10 @@ public final class MultiScaleContainer extends Sprite
         _viewport.addEventListener(ViewportEvent.TRANSFORM_END,
                                    viewport_transformEndHandler,
                                    false, 0, true)
+                                   
+        addEventListener(Event.ENTER_FRAME,
+                         enterFrameHandler,
+                         false, 0, true)                                   
     }
 
     private function createScene():void
@@ -450,6 +450,24 @@ public final class MultiScaleContainer extends Sprite
     private function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
 //      trace("ViewportEvent.TRANSFORM_UPDATE")
+        invalidated = true
+    }
+    
+    private var invalidated:Boolean = true
+
+    private function viewport_transformEndHandler(event:ViewportEvent):void
+    {
+//      trace("ViewportEvent.TRANSFORM_END")
+    }
+    
+    private function enterFrameHandler(event:Event):void
+    {
+        if (invalidated)
+            updateDisplayList()
+    }
+    
+    private function updateDisplayList():void
+    {
         var v:INormalizedViewport = viewport
         var targetWidth:Number = v.viewportWidth / v.width
         var targetHeight:Number = v.viewportHeight / v.height
@@ -461,11 +479,8 @@ public final class MultiScaleContainer extends Sprite
             target.y = targetY
             target.width = targetWidth
             target.height = targetHeight
-    }
-
-    private function viewport_transformEndHandler(event:ViewportEvent):void
-    {
-//      trace("ViewportEvent.TRANSFORM_END")
+            
+        invalidated = false
     }
 
     //--------------------------------------------------------------------------

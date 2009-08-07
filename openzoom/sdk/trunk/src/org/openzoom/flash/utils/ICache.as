@@ -18,47 +18,51 @@
 //  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.viewport
+package org.openzoom.flash.utils
 {
 
 /**
- * Represents a viewport that can be animated / transformed.
+ * Interface for cache implementations.
  */
-public interface ITransformerViewport extends IViewport
+public interface ICache extends IDisposable
 {
     //--------------------------------------------------------------------------
     //
     //  Properties
     //
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    //  transform
-    //----------------------------------
-
+    
     /**
-     * Transformation that is currently applied to the viewport
+     * Returns the size of the cache.
      */
-    function get transform():IViewportTransform
-    function set transform(value:IViewportTransform):void
-
+    function get size():int
+    
     //--------------------------------------------------------------------------
     //
-    //  Methods: Events
+    //  Methods
     //
     //--------------------------------------------------------------------------
+    
+    /**
+     * Returns <code>true</code> if cache has item at key
+     * and otherwise <code>false</code>
+     */
+    function contains(key:*):Boolean
 
     /**
-     * Dispatch <code>transformStart</code> event to
-     * let all listeners know that a viewport transition has started.
+     * Returns cache item at key.
      */
-    function beginTransform():void
+    function get(key:*):ICacheItem
 
     /**
-     * Dispatch <code>transformEnd</code> event to
-     * let all listeners know that a viewport transition has finished.
+     * Put item into cache at key.
      */
-    function endTransform():void
+    function put(key:*, item:ICacheItem):void
+
+    /**
+     * Remove item from cache at key.
+     */
+    function remove(key:*):ICacheItem
 }
 
 }

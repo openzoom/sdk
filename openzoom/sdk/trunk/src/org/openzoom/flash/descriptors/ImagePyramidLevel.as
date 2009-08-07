@@ -28,8 +28,8 @@ import flash.geom.Rectangle;
  * multiscale image pyramid.
  * It is the default implementation of IMultiScaleImageLevel.
  */
-public class MultiScaleImageLevel extends MultiScaleImageLevelBase
-                                  implements IMultiScaleImageLevel
+public final class ImagePyramidLevel extends ImagePyramidLevelBase
+                                     implements IImagePyramidLevel
 {
     //--------------------------------------------------------------------------
     //
@@ -40,12 +40,14 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * Constructor.
      */
-    public function MultiScaleImageLevel(descriptor:IMultiScaleImageDescriptor,
-                                          index:int, width:uint, height:uint,
-                                          numColumns:uint, numRows:uint)
+    public function ImagePyramidLevel(descriptor:IImagePyramidDescriptor,
+                                      index:int,
+                                      width:uint,
+                                      height:uint,
+                                      numColumns:int,
+                                      numRows:int)
     {
         this.descriptor = descriptor
-
         super(index, width, height, numColumns, numRows)
     }
 
@@ -58,7 +60,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @private
      */
-    private var descriptor:IMultiScaleImageDescriptor
+    private var descriptor:IImagePyramidDescriptor
 
     //--------------------------------------------------------------------------
     //
@@ -69,7 +71,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTileURL(column:uint, row:uint):String
+    public function getTileURL(column:int, row:int):String
     {
         return descriptor.getTileURL(index, column, row)
     }
@@ -77,7 +79,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function getTileBounds(column:uint, row:uint):Rectangle
+    public function getTileBounds(column:int, row:int):Rectangle
     {
         return descriptor.getTileBounds(index, column, row)
     }
@@ -85,11 +87,14 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
     /**
      * @inheritDoc
      */
-    public function clone():IMultiScaleImageLevel
+    public function clone():IImagePyramidLevel
     {
-        return new MultiScaleImageLevel(descriptor, index,
-                                        width, height,
-                                        numColumns, numRows)
+        return new ImagePyramidLevel(descriptor,
+                                     index,
+                                     width,
+                                     height,
+                                     numColumns,
+                                     numRows)
     }
 
     //--------------------------------------------------------------------------
@@ -103,7 +108,7 @@ public class MultiScaleImageLevel extends MultiScaleImageLevelBase
      */
     override public function toString():String
     {
-        return "[MultiScaleImageLevel]" + "\n" + super.toString()
+        return "[ImagePyramidLevel]" + "\n" + super.toString()
     }
 }
 

@@ -28,7 +28,7 @@ import org.openzoom.flash.net.INetworkRequest;
 /**
  * @private
  */
-public class NetworkRequestEvent extends Event
+public final class NetworkRequestEvent extends Event
 {
     //--------------------------------------------------------------------------
     //
@@ -76,11 +76,6 @@ public class NetworkRequestEvent extends Event
      * Useful for identifying certain requests, e.g. by URL.
      */
     public var context:* = null
-
-    /**
-     * URI of this request.
-     */
-    public var uri:String
 
     //--------------------------------------------------------------------------
     //
