@@ -11,11 +11,11 @@
   Code: <http://github.com/openzoom>
     
     
-  Welcome to the OpenZoom project.
+  Welcome to the OpenZoom SDK project.
   
-  All projects that are part of the OpenZoom project can easily be imported
-  into Eclipse through the "Import..." command. Please set the OPENZOOM_HOME linked
-  resource to point to the trunk of the OpenZoom SDK and get started!
+  The OpenZoom SDK project can easily be imported into Eclipse through the
+  "Import..." command. Please set the Eclipse OPENZOOM_HOME linked resource to
+  point to the master branch of the OpenZoom SDK project and get started!
   
   Instructions: OPENZOOM_HOME Linked Resource (Eclipse)
   ----------------------------------------------------------------------------
@@ -23,17 +23,17 @@
   Eclipse > Preferences > General > Workspace > Linked Resources > New...
   
   Name: OPENZOOM_HOME
-  Location: ... (e.g. openzoom/sdk/trunk/)
+  Location: ... (e.g. /Users/dani/workspace/openzoom/sdk/)
   
   ----------------------------------------------------------------------------
   
-  Have fun with OpenZoom and create something awesome!
+  Have fun with the OpenZoom SDK and create something awesome!
   
   Share your ideas, issues and work you've done at:
   <http://openzoom.org/go/community>
   
   Please file bug reports at:
-  <http://code.google.com/p/open-zoom/issues/list>
+  <http://github.com/openzoom/sdk/issues>
   
   I am looking forward to see what you create with OpenZoom!
   
