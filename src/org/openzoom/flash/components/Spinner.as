@@ -14,6 +14,8 @@ import flash.utils.Timer;
  * Adapted from code by Steven Sacks
  * @see http://www.stevensacks.net/2008/10/01/as3-apple-style-preloader/
  *
+ * License: Unknown
+ * 
  */
 public class Spinner extends Sprite
 {

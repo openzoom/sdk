@@ -46,7 +46,7 @@ import org.openzoom.flash.viewport.INormalizedViewport
 
 /**
  * @private
- * 
+ *
  * Manages the rendering of all image pyramid renderers on stage.
  */
 public final class ImagePyramidRenderManager implements IDisposable
@@ -58,7 +58,7 @@ public final class ImagePyramidRenderManager implements IDisposable
     //--------------------------------------------------------------------------
 
     private static const TILE_SHOW_DURATION:Number = 400 // milliseconds
-    
+
     private static const MAX_CACHE_SIZE:uint = 125
 
     private static const MAX_DOWNLOADS_STATIC:uint = 4
@@ -82,9 +82,9 @@ public final class ImagePyramidRenderManager implements IDisposable
         this.scene = scene
         this.viewport = viewport
         this.loader = loader
-        
+
         tileCache = new Cache(MAX_CACHE_SIZE)
-        
+
         tileLoader = new TileLoader(this,
                                     loader,
                                     tileCache,
@@ -131,7 +131,7 @@ public final class ImagePyramidRenderManager implements IDisposable
     //--------------------------------------------------------------------------
 
     private var invalidateDisplayListFlag:Boolean = true
-    
+
     /**
      * @private
      */
@@ -149,12 +149,12 @@ public final class ImagePyramidRenderManager implements IDisposable
         if (invalidateDisplayListFlag)
         {
             invalidateDisplayListFlag = false
-            
+
             for each (var renderer:ImagePyramidRenderer in renderers)
                 updateDisplayList(renderer)
         }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -251,7 +251,7 @@ public final class ImagePyramidRenderManager implements IDisposable
                 for (var r:int = fromTile.y; r <= toTile.y; r++)
                 {
                     var tile:ImagePyramidTile = renderer.openzoom_internal::getTile(l, c, r)
-                    
+
                     if (!tile)
                        continue
 
@@ -360,7 +360,7 @@ public final class ImagePyramidRenderManager implements IDisposable
                 dziDescriptor.collection &&
                 tile.level <= dziDescriptor.collection.maxLevel)
             {
-            	// Deep Zoom collection
+                // Deep Zoom collection
                 var levelSize:uint = 1 << tile.level
                 var position:Point = MortonOrder.getPosition(dziDescriptor.mortonNumber)
                 var tileSize:uint = dziDescriptor.collection.tileSize
@@ -372,7 +372,7 @@ public final class ImagePyramidRenderManager implements IDisposable
             }
             else
             {
-            	// Normal
+                // Normal
                 sx = descriptor.width / level.width
                 sy = descriptor.height / level.height
                 var w:Number = tile.bounds.x * sx
