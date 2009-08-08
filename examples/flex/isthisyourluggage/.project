@@ -23,9 +23,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>[source path] src</name>
+			<name>[source path] OpenZoom SDK</name>
 			<type>2</type>
-			<locationURI>OPENZOOM_HOME/src</locationURI>
+			<location>/Users/dani/Documents/workspace-github/openzoom/sdk/src</location>
 		</link>
 	</linkedResources>
 </projectDescription>

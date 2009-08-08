@@ -30,7 +30,6 @@
             import org.openzoom.examples.ityl.pages.OtherStuffPageAsset;
 
             import org.openzoom.flash.events.NetworkRequestEvent;
-            import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
             import org.openzoom.flash.net.INetworkRequest;
             import org.openzoom.flash.net.NetworkQueue;
             import org.openzoom.flash.renderers.MultiScaleImageRenderer;
@@ -102,7 +101,7 @@
         ]]>
     </mx:Script>
 
-    <components:MultiScaleContainer
+    <components:MultiScaleContainer2
         id="container"
         top="0"
         right="0"
@@ -126,7 +125,7 @@
                <constraints:ZoomConstraint minZoom="1"/>
             </constraints:CompositeConstraint>
         </components:constraint>
-    </components:MultiScaleContainer>
+    </components:MultiScaleContainer2>
 
     <mx:Image
         source="@Embed('../assets/buttons/home-button.png')"

@@ -109,7 +109,7 @@ public class SuitcaseRenderer extends Renderer
         if (!content)
            return
 
-        Tweener.addTween(suitcase, {alpha: 0, time: 0.6})
+        Tweener.addTween(suitcase, {alpha: 1, time: 0.6})
     }
 
     //--------------------------------------------------------------------------
