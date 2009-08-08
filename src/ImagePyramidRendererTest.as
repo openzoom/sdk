@@ -212,11 +212,11 @@ public class ImagePyramidRendererTest extends Sprite
 //        height = 16384
 
         // Virtual Earth
-        source = new VirtualEarthDescriptor()
-        numRenderers = 1
-        numColumns = 1
-        width = 16384
-        height = 16384
+//        source = new VirtualEarthDescriptor()
+//        numRenderers = 1
+//        numColumns = 1
+//        width = 16384
+//        height = 16384
 
         // Zoomify
         // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290"

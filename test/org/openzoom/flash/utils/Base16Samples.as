@@ -1,1 +1,1 @@
-    private static const SAMPLES:Array = []
+    private static const SAMPLES : Array = []

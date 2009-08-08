@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application
+    xmlns:fx="http://ns.adobe.com/mxml/2009"
+    xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:mx="library://ns.adobe.com/flex/halo"
+	xmlns:flexUnitUIRunner="http://www.adobe.com/2009/flexUnitUIRunner"  
+	minWidth="1024"
+	minHeight="768"
+	creationComplete="creationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+		
+			import mx.events.FlexEvent;
+			
+			import org.flexunit.listeners.UIListener;
+			import org.flexunit.runner.FlexUnitCore;
+			
+			import org.openzoom.flash.utils.UtilsSuite;
+			import org.openzoom.flash.descriptors.DescriptorSuite;
+			
+			private var flexUnitCore:FlexUnitCore;
+
+            private function creationCompleteHandler(event:Event):void
+            {
+                flexUnitCore = new FlexUnitCore()
+                flexUnitCore.addListener(new UIListener(testRunner))
+                flexUnitCore.run(DescriptorSuite, UtilsSuite)
+            }
+
+        ]]>
+    </fx:Script>
+    
+    <flexUnitUIRunner:TestRunnerBase id="testRunner" width="100%" height="100%" />
+    
+</s:Application>

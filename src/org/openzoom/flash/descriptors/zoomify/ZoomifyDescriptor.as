@@ -277,7 +277,6 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     private function getScale(level:int):Number
     {
         var maxLevel:int = numLevels - 1
-        // 1 / (1 << maxLevel - level)
         return Math.pow(0.5, maxLevel - level)
     }
     
@@ -286,7 +285,6 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      */ 
     private function getSize(level:int):Point
     {
-        // TODO: Test whether to floor or ceil dimensions
         var size:Point = new Point()
         var scale:Number = getScale(level)
         size.x = Math.ceil(width * scale)

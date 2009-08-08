@@ -21,15 +21,14 @@
 package org.openzoom.flash.descriptors.deepzoom
 {
 
-import flexunit.framework.TestCase;
-
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.flexunit.Assert;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 
 /**
- * Tests the DZIDescriptor implementation for correctness.
+ * Tests the DeepZoomImageDescriptor implementation for correctness.
  */
-public class DZIDescriptorTest extends TestCase
+public class DeepZoomImageDescriptorTest
 {
     //--------------------------------------------------------------------------
     //
@@ -66,7 +65,7 @@ public class DZIDescriptorTest extends TestCase
     //
     //--------------------------------------------------------------------------
 
-    private var descriptor:IMultiScaleImageDescriptor
+    private var descriptor:IImagePyramidDescriptor
 
     //--------------------------------------------------------------------------
     //
@@ -74,12 +73,14 @@ public class DZIDescriptorTest extends TestCase
     //
     //--------------------------------------------------------------------------
 
-    override public function setUp():void
+	[Before]
+    public function setUp():void
     {
-        descriptor = DZIDescriptor.fromXML("test.xml", DESCRIPTOR_XML)
+        descriptor = DeepZoomImageDescriptor.fromXML("test.xml", DESCRIPTOR_XML)
     }
 
-    override public function tearDown():void
+	[After]
+    public function tearDown():void
     {
         descriptor = null
     }
@@ -90,36 +91,40 @@ public class DZIDescriptorTest extends TestCase
     //
     //--------------------------------------------------------------------------
 
+	[Test]
     public function testMaxLevel():void
     {
-        assertEquals("Maximum level correctly computed", 12, descriptor.numLevels - 1)
+        Assert.assertEquals("Maximum level correctly computed", 12, descriptor.numLevels - 1)
     }
 
+	[Test]
     public function testOverlap():void
     {
-        assertEquals("Overlap correct", 0, descriptor.tileOverlap)
+        Assert.assertEquals("Overlap correct", 0, descriptor.tileOverlap)
     }
 
+	[Test]
     public function testLevels():void
     {
        for (var index:int = 0; index < descriptor.numLevels; index++)
        {
-            var level:IMultiScaleImageLevel = descriptor.getLevelAt(index)
-            assertEquals("Width on level "        + level.index, LEVELS[level.index][0], level.width)
-            assertEquals("Height on level "       + level.index, LEVELS[level.index][1], level.height)
-            assertEquals("Column count on level " + level.index, LEVELS[level.index][2], level.numColumns)
-            assertEquals("Row count on level "    + level.index, LEVELS[level.index][3], level.numRows)
+            var level:IImagePyramidLevel = descriptor.getLevelAt(index)
+            Assert.assertEquals("Width on level "        + level.index, LEVELS[level.index][0], level.width)
+            Assert.assertEquals("Height on level "       + level.index, LEVELS[level.index][1], level.height)
+            Assert.assertEquals("Column count on level " + level.index, LEVELS[level.index][2], level.numColumns)
+            Assert.assertEquals("Row count on level "    + level.index, LEVELS[level.index][3], level.numRows)
        }
 
     }
 
-    public function testGetMinimumLevelForSize():void
+	[Test]
+    public function testGetLevelForSize():void
     {
-        assertEquals("Level computation for given size", descriptor.numLevels - 1,
-            descriptor.getMinLevelForSize(descriptor.width, descriptor.height).index)
+        Assert.assertEquals("Level computation for given size", descriptor.numLevels - 1,
+            descriptor.getLevelForSize(descriptor.width, descriptor.height).index)
 
-        assertEquals("Level computation for given size", descriptor.numLevels - 2,
-            descriptor.getMinLevelForSize(descriptor.width / 2 - 1, descriptor.height / 2 - 1).index)
+        Assert.assertEquals("Level computation for given size", descriptor.numLevels - 2,
+            descriptor.getLevelForSize(descriptor.width / 2 - 1, descriptor.height / 2 - 1).index)
     }
 }
 

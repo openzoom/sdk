@@ -23,15 +23,14 @@ package org.openzoom.flash.descriptors.djatoka
 
 import flash.geom.Rectangle;
 
-import flexunit.framework.TestCase;
-
-import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-import org.openzoom.flash.descriptors.IMultiScaleImageLevel;
+import org.flexunit.Assert;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
 
 /**
  * Tests the DjatokaDescriptor implementation for correctness.
  */
-public class DjatokaDescriptorTest extends TestCase
+public class DjatokaDescriptorTest
 {
     //--------------------------------------------------------------------------
     //
@@ -56,7 +55,7 @@ public class DjatokaDescriptorTest extends TestCase
     //
     //--------------------------------------------------------------------------
 
-    private var descriptor:IMultiScaleImageDescriptor
+    private var descriptor:IImagePyramidDescriptor
 
     //--------------------------------------------------------------------------
     //
@@ -64,18 +63,20 @@ public class DjatokaDescriptorTest extends TestCase
     //
     //--------------------------------------------------------------------------
 
-    override public function setUp():void
+	[Before]
+    public function setUp():void
     {
         descriptor = new DjatokaDescriptor("",
-                                            "http://farm4.static.flickr.com/3187/2780115722_20d8d18d33_o.jpg",
-                                            2416,
-                                            3610,
-                                            256,
-                                            0,
-                                            "image/jpeg")
+                                           "http://farm4.static.flickr.com/3187/2780115722_20d8d18d33_o.jpg",
+                                           2416,
+                                           3610,
+                                           256,
+                                           0,
+                                           "image/jpeg")
     }
 
-    override public function tearDown():void
+	[After]
+    public function tearDown():void
     {
         descriptor = null
     }
@@ -86,43 +87,48 @@ public class DjatokaDescriptorTest extends TestCase
     //
     //--------------------------------------------------------------------------
 
+	[Test]
     public function testMaxLevel():void
     {
-        assertEquals("Maximum level correctly computed", 6, descriptor.numLevels - 1)
+        Assert.assertEquals("Maximum level correctly computed", 6, descriptor.numLevels - 1)
     }
 
+	[Test]
     public function testOverlap():void
     {
-        assertEquals("Overlap correct", 0, descriptor.tileOverlap)
+        Assert.assertEquals("Overlap correct", 0, descriptor.tileOverlap)
     }
 
+	[Test]
     public function testLevels():void
     {
        for (var index:int = 0; index < descriptor.numLevels; index++)
        {
-              var level:IMultiScaleImageLevel = descriptor.getLevelAt(index)
-           assertEquals("Width on level "        + level.index, LEVELS[level.index][0], level.width)
-           assertEquals("Height on level "       + level.index, LEVELS[level.index][1], level.height)
-           assertEquals("Column count on level " + level.index, LEVELS[level.index][2], level.numColumns)
-           assertEquals("Row count on level "    + level.index, LEVELS[level.index][3], level.numRows)
+           var level:IImagePyramidLevel = descriptor.getLevelAt(index)
+           Assert.assertEquals("Width on level "        + level.index, LEVELS[level.index][0], level.width)
+           Assert.assertEquals("Height on level "       + level.index, LEVELS[level.index][1], level.height)
+           Assert.assertEquals("Column count on level " + level.index, LEVELS[level.index][2], level.numColumns)
+           Assert.assertEquals("Row count on level "    + level.index, LEVELS[level.index][3], level.numRows)
        }
 
     }
 
-    public function testGetMinimumLevelForSize():void
+	[Test]
+    public function testGetLevelForSize():void
     {
-       assertEquals("Level computation for given size", descriptor.numLevels - 1,
-           descriptor.getMinLevelForSize(descriptor.width, descriptor.height).index)
+       Assert.assertEquals("Level computation for given size", descriptor.numLevels - 1,
+           descriptor.getLevelForSize(descriptor.width, descriptor.height).index)
 
-       assertEquals("Level computation for given size", descriptor.numLevels - 3,
-           descriptor.getMinLevelForSize(descriptor.width / 2 - 1, descriptor.height / 2 - 1).index)
+       Assert.assertEquals("Level computation for given size", descriptor.numLevels - 2,
+           descriptor.getLevelForSize(descriptor.width / 2 - 1, descriptor.height / 2 - 1).index)
     }
 
+	[Test]
     public function testTileBounds():void
     {
         for (var index:int = 0; index < descriptor.numLevels; index++)
         {
-            var level:IMultiScaleImageLevel = descriptor.getLevelAt(index)
+            var level:IImagePyramidLevel = descriptor.getLevelAt(index)
             var computedBounds:Rectangle = new Rectangle()
 
             for (var column:uint = 0; column < level.numColumns; column++)
@@ -136,7 +142,7 @@ public class DjatokaDescriptorTest extends TestCase
             }
 
             var bounds:Rectangle = new Rectangle(0, 0, level.width, level.height)
-            assertTrue("Level bounds must match", computedBounds.equals(bounds))
+            Assert.assertTrue("Level bounds must match", computedBounds.equals(bounds))
         }
     }
 }

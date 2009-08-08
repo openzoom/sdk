@@ -21,14 +21,12 @@
 package org.openzoom.flash.utils
 {
 
-import flexunit.framework.TestCase;
-
-import org.openzoom.flash.utils.Base16;
+import org.flexunit.Assert;
 
 /**
  * Tests the Base16 utility class implementation for correctness.
  */
-public class Base16Test extends TestCase
+public class Base16Test
 {
     //--------------------------------------------------------------------------
     //
@@ -44,26 +42,27 @@ public class Base16Test extends TestCase
     //
     //--------------------------------------------------------------------------
 
+	[Test]
     public function testEncode():void
     {
         for (var i:int = 0; i < SAMPLES.length; i++)
         {
             var testCase:Array = SAMPLES[i]
-            assertEquals("Correct encoding",
-                          Base16.encode(testCase[0]), testCase[1])
+            Assert.assertEquals("Correct encoding",
+            					Base16.encode(testCase[0]), testCase[1])
         }
     }
 
+	[Test]
     public function testDecode():void
     {
         for (var i:int = 0; i < SAMPLES.length; i++)
         {
             var testCase:Array = SAMPLES[i]
-            assertEquals("Correct decoding",
-                          testCase[0], Base16.decode(testCase[1]))
+            Assert.assertEquals("Correct decoding",
+                                testCase[0], Base16.decode(testCase[1]))
         }
     }
 }
 
 }
-
