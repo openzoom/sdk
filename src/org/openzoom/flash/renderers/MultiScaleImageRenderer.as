@@ -66,7 +66,6 @@ import org.openzoom.flash.renderers.images.Tile;
 import org.openzoom.flash.renderers.images.TileLayer;
 import org.openzoom.flash.utils.math.clamp;
 
-[ExcludeClass]
 /**
  * @private
  *

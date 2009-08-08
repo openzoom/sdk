@@ -10,7 +10,7 @@
     <mx:Script>
         <![CDATA[
 
-            import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+    		import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
 
             private var path:String = "../../../../resources/images/deepzoom/billions.xml"
             private var xml:XML = <Image xmlns="http://schemas.microsoft.com/deepzoom/2008"
@@ -19,17 +19,17 @@
                                   </Image>;
 
             [Bindable]
-            public var image:DZIDescriptor = DZIDescriptor.fromXML(path, xml)
+            public var image:DeepZoomImageDescriptor = DeepZoomImageDescriptor.fromXML(path, xml)
 
         ]]>
     </mx:Script>
     <!--
         source="{image}"
-        source="../../../../resources/images/deepzoom/billions.xml"
+        source="../../../../resources/images/deepzoom/collection/la-degustation/dzc_output.xml"
     -->
     <openzoom:DeepZoomContainer
+        source="../../../../resources/images/deepzoom/billions.xml"
         id="container"
-        source="../../../resources/images/deepzoom/collection/la-degustation/dzc_output.xml"
         top="0" right="0" bottom="0" left="0"
         >
         <openzoom:transformer>

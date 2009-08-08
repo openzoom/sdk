@@ -49,7 +49,6 @@ import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.renderers.Renderer;
 import org.openzoom.flash.utils.IDisposable;
 
-[ExcludeClass]
 /**
  * @private
  * 

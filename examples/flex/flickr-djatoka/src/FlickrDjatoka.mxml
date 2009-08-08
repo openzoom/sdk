@@ -25,6 +25,9 @@
 
     <mx:Script>
         <![CDATA[
+    		import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
+    		import org.openzoom.flash.descriptors.ImagePyramidLevel;
+    		import org.openzoom.flash.events.ViewportEvent;
 
             //------------------------------------------------------------------
             //
@@ -41,8 +44,8 @@
 
             import mx.events.FlexEvent;
 
-            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-        	import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+    		import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+        	import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
             import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor;
             import org.openzoom.flash.renderers.MultiScaleImageRenderer;
             import org.openzoom.flash.utils.ExternalMouseWheel;
@@ -65,7 +68,7 @@
             private static const IMAGE_SIZE:Number = 1024
             private static const IMAGE_SUFFIX:String = "_b"
 
-            private static const NUM_PHOTOS:uint = 10
+            private static const NUM_PHOTOS:uint = 100
             private static const DEFAULT_PAGE:uint = 3
 
             //------------------------------------------------------------------
@@ -141,12 +144,6 @@
                     // Flickr photo URL:
                     // http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{o-secret}_o.(jpg|gif|png)
 
-                    // Original Size URL
-//                    var url:String = ["http://farm", photo.farmId,
-//                                         ".static.flickr.com/", photo.server, "/",
-//                                         photo.id, "_", photo.originalSecret, "_o.",
-//                                         photo.originalFormat].join("")
-
                     var url:String = ["http://farm", photo.farmId,
                                       ".static.flickr.com/", photo.server, "/",
                                       photo.id, "_", photo.secret, IMAGE_SUFFIX, ".jpg"].join("")
@@ -170,7 +167,7 @@
 //                        imageHeight = IMAGE_SIZE
 //                    }
 
-                    var photoDescriptor:IMultiScaleImageDescriptor
+                    var photoDescriptor:IImagePyramidDescriptor
 
                     photoDescriptor = new DjatokaDescriptor(DJAKOTA_RESOLVER_URL,
                                                             url,
@@ -181,13 +178,12 @@
 
 
                     var scale:Number = 0.2
-                    var renderer:Sprite
-                    renderer = new MultiScaleImageRenderer(photoDescriptor,
-                                                           container.loader,
-                                                           imageWidth * scale,
-                                                           imageHeight * scale)
-
-                   
+                    var renderer:ImagePyramidRenderer
+                    renderer = new ImagePyramidRenderer()
+                    renderer.width = imageWidth * scale
+                    renderer.height = imageHeight * scale
+                    renderer.source = photoDescriptor
+                    
                     var size:Number = IMAGE_SIZE
                     var position:Point = new Point()
                     position.x = column * size * spacing + (IMAGE_SIZE - renderer.width) / 2
@@ -197,7 +193,7 @@
                     renderer.y = position.y
 
                     container.addChild(renderer)
-
+                    
                     if (++column >= numColumns)
                     {
                         column = 0
@@ -347,7 +343,7 @@
         ]]>
     </mx:Script>
 
-    <components:MultiScaleContainer
+    <components:MultiScaleContainer2
         id="container"
         top="40" right="0" bottom="0" left="0"
         sceneWidth="48000"
@@ -361,32 +357,29 @@
         <components:transformer>
             <transformers:TweenerTransformer/>
         </components:transformer>
-    </components:MultiScaleContainer>
-
-<!--
-            label="Shake it!"
-            label="Circular"
-            label="Grid (columns)"
-            label="Grid (rows)"
--->
+    </components:MultiScaleContainer2>
     <mx:HBox
         horizontalCenter="0"
         top="10"
         >
         <mx:Button
             id="shakeItButton"
+	        label="Shake it!"
             click="shakeItButton_clickHandler(event)"
             />
         <mx:Button
             id="circularLayoutButton"
+	        label="Circular"
             click="circularLayoutButton_clickHandler(event)"
             />
         <mx:Button
             id="gridColumnsButton"
+	        label="Grid (columns)"
             click="gridColumnsButton_clickHandler(event)"
             />
         <mx:Button
             id="gridRowsButton"
+	        label="Grid (rows)"
             click="gridRowsButton_clickHandler(event)"
             />
     </mx:HBox>

@@ -205,14 +205,14 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
         tileBounds.y = Math.ceil((tileBounds.y / currentLevel.height) * maxLevel.height)
         var region:String = [tileBounds.y, tileBounds.x, tileBounds.height, tileBounds.width].join(",")
 
-        var url:String =  resolverURL + "?" +
-                               "url_ver=Z39.88-2004&" +
-                               "rft_id=" + imageURL + "&" +
-                               "svc_id=info:lanl-repo/svc/getRegion&" +
-                               "svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000&" +
-                               "svc.format=" + type + "&" +
-                               "svc.level=" + level + "&" +
-                               "svc.region=" + region
+        var url:String = resolverURL + "?" +
+                            "url_ver=Z39.88-2004&" +
+                            "rft_id=" + imageURL + "&" +
+                            "svc_id=info:lanl-repo/svc/getRegion&" +
+                            "svc_val_fmt=info:ofi/fmt:kev:mtx:jpeg2000&" +
+                            "svc.format=" + type + "&" +
+                            "svc.level=" + level + "&" +
+                            "svc.region=" + region
         return url
     }
 

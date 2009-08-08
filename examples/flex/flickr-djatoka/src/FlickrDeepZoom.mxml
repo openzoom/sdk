@@ -6,7 +6,6 @@
     xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
     backgroundGradientColors="[0, 0]"
     layout="absolute"
-    preinitialize="preinitializeHandler(event)"
     applicationComplete="applicationCompleteHandler(event)"
     >
     <mx:Style>
@@ -41,10 +40,11 @@
 
             import mx.events.FlexEvent;
 
-            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-        	import org.openzoom.flash.descriptors.deepzoom.DZIDescriptor;
+            import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+        	import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
             import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor;
             import org.openzoom.flash.renderers.MultiScaleImageRenderer;
+    		import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
             import org.openzoom.flash.utils.ExternalMouseWheel;
 
             //------------------------------------------------------------------
@@ -81,11 +81,6 @@
             //
             //------------------------------------------------------------------
 
-            private function preinitializeHandler(event:FlexEvent):void
-            {
-                Security.loadPolicyFile("http://african.lanl.gov/crossdomain.xml")
-            }
-
             private function applicationCompleteHandler(event:FlexEvent):void
             {
                 // Enable mouse wheel support on Mac OS
@@ -95,7 +90,7 @@
                 flickr.addEventListener(FlickrResultEvent.PEOPLE_GET_PUBLIC_PHOTOS,
                                         flickr_peopleGetPublicPhotosHandler,
                                         false, 0, true)
-                flickr.people.getPublicPhotos(USER_ID, EXTRAS, NUM_PHOTOS, 3)
+                flickr.people.getPublicPhotos(USER_ID, EXTRAS, NUM_PHOTOS, 5)
 
                 numColumns = container.sceneWidth / (IMAGE_SIZE * spacing)
             }
@@ -118,11 +113,7 @@
                 var numPages:uint = event.data.photos.pages
 
                 trace("Page", page, "of", numPages)
-
-//                if (page < 3)//numPages)
-//	                flickr.people.getPublicPhotos(USER_ID, EXTRAS, NUM_PHOTOS, page + 1)
-//	            else
-	               trace("Done.")
+                trace("Done.")
             }
 
             private var init:Boolean = false
@@ -140,12 +131,6 @@
                     // Flickr photo URL:
                     // http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{o-secret}_o.(jpg|gif|png)
 
-                    // Original Size URL
-//                    var url:String = ["http://farm", photo.farmId,
-//                                         ".static.flickr.com/", photo.server, "/",
-//                                         photo.id, "_", photo.originalSecret, "_o.",
-//                                         photo.originalFormat].join("")
-
                     var url:String = ["http://farm", photo.farmId,
                                       ".static.flickr.com/", photo.server, "/",
                                       photo.id, "_", photo.secret, IMAGE_SUFFIX, ".jpg"].join("")
@@ -158,47 +143,23 @@
                     var imageWidth:Number = photo.originalWidth
                     var imageHeight:Number = photo.originalHeight
 
-//                    if (aspectRatio > 1)
-//                    {
-//                        imageWidth = IMAGE_SIZE
-//                        imageHeight = IMAGE_SIZE / aspectRatio
-//                    }
-//                    else
-//                    {
-//                        imageWidth = IMAGE_SIZE * aspectRatio
-//                        imageHeight = IMAGE_SIZE
-//                    }
-
-                    var photoDescriptor:IMultiScaleImageDescriptor
-
-//                    photoDescriptor = new DjatokaDescriptor(DJAKOTA_RESOLVER_URL,
-//                                                            url,
-//                                                            imageWidth,
-//                                                            imageHeight,
-//                                                            256,
-//                                                            1)
+                    var photoDescriptor:IImagePyramidDescriptor
 
                     // http://static.gasi.ch/images/3128884923/image.xml 
                     var descriptorXML:XML = <Image TileSize="256" Overlap="1" Format="jpg" xmlns="http://schemas.microsoft.com/deepzoom/2008">
-                                                  <Size Width={imageWidth} Height={imageHeight}/>
-                                              </Image>;
+                                                <Size Width={imageWidth} Height={imageHeight}/>
+                                            </Image>;
 
                     var path:String = "http://static.gasi.ch/images/" + photo.id + "/image.dzi"
-                    photoDescriptor = DZIDescriptor.fromXML(path, descriptorXML)
+                    photoDescriptor = DeepZoomImageDescriptor.fromXML(path, descriptorXML)
 
-                    var scale:Number = 0.2//1 // 0.2
-                    var renderer:Sprite
-                    renderer = new MultiScaleImageRenderer(photoDescriptor,
-                                                           container.loader,
-                                                           imageWidth * scale,
-                                                           imageHeight * scale)
+                    var scale:Number = 0.2
+                    var renderer:ImagePyramidRenderer
+                    renderer = new ImagePyramidRenderer()
+                    renderer.width = imageWidth * scale
+                    renderer.height = imageHeight * scale
+                    renderer.source = photoDescriptor
 
-//                  renderer = new Sprite()
-//                  var g:Graphics = renderer.graphics
-//                  g.beginFill(Math.random() * 0xFFFFFF)
-//                  g.drawRect(0, 0, imageWidth * scale, imageHeight * scale)
-//                  g.endFill()
-                   
                     var size:Number = IMAGE_SIZE
                     var position:Point = new Point()
                     position.x = column * size * spacing + (IMAGE_SIZE - renderer.width) / 2
@@ -358,7 +319,7 @@
         ]]>
     </mx:Script>
 
-    <components:MultiScaleContainer
+    <components:MultiScaleContainer2
         id="container"
         top="40" right="0" bottom="0" left="0"
         sceneWidth="48000"
@@ -372,31 +333,29 @@
         <components:transformer>
             <transformers:TweenerTransformer/>
         </components:transformer>
-    </components:MultiScaleContainer>
+    </components:MultiScaleContainer2>
 
-<!--
-            label="Shake it!"
-            label="Circular"
-            label="Grid (columns)"
-            label="Grid (rows)"
--->
     <mx:HBox
         horizontalCenter="0"
         top="10"
         >
         <mx:Button
+            label="Shake it!"
             id="shakeItButton"
             click="shakeItButton_clickHandler(event)"
             />
         <mx:Button
+            label="Circular"
             id="circularLayoutButton"
             click="circularLayoutButton_clickHandler(event)"
             />
         <mx:Button
+            label="Grid (columns)"
             id="gridColumnsButton"
             click="gridColumnsButton_clickHandler(event)"
             />
         <mx:Button
+            label="Grid (rows)"
             id="gridRowsButton"
             click="gridRowsButton_clickHandler(event)"
             />

@@ -6,14 +6,15 @@
 	xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
 	xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
 	backgroundGradientColors="[0xFFFFFF, 0xFFFFFF]"
-	applicationComplete="applicationCompleteHandler(event)"
+	frameRate="60"
 	layout="absolute"
+	applicationComplete="applicationCompleteHandler(event)"
 	>
 	<mx:Script>
 		<![CDATA[
 		
 		    import flashx.textLayout.container.ContainerController;
-			import flashx.textLayout.conversion.TextFilter;
+			import flashx.textLayout.conversion.TextConverter;
 			import flashx.textLayout.elements.TextFlow;
 			
 			import org.openzoom.flash.utils.ExternalMouseWheel;
@@ -30,19 +31,24 @@
             	
             	textContainer = new Sprite()
             	container.addChild(textContainer)
+//            	textContainer.x = -2048
+//            	textContainer.y = -1024
+//              rawChildren.addChild(textContainer)
             }
 
 			private function loader_completeHandler(event:Event):void
 			{
    	            var document:String = loader.data
-	            var textFlow:TextFlow = TextFilter.importToFlow(document,
-	                                             TextFilter.TEXT_LAYOUT_FORMAT)
+	            var textFlow:TextFlow = TextConverter.importToFlow(document,
+	                                                               TextConverter.TEXT_LAYOUT_FORMAT)
 	            
                 textFlow.flowComposer.addController(
                     new ContainerController(textContainer,
-	                                                     container.sceneWidth,
-	                                                     container.sceneHeight))
-                textFlow.columnCount = 16
+	                                        container.sceneWidth,
+	                                        container.sceneHeight))
+//                textFlow.flowComposer.addController(
+//                    new ContainerController(textContainer, 4096, 2048))
+                textFlow.columnCount = 10
                 textFlow.columnGap = 10
 	            textFlow.flowComposer.updateAllControllers()
 	            textFlow.color = 0xFFFFFF
@@ -50,13 +56,17 @@
 			
 		]]>
 	</mx:Script>
-	
 	<components:MultiScaleContainer
 		id="container"
 		top="0" right="0" bottom="0" left="0"
-		sceneWidth="4000"
-		sceneHeight="2000"
+		sceneWidth="4096"
+		sceneHeight="2048"
 		>
+		<!--
+		<components:constraint>
+			<constraints:MapConstraint/>
+		</components:constraint>
+		-->
 		<components:transformer>
 			<transformers:TweenerTransformer/>
 		</components:transformer>
@@ -66,4 +76,15 @@
 			<controllers:ContextMenuController/>
 		</components:controllers>
 	</components:MultiScaleContainer>
+	<!--
+    <mx:VSlider
+        id="scaleSlider"
+        verticalCenter="0"
+        left="20"
+        maximum="128"
+        minimum="0.1"
+        liveDragging="true"
+        change="{textContainer.scaleX = textContainer.scaleY = scaleSlider.value}"
+        />
+	-->
 </mx:Application>

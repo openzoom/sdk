@@ -50,7 +50,7 @@ import org.openzoom.flash.events.NetworkRequestEvent;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.net.INetworkRequest;
 import org.openzoom.flash.net.NetworkQueue;
-import org.openzoom.flash.renderers.MultiScaleImageRenderer;
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 
 /**
  *  Dispatched when the image has successfully loaded.
@@ -74,11 +74,13 @@ import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 [Event(name="securityError", type="flash.events.SecurityErrorEvent")]
 
 /**
+ * @private
+ * 
  * Flex component for displaying single Deep Zoom images (DZI) as well
  * as Deep Zoom collections (DZC) created by Microsoft Deep Zoom Composer,
  * DeepZoomTools.dll, Python Deep Zoom Tools (deepzoom.py) or others.
  */
-public final class DeepZoomContainer extends MultiScaleImageBase
+public final class DeepZoomContainer extends MultiScaleImageBase2
 {
     //--------------------------------------------------------------------------
     //
@@ -282,16 +284,12 @@ public final class DeepZoomContainer extends MultiScaleImageBase
             var targetWidth:Number = item.targetWidth  * container.sceneWidth
             var targetHeight:Number = item.targetHeight * container.sceneWidth
 
-//            if (!item.source || !item.data)
-//                continue
-
-            var descriptor:DeepZoomImageDescriptor = DeepZoomImageDescriptor.fromXML(item.source,
-                                                                 item.data)
-            var renderer:MultiScaleImageRenderer =
-                                  new MultiScaleImageRenderer(descriptor,
-                                                              container.loader,
-                                                              targetWidth,
-                                                              targetHeight)
+            var descriptor:DeepZoomImageDescriptor =
+                    DeepZoomImageDescriptor.fromXML(item.source, item.xml)
+            var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
+            renderer.source = descriptor
+            renderer.width = targetWidth
+            renderer.height = targetHeight
             renderer.x = targetX
             renderer.y = targetY
 
@@ -321,11 +319,10 @@ public final class DeepZoomContainer extends MultiScaleImageBase
             container.sceneHeight = DEFAULT_SCENE_DIMENSION
         }
 
-        var renderer:MultiScaleImageRenderer =
-                                  new MultiScaleImageRenderer(descriptor,
-                                                              container.loader,
-                                                              sceneWidth,
-                                                              sceneHeight)
+        var renderer:ImagePyramidRenderer = new ImagePyramidRenderer()
+        renderer.source = descriptor
+        renderer.width = sceneWidth
+        renderer.height = sceneHeight
 
         addChild(renderer)
     }
@@ -394,7 +391,7 @@ public final class DeepZoomContainer extends MultiScaleImageBase
     private function loadingItem_completeHandler(event:NetworkRequestEvent):void
     {
         numItemsToDownload--
-        ItemInfo(event.context).data = new XML(event.data)
+        ItemInfo(event.context).xml = new XML(event.data)
 
         if (numItemsToDownload == 0)
             itemsLoaded()
@@ -455,7 +452,7 @@ class ItemInfo
         itemInfo.width = data.Size.@Width
         itemInfo.height = data.Size.@Height
 
-        if (data.Viewport)
+        if (data.Viewport.length() > 0)
         {
             itemInfo.viewportWidth = data.Viewport.@Width
             itemInfo.viewportX = data.Viewport.@X
@@ -480,7 +477,7 @@ class ItemInfo
     public var viewportX:Number = 0
     public var viewportY:Number = 0
 
-    public var data:XML
+    public var xml:XML
 
     // FIXME: This probably doesn't belong here
     public var targetX:Number
