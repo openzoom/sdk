@@ -28,12 +28,13 @@ import flash.events.Event;
 import flash.system.Security;
 import flash.utils.setTimeout;
 
-import org.openzoom.flash.components.MultiScaleImage;
+import org.openzoom.flash.components.MultiScaleImage2;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.utils.ExternalMouseWheel;
+import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
-import org.openzoom.flash.viewport.constraints.MappingConstraint;
+import org.openzoom.flash.viewport.constraints.MapConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.constraints.ZoomConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
@@ -73,7 +74,7 @@ public class MappingFlash extends Sprite
         ExternalMouseWheel.initialize(stage)
 
         // Map setup
-        map = new MultiScaleImage()
+        map = new MultiScaleImage2()
 
         // Controllers handle user input
         var mouseController:MouseController = new MouseController()
@@ -105,6 +106,9 @@ public class MappingFlash extends Sprite
 
         // Constraints (due to a bug, these have to be applied after the transformer)
         scaleConstraint = new ScaleConstraint()
+        
+        // Ensure the scene is centered once we zoom out
+        var centerConstraint:CenterConstraint = new CenterConstraint()
 
         // Zoom is a relative value, 0.5 means the map will never be smaller
         // than half of the viewport, with automatic consideration of the aspect ratio.
@@ -116,7 +120,7 @@ public class MappingFlash extends Sprite
         // render at a scale that is not a power of 2. This way, we'll always
         // have cristal crisp rendering of maps like Google Maps, Yahoo Maps,
         // or from the OSM project.
-        var mappingConstraint:MappingConstraint = new MappingConstraint()
+        var mappingConstraint:MapConstraint = new MapConstraint()
 
         // Since the architecture I designed only allows for one constraint,
         // we can use the composite design pattern for grouping several constraints
@@ -124,6 +128,7 @@ public class MappingFlash extends Sprite
         var constraint:CompositeConstraint = new CompositeConstraint()
         constraint.constraints = [scaleConstraint,
                                   zoomConstraint,
+                                  centerConstraint,
                                   mappingConstraint]
 
         map.constraint = constraint
@@ -143,7 +148,7 @@ public class MappingFlash extends Sprite
     //
     //--------------------------------------------------------------------------
 
-    private var map:MultiScaleImage
+    private var map:MultiScaleImage2
 
     // We're keeping a reference to the scale constraints
     // since the maxScale is only set after the image has loaded
