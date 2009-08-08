@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="FlickrDeepZoom.mxml" projectUUID="14168759-6d0a-41ab-a30e-d50fb4deff1d" version="6">
-  <compiler additionalCompilerArguments="-locale en_US -use-network=true -default-size 960 600" autoRSLOrdering="true" copyDependentFiles="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+<actionScriptProperties mainApplicationPath="FlickrDeepZoom.mxml" projectUUID="e5c5d0eb-97d6-4e37-bc7d-a257c84302ef" version="6">
+  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="false" flexSDK="Flex 3.4" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM_HOME}/src"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM_HOME}/lib/as3flickrlib/src"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM_HOME}/lib/as3corelib/src"/>
     </compilerSourcePath>
-    <libraryPath defaultLinkType="1">
+    <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path=""/>
       <libraryPathEntry kind="1" linkType="1" path="${OPENZOOM_HOME}/lib"/>
     </libraryPath>
