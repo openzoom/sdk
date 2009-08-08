@@ -1,2 +1,5 @@
 # .gitignore
 .DS_Store
+bin-debug
+bin-release
+build

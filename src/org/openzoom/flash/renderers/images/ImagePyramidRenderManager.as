@@ -21,28 +21,28 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.BitmapData;
-import flash.display.Graphics;
-import flash.display.Shape;
-import flash.display.Sprite;
-import flash.events.Event;
-import flash.geom.Matrix;
-import flash.geom.Point;
-import flash.geom.Rectangle;
-import flash.utils.getTimer;
+import flash.display.BitmapData
+import flash.display.Graphics
+import flash.display.Shape
+import flash.display.Sprite
+import flash.events.Event
+import flash.geom.Matrix
+import flash.geom.Point
+import flash.geom.Rectangle
+import flash.utils.getTimer
 
-import org.openzoom.flash.core.openzoom_internal;
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.net.INetworkQueue;
-import org.openzoom.flash.scene.IMultiScaleScene;
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.utils.Cache;
-import org.openzoom.flash.utils.IDisposable;
-import org.openzoom.flash.utils.MortonOrder;
-import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.core.openzoom_internal
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.IImagePyramidLevel
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor
+import org.openzoom.flash.events.ViewportEvent
+import org.openzoom.flash.net.INetworkQueue
+import org.openzoom.flash.scene.IMultiScaleScene
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene
+import org.openzoom.flash.utils.Cache
+import org.openzoom.flash.utils.IDisposable
+import org.openzoom.flash.utils.MortonOrder
+import org.openzoom.flash.viewport.INormalizedViewport
 
 /**
  * @private
@@ -278,7 +278,7 @@ public final class ImagePyramidRenderManager implements IDisposable
                         done = false
                         continue
                     }
-                    
+
                     // Prepare alpha bitmap
                     if (tile.fadeStart == 0)
                         tile.fadeStart = currentTime
@@ -291,7 +291,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 
                     if (tile.alpha < 1)
                         done = false
-                        
+
                     renderingQueue.push(tile)
                }
             }
@@ -322,7 +322,7 @@ public final class ImagePyramidRenderManager implements IDisposable
             tile = renderingQueue.pop()
 
             var textureMap:BitmapData
-            
+
             if (tile.alpha < 1)
             {
                 invalidateDisplayList()
@@ -393,7 +393,7 @@ public final class ImagePyramidRenderManager implements IDisposable
     }
 
     private static const ZERO_POINT:Point = new Point(0, 0)
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers

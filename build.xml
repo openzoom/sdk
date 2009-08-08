@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+//
+//  OpenZoom
+//
+//  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
+//
+//  OpenZoom is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  OpenZoom is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with OpenZoom. If not, see <http://www.gnu.org/licenses/>.
+//
+////////////////////////////////////////////////////////////////////////////////
+-->
+<project name="OpenZoom" default="lib" basedir=".">
+	
+	<property name="OPENZOOM_HOME" location="${basedir}"/>
+	
+	<property file="${OPENZOOM_HOME}/local.properties"/>
+	<property file="${OPENZOOM_HOME}/build.properties"/>
+	
+    <property name="openzoom.version" value="0.5.0.0"/>
+    <property name="openzoom.lib" location="${OPENZOOM_HOME}/lib"/>
+    <property name="openzoom.src" location="${OPENZOOM_HOME}/src" />
+    <property name="openzoom.doc" location="${OPENZOOM_HOME}/docs" />
+    <property name="openzoom.doc.out" location="${OPENZOOM_HOME}/build/docs" />
+    <property name="openzoom.swc.out" location="${OPENZOOM_HOME}/build/lib" />
+	
+    <target name="clean" depends="lib-clean, doc-clean" description="Clean"/>
+	
+    <target name="lib-clean">
+        <delete dir="${openzoom.swc.out}" failOnError="false" includeEmptyDirs="true"/>
+        <mkdir dir="${openzoom.swc.out}"/>
+    </target>
+	
+    <target name="doc-clean">
+        <delete dir="${openzoom.doc.out}" failOnError="false" includeEmptyDirs="true"/>
+        <mkdir dir="${openzoom.doc.out}"/>
+    </target>
+
+    <target name="doc" depends="doc-clean, asdoc" description="Build documentation"/>
+	
+    <target name="asdoc">
+        <exec executable="${flex_sdk.asdoc}" failonerror="true">
+            <arg line='-source-path ${openzoom.src}'/>
+            <arg line='-doc-sources ${openzoom.src}/org/.'/>
+            <arg line='-library-path ${openzoom.lib}'/>
+            <arg line='-library-path ${flex_sdk.dir}/frameworks/libs/'/>
+            <arg line='-window-title "OpenZoom SDK"'/>
+            <arg line='-templates-path ${openzoom.doc}/templates'/>
+            <arg line='-output ${openzoom.doc.out}'/>
+        </exec>
+    </target>
+
+    <target name="lib" depends="lib-clean">
+        <exec executable="${flex_sdk.compc}" failonerror="true">
+            <arg line='-source-path ${openzoom.src}'/>
+            <arg line='-library-path ${openzoom.lib}'/>
+            <arg line='-library-path ${flex_sdk.dir}/frameworks/libs/'/>
+            <arg line="-library-path ${flex_sdk.dir}/frameworks/locale/en_US"/>
+            <arg line='-namespace http://ns.openzoom.org/sdk/2009 manifest.xml'/>
+            <arg line='-include-namespaces http://ns.openzoom.org/sdk/2009'/>
+            <arg line='-output ${openzoom.swc.out}/openzoom-${openzoom.version}.swc'/>
+        </exec>
+    </target>
+</project>

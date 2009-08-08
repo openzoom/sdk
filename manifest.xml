@@ -25,13 +25,12 @@
 
 	<!-- Utils -->
     <component id="ExternalMouseWheel" class="org.openzoom.flash.utils.ExternalMouseWheel"/>
-    <component id="ZOrder" class="org.openzoom.flash.utils.ZOrder"/>
 	
 	<!-- Controllers -->
     <component id="ContextMenuController" class="org.openzoom.flash.viewport.controllers.ContextMenuController"/>
     <component id="KeyboardController" class="org.openzoom.flash.viewport.controllers.KeyboardController"/>
     <component id="MouseController" class="org.openzoom.flash.viewport.controllers.MouseController"/>
-    
+
     <!-- Constraints -->
     <component id="CenterConstraint" class="org.openzoom.flash.viewport.constraints.CenterConstraint"/>
     <component id="CompositeConstraint" class="org.openzoom.flash.viewport.constraints.CompositeConstraint"/>
@@ -39,12 +38,12 @@
     <component id="ScaleConstraint" class="org.openzoom.flash.viewport.constraints.ScaleConstraint"/>
     <component id="VisibilityConstraint" class="org.openzoom.flash.viewport.constraints.VisibilityConstraint"/>
     <component id="ZoomConstraint" class="org.openzoom.flash.viewport.constraints.ZoomConstraint"/>
-    
+
     <!-- Transformers -->
     <component id="NullTransformer" class="org.openzoom.flash.viewport.transformers.NullTransformer"/>
     <component id="TweenerTransformer" class="org.openzoom.flash.viewport.transformers.TweenerTransformer"/>
-	
-	<!-- Flex Components -->
+    
+    <!-- Flex Components -->
     <component id="DeepZoomContainer" class="org.openzoom.flex.components.DeepZoomContainer"/>
     <component id="MultiScaleContainer" class="org.openzoom.flex.components.MultiScaleContainer"/>
     <component id="MultiScaleImage" class="org.openzoom.flex.components.MultiScaleImage"/>
