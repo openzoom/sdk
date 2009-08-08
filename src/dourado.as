@@ -41,11 +41,9 @@ package
 
 import flash.display.Sprite;
 import flash.display.StageAlign;
-import flash.display.StageDisplayState;
 import flash.display.StageQuality;
 import flash.display.StageScaleMode;
 import flash.events.Event;
-import flash.events.KeyboardEvent;
 import flash.utils.setTimeout;
 
 import org.openzoom.flash.components.MemoryMonitor;
@@ -58,7 +56,7 @@ import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
 import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
-import org.openzoom.flash.viewport.constraints.MappingConstraint;
+import org.openzoom.flash.viewport.constraints.MapConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
 import org.openzoom.flash.viewport.constraints.ZoomConstraint;
@@ -142,7 +140,7 @@ public class dourado extends Sprite
         var centerConstraint:CenterConstraint = new CenterConstraint()
         
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
-        var mappingConstraint:MappingConstraint = new MappingConstraint()
+        var mappingConstraint:MapConstraint = new MapConstraint()
 
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
         compositeContraint.constraints = [scaleConstraint,

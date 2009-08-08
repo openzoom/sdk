@@ -62,7 +62,6 @@ import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
 import org.openzoom.flash.viewport.constraints.FillConstraint;
-import org.openzoom.flash.viewport.constraints.MappingConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
 import org.openzoom.flash.viewport.constraints.ZoomConstraint;
@@ -168,7 +167,6 @@ public class OpenZoomDescriptorTest extends Sprite
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
         scaleConstraint.maxScale = source.width / container.sceneWidth * numColumns * 4
 
-        var mappingConstraint:MappingConstraint = new MappingConstraint()
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
         visibilityContraint.visibilityRatio = 1.0
 

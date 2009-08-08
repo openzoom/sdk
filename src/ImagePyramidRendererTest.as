@@ -48,13 +48,12 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
-import org.openzoom.flash.viewport.constraints.MappingConstraint;
+import org.openzoom.flash.viewport.constraints.MapConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
@@ -258,7 +257,7 @@ public class ImagePyramidRendererTest extends Sprite
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
         scaleConstraint.maxScale = source.width / container.sceneWidth * numColumns * 4
 
-        var mappingConstraint:MappingConstraint = new MappingConstraint()
+        var mappingConstraint:MapConstraint = new MapConstraint()
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
 
 //        var centerConstraint:CenterConstraint = new CenterConstraint()
