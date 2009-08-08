@@ -46,7 +46,7 @@ import org.openzoom.flash.viewport.IViewportTransform;
  * Provides basic bounds checking by ensuring that a certain ratio of the scene
  * is always visible.
  */
-public class VisibilityConstraint implements IViewportConstraint
+public final class VisibilityConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
     //

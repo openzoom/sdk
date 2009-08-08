@@ -45,7 +45,7 @@ import org.openzoom.flash.viewport.IViewportTransform;
 /**
  * Provides a way to limit the minimum and maximum zoom the viewport can reach.
  */
-public class ZoomConstraint implements IViewportConstraint
+public final class ZoomConstraint implements IViewportConstraint
 {
     //--------------------------------------------------------------------------
     //

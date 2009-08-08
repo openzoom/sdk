@@ -32,10 +32,10 @@ import org.openzoom.flash.utils.math.clamp;
 import org.openzoom.flash.viewport.IViewportController;
 
 /**
- * Viewport controller for mouse navigation.
+ * Mouse controller for viewports.
  */
-public class MouseController extends ViewportControllerBase
-                             implements IViewportController
+public final class MouseController extends ViewportControllerBase
+                                   implements IViewportController
 {
     //--------------------------------------------------------------------------
     //

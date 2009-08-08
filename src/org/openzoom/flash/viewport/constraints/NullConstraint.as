@@ -45,6 +45,7 @@ import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransform;
 
 /**
+ * NullConstraint doesn't aplly any constraints to a viewport.
  * Null Object Pattern applied to IViewportConstraint.
  */
 public final class NullConstraint implements IViewportConstraint

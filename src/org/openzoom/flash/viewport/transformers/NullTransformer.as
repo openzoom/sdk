@@ -25,11 +25,11 @@ import org.openzoom.flash.viewport.IViewportTransform;
 import org.openzoom.flash.viewport.IViewportTransformer;
 
 /**
- * Null Object Pattern applied to IViewportTransformer.
  * The NullTransformer transforms the given viewport without any kind of animation.
+ * Null Object Pattern applied to IViewportTransformer.
  */
-public class NullTransformer extends ViewportTransformerBase
-                             implements IViewportTransformer
+public final class NullTransformer extends ViewportTransformerBase
+                                   implements IViewportTransformer
 {
     //--------------------------------------------------------------------------
     //

@@ -54,10 +54,10 @@ import org.openzoom.flash.utils.FullScreenUtil;
 import org.openzoom.flash.viewport.IViewportController;
 
 /**
- * Viewport controller that uses the context menu.
+ * Context menu controller for viewports.
  */
-public class ContextMenuController extends ViewportControllerBase
-                                   implements IViewportController
+public final class ContextMenuController extends ViewportControllerBase
+                                         implements IViewportController
 {
     //--------------------------------------------------------------------------
     //
@@ -230,7 +230,7 @@ public class ContextMenuController extends ViewportControllerBase
         
         if (_showAll)
            showAllMenu = addContextMenuItem(showAllMenuCaption,
-                                               showAllMenu_menuItemSelectHandler)
+                                            showAllMenu_menuItemSelectHandler)
         else
             removeContextMenuItem(showAllMenu,
                                   showAllMenu_menuItemSelectHandler)
@@ -259,8 +259,8 @@ public class ContextMenuController extends ViewportControllerBase
         
         if (_fullScreen)
             fullScreenMenu = addContextMenuItem(view.stage.displayState == StageDisplayState.NORMAL ?
-                                                   fullScreenMenuEnterCaption : fullScreenMenuExitCaption,
-                                                   fullScreenMenu_menuItemSelectHandler)
+                                                fullScreenMenuEnterCaption : fullScreenMenuExitCaption,
+                                                fullScreenMenu_menuItemSelectHandler)
         else
             removeContextMenuItem(fullScreenMenu,
                                   fullScreenMenu_menuItemSelectHandler)
@@ -502,7 +502,9 @@ public class ContextMenuController extends ViewportControllerBase
         
         _fullScreenMenuExitCaption = value
         
-        if (fullScreenMenu && view.stage.displayState == StageDisplayState.FULL_SCREEN)
+        if (fullScreenMenu &&
+            (view.stage.displayState == StageDisplayState.FULL_SCREEN ||
+             view.stage.displayState == "fullScreenInteractive"))
             fullScreenMenu.caption = _fullScreenMenuExitCaption
     }
 

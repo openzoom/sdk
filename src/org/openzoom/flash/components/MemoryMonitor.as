@@ -53,7 +53,7 @@ import flash.text.TextFormatAlign;
 /**
  * Displays the total memory consumption of all running Flash Player instances.
  */
-public class MemoryMonitor extends Sprite
+public final class MemoryMonitor extends Sprite
 {
     //--------------------------------------------------------------------------
     //

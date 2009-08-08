@@ -17,7 +17,7 @@ import flash.utils.Timer;
  * License: Unknown
  * 
  */
-public class Spinner extends Sprite
+public final class Spinner extends Sprite
 {
     //--------------------------------------------------------------------------
     //
@@ -95,6 +95,7 @@ public class Spinner extends Sprite
     //  Methods: Display list
     //
     //--------------------------------------------------------------------------
+    
     private function draw():void
     {
         var i:int = numSlices
