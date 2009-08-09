@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--////////////////////////////////////////////////////////////////////////////
+
+    OpenZoom SDK Example
+    Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
+
+    License: MPL 1.1/GPL 3/LGPL 3
+
+/////////////////////////////////////////////////////////////////////////////-->
 <mx:Application
     xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:components="org.openzoom.flex.components.*"

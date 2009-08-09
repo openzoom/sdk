@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-////////////////////////////////////////////////////////////////////////////////
+<!--////////////////////////////////////////////////////////////////////////////
 
     OpenZoom Visualization: Z-Order
     Developed by Daniel Gasienica
 
     Blog: http://gasi.ch/blog/openzoom-visualization-z-order/
-    License: GPL3
+    License: MPL 1.1/GPL 3/LGPL 3
 
-////////////////////////////////////////////////////////////////////////////////
--->
+/////////////////////////////////////////////////////////////////////////////-->
 <mx:Application
     xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:openzoom="org.openzoom.flex.components.*"
@@ -42,7 +40,7 @@
             import mx.events.FlexEvent
 
             import org.openzoom.flash.utils.ExternalMouseWheel
-            import org.openzoom.flash.utils.ZOrder
+            import org.openzoom.flash.utils.MortonOrder
 
 
             private static const DEFAULT_ITERATIONS:uint = 15000
@@ -74,7 +72,7 @@
                 
                 for (var i:int = 0; i < iterations; i++)
                 {
-                    position = org.openzoom.flash.utils.ZOrder.getPosition(i)
+                    position = MortonOrder.getPosition(i)
                     drawingPosition = new Point(position.x * SPACING,
                                                 position.y * SPACING)
                     target.lineStyle(0, i / iterations * 0xFFFFFF)
@@ -114,7 +112,7 @@
             />
     </mx:HBox>
 
-    <openzoom:MultiScaleContainer
+    <openzoom:MultiScaleContainer2
         id="container"
         top="48"
         right="0"
@@ -129,5 +127,5 @@
         <openzoom:transformer>
             <transformers:TweenerTransformer/>
         </openzoom:transformer>
-    </openzoom:MultiScaleContainer>
+    </openzoom:MultiScaleContainer2>
 </mx:Application>
