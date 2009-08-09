@@ -8,7 +8,7 @@
     backgroundGradientColors="[0, 0]"
     layout="absolute"
     >
-    <openzoom:MultiScaleImage
+    <openzoom:MultiScaleImage2
         source="../../../../resources/images/deepzoom/morocco.xml"
         id="image"
         top="0"
@@ -17,11 +17,12 @@
         left="0"
         >
         <openzoom:controllers>
+            <controllers:ContextMenuController/>
             <controllers:MouseController/>
             <controllers:KeyboardController/>
         </openzoom:controllers>
         <openzoom:constraint>
             <constraints:CenterConstraint/>
         </openzoom:constraint>
-    </openzoom:MultiScaleImage>
+    </openzoom:MultiScaleImage2>
 </mx:Application>
