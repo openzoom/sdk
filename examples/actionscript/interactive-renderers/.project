@@ -18,7 +18,7 @@
 		<link>
 			<name>[source path] OpenZoom SDK</name>
 			<type>2</type>
-			<location>/Users/dani/Documents/workspace-github/openzoom/sdk/src</location>
+			<location>OPENZOOM_HOME/src</location>
 		</link>
 	</linkedResources>
 </projectDescription>

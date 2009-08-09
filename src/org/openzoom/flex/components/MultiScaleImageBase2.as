@@ -46,7 +46,7 @@ import flash.geom.Rectangle;
 
 import mx.core.UIComponent;
 
-import org.openzoom.flash.components.IMultiScaleContainer;
+import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.NormalizedViewport;
@@ -247,6 +247,24 @@ public class MultiScaleImageBase2 extends UIComponent
 
             dispatchEvent(new Event("controllersChanged"))
         }
+    }
+    
+    //--------------------------------------------------------------------------
+    //
+    //  Properties: ILoaderClient
+    //
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  loader
+    //----------------------------------
+
+    /**
+     * @copy org.openzoom.flash.net.ILoaderClient#loader
+     */
+    public function get loader():INetworkQueue
+    {
+        return container ? container.loader : null
     }
 
     //--------------------------------------------------------------------------

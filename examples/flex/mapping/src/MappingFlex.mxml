@@ -12,73 +12,77 @@
     >
     <mx:Script>
         <![CDATA[
-        	import org.openzoom.flash.utils.math.clamp;
+    		import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
+    		import org.openzoom.flash.viewport.IViewportTransform;
+    		import org.openzoom.flash.viewport.transformers.SmoothTransformer;
 
         	import mx.events.FlexEvent
         	
             import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor
             import org.openzoom.flash.events.ViewportEvent
         	import org.openzoom.flash.utils.ExternalMouseWheel
-            import org.openzoom.flash.viewport.constraints.MappingConstraint
+        	import org.openzoom.flash.utils.math.clamp;
+            import org.openzoom.flash.viewport.constraints.MapConstraint
 
-
-            private static const DEFAULT_SOURCE:String = "openstreetmap.xml"
+            private var transformer:SmoothTransformer
 
             private function initializeHandler(event:FlexEvent):void
             {
                 Security.loadPolicyFile("http://tile.openstreetmap.org/crossdomain.xml")
-                map.addEventListener(Event.COMPLETE, image_completeHandler)
+
+                var descriptor:IMultiScaleImageDescriptor = new OpenStreetMapDescriptor()
+                map.source = descriptor
+
+                if (descriptor)
+                    scaleConstraint.maxScale = descriptor.width / map.sceneWidth
             }
             
             private function applicationCompleteHandler(event:FlexEvent):void
             {
             	// Enable mouse wheel support on Mac OS
             	ExternalMouseWheel.initialize(stage)
-            }
-
-            private function image_completeHandler(event:Event):void
-            {
-                var descriptor:IMultiScaleImageDescriptor =
-                        map.source as IMultiScaleImageDescriptor
-
-                if (descriptor)
-                    scaleConstraint.maxScale = descriptor.width / map.sceneWidth
+            	transformer = SmoothTransformer.getInstance(map.viewport)
             }
 
             private function show(x:Number, y:Number, width:Number, height:Number):void
             {
                 var bounds:Rectangle = new Rectangle(x, y, width, height)
-                map.fitToBounds(bounds)
+                
+                var t:IViewportTransform = map.viewport.transform
+                t.fitToBounds(bounds)
+                transformer.transform(t)
+                
+//                map.fitToBounds(bounds)
             }
 
         ]]>
     </mx:Script>
 
-    <openzoom:MultiScaleImage
+    <openzoom:MultiScaleImage2
         id="map"
         top="0"
         right="0"
         bottom="0"
         left="0"
-        source="{DEFAULT_SOURCE}"
         >
         <openzoom:controllers>
+            <controllers:ContextMenuController/>
             <controllers:MouseController/>
             <controllers:KeyboardController
-                zoomInFactor="2"
-                zoomOutFactor="0.5"
+                zoomInFactor="2.01"
+                zoomOutFactor="0.49"
                 />
         </openzoom:controllers>
         <openzoom:constraint>
             <constraints:CompositeConstraint>
-                <constraints:MappingConstraint/>
                 <constraints:ScaleConstraint id="scaleConstraint"/>
+                <constraints:MapConstraint/>
             </constraints:CompositeConstraint>
         </openzoom:constraint>
         <openzoom:transformer>
             <transformers:TweenerTransformer/>
         </openzoom:transformer>
-    </openzoom:MultiScaleImage>
+    </openzoom:MultiScaleImage2>
 
     <mx:HBox
         left="12"
@@ -90,5 +94,5 @@
         <mx:Button label="Zürich"   click="show(0.52368800733271430, 0.35020113902615230, 0.00008156161479865066, 0.00004895413071291973)" focusEnabled="false"/>
     </mx:HBox>
     
-    <mx:ProgressBar source="{map}" right="12" bottom="12" labelPlacement="left" color="#FFFFFF"/>
+    <mx:ProgressBar source="{map.loader}" right="12" bottom="12" labelPlacement="left" color="#FFFFFF"/>
 </mx:Application>
