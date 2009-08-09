@@ -17,8 +17,8 @@
     </mx:Style>
     <mx:Script>
         <![CDATA[
-
-            import test.Circle;
+        
+    		import shapes.Circle;
             import mx.controls.Button;
 
 
@@ -37,7 +37,7 @@
             {
                 if (Math.random() < 0.042)
                 {
-                    var circle:Circle = new Circle()
+                    var circle:shapes.Circle = new Circle()
                     circle.color = Math.random() * 0xFFFFFF
                     circle.radius = Math.random() * 1000 + 20
                     circle.x = Math.max(0, Math.random() * container.sceneWidth  - circle.radius - 100)
@@ -81,7 +81,7 @@
         ]]>
     </mx:Script>
 
-    <openzoom:MultiScaleContainer
+    <openzoom:MultiScaleContainer2
         id="container"
         top="40"
         right="0"
@@ -91,14 +91,14 @@
         sceneHeight="8000"
         >
         <openzoom:controllers>
-            <controllers:KeyboardController/>
-            <controllers:MouseController/>
             <controllers:ContextMenuController/>
+            <controllers:MouseController/>
+            <controllers:KeyboardController/>
         </openzoom:controllers>
         <openzoom:transformer>
             <transformers:TweenerTransformer/>
         </openzoom:transformer>
-    </openzoom:MultiScaleContainer>
+    </openzoom:MultiScaleContainer2>
 
     <mx:Button
         label="Play!"
