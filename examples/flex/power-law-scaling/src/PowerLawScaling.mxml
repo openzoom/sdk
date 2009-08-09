@@ -11,14 +11,15 @@
     >
     <mx:Script>
         <![CDATA[
-        	import org.openzoom.examples.powerLawScaling.renderers.SimplePinRenderer;
-        	import org.openzoom.flash.renderers.Renderer;
-
+        
             import mx.events.FlexEvent;
             
+        	import org.openzoom.examples.powerLawScaling.renderers.SimplePinRenderer;
+            import org.openzoom.examples.powerLawScaling.renderers.AdvancedPinRenderer;
+            
+        	import org.openzoom.flash.renderers.Renderer;
             import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
             import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
-            import org.openzoom.examples.powerLawScaling.renderers.AdvancedPinRenderer;
 
 
             [Bindable]
@@ -48,12 +49,12 @@
                     map.addChild(pin)
                 }
 
-                scaleConstraint.maxScale = mapDescriptor.width / map.sceneWidth / 24
+                scaleConstraint.maxScale = mapDescriptor.width / map.sceneWidth
             }
 
         ]]>
     </mx:Script>
-    <openzoom:MultiScaleImage
+    <openzoom:MultiScaleImage2
         id="map"
         top="0"
         right="0"
@@ -76,5 +77,5 @@
                <constraints:ScaleConstraint id="scaleConstraint"/>
             </constraints:CompositeConstraint>
         </openzoom:constraint>
-    </openzoom:MultiScaleImage>
+    </openzoom:MultiScaleImage2>
 </mx:Application>
