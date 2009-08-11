@@ -28,7 +28,7 @@ import flash.events.Event;
 import flash.system.Security;
 import flash.utils.setTimeout;
 
-import org.openzoom.flash.components.MultiScaleImage2;
+import org.openzoom.flash.components.MultiScaleImage;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.utils.ExternalMouseWheel;
@@ -74,7 +74,7 @@ public class MappingFlash extends Sprite
         ExternalMouseWheel.initialize(stage)
 
         // Map setup
-        map = new MultiScaleImage2()
+        map = new MultiScaleImage()
 
         // Controllers handle user input
         var mouseController:MouseController = new MouseController()
@@ -148,7 +148,7 @@ public class MappingFlash extends Sprite
     //
     //--------------------------------------------------------------------------
 
-    private var map:MultiScaleImage2
+    private var map:MultiScaleImage
 
     // We're keeping a reference to the scale constraints
     // since the maxScale is only set after the image has loaded

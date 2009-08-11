@@ -50,7 +50,7 @@ internal class OpenZoomSDK
 {
     // Flash components
     import org.openzoom.flash.components.MemoryMonitor; MemoryMonitor;
-    import org.openzoom.flash.components.MultiScaleImage; MultiScaleImage;
+    import org.openzoom.flash.components.MultiScaleImage2; MultiScaleImage2;
     import org.openzoom.flash.components.SceneNavigator; SceneNavigator;
     import org.openzoom.flash.components.Spinner; Spinner;
 

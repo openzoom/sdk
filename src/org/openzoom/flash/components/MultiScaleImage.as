@@ -48,6 +48,7 @@ import flash.net.URLRequest;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.ImagePyramidDescriptorFactory;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
+import org.openzoom.flash.utils.uri.resolveURI;
 
 /**
  *  Dispatched when the image has successfully loaded.
@@ -79,7 +80,7 @@ import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
  * The animation can be customized by adding a viewport transformer through the <code>transformer</code> property.
  * Zoom, visibility or custom constraints can be added through the <code>constraint</code> property.
  */
-public final class MultiScaleImage2 extends MultiScaleImageBase2
+public final class MultiScaleImage extends MultiScaleImageBase
 {
     //--------------------------------------------------------------------------
     //
@@ -90,7 +91,7 @@ public final class MultiScaleImage2 extends MultiScaleImageBase2
     /**
      * Constructor.
      */
-    public function MultiScaleImage2()
+    public function MultiScaleImage()
     {
         super()
 
@@ -146,8 +147,7 @@ public final class MultiScaleImage2 extends MultiScaleImageBase2
             if (String(value) === url)
                 return
 
-//            url = resolveURI(loaderInfo.url, String(value))
-            url = String(value)
+            url = resolveURI(loaderInfo.url, String(value))
             urlLoader = new URLLoader(new URLRequest(url))
 
             urlLoader.addEventListener(Event.COMPLETE,

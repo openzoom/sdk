@@ -49,7 +49,7 @@ import flash.geom.Rectangle;
 import flash.utils.setTimeout;
 
 import org.openzoom.flash.components.MemoryMonitor;
-import org.openzoom.flash.components.MultiScaleImage2;
+import org.openzoom.flash.components.MultiScaleImage;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
 import org.openzoom.flash.events.ViewportEvent;
@@ -83,7 +83,7 @@ public class GigaPanViewer extends Sprite
 
         ExternalMouseWheel.initialize(stage)
 
-        image = new MultiScaleImage2()
+        image = new MultiScaleImage()
         image.transformer = new TweenerTransformer()
 
         // Smooth transformer
@@ -146,7 +146,7 @@ public class GigaPanViewer extends Sprite
         setTimeout(image.showAll, 500, true)
     }
 
-    private var image:MultiScaleImage2
+    private var image:MultiScaleImage
     private var transformer:SmoothTransformer
 
     private var memoryMonitor:MemoryMonitor

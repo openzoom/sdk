@@ -56,9 +56,9 @@ import org.openzoom.flash.viewport.IViewportTransformer;
  *
  * Base class for MultiScaleImage and DeepZoomContainer.
  */
-public class MultiScaleImageBase2 extends Sprite
-                                  implements IMultiScaleContainer,
-                                             ILoaderClient
+public class MultiScaleImageBase extends Sprite
+                                 implements IMultiScaleContainer,
+                                            ILoaderClient
 {
     //--------------------------------------------------------------------------
     //
@@ -80,7 +80,7 @@ public class MultiScaleImageBase2 extends Sprite
     /**
      * Constructor.
      */
-    public function MultiScaleImageBase2()
+    public function MultiScaleImageBase()
     {
         createChildren()
     }
@@ -91,7 +91,7 @@ public class MultiScaleImageBase2 extends Sprite
     //
     //--------------------------------------------------------------------------
 
-    protected var container:MultiScaleContainer2
+    protected var container:MultiScaleContainer
 
     //--------------------------------------------------------------------------
     //
@@ -254,7 +254,7 @@ public class MultiScaleImageBase2 extends Sprite
      */
     private function createContainer():void
     {
-        container = new MultiScaleContainer2()
+        container = new MultiScaleContainer()
         super.addChild(container)
     }
 

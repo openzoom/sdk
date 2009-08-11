@@ -288,6 +288,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
      */
     public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
+    	// FIXME
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
