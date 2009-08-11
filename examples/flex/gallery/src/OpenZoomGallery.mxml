@@ -97,7 +97,7 @@
          width="320"
          />
 
-    <openzoom:MultiScaleImage2
+    <openzoom:MultiScaleImage
         id="image"
         top="{imagesComboBox.height + 16}"
         right="0"
@@ -114,7 +114,7 @@
             <controllers:MouseController/>
             <controllers:KeyboardController/>
         </openzoom:controllers>
-    </openzoom:MultiScaleImage2>
+    </openzoom:MultiScaleImage>
 
     <mx:Label
         text="All Images Copyright Microsoft"

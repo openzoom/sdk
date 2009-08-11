@@ -72,7 +72,7 @@ import mx.core.UIComponent
 /**
  * Generic container for multiscale content.
  */
-public final class MultiScaleContainer2 extends UIComponent
+public final class MultiScaleContainer extends UIComponent
                                         implements /*IMultiScaleContainer,*/
                                                    ILoaderClient
 {
@@ -99,7 +99,7 @@ public final class MultiScaleContainer2 extends UIComponent
     /**
      * Constructor.
      */
-    public function MultiScaleContainer2()
+    public function MultiScaleContainer()
     {
         super()
 

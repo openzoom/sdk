@@ -80,7 +80,7 @@ import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
  * as Deep Zoom collections (DZC) created by Microsoft Deep Zoom Composer,
  * DeepZoomTools.dll, Python Deep Zoom Tools (deepzoom.py) or others.
  */
-public final class DeepZoomContainer extends MultiScaleImageBase2
+public final class DeepZoomContainer extends MultiScaleImageBase
 {
     //--------------------------------------------------------------------------
     //

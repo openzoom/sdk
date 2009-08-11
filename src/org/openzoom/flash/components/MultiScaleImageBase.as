@@ -56,9 +56,9 @@ import org.openzoom.flash.viewport.IViewportTransformer;
  *
  * Base class for MultiScaleImage and DeepZoomContainer.
  */
-public class MultiScaleImageBase extends Sprite
-                                 implements IMultiScaleContainer,
-                                            ILoaderClient
+internal class MultiScaleImageBase extends Sprite
+                                   implements IMultiScaleContainer,
+                                              ILoaderClient
 {
     //--------------------------------------------------------------------------
     //

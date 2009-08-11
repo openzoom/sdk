@@ -26,7 +26,6 @@
             import org.openzoom.flash.events.NetworkRequestEvent;
             import org.openzoom.flash.net.INetworkRequest;
             import org.openzoom.flash.net.NetworkQueue;
-            import org.openzoom.flash.renderers.MultiScaleImageRenderer;
 
             import mx.events.FlexEvent;
 
@@ -86,7 +85,7 @@
 
         ]]>
     </mx:Script>
-    <components:MultiScaleContainer2
+    <components:MultiScaleContainer
         id="container"
         top="0"
         right="0"
@@ -101,7 +100,7 @@
             <controllers:KeyboardController/>
             <controllers:MouseController smoothPanning="false"/>
         </components:controllers>
-    </components:MultiScaleContainer2>
+    </components:MultiScaleContainer>
 
     <mx:VSlider
         id="layerAlphaSlider"

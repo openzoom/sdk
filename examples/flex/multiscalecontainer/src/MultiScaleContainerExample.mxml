@@ -89,7 +89,7 @@
         ]]>
     </mx:Script>
 
-    <openzoom:MultiScaleContainer2
+    <openzoom:MultiScaleContainer
         id="container"
         top="40"
         right="0"
@@ -106,7 +106,7 @@
         <openzoom:transformer>
             <transformers:TweenerTransformer/>
         </openzoom:transformer>
-    </openzoom:MultiScaleContainer2>
+    </openzoom:MultiScaleContainer>
 
     <mx:Button
         label="Play!"

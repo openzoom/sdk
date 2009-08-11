@@ -79,7 +79,7 @@ import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
  * The animation can be customized by adding a viewport transformer through the <code>transformer</code> property.
  * Zoom, visibility or custom constraints can be added through the <code>constraint</code> property.
  */
-public final class MultiScaleImage2 extends MultiScaleImageBase2
+public final class MultiScaleImage extends MultiScaleImageBase
 {
     //--------------------------------------------------------------------------
     //
@@ -90,7 +90,7 @@ public final class MultiScaleImage2 extends MultiScaleImageBase2
     /**
      * Constructor.
      */
-    public function MultiScaleImage2()
+    public function MultiScaleImage()
     {
         super()
 

@@ -55,7 +55,6 @@
     		import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
         	import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
             import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor;
-            import org.openzoom.flash.renderers.MultiScaleImageRenderer;
             import org.openzoom.flash.utils.ExternalMouseWheel;
 
             //------------------------------------------------------------------
@@ -351,7 +350,7 @@
         ]]>
     </mx:Script>
 
-    <components:MultiScaleContainer2
+    <components:MultiScaleContainer
         id="container"
         top="40" right="0" bottom="0" left="0"
         sceneWidth="48000"
@@ -365,7 +364,7 @@
         <components:transformer>
             <transformers:TweenerTransformer/>
         </components:transformer>
-    </components:MultiScaleContainer2>
+    </components:MultiScaleContainer>
     <mx:HBox
         horizontalCenter="0"
         top="10"

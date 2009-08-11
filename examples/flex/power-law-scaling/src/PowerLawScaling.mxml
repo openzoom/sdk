@@ -62,7 +62,7 @@
 
         ]]>
     </mx:Script>
-    <openzoom:MultiScaleImage2
+    <openzoom:MultiScaleImage
         id="map"
         top="0"
         right="0"
@@ -85,5 +85,5 @@
                <constraints:ScaleConstraint id="scaleConstraint"/>
             </constraints:CompositeConstraint>
         </openzoom:constraint>
-    </openzoom:MultiScaleImage2>
+    </openzoom:MultiScaleImage>
 </mx:Application>
