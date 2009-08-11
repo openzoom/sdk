@@ -24,9 +24,9 @@ import sys
 
 def convert(file):
     for line in fileinput.FileInput(file, inplace=1):
-        line = re.sub("( )+$", "", line)
-        line = re.sub("\t", "    ", line)
-        line = re.sub("^import;$", "", line)
+        line = re.sub(r" +$", "", line)
+        line = re.sub(r"\t", "    ", line)
+        line = re.sub(r"^import (.*);$", r"import $1", line)
         
         # prevent messing up ternary expressions
         if line.count("?") == 0:
@@ -42,21 +42,16 @@ def convert(file):
         line = re.sub("switch\(", "switch (", line)
         sys.stdout.write(line)
 
-
 for root, dirs, files in os.walk("src"):
     for file in files:
         _, ext = os.path.splitext(file)
         if ext == ".as" and str(file).count("ExternalMouseWheel") == 0:
             convert(os.path.join(root, file))
-    if ".svn" in dirs:
-        dirs.remove(".svn")
 
 for root, dirs, files in os.walk("test"):
     for file in files:
         _, ext = os.path.splitext(file)
         if ext == ".as":
             convert(os.path.join(root, file))
-    if ".svn" in dirs:
-        dirs.remove(".svn")
         
 print("Done.")
