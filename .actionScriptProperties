@@ -3,6 +3,19 @@
   <compiler additionalCompilerArguments="-locale en_US -default-size 1024 768" autoRSLOrdering="true" copyDependentFiles="false" flexSDK="Flex 4.0" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="test"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/actionscript/interactive-renderers/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/actionscript/mapping/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/deepzoomcontainer/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/flash-text-engine/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/flickr-djatoka/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/gallery/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/isthisyourluggage/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/mapping/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/mapping-layers/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/multiscalecontainer/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/multiscaleimage/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/power-law-scaling/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/z-order/src"/>
     </compilerSourcePath>
     <libraryPath defaultLinkType="1">
       <libraryPathEntry kind="4" path=""/>

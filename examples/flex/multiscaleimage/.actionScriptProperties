@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="MultiScaleImage.mxml" projectUUID="7b68d03b-7a2f-42fb-a284-03d060152797" version="6">
+<actionScriptProperties mainApplicationPath="MultiScaleImageExample.mxml" projectUUID="7b68d03b-7a2f-42fb-a284-03d060152797" version="6">
   <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="${OPENZOOM_HOME}/src"/>
@@ -11,7 +11,7 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="MultiScaleImage.mxml"/>
+    <application path="MultiScaleImageExample.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>

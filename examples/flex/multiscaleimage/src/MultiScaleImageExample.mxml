@@ -16,7 +16,7 @@
     backgroundGradientColors="[0, 0]"
     layout="absolute"
     >
-    <openzoom:MultiScaleImage2
+    <openzoom:MultiScaleImage
         source="../../../../resources/images/deepzoom/morocco.xml"
         id="image"
         top="0"
@@ -32,5 +32,5 @@
         <openzoom:constraint>
             <constraints:CenterConstraint/>
         </openzoom:constraint>
-    </openzoom:MultiScaleImage2>
+    </openzoom:MultiScaleImage>
 </mx:Application>

@@ -43,28 +43,35 @@ import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
+import flash.events.KeyboardEvent;
+import flash.geom.Rectangle;
 
 import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleContainer;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
+import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor;
+import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.ExternalMouseWheel;
+import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
-import org.openzoom.flash.viewport.constraints.MapConstraint;
+import org.openzoom.flash.viewport.constraints.FillConstraint;
 import org.openzoom.flash.viewport.constraints.ScaleConstraint;
 import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
+import org.openzoom.flash.viewport.constraints.ZoomConstraint;
 import org.openzoom.flash.viewport.controllers.ContextMenuController;
 import org.openzoom.flash.viewport.controllers.KeyboardController;
 import org.openzoom.flash.viewport.controllers.MouseController;
+import org.openzoom.flash.viewport.transformers.SmoothTransformer;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
-public class ImagePyramidRendererTest extends Sprite
+public class DjatokaTest extends Sprite
 {
-    public function ImagePyramidRendererTest()
+    public function DjatokaTest()
     {
         stage.align = StageAlign.TOP_LEFT
         stage.scaleMode = StageScaleMode.NO_SCALE
@@ -75,14 +82,14 @@ public class ImagePyramidRendererTest extends Sprite
         ExternalMouseWheel.initialize(stage)
 
         container = new MultiScaleContainer()
-        var transformer:TweenerTransformer = new TweenerTransformer()
-        container.transformer = transformer
+        var tweenerTransformer:TweenerTransformer = new TweenerTransformer()
+        container.transformer = tweenerTransformer
+        
+        // Smooth transformer
+        smoothTransformer = SmoothTransformer.getInstance(container.viewport)
 
+        // Controllers
         var mouseController:MouseController = new MouseController()
-//        mouseController.minMouseWheelZoomInFactor = 2.01
-//        mouseController.minMouseWheelZoomOutFactor = 0.45
-//        mouseController.smoothPanning = false
-
         var keyboardController:KeyboardController = new KeyboardController()
         var contextMenuController:ContextMenuController = new ContextMenuController()
         container.controllers = [mouseController,
@@ -102,17 +109,6 @@ public class ImagePyramidRendererTest extends Sprite
         var path:String
         var aspectRatio:Number
 
-
-        // Deep Zoom
-        path = "http://static.gasi.ch/images/3229924166/image.dzi"
-        path = "../resources/images/deepzoom/billions.xml"
-        source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
-        numRenderers = 263
-        numColumns = 36
-        aspectRatio = source.width / source.height
-        width = 512
-        height = width / aspectRatio
-
         // Deep Zoom: Carina Nebula
         path = "http://seadragon.com/content/images/CarinaNebula.dzi"
         source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
@@ -121,113 +117,60 @@ public class ImagePyramidRendererTest extends Sprite
         aspectRatio = source.width / source.height
         width = 16384
         height = 16384 / aspectRatio
-//        
-//        path = "http://gasi.ch/indupart/indupart-9-gaussian-12-jpg-lq.dzi"
-//        path = "../resources/images/indupart/test/jpg/indupart-200/image.dzi"
-//        source = new DeepZoomImageDescriptor(path, 2896, 4096, 254, 1, "jpg")
-////        path = "../resources/images/indupart/test/png/indupart-200/image.dzi"
-////        source = new DeepZoomImageDescriptor(path, 2896, 4096, 254, 1, "png")
-//        numRenderers = 268//120
-//        numColumns = 36//36
-//        aspectRatio = source.width / source.height
-//        width = 512
-//        height = 512 / aspectRatio
 
-        // Deep Zoom: Inline Multiscale Image Replacement
-//        path = "http://gasi.ch/examples/2009/04/08/inline-multiscale-image-replacement/nytimes/ridge-run/image.dzi"
-//        source = new DeepZoomImageDescriptor(path, 3627, 2424, 256,  1, "jpg")
-//        numRenderers = 300
-//        numColumns = 24
-//        aspectRatio = source.width / source.height
-//        width = 163.84
-//        height = width / aspectRatio
+        // Virtual Earth
+        source = new VirtualEarthDescriptor()
+        numRenderers = 1
+        numColumns = 1
+        width = 16384
+        height = 16384
 
-        // Deep Zoom: World wide music scene
-//        path = "http://seadragon.com/content/images/lastfm.dzi"
-//        source = new DeepZoomImageDescriptor(path, 20000, 15000, 254,  1, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-
-        // Deep Zoom: Obama
-//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/15374.dzi"
-//        source = new DeepZoomImageDescriptor(path, 59783, 24658, 256, 0, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-
-        // Deep Zoom: CMU
-//        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/23379.dzi"
-//        source = new DeepZoomImageDescriptor(path, 79433, 17606, 256, 0, "jpg")
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-
-        // Deep Zoom: Hanauma Bay
+//        // Deep Zoom: Hanauma Bay
 //        path = "http://7.latest.gigapan-mobile.appspot.com/gigapan/5322.dzi"
 //        source = new DeepZoomImageDescriptor(path, 154730, 36408, 256, 0, "jpg")
-//        numRenderers = 1//400
-//        numColumns = 1//12
+//        numRenderers = 1
+//        numColumns = 1
 //        aspectRatio = source.width / source.height
 //        width = 16384
 //        height = width / aspectRatio
 
-        // Zoomify
-        path = "http://shutter.gigapixelphotography.com/images/garibaldi-park-snowshoe/ImageProperties.xml"
-        source = new ZoomifyDescriptor(path, 22761, 14794, 256)
+        // Djatoka
+//        source = new DjatokaDescriptor("http://african.lanl.gov/adore-djatoka/resolver",
+//                                       "info:lanl-repo/ds/5aa182c2-c092-4596-af6e-e95d2e263de3&",
+//                                       5120,
+//                                       3372)
+//                                       
+//        source = new DjatokaDescriptor("http://african.lanl.gov/adore-djatoka/resolver",
+//                                       "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
+//                                       5056, 11264, 256, 0, "image/jpeg", 5)
+                                       
+//        source = DjatokaDescriptor.fromJSONMetadata("http://african.lanl.gov/adore-djatoka/resolver",
+//                                                    "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
+//                                                    '{\n"identifier": "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",\n' + 
+//                                                    '"imagefile": "/home/rchute/tomcat/temp/cache160035104950802.jp2",\n' + 
+//                                                    '"width": "5056",\n' + 
+//                                                    '"height": "11264",\n' + 
+//                                                    '"dwtLevels": "5",\n' + 
+//                                                    '"levels": "5",\n' + 
+//                                                    '"compositingLayerCount": "1"\n' + 
+//                                                    '}')
+                                                    
+        var jsonString:String = '{"identifier": "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",' + 
+                                 '"imagefile": "/home/rchute/tomcat/temp/cache160035104950802.jp2",' + 
+                                 '"width": "5056",' + 
+                                 '"height": "11264",' + 
+                                 '"dwtLevels": "5",' + 
+                                 '"levels": "5",' + 
+                                 '"compositingLayerCount": "1"}'
+        source = DjatokaDescriptor.fromJSONMetadata("http://african.lanl.gov/adore-djatoka/resolver",
+                                                    "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
+                                                    jsonString)
+
         numRenderers = 1
         numColumns = 1
         aspectRatio = source.width / source.height
         width = 16384
-        height = 16384 / aspectRatio
-
-        // Zoomify
-//        path = "http://shutter.gigapixelphotography.com/images/vancouver-yaletown-condos/ImageProperties.xml"
-//        source = new ZoomifyDescriptor(path, 46953, 22255, 256)
-//        numRenderers = 1
-//        numColumns = 1
-//        aspectRatio = source.width / source.height
-//        width = 16384
-//        height = 16384 / aspectRatio
-
-        // OpenStreetMap
-//        source = new OpenStreetMapDescriptor()
-//        numRenderers = 1
-//        numColumns = 1
-//        width = 16384
-//        height = 16384
-
-        // OpenStreetMap
-//        source = new AwhereDescriptor()
-//        numRenderers = 1
-//        numColumns = 1
-//        width = 16384
-//        height = 16384
-
-        // Virtual Earth
-//        source = new VirtualEarthDescriptor()
-//        numRenderers = 1
-//        numColumns = 1
-//        width = 16384
-//        height = 16384
-
-        // Zoomify
-        // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290"
-        //  NUMTILES="169" NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
-//        path = "../resources/images/zoomify/morocco/ImageProperties.xml"
-//        source = new ZoomifyDescriptor(path, 2203, 3290, 169, 256)
-//
-//        numRenderers = 360
-//        numColumns = 32
-//        width = 220.3
-//        height = 329.0
-
+        height = width / aspectRatio
 
         var padding:Number = width * 0.1
 
@@ -257,15 +200,23 @@ public class ImagePyramidRendererTest extends Sprite
         var scaleConstraint:ScaleConstraint = new ScaleConstraint()
         scaleConstraint.maxScale = source.width / container.sceneWidth * numColumns * 4
 
-        var mappingConstraint:MapConstraint = new MapConstraint()
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
+//        visibilityContraint.visibilityRatio = 1.0
 
-//        var centerConstraint:CenterConstraint = new CenterConstraint()
+        var zoomConstraint:ZoomConstraint = new ZoomConstraint()
+        zoomConstraint.minZoom = 1
+
+        var centerConstraint:CenterConstraint = new CenterConstraint()
+        var fillConstraint:FillConstraint = new FillConstraint()
 
         var compositeContraint:CompositeConstraint = new CompositeConstraint()
-        compositeContraint.constraints = [scaleConstraint,
-                                          //centerConstraint,
-                                          visibilityContraint]
+        compositeContraint.constraints = [
+                                          scaleConstraint,
+                                          zoomConstraint,
+                                          centerConstraint,
+                                          visibilityContraint,
+//                                          fillConstraint,
+                                          ]
 //        compositeContraint.constraints = [scaleConstraint,
 //                                          mappingConstraint]
 //        compositeContraint.constraints = [scaleConstraint,
@@ -279,11 +230,17 @@ public class ImagePyramidRendererTest extends Sprite
         addChild(memoryMonitor)
 
         layout()
+                           
+        stage.addEventListener(KeyboardEvent.KEY_DOWN,
+                               keyDownHandler,
+                               false, 0, true)
     }
 
     private var container:MultiScaleContainer
     private var memoryMonitor:MemoryMonitor
     private var renderManager:ImagePyramidRenderManager
+
+    private var smoothTransformer:SmoothTransformer
 
     private function stage_resizeHandler(event:Event):void
     {
@@ -303,6 +260,32 @@ public class ImagePyramidRendererTest extends Sprite
             memoryMonitor.x = stage.stageWidth - memoryMonitor.width - 10
             memoryMonitor.y = stage.stageHeight - memoryMonitor.height - 10
         }
+    }
+    
+    private function keyDownHandler(event:KeyboardEvent):void
+    {
+        if (event.keyCode != 76) // L
+            return
+        
+        var target:IViewportTransform = container.viewport.transform
+        target.fitToBounds(new Rectangle(0.1 + Math.random() * 0.8,
+                                         0.1 + Math.random() * 0.8,
+                                         0.05,
+                                         0.05))
+//        target.fitToBounds(new Rectangle(0.45 + Math.random() * 0.05,
+//                                         0.45 + Math.random() * 0.2,
+//                                         0.01,
+//                                         0.01))
+//        target.fitToBounds(new Rectangle(0.5 + Math.random() * 0.4,
+//                                         0.3 + Math.random() * 0.4,
+//                                         0.00004,
+//                                         0.00004))
+//        target.fitToBounds(new Rectangle(0.5234956109333568,
+//                                         0.35019891395599395,
+//                                         0.00004,
+//                                         0.00004))
+        
+        smoothTransformer.transform(target)
     }
 }
 
