@@ -509,10 +509,10 @@ public final class MultiScaleContainer extends UIComponent
         var targetY:Number = -vp.y * targetHeight
 
         var target:DisplayObject = _scene.targetCoordinateSpace
-            target.x = targetX
-            target.y = targetY
-            target.width = targetWidth
-            target.height = targetHeight
+        target.x = targetX
+        target.y = targetY
+        target.width = targetWidth
+        target.height = targetHeight
     }
 
     //--------------------------------------------------------------------------
@@ -703,6 +703,7 @@ public final class MultiScaleContainer extends UIComponent
     private function viewport_transformStartHandler(event:ViewportEvent):void
     {
 //      trace("ViewportEvent.TRANSFORM_START")
+        invalidateDisplayList()
     }
 
     private function viewport_transformUpdateHandler(event:ViewportEvent):void
@@ -716,6 +717,7 @@ public final class MultiScaleContainer extends UIComponent
     private function viewport_transformEndHandler(event:ViewportEvent):void
     {
 //      trace("ViewportEvent.TRANSFORM_END")
+        invalidateDisplayList()
     }
 
     //--------------------------------------------------------------------------

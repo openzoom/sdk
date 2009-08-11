@@ -39,28 +39,28 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.BitmapData
-import flash.display.Graphics
-import flash.display.Shape
-import flash.display.Sprite
-import flash.events.Event
-import flash.geom.Matrix
-import flash.geom.Point
-import flash.geom.Rectangle
-import flash.utils.getTimer
+import flash.display.BitmapData;
+import flash.display.Graphics;
+import flash.display.Shape;
+import flash.display.Sprite;
+import flash.events.Event;
+import flash.geom.Matrix;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+import flash.utils.getTimer;
 
-import org.openzoom.flash.core.openzoom_internal
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor
-import org.openzoom.flash.descriptors.IImagePyramidLevel
-import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor
-import org.openzoom.flash.events.ViewportEvent
-import org.openzoom.flash.net.INetworkQueue
-import org.openzoom.flash.scene.IMultiScaleScene
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene
-import org.openzoom.flash.utils.Cache
-import org.openzoom.flash.utils.IDisposable
-import org.openzoom.flash.utils.MortonOrder
-import org.openzoom.flash.viewport.INormalizedViewport
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
+import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.net.INetworkQueue;
+import org.openzoom.flash.scene.IMultiScaleScene;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+import org.openzoom.flash.utils.Cache;
+import org.openzoom.flash.utils.IDisposable;
+import org.openzoom.flash.utils.MortonOrder;
+import org.openzoom.flash.viewport.INormalizedViewport;
 
 [ExcludeClass]
 /**
@@ -120,11 +120,6 @@ public final class ImagePyramidRenderManager implements IDisposable
         this.viewport.addEventListener(ViewportEvent.TRANSFORM_END,
                                        viewport_transformEndHandler,
                                        false, 0, true)
-
-        // Render loop
-        owner.addEventListener(Event.ENTER_FRAME,
-                               enterFrameHandler,
-                               false, 0, true)
     }
 
     //--------------------------------------------------------------------------
@@ -415,14 +410,12 @@ public final class ImagePyramidRenderManager implements IDisposable
 
     //--------------------------------------------------------------------------
     //
-    //  Event handlers
-    //
-    //--------------------------------------------------------------------------
+    //  Event haexitFrameHandler //--------------------------------------------------------------------------
 
     /**
      * @private
      */
-    private function enterFrameHandler(event:Event):void
+    private function exitFrameHandler(event:Event):void
     {
         // Rendering loop
         validateDisplayList()
@@ -469,11 +462,11 @@ public final class ImagePyramidRenderManager implements IDisposable
     {
         if (renderers.indexOf(renderer) != -1)
             throw new ArgumentError("[ImagePyramidRenderManager] " +
-                                    "Renderer already added.")
+                                    "ReexitFrameHandlerded.")
 
         if (renderers.length == 0)
-            owner.addEventListener(Event.ENTER_FRAME,
-                                   enterFrameHandler,
+            owner.addEventListener(Event.EXIT_FRAME,
+                                   exitFrameHandler,
                                    false, 0, true)
 
         renderers.push(renderer)
@@ -495,8 +488,8 @@ public final class ImagePyramidRenderManager implements IDisposable
         renderers.splice(index, 1)
 
         if (renderers.length == 0)
-            owner.removeEventListener(Event.ENTER_FRAME,
-                                      enterFrameHandler)
+            owner.removeEventListener(Event.EXIT_FRAME,
+                                      exitFrameHandler)
 
         return renderer
     }
@@ -510,8 +503,8 @@ public final class ImagePyramidRenderManager implements IDisposable
     public function dispose():void
     {
         // Remove render loop
-        owner.removeEventListener(Event.ENTER_FRAME,
-                                  enterFrameHandler)
+        owner.removeEventListener(Event.EXIT_FRAME,
+                                  exitFrameHandler)
 
         // Remove render manager from all its renderers
         for each (var renderer:ImagePyramidRenderer in renderers)

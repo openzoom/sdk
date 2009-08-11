@@ -15,10 +15,31 @@
     xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
     backgroundGradientColors="[0, 0]"
     layout="absolute"
+    applicationComplete="applicationCompleteHandler(event)"
     >
+    <mx:Script>
+        <![CDATA[
+        
+            import mx.events.FlexEvent;
+            
+            private function applicationCompleteHandler(event:FlexEvent):void
+            {
+                image.addEventListener(MouseEvent.CLICK,
+                                       image_clickHandler,
+                                       false, 0, true)
+            }
+            
+            private function image_clickHandler(event:MouseEvent):void
+            {
+                var imagePoint:Point = image.globalToLocal(new Point(event.stageX, event.stageY))
+                var scenePoint:Point = image.localToScene(imagePoint)
+            }
+            
+        ]]>
+    </mx:Script>
     <openzoom:MultiScaleImage
         id="image"
-        source="../../../../resources/images/deepzoom/morocco.xml"
+        source="../../../../resources/images/deepzoom/billions.xml"
         top="0"
         right="0"
         bottom="0"

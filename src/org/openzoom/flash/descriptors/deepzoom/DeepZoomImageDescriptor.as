@@ -292,7 +292,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
-        var index:int = clamp(Math.ceil(log2) + 1, 0, maxLevel)
+        var index:int = clamp(Math.ceil(log2)/* + 1*/, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
 
         var pixelRatio:Number = width / level.width
