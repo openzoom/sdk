@@ -26,7 +26,7 @@ def convert(file):
     for line in fileinput.FileInput(file, inplace=1):
         line = re.sub(r" +$", "", line)
         line = re.sub(r"\t", "    ", line)
-        line = re.sub(r"^import (.*);$", r"import $1", line)
+        line = re.sub(r"^import (.*);$", r"import \1", line)
         
         # prevent messing up ternary expressions
         if line.count("?") == 0:
