@@ -21,15 +21,15 @@
 package org.openzoom.flash.viewport.controllers
 {
 
-import flash.events.Event;
-import flash.events.MouseEvent;
-import flash.events.TimerEvent;
-import flash.geom.Point;
-import flash.geom.Rectangle;
-import flash.utils.Timer;
+import flash.events.Event
+import flash.events.MouseEvent
+import flash.events.TimerEvent
+import flash.geom.Point
+import flash.geom.Rectangle
+import flash.utils.Timer
 
-import org.openzoom.flash.utils.math.clamp;
-import org.openzoom.flash.viewport.IViewportController;
+import org.openzoom.flash.utils.math.clamp
+import org.openzoom.flash.viewport.IViewportController
 
 /**
  * Mouse controller for viewports.
@@ -216,17 +216,22 @@ public final class MouseController extends ViewportControllerBase
      */
     override protected function view_removedFromStageHandler(event:Event):void
     {
-        // panning listeners
-        view.removeEventListener(MouseEvent.MOUSE_DOWN,
-                                 view_mouseDownHandler)
-        view.removeEventListener(MouseEvent.ROLL_OUT,
-                                 view_rollOutHandler)
-        view.stage.removeEventListener(Event.MOUSE_LEAVE,
-                                       stage_mouseLeaveHandler)
-
-        // zooming listeners
-        view.removeEventListener(MouseEvent.MOUSE_WHEEL,
-                                 view_mouseWheelHandler)
+    	if (view)
+    	{
+	        // panning listeners
+	        view.removeEventListener(MouseEvent.MOUSE_DOWN,
+	                                 view_mouseDownHandler)
+	        view.removeEventListener(MouseEvent.ROLL_OUT,
+	                                 view_rollOutHandler)
+	                                 
+            if (view.stage) 
+		        view.stage.removeEventListener(Event.MOUSE_LEAVE,
+		                                       stage_mouseLeaveHandler)
+	
+	        // zooming listeners
+	        view.removeEventListener(MouseEvent.MOUSE_WHEEL,
+	                                 view_mouseWheelHandler)
+    	}
     }
 
     //--------------------------------------------------------------------------
@@ -263,7 +268,7 @@ public final class MouseController extends ViewportControllerBase
 
         // transform viewport
         viewport.zoomBy(factor, originX, originY)
-        
+
         // TODO
         event.updateAfterEvent()
     }
@@ -325,7 +330,7 @@ public final class MouseController extends ViewportControllerBase
         var distanceY:Number
         var targetX:Number
         var targetY:Number
-        
+
         distanceX = viewDragVector.width / viewport.viewportWidth
         distanceY = viewDragVector.height / viewport.viewportHeight
 

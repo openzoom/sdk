@@ -44,6 +44,7 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+import org.openzoom.flash.utils.IDisposable;
 
 //------------------------------------------------------------------------------
 //
@@ -89,7 +90,8 @@ import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 /**
  * Interface a viewport implementation has to provide.
  */
-public interface IViewport extends IEventDispatcher
+public interface IViewport extends IDisposable,
+                                   IEventDispatcher
 {
     //--------------------------------------------------------------------------
     //
@@ -196,7 +198,7 @@ public interface IViewport extends IEventDispatcher
     //  Properties: Transform
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  transform
     //----------------------------------
@@ -216,7 +218,7 @@ public interface IViewport extends IEventDispatcher
      */
     function get transformer():IViewportTransformer
     function set transformer(value:IViewportTransformer):void
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Transform
@@ -234,7 +236,7 @@ public interface IViewport extends IEventDispatcher
      * let all listeners know that a viewport transition has finished.
      */
     function endTransform():void
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: Zooming

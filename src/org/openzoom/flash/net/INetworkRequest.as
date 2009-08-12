@@ -39,9 +39,9 @@
 package org.openzoom.flash.net
 {
 
-import flash.events.IEventDispatcher;
+import flash.events.IEventDispatcher
 
-import org.openzoom.flash.utils.IDisposable;
+import org.openzoom.flash.utils.IDisposable
 
 /**
  *  Dispatched when a request successfully finished loading.
@@ -59,11 +59,11 @@ import org.openzoom.flash.utils.IDisposable;
 
 /**
  * @private
- * 
+ *
  * Interface for network requests.
  */
-public interface INetworkRequest extends IEventDispatcher,
-                                         IDisposable
+public interface INetworkRequest extends IDisposable,
+                                         IEventDispatcher
 {
     //--------------------------------------------------------------------------
     //
@@ -83,19 +83,19 @@ public interface INetworkRequest extends IEventDispatcher,
     //----------------------------------
     //  bytesLoaded
     //----------------------------------
-    
+
     function get bytesLoaded():uint
-    
+
     //----------------------------------
     //  bytesTotal
     //----------------------------------
-    
+
     function get bytesTotal():uint
-    
+
     //----------------------------------
     //  url
     //----------------------------------
-    
+
     function get url():String
 }
 

@@ -39,37 +39,37 @@
 package
 {
 
-import flash.display.Sprite;
-import flash.display.StageAlign;
-import flash.display.StageQuality;
-import flash.display.StageScaleMode;
-import flash.events.Event;
-import flash.events.KeyboardEvent;
-import flash.geom.Rectangle;
+import flash.display.Sprite
+import flash.display.StageAlign
+import flash.display.StageQuality
+import flash.display.StageScaleMode
+import flash.events.Event
+import flash.events.KeyboardEvent
+import flash.geom.Rectangle
 
-import org.openzoom.flash.components.MemoryMonitor;
-import org.openzoom.flash.components.MultiScaleContainer;
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
-import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
-import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
-import org.openzoom.flash.utils.ExternalMouseWheel;
-import org.openzoom.flash.viewport.IViewportTransform;
-import org.openzoom.flash.viewport.constraints.CenterConstraint;
-import org.openzoom.flash.viewport.constraints.CompositeConstraint;
-import org.openzoom.flash.viewport.constraints.FillConstraint;
-import org.openzoom.flash.viewport.constraints.MapConstraint;
-import org.openzoom.flash.viewport.constraints.ScaleConstraint;
-import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
-import org.openzoom.flash.viewport.constraints.ZoomConstraint;
-import org.openzoom.flash.viewport.controllers.ContextMenuController;
-import org.openzoom.flash.viewport.controllers.KeyboardController;
-import org.openzoom.flash.viewport.controllers.MouseController;
-import org.openzoom.flash.viewport.transformers.SmoothTransformer;
-import org.openzoom.flash.viewport.transformers.TweenerTransformer;
+import org.openzoom.flash.components.MemoryMonitor
+import org.openzoom.flash.components.MultiScaleContainer
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor
+import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor
+import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor
+import org.openzoom.flash.events.ViewportEvent
+import org.openzoom.flash.renderers.images.ImagePyramidRenderManager
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer
+import org.openzoom.flash.utils.ExternalMouseWheel
+import org.openzoom.flash.viewport.IViewportTransform
+import org.openzoom.flash.viewport.constraints.CenterConstraint
+import org.openzoom.flash.viewport.constraints.CompositeConstraint
+import org.openzoom.flash.viewport.constraints.FillConstraint
+import org.openzoom.flash.viewport.constraints.MapConstraint
+import org.openzoom.flash.viewport.constraints.ScaleConstraint
+import org.openzoom.flash.viewport.constraints.VisibilityConstraint
+import org.openzoom.flash.viewport.constraints.ZoomConstraint
+import org.openzoom.flash.viewport.controllers.ContextMenuController
+import org.openzoom.flash.viewport.controllers.KeyboardController
+import org.openzoom.flash.viewport.controllers.MouseController
+import org.openzoom.flash.viewport.transformers.SmoothTransformer
+import org.openzoom.flash.viewport.transformers.TweenerTransformer
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class SmoothTransformerTest extends Sprite
@@ -95,7 +95,7 @@ public class SmoothTransformerTest extends Sprite
 //        container.viewport.addEventListener(ViewportEvent.TRANSFORM_END,
 //                                            viewport_transformEndHandler,
 //                                            false, 0, true)
-        
+
         // Smooth transformer
         smoothTransformer = SmoothTransformer.getInstance(container.viewport)
 //        smoothTransformer.speed = 1.6
@@ -152,7 +152,7 @@ public class SmoothTransformerTest extends Sprite
         aspectRatio = source.width / source.height
         width = 16384
         height = width / aspectRatio
-        
+
 //        source = GigaPanDescriptor.fromID(6568, 180504, 27837)
 //        numRenderers = 1
 //        numColumns = 1
@@ -173,7 +173,7 @@ public class SmoothTransformerTest extends Sprite
             renderer.y = Math.floor(i / numColumns) * (height + padding)
             renderer.width = width
             renderer.height = height
-            
+
             renderer.source = source
 
             container.addChild(renderer)
@@ -206,7 +206,7 @@ public class SmoothTransformerTest extends Sprite
                                           centerConstraint,
                                           visibilityContraint,
 //                                          fillConstraint,
-                                          ]
+                                        ]
 //        compositeContraint.constraints = [scaleConstraint,
 //                                          mappingConstraint]
 //        compositeContraint.constraints = [scaleConstraint,
@@ -220,7 +220,7 @@ public class SmoothTransformerTest extends Sprite
         addChild(memoryMonitor)
 
         layout()
-                                                
+
         stage.addEventListener(KeyboardEvent.KEY_DOWN,
                                keyDownHandler,
                                false, 0, true)
@@ -251,12 +251,12 @@ public class SmoothTransformerTest extends Sprite
             memoryMonitor.y = stage.stageHeight - memoryMonitor.height - 10
         }
     }
-    
+
     private function keyDownHandler(event:KeyboardEvent):void
     {
         if (event.keyCode != 76) // L
             return
-        
+
         var target:IViewportTransform = container.viewport.transform
         target.fitToBounds(new Rectangle(0.1 + Math.random() * 0.8,
                                          0.1 + Math.random() * 0.8,
@@ -274,15 +274,15 @@ public class SmoothTransformerTest extends Sprite
 //                                         0.35019891395599395,
 //                                         0.00004,
 //                                         0.00004))
-        
+
         smoothTransformer.transform(target)
     }
-    
+
     private function viewport_transformStartHandler(event:ViewportEvent):void
     {
         stage.quality = StageQuality.LOW
     }
-    
+
     private function viewport_transformEndHandler(event:ViewportEvent):void
     {
         stage.quality = StageQuality.BEST

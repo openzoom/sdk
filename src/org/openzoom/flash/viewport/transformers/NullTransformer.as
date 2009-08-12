@@ -21,8 +21,8 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import org.openzoom.flash.viewport.IViewportTransform;
-import org.openzoom.flash.viewport.IViewportTransformer;
+import org.openzoom.flash.viewport.IViewportTransform
+import org.openzoom.flash.viewport.IViewportTransformer
 
 /**
  * The NullTransformer transforms the given viewport without any kind of animation.

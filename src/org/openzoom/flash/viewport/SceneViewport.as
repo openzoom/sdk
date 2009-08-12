@@ -39,13 +39,13 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.errors.IllegalOperationError;
-import flash.events.EventDispatcher;
-import flash.geom.Point;
-import flash.geom.Rectangle;
-import flash.utils.Dictionary;
+import flash.errors.IllegalOperationError
+import flash.events.EventDispatcher
+import flash.geom.Point
+import flash.geom.Rectangle
+import flash.utils.Dictionary
 
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene
 
 //------------------------------------------------------------------------------
 //
@@ -95,23 +95,23 @@ public final class SceneViewport extends EventDispatcher
 
     /**
      * Constructor.
-     */  
+     */
     public function SceneViewport(lock:SingletonLock,
                                   viewport:INormalizedViewport)
     {
         this.viewport = viewport
     }
-    
+
     private var viewport:INormalizedViewport
     private static var sceneViewports:Dictionary = new Dictionary(true)
 
     /**
      * Returns an instance of SceneViewport for a given normalized viewport.
-     */     
+     */
     public static function getInstance(viewport:INormalizedViewport):ISceneViewport
     {
-        var svp:ISceneViewport = sceneViewports[viewport] as ISceneViewport 
-        
+        var svp:ISceneViewport = sceneViewports[viewport] as ISceneViewport
+
         if (!svp)
             sceneViewports[viewport] = new SceneViewport(new SingletonLock(),
                                                          viewport)
@@ -286,10 +286,10 @@ public final class SceneViewport extends EventDispatcher
     {
         if (isNaN(transformX))
            transformX = scene.sceneWidth / 2
-        
+
         if (isNaN(transformY))
-           transformY = scene.sceneHeight / 2   
-        
+           transformY = scene.sceneHeight / 2
+
         viewport.zoomTo(zoom,
                         transformX / scene.sceneWidth,
                         transformY / scene.sceneHeight,
@@ -306,15 +306,15 @@ public final class SceneViewport extends EventDispatcher
     {
         if (isNaN(transformX))
            transformX = scene.sceneWidth / 2
-        
+
         if (isNaN(transformY))
            transformY = scene.sceneHeight / 2
-           
+
         viewport.zoomBy(factor,
                         transformX / scene.sceneWidth,
                         transformY / scene.sceneHeight,
                         immediately)
-        
+
     }
 
     //--------------------------------------------------------------------------
@@ -369,7 +369,7 @@ public final class SceneViewport extends EventDispatcher
         bounds.y /= scene.sceneHeight
         bounds.width /= scene.sceneWidth
         bounds.height /= scene.sceneHeight
-        
+
         viewport.fitToBounds(bounds, scale, immediately)
     }
 
@@ -414,7 +414,7 @@ public final class SceneViewport extends EventDispatcher
         var p:Point = viewport.localToScene(point)
         p.x *= scene.sceneWidth
         p.y *= scene.sceneHeight
-        
+
         return p
     }
 
@@ -428,7 +428,7 @@ public final class SceneViewport extends EventDispatcher
         var p:Point = viewport.sceneToLocal(point)
         p.x *= viewportWidth
         p.y *= viewportHeight
-        
+
         return p
     }
 
@@ -477,7 +477,7 @@ public final class SceneViewport extends EventDispatcher
         bounds.y /= scene.sceneHeight
         bounds.width /= scene.sceneWidth
         bounds.height /= scene.sceneHeight
-        
+
         return viewport.intersects(bounds)
     }
 
@@ -492,14 +492,14 @@ public final class SceneViewport extends EventDispatcher
         bounds.y /= scene.sceneHeight
         bounds.width /= scene.sceneWidth
         bounds.height /= scene.sceneHeight
-        
+
         bounds = viewport.intersection(bounds)
-        
+
         bounds.x *= scene.sceneWidth
         bounds.y *= scene.sceneHeight
         bounds.width *= scene.sceneWidth
         bounds.height *= scene.sceneHeight
-        
+
         return bounds
     }
 
@@ -611,7 +611,7 @@ public final class SceneViewport extends EventDispatcher
     public function get right():Number
     {
         return viewport.right * scene.sceneWidth
-    }  
+    }
 
     //----------------------------------
     //  top
@@ -655,8 +655,8 @@ public final class SceneViewport extends EventDispatcher
         var p:Point = viewport.topLeft
         p.x *= scene.sceneWidth
         p.y *= scene.sceneHeight
-        
-        return p 
+
+        return p
     }
 
     //----------------------------------
@@ -673,8 +673,8 @@ public final class SceneViewport extends EventDispatcher
         var p:Point = viewport.topLeft
         p.x *= scene.sceneWidth
         p.y *= scene.sceneHeight
-        
-        return p 
+
+        return p
     }
 
     //----------------------------------
@@ -691,8 +691,8 @@ public final class SceneViewport extends EventDispatcher
         var p:Point = viewport.center
         p.x *= scene.sceneWidth
         p.y *= scene.sceneHeight
-        
-        return p 
+
+        return p
     }
 
     //--------------------------------------------------------------------------
@@ -736,6 +736,17 @@ public final class SceneViewport extends EventDispatcher
                "h=" + height + "\n" +
                "sW=" + scene.sceneWidth + "\n" +
                "sH=" + scene.sceneHeight
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function dispose():void
+    {
+    	// TODO
     }
 }
 

@@ -39,7 +39,7 @@
 package org.openzoom.flash.descriptors
 {
 
-import flash.geom.Rectangle;
+import flash.geom.Rectangle
 
 /**
  * Interface of a level of a multiscale image pyramid.

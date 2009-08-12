@@ -52,6 +52,7 @@ import org.openzoom.flash.components.MemoryMonitor;
 import org.openzoom.flash.components.MultiScaleImage;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
+import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.utils.ExternalMouseWheel;
 import org.openzoom.flash.viewport.IViewportTransform;
@@ -108,6 +109,15 @@ public class GigaPanViewer extends Sprite
 //        source = GigaPanDescriptor.fromID(25701, 41315, 11548)
 //        source = GigaPanDescriptor.fromID(6568, 180504, 27837)
 
+//        path = "http://www.mosaikfabrik.eu/de/onlinemosaike/JPII/zoom/ImageProperties.xml"
+//        source = new ZoomifyDescriptor(path, 6000, 8858, 256)
+
+//        path = "http://apps.koeln.de/gigapixel/koeln8gp_img/ImageProperties.xml"
+//        source = new ZoomifyDescriptor(path, 171800, 46600, 256)
+
+        path = "http://apps.koeln.de/gigapixel/cgn8gp_img/ImageProperties.xml"
+        source = new ZoomifyDescriptor(path, 171198, 44204, 256)
+
 
         image.source = source
 
@@ -129,13 +139,13 @@ public class GigaPanViewer extends Sprite
                                           visibilityContraint,
                                           zoomConstraint,
                                           centerConstraint,
-                                         ]
+                                       ]
         image.constraint = compositeContraint
 
         addChild(image)
 
-//        memoryMonitor = new MemoryMonitor()
-//        addChild(memoryMonitor)
+        memoryMonitor = new MemoryMonitor()
+        addChild(memoryMonitor)
 
         layout()
 

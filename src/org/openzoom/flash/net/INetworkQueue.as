@@ -41,12 +41,15 @@ package org.openzoom.flash.net
 
 import flash.events.IEventDispatcher;
 
+import org.openzoom.flash.utils.IDisposable;
+
 /**
  * @private
- * 
+ *
  * Interface for loading items in a queue.
  */
-public interface INetworkQueue extends IEventDispatcher
+public interface INetworkQueue extends IDisposable,
+                                       IEventDispatcher
 {
     /**
      * Add request to network queue.

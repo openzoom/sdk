@@ -39,8 +39,8 @@
 package org.openzoom.flash.utils
 {
 
-import flash.utils.Dictionary;
-import flash.utils.getTimer;
+import flash.utils.Dictionary
+import flash.utils.getTimer
 
 /**
  * Basic implementation of a cache that evicts lowest item in order

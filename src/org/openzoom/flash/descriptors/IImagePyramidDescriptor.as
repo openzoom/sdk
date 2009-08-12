@@ -39,7 +39,7 @@
 package org.openzoom.flash.descriptors
 {
 
-import flash.geom.Point;
+import flash.geom.Point
 import flash.geom.Rectangle;
 
 /**

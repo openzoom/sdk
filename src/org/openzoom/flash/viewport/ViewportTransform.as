@@ -39,8 +39,8 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import flash.geom.Point
+import flash.geom.Rectangle
 
 /**
  * The ViewportTransform stores the position and bounds of a viewport.
@@ -72,10 +72,10 @@ public final class ViewportTransform implements IViewportTransform,
         bounds.width = width
         bounds.height = height
         _zoom = zoom
-        
+
         _viewportWidth = viewportWidth
         _viewportHeight = viewportHeight
-        
+
         _sceneWidth = sceneWidth
         _sceneHeight = sceneHeight
     }
@@ -105,7 +105,7 @@ public final class ViewportTransform implements IViewportTransform,
                                                                sceneHeight)
         // initialize
         instance.zoomTo(zoom)
-        
+
         return instance
     }
 
@@ -114,7 +114,7 @@ public final class ViewportTransform implements IViewportTransform,
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var bounds:Rectangle = new Rectangle(0, 0, 1, 1)
 
     //--------------------------------------------------------------------------
@@ -175,7 +175,7 @@ public final class ViewportTransform implements IViewportTransform,
                            transformY:Number=0.5):void
     {
         _zoom = zoom
-        
+
         // remember old origin
         var oldOrigin:Point = getViewportOrigin(transformX, transformY)
 
@@ -196,7 +196,7 @@ public final class ViewportTransform implements IViewportTransform,
     {
         if (factor == 1)
            return
-           
+
         zoomTo(zoom * factor, transformX, transformY)
     }
 
@@ -261,7 +261,7 @@ public final class ViewportTransform implements IViewportTransform,
     {
         fitToBounds(new Rectangle(0, 0, 1, 1))
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -714,7 +714,7 @@ public final class ViewportTransform implements IViewportTransform,
     //----------------------------------
     //  center
     //----------------------------------
-    
+
     /**
      * @inheritDoc
      */
@@ -722,6 +722,17 @@ public final class ViewportTransform implements IViewportTransform,
     {
         return new Point(bounds.x + bounds.width / 2,
                          bounds.y + bounds.height / 2)
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function dispose():void
+    {
+    	bounds = null
     }
 }
 

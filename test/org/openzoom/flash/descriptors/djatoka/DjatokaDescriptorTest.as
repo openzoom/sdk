@@ -21,11 +21,11 @@
 package org.openzoom.flash.descriptors.djatoka
 {
 
-import flash.geom.Rectangle;
+import flash.geom.Rectangle
 
-import org.flexunit.Assert;
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.flexunit.Assert
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.IImagePyramidLevel
 
 /**
  * Tests the DjatokaDescriptor implementation for correctness.
@@ -40,14 +40,14 @@ public class DjatokaDescriptorTest
 
     private static const LEVELS:Array =
         [// width, height, columns, rows
-            [ 38,    57,       1,    1],
-            [ 76,   113,       1,    1],
+            [38,    57,       1,    1],
+            [76,   113,       1,    1],
             [151,   226,       1,    1],
             [302,   452,       2,    2],
             [604,   903,       3,    4],
             [1208,  1805,       5,    8],
             [2416,  3610,      10,   15],
-      ]
+    ]
 
     //--------------------------------------------------------------------------
     //
@@ -63,7 +63,7 @@ public class DjatokaDescriptorTest
     //
     //--------------------------------------------------------------------------
 
-	[Before]
+    [Before]
     public function setUp():void
     {
         descriptor = new DjatokaDescriptor("",
@@ -75,7 +75,7 @@ public class DjatokaDescriptorTest
                                            "image/jpeg")
     }
 
-	[After]
+    [After]
     public function tearDown():void
     {
         descriptor = null
@@ -87,19 +87,19 @@ public class DjatokaDescriptorTest
     //
     //--------------------------------------------------------------------------
 
-	[Test]
+    [Test]
     public function testMaxLevel():void
     {
         Assert.assertEquals("Maximum level correctly computed", 6, descriptor.numLevels - 1)
     }
 
-	[Test]
+    [Test]
     public function testOverlap():void
     {
         Assert.assertEquals("Overlap correct", 0, descriptor.tileOverlap)
     }
 
-	[Test]
+    [Test]
     public function testLevels():void
     {
        for (var index:int = 0; index < descriptor.numLevels; index++)
@@ -113,7 +113,7 @@ public class DjatokaDescriptorTest
 
     }
 
-	[Test]
+    [Test]
     public function testGetLevelForSize():void
     {
        Assert.assertEquals("Level computation for given size", descriptor.numLevels - 1,
@@ -123,7 +123,7 @@ public class DjatokaDescriptorTest
            descriptor.getLevelForSize(descriptor.width / 2 - 1, descriptor.height / 2 - 1).index)
     }
 
-	[Test]
+    [Test]
     public function testTileBounds():void
     {
         for (var index:int = 0; index < descriptor.numLevels; index++)

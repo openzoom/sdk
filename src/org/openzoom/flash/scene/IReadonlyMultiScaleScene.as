@@ -39,8 +39,8 @@
 package org.openzoom.flash.scene
 {
 
-import flash.display.DisplayObject;
-import flash.events.IEventDispatcher;
+import flash.display.DisplayObject
+import flash.events.IEventDispatcher
 
 /**
  * Dispatched when sceneWidth or sceneHeight are changed.

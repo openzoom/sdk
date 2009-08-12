@@ -39,16 +39,16 @@
 package org.openzoom.flash.viewport.controllers
 {
 
-import flash.display.DisplayObject;
-import flash.events.Event;
+import flash.display.DisplayObject
+import flash.events.Event
 
-import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportController;
+import org.openzoom.flash.viewport.INormalizedViewport
+import org.openzoom.flash.viewport.IViewportController
 
 [ExcludeClass]
 /**
  * @private
- * 
+ *
  * Base class for viewport controllers. For your own controller, extend
  * this class and implement org.openzoom.flash.viewport.IViewportController.
  *

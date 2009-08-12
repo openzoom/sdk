@@ -39,8 +39,8 @@
 package org.openzoom.flash.viewport.constraints
 {
 
-import org.openzoom.flash.viewport.IViewportConstraint;
-import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.IViewportConstraint
+import org.openzoom.flash.viewport.IViewportTransform
 
 /**
  * Ensures that the scene always entirely fills the viewport.

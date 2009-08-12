@@ -39,18 +39,18 @@
 package org.openzoom.flex.components
 {
 
-import flash.events.Event;
-import flash.events.IOErrorEvent;
-import flash.events.SecurityErrorEvent;
-import flash.net.URLLoader;
-import flash.net.URLRequest;
+import flash.events.Event
+import flash.events.IOErrorEvent
+import flash.events.SecurityErrorEvent
+import flash.net.URLLoader
+import flash.net.URLRequest
 
-import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.events.NetworkRequestEvent;
-import org.openzoom.flash.net.INetworkQueue;
-import org.openzoom.flash.net.INetworkRequest;
-import org.openzoom.flash.net.NetworkQueue;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor
+import org.openzoom.flash.events.NetworkRequestEvent
+import org.openzoom.flash.net.INetworkQueue
+import org.openzoom.flash.net.INetworkRequest
+import org.openzoom.flash.net.NetworkQueue
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer
 
 /**
  *  Dispatched when the image has successfully loaded.
@@ -75,7 +75,7 @@ import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 
 /**
  * @private
- * 
+ *
  * Flex component for displaying single Deep Zoom images (DZI) as well
  * as Deep Zoom collections (DZC) created by Microsoft Deep Zoom Composer,
  * DeepZoomTools.dll, Python Deep Zoom Tools (deepzoom.py) or others.
@@ -407,8 +407,8 @@ public final class DeepZoomContainer extends MultiScaleImageBase
 //
 //------------------------------------------------------------------------------
 
-import mx.utils.LoaderUtil;
-import org.openzoom.flash.utils.uri.resolveURI;
+import mx.utils.LoaderUtil
+import org.openzoom.flash.utils.uri.resolveURI
 
 /**
  * @private

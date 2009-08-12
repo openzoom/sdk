@@ -39,36 +39,35 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import flash.events.TimerEvent;
-import flash.geom.Point;
-import flash.utils.Timer;
-import flash.utils.getTimer;
+import flash.events.TimerEvent
+import flash.geom.Point
+import flash.utils.Timer
+import flash.utils.getTimer
 
-import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.utils.IDisposable;
-import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportTransform;
-import org.openzoom.flash.viewport.IViewportTransformer;
+import org.openzoom.flash.events.ViewportEvent
+import org.openzoom.flash.utils.IDisposable
+import org.openzoom.flash.viewport.INormalizedViewport
+import org.openzoom.flash.viewport.IViewportTransform
+import org.openzoom.flash.viewport.IViewportTransformer
 
 /**
  * Viewport transformer based on the excellent research paper
  * «Smooth and Efficient Zooming and Panning» by Wijk & Nuij.
- * 
+ *
  * @see http://www.win.tue.nl/~vanwijk/zoompan.pdf
  */
 public class SmoothTransformer extends ViewportTransformerBase
-                               implements IViewportTransformer,
-                                          IDisposable
+                               implements IViewportTransformer
 {
     //--------------------------------------------------------------------------
     //
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_RHO:Number = Math.SQRT2
     private static const DEFAULT_V:Number = 0.0011
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -81,7 +80,7 @@ public class SmoothTransformer extends ViewportTransformerBase
     public function SmoothTransformer()
     {
     }
-    
+
     /**
      * Constructor.
      */
@@ -90,10 +89,10 @@ public class SmoothTransformer extends ViewportTransformerBase
         var instance:SmoothTransformer = new SmoothTransformer()
         instance.viewport = viewport
         instance.external = true
-        
+
         return instance
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
@@ -126,17 +125,17 @@ public class SmoothTransformer extends ViewportTransformerBase
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  rho
     //----------------------------------
 
     public var rho:Number = DEFAULT_RHO
-    
+
     //----------------------------------
     //  speed
     //----------------------------------
-    
+
     private var V:Number = DEFAULT_V
 
     public function get speed():Number
@@ -152,18 +151,18 @@ public class SmoothTransformer extends ViewportTransformerBase
     //----------------------------------
     //  external
     //----------------------------------
-    
+
     private var _external:Boolean = false
-    
+
     public function get external():Boolean
     {
         return _external
     }
-    
+
     public function set external(value:Boolean):void
     {
         _external = value
-        
+
         if (value)
         {
             viewport.addEventListener(ViewportEvent.TARGET_UPDATE,
@@ -176,7 +175,7 @@ public class SmoothTransformer extends ViewportTransformerBase
                                          viewport_targetUpdateHandler)
         }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods: IViewportTransformer
@@ -291,7 +290,7 @@ public class SmoothTransformer extends ViewportTransformerBase
         var us:Number = u(s)
         center.x = c0.x + (c1.x - c0.x) / u1 * us
         center.y = c0.y + (c1.y - c0.y) / u1 * us
-        
+
         return center
     }
 
@@ -320,7 +319,7 @@ public class SmoothTransformer extends ViewportTransformerBase
         var du:Number = u1 - u0
         var numerator:Number = w1*w1 - w0*w0 + sign * rho4 * du*du
         var denominator:Number = 2*w * rho2 * du
-        
+
         return numerator / denominator
     }
 
@@ -361,14 +360,15 @@ public class SmoothTransformer extends ViewportTransformerBase
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
-    public function dispose():void
+
+    override public function dispose():void
     {
+    	
         if (viewport && external)
             viewport.removeEventListener(ViewportEvent.TARGET_UPDATE,
                                          viewport_targetUpdateHandler)
-        
-        viewport = null
+
+    	super.dispose()
     }
 }
 

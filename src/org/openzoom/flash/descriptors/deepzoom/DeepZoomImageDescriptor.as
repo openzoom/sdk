@@ -39,14 +39,14 @@
 package org.openzoom.flash.descriptors.deepzoom
 {
 
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import flash.geom.Point
+import flash.geom.Rectangle
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
-import org.openzoom.flash.descriptors.ImagePyramidLevel;
-import org.openzoom.flash.utils.MIMEUtil;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.IImagePyramidLevel
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase
+import org.openzoom.flash.descriptors.ImagePyramidLevel
+import org.openzoom.flash.utils.MIMEUtil
 import org.openzoom.flash.utils.math.clamp;
 
 /**
@@ -122,9 +122,9 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
      */
     public static function fromXML(source:String, xml:XML):DeepZoomImageDescriptor
     {
-    	var ns:Namespace = deepzoom2008
-    	
-    	if (xml.namespace() == deepzoom2009)
+        var ns:Namespace = deepzoom2008
+        
+        if (xml.namespace() == deepzoom2009)
             ns = deepzoom2009
 
         var width:uint = xml.ns::Size.@Width
@@ -144,7 +144,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
                                               displayRect.ns::Rect.@Width,
                                               displayRect.ns::Rect.@Height,
                                               displayRect.@MinLevel,
-                                              displayRect.@MaxLevel))	
+                                              displayRect.@MaxLevel))    
         }
 
         var descriptor:DeepZoomImageDescriptor =
@@ -183,7 +183,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
      */
     public function get mortonNumber():uint
     {
-    	return _mortonNumber
+        return _mortonNumber
     }
 
     //----------------------------------
@@ -198,7 +198,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
      */
     public function get collection():DeepZoomCollectionDescriptor
     {
-    	return _collection
+        return _collection
     }
 
     //----------------------------------
@@ -241,7 +241,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
         if (collection && level <= collection.maxLevel)
             return collection.getTileURL(mortonNumber, level)
 
-    	var basePath:String = source.substring(0, source.lastIndexOf("."))
+        var basePath:String = source.substring(0, source.lastIndexOf("."))
         var path:String = basePath + "_files"
         return [path, "/", level, "/", column, "_", row, ".", format].join("")
     }
@@ -288,7 +288,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
      */
     public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
-    	// FIXME
+        // FIXME
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
@@ -356,11 +356,11 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
 
         for (var index:int = 0; index <= maxLevel; index++)
         {
-        	var size:Point = getSize(index)
-        	var width:uint = size.x
-        	var height:uint = size.y
-        	var numColumns:int = Math.ceil(width / tileWidth)
-        	var numRows:int = Math.ceil(height / tileHeight)
+            var size:Point = getSize(index)
+            var width:uint = size.x
+            var height:uint = size.y
+            var numColumns:int = Math.ceil(width / tileWidth)
+            var numRows:int = Math.ceil(height / tileHeight)
             var level:IImagePyramidLevel = new ImagePyramidLevel(this,
                                                                  index,
                                                                  width,
@@ -376,9 +376,9 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
      */
     private function getScale(level:int):Number
     {
-    	var maxLevel:int = numLevels - 1
-    	// 1 / (1 << maxLevel - level)
-    	return Math.pow(0.5, maxLevel - level)
+        var maxLevel:int = numLevels - 1
+        // 1 / (1 << maxLevel - level)
+        return Math.pow(0.5, maxLevel - level)
     }
 
     /**

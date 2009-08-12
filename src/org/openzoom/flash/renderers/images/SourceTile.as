@@ -39,14 +39,14 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.BitmapData;
+import flash.display.BitmapData
 
-import org.openzoom.flash.utils.ICacheItem;
+import org.openzoom.flash.utils.ICacheItem
 
 [ExcludeClass]
 /**
  * @private
- * 
+ *
  * Cache entry for bitmaps that could or could not be shared by several tiles.
  */
 internal final class SourceTile implements ICacheItem
@@ -98,8 +98,8 @@ internal final class SourceTile implements ICacheItem
     {
         if (owners.indexOf(owner) > 0)
         {
-        	return
-        	// FIXME
+            return
+            // FIXME
 //            throw new ArgumentError("[SharedTile] Owner already added.")
         }
 

@@ -39,27 +39,27 @@
 package
 {
 
-import flash.display.Sprite;
-import flash.display.StageAlign;
-import flash.display.StageScaleMode;
-import flash.events.Event;
+import flash.display.Sprite
+import flash.display.StageAlign
+import flash.display.StageScaleMode
+import flash.events.Event
 
-import org.openzoom.flash.components.MemoryMonitor;
-import org.openzoom.flash.components.MultiScaleContainer;
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
-import org.openzoom.flash.utils.ExternalMouseWheel;
-import org.openzoom.flash.viewport.constraints.CompositeConstraint;
-import org.openzoom.flash.viewport.constraints.MapConstraint;
-import org.openzoom.flash.viewport.constraints.ScaleConstraint;
-import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
-import org.openzoom.flash.viewport.controllers.ContextMenuController;
-import org.openzoom.flash.viewport.controllers.KeyboardController;
-import org.openzoom.flash.viewport.controllers.MouseController;
-import org.openzoom.flash.viewport.transformers.TweenerTransformer;
+import org.openzoom.flash.components.MemoryMonitor
+import org.openzoom.flash.components.MultiScaleContainer
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor
+import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor
+import org.openzoom.flash.renderers.images.ImagePyramidRenderManager
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer
+import org.openzoom.flash.utils.ExternalMouseWheel
+import org.openzoom.flash.viewport.constraints.CompositeConstraint
+import org.openzoom.flash.viewport.constraints.MapConstraint
+import org.openzoom.flash.viewport.constraints.ScaleConstraint
+import org.openzoom.flash.viewport.constraints.VisibilityConstraint
+import org.openzoom.flash.viewport.controllers.ContextMenuController
+import org.openzoom.flash.viewport.controllers.KeyboardController
+import org.openzoom.flash.viewport.controllers.MouseController
+import org.openzoom.flash.viewport.transformers.TweenerTransformer
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class ImagePyramidRendererTest extends Sprite
@@ -121,7 +121,7 @@ public class ImagePyramidRendererTest extends Sprite
         aspectRatio = source.width / source.height
         width = 16384
         height = 16384 / aspectRatio
-//        
+//
 //        path = "http://gasi.ch/indupart/indupart-9-gaussian-12-jpg-lq.dzi"
 //        path = "../resources/images/indupart/test/jpg/indupart-200/image.dzi"
 //        source = new DeepZoomImageDescriptor(path, 2896, 4096, 254, 1, "jpg")
@@ -241,7 +241,7 @@ public class ImagePyramidRendererTest extends Sprite
             renderer.y = Math.floor(i / numColumns) * (height + padding)
             renderer.width = width
             renderer.height = height
-            
+
             renderer.source = source
 
             container.addChild(renderer)

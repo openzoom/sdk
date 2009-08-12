@@ -39,12 +39,12 @@
 package org.openzoom.flash.descriptors.openzoom
 {
 
-import flash.geom.Rectangle;
+import flash.geom.Rectangle
 
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.ImagePyramidLevelBase;
-import org.openzoom.flash.utils.math.clamp;
-import org.openzoom.flash.utils.uri.resolveURI;
+import org.openzoom.flash.descriptors.IImagePyramidLevel
+import org.openzoom.flash.descriptors.ImagePyramidLevelBase
+import org.openzoom.flash.utils.math.clamp
+import org.openzoom.flash.utils.uri.resolveURI
 
 /**
  * Represents a single level of a multiscale

@@ -21,17 +21,17 @@
 package org.openzoom.flash.net
 {
 
-import flash.events.Event;
-import flash.events.EventDispatcher;
-import flash.events.HTTPStatusEvent;
-import flash.events.IEventDispatcher;
-import flash.events.IOErrorEvent;
-import flash.events.ProgressEvent;
-import flash.events.SecurityErrorEvent;
-import flash.net.URLLoader;
-import flash.net.URLRequest;
+import flash.events.Event
+import flash.events.EventDispatcher
+import flash.events.HTTPStatusEvent
+import flash.events.IEventDispatcher
+import flash.events.IOErrorEvent
+import flash.events.ProgressEvent
+import flash.events.SecurityErrorEvent
+import flash.net.URLLoader
+import flash.net.URLRequest
 
-import org.openzoom.flash.events.NetworkRequestEvent;
+import org.openzoom.flash.events.NetworkRequestEvent
 
 /**
  * @private
@@ -92,7 +92,7 @@ internal final class URLRequest extends EventDispatcher
     //----------------------------------
     //  url
     //----------------------------------
-    
+
     private var _url:String
 
     public function get url():String
@@ -146,7 +146,7 @@ internal final class URLRequest extends EventDispatcher
      */
     private function request_httpStatusHandler(event:HTTPStatusEvent):void
     {
-    	// TODO
+        // TODO
     }
 
     /**
@@ -155,10 +155,10 @@ internal final class URLRequest extends EventDispatcher
     private function request_ioErrorHandler(event:IOErrorEvent):void
     {
         trace("[URLRequest]", "IO error")
-        
+
         // TODO: Test
         disposeLoader()
-        
+
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
@@ -172,7 +172,7 @@ internal final class URLRequest extends EventDispatcher
     private function request_securityErrorHandler(event:SecurityErrorEvent):void
     {
         trace("[URLRequest]", "Security error")
-        
+
         // TODO: Test
         disposeLoader()
 
@@ -203,8 +203,8 @@ internal final class URLRequest extends EventDispatcher
      */
     public function dispose():void
     {
-    	disposeLoader()
-    	context = null
+        disposeLoader()
+        context = null
         _url = null
     }
 
@@ -218,7 +218,7 @@ internal final class URLRequest extends EventDispatcher
     {
         if (!loader)
            return
-           
+
         removeEventListeners(loader)
         loader = null
     }

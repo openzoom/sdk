@@ -39,34 +39,34 @@
 package
 {
 
-import flash.display.Sprite;
-import flash.display.StageAlign;
-import flash.display.StageScaleMode;
-import flash.events.Event;
-import flash.events.KeyboardEvent;
-import flash.geom.Rectangle;
+import flash.display.Sprite
+import flash.display.StageAlign
+import flash.display.StageScaleMode
+import flash.events.Event
+import flash.events.KeyboardEvent
+import flash.geom.Rectangle
 
-import org.openzoom.flash.components.MemoryMonitor;
-import org.openzoom.flash.components.MultiScaleContainer;
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor;
-import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
-import org.openzoom.flash.utils.ExternalMouseWheel;
-import org.openzoom.flash.viewport.IViewportTransform;
-import org.openzoom.flash.viewport.constraints.CenterConstraint;
-import org.openzoom.flash.viewport.constraints.CompositeConstraint;
-import org.openzoom.flash.viewport.constraints.FillConstraint;
-import org.openzoom.flash.viewport.constraints.ScaleConstraint;
-import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
-import org.openzoom.flash.viewport.constraints.ZoomConstraint;
-import org.openzoom.flash.viewport.controllers.ContextMenuController;
-import org.openzoom.flash.viewport.controllers.KeyboardController;
-import org.openzoom.flash.viewport.controllers.MouseController;
-import org.openzoom.flash.viewport.transformers.SmoothTransformer;
-import org.openzoom.flash.viewport.transformers.TweenerTransformer;
+import org.openzoom.flash.components.MemoryMonitor
+import org.openzoom.flash.components.MultiScaleContainer
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor
+import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor
+import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor
+import org.openzoom.flash.renderers.images.ImagePyramidRenderManager
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer
+import org.openzoom.flash.utils.ExternalMouseWheel
+import org.openzoom.flash.viewport.IViewportTransform
+import org.openzoom.flash.viewport.constraints.CenterConstraint
+import org.openzoom.flash.viewport.constraints.CompositeConstraint
+import org.openzoom.flash.viewport.constraints.FillConstraint
+import org.openzoom.flash.viewport.constraints.ScaleConstraint
+import org.openzoom.flash.viewport.constraints.VisibilityConstraint
+import org.openzoom.flash.viewport.constraints.ZoomConstraint
+import org.openzoom.flash.viewport.controllers.ContextMenuController
+import org.openzoom.flash.viewport.controllers.KeyboardController
+import org.openzoom.flash.viewport.controllers.MouseController
+import org.openzoom.flash.viewport.transformers.SmoothTransformer
+import org.openzoom.flash.viewport.transformers.TweenerTransformer
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class DjatokaTest extends Sprite
@@ -84,7 +84,7 @@ public class DjatokaTest extends Sprite
         container = new MultiScaleContainer()
         var tweenerTransformer:TweenerTransformer = new TweenerTransformer()
         container.transformer = tweenerTransformer
-        
+
         // Smooth transformer
         smoothTransformer = SmoothTransformer.getInstance(container.viewport)
 
@@ -139,28 +139,28 @@ public class DjatokaTest extends Sprite
 //                                       "info:lanl-repo/ds/5aa182c2-c092-4596-af6e-e95d2e263de3&",
 //                                       5120,
 //                                       3372)
-//                                       
+//
 //        source = new DjatokaDescriptor("http://african.lanl.gov/adore-djatoka/resolver",
 //                                       "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
 //                                       5056, 11264, 256, 0, "image/jpeg", 5)
-                                       
+
 //        source = DjatokaDescriptor.fromJSONMetadata("http://african.lanl.gov/adore-djatoka/resolver",
 //                                                    "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
-//                                                    '{\n"identifier": "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",\n' + 
-//                                                    '"imagefile": "/home/rchute/tomcat/temp/cache160035104950802.jp2",\n' + 
-//                                                    '"width": "5056",\n' + 
-//                                                    '"height": "11264",\n' + 
-//                                                    '"dwtLevels": "5",\n' + 
-//                                                    '"levels": "5",\n' + 
-//                                                    '"compositingLayerCount": "1"\n' + 
+//                                                    '{\n"identifier": "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",\n' +
+//                                                    '"imagefile": "/home/rchute/tomcat/temp/cache160035104950802.jp2",\n' +
+//                                                    '"width": "5056",\n' +
+//                                                    '"height": "11264",\n' +
+//                                                    '"dwtLevels": "5",\n' +
+//                                                    '"levels": "5",\n' +
+//                                                    '"compositingLayerCount": "1"\n' +
 //                                                    '}')
-                                                    
-        var jsonString:String = '{"identifier": "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",' + 
-                                 '"imagefile": "/home/rchute/tomcat/temp/cache160035104950802.jp2",' + 
-                                 '"width": "5056",' + 
-                                 '"height": "11264",' + 
-                                 '"dwtLevels": "5",' + 
-                                 '"levels": "5",' + 
+
+        var jsonString:String = '{"identifier": "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",' +
+                                 '"imagefile": "/home/rchute/tomcat/temp/cache160035104950802.jp2",' +
+                                 '"width": "5056",' +
+                                 '"height": "11264",' +
+                                 '"dwtLevels": "5",' +
+                                 '"levels": "5",' +
                                  '"compositingLayerCount": "1"}'
         source = DjatokaDescriptor.fromJSONMetadata("http://african.lanl.gov/adore-djatoka/resolver",
                                                     "http://mars.asu.edu/~cyates/P01_001337_1945_XN_14N065W.jp2",
@@ -184,7 +184,7 @@ public class DjatokaTest extends Sprite
             renderer.y = Math.floor(i / numColumns) * (height + padding)
             renderer.width = width
             renderer.height = height
-            
+
             renderer.source = source
 
             container.addChild(renderer)
@@ -216,7 +216,7 @@ public class DjatokaTest extends Sprite
                                           centerConstraint,
                                           visibilityContraint,
 //                                          fillConstraint,
-                                          ]
+                                        ]
 //        compositeContraint.constraints = [scaleConstraint,
 //                                          mappingConstraint]
 //        compositeContraint.constraints = [scaleConstraint,
@@ -230,7 +230,7 @@ public class DjatokaTest extends Sprite
         addChild(memoryMonitor)
 
         layout()
-                           
+
         stage.addEventListener(KeyboardEvent.KEY_DOWN,
                                keyDownHandler,
                                false, 0, true)
@@ -261,12 +261,12 @@ public class DjatokaTest extends Sprite
             memoryMonitor.y = stage.stageHeight - memoryMonitor.height - 10
         }
     }
-    
+
     private function keyDownHandler(event:KeyboardEvent):void
     {
         if (event.keyCode != 76) // L
             return
-        
+
         var target:IViewportTransform = container.viewport.transform
         target.fitToBounds(new Rectangle(0.1 + Math.random() * 0.8,
                                          0.1 + Math.random() * 0.8,
@@ -284,7 +284,7 @@ public class DjatokaTest extends Sprite
 //                                         0.35019891395599395,
 //                                         0.00004,
 //                                         0.00004))
-        
+
         smoothTransformer.transform(target)
     }
 }

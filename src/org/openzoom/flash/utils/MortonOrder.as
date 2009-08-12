@@ -39,7 +39,7 @@
 package org.openzoom.flash.utils
 {
 
-import flash.geom.Point;
+import flash.geom.Point
 
 /**
  * Utility class for doing computations with the Morton-order (Z-order) which

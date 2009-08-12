@@ -39,11 +39,11 @@
 package org.openzoom.flash.renderers
 {
 
-import flash.display.DisplayObject;
-import flash.geom.Rectangle;
+import flash.display.DisplayObject
+import flash.geom.Rectangle
 
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene
+import org.openzoom.flash.viewport.INormalizedViewport
 
 /**
  * Interface for a renderer that is multiscalar.
@@ -59,7 +59,7 @@ public interface IRenderer
     //----------------------------------
     //  scene
     //----------------------------------
-    
+
     /**
      * The scene this renderer is attached to.
      */
@@ -69,7 +69,7 @@ public interface IRenderer
     //----------------------------------
     //  width
     //----------------------------------
-    
+
     /**
      * The viewport this renderer is viewed in.
      */
@@ -81,7 +81,7 @@ public interface IRenderer
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Bounds of this renderer.
      */

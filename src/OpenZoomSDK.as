@@ -49,58 +49,58 @@ package
 internal class OpenZoomSDK
 {
     // Flash components
-    import org.openzoom.flash.components.MemoryMonitor; MemoryMonitor;
-    import org.openzoom.flash.components.MultiScaleImage2; MultiScaleImage2;
-    import org.openzoom.flash.components.SceneNavigator; SceneNavigator;
-    import org.openzoom.flash.components.Spinner; Spinner;
+import org.openzoom.flash.components.MemoryMonitor; MemoryMonitor
+import org.openzoom.flash.components.MultiScaleImage2; MultiScaleImage2
+import org.openzoom.flash.components.SceneNavigator; SceneNavigator
+import org.openzoom.flash.components.Spinner; Spinner
 
     // Descriptors
-    import org.openzoom.flash.descriptors.deepzoom.DeepZoomCollectionDescriptor; DeepZoomCollectionDescriptor;
-    import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor; DeepZoomImageDescriptor;
-    import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor; DjatokaDescriptor;
-    import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor; GigaPanDescriptor;
-    import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor; OpenStreetMapDescriptor;
-    import org.openzoom.flash.descriptors.openzoom.OpenZoomDescriptor; OpenZoomDescriptor;
-    import org.openzoom.flash.descriptors.rosettaproject.RosettaDiskBackDescriptor; RosettaDiskBackDescriptor;
-    import org.openzoom.flash.descriptors.rosettaproject.RosettaDiskFrontDescriptor; RosettaDiskFrontDescriptor;
-    import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor; VirtualEarthDescriptor;
-    import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor; ZoomifyDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomCollectionDescriptor; DeepZoomCollectionDescriptor
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor; DeepZoomImageDescriptor
+import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor; DjatokaDescriptor
+import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor; GigaPanDescriptor
+import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor; OpenStreetMapDescriptor
+import org.openzoom.flash.descriptors.openzoom.OpenZoomDescriptor; OpenZoomDescriptor
+import org.openzoom.flash.descriptors.rosettaproject.RosettaDiskBackDescriptor; RosettaDiskBackDescriptor
+import org.openzoom.flash.descriptors.rosettaproject.RosettaDiskFrontDescriptor; RosettaDiskFrontDescriptor
+import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor; VirtualEarthDescriptor
+import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor; ZoomifyDescriptor
 
     // Utils
-    import org.openzoom.flash.utils.Base16; Base16;
-    import org.openzoom.flash.utils.Cache; Cache;
-    import org.openzoom.flash.utils.ExternalMouseWheel; ExternalMouseWheel;
-    import org.openzoom.flash.utils.FullScreenUtil; FullScreenUtil;
-    import org.openzoom.flash.utils.ICache; ICache;
-    import org.openzoom.flash.utils.ICacheItem; ICacheItem;
-    import org.openzoom.flash.utils.IComparable; IComparable;
-    import org.openzoom.flash.utils.IDisposable; IDisposable;
-    import org.openzoom.flash.utils.MIMEUtil; MIMEUtil;
-    import org.openzoom.flash.utils.MortonOrder; MortonOrder;
+import org.openzoom.flash.utils.Base16; Base16
+import org.openzoom.flash.utils.Cache; Cache
+import org.openzoom.flash.utils.ExternalMouseWheel; ExternalMouseWheel
+import org.openzoom.flash.utils.FullScreenUtil; FullScreenUtil
+import org.openzoom.flash.utils.ICache; ICache
+import org.openzoom.flash.utils.ICacheItem; ICacheItem
+import org.openzoom.flash.utils.IComparable; IComparable
+import org.openzoom.flash.utils.IDisposable; IDisposable
+import org.openzoom.flash.utils.MIMEUtil; MIMEUtil
+import org.openzoom.flash.utils.MortonOrder; MortonOrder
 
     // Viewport constraints
-    import org.openzoom.flash.viewport.constraints.CenterConstraint; CenterConstraint;
-    import org.openzoom.flash.viewport.constraints.CompositeConstraint; CompositeConstraint;
-    import org.openzoom.flash.viewport.constraints.FillConstraint; FillConstraint;
-    import org.openzoom.flash.viewport.constraints.MappingConstraint; MappingConstraint;
-    import org.openzoom.flash.viewport.constraints.NullConstraint; NullConstraint;
-    import org.openzoom.flash.viewport.constraints.ScaleConstraint; ScaleConstraint;
-    import org.openzoom.flash.viewport.constraints.VisibilityConstraint; VisibilityConstraint;
-    import org.openzoom.flash.viewport.constraints.ZoomConstraint; ZoomConstraint;
+import org.openzoom.flash.viewport.constraints.CenterConstraint; CenterConstraint
+import org.openzoom.flash.viewport.constraints.CompositeConstraint; CompositeConstraint
+import org.openzoom.flash.viewport.constraints.FillConstraint; FillConstraint
+import org.openzoom.flash.viewport.constraints.MappingConstraint; MappingConstraint
+import org.openzoom.flash.viewport.constraints.NullConstraint; NullConstraint
+import org.openzoom.flash.viewport.constraints.ScaleConstraint; ScaleConstraint
+import org.openzoom.flash.viewport.constraints.VisibilityConstraint; VisibilityConstraint
+import org.openzoom.flash.viewport.constraints.ZoomConstraint; ZoomConstraint
 
     // Viewport controllers
-    import org.openzoom.flash.viewport.controllers.ContextMenuController; ContextMenuController;
-    import org.openzoom.flash.viewport.controllers.KeyboardController; KeyboardController;
-    import org.openzoom.flash.viewport.controllers.MouseController; MouseController;
+import org.openzoom.flash.viewport.controllers.ContextMenuController; ContextMenuController
+import org.openzoom.flash.viewport.controllers.KeyboardController; KeyboardController
+import org.openzoom.flash.viewport.controllers.MouseController; MouseController
 
     // Viewport transformers
-    import org.openzoom.flash.viewport.transformers.NullTransformer; NullTransformer;
-    import org.openzoom.flash.viewport.transformers.SmoothTransformer; SmoothTransformer;
-    import org.openzoom.flash.viewport.transformers.TweenerTransformer; TweenerTransformer;
-    import org.openzoom.flash.viewport.transformers.TweensyZeroTransformer; TweensyZeroTransformer;
+import org.openzoom.flash.viewport.transformers.NullTransformer; NullTransformer
+import org.openzoom.flash.viewport.transformers.SmoothTransformer; SmoothTransformer
+import org.openzoom.flash.viewport.transformers.TweenerTransformer; TweenerTransformer
+import org.openzoom.flash.viewport.transformers.TweensyZeroTransformer; TweensyZeroTransformer
 
     // Viewport
-    import org.openzoom.flash.viewport.SceneViewport; SceneViewport;
+import org.openzoom.flash.viewport.SceneViewport; SceneViewport
 }
 
 }

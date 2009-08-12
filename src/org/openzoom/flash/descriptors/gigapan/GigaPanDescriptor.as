@@ -39,13 +39,13 @@
 package org.openzoom.flash.descriptors.gigapan
 {
 
-import flash.geom.Point;
+import flash.geom.Point
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
-import org.openzoom.flash.descriptors.ImagePyramidLevel;
-import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.IImagePyramidLevel
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase
+import org.openzoom.flash.descriptors.ImagePyramidLevel
+import org.openzoom.flash.utils.math.clamp
 
 /**
  * Descriptor for the <a href="http://gigapan.org/">GigaPan.org</a> project panoramas.
@@ -87,7 +87,7 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
 
         createLevels(width, height, DEFAULT_TILE_SIZE, numLevels)
     }
-    
+
     /**
      * Constructor.
      */
@@ -99,9 +99,9 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
         var tileServer:uint = Math.floor(id / 1000.0)
         var zeroPaddedTileServer:String = tileServer <= 9 ? "0" + tileServer : tileServer.toString()
         var path:String = "http://tile" + zeroPaddedTileServer + ".gigapan.org/gigapans0/" + id + "/tiles"
-        
+
         var descriptor:GigaPanDescriptor = new GigaPanDescriptor(path, width, height)
-        
+
         return descriptor
     }
 
@@ -158,14 +158,14 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
         var maxLevel:uint = numLevels - 1
         var index:uint = clamp(Math.ceil(log2) - DEFAULT_BASE_LEVEL + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
-        
+
         // FIXME
         if (width / level.width < 0.5)
             level = getLevelAt(Math.max(0, index - 1))
 
         if (width / level.width < 0.5)
             trace("[GigaPanDescriptor] getLevelForSize():", width / level.width)
-        
+
         return level
     }
 
@@ -205,10 +205,10 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
         var maxDimension:uint = Math.max(width, height)
         var actualLevels:uint = Math.ceil(Math.log(maxDimension) / Math.LN2)
         var numLevels:uint = Math.max(0, actualLevels - DEFAULT_BASE_LEVEL + 1)
-        
+
         return numLevels
     }
-     
+
     /**
      * @private
      */
@@ -218,7 +218,7 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
                                   numLevels:int):void
     {
         var maxLevel:int = numLevels - 1
-        
+
         for (var index:int = 0; index <= maxLevel; index++)
         {
             var size:Point = getSize(index)
@@ -235,27 +235,27 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
             addLevel(level)
         }
     }
-    
+
     /**
      * @private
-     */ 
+     */
     private function getScale(level:int):Number
     {
         var maxLevel:int = numLevels - 1
         // 1 / (1 << maxLevel - level)
         return Math.pow(0.5, maxLevel - level)
     }
-    
+
     /**
      * @private
-     */ 
+     */
     private function getSize(level:int):Point
     {
         var size:Point = new Point()
         var scale:Number = getScale(level)
         size.x = Math.floor(width * scale)
         size.y = Math.floor(height * scale)
-        
+
         return size
     }
 }

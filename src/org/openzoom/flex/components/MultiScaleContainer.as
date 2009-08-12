@@ -39,32 +39,32 @@
 package org.openzoom.flex.components
 {
 
-import flash.display.DisplayObject;
-import flash.display.Graphics;
-import flash.display.Shape;
-import flash.display.Sprite;
-import flash.events.Event;
-import flash.events.ProgressEvent;
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import flash.display.DisplayObject
+import flash.display.Graphics
+import flash.display.Shape
+import flash.display.Sprite
+import flash.events.Event
+import flash.events.ProgressEvent
+import flash.geom.Point
+import flash.geom.Rectangle
 
-import org.openzoom.flash.components.IMultiScaleContainer;
-import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.net.ILoaderClient;
-import org.openzoom.flash.net.INetworkQueue;
-import org.openzoom.flash.net.NetworkQueue;
-import org.openzoom.flash.renderers.IRenderer;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
-import org.openzoom.flash.scene.IMultiScaleScene;
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.scene.MultiScaleScene;
-import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.INormalizedViewportContainer;
-import org.openzoom.flash.viewport.IViewportConstraint;
-import org.openzoom.flash.viewport.IViewportController;
-import org.openzoom.flash.viewport.IViewportTransformer;
-import org.openzoom.flash.viewport.NormalizedViewport;
+import org.openzoom.flash.components.IMultiScaleContainer
+import org.openzoom.flash.events.ViewportEvent
+import org.openzoom.flash.net.ILoaderClient
+import org.openzoom.flash.net.INetworkQueue
+import org.openzoom.flash.net.NetworkQueue
+import org.openzoom.flash.renderers.IRenderer
+import org.openzoom.flash.renderers.images.ImagePyramidRenderManager
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer
+import org.openzoom.flash.scene.IMultiScaleScene
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene
+import org.openzoom.flash.scene.MultiScaleScene
+import org.openzoom.flash.viewport.INormalizedViewport
+import org.openzoom.flash.viewport.INormalizedViewportContainer
+import org.openzoom.flash.viewport.IViewportConstraint
+import org.openzoom.flash.viewport.IViewportController
+import org.openzoom.flash.viewport.IViewportTransformer
+import org.openzoom.flash.viewport.NormalizedViewport
 
 import mx.core.UIComponent
 
@@ -386,7 +386,7 @@ public final class MultiScaleContainer extends UIComponent
 
         if (!loader)
             createLoader()
-            
+
         if (!renderManager)
             createRenderManager()
     }
@@ -550,7 +550,7 @@ public final class MultiScaleContainer extends UIComponent
         {
             renderer.viewport = _viewport
             renderer.scene = IReadonlyMultiScaleScene(_scene)
-            
+
             var imagePyramidRenderer:ImagePyramidRenderer = renderer as ImagePyramidRenderer
             if (imagePyramidRenderer)
                 renderManager.addRenderer(imagePyramidRenderer)
@@ -569,7 +569,7 @@ public final class MultiScaleContainer extends UIComponent
             var imagePyramidRenderer:ImagePyramidRenderer = renderer as ImagePyramidRenderer
             if (imagePyramidRenderer)
                 renderManager.removeRenderer(imagePyramidRenderer)
-                
+
             renderer.scene = null
             renderer.viewport = null
         }
@@ -795,7 +795,7 @@ public final class MultiScaleContainer extends UIComponent
     private var scaleChanged:Boolean = false
 
    ;[Bindable(event="transformUpdate")]
-   
+
     // FIXME
     /**
      * @copy org.openzoom.flash.viewport.IViewport#scale

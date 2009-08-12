@@ -21,9 +21,9 @@
 package org.openzoom.flash.descriptors.zoomify
 {
 
-import org.flexunit.Assert;
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.flexunit.Assert
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.IImagePyramidLevel
 
 /**
  * Tests the ZoomifyDescriptor implementation for correctness.
@@ -42,12 +42,12 @@ public class ZoomifyDescriptorTest
 
     private static const LEVELS:Array =
         [//  width, height, columns, rows
-            [ 138,   206,       1,    1],
-            [ 276,   412,       2,    2],
-            [ 551,   823,       3,    4],
+            [138,   206,       1,    1],
+            [276,   412,       2,    2],
+            [551,   823,       3,    4],
             [1102,  1645,       5,    7],
             [2203,  3290,       9,   13],
-        ]
+      ]
 
     //--------------------------------------------------------------------------
     //
@@ -63,13 +63,13 @@ public class ZoomifyDescriptorTest
     //
     //--------------------------------------------------------------------------
 
-	[Before]
+    [Before]
     public function setUp():void
     {
         descriptor = ZoomifyDescriptor.fromXML("test.xml", DESCRIPTOR_XML)
     }
 
-	[After]
+    [After]
     public function tearDown():void
     {
         descriptor = null
@@ -81,20 +81,20 @@ public class ZoomifyDescriptorTest
     //
     //--------------------------------------------------------------------------
 
-	[Test]
+    [Test]
     public function testMaxLevel():void
     {
         Assert.assertEquals("Maximum level correctly computed",
                       4, descriptor.numLevels - 1)
     }
-    
-	[Test]
+
+    [Test]
     public function testOverlap():void
     {
         Assert.assertEquals("Overlap correct", 0, descriptor.tileOverlap)
     }
-    
-	[Test]
+
+    [Test]
     public function testLevels():void
     {
        for (var index:int = 0; index < descriptor.numLevels; index++)
@@ -111,8 +111,8 @@ public class ZoomifyDescriptorTest
        }
 
     }
-    
-	[Test]
+
+    [Test]
     public function testGetLevelForSize():void
     {
        Assert.assertEquals("Level computation for given size", descriptor.numLevels - 1,

@@ -39,10 +39,12 @@
 package org.openzoom.flash.viewport
 {
 
+import org.openzoom.flash.utils.IDisposable;
+
 /**
  * Interface for viewport transformers.
  */
-public interface IViewportTransformer
+public interface IViewportTransformer extends IDisposable
 {
     //--------------------------------------------------------------------------
     //

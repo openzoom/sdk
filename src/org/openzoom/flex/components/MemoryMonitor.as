@@ -39,17 +39,17 @@
 package org.openzoom.flex.components
 {
 
-import flash.display.Graphics;
-import flash.display.Shape;
-import flash.events.Event;
-import flash.system.System;
-import flash.text.AntiAliasType;
-import flash.text.TextField;
-import flash.text.TextFieldAutoSize;
-import flash.text.TextFormat;
-import flash.text.TextFormatAlign;
+import flash.display.Graphics
+import flash.display.Shape
+import flash.events.Event
+import flash.system.System
+import flash.text.AntiAliasType
+import flash.text.TextField
+import flash.text.TextFieldAutoSize
+import flash.text.TextFormat
+import flash.text.TextFormatAlign
 
-import mx.core.UIComponent;
+import mx.core.UIComponent
 
 /**
  * Displays the total memory consumption of all running Flash Player instances.
@@ -61,29 +61,29 @@ public final class MemoryMonitor extends UIComponent
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_WIDTH:Number = 70
     private static const DEFAULT_HEIGHT:Number = 24
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
-     */ 
-	public function MemoryMonitor()
-	{
-		addEventListener(Event.ADDED_TO_STAGE,
-		                 addedToStageHandler,
-		                 false, 0, true)
-		                 
+     */
+    public function MemoryMonitor()
+    {
+        addEventListener(Event.ADDED_TO_STAGE,
+                         addedToStageHandler,
+                         false, 0, true)
+
         addEventListener(Event.REMOVED_FROM_STAGE,
                          removedFromStageHandler,
                          false, 0, true)
-	}
+    }
 
     //--------------------------------------------------------------------------
     //
@@ -99,35 +99,35 @@ public final class MemoryMonitor extends UIComponent
     //  Overridden methods: UIComponent
     //
     //--------------------------------------------------------------------------
-	
-	override protected function createChildren():void
-	{
-		super.createChildren()
-		
+
+    override protected function createChildren():void
+    {
+        super.createChildren()
+
         if (!background)
             createBackground()
-	   
+
         if (!label)
             createLabel()
-	}
-	
-	override protected function measure():void
-	{
-		measuredWidth = DEFAULT_WIDTH
-		measuredHeight = DEFAULT_HEIGHT
-		
-		explicitWidth = DEFAULT_WIDTH
-		explicitHeight = DEFAULT_HEIGHT
-	}
-	
-	override protected function updateDisplayList(unscaledWidth:Number,
-	                                              unscaledHeight:Number):void
+    }
+
+    override protected function measure():void
+    {
+        measuredWidth = DEFAULT_WIDTH
+        measuredHeight = DEFAULT_HEIGHT
+
+        explicitWidth = DEFAULT_WIDTH
+        explicitHeight = DEFAULT_HEIGHT
+    }
+
+    override protected function updateDisplayList(unscaledWidth:Number,
+                                                  unscaledHeight:Number):void
     {
         // center label
         label.x = (background.width - label.width) / 2
         label.y = (background.height - label.height) / 2
     }
-	
+
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -164,26 +164,26 @@ public final class MemoryMonitor extends UIComponent
 
         addChild(label)
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
- 
+
     private function addedToStageHandler(event:Event):void
     {
         addEventListener(Event.ENTER_FRAME,
                          enterFrameHandler,
                          false, 0, true)
     }
-    
+
     private function removedFromStageHandler(event:Event):void
     {
-    	removeEventListener(Event.ENTER_FRAME,
-    	                    enterFrameHandler)
+        removeEventListener(Event.ENTER_FRAME,
+                            enterFrameHandler)
     }
-    
+
     private function enterFrameHandler(event:Event):void
     {
         var memoryConsumption:Number = System.totalMemory / 1024 / 1024

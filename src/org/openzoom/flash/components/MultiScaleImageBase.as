@@ -47,6 +47,7 @@ import flash.ui.ContextMenu;
 
 import org.openzoom.flash.net.ILoaderClient;
 import org.openzoom.flash.net.INetworkQueue;
+import org.openzoom.flash.utils.IDisposable;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
@@ -58,7 +59,8 @@ import org.openzoom.flash.viewport.IViewportTransformer;
  */
 internal class MultiScaleImageBase extends Sprite
                                    implements IMultiScaleContainer,
-                                              ILoaderClient
+                                              ILoaderClient,
+                                              IDisposable
 {
     //--------------------------------------------------------------------------
     //
@@ -98,7 +100,7 @@ internal class MultiScaleImageBase extends Sprite
     //  Properties: ILoaderClient
     //
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     //  loader
     //----------------------------------
@@ -112,10 +114,10 @@ internal class MultiScaleImageBase extends Sprite
 
     public function set loader(value:INetworkQueue):void
     {
-    	if (container)
+        if (container)
             container.loader = value
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: Scene
@@ -540,6 +542,20 @@ internal class MultiScaleImageBase extends Sprite
     override public function get numChildren():int
     {
         return container ? container.numChildren : 0
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function dispose():void
+    {
+    	container.dispose()
+    	container = null
+    	
+    	loader = null
     }
 }
 

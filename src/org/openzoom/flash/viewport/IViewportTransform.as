@@ -42,10 +42,12 @@ package org.openzoom.flash.viewport
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
+import org.openzoom.flash.utils.IDisposable;
+
 /**
  * Interface for viewport transform implementations.
  */
-public interface IViewportTransform
+public interface IViewportTransform extends IDisposable
 {
     //--------------------------------------------------------------------------
     //
@@ -250,7 +252,7 @@ public interface IViewportTransform
      * Returns a Rectangle object with the bounds of the viewport.
      */
     function getBounds():Rectangle
-     
+
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -318,7 +320,7 @@ public interface IViewportTransform
      * object; that is, a rectangle with its x, y, width, and height properties set to 0.
      */
     function intersection(toIntersect:Rectangle):Rectangle
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: flash.geom.Rectangle

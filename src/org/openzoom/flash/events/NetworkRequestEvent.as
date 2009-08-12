@@ -39,13 +39,13 @@
 package org.openzoom.flash.events
 {
 
-import flash.events.Event;
+import flash.events.Event
 
-import org.openzoom.flash.net.INetworkRequest;
+import org.openzoom.flash.net.INetworkRequest
 
 /**
  * @private
- * 
+ *
  * NetworkRequest event class.
  */
 public final class NetworkRequestEvent extends Event

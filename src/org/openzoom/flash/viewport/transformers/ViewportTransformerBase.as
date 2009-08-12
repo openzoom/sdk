@@ -39,16 +39,16 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import org.openzoom.flash.viewport.INormalizedViewport;
-import org.openzoom.flash.viewport.IViewportConstraint;
-import org.openzoom.flash.viewport.IViewportTransform;
-import org.openzoom.flash.viewport.IViewportTransformer;
-import org.openzoom.flash.viewport.constraints.NullConstraint;
+import org.openzoom.flash.viewport.INormalizedViewport
+import org.openzoom.flash.viewport.IViewportConstraint
+import org.openzoom.flash.viewport.IViewportTransform
+import org.openzoom.flash.viewport.IViewportTransformer
+import org.openzoom.flash.viewport.constraints.NullConstraint
 
 [ExcludeClass]
 /**
  * @private
- * 
+ *
  * Base class for implementations of IViewportTransformer
  * providing a basic getter and setter skeleton.
  */
@@ -140,7 +140,7 @@ public class ViewportTransformerBase
     {
         return _target.clone()
     }
-    
+
     public function set target(value:IViewportTransform):void
     {
         _target = value
@@ -161,6 +161,19 @@ public class ViewportTransformerBase
         // Copy target and validate to know where to tween to...
         var previousTarget:IViewportTransform = this.target
         _target = constraint.validate(target.clone(), previousTarget)
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function dispose():void
+    {
+    	_viewport = null
+    	_target = null
+    	_constraint = null
     }
 }
 

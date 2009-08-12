@@ -39,7 +39,7 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.geom.Point;
+import flash.geom.Point
 
 /**
  * Interface for IViewportTransform constraints, e.g. use constraints to

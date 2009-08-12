@@ -39,9 +39,9 @@
 package org.openzoom.flash.descriptors
 {
 
-import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
-import org.openzoom.flash.descriptors.openzoom.OpenZoomDescriptor;
-import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor
+import org.openzoom.flash.descriptors.openzoom.OpenZoomDescriptor
+import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor
 
 
 /**

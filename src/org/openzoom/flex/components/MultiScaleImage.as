@@ -39,15 +39,15 @@
 package org.openzoom.flex.components
 {
 
-import flash.events.Event;
-import flash.events.IOErrorEvent;
-import flash.events.SecurityErrorEvent;
-import flash.net.URLLoader;
-import flash.net.URLRequest;
+import flash.events.Event
+import flash.events.IOErrorEvent
+import flash.events.SecurityErrorEvent
+import flash.net.URLLoader
+import flash.net.URLRequest
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorFactory;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorFactory
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer
 
 /**
  *  Dispatched when the image has successfully loaded.
@@ -207,7 +207,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
         image.source = descriptor
         image.width = sceneWidth
         image.height = sceneHeight
-        
+
         container.addChild(image)
         container.showAll(true)
 

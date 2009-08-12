@@ -39,13 +39,13 @@
 package org.openzoom.flash.descriptors.zoomify
 {
 
-import flash.geom.Point;
+import flash.geom.Point
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
-import org.openzoom.flash.descriptors.ImagePyramidLevel;
-import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.IImagePyramidLevel
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase
+import org.openzoom.flash.descriptors.ImagePyramidLevel
+import org.openzoom.flash.utils.math.clamp
 
 /**
  * Descriptor for the <a href="http://www.zoomify.com/">Zoomify</a>
@@ -66,7 +66,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     private static const DEFAULT_TYPE:String = "image/jpeg"
     private static const DEFAULT_TILE_OVERLAP:uint = 0
     private static const DEFAULT_NUM_TILES_IN_FOLDER:uint = 256
-    
+
     private static const DEFAULT_NUM_IMAGES:int = 1
     private static const DEFAULT_VERSION:String = "1.8"
 
@@ -107,7 +107,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     {
         // <IMAGE_PROPERTIES WIDTH="2203" HEIGHT="3290" NUMTILES="169"
         //        NUMIMAGES="1" VERSION="1.8" TILESIZE="256" />
-        
+
         var width:uint = xml.@WIDTH
         var height:uint = xml.@HEIGHT
         var tileSize:uint = xml.@TILESIZE
@@ -171,7 +171,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
         var longestSide:Number = Math.max(width, height)
-        var log2:Number = (Math.log(longestSide) - Math.log(tileSize)) / Math.LN2 
+        var log2:Number = (Math.log(longestSide) - Math.log(tileSize)) / Math.LN2
         var maxLevel:uint = numLevels - 1
         var index:int = clamp(Math.ceil(log2) + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
@@ -182,7 +182,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
 
         if (width / level.width < 0.5)
             trace("[ZoomifyDescriptor] getLevelForSize():", width / level.width)
-        
+
         return level
     }
 
@@ -241,7 +241,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
                                   numLevels:int):void
     {
         var maxLevel:int = numLevels - 1
-        
+
         for (var index:int = 0; index <= maxLevel; index++)
         {
             var size:Point = getSize(index)
@@ -288,7 +288,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
 
         return tileGroup
     }
-    
+
     /**
      * @private
      */
@@ -297,17 +297,17 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
         var maxLevel:int = numLevels - 1
         return Math.pow(0.5, maxLevel - level)
     }
-    
+
     /**
      * @private
-     */ 
+     */
     private function getSize(level:int):Point
     {
         var size:Point = new Point()
         var scale:Number = getScale(level)
         size.x = Math.ceil(width * scale)
         size.y = Math.ceil(height * scale)
-        
+
         return size
     }
 }

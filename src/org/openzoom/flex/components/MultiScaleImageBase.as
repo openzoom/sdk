@@ -39,17 +39,17 @@
 package org.openzoom.flex.components
 {
 
-import flash.display.DisplayObject;
-import flash.events.Event;
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import flash.display.DisplayObject
+import flash.events.Event
+import flash.geom.Point
+import flash.geom.Rectangle
 
-import mx.core.UIComponent;
+import mx.core.UIComponent
 
-import org.openzoom.flash.net.INetworkQueue;
-import org.openzoom.flash.viewport.IViewportConstraint;
-import org.openzoom.flash.viewport.IViewportTransformer;
-import org.openzoom.flash.viewport.NormalizedViewport;
+import org.openzoom.flash.net.INetworkQueue
+import org.openzoom.flash.viewport.IViewportConstraint
+import org.openzoom.flash.viewport.IViewportTransformer
+import org.openzoom.flash.viewport.NormalizedViewport
 
 /**
  * @private
@@ -248,7 +248,7 @@ internal class MultiScaleImageBase extends UIComponent
             dispatchEvent(new Event("controllersChanged"))
         }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: ILoaderClient
@@ -284,7 +284,7 @@ internal class MultiScaleImageBase extends UIComponent
         {
             container = new MultiScaleContainer()
             super.addChild(container)
-            
+
 //            container.loader.addEventListener(Event.INIT,
 //                                              container_eventHandler,
 //                                              false, 0, true)

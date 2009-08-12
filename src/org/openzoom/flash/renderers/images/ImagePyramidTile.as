@@ -39,12 +39,12 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.BitmapData;
-import flash.errors.IllegalOperationError;
-import flash.geom.Rectangle;
+import flash.display.BitmapData
+import flash.errors.IllegalOperationError
+import flash.geom.Rectangle
 
-import org.openzoom.flash.utils.IComparable;
-import org.openzoom.flash.utils.IDisposable;
+import org.openzoom.flash.utils.IComparable
+import org.openzoom.flash.utils.IDisposable
 
 [ExcludeClass]
 /**
@@ -277,10 +277,10 @@ internal class ImagePyramidTile implements IDisposable,
 
         if (level > tile.level)
             return -1
-            
+
         if (distance < tile.distance)
             return 1
-            
+
         if (distance > tile.distance)
             return -1
 
@@ -288,7 +288,7 @@ internal class ImagePyramidTile implements IDisposable,
         // more important than those in the lower part
         if (row < tile.row)
             return 1
-            
+
         if (row > tile.row)
             return -1
 

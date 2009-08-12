@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="OpenZoomTestRunner.mxml" projectUUID="efa1b883-609d-439f-a9b6-852a61f741cd" version="6">
+<actionScriptProperties mainApplicationPath="GigaPanViewer.as" projectUUID="efa1b883-609d-439f-a9b6-852a61f741cd" version="6">
   <compiler additionalCompilerArguments="-locale en_US -default-size 1024 768" autoRSLOrdering="true" copyDependentFiles="false" flexSDK="Flex 4.0" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="test"/>
+<!--
       <compilerSourcePathEntry kind="1" linkType="1" path="examples/actionscript/interactive-renderers/src"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="examples/actionscript/mapping/src"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/deepzoomcontainer/src"/>
@@ -16,6 +17,7 @@
       <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/multiscaleimage/src"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/power-law-scaling/src"/>
       <compilerSourcePathEntry kind="1" linkType="1" path="examples/flex/z-order/src"/>
+-->
     </compilerSourcePath>
     <libraryPath defaultLinkType="1">
       <libraryPathEntry kind="4" path=""/>
@@ -24,17 +26,16 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="OpenZoomTestRunner.mxml"/>
     <application path="CatalogViewer.as"/>
     <application path="GigaPanViewer.as"/>
-    <application path="SmoothTransformerTest.as"/>
     <application path="LayerRendererTest.as"/>
+    <application path="SmoothTransformerTest.as"/>
     <application path="RosettaProjectViewer.as"/>
     <application path="DjatokaTest.as"/>
-    <application path="OpenZoomDescriptorTest.as"/>
-    <application path="dourado.as"/>
+    <application path="OpenZoomTestRunner.mxml"/>
     <application path="ImagePyramidRendererTest.as"/>
-    <application path="KoelnGigapixel.as"/>
+    <application path="dourado.as"/>
+    <application path="OpenZoomDescriptorTest.as"/>
   </applications>
   <modules/>
   <buildCSSFiles/>

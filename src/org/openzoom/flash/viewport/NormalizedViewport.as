@@ -39,14 +39,14 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.events.Event;
-import flash.events.EventDispatcher;
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import flash.events.Event
+import flash.events.EventDispatcher
+import flash.geom.Point
+import flash.geom.Rectangle
 
-import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.viewport.transformers.NullTransformer;
+import org.openzoom.flash.events.ViewportEvent
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene
+import org.openzoom.flash.viewport.transformers.NullTransformer
 
 //------------------------------------------------------------------------------
 //
@@ -118,7 +118,7 @@ public final class NormalizedViewport extends EventDispatcher
         var width:Number = 1
         var height:Number = 1
         var zoom:Number = 1
-        
+
         _transform = ViewportTransform.fromValues(x,
                                                   y,
                                                   width,
@@ -452,7 +452,7 @@ public final class NormalizedViewport extends EventDispatcher
     //--------------------------------------------------------------------------
 
    ;[Bindable(event="transformUpdate")]
-   
+
     /**
      * @inheritDoc
      */
@@ -789,6 +789,23 @@ public final class NormalizedViewport extends EventDispatcher
                "h=" + height + "\n" +
                "sW=" + scene.sceneWidth + "\n" +
                "sH=" + scene.sceneHeight
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function dispose():void
+    {
+        _scene.removeEventListener(Event.RESIZE,
+                                   scene_resizeHandler)
+    	
+    	_transform.dispose()
+    	_transform = null
+    	
+    	_transformer = null    	
     }
 }
 

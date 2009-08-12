@@ -39,27 +39,27 @@
 package org.openzoom.flash.utils
 {
 
-import flash.display.Stage;
-import flash.display.StageDisplayState;
-import flash.system.Capabilities;
-	
+import flash.display.Stage
+import flash.display.StageDisplayState
+import flash.system.Capabilities
+
 /**
  * Helper for toggling fullscreen mode.
  */
 public final class FullScreenUtil
 {
     public static function toggleFullScreen(stage:Stage,
-    										interactive:Boolean=true):void
+                                            interactive:Boolean=true):void
     {
         try
         {
             if (stage.displayState == StageDisplayState.NORMAL)
             {
                 var mode:String = StageDisplayState.FULL_SCREEN
-                
+
                 if (interactive && Capabilities.playerType == "Desktop")
                     mode = "fullScreenInteractive"
-                    
+
                 stage.displayState = mode
             }
             else

@@ -39,11 +39,11 @@
 package org.openzoom.flash.descriptors.rosettaproject
 {
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
-import org.openzoom.flash.descriptors.ImagePyramidLevel;
-import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.IImagePyramidLevel
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase
+import org.openzoom.flash.descriptors.ImagePyramidLevel
+import org.openzoom.flash.utils.math.clamp
 
 /**
  * <a href="http://rosettaproject.org/">The Rosetta Project</a> descriptor.
@@ -109,14 +109,14 @@ public final class RosettaDiskBackDescriptor extends ImagePyramidDescriptorBase
         var maxLevel:uint = numLevels - 1
         var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
-        
+
         // FIXME
         if (width / level.width < 0.5)
             level = getLevelAt(Math.max(0, index - 1))
 
         if (width / level.width < 0.5)
             trace("[RosettaDiskBackDescriptor] getLevelForSize():", width / level.width)
-        
+
         return level
     }
 
@@ -125,7 +125,7 @@ public final class RosettaDiskBackDescriptor extends ImagePyramidDescriptorBase
      */
     public function getTileURL(level:int, column:int, row:int):String
     {
-    	var l:IImagePyramidLevel = getLevelAt(level)
+        var l:IImagePyramidLevel = getLevelAt(level)
         var baseURL:String = "http://dvd.rosettaproject.org/1.0.0/disk_back/"
         var tileURL:String = [baseURL, level, "/", column, "/", l.numRows - row - 1, ".gif"].join("")
 

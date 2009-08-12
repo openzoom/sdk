@@ -39,10 +39,10 @@
 package org.openzoom.flash.viewport.constraints
 {
 
-import flash.geom.Point;
+import flash.geom.Point
 
-import org.openzoom.flash.viewport.IViewportConstraint;
-import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.IViewportConstraint
+import org.openzoom.flash.viewport.IViewportTransform
 
 /**
  * NullConstraint doesn't aplly any constraints to a viewport.

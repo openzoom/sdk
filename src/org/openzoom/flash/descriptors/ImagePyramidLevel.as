@@ -39,7 +39,7 @@
 package org.openzoom.flash.descriptors
 {
 
-import flash.geom.Rectangle;
+import flash.geom.Rectangle
 
 /**
  * The ImagePyramidLevel class represents a single level of a

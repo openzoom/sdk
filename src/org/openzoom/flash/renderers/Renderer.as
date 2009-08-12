@@ -38,11 +38,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.renderers
 {
-import flash.display.Sprite;
+import flash.display.Sprite
 
-import org.openzoom.flash.events.RendererEvent;
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
-import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.events.RendererEvent
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene
+import org.openzoom.flash.viewport.INormalizedViewport
 
 //------------------------------------------------------------------------------
 //
@@ -143,11 +143,11 @@ public class Renderer extends Sprite
     //  zoom
     //----------------------------------
 
-	/**
-	 * Returns the scale ratio of this renderer in respect to the viewport.
-	 * 
-	 * @return Zoom value of this renderer. NaN if <code>scene</code> is <code>null</code>.
-	 */
+    /**
+     * Returns the scale ratio of this renderer in respect to the viewport.
+     *
+     * @return Zoom value of this renderer. NaN if <code>scene</code> is <code>null</code>.
+     */
     public function get zoom():Number
     {
         if (!viewport)

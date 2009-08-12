@@ -39,9 +39,9 @@
 package org.openzoom.flash.viewport.constraints
 {
 
-import org.openzoom.flash.viewport.IViewportConstraint;
-import org.openzoom.flash.viewport.IViewportTransform;
-         
+import org.openzoom.flash.viewport.IViewportConstraint
+import org.openzoom.flash.viewport.IViewportTransform
+
 /**
  * Provides a way to limit the minimum and maximum scale the scene can reach.
  */

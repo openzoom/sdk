@@ -39,48 +39,48 @@
 package
 {
 
-import flash.display.Sprite;
-import flash.display.StageAlign;
-import flash.display.StageQuality;
-import flash.display.StageScaleMode;
-import flash.events.Event;
-import flash.utils.setTimeout;
+import flash.display.Sprite
+import flash.display.StageAlign
+import flash.display.StageQuality
+import flash.display.StageScaleMode
+import flash.events.Event
+import flash.utils.setTimeout
 
-import org.openzoom.flash.components.MemoryMonitor;
-import org.openzoom.flash.components.MultiScaleContainer;
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
-import org.openzoom.flash.events.ViewportEvent;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
-import org.openzoom.flash.utils.ExternalMouseWheel;
-import org.openzoom.flash.viewport.constraints.CenterConstraint;
-import org.openzoom.flash.viewport.constraints.CompositeConstraint;
-import org.openzoom.flash.viewport.constraints.MapConstraint;
-import org.openzoom.flash.viewport.constraints.ScaleConstraint;
-import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
-import org.openzoom.flash.viewport.constraints.ZoomConstraint;
-import org.openzoom.flash.viewport.controllers.ContextMenuController;
-import org.openzoom.flash.viewport.controllers.KeyboardController;
-import org.openzoom.flash.viewport.controllers.MouseController;
-import org.openzoom.flash.viewport.transformers.TweenerTransformer;
+import org.openzoom.flash.components.MemoryMonitor
+import org.openzoom.flash.components.MultiScaleContainer
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor
+import org.openzoom.flash.events.ViewportEvent
+import org.openzoom.flash.renderers.images.ImagePyramidRenderManager
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer
+import org.openzoom.flash.utils.ExternalMouseWheel
+import org.openzoom.flash.viewport.constraints.CenterConstraint
+import org.openzoom.flash.viewport.constraints.CompositeConstraint
+import org.openzoom.flash.viewport.constraints.MapConstraint
+import org.openzoom.flash.viewport.constraints.ScaleConstraint
+import org.openzoom.flash.viewport.constraints.VisibilityConstraint
+import org.openzoom.flash.viewport.constraints.ZoomConstraint
+import org.openzoom.flash.viewport.controllers.ContextMenuController
+import org.openzoom.flash.viewport.controllers.KeyboardController
+import org.openzoom.flash.viewport.controllers.MouseController
+import org.openzoom.flash.viewport.transformers.TweenerTransformer
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#000000")]
 public class dourado extends Sprite
 {
-	private static const DEFAULT_SCALE_FACTOR:Number = 1.0
-	
+    private static const DEFAULT_SCALE_FACTOR:Number = 1.0
+
     public function dourado()
     {
         // FIXME
         stage.quality = StageQuality.HIGH
-        
+
         stage.align = StageAlign.TOP_LEFT
         stage.scaleMode = StageScaleMode.NO_SCALE
         stage.addEventListener(Event.RESIZE,
                                stage_resizeHandler,
                                false, 0, true)
-                      
+
         ExternalMouseWheel.initialize(stage)
 
         container = new MultiScaleContainer()
@@ -136,9 +136,9 @@ public class dourado extends Sprite
 
         var zoomConstraint:ZoomConstraint = new ZoomConstraint()
         zoomConstraint.minZoom = 1
-        
+
         var centerConstraint:CenterConstraint = new CenterConstraint()
-        
+
         var visibilityContraint:VisibilityConstraint = new VisibilityConstraint()
         var mappingConstraint:MapConstraint = new MapConstraint()
 
@@ -148,7 +148,7 @@ public class dourado extends Sprite
                                           visibilityContraint,
 //                                          mappingConstraint,
                                           zoomConstraint,
-                                          ]
+                                        ]
         container.constraint = compositeContraint
         addChild(container)
 
@@ -161,7 +161,7 @@ public class dourado extends Sprite
 
         // Layout
         layout()
-        
+
         // Refresh source
         setTimeout(container.showAll, 400, true)
     }
@@ -184,35 +184,35 @@ public class dourado extends Sprite
             container.width = stage.stageWidth
             container.height = stage.stageHeight
         }
-        
+
         if (attributionLabel)
         {
             attributionLabel.x = stage.stageWidth - attributionLabel.width
             attributionLabel.y = stage.stageHeight - attributionLabel.height
         }
     }
-    
+
     private function viewport_transformUpdateHandler(event:ViewportEvent):void
     {
-//    	trace(container.viewport.scale)
+//        trace(container.viewport.scale)
     }
 }
 
 }
 
-import flash.display.Graphics;
-import flash.display.Shape;
-import flash.display.Sprite;
-import flash.events.Event;
-import flash.system.System;
-import flash.text.AntiAliasType;
-import flash.text.TextField;
-import flash.text.TextFieldAutoSize;
-import flash.text.TextFormat;
-import flash.text.TextFormatAlign;
-import flash.events.MouseEvent;
-import flash.net.navigateToURL;
-import flash.net.URLRequest;
+import flash.display.Graphics
+import flash.display.Shape
+import flash.display.Sprite
+import flash.events.Event
+import flash.system.System
+import flash.text.AntiAliasType
+import flash.text.TextField
+import flash.text.TextFieldAutoSize
+import flash.text.TextFormat
+import flash.text.TextFormatAlign
+import flash.events.MouseEvent
+import flash.net.navigateToURL
+import flash.net.URLRequest
 
 class AttributionLabel extends Sprite
 {
@@ -234,7 +234,7 @@ class AttributionLabel extends Sprite
         mouseEnabled = true
         mouseChildren = false
         buttonMode = true
-                
+
         addEventListener(MouseEvent.CLICK,
                          clickHandler,
                          false, 0, true)
@@ -284,7 +284,7 @@ class AttributionLabel extends Sprite
         label.selectable = false
 
         label.htmlText = "Powered by OpenStreetMap"
-        
+
         addChild(label)
     }
 
@@ -294,9 +294,9 @@ class AttributionLabel extends Sprite
         label.x = (background.width - label.width) / 2
         label.y = (background.height - label.height) / 2
     }
-    
+
     private function clickHandler(event:MouseEvent):void
     {
-    	navigateToURL(new URLRequest("http://www.openstreetmap.org/"), "_blank")
+        navigateToURL(new URLRequest("http://www.openstreetmap.org/"), "_blank")
     }
 }

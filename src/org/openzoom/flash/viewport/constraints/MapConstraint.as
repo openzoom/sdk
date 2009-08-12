@@ -39,8 +39,8 @@
 package org.openzoom.flash.viewport.constraints
 {
 
-import org.openzoom.flash.viewport.IViewportConstraint;
-import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.IViewportConstraint
+import org.openzoom.flash.viewport.IViewportTransform
 
 /**
  * Viewport constraint that ensures that the viewport only reaches zoom
@@ -106,7 +106,7 @@ public final class MapConstraint implements IViewportConstraint
             n = Math.ceil(exp)
 
         var result:Number = Math.pow(2, n)
-        
+
         return result
     }
 }

@@ -41,7 +41,7 @@ package org.openzoom.flash.net
 
 /**
  * @private
- * 
+ *
  * Interface for types that need a loader to work.
  */
 public interface ILoaderClient

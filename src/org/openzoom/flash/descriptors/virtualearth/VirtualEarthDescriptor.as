@@ -39,14 +39,14 @@
 package org.openzoom.flash.descriptors.virtualearth
 {
 
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import flash.geom.Point
+import flash.geom.Rectangle
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
-import org.openzoom.flash.descriptors.ImagePyramidLevel;
-import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.IImagePyramidLevel
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase
+import org.openzoom.flash.descriptors.ImagePyramidLevel
+import org.openzoom.flash.utils.math.clamp
 
 /**
  * <a href="http://www.microsoft.com/virtualearth/">Microsoft VirtualEarth</a> descriptor.
@@ -93,7 +93,7 @@ public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
             var rows:uint = Math.ceil(size / tileHeight)
             var level:IImagePyramidLevel =
                     new ImagePyramidLevel(this, i, size, size, columns, rows)
-                    
+
             addLevel(level)
         }
     }
@@ -115,7 +115,7 @@ public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
         var maxLevel:uint = numLevels - 1
         var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
-        
+
         return level
     }
 

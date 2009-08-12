@@ -39,16 +39,16 @@
 package org.openzoom.flash.components
 {
 
-import flash.display.Graphics;
-import flash.display.Shape;
-import flash.display.Sprite;
-import flash.events.Event;
-import flash.system.System;
-import flash.text.AntiAliasType;
-import flash.text.TextField;
-import flash.text.TextFieldAutoSize;
-import flash.text.TextFormat;
-import flash.text.TextFormatAlign;
+import flash.display.Graphics
+import flash.display.Shape
+import flash.display.Sprite
+import flash.events.Event
+import flash.system.System
+import flash.text.AntiAliasType
+import flash.text.TextField
+import flash.text.TextFieldAutoSize
+import flash.text.TextFormat
+import flash.text.TextFormatAlign
 
 /**
  * Displays the total memory consumption of all running Flash Player instances.
@@ -69,11 +69,11 @@ public final class MemoryMonitor extends Sprite
         createBackground()
         createLabel()
         layout()
-        
+
         addEventListener(Event.ADDED_TO_STAGE,
                          addedToStageHandler,
                          false, 0, true)
-                         
+
         addEventListener(Event.REMOVED_FROM_STAGE,
                          removedFromStageHandler,
                          false, 0, true)
@@ -144,7 +144,7 @@ public final class MemoryMonitor extends Sprite
                          enterFrameHandler,
                          false, 0, true)
     }
-    
+
     private function removedFromStageHandler(event:Event):void
     {
         removeEventListener(Event.ENTER_FRAME,

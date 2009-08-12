@@ -39,12 +39,11 @@
 package org.openzoom.flash.descriptors
 {
 
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import flash.geom.Point
+import flash.geom.Rectangle
 
-import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.utils.math.clamp
 
-[ExcludeClass]
 /**
  * @private
  *
@@ -232,13 +231,13 @@ public class ImagePyramidDescriptorBase
         var offsetY:uint = (row == 0) ? 0 : tileOverlap
         bounds.x = (column * tileWidth) - offsetX
         bounds.y = (row * tileHeight) - offsetY
-        
+
         var l:IImagePyramidLevel = getLevelAt(level)
         var width:uint = tileWidth + (column == 0 ? 1 : 2) * tileOverlap
         var height:uint = tileHeight + (row == 0 ? 1 : 2) * tileOverlap
         bounds.width = Math.min(width, l.width - bounds.x)
         bounds.height = Math.min(height, l.height - bounds.y)
-                
+
         return bounds
     }
 
@@ -259,9 +258,9 @@ public class ImagePyramidDescriptorBase
         var p:Point = new Point()
 
         var l:IImagePyramidLevel = getLevelAt(level)
-        p.x = clamp(Math.floor(point.x / tileWidth), 0, l.numColumns - 1) 
+        p.x = clamp(Math.floor(point.x / tileWidth), 0, l.numColumns - 1)
         p.y = clamp(Math.floor(point.y / tileHeight), 0, l.numRows - 1)
-        
+
         return p
     }
 
@@ -281,8 +280,8 @@ public class ImagePyramidDescriptorBase
      */
     protected function addLevel(level:IImagePyramidLevel):IImagePyramidLevel
     {
-    	levels.push(level)
-    	return level
+        levels.push(level)
+        return level
     }
 
     /**
@@ -290,10 +289,10 @@ public class ImagePyramidDescriptorBase
      */
     public function getLevelAt(index:int):IImagePyramidLevel
     {
-    	if (index < 0 || index >= numLevels)
-    	   throw new ArgumentError("[ImagePyramidDescriptorBase] Illegal level index.")
-    	
-    	return levels[index]
+        if (index < 0 || index >= numLevels)
+           throw new ArgumentError("[ImagePyramidDescriptorBase] Illegal level index.")
+
+        return levels[index]
     }
 
     //--------------------------------------------------------------------------

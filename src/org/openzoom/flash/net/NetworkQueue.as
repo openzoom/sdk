@@ -114,13 +114,8 @@ public final class NetworkQueue extends EventDispatcher
 
         if (!request)
             throw new ArgumentError("Type " + type.toString() + " not supported.")
-
-        request.addEventListener(ProgressEvent.PROGRESS,
-                                 request_progressHandler)
-        request.addEventListener(NetworkRequestEvent.COMPLETE,
-                                 request_completeHandler)
-        request.addEventListener(NetworkRequestEvent.ERROR,
-                                 request_errorHandler)
+            
+        addEventListeners(request)
 
         // Add item to front (LIFO)
         if (queue.length == 0 && connections.length == 0)
@@ -165,7 +160,9 @@ public final class NetworkQueue extends EventDispatcher
 
         if (index >= 0)
            connections.splice(index, 1)
-        
+
+        removeEventListeners(event.request)
+
         processQueue()
 
         if (queue.length == 0 && connections.length == 0)
@@ -201,6 +198,53 @@ public final class NetworkQueue extends EventDispatcher
         progressEvent.bytesTotal = bytesTotal
         dispatchEvent(progressEvent)
     }
+    
+    private function addEventListeners(request:INetworkRequest):void
+    {
+        request.addEventListener(ProgressEvent.PROGRESS,
+                                 request_progressHandler)
+        request.addEventListener(NetworkRequestEvent.COMPLETE,
+                                 request_completeHandler)
+        request.addEventListener(NetworkRequestEvent.ERROR,
+                                 request_errorHandler)
+    }
+    
+    private function removeEventListeners(request:INetworkRequest):void
+    {
+        request.removeEventListener(ProgressEvent.PROGRESS,
+                                    request_progressHandler)
+        request.removeEventListener(NetworkRequestEvent.COMPLETE,
+                                   request_completeHandler)
+        request.removeEventListener(NetworkRequestEvent.ERROR,
+                                    request_errorHandler)
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function dispose():void
+    {
+    	var request:INetworkRequest
+        for each (request in queue)
+        {
+        	removeEventListeners(request)
+            request.dispose()
+        }
+        
+        queue = []
+        
+        for each (request in connections)
+        {
+        	removeEventListeners(request)
+            request.dispose()
+        }
+        
+        connections = []
+            
+    }    
 }
 
 }

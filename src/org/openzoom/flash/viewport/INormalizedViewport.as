@@ -39,7 +39,7 @@
 package org.openzoom.flash.viewport
 {
 
-import org.openzoom.flash.viewport.IViewport;
+import org.openzoom.flash.viewport.IViewport
 
 /**
  * Interface for a viewport with a normalized coordinate system.

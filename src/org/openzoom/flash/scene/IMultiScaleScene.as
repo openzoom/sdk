@@ -42,6 +42,8 @@ package org.openzoom.flash.scene
 import flash.display.DisplayObject;
 import flash.events.IEventDispatcher;
 
+import org.openzoom.flash.utils.IDisposable;
+
 /**
  * Dispatched when sceneWidth or sceneHeight are changed.
  */
@@ -50,7 +52,8 @@ import flash.events.IEventDispatcher;
 /**
  * Interface for a multiscale scene that is viewed with a viewport.
  */
-public interface IMultiScaleScene extends IEventDispatcher
+public interface IMultiScaleScene extends IDisposable,
+                                          IEventDispatcher
 {
     //--------------------------------------------------------------------------
     //

@@ -21,9 +21,9 @@
 package org.openzoom.flash.descriptors.deepzoom
 {
 
-import org.flexunit.Assert;
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.flexunit.Assert
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.IImagePyramidLevel
 
 /**
  * Tests the DeepZoomImageDescriptor implementation for correctness.
@@ -44,20 +44,20 @@ public class DeepZoomImageDescriptorTest
 
     private static const LEVELS:Array =
         [// width, height, columns, rows
-            [ 1,      1,       1,    1],
-            [ 2,      2,       1,    1],
-            [ 3,      4,       1,    1],
-            [ 6,      8,       1,    1],
-            [ 11,    16,       1,    1],
-            [ 21,    31,       1,    1],
-            [ 41,    61,       1,    1],
-            [ 81,   121,       1,    2],
+            [1,      1,       1,    1],
+            [2,      2,       1,    1],
+            [3,      4,       1,    1],
+            [6,      8,       1,    1],
+            [11,    16,       1,    1],
+            [21,    31,       1,    1],
+            [41,    61,       1,    1],
+            [81,   121,       1,    2],
             [162,   242,       2,    3],
             [324,   484,       4,    5],
             [648,   968,       7,   10],
             [1296,  1936,      13,   20],
             [2592,  3872,      26,   39],
-      ]
+    ]
 
     //--------------------------------------------------------------------------
     //
@@ -73,13 +73,13 @@ public class DeepZoomImageDescriptorTest
     //
     //--------------------------------------------------------------------------
 
-	[Before]
+    [Before]
     public function setUp():void
     {
         descriptor = DeepZoomImageDescriptor.fromXML("test.xml", DESCRIPTOR_XML)
     }
 
-	[After]
+    [After]
     public function tearDown():void
     {
         descriptor = null
@@ -91,19 +91,19 @@ public class DeepZoomImageDescriptorTest
     //
     //--------------------------------------------------------------------------
 
-	[Test]
+    [Test]
     public function testMaxLevel():void
     {
         Assert.assertEquals("Maximum level correctly computed", 12, descriptor.numLevels - 1)
     }
 
-	[Test]
+    [Test]
     public function testOverlap():void
     {
         Assert.assertEquals("Overlap correct", 0, descriptor.tileOverlap)
     }
 
-	[Test]
+    [Test]
     public function testLevels():void
     {
        for (var index:int = 0; index < descriptor.numLevels; index++)
@@ -117,7 +117,7 @@ public class DeepZoomImageDescriptorTest
 
     }
 
-	[Test]
+    [Test]
     public function testGetLevelForSize():void
     {
         Assert.assertEquals("Level computation for given size", descriptor.numLevels - 1,

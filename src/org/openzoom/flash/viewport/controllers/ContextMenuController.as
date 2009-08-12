@@ -39,19 +39,19 @@
 package org.openzoom.flash.viewport.controllers
 {
 
-import flash.display.DisplayObjectContainer;
-import flash.display.StageDisplayState;
-import flash.errors.IllegalOperationError;
-import flash.events.ContextMenuEvent;
-import flash.events.Event;
-import flash.events.FullScreenEvent;
-import flash.geom.Point;
-import flash.system.Capabilities;
-import flash.ui.ContextMenu;
-import flash.ui.ContextMenuItem;
+import flash.display.DisplayObjectContainer
+import flash.display.StageDisplayState
+import flash.errors.IllegalOperationError
+import flash.events.ContextMenuEvent
+import flash.events.Event
+import flash.events.FullScreenEvent
+import flash.geom.Point
+import flash.system.Capabilities
+import flash.ui.ContextMenu
+import flash.ui.ContextMenuItem
 
-import org.openzoom.flash.utils.FullScreenUtil;
-import org.openzoom.flash.viewport.IViewportController;
+import org.openzoom.flash.utils.FullScreenUtil
+import org.openzoom.flash.viewport.IViewportController
 
 /**
  * Context menu controller for viewports.
@@ -67,7 +67,7 @@ public final class ContextMenuController extends ViewportControllerBase
 
     private static var FULL_SCREEN_MENU_ENTER_CAPTION:String = "Fullscreen"
     private static var FULL_SCREEN_MENU_ENTER_KEY:String = "F"
-    
+
     private static var FULL_SCREEN_MENU_EXIT_CAPTION:String = "Exit Fullscreen"
     private static var FULL_SCREEN_MENU_EXIT_KEY:String = "Esc"
 
@@ -106,53 +106,53 @@ public final class ContextMenuController extends ViewportControllerBase
         var tab2:String = "\t\t"
         var tab3:String = "\t\t\t"
         var tab4:String = "\t\t\t\t"
-    
-        // Default setup, e.g. Mac OS    
+
+        // Default setup, e.g. Mac OS
         _fullScreenMenuEnterCaption = FULL_SCREEN_MENU_ENTER_CAPTION +
                                       tab3 + FULL_SCREEN_MENU_ENTER_KEY
         _fullScreenMenuExitCaption = FULL_SCREEN_MENU_EXIT_CAPTION +
                                      tab2 + FULL_SCREEN_MENU_EXIT_KEY
-    
+
         _showAllMenuCaption = SHOW_ALL_MENU_CAPTION + tab3 + SHOW_ALL_MENU_KEY
-    
+
         _zoomInMenuCaption = ZOOM_IN_MENU_CAPTION + tab4 + ZOOM_IN_MENU_KEY
         _zoomOutMenuCaption = ZOOM_OUT_MENU_CAPTION + tab3 + ZOOM_OUT_MENU_KEY
-    
+
         _panUpMenuCaption = PAN_UP_MENU_CAPTION + tab4 + PAN_UP_MENU_KEY
         _panDownMenuCaption = PAN_DOWN_MENU_CAPTION + tab3 + PAN_DOWN_MENU_KEY
         _panLeftMenuCaption = PAN_LEFT_MENU_CAPTION + tab4 + PAN_LEFT_MENU_KEY
         _panRightMenuCaption = PAN_RIGHT_MENU_CAPTION + tab3 + PAN_RIGHT_MENU_KEY
-        
+
         if (Capabilities.os.indexOf("Linux") != -1)
         {
             _fullScreenMenuEnterCaption = FULL_SCREEN_MENU_ENTER_CAPTION +
                                           tab3 + FULL_SCREEN_MENU_ENTER_KEY
             _fullScreenMenuExitCaption = FULL_SCREEN_MENU_EXIT_CAPTION +
                                          tab2 + FULL_SCREEN_MENU_EXIT_KEY
-        
+
             _showAllMenuCaption = SHOW_ALL_MENU_CAPTION + tab4 + SHOW_ALL_MENU_KEY
-        
+
             _zoomInMenuCaption = ZOOM_IN_MENU_CAPTION + tab4 + ZOOM_IN_MENU_KEY
             _zoomOutMenuCaption = ZOOM_OUT_MENU_CAPTION + tab3 + ZOOM_OUT_MENU_KEY
-        
+
             _panUpMenuCaption = PAN_UP_MENU_CAPTION + tab4 + PAN_UP_MENU_KEY
             _panDownMenuCaption = PAN_DOWN_MENU_CAPTION + tab3 + PAN_DOWN_MENU_KEY
             _panLeftMenuCaption = PAN_LEFT_MENU_CAPTION + tab4 + PAN_LEFT_MENU_KEY
             _panRightMenuCaption = PAN_RIGHT_MENU_CAPTION + tab3 + PAN_RIGHT_MENU_KEY
         }
-        
+
         if (Capabilities.os.indexOf("Windows") != -1)
         {
             _fullScreenMenuEnterCaption = FULL_SCREEN_MENU_ENTER_CAPTION +
                                           tab1 + FULL_SCREEN_MENU_ENTER_KEY
             _fullScreenMenuExitCaption = FULL_SCREEN_MENU_EXIT_CAPTION +
                                          tab1 + FULL_SCREEN_MENU_EXIT_KEY
-        
+
             _showAllMenuCaption = SHOW_ALL_MENU_CAPTION + tab1 + SHOW_ALL_MENU_KEY
-        
+
             _zoomInMenuCaption = ZOOM_IN_MENU_CAPTION + tab1 + ZOOM_IN_MENU_KEY
             _zoomOutMenuCaption = ZOOM_OUT_MENU_CAPTION + tab1 + ZOOM_OUT_MENU_KEY
-        
+
             _panUpMenuCaption = PAN_UP_MENU_CAPTION + tab1 + PAN_UP_MENU_KEY
             _panDownMenuCaption = PAN_DOWN_MENU_CAPTION + tab1+ PAN_DOWN_MENU_KEY
             _panLeftMenuCaption = PAN_LEFT_MENU_CAPTION + tab1 + PAN_LEFT_MENU_KEY
@@ -210,7 +210,7 @@ public final class ContextMenuController extends ViewportControllerBase
     //----------------------------------
     //  showAll
     //----------------------------------
-    
+
     private var _showAll:Boolean = true
 
     public function get showAll():Boolean
@@ -224,10 +224,10 @@ public final class ContextMenuController extends ViewportControllerBase
             return
 
         _showAll = value;
-        
+
         if (!menu)
             return
-        
+
         if (_showAll)
            showAllMenu = addContextMenuItem(showAllMenuCaption,
                                             showAllMenu_menuItemSelectHandler)
@@ -239,7 +239,7 @@ public final class ContextMenuController extends ViewportControllerBase
     //----------------------------------
     //  fullScreen
     //----------------------------------
-    
+
     private var _fullScreen:Boolean = true
 
     public function get fullScreen():Boolean
@@ -251,15 +251,15 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         if (value === _fullScreen)
             return
-           
+
         _fullScreen = value;
-        
+
         if (!menu)
             return
-        
+
         if (_fullScreen)
             fullScreenMenu = addContextMenuItem(view.stage.displayState == StageDisplayState.NORMAL ?
-                                                fullScreenMenuEnterCaption : fullScreenMenuExitCaption,
+                                                fullScreenMenuEnterCaption:fullScreenMenuExitCaption,
                                                 fullScreenMenu_menuItemSelectHandler)
         else
             removeContextMenuItem(fullScreenMenu,
@@ -269,7 +269,7 @@ public final class ContextMenuController extends ViewportControllerBase
     //----------------------------------
     //  zoomIn
     //----------------------------------
-    
+
     private var _zoomIn:Boolean = true
 
     public function get zoomIn():Boolean
@@ -281,12 +281,12 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         if (value === _zoomIn)
             return
-            
+
         _zoomIn = value;
-        
+
         if (!menu)
             return
-        
+
         if (_zoomIn)
             zoomInMenu = addContextMenuItem(zoomInMenuCaption,
                                             zoomInMenu_menuItemSelectHandler)
@@ -298,7 +298,7 @@ public final class ContextMenuController extends ViewportControllerBase
     //----------------------------------
     //  zoomOut
     //----------------------------------
-    
+
     private var _zoomOut:Boolean = true
 
     public function get zoomOut():Boolean
@@ -310,12 +310,12 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         if (value === _zoomOut)
             return
-            
+
         _zoomOut = value;
-        
+
         if (!menu)
             return
-        
+
         if (_zoomOut)
             zoomOutMenu = addContextMenuItem(zoomOutMenuCaption,
                                              zoomOutMenu_menuItemSelectHandler)
@@ -339,12 +339,12 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         if (value === _panDown)
             return
-            
+
         _panDown = value;
-        
+
         if (!menu)
             return
-        
+
         if (_panDown)
             panDownMenu = addContextMenuItem(panDownMenuCaption,
                                              panDownMenu_menuItemSelectHandler)
@@ -356,7 +356,7 @@ public final class ContextMenuController extends ViewportControllerBase
     //----------------------------------
     //  panUp
     //----------------------------------
-    
+
     private var _panUp:Boolean = true
 
     public function get panUp():Boolean
@@ -368,12 +368,12 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         if (value === _panUp)
             return
-            
+
         _panUp = value;
-        
+
         if (!menu)
             return
-        
+
         if (_panUp)
             panUpMenu = addContextMenuItem(panUpMenuCaption,
                                            panUpMenu_menuItemSelectHandler)
@@ -385,7 +385,7 @@ public final class ContextMenuController extends ViewportControllerBase
     //----------------------------------
     //  panLeft
     //----------------------------------
-    
+
     private var _panLeft:Boolean = true
 
     public function get panLeft():Boolean
@@ -397,12 +397,12 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         if (value === _panLeft)
             return
-            
+
         _panLeft = value;
-        
+
         if (!menu)
             return
-        
+
         if (_panLeft)
             panLeftMenu = addContextMenuItem(panLeftMenuCaption,
                                              panLeftMenu_menuItemSelectHandler)
@@ -414,7 +414,7 @@ public final class ContextMenuController extends ViewportControllerBase
     //----------------------------------
     //  panRight
     //----------------------------------
-    
+
     private var _panRight:Boolean = true
 
     public function get panRight():Boolean
@@ -426,12 +426,12 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         if (value === _panRight)
             return
-            
+
         _panRight = value;
-        
+
         if (!menu)
             return
-        
+
         if (_panRight)
             panRightMenu = addContextMenuItem(panRightMenuCaption,
                                               panRightMenu_menuItemSelectHandler)
@@ -443,21 +443,21 @@ public final class ContextMenuController extends ViewportControllerBase
     //----------------------------------
     //  showAllMenuCaption
     //----------------------------------
-    
+
     private var _showAllMenuCaption:String
 
     public function get showAllMenuCaption():String
     {
-        return _showAllMenuCaption 
+        return _showAllMenuCaption
     }
-    
+
     public function set showAllMenuCaption(value:String):void
     {
         if (value === _showAllMenuCaption)
             return
-        
+
         _showAllMenuCaption = value
-        
+
         if (showAllMenu)
             showAllMenu.caption = _showAllMenuCaption
     }
@@ -472,14 +472,14 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         return _fullScreenMenuEnterCaption
     }
-    
+
     public function set fullScreenMenuEnterCaption(value:String):void
     {
         if (value == _fullScreenMenuEnterCaption)
             return
-        
+
         _fullScreenMenuEnterCaption = value
-        
+
         if (fullScreenMenu && view.stage.displayState == StageDisplayState.NORMAL)
             fullScreenMenu.caption = _fullScreenMenuEnterCaption
     }
@@ -494,14 +494,14 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         return _fullScreenMenuExitCaption
     }
-    
+
     public function set fullScreenMenuExitCaption(value:String):void
     {
         if (value == _fullScreenMenuExitCaption)
             return
-        
+
         _fullScreenMenuExitCaption = value
-        
+
         if (fullScreenMenu &&
             (view.stage.displayState == StageDisplayState.FULL_SCREEN ||
              view.stage.displayState == "fullScreenInteractive"))
@@ -518,14 +518,14 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         return _zoomInMenuCaption
     }
-    
+
     public function set zoomInMenuCaption(value:String):void
     {
         if (value === _zoomInMenuCaption)
             return
-        
+
         _zoomInMenuCaption = value
-        
+
         if (zoomInMenu)
             zoomInMenu.caption = _zoomInMenuCaption
     }
@@ -540,14 +540,14 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         return _zoomOutMenuCaption
     }
-    
+
     public function set zoomOutMenuCaption(value:String):void
     {
         if (value === _zoomOutMenuCaption)
             return
-        
+
         _zoomOutMenuCaption = value
-        
+
         if (zoomOutMenu)
             zoomOutMenu.caption = _zoomOutMenuCaption
     }
@@ -562,14 +562,14 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         return _panDownMenuCaption
     }
-    
+
     public function set panDownMenuCaption(value:String):void
     {
         if (value === _panDownMenuCaption)
             return
-        
+
         _panDownMenuCaption = value
-        
+
         if (panDownMenu)
             panDownMenu.caption = _panDownMenuCaption
     }
@@ -584,18 +584,18 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         return _panUpMenuCaption
     }
-    
+
     public function set panUpMenuCaption(value:String):void
     {
         if (value === _panUpMenuCaption)
             return
-        
+
         _panUpMenuCaption = value
-        
+
         if (panUpMenu)
             panUpMenu.caption = _panUpMenuCaption
     }
-    
+
     //----------------------------------
     //  panLeftMenuCaption
     //----------------------------------
@@ -606,18 +606,18 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         return _panLeftMenuCaption
     }
-    
+
     public function set panLeftMenuCaption(value:String):void
     {
         if (value === _panLeftMenuCaption)
             return
-        
+
         _panLeftMenuCaption = value
-        
+
         if (panLeftMenu)
             panLeftMenu.caption = _panLeftMenuCaption
     }
-    
+
     //----------------------------------
     //  panRightMenuCaption
     //----------------------------------
@@ -628,18 +628,18 @@ public final class ContextMenuController extends ViewportControllerBase
     {
         return _panRightMenuCaption
     }
-    
+
     public function set panRightMenuCaption(value:String):void
     {
         if (value === _panRightMenuCaption)
             return
-        
+
         _panRightMenuCaption = value
-        
+
         if (panRightMenu)
             panRightMenu.caption = _panRightMenuCaption
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Overridden methods: ViewportControllerBase
@@ -654,7 +654,7 @@ public final class ContextMenuController extends ViewportControllerBase
         // Context Menu
         menu = new ContextMenu()
         menu.hideBuiltInItems()
-        
+
         // Fullscreen
         view.stage.addEventListener(FullScreenEvent.FULL_SCREEN,
                                     stage_fullScreenHandler,
@@ -663,7 +663,7 @@ public final class ContextMenuController extends ViewportControllerBase
         // Display state
         if (fullScreen)
             fullScreenMenu = addContextMenuItem(fullScreenMenuEnterCaption,
-                                                fullScreenMenu_menuItemSelectHandler) 
+                                                fullScreenMenu_menuItemSelectHandler)
 
         if (showAll)
             showAllMenu = addContextMenuItem(showAllMenuCaption,
@@ -684,7 +684,7 @@ public final class ContextMenuController extends ViewportControllerBase
             panUpMenu = addContextMenuItem(panUpMenuCaption,
                                            panUpMenu_menuItemSelectHandler,
                                            true)
-                               
+
         if (panDown)
             panDownMenu = addContextMenuItem(panDownMenuCaption,
                                              panDownMenu_menuItemSelectHandler)
@@ -706,10 +706,11 @@ public final class ContextMenuController extends ViewportControllerBase
      */
     override protected function view_removedFromStageHandler(event:Event):void
     {
-        view.stage.removeEventListener(FullScreenEvent.FULL_SCREEN,
-                                       stage_fullScreenHandler)
-                                       
-                                       
+    	if (view && view.stage)
+	        view.stage.removeEventListener(FullScreenEvent.FULL_SCREEN,
+	                                       stage_fullScreenHandler)
+
+
         if (showAll)
             removeContextMenuItem(showAllMenu,
                                   showAllMenu_menuItemSelectHandler)
@@ -717,7 +718,7 @@ public final class ContextMenuController extends ViewportControllerBase
         // Display state
         if (fullScreen)
             removeContextMenuItem(fullScreenMenu,
-                                  fullScreenMenu_menuItemSelectHandler) 
+                                  fullScreenMenu_menuItemSelectHandler)
 
         // Zooming
         if (zoomIn)
@@ -732,7 +733,7 @@ public final class ContextMenuController extends ViewportControllerBase
         if (panUp)
             removeContextMenuItem(panUpMenu,
                                   panUpMenu_menuItemSelectHandler)
-                               
+
         if (panDown)
             removeContextMenuItem(panDownMenu,
                                   panDownMenu_menuItemSelectHandler)
@@ -744,7 +745,7 @@ public final class ContextMenuController extends ViewportControllerBase
         if (panRight)
             removeContextMenuItem(panRightMenu,
                                   panRightMenu_menuItemSelectHandler)
-                                  
+
         menu = null
     }
 
@@ -866,7 +867,7 @@ public final class ContextMenuController extends ViewportControllerBase
         return new Point(view.mouseX / view.width,
                          view.mouseY / view.height)
     }
-    
+
     /**
      * @private
      */
@@ -886,17 +887,21 @@ public final class ContextMenuController extends ViewportControllerBase
         menu.customItems.push(menuItem)
         return menuItem
     }
-    
+
     /**
      * @private
      */
     private function removeContextMenuItem(menuItem:ContextMenuItem,
                                            menuItemSelectHandler:Function):void
     {
-        var index:int = menu.customItems.indexOf(menuItem) 
+    	// FIXME
+    	if (!menu)
+    	   return
+
+        var index:int = menu.customItems.indexOf(menuItem)
         if (index == -1)
             throw new IllegalOperationError("Context menu item does not exist.")
-        
+
         menuItem.removeEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
                                      menuItemSelectHandler)
         menu.customItems.splice(index, 1)

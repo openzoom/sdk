@@ -148,10 +148,10 @@ public final class MultiScaleImage extends MultiScaleImageBase
                 return
 
             url = String(value)
-            
+
             if (loaderInfo)
                 url = resolveURI(loaderInfo.url, String(value))
-                
+
             urlLoader = new URLLoader(new URLRequest(url))
 
             urlLoader.addEventListener(Event.COMPLETE,
@@ -264,6 +264,31 @@ public final class MultiScaleImage extends MultiScaleImageBase
     private function urlLoader_securityErrorHandler(event:SecurityErrorEvent):void
     {
         dispatchEvent(event)
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    override public function dispose():void
+    {
+    	image.dispose()
+    	image = null
+    	
+    	try
+    	{
+	    	urlLoader.close()
+    	}
+    	catch(error:Error)
+    	{
+    		// Do nothing
+    	}
+    	
+    	urlLoader = null
+    	
+    	super.dispose()
     }
 }
 

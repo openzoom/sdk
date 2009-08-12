@@ -39,19 +39,19 @@
 package org.openzoom.flash.net
 {
 
-import flash.display.DisplayObject;
-import flash.display.Loader;
-import flash.events.Event;
-import flash.events.EventDispatcher;
-import flash.events.HTTPStatusEvent;
-import flash.events.IEventDispatcher;
-import flash.events.IOErrorEvent;
-import flash.events.ProgressEvent;
-import flash.events.SecurityErrorEvent;
-import flash.net.URLRequest;
-import flash.system.LoaderContext;
+import flash.display.DisplayObject
+import flash.display.Loader
+import flash.events.Event
+import flash.events.EventDispatcher
+import flash.events.HTTPStatusEvent
+import flash.events.IEventDispatcher
+import flash.events.IOErrorEvent
+import flash.events.ProgressEvent
+import flash.events.SecurityErrorEvent
+import flash.net.URLRequest
+import flash.system.LoaderContext
 
-import org.openzoom.flash.events.NetworkRequestEvent;
+import org.openzoom.flash.events.NetworkRequestEvent
 
 /**
  * @private
@@ -112,7 +112,7 @@ internal final class DisplayObjectRequest extends EventDispatcher
     //----------------------------------
     //  url
     //----------------------------------
-    
+
     private var _url:String
 
     public function get url():String
@@ -134,7 +134,7 @@ internal final class DisplayObjectRequest extends EventDispatcher
        var request:flash.net.URLRequest = new flash.net.URLRequest(url)
        loader = new Loader()
        addEventListeners(loader.contentLoaderInfo)
-       
+
        // TODO: Does this incur an overhead?
        var loaderContext:LoaderContext = new LoaderContext(true)
        loader.load(request, loaderContext)
@@ -178,9 +178,9 @@ internal final class DisplayObjectRequest extends EventDispatcher
     private function request_ioErrorHandler(event:IOErrorEvent):void
     {
         trace("[DisplayObjectRequest]", "IO error")
-        
+
         // TODO: Test
-        disposeLoader()     
+        disposeLoader()
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
@@ -194,10 +194,10 @@ internal final class DisplayObjectRequest extends EventDispatcher
     private function request_securityErrorHandler(event:SecurityErrorEvent):void
     {
         trace("[DisplayObjectRequest]", "Security error")
-        
+
         // TODO: Test
         disposeLoader()
-        
+
         var requestEvent:NetworkRequestEvent =
                 new NetworkRequestEvent(NetworkRequestEvent.ERROR)
             requestEvent.request = this
@@ -242,7 +242,7 @@ internal final class DisplayObjectRequest extends EventDispatcher
     {
         if (!loader)
            return
-        
+
         // Use Flash Player 10 API for unloading
         // @see mx.controls.SWFLoader#load() (1315)
         var useUnloadAndStop:Boolean = true
@@ -255,7 +255,7 @@ internal final class DisplayObjectRequest extends EventDispatcher
 
         removeEventListeners(loader.contentLoaderInfo)
         loader = null
-    } 
+    }
 
     /**
      * @private

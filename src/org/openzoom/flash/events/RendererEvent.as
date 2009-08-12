@@ -39,7 +39,7 @@
 package org.openzoom.flash.events
 {
 
-import flash.events.Event;
+import flash.events.Event
 
 /**
  * Renderer event class.

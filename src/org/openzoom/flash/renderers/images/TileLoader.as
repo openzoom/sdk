@@ -38,17 +38,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.renderers.images
 {
-    
-import flash.display.Bitmap;
-import flash.display.BitmapData;
-import flash.events.EventDispatcher;
-import flash.utils.Dictionary;
-import flash.utils.getTimer;
 
-import org.openzoom.flash.events.NetworkRequestEvent;
-import org.openzoom.flash.net.INetworkQueue;
-import org.openzoom.flash.net.INetworkRequest;
-import org.openzoom.flash.utils.ICache;
+import flash.display.Bitmap
+import flash.display.BitmapData
+import flash.events.EventDispatcher
+import flash.utils.Dictionary
+import flash.utils.getTimer
+
+import org.openzoom.flash.events.NetworkRequestEvent
+import org.openzoom.flash.net.INetworkQueue
+import org.openzoom.flash.net.INetworkRequest
+import org.openzoom.flash.utils.ICache
 
 [ExcludeClass]
 /**
@@ -61,10 +61,10 @@ internal final class TileLoader extends EventDispatcher
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
-     */     
+     */
     public function TileLoader(owner:ImagePyramidRenderManager,
                                loader:INetworkQueue,
                                cache:ICache,
@@ -73,20 +73,20 @@ internal final class TileLoader extends EventDispatcher
         this.owner = owner
         this.loader = loader
         this.cache = cache
-        
+
         this.maxDownloads = maxDownloads
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var owner:ImagePyramidRenderManager
     private var loader:INetworkQueue
     private var cache:ICache
-    
+
     internal var maxDownloads:int
     private var numDownloads:int
     private var pending:Dictionary = new Dictionary()
@@ -99,12 +99,12 @@ internal final class TileLoader extends EventDispatcher
 
     /**
      * @private
-     */ 
+     */
     public function loadTile(tile:ImagePyramidTile):void
     {
         if (numDownloads >= maxDownloads)
             return
-        
+
         if (pending[tile.url])
            return
 
@@ -128,7 +128,7 @@ internal final class TileLoader extends EventDispatcher
 
     /**
      * @private
-     */ 
+     */
     private function request_completeHandler(event:NetworkRequestEvent):void
     {
         numDownloads--
@@ -151,7 +151,7 @@ internal final class TileLoader extends EventDispatcher
 
     /**
      * @private
-     */ 
+     */
     private function request_errorHandler(event:NetworkRequestEvent):void
     {
         trace("[ImagePyramidRenderManager] Tile failed to load:", event.request.url)

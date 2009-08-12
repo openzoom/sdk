@@ -39,19 +39,19 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.Graphics;
-import flash.display.Shape;
-import flash.geom.Rectangle;
-import flash.utils.Dictionary;
+import flash.display.Graphics
+import flash.display.Shape
+import flash.geom.Rectangle
+import flash.utils.Dictionary
 
-import org.openzoom.flash.core.openzoom_internal;
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.renderers.Renderer;
-import org.openzoom.flash.utils.IDisposable;
+import org.openzoom.flash.core.openzoom_internal
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.renderers.Renderer
+import org.openzoom.flash.utils.IDisposable
 
 /**
  * @private
- * 
+ *
  * Image pyramid renderer.
  */
 public final class ImagePyramidRenderer extends Renderer
@@ -201,7 +201,7 @@ public final class ImagePyramidRenderer extends Renderer
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
         tileCache = null

@@ -39,12 +39,12 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import caurina.transitions.Tweener;
+import caurina.transitions.Tweener
 
-import org.openzoom.flash.viewport.IViewportConstraint;
-import org.openzoom.flash.viewport.IViewportTransform;
-import org.openzoom.flash.viewport.IViewportTransformer;
-import org.openzoom.flash.viewport.constraints.NullConstraint;
+import org.openzoom.flash.viewport.IViewportConstraint
+import org.openzoom.flash.viewport.IViewportTransform
+import org.openzoom.flash.viewport.IViewportTransformer
+import org.openzoom.flash.viewport.constraints.NullConstraint
 
 /**
  * TweenerTransformer is an implementation of IViewportTransformer based on the
@@ -169,7 +169,7 @@ public final class TweenerTransformer extends ViewportTransformerBase
                                   transition: easing,
                                   onComplete: viewport.endTransform
                               }
-                   )
+                 )
         }
     }
 

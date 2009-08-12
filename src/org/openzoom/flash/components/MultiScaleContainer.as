@@ -57,6 +57,7 @@ import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.scene.IMultiScaleScene;
 import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
 import org.openzoom.flash.scene.MultiScaleScene;
+import org.openzoom.flash.utils.IDisposable;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportController;
@@ -69,7 +70,8 @@ import org.openzoom.flash.viewport.NormalizedViewport;
  * Flash component for creating Zoomable User Interfaces.
  */
 public final class MultiScaleContainer extends Sprite
-                                       implements ILoaderClient
+                                       implements ILoaderClient,
+                                                  IDisposable
 {
     //--------------------------------------------------------------------------
     //
@@ -107,7 +109,7 @@ public final class MultiScaleContainer extends Sprite
 
     private var mouseCatcher:Sprite
     private var contentMask:Shape
-    
+
     // TODO: Consider applying dependency injection (DI)
     private var renderManager:ImagePyramidRenderManager
 
@@ -298,7 +300,7 @@ public final class MultiScaleContainer extends Sprite
 
         if (!loader)
             createLoader()
-            
+
         if (!renderManager)
             createRenderManager()
     }
@@ -338,7 +340,7 @@ public final class MultiScaleContainer extends Sprite
         {
             renderer.viewport = _viewport
             renderer.scene = IReadonlyMultiScaleScene(_scene)
-            
+
             var imagePyramidRenderer:ImagePyramidRenderer = renderer as ImagePyramidRenderer
             if (imagePyramidRenderer)
                 renderManager.addRenderer(imagePyramidRenderer)
@@ -355,10 +357,10 @@ public final class MultiScaleContainer extends Sprite
         if (renderer)
         {
             var imagePyramidRenderer:ImagePyramidRenderer = renderer as ImagePyramidRenderer
-            
+
             if (imagePyramidRenderer)
                 renderManager.removeRenderer(imagePyramidRenderer)
-                
+
             renderer.scene = null
             renderer.viewport = null
         }
@@ -388,15 +390,15 @@ public final class MultiScaleContainer extends Sprite
     {
         return _scene.getChildAt(index)
     }
-    
+
     override public function getChildIndex(child:DisplayObject):int
     {
         return _scene.getChildIndex(child)
     }
-    
+
     override public function getChildByName(name:String):DisplayObject
     {
-        return _scene.getChildByName(name)   
+        return _scene.getChildByName(name)
     }
 
     //--------------------------------------------------------------------------
@@ -451,10 +453,10 @@ public final class MultiScaleContainer extends Sprite
         _viewport.addEventListener(ViewportEvent.TRANSFORM_END,
                                    viewport_transformEndHandler,
                                    false, 0, true)
-                                   
+
         addEventListener(Event.ENTER_FRAME,
                          enterFrameHandler,
-                         false, 0, true)                                   
+                         false, 0, true)
     }
 
     private function createScene():void
@@ -492,20 +494,20 @@ public final class MultiScaleContainer extends Sprite
 //      trace("ViewportEvent.TRANSFORM_UPDATE")
         invalidated = true
     }
-    
+
     private var invalidated:Boolean = true
 
     private function viewport_transformEndHandler(event:ViewportEvent):void
     {
 //      trace("ViewportEvent.TRANSFORM_END")
     }
-    
+
     private function enterFrameHandler(event:Event):void
     {
-    	if (invalidated)
+        if (invalidated)
             updateDisplayList()
     }
-    
+
     private function updateDisplayList():void
     {
         var v:INormalizedViewport = viewport
@@ -519,7 +521,7 @@ public final class MultiScaleContainer extends Sprite
             target.y = targetY
             target.width = targetWidth
             target.height = targetHeight
-            
+
         invalidated = false
     }
 
@@ -798,6 +800,43 @@ public final class MultiScaleContainer extends Sprite
     public function sceneToLocal(point:Point):Point
     {
         return viewport.sceneToLocal(point)
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function dispose():void
+    {
+        removeEventListener(Event.ENTER_FRAME,
+                            enterFrameHandler)
+
+    	_transformer = null
+    	controllers = []
+    	_constraint = null
+    	
+    	while (super.numChildren > 0)
+    	   super.removeChildAt(0)
+
+        mouseCatcher = null
+        contentMask = null
+                            
+        _viewport.removeEventListener(ViewportEvent.TRANSFORM_START,
+                                      viewport_transformStartHandler)
+        _viewport.removeEventListener(ViewportEvent.TRANSFORM_UPDATE,
+                                      viewport_transformUpdateHandler)
+        _viewport.removeEventListener(ViewportEvent.TRANSFORM_END,
+                                      viewport_transformEndHandler)
+    	_viewport.dispose()
+    	_viewport = null
+    	
+    	_scene.dispose()
+    	_scene = null
+    	
+    	_loader.dispose()
+    	_loader = null
     }
 }
 

@@ -39,13 +39,13 @@
 package org.openzoom.flash.descriptors.openzoom
 {
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
-import org.openzoom.flash.descriptors.IImagePyramidLevel;
-import org.openzoom.flash.descriptors.IImageSourceDescriptor;
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
-import org.openzoom.flash.descriptors.ImageSourceDescriptor;
-import org.openzoom.flash.utils.math.clamp;
-import org.openzoom.flash.utils.uri.resolveURI;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor
+import org.openzoom.flash.descriptors.IImagePyramidLevel
+import org.openzoom.flash.descriptors.IImageSourceDescriptor
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase
+import org.openzoom.flash.descriptors.ImageSourceDescriptor
+import org.openzoom.flash.utils.math.clamp
+import org.openzoom.flash.utils.uri.resolveURI
 
 /**
  * OpenZoom Descriptor.
@@ -88,21 +88,21 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
     //--------------------------------------------------------------------------
 
     private var data:XML
-    
+
     //--------------------------------------------------------------------------
     //
     //  Properties: IImagePyramidDescriptor
     //
     //--------------------------------------------------------------------------
-    
+
     private var _sources:Array = []
-    
+
     /**
      * @inheritDoc
-     */ 
+     */
     override public function get sources():Array
     {
-        return _sources.slice(0)    
+        return _sources.slice(0)
     }
 
     //--------------------------------------------------------------------------
@@ -137,11 +137,11 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
         var maxLevel:uint = numLevels - 1
         var index:int = clamp(i + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
-        
+
         // FIXME
         if (width / level.width < 0.5)
             level = getLevelAt(Math.max(0, index - 1))
-        
+
         if (width / level.width < 0.5)
             trace("[OpenZoomDescriptor] getLevelForSize():", width / level.width)
 
@@ -182,7 +182,7 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
     private function parseXML(data:XML):void
     {
         use namespace openzoom
-        
+
         // Parse sources
         for each (var source:XML in data.source)
         {
@@ -191,10 +191,10 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
             var width:uint = source.@width
             var height:uint = source.@height
             var type:String = source.@type
-            
+
             var descriptor:IImageSourceDescriptor
             descriptor = new ImageSourceDescriptor(sourceUri, width, height, type)
-            
+
             _sources.push(descriptor)
         }
 

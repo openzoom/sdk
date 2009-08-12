@@ -49,18 +49,18 @@ public interface ICache extends IDisposable
     //  Properties
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Returns the size of the cache.
      */
     function get size():int
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Returns <code>true</code> if cache has item at key
      * and otherwise <code>false</code>

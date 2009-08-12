@@ -39,31 +39,31 @@
 package
 {
 
-import flash.display.Sprite;
-import flash.display.StageAlign;
-import flash.display.StageScaleMode;
-import flash.events.ContextMenuEvent;
-import flash.events.Event;
-import flash.net.URLRequest;
-import flash.net.navigateToURL;
-import flash.ui.ContextMenuItem;
+import flash.display.Sprite
+import flash.display.StageAlign
+import flash.display.StageScaleMode
+import flash.events.ContextMenuEvent
+import flash.events.Event
+import flash.net.URLRequest
+import flash.net.navigateToURL
+import flash.ui.ContextMenuItem
 
-import org.openzoom.flash.components.MemoryMonitor;
-import org.openzoom.flash.components.MultiScaleContainer;
-import org.openzoom.flash.descriptors.rosettaproject.RosettaDiskBackDescriptor;
-import org.openzoom.flash.descriptors.rosettaproject.RosettaDiskFrontDescriptor;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderManager;
-import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
-import org.openzoom.flash.utils.ExternalMouseWheel;
-import org.openzoom.flash.viewport.constraints.CenterConstraint;
-import org.openzoom.flash.viewport.constraints.CompositeConstraint;
-import org.openzoom.flash.viewport.constraints.ScaleConstraint;
-import org.openzoom.flash.viewport.constraints.VisibilityConstraint;
-import org.openzoom.flash.viewport.constraints.ZoomConstraint;
-import org.openzoom.flash.viewport.controllers.ContextMenuController;
-import org.openzoom.flash.viewport.controllers.KeyboardController;
-import org.openzoom.flash.viewport.controllers.MouseController;
-import org.openzoom.flash.viewport.transformers.TweenerTransformer;
+import org.openzoom.flash.components.MemoryMonitor
+import org.openzoom.flash.components.MultiScaleContainer
+import org.openzoom.flash.descriptors.rosettaproject.RosettaDiskBackDescriptor
+import org.openzoom.flash.descriptors.rosettaproject.RosettaDiskFrontDescriptor
+import org.openzoom.flash.renderers.images.ImagePyramidRenderManager
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer
+import org.openzoom.flash.utils.ExternalMouseWheel
+import org.openzoom.flash.viewport.constraints.CenterConstraint
+import org.openzoom.flash.viewport.constraints.CompositeConstraint
+import org.openzoom.flash.viewport.constraints.ScaleConstraint
+import org.openzoom.flash.viewport.constraints.VisibilityConstraint
+import org.openzoom.flash.viewport.constraints.ZoomConstraint
+import org.openzoom.flash.viewport.controllers.ContextMenuController
+import org.openzoom.flash.viewport.controllers.KeyboardController
+import org.openzoom.flash.viewport.controllers.MouseController
+import org.openzoom.flash.viewport.transformers.TweenerTransformer
 
 
 [SWF(width="960", height="600", frameRate="60", backgroundColor="#FFFFFF")]
@@ -72,7 +72,7 @@ public class RosettaProjectViewer extends Sprite
     // Attribution
     private static const ABOUT_CAPTION:String = "About OpenZoom..."
     private static const ABOUT_URL:String = "http://openzoom.org/"
-            
+
     public function RosettaProjectViewer()
     {
         stage.align = StageAlign.TOP_LEFT
@@ -157,7 +157,7 @@ public class RosettaProjectViewer extends Sprite
 
         memoryMonitor = new MemoryMonitor()
         addChild(memoryMonitor)
-                                                    
+
         // Credits where credits are due
         var aboutMenu:ContextMenuItem =
                 new ContextMenuItem(ABOUT_CAPTION,
@@ -193,7 +193,7 @@ public class RosettaProjectViewer extends Sprite
             memoryMonitor.y = stage.stageHeight - memoryMonitor.height - 10
         }
     }
-        
+
     private function aboutMenu_menuItemSelectHandler(event:ContextMenuEvent):void
     {
         navigateToURL(new URLRequest(ABOUT_URL), "_blank")

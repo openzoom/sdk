@@ -39,14 +39,14 @@
 package org.openzoom.flash.viewport.controllers
 {
 
-import flash.events.Event;
-import flash.events.KeyboardEvent;
-import flash.events.TimerEvent;
-import flash.ui.Keyboard;
-import flash.utils.Timer;
+import flash.events.Event
+import flash.events.KeyboardEvent
+import flash.events.TimerEvent
+import flash.ui.Keyboard
+import flash.utils.Timer
 
-import org.openzoom.flash.utils.FullScreenUtil;
-import org.openzoom.flash.viewport.IViewportController;
+import org.openzoom.flash.utils.FullScreenUtil
+import org.openzoom.flash.viewport.IViewportController
 
 /**
  * Keyboard controller for viewports.
@@ -176,67 +176,67 @@ public final class KeyboardController extends ViewportControllerBase
     //----------------------------------
     //  showAll
     //----------------------------------
-    
+
     public var showAll:Boolean = true
 
     //----------------------------------
     //  zoomIn
     //----------------------------------
-    
+
     public var zoomIn:Boolean = true
 
     //----------------------------------
     //  zoomOut
     //----------------------------------
-    
+
     public var zoomOut:Boolean = true
 
     //----------------------------------
     //  panUp
     //----------------------------------
-    
+
     public var panUp:Boolean = true
 
     //----------------------------------
     //  panRight
     //----------------------------------
-    
+
     public var panRight:Boolean = true
 
     //----------------------------------
     //  panDown
     //----------------------------------
-    
+
     public var panDown:Boolean = true
 
     //----------------------------------
     //  panLeft
     //----------------------------------
-    
+
     public var panLeft:Boolean = true
 
     //----------------------------------
     //  home
     //----------------------------------
-    
+
     public var home:Boolean = true
 
     //----------------------------------
     //  end
     //----------------------------------
-    
+
     public var end:Boolean = true
 
     //----------------------------------
     //  pageUp
     //----------------------------------
-    
+
     public var pageUp:Boolean = true
 
     //----------------------------------
     //  pageDown
     //----------------------------------
-    
+
     public var pageDown:Boolean = true
 
     //--------------------------------------------------------------------------
@@ -495,7 +495,7 @@ public final class KeyboardController extends ViewportControllerBase
     private function keyDownHandler(event:KeyboardEvent):void
     {
         updateFlags(event, true)
-        
+
         if (fullScreen && event.keyCode == fullScreenKeyCode)
             FullScreenUtil.toggleFullScreen(view.stage)
     }

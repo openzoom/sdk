@@ -54,7 +54,7 @@ import flash.events.Event;
 [ExcludeClass]
 /**
  * @private
- * 
+ *
  * Basic implementation of IMultiScaleScene
  */
 public class MultiScaleScene extends Sprite implements IMultiScaleScene,
@@ -255,6 +255,20 @@ public class MultiScaleScene extends Sprite implements IMultiScaleScene,
             g.drawRect(0, 0, 100, 100)
             g.endFill()
         addChild(frame)
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: IDisposable
+    //
+    //--------------------------------------------------------------------------
+    
+    public function dispose():void
+    {
+        while (super.numChildren > 0)
+        	super.removeChildAt(0)
+
+        frame = null
     }
 }
 

@@ -21,7 +21,7 @@
 package org.openzoom.flash.utils
 {
 
-import org.flexunit.Assert;
+import org.flexunit.Assert
 
 /**
  * Tests the Base16 utility class implementation for correctness.
@@ -42,18 +42,18 @@ public class Base16Test
     //
     //--------------------------------------------------------------------------
 
-	[Test]
+    [Test]
     public function testEncode():void
     {
         for (var i:int = 0; i < SAMPLES.length; i++)
         {
             var testCase:Array = SAMPLES[i]
             Assert.assertEquals("Correct encoding",
-            					Base16.encode(testCase[0]), testCase[1])
+                                Base16.encode(testCase[0]), testCase[1])
         }
     }
 
-	[Test]
+    [Test]
     public function testDecode():void
     {
         for (var i:int = 0; i < SAMPLES.length; i++)

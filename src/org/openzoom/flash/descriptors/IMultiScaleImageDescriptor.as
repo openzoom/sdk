@@ -53,11 +53,11 @@ public interface IMultiScaleImageDescriptor
     //----------------------------------
     //  sources
     //----------------------------------
-    
+
     /**
      * Returns an array of IImageSourceDescriptor objects.
      * Returns empty array in case there are no descriptors.
-     */ 
+     */
     function get sources():Array
 
     //----------------------------------

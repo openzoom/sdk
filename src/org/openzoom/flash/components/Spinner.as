@@ -1,21 +1,21 @@
 package org.openzoom.flash.components
 {
 
-import flash.display.Graphics;
-import flash.display.Shape;
-import flash.display.Sprite;
-import flash.events.Event;
-import flash.events.TimerEvent;
-import flash.utils.Timer;
+import flash.display.Graphics
+import flash.display.Shape
+import flash.display.Sprite
+import flash.events.Event
+import flash.events.TimerEvent
+import flash.utils.Timer
 
 /**
  * Component for indicating activity, such as loading over the network.
- * 
+ *
  * Adapted from code by Steven Sacks
  * @see http://www.stevensacks.net/2008/10/01/as3-apple-style-preloader/
  *
  * License: Unknown
- * 
+ *
  */
 public final class Spinner extends Sprite
 {
@@ -24,9 +24,9 @@ public final class Spinner extends Sprite
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const DEFAULT_ANIMATION_DURATION:Number = 65
-    
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -40,9 +40,9 @@ public final class Spinner extends Sprite
         this.numSlices = numSlices
         this.radius = radius
         this.color = color
-        
+
         draw()
-        
+
         addEventListener(Event.ADDED_TO_STAGE,
                          addedToStageHandler,
                          false, 0, true)
@@ -76,7 +76,7 @@ public final class Spinner extends Sprite
                                false, 0, true)
         timer.start()
     }
-    
+
     private function removedFromStageHandler(event:Event):void
     {
         timer.reset()
@@ -84,7 +84,7 @@ public final class Spinner extends Sprite
                                   timer_timerHandler)
         timer = null
     }
-    
+
     private function timer_timerHandler(event:TimerEvent):void
     {
         rotation = (rotation + (360 / numSlices)) % 360
@@ -95,7 +95,7 @@ public final class Spinner extends Sprite
     //  Methods: Display list
     //
     //--------------------------------------------------------------------------
-    
+
     private function draw():void
     {
         var i:int = numSlices
@@ -120,7 +120,7 @@ public final class Spinner extends Sprite
         g.beginFill(color)
         g.drawRoundRect(-1, 0, 2, 6, 12, 12)
         g.endFill()
-        
+
         return slice
     }
 }

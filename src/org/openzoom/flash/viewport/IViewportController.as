@@ -39,7 +39,7 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.display.DisplayObject;
+import flash.display.DisplayObject
 
 import org.openzoom.flash.viewport.INormalizedViewport;
 
