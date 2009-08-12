@@ -78,7 +78,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 
     private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
 
-    private static const MAX_CACHE_SIZE:uint = 100
+    private static const MAX_CACHE_SIZE:uint = 140
 
     private static const MAX_DOWNLOADS_STATIC:uint = 4
     private static const MAX_DOWNLOADS_DYNAMIC:uint = 2
@@ -120,10 +120,6 @@ public final class ImagePyramidRenderManager implements IDisposable
         this.viewport.addEventListener(ViewportEvent.TRANSFORM_END,
                                        viewport_transformEndHandler,
                                        false, 0, true)
-                                       
-//        this.owner.addEventListener(Event.ENTER_FRAME,
-//                                    enterFrameHandler,
-//                                    false, 0, true)
     }
 
     //--------------------------------------------------------------------------
@@ -166,7 +162,6 @@ public final class ImagePyramidRenderManager implements IDisposable
     {
         if (invalidateDisplayListFlag)
         {
-        	trace(Math.random())
             invalidateDisplayListFlag = false
 
             for each (var renderer:ImagePyramidRenderer in renderers)
@@ -470,7 +465,7 @@ public final class ImagePyramidRenderManager implements IDisposable
     {
         if (renderers.indexOf(renderer) != -1)
             throw new ArgumentError("[ImagePyramidRenderManager] " +
-                                    "ReexitFrameHandlerded.")
+                                    "Renderer already added.")
 
         if (renderers.length == 0)
             owner.addEventListener(Event.ENTER_FRAME,
@@ -501,6 +496,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 
         return renderer
     }
+
 
     //--------------------------------------------------------------------------
     //

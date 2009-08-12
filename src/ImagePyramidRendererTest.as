@@ -107,20 +107,20 @@ public class ImagePyramidRendererTest extends Sprite
         path = "http://static.gasi.ch/images/3229924166/image.dzi"
         path = "../resources/images/deepzoom/billions.xml"
         source = new DeepZoomImageDescriptor(path, 3872, 2592, 256,  1, "jpg")
-        numRenderers = 263
+        numRenderers = 800
         numColumns = 36
         aspectRatio = source.width / source.height
         width = 512
         height = width / aspectRatio
 
         // Deep Zoom: Carina Nebula
-        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
-        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = 16384 / aspectRatio
+//        path = "http://seadragon.com/content/images/CarinaNebula.dzi"
+//        source = new DeepZoomImageDescriptor(path, 29566, 14321, 254,  1, "jpg")
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = 16384 / aspectRatio
 //
 //        path = "http://gasi.ch/indupart/indupart-9-gaussian-12-jpg-lq.dzi"
 //        path = "../resources/images/indupart/test/jpg/indupart-200/image.dzi"
@@ -179,13 +179,13 @@ public class ImagePyramidRendererTest extends Sprite
 //        height = width / aspectRatio
 
         // Zoomify
-        path = "http://shutter.gigapixelphotography.com/images/garibaldi-park-snowshoe/ImageProperties.xml"
-        source = new ZoomifyDescriptor(path, 22761, 14794, 256)
-        numRenderers = 1
-        numColumns = 1
-        aspectRatio = source.width / source.height
-        width = 16384
-        height = 16384 / aspectRatio
+//        path = "http://shutter.gigapixelphotography.com/images/garibaldi-park-snowshoe/ImageProperties.xml"
+//        source = new ZoomifyDescriptor(path, 22761, 14794, 256)
+//        numRenderers = 1
+//        numColumns = 1
+//        aspectRatio = source.width / source.height
+//        width = 16384
+//        height = 16384 / aspectRatio
 
         // Zoomify
 //        path = "http://shutter.gigapixelphotography.com/images/vancouver-yaletown-condos/ImageProperties.xml"
