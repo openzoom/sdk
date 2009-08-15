@@ -7,7 +7,7 @@
     
   
   Home: <http://openzoom.org/>
-  Twitter: @OpenZoom <http://twitter.com/OpenZoom>
+  Twitter: <http://twitter.com/OpenZoom>
   Code: <http://github.com/openzoom>
     
     
