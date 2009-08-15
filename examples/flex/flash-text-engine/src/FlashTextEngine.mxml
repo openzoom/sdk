@@ -8,91 +8,93 @@
 
 /////////////////////////////////////////////////////////////////////////////-->
 <mx:Application
-	xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:components="org.openzoom.flex.components.*"
-	xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
-	xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
-	xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
-	backgroundGradientColors="[0xFFFFFF, 0xFFFFFF]"
-	frameRate="60"
-	layout="absolute"
-	applicationComplete="applicationCompleteHandler(event)"
-	>
-	<mx:Script>
-		<![CDATA[
-		
-		    import flashx.textLayout.container.ContainerController;
-			import flashx.textLayout.conversion.TextConverter;
-			import flashx.textLayout.elements.TextFlow;
-			
-			import org.openzoom.flash.utils.ExternalMouseWheel;
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:components="org.openzoom.flex.components.*"
+    xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
+    xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
+    xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
+    backgroundGradientColors="[0xFFFFFF, 0xFFFFFF]"
+    frameRate="60"
+    layout="absolute"
+    applicationComplete="applicationCompleteHandler(event)"
+    >
+    <mx:Script>
+        <![CDATA[
+            import org.openzoom.flash.viewport.IViewportTransform;
+            import org.openzoom.flash.viewport.transformers.SmoothTransformer;
+
+            import flashx.textLayout.container.ContainerController;
+            import flashx.textLayout.conversion.TextConverter;
+            import flashx.textLayout.elements.TextFlow;
+
+            import org.openzoom.flash.utils.ExternalMouseWheel;
 
             private var loader:URLLoader
             private var textContainer:Sprite
+            private var transformer:SmoothTransformer
 
             private function applicationCompleteHandler(event:Event):void
             {
-            	ExternalMouseWheel.initialize(systemManager.stage)
-            	
-            	loader = new URLLoader(new URLRequest("document.xml"))
-            	loader.addEventListener(Event.COMPLETE, loader_completeHandler)
-            	
-            	textContainer = new Sprite()
-            	container.addChild(textContainer)
-//            	textContainer.x = -2048
-//            	textContainer.y = -1024
-//              rawChildren.addChild(textContainer)
+                ExternalMouseWheel.initialize(systemManager.stage)
+
+                loader = new URLLoader(new URLRequest("document.xml"))
+                loader.addEventListener(Event.COMPLETE, loader_completeHandler)
+
+                textContainer = new Sprite()
+                container.addChild(textContainer)
+
+                transformer = SmoothTransformer.getInstance(container.viewport)
             }
 
-			private function loader_completeHandler(event:Event):void
-			{
-   	            var document:String = loader.data
-	            var textFlow:TextFlow = TextConverter.importToFlow(document,
-	                                                               TextConverter.TEXT_LAYOUT_FORMAT)
-	            
+            private function loader_completeHandler(event:Event):void
+            {
+                   var document:String = loader.data
+                var textFlow:TextFlow = TextConverter.importToFlow(document,
+                                                                   TextConverter.TEXT_LAYOUT_FORMAT)
+
                 textFlow.flowComposer.addController(
                     new ContainerController(textContainer,
-	                                        container.sceneWidth,
-	                                        container.sceneHeight))
-//                textFlow.flowComposer.addController(
-//                    new ContainerController(textContainer, 4096, 2048))
+                                            container.sceneWidth,
+                                            container.sceneHeight))
                 textFlow.columnCount = 10
                 textFlow.columnGap = 10
-	            textFlow.flowComposer.updateAllControllers()
-	            textFlow.color = 0xFFFFFF
-			}
-			
-		]]>
-	</mx:Script>
-	<components:MultiScaleContainer
-		id="container"
-		top="0" right="0" bottom="0" left="0"
-		sceneWidth="4096"
-		sceneHeight="2048"
-		>
-		<!--
-		<components:constraint>
-			<constraints:MapConstraint/>
-		</components:constraint>
-		-->
-		<components:transformer>
-			<transformers:TweenerTransformer/>
-		</components:transformer>
-		<components:controllers>
-			<controllers:MouseController/>
-			<controllers:KeyboardController/>
-			<controllers:ContextMenuController/>
-		</components:controllers>
-	</components:MultiScaleContainer>
-	<!--
-    <mx:VSlider
-        id="scaleSlider"
-        verticalCenter="0"
-        left="20"
-        maximum="128"
-        minimum="0.1"
-        liveDragging="true"
-        change="{textContainer.scaleX = textContainer.scaleY = scaleSlider.value}"
+                textFlow.flowComposer.updateAllControllers()
+                textFlow.color = 0xFFFFFF
+            }
+
+
+            private function randomizeButton_clickHandler(event:MouseEvent):void
+            {
+                var t:IViewportTransform = container.viewport.transform
+                var randomBounds:Rectangle = new Rectangle(0, 0, 0.001, 0.001)
+                randomBounds.x = Math.random() * (1 - randomBounds.width)
+                randomBounds.y = Math.random() * (1 - randomBounds.height)
+                t.fitToBounds(randomBounds)
+                transformer.transform(t)
+            }
+
+        ]]>
+    </mx:Script>
+    <components:MultiScaleContainer
+        id="container"
+        top="0" right="0" bottom="0" left="0"
+        sceneWidth="4096"
+        sceneHeight="2048"
+        >
+        <components:transformer>
+            <transformers:TweenerTransformer/>
+        </components:transformer>
+        <components:controllers>
+            <controllers:MouseController/>
+            <controllers:KeyboardController/>
+            <controllers:ContextMenuController/>
+        </components:controllers>
+    </components:MultiScaleContainer>
+    <mx:Button
+        id="randomizeButton"
+        label="Randomize"
+        right="10"
+        bottom="10"
+        click="randomizeButton_clickHandler(event)"
         />
-	-->
 </mx:Application>
