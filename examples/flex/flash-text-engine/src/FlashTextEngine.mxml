@@ -48,7 +48,7 @@
 
             private function loader_completeHandler(event:Event):void
             {
-                   var document:String = loader.data
+                var document:String = loader.data
                 var textFlow:TextFlow = TextConverter.importToFlow(document,
                                                                    TextConverter.TEXT_LAYOUT_FORMAT)
 

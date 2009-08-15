@@ -13,9 +13,10 @@
     
   Welcome to the OpenZoom SDK project.
   
-  The OpenZoom SDK project can easily be imported into Eclipse through the
-  "Import..." command. Please set the Eclipse OPENZOOM_HOME linked resource to
-  point to the master branch of the OpenZoom SDK project and get started!
+  The OpenZoom SDK project can easily be imported into Eclipse through
+  the "Import..." command. First, please set the Eclipse OPENZOOM_HOME
+  linked resource point to the master branch of the OpenZoom SDK project
+  and get started!
   
   Instructions: OPENZOOM_HOME Linked Resource (Eclipse)
   ----------------------------------------------------------------------------
@@ -24,6 +25,19 @@
   
   Name: OPENZOOM_HOME
   Location: ... (e.g. /Users/dani/workspace/openzoom/sdk/)
+  
+  ----------------------------------------------------------------------------
+  
+  License
+  
+  The OpenZoom SDK project and examples are released under the
+  MPL 1.1/GPL 3/LGPL 3 trilicense. Please read the accompanied
+  licensing terms and consult with a lawyer in case you have any
+  questions.
+  
+  Should all of the available licenses not be compatible with your 
+  project or product please get in touch with me <daniel@gasienica.ch>
+  in order to figure out a licensing scheme that suits your needs.
   
   ----------------------------------------------------------------------------
   

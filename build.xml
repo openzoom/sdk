@@ -23,17 +23,17 @@
 -->
 <project name="OpenZoom" default="lib" basedir=".">
 	
-	<property name="OPENZOOM_HOME" location="${basedir}"/>
+    <property name="OPENZOOM_HOME" location="${basedir}"/>
 	
-	<property file="${OPENZOOM_HOME}/local.properties"/>
-	<property file="${OPENZOOM_HOME}/build.properties"/>
+    <property file="${OPENZOOM_HOME}/local.properties"/>
+    <property file="${OPENZOOM_HOME}/build.properties"/>
 	
     <property name="openzoom.version" value="0.5.0.0"/>
     <property name="openzoom.lib" location="${OPENZOOM_HOME}/lib"/>
     <property name="openzoom.src" location="${OPENZOOM_HOME}/src" />
-    <property name="openzoom.doc" location="${OPENZOOM_HOME}/docs" />
-    <property name="openzoom.doc.out" location="${OPENZOOM_HOME}/build/docs" />
-    <property name="openzoom.swc.out" location="${OPENZOOM_HOME}/build/lib" />
+    <property name="openzoom.doc" location="${OPENZOOM_HOME}/resources/docs" />
+    <property name="openzoom.doc.out" location="${OPENZOOM_HOME}/docs" />
+    <property name="openzoom.swc.out" location="${OPENZOOM_HOME}/bin" />
 	
     <target name="clean" depends="lib-clean, doc-clean" description="Clean"/>
 	

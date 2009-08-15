@@ -29,7 +29,7 @@
     </mx:Style>
 
     <!-- Include settings such as Flickr API key -->
-    <mx:Script source="settings.as"/>
+    <mx:Script source="config.as"/>
 
     <mx:Script>
         <![CDATA[

@@ -50,7 +50,7 @@ internal class OpenZoomSDK
 {
     // Flash components
 import org.openzoom.flash.components.MemoryMonitor; MemoryMonitor
-import org.openzoom.flash.components.MultiScaleImage2; MultiScaleImage2
+import org.openzoom.flash.components.MultiScaleImage; MultiScaleImage
 import org.openzoom.flash.components.SceneNavigator; SceneNavigator
 import org.openzoom.flash.components.Spinner; Spinner
 
@@ -82,7 +82,7 @@ import org.openzoom.flash.utils.MortonOrder; MortonOrder
 import org.openzoom.flash.viewport.constraints.CenterConstraint; CenterConstraint
 import org.openzoom.flash.viewport.constraints.CompositeConstraint; CompositeConstraint
 import org.openzoom.flash.viewport.constraints.FillConstraint; FillConstraint
-import org.openzoom.flash.viewport.constraints.MappingConstraint; MappingConstraint
+import org.openzoom.flash.viewport.constraints.MapConstraint; MapConstraint
 import org.openzoom.flash.viewport.constraints.NullConstraint; NullConstraint
 import org.openzoom.flash.viewport.constraints.ScaleConstraint; ScaleConstraint
 import org.openzoom.flash.viewport.constraints.VisibilityConstraint; VisibilityConstraint
