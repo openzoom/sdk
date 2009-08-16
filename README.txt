@@ -28,7 +28,15 @@
   
   ----------------------------------------------------------------------------
   
+  Prerequisites
+  -------------
+  
+  The OpenZoom SDK has been tested with Flex Builder 3.0.1 and the Flex SDK 3.3
+  
+  ----------------------------------------------------------------------------
+  
   License
+  -------
   
   The OpenZoom SDK project and examples are released under the
   MPL 1.1/GPL 3/LGPL 3 trilicense. Please read the accompanied
