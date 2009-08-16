@@ -50,6 +50,8 @@ import org.openzoom.flash.net.INetworkRequest
  */
 public final class NetworkRequestEvent extends Event
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

@@ -48,6 +48,8 @@ import org.openzoom.flash.events.ViewportEvent
  */
 public class ScaleInvariantRenderer extends Renderer
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

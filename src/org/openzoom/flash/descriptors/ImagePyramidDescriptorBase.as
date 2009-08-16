@@ -52,6 +52,8 @@ import org.openzoom.flash.utils.math.clamp
  */
 public class ImagePyramidDescriptorBase
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Properties

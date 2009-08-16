@@ -54,6 +54,8 @@ import org.openzoom.flash.viewport.constraints.NullConstraint
 public final class TweenerTransformer extends ViewportTransformerBase
                                       implements IViewportTransformer
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

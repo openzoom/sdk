@@ -65,14 +65,14 @@ import org.openzoom.flash.viewport.IViewportTransformer;
 import org.openzoom.flash.viewport.NormalizedViewport;
 
 /**
- * @private
- *
  * Flash component for creating Zoomable User Interfaces.
  */
 public final class MultiScaleContainer extends Sprite
                                        implements ILoaderClient,
                                                   IDisposable
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

@@ -48,6 +48,8 @@ import org.openzoom.flash.viewport.IViewportTransform
  */
 public final class VisibilityConstraint implements IViewportConstraint
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

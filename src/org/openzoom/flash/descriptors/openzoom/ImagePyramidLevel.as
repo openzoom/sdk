@@ -53,6 +53,8 @@ import org.openzoom.flash.utils.uri.resolveURI
 internal final class ImagePyramidLevel extends ImagePyramidLevelBase
                                        implements IImagePyramidLevel
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

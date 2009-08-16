@@ -59,6 +59,8 @@ import org.openzoom.flash.viewport.IViewportController
 public final class ContextMenuController extends ViewportControllerBase
                                          implements IViewportController
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

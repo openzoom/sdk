@@ -52,6 +52,8 @@ import org.openzoom.flash.utils.MortonOrder
  */
 public final class DeepZoomCollectionDescriptor
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Namespaces

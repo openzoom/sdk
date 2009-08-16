@@ -61,6 +61,8 @@ import org.openzoom.flash.events.NetworkRequestEvent
 internal final class DisplayObjectRequest extends EventDispatcher
                                           implements INetworkRequest
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

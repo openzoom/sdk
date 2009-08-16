@@ -54,6 +54,8 @@ import org.openzoom.flash.utils.math.clamp
 public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
                                implements IImagePyramidDescriptor
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

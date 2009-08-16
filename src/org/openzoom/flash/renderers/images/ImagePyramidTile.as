@@ -53,6 +53,8 @@ import org.openzoom.flash.utils.IDisposable
 internal class ImagePyramidTile implements IDisposable,
                                          IComparable
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

@@ -82,6 +82,8 @@ import flash.system.Capabilities;
  */
 public final class ExternalMouseWheel extends EventDispatcher
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

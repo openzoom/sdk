@@ -51,6 +51,8 @@ import org.openzoom.flash.viewport.IViewportTransformer
 public class TweensyZeroTransformer extends ViewportTransformerBase
                                     implements IViewportTransformer
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

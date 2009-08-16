@@ -81,6 +81,8 @@ import org.openzoom.flash.renderers.images.ImagePyramidRenderer
  */
 public final class MultiScaleImage extends MultiScaleImageBase
 {
+	include "../../flash/core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

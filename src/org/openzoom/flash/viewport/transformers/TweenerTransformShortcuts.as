@@ -49,6 +49,8 @@ import org.openzoom.flash.viewport.IViewportTransform
  */
 internal final class TweenerTransformShortcuts
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

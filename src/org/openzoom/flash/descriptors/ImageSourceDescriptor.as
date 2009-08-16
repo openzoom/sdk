@@ -44,6 +44,8 @@ package org.openzoom.flash.descriptors
  */
 public final class ImageSourceDescriptor implements IImageSourceDescriptor
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

@@ -56,6 +56,8 @@ import mx.core.UIComponent
  */
 public final class MemoryMonitor extends UIComponent
 {
+	include "../../flash/core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

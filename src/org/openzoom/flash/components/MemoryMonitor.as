@@ -55,6 +55,8 @@ import flash.text.TextFormatAlign
  */
 public final class MemoryMonitor extends Sprite
 {
+	include "../core/Version.as"
+	
     //--------------------------------------------------------------------------
     //
     //  Constructor

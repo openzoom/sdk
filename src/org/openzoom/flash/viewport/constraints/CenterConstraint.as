@@ -47,6 +47,8 @@ import org.openzoom.flash.viewport.IViewportTransform
  */
 public final class CenterConstraint implements IViewportConstraint
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

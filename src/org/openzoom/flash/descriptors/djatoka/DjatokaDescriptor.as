@@ -55,6 +55,8 @@ import org.openzoom.flash.utils.math.clamp
 public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
                                      implements IImagePyramidDescriptor
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

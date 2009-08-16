@@ -58,7 +58,7 @@
     <!-- Transformers -->
     <component id="NullTransformer" class="org.openzoom.flash.viewport.transformers.NullTransformer"/>
     <component id="TweenerTransformer" class="org.openzoom.flash.viewport.transformers.TweenerTransformer"/>
-    
+
     <!-- Flex Components -->
     <!--<component id="DeepZoomContainer" class="org.openzoom.flex.components.DeepZoomContainer"/>-->
     <component id="MultiScaleContainer" class="org.openzoom.flex.components.MultiScaleContainer"/>

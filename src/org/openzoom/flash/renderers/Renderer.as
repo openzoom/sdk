@@ -70,6 +70,8 @@ import org.openzoom.flash.viewport.INormalizedViewport
 public class Renderer extends Sprite
                       implements IRenderer
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

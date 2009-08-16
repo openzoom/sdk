@@ -41,6 +41,8 @@ import org.openzoom.flash.events.NetworkRequestEvent
 internal final class URLRequest extends EventDispatcher
                                 implements INetworkRequest
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

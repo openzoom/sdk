@@ -47,6 +47,8 @@ import org.openzoom.flash.viewport.IViewportTransform
  */
 public final class FillConstraint implements IViewportConstraint
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

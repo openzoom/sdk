@@ -18,6 +18,8 @@ import flash.utils.Timer
  */
 public final class Spinner extends Sprite
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

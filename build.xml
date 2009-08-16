@@ -68,7 +68,7 @@
     <target name="asdoc">
         <exec executable="${flex_sdk.asdoc}" failonerror="true">
             <arg line='-source-path ${openzoom.src}'/>
-            <arg line='-doc-sources ${openzoom.src}'/>
+            <arg line='-doc-sources ${openzoom.src}/OpenZoomSDK.as'/>
             <arg line='-library-path ${openzoom.lib}'/>
             <arg line='-library-path ${flex_sdk.dir}/frameworks/libs/'/>
             <arg line='-package org.openzoom.flash.components "The org.openzoom.flash.components package contains the OpenZoom components for Flash."'/>
@@ -106,7 +106,7 @@
             <arg line="-library-path ${flex_sdk.dir}/frameworks/locale/en_US"/>
             <arg line='-namespace http://ns.openzoom.org/sdk/2009 manifest.xml'/>
             <arg line='-include-namespaces http://ns.openzoom.org/sdk/2009'/>
-            <arg line='-output ${openzoom.swc.out}/openzoom-${openzoom.version}.swc'/>
+            <arg line='-output ${openzoom.swc.out}/openzoom.swc'/>
         </exec>
     </target>
 </project>

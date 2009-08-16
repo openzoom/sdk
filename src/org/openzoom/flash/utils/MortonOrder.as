@@ -52,6 +52,14 @@ import flash.geom.Point
  */
 public final class MortonOrder
 {
+	include "../core/Version.as"
+
+    //--------------------------------------------------------------------------
+    //
+    //  Class methods
+    //
+    //--------------------------------------------------------------------------
+
     /**
      * Returns the position (column, row) for a given Morton number.
      *

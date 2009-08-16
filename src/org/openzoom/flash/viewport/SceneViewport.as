@@ -86,6 +86,7 @@ import org.openzoom.flash.scene.IReadonlyMultiScaleScene
 public final class SceneViewport extends EventDispatcher
                                  implements ISceneViewport
 {
+	include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

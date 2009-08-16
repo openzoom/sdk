@@ -48,6 +48,8 @@ import flash.geom.Rectangle
 public final class ViewportTransform implements IViewportTransform,
                                                 IViewportTransformContainer
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

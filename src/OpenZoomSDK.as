@@ -49,8 +49,8 @@ package
 internal class OpenZoomSDK
 {
     // Flash components
-import org.openzoom.flash.components.MemoryMonitor; MemoryMonitor
-import org.openzoom.flash.components.MultiScaleImage; MultiScaleImage
+import org.openzoom.flash.components.MemoryMonitor; org.openzoom.flash.components.MemoryMonitor
+import org.openzoom.flash.components.MultiScaleImage; org.openzoom.flash.components.MultiScaleImage
 import org.openzoom.flash.components.SceneNavigator; SceneNavigator
 import org.openzoom.flash.components.Spinner; Spinner
 
@@ -101,6 +101,11 @@ import org.openzoom.flash.viewport.transformers.TweensyZeroTransformer; TweensyZ
 
     // Viewport
 import org.openzoom.flash.viewport.SceneViewport; SceneViewport
+
+    // Flex components
+import org.openzoom.flex.components.DeepZoomContainer; DeepZoomContainer
+import org.openzoom.flex.components.MemoryMonitor; org.openzoom.flex.components.MemoryMonitor
+import org.openzoom.flex.components.MultiScaleImage; org.openzoom.flex.components.MultiScaleImage
 }
 
 }

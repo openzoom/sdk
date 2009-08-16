@@ -51,6 +51,8 @@ import org.openzoom.flash.utils.ICacheItem
  */
 internal final class SourceTile implements ICacheItem
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

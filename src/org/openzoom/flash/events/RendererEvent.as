@@ -46,6 +46,8 @@ import flash.events.Event
  */
 public final class RendererEvent extends Event
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class Constants

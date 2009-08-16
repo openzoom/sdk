@@ -82,6 +82,8 @@ import org.openzoom.flash.utils.uri.resolveURI;
  */
 public final class MultiScaleImage extends MultiScaleImageBase
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

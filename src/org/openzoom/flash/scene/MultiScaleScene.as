@@ -57,9 +57,12 @@ import flash.events.Event;
  *
  * Basic implementation of IMultiScaleScene
  */
-public class MultiScaleScene extends Sprite implements IMultiScaleScene,
-                                                       IReadonlyMultiScaleScene
+public class MultiScaleScene extends Sprite
+						     implements IMultiScaleScene,
+                                        IReadonlyMultiScaleScene
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

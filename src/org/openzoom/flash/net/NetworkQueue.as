@@ -55,6 +55,8 @@ import org.openzoom.flash.events.NetworkRequestEvent;
 public final class NetworkQueue extends EventDispatcher
                                 implements INetworkQueue
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

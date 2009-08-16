@@ -48,6 +48,8 @@ import flash.utils.getTimer
  */
 public final class Cache implements ICache
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

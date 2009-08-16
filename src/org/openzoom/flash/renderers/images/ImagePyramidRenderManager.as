@@ -70,6 +70,8 @@ import org.openzoom.flash.viewport.INormalizedViewport
  */
 public final class ImagePyramidRenderManager implements IDisposable
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

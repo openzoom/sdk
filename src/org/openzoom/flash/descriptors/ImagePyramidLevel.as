@@ -49,6 +49,8 @@ import flash.geom.Rectangle
 public final class ImagePyramidLevel extends ImagePyramidLevelBase
                                      implements IImagePyramidLevel
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

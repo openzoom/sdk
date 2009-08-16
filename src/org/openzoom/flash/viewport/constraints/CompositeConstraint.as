@@ -50,6 +50,8 @@ import org.openzoom.flash.viewport.IViewportTransform
  */
 public final class CompositeConstraint implements IViewportConstraint
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

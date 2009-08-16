@@ -76,6 +76,8 @@ public final class MultiScaleContainer extends UIComponent
                                         implements /*IMultiScaleContainer,*/
                                                    ILoaderClient
 {
+	include "../../flash/core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

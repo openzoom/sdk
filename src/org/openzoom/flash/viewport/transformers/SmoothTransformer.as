@@ -59,6 +59,8 @@ import org.openzoom.flash.viewport.IViewportTransformer
 public class SmoothTransformer extends ViewportTransformerBase
                                implements IViewportTransformer
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

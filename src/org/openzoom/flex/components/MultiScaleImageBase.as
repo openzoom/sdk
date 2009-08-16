@@ -59,6 +59,8 @@ import org.openzoom.flash.viewport.NormalizedViewport
 internal class MultiScaleImageBase extends UIComponent
                                   /*implements IMultiScaleContainer*/
 {
+	include "../../flash/core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

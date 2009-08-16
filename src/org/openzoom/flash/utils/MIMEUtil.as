@@ -44,6 +44,14 @@ package org.openzoom.flash.utils
  */
 public final class MIMEUtil
 {
+	include "../core/Version.as"
+
+    //--------------------------------------------------------------------------
+    //
+    //  Class methods
+    //
+    //--------------------------------------------------------------------------
+
     /**
      * Returns the official MIME type for the
      * given file extension without a leading dot.

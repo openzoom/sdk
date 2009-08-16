@@ -54,6 +54,8 @@ import org.openzoom.flash.viewport.IViewportController
 public final class KeyboardController extends ViewportControllerBase
                                       implements IViewportController
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

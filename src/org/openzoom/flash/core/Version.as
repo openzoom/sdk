@@ -36,57 +36,12 @@
 //  the terms of any one of the MPL, the GPL or the LGPL.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package org.openzoom.flash.utils
-{
+
+import org.openzoom.flash.core.openzoom_internal;
 
 /**
- * Simple Base16 encoder/decoder.
+ *  @private
  *
- * @see http://tools.ietf.org/html/rfc3548
+ *  Version string for this class.
  */
-public final class Base16
-{
-	include "../core/Version.as"
-
-    //--------------------------------------------------------------------------
-    //
-    //  Methods
-    //
-    //--------------------------------------------------------------------------
-
-    /**
-     * Returns the decoded value of the Base16 encoded String <code>value</code>.
-     */
-    public static function decode(value:String, ignoreCase:Boolean=false):String
-    {
-        var result:String = ""
-        var l:int = value.length
-
-//        if (l % 2 != 0)
-//            throw new ArgumentError("Argument is not a valid Base16 encoded String.")
-
-        for (var i:int = 0; i < l; i += 2)
-        {
-            var s:int = parseInt(value.substr(i, 2), 16)
-            result += String.fromCharCode(s)
-        }
-
-        return result
-    }
-
-    /**
-     * Returns the Base16 encoded String of <code>value</code>.
-     */
-    public static function encode(value:String):String
-    {
-        var result:String = ""
-        var l:int = value.length
-
-        for (var i:int = 0; i < l; i++)
-            result += value.charCodeAt(i).toString(16)
-
-        return result.toUpperCase()
-    }
-}
-
-}
+openzoom_internal static const VERSION:String = "0.4.2.0"

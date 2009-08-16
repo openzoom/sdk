@@ -39,7 +39,7 @@
 package org.openzoom.flash.descriptors
 {
 
-[ExcludeClass]
+//[ExcludeClass]
 /**
  * @private
  *
@@ -47,6 +47,8 @@ package org.openzoom.flash.descriptors
  */
 public class ImagePyramidLevelBase
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

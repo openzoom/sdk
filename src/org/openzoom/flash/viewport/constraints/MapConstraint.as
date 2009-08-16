@@ -49,6 +49,8 @@ import org.openzoom.flash.viewport.IViewportTransform
  */
 public final class MapConstraint implements IViewportConstraint
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

@@ -48,6 +48,8 @@ package org.openzoom.flash.descriptors.openzoom
  */
 internal final class ImagePyramidOrigin
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

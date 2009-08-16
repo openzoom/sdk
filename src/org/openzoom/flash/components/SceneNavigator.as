@@ -55,6 +55,8 @@ import org.openzoom.flash.viewport.INormalizedViewport
  */
 public final class SceneNavigator extends Sprite
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

@@ -57,6 +57,8 @@ import org.openzoom.flash.utils.math.clamp
 public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
                                           implements IImagePyramidDescriptor
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

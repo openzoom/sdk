@@ -57,6 +57,8 @@ import org.openzoom.flash.utils.IDisposable
 public final class ImagePyramidRenderer extends Renderer
                                         implements IDisposable
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

@@ -48,6 +48,20 @@ import flash.system.Capabilities
  */
 public final class FullScreenUtil
 {
+	include "../core/Version.as"
+
+    //--------------------------------------------------------------------------
+    //
+    //  Class methods
+    //
+    //--------------------------------------------------------------------------
+
+	/**
+	 * Toggle fullscreen mode. If running inside AIR runtime, the
+	 * <code>interactive</code> paramener determines whether to switch
+	 * into interactive fullscreen mode or non-interactive (default
+	 * for non-AIR runtime).
+	 */
     public static function toggleFullScreen(stage:Stage,
                                             interactive:Boolean=true):void
     {

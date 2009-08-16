@@ -87,6 +87,8 @@ public final class NormalizedViewport extends EventDispatcher
                                       implements INormalizedViewport,
                                                  INormalizedViewportContainer
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

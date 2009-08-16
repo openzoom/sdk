@@ -48,6 +48,8 @@ import org.openzoom.flash.viewport.IViewportTransform
  */
 public final class ViewportEvent extends Event
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class Constants

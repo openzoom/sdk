@@ -45,7 +45,6 @@ import flash.events.Event
 import org.openzoom.flash.viewport.INormalizedViewport
 import org.openzoom.flash.viewport.IViewportController
 
-[ExcludeClass]
 /**
  * @private
  *
@@ -56,6 +55,8 @@ import org.openzoom.flash.viewport.IViewportController
  */
 public class ViewportControllerBase
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Constructor

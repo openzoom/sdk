@@ -45,7 +45,6 @@ import org.openzoom.flash.viewport.IViewportTransform
 import org.openzoom.flash.viewport.IViewportTransformer
 import org.openzoom.flash.viewport.constraints.NullConstraint
 
-[ExcludeClass]
 /**
  * @private
  *
@@ -54,6 +53,8 @@ import org.openzoom.flash.viewport.constraints.NullConstraint
  */
 public class ViewportTransformerBase
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

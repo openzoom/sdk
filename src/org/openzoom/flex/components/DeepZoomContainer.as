@@ -82,6 +82,8 @@ import org.openzoom.flash.renderers.images.ImagePyramidRenderer
  */
 public final class DeepZoomContainer extends MultiScaleImageBase
 {
+	include "../../flash/core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Namespaces

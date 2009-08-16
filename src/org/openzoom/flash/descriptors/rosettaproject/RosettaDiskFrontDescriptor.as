@@ -52,6 +52,8 @@ import org.openzoom.flash.utils.math.clamp
 public final class RosettaDiskFrontDescriptor extends ImagePyramidDescriptorBase
                                               implements IImagePyramidDescriptor
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

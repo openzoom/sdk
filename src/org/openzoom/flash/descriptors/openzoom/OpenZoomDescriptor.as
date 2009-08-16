@@ -54,6 +54,8 @@ import org.openzoom.flash.utils.uri.resolveURI
 public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
                                       implements IImagePyramidDescriptor
 {
+	include "../../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Namespaces

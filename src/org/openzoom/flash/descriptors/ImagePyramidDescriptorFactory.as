@@ -49,6 +49,8 @@ import org.openzoom.flash.descriptors.zoomify.ZoomifyDescriptor
  */
 public class ImagePyramidDescriptorFactory
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants

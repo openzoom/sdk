@@ -62,6 +62,8 @@ internal class MultiScaleImageBase extends Sprite
                                               ILoaderClient,
                                               IDisposable
 {
+	include "../core/Version.as"
+
     //--------------------------------------------------------------------------
     //
     //  Class constants
