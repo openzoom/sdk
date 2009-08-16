@@ -5,11 +5,21 @@
   \____/ .__/\__/_//_/___/\___/\___/_/_/_/
       /_/
 
+  Open Source Framework For Multiscale Images and Zoomable User Interfaces (ZUIs)
+
+  ----------------------------------------------------------------------------
+  
+  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
+  All rights reserved.
 
   Home: <http://openzoom.org/>
   Twitter: <http://twitter.com/OpenZoom>
   Code: <http://github.com/openzoom>
 
+  ----------------------------------------------------------------------------
+  
+  Welcome
+  =======
 
   Welcome to the OpenZoom SDK project.
 

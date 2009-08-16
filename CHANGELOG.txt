@@ -1,0 +1,4 @@
+Version 0.4.2 - August 16, 2009
+===============================
+
+  - First public release.
