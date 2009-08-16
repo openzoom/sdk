@@ -33,9 +33,6 @@
 
     <mx:Script>
         <![CDATA[
-    		import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
-    		import org.openzoom.flash.descriptors.ImagePyramidLevel;
-    		import org.openzoom.flash.events.ViewportEvent;
 
             //------------------------------------------------------------------
             //
@@ -53,8 +50,11 @@
             import mx.events.FlexEvent;
 
     		import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+    		import org.openzoom.flash.descriptors.ImagePyramidLevel;
         	import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
             import org.openzoom.flash.descriptors.djatoka.DjatokaDescriptor;
+    		import org.openzoom.flash.events.ViewportEvent;
+    		import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
             import org.openzoom.flash.utils.ExternalMouseWheel;
 
             //------------------------------------------------------------------

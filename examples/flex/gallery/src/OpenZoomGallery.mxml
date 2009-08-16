@@ -91,6 +91,7 @@
          id="imagesComboBox"
          labelField="title"
          dataProvider="{images}"
+         focusEnabled="false"
          horizontalCenter="0"
          top="8"
          height="28"

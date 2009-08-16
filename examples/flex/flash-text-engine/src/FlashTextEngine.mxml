@@ -20,14 +20,14 @@
     >
     <mx:Script>
         <![CDATA[
-            import org.openzoom.flash.viewport.IViewportTransform;
-            import org.openzoom.flash.viewport.transformers.SmoothTransformer;
-
+        
             import flashx.textLayout.container.ContainerController;
             import flashx.textLayout.conversion.TextConverter;
             import flashx.textLayout.elements.TextFlow;
 
             import org.openzoom.flash.utils.ExternalMouseWheel;
+            import org.openzoom.flash.viewport.IViewportTransform;
+            import org.openzoom.flash.viewport.transformers.SmoothTransformer;
 
             private var loader:URLLoader
             private var textContainer:Sprite

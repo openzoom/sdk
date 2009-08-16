@@ -19,9 +19,10 @@
     >
     <mx:Script>
         <![CDATA[
-            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 
             import mx.events.FlexEvent;
+        
+            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
 
             private function applicationCompleteHandler(event:FlexEvent):void
             {

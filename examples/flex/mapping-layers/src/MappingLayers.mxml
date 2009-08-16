@@ -18,17 +18,16 @@
     >
     <mx:Script>
         <![CDATA[
-    		import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
         
+            import mx.events.FlexEvent;
+            
     		import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
     		import org.openzoom.flash.descriptors.ImagePyramidDescriptorFactory;
             import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
             import org.openzoom.flash.events.NetworkRequestEvent;
             import org.openzoom.flash.net.INetworkRequest;
             import org.openzoom.flash.net.NetworkQueue;
-
-            import mx.events.FlexEvent;
-
+    		import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 
             private var loader:NetworkQueue
             private var osmLayer:ImagePyramidRenderer
@@ -36,7 +35,6 @@
 
             private const OSM_SOURCE:String = "openstreetmap.xml"
             private const BLUE_MARBLE_SOURCE:String = "bluemarble.xml"
-
 
             private function applicationCompleteHandler(event:FlexEvent):void
             {

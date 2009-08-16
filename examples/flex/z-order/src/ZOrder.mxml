@@ -69,7 +69,7 @@
 
                 target.clear()
                 target.beginFill(0x000000, 0)
-                
+
                 for (var i:int = 0; i < iterations; i++)
                 {
                     position = MortonOrder.getPosition(i)
@@ -79,7 +79,7 @@
                     target.lineTo(drawingPosition.x, drawingPosition.y)
                     target.moveTo(drawingPosition.x, drawingPosition.y)
                 }
-                
+
                 target.endFill()
 
                 container.sceneWidth = canvas.width
@@ -112,7 +112,7 @@
             />
     </mx:HBox>
 
-    <openzoom:MultiScaleContainer2
+    <openzoom:MultiScaleContainer
         id="container"
         top="48"
         right="0"
@@ -127,5 +127,5 @@
         <openzoom:transformer>
             <transformers:TweenerTransformer/>
         </openzoom:transformer>
-    </openzoom:MultiScaleContainer2>
+    </openzoom:MultiScaleContainer>
 </mx:Application>
