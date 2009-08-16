@@ -50,8 +50,9 @@ import org.openzoom.flash.utils.math.clamp
 
 /**
  * <a href="http://www.microsoft.com/virtualearth/">Microsoft VirtualEarth</a> descriptor.
- * @see http://msdn.microsoft.com/en-us/library/bb259689.aspx
  * For educational purposes only. Please respect the owner's copyright.
+ * 
+ * @see http://msdn.microsoft.com/en-us/library/bb259689.aspx
  */
 public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
                                           implements IImagePyramidDescriptor
@@ -162,7 +163,7 @@ public final class VirtualEarthDescriptor extends ImagePyramidDescriptorBase
     /**
      * @private
      */
-    private function getQuadKey(level:int, column:uint, row:uint):String
+    private function getQuadKey(level:int, column:int, row:int):String
     {
         var quadKey:String = "";
 

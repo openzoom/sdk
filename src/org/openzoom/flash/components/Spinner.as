@@ -9,13 +9,12 @@ import flash.events.TimerEvent
 import flash.utils.Timer
 
 /**
- * Component for indicating activity, such as loading over the network.
+ * Component for indicating activity, such as loading over the network.<br/>
  *
+ * License: Unknown<br/>
+ * 
  * Adapted from code by Steven Sacks
  * @see http://www.stevensacks.net/2008/10/01/as3-apple-style-preloader/
- *
- * License: Unknown
- *
  */
 public final class Spinner extends Sprite
 {

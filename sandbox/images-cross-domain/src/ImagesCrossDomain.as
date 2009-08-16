@@ -39,6 +39,7 @@
 package
 {
 
+import flash.display.DisplayObject;
 import flash.display.Loader;
 import flash.display.LoaderInfo;
 import flash.display.Sprite;

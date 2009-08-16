@@ -42,6 +42,7 @@ package
 import flash.display.Sprite;
 import flash.utils.getTimer;
 
+[SWF(width="960", height="540", frameRate="60", backgroundColor="#000000")]
 public class Performance extends Sprite
 {
     private static const NUM_ITERATIONS:int = 1000000

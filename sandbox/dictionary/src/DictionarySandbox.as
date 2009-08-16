@@ -42,6 +42,7 @@ package
 import flash.display.Sprite;
 import flash.utils.Dictionary;
 
+[SWF(width="960", height="540", frameRate="60", backgroundColor="#000000")]
 public class DictionarySandbox extends Sprite
 {
     public function DictionarySandbox()

@@ -47,7 +47,7 @@ import flash.events.Event;
 import flash.events.FocusEvent;
 import flash.utils.setTimeout;
 
-[SWF(width="960", height="600", frameRate="30", backgroundColor="#000000")]
+[SWF(width="960", height="540", frameRate="60", backgroundColor="#000000")]
 public class Activation extends Sprite
 {
     public function Activation()

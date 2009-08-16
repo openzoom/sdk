@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>OpenZoom SDK API Documentation</title>
+    <script language="javascript" type="text/javascript">
+    	<!--
+        window.onload=function(){
+            var d=document.location.search;
+			var args=d.substring(d.lastIndexOf('?')+1,d.length);
+			var classFrameContent=args;
+			var classListFrameContent='';
+			if (args.indexOf('&') != -1) {
+				classFrameContent = args.substring(0,args.indexOf('&'));
+				classListFrameContent = args.substring(args.indexOf('&')+1,args.length);
+			}
+            if(classFrameContent!='')
+            	top.frames['classFrame'].document.location.href=classFrameContent;
+			if(classListFrameContent!='')
+				top.frames['packageFrame'].frames['classListFrame'].document.location.href=classListFrameContent;
+        }
+        -->
+    </script>
+</head>
+<frameset cols="210,*" border="2" bordercolor="#AAAAAA" framespacing="0">
+       <frame src="package-frame.html" name="packageFrame" scrolling="no" />
+       <frameset rows="80,*" border="0" bordercolor="#AAAAAA">
+       		<frame src="title-bar.html" name="titlebar" scrolling="no" frameborder="0" />
+       		<frame src="package-summary.html" name="classFrame" frameborder="0" />
+    	</frameset>
+    <noframes>
+	<body>
+        <h2>Frame Alert</h2>
+        <p>
+        This document is designed to be viewed using the frames feature. If you see this message, you are using a non-frame-capable web client.
+        <br />
+        Link to <a href="package-summary.html">Non-frame version.</a>
+        </p>
+        
+		<!-- Google Analytics Tracker -->
+		<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		try {
+		var pageTracker = _gat._getTracker("UA-5667667-3");
+		pageTracker._trackPageview();
+		} catch(err) {}</script>
+		
+        </body>
+    </noframes>
+</frameset>
+</html>
