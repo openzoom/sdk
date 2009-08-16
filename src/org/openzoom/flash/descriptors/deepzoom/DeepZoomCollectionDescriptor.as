@@ -46,6 +46,8 @@ import org.openzoom.flash.utils.MIMEUtil
 import org.openzoom.flash.utils.MortonOrder
 
 /**
+ * @private
+ * 
  * Descriptor for the
  * <a href="http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx">
  * Microsoft Deep Zoom Collection (DZC) format</a>.
