@@ -59,7 +59,7 @@ public final class ViewportEvent extends Event
     public static const RESIZE:String = "resize"
     public static const TRANSFORM_START:String = "transformStart"
     public static const TRANSFORM_UPDATE:String = "transformUpdate"
-    public static const TRANSFORM_END:String = "transformComplete"
+    public static const TRANSFORM_END:String = "transformEnd"
     public static const TARGET_UPDATE:String = "targetUpdate"
 
     //--------------------------------------------------------------------------

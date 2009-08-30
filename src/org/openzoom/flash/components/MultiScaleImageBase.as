@@ -359,7 +359,7 @@ internal class MultiScaleImageBase extends Sprite
      */
     public function get scale():Number
     {
-        return viewport.zoom
+        return viewport.scale
     }
 
     public function set scale(value:Number):void
