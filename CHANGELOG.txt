@@ -1,5 +1,5 @@
 Version 0.4.2.1 - September 4, 2009
-===============================
+===================================
 
   - Fixed bug "#1004: Namespace was not found or is not a compile-time constant"
     which occurred in Flash CS3.
