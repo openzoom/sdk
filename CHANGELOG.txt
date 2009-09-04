@@ -6,7 +6,7 @@ Version 0.4.2.1 - September 4, 2009
 
   - Fixed bug in MultiScaleImageBase::scale getter.
   
-  - Fixed bad ViewportEvent  string constant for TRANSFORM_END.
+  - Fixed bad ViewportEvent string constant for TRANSFORM_END.
   
   - Removed explicit dependency on Flex SDK 3.3 in Flash Builder project file. 
   
