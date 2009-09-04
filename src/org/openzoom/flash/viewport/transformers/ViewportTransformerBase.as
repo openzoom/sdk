@@ -39,11 +39,13 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import org.openzoom.flash.viewport.INormalizedViewport
-import org.openzoom.flash.viewport.IViewportConstraint
-import org.openzoom.flash.viewport.IViewportTransform
-import org.openzoom.flash.viewport.IViewportTransformer
-import org.openzoom.flash.viewport.constraints.NullConstraint
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.IViewportConstraint;
+import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.constraints.NullConstraint;
+
+use namespace openzoom_internal;
 
 /**
  * @private

@@ -39,13 +39,16 @@
 package org.openzoom.flash.descriptors.openzoom
 {
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor
-import org.openzoom.flash.descriptors.IImagePyramidLevel
-import org.openzoom.flash.descriptors.IImageSourceDescriptor
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase
-import org.openzoom.flash.descriptors.ImageSourceDescriptor
-import org.openzoom.flash.utils.math.clamp
-import org.openzoom.flash.utils.uri.resolveURI
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.IImageSourceDescriptor;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImageSourceDescriptor;
+import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.utils.uri.resolveURI;
+
+use namespace openzoom_internal;
 
 /**
  * OpenZoom Descriptor.

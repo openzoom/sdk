@@ -39,6 +39,10 @@
 package org.openzoom.flash.descriptors.openzoom
 {
 
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
+
 /**
  * Represents the coordinate system origin of the image pyramid.
  * Added due to great feedback from Klokan Petr Pridal to support the

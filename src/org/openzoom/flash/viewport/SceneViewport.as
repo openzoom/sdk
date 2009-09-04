@@ -39,13 +39,16 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.errors.IllegalOperationError
-import flash.events.EventDispatcher
-import flash.geom.Point
-import flash.geom.Rectangle
-import flash.utils.Dictionary
+import flash.errors.IllegalOperationError;
+import flash.events.EventDispatcher;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+import flash.utils.Dictionary;
 
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+
+use namespace openzoom_internal;
 
 //------------------------------------------------------------------------------
 //

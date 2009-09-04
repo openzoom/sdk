@@ -39,9 +39,12 @@
 package org.openzoom.flash.events
 {
 
-import flash.events.Event
+import flash.events.Event;
 
-import org.openzoom.flash.viewport.IViewportTransform
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.viewport.IViewportTransform;
+
+use namespace openzoom_internal;
 
 /**
  * Viewport event class.

@@ -1,3 +1,15 @@
+Version 0.4.2.1 - September 4, 2009
+===============================
+
+  - Fixed bug "#1004: Namespace was not found or is not a compile-time constant"
+    which occurred in Flash CS3.
+
+  - Fixed bug in MultiScaleImageBase::scale getter.
+  
+  - Fixed bad ViewportEvent  string constant for TRANSFORM_END.
+  
+  - Removed explicit dependency on Flex SDK 3.3 in Flash Builder project file. 
+  
 Version 0.4.2 - August 16, 2009
 ===============================
 

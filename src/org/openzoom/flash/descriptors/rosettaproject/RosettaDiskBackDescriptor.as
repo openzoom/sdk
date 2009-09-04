@@ -39,11 +39,14 @@
 package org.openzoom.flash.descriptors.rosettaproject
 {
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor
-import org.openzoom.flash.descriptors.IImagePyramidLevel
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase
-import org.openzoom.flash.descriptors.ImagePyramidLevel
-import org.openzoom.flash.utils.math.clamp
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidLevel;
+import org.openzoom.flash.utils.math.clamp;
+
+use namespace openzoom_internal;
 
 /**
  * <a href="http://rosettaproject.org/">The Rosetta Project</a> descriptor.

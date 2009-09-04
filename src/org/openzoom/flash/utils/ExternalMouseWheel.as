@@ -71,6 +71,10 @@ import flash.events.MouseEvent;
 import flash.external.ExternalInterface;
 import flash.system.Capabilities;
 
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
+
 /**
  * The ExternalMouseWheel class provices support for the mouse wheel on systems
  * where the Flash Player does not natively support this capability. Refactored
@@ -257,7 +261,7 @@ public final class ExternalMouseWheel extends EventDispatcher
 
             var force:Boolean =
                  ExternalInterface.call(FORCE_FUNCTION,
-                                         ExternalInterface.objectID) as Boolean
+                                        ExternalInterface.objectID) as Boolean
 
             // Ignore if not Mac OS or Safari
             if (!isMac && !force)

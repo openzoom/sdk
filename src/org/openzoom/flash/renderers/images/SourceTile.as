@@ -39,9 +39,12 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.BitmapData
+import flash.display.BitmapData;
 
-import org.openzoom.flash.utils.ICacheItem
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.utils.ICacheItem;
+
+use namespace openzoom_internal;
 
 [ExcludeClass]
 /**

@@ -39,6 +39,10 @@
 package org.openzoom.flash.utils
 {
 
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
+
 /**
  * Simple Base16 encoder/decoder.
  *

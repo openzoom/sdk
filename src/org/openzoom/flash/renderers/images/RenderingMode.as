@@ -39,6 +39,10 @@
 package org.openzoom.flash.renderers.images
 {
 
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
+
 [ExcludeClass]
 /**
  * @private

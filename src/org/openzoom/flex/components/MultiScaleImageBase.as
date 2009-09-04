@@ -39,17 +39,20 @@
 package org.openzoom.flex.components
 {
 
-import flash.display.DisplayObject
-import flash.events.Event
-import flash.geom.Point
-import flash.geom.Rectangle
+import flash.display.DisplayObject;
+import flash.events.Event;
+import flash.geom.Point;
+import flash.geom.Rectangle;
 
-import mx.core.UIComponent
+import mx.core.UIComponent;
 
-import org.openzoom.flash.net.INetworkQueue
-import org.openzoom.flash.viewport.IViewportConstraint
-import org.openzoom.flash.viewport.IViewportTransformer
-import org.openzoom.flash.viewport.NormalizedViewport
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.net.INetworkQueue;
+import org.openzoom.flash.viewport.IViewportConstraint;
+import org.openzoom.flash.viewport.IViewportTransformer;
+import org.openzoom.flash.viewport.NormalizedViewport;
+
+use namespace openzoom_internal;
 
 /**
  * @private

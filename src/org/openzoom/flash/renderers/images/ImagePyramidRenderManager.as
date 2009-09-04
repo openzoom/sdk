@@ -39,28 +39,30 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.BitmapData
-import flash.display.Graphics
-import flash.display.Shape
-import flash.display.Sprite
-import flash.events.Event
-import flash.geom.Matrix
-import flash.geom.Point
-import flash.geom.Rectangle
-import flash.utils.getTimer
+import flash.display.BitmapData;
+import flash.display.Graphics;
+import flash.display.Shape;
+import flash.display.Sprite;
+import flash.events.Event;
+import flash.geom.Matrix;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+import flash.utils.getTimer;
 
-import org.openzoom.flash.core.openzoom_internal
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor
-import org.openzoom.flash.descriptors.IImagePyramidLevel
-import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor
-import org.openzoom.flash.events.ViewportEvent
-import org.openzoom.flash.net.INetworkQueue
-import org.openzoom.flash.scene.IMultiScaleScene
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene
-import org.openzoom.flash.utils.Cache
-import org.openzoom.flash.utils.IDisposable
-import org.openzoom.flash.utils.MortonOrder
-import org.openzoom.flash.viewport.INormalizedViewport
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
+import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.net.INetworkQueue;
+import org.openzoom.flash.scene.IMultiScaleScene;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+import org.openzoom.flash.utils.Cache;
+import org.openzoom.flash.utils.IDisposable;
+import org.openzoom.flash.utils.MortonOrder;
+import org.openzoom.flash.viewport.INormalizedViewport;
+
+use namespace openzoom_internal;
 
 //[ExcludeClass]
 /**
@@ -512,17 +514,13 @@ public final class ImagePyramidRenderManager implements IDisposable
         owner.removeEventListener(Event.ENTER_FRAME,
                                   enterFrameHandler)
 
-        // Remove render manager from all its renderers
-        for each (var renderer:ImagePyramidRenderer in renderers)
-            renderer.openzoom_internal::renderManager = null
-
         owner = null
         scene = null
         viewport = null
         loader = null
 
-        openzoom_internal::tileCache.dispose()
-        openzoom_internal::tileCache = null
+        tileCache.dispose()
+        tileCache = null
     }
 }
 

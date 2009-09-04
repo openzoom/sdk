@@ -39,14 +39,17 @@
 package org.openzoom.flash.viewport.controllers
 {
 
-import flash.events.Event
-import flash.events.KeyboardEvent
-import flash.events.TimerEvent
-import flash.ui.Keyboard
-import flash.utils.Timer
+import flash.events.Event;
+import flash.events.KeyboardEvent;
+import flash.events.TimerEvent;
+import flash.ui.Keyboard;
+import flash.utils.Timer;
 
-import org.openzoom.flash.utils.FullScreenUtil
-import org.openzoom.flash.viewport.IViewportController
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.utils.FullScreenUtil;
+import org.openzoom.flash.viewport.IViewportController;
+
+use namespace openzoom_internal;
 
 /**
  * Keyboard controller for viewports.

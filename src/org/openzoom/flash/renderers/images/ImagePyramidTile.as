@@ -39,19 +39,22 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.BitmapData
-import flash.errors.IllegalOperationError
-import flash.geom.Rectangle
+import flash.display.BitmapData;
+import flash.errors.IllegalOperationError;
+import flash.geom.Rectangle;
 
-import org.openzoom.flash.utils.IComparable
-import org.openzoom.flash.utils.IDisposable
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.utils.IComparable;
+import org.openzoom.flash.utils.IDisposable;
+
+use namespace openzoom_internal;
 
 [ExcludeClass]
 /**
  * Tile of an image pyramid.
  */
 internal class ImagePyramidTile implements IDisposable,
-                                         IComparable
+                                           IComparable
 {
 	include "../../core/Version.as"
 

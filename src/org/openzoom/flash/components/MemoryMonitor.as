@@ -39,16 +39,20 @@
 package org.openzoom.flash.components
 {
 
-import flash.display.Graphics
-import flash.display.Shape
-import flash.display.Sprite
-import flash.events.Event
-import flash.system.System
-import flash.text.AntiAliasType
-import flash.text.TextField
-import flash.text.TextFieldAutoSize
-import flash.text.TextFormat
-import flash.text.TextFormatAlign
+import flash.display.Graphics;
+import flash.display.Shape;
+import flash.display.Sprite;
+import flash.events.Event;
+import flash.system.System;
+import flash.text.AntiAliasType;
+import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
+import flash.text.TextFormatAlign;
+
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
 
 /**
  * Displays the total memory consumption of all running Flash Player instances.

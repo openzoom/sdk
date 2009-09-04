@@ -39,19 +39,21 @@
 package org.openzoom.flash.net
 {
 
-import flash.display.DisplayObject
-import flash.display.Loader
-import flash.events.Event
-import flash.events.EventDispatcher
-import flash.events.HTTPStatusEvent
-import flash.events.IEventDispatcher
-import flash.events.IOErrorEvent
-import flash.events.ProgressEvent
-import flash.events.SecurityErrorEvent
-import flash.net.URLRequest
-import flash.system.LoaderContext
+import flash.display.DisplayObject;
+import flash.display.Loader;
+import flash.events.Event;
+import flash.events.EventDispatcher;
+import flash.events.IEventDispatcher;
+import flash.events.IOErrorEvent;
+import flash.events.ProgressEvent;
+import flash.events.SecurityErrorEvent;
+import flash.net.URLRequest;
+import flash.system.LoaderContext;
 
-import org.openzoom.flash.events.NetworkRequestEvent
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.events.NetworkRequestEvent;
+
+use namespace openzoom_internal;
 
 /**
  * @private

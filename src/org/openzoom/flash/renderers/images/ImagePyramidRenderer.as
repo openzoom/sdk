@@ -39,15 +39,17 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.Graphics
-import flash.display.Shape
-import flash.geom.Rectangle
-import flash.utils.Dictionary
+import flash.display.Graphics;
+import flash.display.Shape;
+import flash.geom.Rectangle;
+import flash.utils.Dictionary;
 
-import org.openzoom.flash.core.openzoom_internal
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor
-import org.openzoom.flash.renderers.Renderer
-import org.openzoom.flash.utils.IDisposable
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.renderers.Renderer;
+import org.openzoom.flash.utils.IDisposable;
+
+use namespace openzoom_internal;
 
 /**
  * @private

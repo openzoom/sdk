@@ -38,11 +38,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.viewport.transformers
 {
-import com.flashdynamix.motion.TweensyTimelineZero
-import com.flashdynamix.motion.TweensyZero
+import com.flashdynamix.motion.TweensyTimelineZero;
+import com.flashdynamix.motion.TweensyZero;
 
-import org.openzoom.flash.viewport.IViewportTransform
-import org.openzoom.flash.viewport.IViewportTransformer
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.IViewportTransformer;
+
+use namespace openzoom_internal;
 
 /**
  * TweensyZeroTransformer is an implementation of IViewportTransformer based on

@@ -39,9 +39,12 @@
 package org.openzoom.flash.events
 {
 
-import flash.events.Event
+import flash.events.Event;
 
-import org.openzoom.flash.net.INetworkRequest
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.net.INetworkRequest;
+
+use namespace openzoom_internal;
 
 /**
  * @private

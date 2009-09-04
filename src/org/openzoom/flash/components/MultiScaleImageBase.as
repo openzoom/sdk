@@ -45,12 +45,15 @@ import flash.geom.Point;
 import flash.geom.Rectangle;
 import flash.ui.ContextMenu;
 
+import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.net.ILoaderClient;
 import org.openzoom.flash.net.INetworkQueue;
 import org.openzoom.flash.utils.IDisposable;
 import org.openzoom.flash.viewport.INormalizedViewport;
 import org.openzoom.flash.viewport.IViewportConstraint;
 import org.openzoom.flash.viewport.IViewportTransformer;
+
+use namespace openzoom_internal;
 
 /**
  * @private
@@ -106,8 +109,6 @@ internal class MultiScaleImageBase extends Sprite
     //----------------------------------
     //  loader
     //----------------------------------
-
-    private var _loader:INetworkQueue
 
     public function get loader():INetworkQueue
     {

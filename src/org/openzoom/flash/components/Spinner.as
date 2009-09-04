@@ -1,12 +1,16 @@
 package org.openzoom.flash.components
 {
 
-import flash.display.Graphics
-import flash.display.Shape
-import flash.display.Sprite
-import flash.events.Event
-import flash.events.TimerEvent
-import flash.utils.Timer
+import flash.display.Graphics;
+import flash.display.Shape;
+import flash.display.Sprite;
+import flash.events.Event;
+import flash.events.TimerEvent;
+import flash.utils.Timer;
+
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
 
 /**
  * Component for indicating activity, such as loading over the network.<br/>

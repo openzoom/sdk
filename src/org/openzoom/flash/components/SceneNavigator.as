@@ -39,16 +39,19 @@
 package org.openzoom.flash.components
 {
 
-import flash.display.Graphics
-import flash.display.LineScaleMode
-import flash.display.Sprite
-import flash.events.Event
-import flash.events.MouseEvent
-import flash.geom.Rectangle
+import flash.display.Graphics;
+import flash.display.LineScaleMode;
+import flash.display.Sprite;
+import flash.events.Event;
+import flash.events.MouseEvent;
+import flash.geom.Rectangle;
 
-import org.openzoom.flash.events.ViewportEvent
-import org.openzoom.flash.utils.math.clamp
-import org.openzoom.flash.viewport.INormalizedViewport
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.viewport.INormalizedViewport;
+
+use namespace openzoom_internal;
 
 /**
  * Component for quickly navigating a multiscale scene.

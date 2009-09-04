@@ -39,18 +39,21 @@
 package org.openzoom.flex.components
 {
 
-import flash.events.Event
-import flash.events.IOErrorEvent
-import flash.events.SecurityErrorEvent
-import flash.net.URLLoader
-import flash.net.URLRequest
+import flash.events.Event;
+import flash.events.IOErrorEvent;
+import flash.events.SecurityErrorEvent;
+import flash.net.URLLoader;
+import flash.net.URLRequest;
 
-import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor
-import org.openzoom.flash.events.NetworkRequestEvent
-import org.openzoom.flash.net.INetworkQueue
-import org.openzoom.flash.net.INetworkRequest
-import org.openzoom.flash.net.NetworkQueue
-import org.openzoom.flash.renderers.images.ImagePyramidRenderer
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.descriptors.deepzoom.DeepZoomImageDescriptor;
+import org.openzoom.flash.events.NetworkRequestEvent;
+import org.openzoom.flash.net.INetworkQueue;
+import org.openzoom.flash.net.INetworkRequest;
+import org.openzoom.flash.net.NetworkQueue;
+import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
+
+use namespace openzoom_internal;
 
 /**
  *  Dispatched when the image has successfully loaded.

@@ -45,6 +45,10 @@ import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
 
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
+
 /**
  * @inheritDoc
  */

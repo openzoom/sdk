@@ -39,16 +39,19 @@
 package org.openzoom.flash.renderers.images
 {
 
-import flash.display.Bitmap
-import flash.display.BitmapData
-import flash.events.EventDispatcher
-import flash.utils.Dictionary
-import flash.utils.getTimer
+import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.events.EventDispatcher;
+import flash.utils.Dictionary;
+import flash.utils.getTimer;
 
-import org.openzoom.flash.events.NetworkRequestEvent
-import org.openzoom.flash.net.INetworkQueue
-import org.openzoom.flash.net.INetworkRequest
-import org.openzoom.flash.utils.ICache
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.events.NetworkRequestEvent;
+import org.openzoom.flash.net.INetworkQueue;
+import org.openzoom.flash.net.INetworkRequest;
+import org.openzoom.flash.utils.ICache;
+
+use namespace openzoom_internal;
 
 [ExcludeClass]
 /**

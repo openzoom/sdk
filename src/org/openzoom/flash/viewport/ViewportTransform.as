@@ -39,8 +39,12 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.geom.Point
-import flash.geom.Rectangle
+import flash.geom.Point;
+import flash.geom.Rectangle;
+
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
 
 /**
  * The ViewportTransform stores the position and bounds of a viewport.

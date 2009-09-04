@@ -39,15 +39,18 @@
 package org.openzoom.flash.descriptors.deepzoom
 {
 
-import flash.geom.Point
-import flash.geom.Rectangle
+import flash.geom.Point;
+import flash.geom.Rectangle;
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor
-import org.openzoom.flash.descriptors.IImagePyramidLevel
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase
-import org.openzoom.flash.descriptors.ImagePyramidLevel
-import org.openzoom.flash.utils.MIMEUtil
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidLevel;
+import org.openzoom.flash.utils.MIMEUtil;
 import org.openzoom.flash.utils.math.clamp;
+
+use namespace openzoom_internal;
 
 /**
  * Descriptor for the

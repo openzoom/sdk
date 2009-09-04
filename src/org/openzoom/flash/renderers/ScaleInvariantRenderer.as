@@ -39,8 +39,11 @@
 package org.openzoom.flash.renderers
 {
 
-import org.openzoom.flash.events.RendererEvent
-import org.openzoom.flash.events.ViewportEvent
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.events.RendererEvent;
+import org.openzoom.flash.events.ViewportEvent;
+
+use namespace openzoom_internal;
 
 /**
  * Base class for all renderers that should preserve their size on a

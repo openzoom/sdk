@@ -45,10 +45,13 @@ import flash.events.SecurityErrorEvent;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
 
+import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
 import org.openzoom.flash.descriptors.ImagePyramidDescriptorFactory;
 import org.openzoom.flash.renderers.images.ImagePyramidRenderer;
 import org.openzoom.flash.utils.uri.resolveURI;
+
+use namespace openzoom_internal;
 
 /**
  *  Dispatched when the image has successfully loaded.

@@ -39,9 +39,12 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import caurina.transitions.Tweener
+import caurina.transitions.Tweener;
 
-import org.openzoom.flash.viewport.IViewportTransform
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.viewport.IViewportTransform;
+
+use namespace openzoom_internal;
 
 [ExcludeClass]
 /**

@@ -39,19 +39,22 @@
 package org.openzoom.flash.viewport.controllers
 {
 
-import flash.display.DisplayObjectContainer
-import flash.display.StageDisplayState
-import flash.errors.IllegalOperationError
-import flash.events.ContextMenuEvent
-import flash.events.Event
-import flash.events.FullScreenEvent
-import flash.geom.Point
-import flash.system.Capabilities
-import flash.ui.ContextMenu
-import flash.ui.ContextMenuItem
+import flash.display.DisplayObjectContainer;
+import flash.display.StageDisplayState;
+import flash.errors.IllegalOperationError;
+import flash.events.ContextMenuEvent;
+import flash.events.Event;
+import flash.events.FullScreenEvent;
+import flash.geom.Point;
+import flash.system.Capabilities;
+import flash.ui.ContextMenu;
+import flash.ui.ContextMenuItem;
 
-import org.openzoom.flash.utils.FullScreenUtil
-import org.openzoom.flash.viewport.IViewportController
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.utils.FullScreenUtil;
+import org.openzoom.flash.viewport.IViewportController;
+
+use namespace openzoom_internal;
 
 /**
  * Context menu controller for viewports.

@@ -39,9 +39,13 @@
 package org.openzoom.flash.utils
 {
 
-import flash.display.Stage
-import flash.display.StageDisplayState
-import flash.system.Capabilities
+import flash.display.Stage;
+import flash.display.StageDisplayState;
+import flash.system.Capabilities;
+
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
 
 /**
  * Helper for toggling fullscreen mode.

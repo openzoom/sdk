@@ -39,11 +39,13 @@
 package org.openzoom.flash.viewport.controllers
 {
 
-import flash.display.DisplayObject
-import flash.events.Event
+import flash.display.DisplayObject;
+import flash.events.Event;
 
-import org.openzoom.flash.viewport.INormalizedViewport
-import org.openzoom.flash.viewport.IViewportController
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.viewport.INormalizedViewport;
+
+use namespace openzoom_internal;
 
 /**
  * @private

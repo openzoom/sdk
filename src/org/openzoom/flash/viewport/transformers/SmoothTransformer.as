@@ -39,16 +39,18 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import flash.events.TimerEvent
-import flash.geom.Point
-import flash.utils.Timer
-import flash.utils.getTimer
+import flash.events.TimerEvent;
+import flash.geom.Point;
+import flash.utils.Timer;
+import flash.utils.getTimer;
 
-import org.openzoom.flash.events.ViewportEvent
-import org.openzoom.flash.utils.IDisposable
-import org.openzoom.flash.viewport.INormalizedViewport
-import org.openzoom.flash.viewport.IViewportTransform
-import org.openzoom.flash.viewport.IViewportTransformer
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.viewport.INormalizedViewport;
+import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.IViewportTransformer;
+
+use namespace openzoom_internal;
 
 /**
  * Viewport transformer based on the excellent research paper

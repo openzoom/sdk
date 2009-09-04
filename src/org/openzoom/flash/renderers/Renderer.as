@@ -38,11 +38,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.renderers
 {
-import flash.display.Sprite
+import flash.display.Sprite;
 
-import org.openzoom.flash.events.RendererEvent
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene
-import org.openzoom.flash.viewport.INormalizedViewport
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.events.RendererEvent;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+import org.openzoom.flash.viewport.INormalizedViewport;
+
+use namespace openzoom_internal;
 
 //------------------------------------------------------------------------------
 //

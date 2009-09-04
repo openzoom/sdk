@@ -39,6 +39,10 @@
 package org.openzoom.flash.utils
 {
 
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
+
 /**
  * Utility for working with file extensions and MIME types.
  */

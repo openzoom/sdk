@@ -39,8 +39,11 @@
 package org.openzoom.flash.viewport.transformers
 {
 
-import org.openzoom.flash.viewport.IViewportTransform
-import org.openzoom.flash.viewport.IViewportTransformer
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.viewport.IViewportTransform;
+import org.openzoom.flash.viewport.IViewportTransformer;
+
+use namespace openzoom_internal;
 
 /**
  * The NullTransformer transforms the given viewport without any kind of animation.

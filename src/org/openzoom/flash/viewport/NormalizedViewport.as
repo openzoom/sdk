@@ -39,14 +39,17 @@
 package org.openzoom.flash.viewport
 {
 
-import flash.events.Event
-import flash.events.EventDispatcher
-import flash.geom.Point
-import flash.geom.Rectangle
+import flash.events.Event;
+import flash.events.EventDispatcher;
+import flash.geom.Point;
+import flash.geom.Rectangle;
 
-import org.openzoom.flash.events.ViewportEvent
-import org.openzoom.flash.scene.IReadonlyMultiScaleScene
-import org.openzoom.flash.viewport.transformers.NullTransformer
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.events.ViewportEvent;
+import org.openzoom.flash.scene.IReadonlyMultiScaleScene;
+import org.openzoom.flash.viewport.transformers.NullTransformer;
+
+use namespace openzoom_internal;
 
 //------------------------------------------------------------------------------
 //

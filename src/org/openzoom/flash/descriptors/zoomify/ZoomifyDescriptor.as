@@ -39,13 +39,16 @@
 package org.openzoom.flash.descriptors.zoomify
 {
 
-import flash.geom.Point
+import flash.geom.Point;
 
-import org.openzoom.flash.descriptors.IImagePyramidDescriptor
-import org.openzoom.flash.descriptors.IImagePyramidLevel
-import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase
-import org.openzoom.flash.descriptors.ImagePyramidLevel
-import org.openzoom.flash.utils.math.clamp
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.descriptors.IImagePyramidDescriptor;
+import org.openzoom.flash.descriptors.IImagePyramidLevel;
+import org.openzoom.flash.descriptors.ImagePyramidDescriptorBase;
+import org.openzoom.flash.descriptors.ImagePyramidLevel;
+import org.openzoom.flash.utils.math.clamp;
+
+use namespace openzoom_internal;
 
 /**
  * Descriptor for the <a href="http://www.zoomify.com/">Zoomify</a>

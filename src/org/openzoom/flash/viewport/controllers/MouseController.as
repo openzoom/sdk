@@ -39,15 +39,18 @@
 package org.openzoom.flash.viewport.controllers
 {
 
-import flash.events.Event
-import flash.events.MouseEvent
-import flash.events.TimerEvent
-import flash.geom.Point
-import flash.geom.Rectangle
-import flash.utils.Timer
+import flash.events.Event;
+import flash.events.MouseEvent;
+import flash.events.TimerEvent;
+import flash.geom.Point;
+import flash.geom.Rectangle;
+import flash.utils.Timer;
 
-import org.openzoom.flash.utils.math.clamp
-import org.openzoom.flash.viewport.IViewportController
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.utils.math.clamp;
+import org.openzoom.flash.viewport.IViewportController;
+
+use namespace openzoom_internal;
 
 /**
  * Mouse controller for viewports.

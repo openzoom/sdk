@@ -45,7 +45,10 @@ import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.ProgressEvent;
 
+import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.events.NetworkRequestEvent;
+
+use namespace openzoom_internal;
 
 /**
  * @private

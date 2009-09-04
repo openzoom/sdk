@@ -39,11 +39,14 @@
 package org.openzoom.flash.descriptors.deepzoom
 {
 
-import flash.geom.Point
-import flash.geom.Rectangle
+import flash.geom.Point;
+import flash.geom.Rectangle;
 
-import org.openzoom.flash.utils.MIMEUtil
-import org.openzoom.flash.utils.MortonOrder
+import org.openzoom.flash.core.openzoom_internal;
+import org.openzoom.flash.utils.MIMEUtil;
+import org.openzoom.flash.utils.MortonOrder;
+
+use namespace openzoom_internal;
 
 /**
  * @private
