@@ -1,8 +1,12 @@
+- Fixed bug in MultiScaleImage component for both Flash and Flex where setting
+  the source property with the same value twice caused the image to disappear.
+  -- Thanks to Claudius for reporting this.
+
 Version 0.4.2.1 - September 4, 2009
 ===================================
 
   - Fixed bug "#1004: Namespace was not found or is not a compile-time constant"
-    which occurred in Flash CS3.
+    which occurred in Flash CS3. -- Thanks to Nigel for reporting this.
 
   - Fixed bug in MultiScaleImageBase::scale getter.
   

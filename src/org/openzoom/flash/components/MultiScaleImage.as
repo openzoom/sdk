@@ -140,13 +140,6 @@ public final class MultiScaleImage extends MultiScaleImageBase
 
     public function set source(value:Object):void
     {
-        if (_source)
-        {
-            _source = null
-            container.removeChildAt(0)
-            viewport.showAll(true)
-        }
-
         if (value is String)
         {
             if (String(value) === url)
@@ -168,6 +161,14 @@ public final class MultiScaleImage extends MultiScaleImageBase
             urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,
                                        urlLoader_securityErrorHandler,
                                        false, 0, true )
+        }
+        
+        if (_source)
+        {
+            _source = null
+
+            if (container.numChildren > 0)
+                container.removeChildAt(0)
         }
 
         if (value is IImagePyramidDescriptor)
@@ -213,6 +214,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
                             sceneHeight)
 
         container.addChild(image)
+        container.showAll(true)
         dispatchEvent(new Event(Event.COMPLETE))
     }
 
@@ -249,10 +251,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
                                   ImagePyramidDescriptorFactory.getInstance()
         var descriptor:IImagePyramidDescriptor = factory.getDescriptor(url, data)
 
-        _source = descriptor
-        addImage(descriptor)
-
-        viewport.showAll(true)
+        source = descriptor
     }
 
     /**
