@@ -112,7 +112,7 @@ public final class OpenStreetMapDescriptor extends ImagePyramidDescriptorBase
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
-        var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
+        var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
 
         return level
