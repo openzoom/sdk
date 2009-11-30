@@ -283,7 +283,7 @@ internal class ImagePyramidTile implements IDisposable,
 	
 	public function toString():String
 	{
-		return format("[Tile]: ({0}, {1}, {2}) alpha: {3}",
+		return format("[ImagePyramidTile]: ({0}, {1}, {2}) alpha: {3}",
 			level, column, row, alpha)
 	}
 }
