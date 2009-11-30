@@ -183,11 +183,10 @@ public final class ImagePyramidRenderer extends Renderer
         if (!descriptor)
            trace("[ImagePyramidRenderer] getTile: Source undefined")
 
+        var tile:ImagePyramidTile = tileCache[ImagePyramidTile.getHashCode(level, column, row)]
+
         if (!descriptor.existsTile(level, column, row))
             return null
-
-		var tileHash:String = getTileHash(level, column, row)
-        var tile:ImagePyramidTile = tileCache[tileHash]
 
         if (!tile)
         {
@@ -195,22 +194,11 @@ public final class ImagePyramidRenderer extends Renderer
             var bounds:Rectangle = descriptor.getTileBounds(level, column, row)
 
             tile = new ImagePyramidTile(level, column, row, url, bounds)
-            tileCache[tileHash] = tile
+            tileCache[tile.hashCode] = tile
         }
 
         return tile
     }
-	
-	//--------------------------------------------------------------------------
-	//
-	//  Methods: Hash
-	//
-	//--------------------------------------------------------------------------
-	
-	private function getTileHash(level:int, column:int, row:int):String
-	{
-		return [level, column, row].join("-")
-	}
 
     //--------------------------------------------------------------------------
     //

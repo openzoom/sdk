@@ -100,7 +100,7 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
         _type = DEFAULT_TYPE
         format = DEFAULT_TILE_FORMAT
 
-        _numLevels = getNumLevels(width, height, tileSize)
+        _numLevels = computeNumLevels(width, height, tileWidth, tileHeight)
         createLevels(width, height, tileSize, numLevels)
         tileCountUpToLevel = computeLevelTileCounts(numLevels)
     }
@@ -222,10 +222,19 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     /**
      * @private
      */
-    private function getNumLevels(width:uint, height:uint, tileSize:uint):uint
+    private function computeNumLevels(width:uint, height:uint,
+                                      tileWidth:uint, tileHeight:uint):uint
     {
-		// How many levels until image fits into a single tile
-		return Math.ceil(Math.log(Math.ceil(Math.max(width, height) / tileSize))/Math.LN2) + 1
+        var numLevels:uint = 1
+
+        while (width > tileWidth || height > tileHeight)
+        {
+            width = Math.ceil(width / 2)
+            height = Math.ceil(height / 2)
+            numLevels++
+        }
+
+        return numLevels
     }
 
     /**

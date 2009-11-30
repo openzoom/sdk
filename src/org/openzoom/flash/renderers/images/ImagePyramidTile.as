@@ -46,7 +46,6 @@ import flash.geom.Rectangle;
 import org.openzoom.flash.core.openzoom_internal;
 import org.openzoom.flash.utils.IComparable;
 import org.openzoom.flash.utils.IDisposable;
-import org.openzoom.flash.utils.string.format;
 
 use namespace openzoom_internal;
 
@@ -79,6 +78,8 @@ internal class ImagePyramidTile implements IDisposable,
         this.row = row
         this.url = url
         this.bounds = bounds
+
+        _hashCode = ImagePyramidTile.getHashCode(level, column, row)
     }
 
     //--------------------------------------------------------------------------
@@ -160,10 +161,10 @@ internal class ImagePyramidTile implements IDisposable,
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  blendStartTime
+    //  fadeStart
     //----------------------------------
 
-    public var blendStartTime:int = 0
+    public var fadeStart:int = 0
 
     //----------------------------------
     //  alpha
@@ -225,6 +226,30 @@ internal class ImagePyramidTile implements IDisposable,
 
     //--------------------------------------------------------------------------
     //
+    //  Properties: Hash
+    //
+    //--------------------------------------------------------------------------
+
+    private var _hashCode:int
+
+    public function get hashCode():int
+    {
+        return _hashCode
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Hash
+    //
+    //--------------------------------------------------------------------------
+
+    public static function getHashCode(level:int, column:int, row:int):int
+    {
+        return parseInt([level, column, row].join(""))
+    }
+
+    //--------------------------------------------------------------------------
+    //
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
@@ -236,7 +261,7 @@ internal class ImagePyramidTile implements IDisposable,
         loading = false
 
         alpha = 0
-		blendStartTime = 0
+        fadeStart = 0
     }
 
     //--------------------------------------------------------------------------
@@ -274,18 +299,6 @@ internal class ImagePyramidTile implements IDisposable,
 
         return 0
     }
-	
-	//--------------------------------------------------------------------------
-	//
-	//  Methods: Debug
-	//
-	//--------------------------------------------------------------------------
-	
-	public function toString():String
-	{
-		return format("[Tile]: ({0}, {1}, {2}) alpha: {3}",
-			level, column, row, alpha)
-	}
 }
 
 }
