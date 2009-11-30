@@ -80,11 +80,11 @@ public final class ImagePyramidRenderManager implements IDisposable
     //
     //--------------------------------------------------------------------------
 
-    private static const TILE_SHOW_DURATION:Number = 500 // milliseconds
+    private static const TILE_BLEND_DURATION:Number = 500 // milliseconds
 
-    private static const MAX_CACHE_SIZE:uint = 140
+    private static const MAX_CACHE_SIZE:uint = 150
 
-    private static const MAX_DOWNLOADS_STATIC:uint = 4
+    private static const MAX_DOWNLOADS_STATIC:uint = 6
     private static const MAX_DOWNLOADS_DYNAMIC:uint = 2
 
     //--------------------------------------------------------------------------
@@ -260,7 +260,8 @@ public final class ImagePyramidRenderManager implements IDisposable
             level = descriptor.getLevelAt(l)
 			
 			// FIXME Level blending
-			var	levelAlpha:Number = Math.min(1.0, (stageBounds.width / level.width - 0.5) * 2)
+			var	levelAlpha:Number = 1
+//			levelAlpha = Math.min(1.0, (stageBounds.width / level.width - 0.5) * 2)
 			
 			// Cache level dimensions
 			var levelWidth:Number = level.width
@@ -321,9 +322,9 @@ public final class ImagePyramidRenderManager implements IDisposable
 
                     tile.source.lastAccessTime = currentTime
 					
-                    var duration:Number = TILE_SHOW_DURATION
+                    var duration:Number = TILE_BLEND_DURATION
                     var currentAlpha:Number = (currentTime - tile.blendStartTime) / duration
-					var tileAlpha:Number = currentAlpha * levelAlpha
+					var tileAlpha:Number = currentAlpha
 					tile.alpha = Math.min(1, currentAlpha) * levelAlpha
 
                     if (tile.alpha < 1)
@@ -363,13 +364,10 @@ public final class ImagePyramidRenderManager implements IDisposable
             if (tile.alpha < 1)
             {
                 invalidateDisplayList()
-
                 textureMap = new BitmapData(tile.bitmapData.width,
                                             tile.bitmapData.height)
-
                 var alphaMultiplier:uint = (tile.alpha * 256) << 24
                 var alphaMap:BitmapData
-
                 alphaMap = new BitmapData(tile.bitmapData.width,
                                           tile.bitmapData.height,
                                           true,
@@ -382,7 +380,6 @@ public final class ImagePyramidRenderManager implements IDisposable
             }
             else
             {
-
                 textureMap = tile.bitmapData
             }
 

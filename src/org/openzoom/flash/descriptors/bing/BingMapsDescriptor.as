@@ -51,13 +51,13 @@ use namespace openzoom_internal;
 /**
  * <a href="http://www.microsoft.com/virtualearth/">Microsoft Bing Maps</a> descriptor.
  * For educational purposes only. Please respect the owner's copyright.
- * 
+ *
  * @see http://msdn.microsoft.com/en-us/library/bb259689.aspx
  */
 public final class BingMapsDescriptor extends ImagePyramidDescriptorBase
                                       implements IImagePyramidDescriptor
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -65,12 +65,18 @@ public final class BingMapsDescriptor extends ImagePyramidDescriptorBase
     //
     //--------------------------------------------------------------------------
 
+    public static const ROAD:String = "r"
+    public static const AERIAL:String = "h"
+
     private static const DEFAULT_MAP_SIZE:uint = 67108864 //2147483648
     private static const DEFAULT_NUM_LEVELS:uint = 18 //23
     private static const DEFAULT_TILE_SIZE:uint = 256
     private static const DEFAULT_TILE_FORMAT:String = "image/jpeg"
     private static const DEFAULT_TILE_OVERLAP:uint = 0
-    private static const DEFAULT_BASE_LEVEL:uint = 9
+    private static const DEFAULT_BASE_LEVEL:int = 9
+
+    private static const NUM_TILE_SERVERS:int = 8
+    private static const LATEST_VERSION:int = 373
 
     //--------------------------------------------------------------------------
     //
@@ -81,8 +87,10 @@ public final class BingMapsDescriptor extends ImagePyramidDescriptorBase
     /**
      * Constructor.
      */
-    public function BingMapsDescriptor()
+    public function BingMapsDescriptor(style:String=AERIAL)
     {
+        this.style = style
+
         _width = _height = DEFAULT_MAP_SIZE
         _tileWidth = _tileHeight = DEFAULT_TILE_SIZE
         _type = DEFAULT_TILE_FORMAT
@@ -96,11 +104,18 @@ public final class BingMapsDescriptor extends ImagePyramidDescriptorBase
             var rows:uint = Math.ceil(size / tileHeight)
             var level:IImagePyramidLevel =
                     new ImagePyramidLevel(this, i, size, size, columns, rows)
-
             addLevel(level)
         }
     }
 
+    //--------------------------------------------------------------------------
+    //
+    //  Variables
+    //
+    //--------------------------------------------------------------------------
+
+    private static var tileServer:uint = 0
+    private var style:String
 
     //--------------------------------------------------------------------------
     //
@@ -116,7 +131,9 @@ public final class BingMapsDescriptor extends ImagePyramidDescriptorBase
         var longestSide:Number = Math.max(width, height)
         var log2:Number = Math.log(longestSide) / Math.LN2
         var maxLevel:uint = numLevels - 1
-        var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL + 1, 0, maxLevel)
+
+        // TODO Increase level for spatial blending
+        var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
 
         return level
@@ -127,8 +144,15 @@ public final class BingMapsDescriptor extends ImagePyramidDescriptorBase
      */
     public function getTileURL(level:int, column:int, row:int):String
     {
-        var baseURL:String = "http://ecn.t2.tiles.virtualearth.net/tiles/h"
-        var extension:String = ".jpeg?g=282&mkt=en-us"
+        var server:int = (++tileServer) % NUM_TILE_SERVERS
+        var baseURL:String = "http://ecn.t" + server + ".tiles.virtualearth.net/tiles/" + style
+
+        var extension:String
+        if (style == AERIAL)
+            extension = ".jpeg?g=" + LATEST_VERSION + "&mkt=en-us"
+        else
+            extension = ".png?g=" + LATEST_VERSION + "&mkt=en-us&shading=hill"
+
         var tileURL:String = [baseURL, getQuadKey(level, column, row), extension].join("")
 
         return tileURL
@@ -153,7 +177,7 @@ public final class BingMapsDescriptor extends ImagePyramidDescriptorBase
      */
     override public function toString():String
     {
-        return "[VirtualEarthDescriptor]" + "\n" + super.toString()
+        return "[BingMapsDescriptor]" + "\n" + super.toString()
     }
 
     //--------------------------------------------------------------------------

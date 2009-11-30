@@ -114,8 +114,8 @@ public class IIPImageDescriptor extends ImagePyramidDescriptorBase
         // Resolution-number:5
         // Colorspace,0-4,0:0 0 3 3 0 1 2
 
-//		var sizeRegex:RegExp = /max-size: (d+) (d+)/
-//      var width:uint = 
+//      var sizeRegex:RegExp = /max-size: (d+) (d+)/
+//      var width:uint =
 //      var height:uint = ...
 //      var tileWidth:uint = ...
 //      var tileHeight:uint = ...
@@ -128,30 +128,6 @@ public class IIPImageDescriptor extends ImagePyramidDescriptorBase
         // TODO
         throw new IllegalOperationError("Not implemented.")
     }
-
-    //--------------------------------------------------------------------------
-    //
-    //  Variables
-    //
-    //--------------------------------------------------------------------------
-
-//    //--------------------------------------------------------------------------
-//    //
-//    //  Properties: Internet Imaging Protocol
-//    //
-//    //--------------------------------------------------------------------------
-//
-//    //----------------------------------
-//    //  resolutionNumber
-//    //----------------------------------
-//
-//    /**
-//     * TODO
-//     */
-//    public function get resolutionNumber():uint
-//    {
-//        return _resolutionNumber
-//    }
 
     //--------------------------------------------------------------------------
     //
@@ -175,8 +151,7 @@ public class IIPImageDescriptor extends ImagePyramidDescriptorBase
      */
     public function getLevelForSize(width:Number, height:Number):IImagePyramidLevel
     {
-        var longestSide:Number = Math.max(width, height)
-        var log2:Number = (Math.log(longestSide) - Math.log(tileWidth)) / Math.LN2
+        var log2:Number = Math.log(Math.max(width / tileWidth, height / tileHeight)) / Math.LN2
         var maxLevel:uint = numLevels - 1
         var index:int = clamp(Math.ceil(log2) + 1, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
@@ -184,9 +159,6 @@ public class IIPImageDescriptor extends ImagePyramidDescriptorBase
         // FIXME
         if (width / level.width < 0.5)
             level = getLevelAt(Math.max(0, index - 1))
-
-        if (width / level.width < 0.5)
-            trace("[IIPImageDescriptor] getLevelForSize():", width / level.width)
 
         return level
     }

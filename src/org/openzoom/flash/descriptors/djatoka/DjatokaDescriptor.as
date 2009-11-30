@@ -232,6 +232,20 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
                                      type,
                                      dwtLevels)
     }
+	
+	//--------------------------------------------------------------------------
+	//
+	//  Methods: Debug
+	//
+	//--------------------------------------------------------------------------
+	
+	/**
+	 * @inheritDoc
+	 */
+	override public function toString():String
+	{
+		return "[DjatokaDescriptor]" + "\n" + super.toString()
+	}
 
     //--------------------------------------------------------------------------
     //
