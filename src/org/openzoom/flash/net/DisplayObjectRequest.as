@@ -155,8 +155,9 @@ internal final class DisplayObjectRequest extends EventDispatcher
      */
     private function request_completeHandler(event:Event):void
     {
-        var displayObject:DisplayObject = loader.content as DisplayObject
-
+		// TODO Add error handling
+    	var displayObject:DisplayObject = loader.content as DisplayObject
+		
         disposeLoader()
 
         var requestEvent:NetworkRequestEvent =
