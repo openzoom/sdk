@@ -57,7 +57,7 @@ use namespace openzoom_internal;
 public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
                                implements IImagePyramidDescriptor
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -224,8 +224,8 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
      */
     private function getNumLevels(width:uint, height:uint, tileSize:uint):uint
     {
-		// How many levels until image fits into a single tile
-		return Math.ceil(Math.log(Math.ceil(Math.max(width, height) / tileSize))/Math.LN2) + 1
+        // How many levels until image fits into a single tile
+        return Math.ceil(Math.log(Math.ceil(Math.max(width, height) / tileSize))/Math.LN2) + 1
     }
 
     /**
@@ -301,8 +301,13 @@ public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
     {
         var size:Point = new Point()
         var scale:Number = getScale(level)
-        size.x = Math.ceil(width * scale)
-        size.y = Math.ceil(height * scale)
+        // Verified that Zoomify levels (tiers) logic uses
+        // divide by two (2) followed by floor both with
+        // official Zoomify Express converter as well as
+        // the open source ZoomifyImage project which
+        // uses Python integer division.
+        size.x = Math.floor(width * scale)
+        size.y = Math.floor(height * scale)
 
         return size
     }
