@@ -5,16 +5,16 @@
   \____/ .__/\__/_//_/___/\___/\___/_/_/_/
       /_/
 
-  Open Source Framework For Multiscale Images and Zoomable User Interfaces (ZUIs)
+  Open Source Toolkit For Multiscale Images and Zoomable User Interfaces (ZUIs)
 
   ----------------------------------------------------------------------------
   
-  Copyright (c) 2007-2009, Daniel Gasienica <daniel@gasienica.ch>
+  Copyright (c) 2007-2010, Daniel Gasienica <daniel@gasienica.ch>
   All rights reserved.
 
   Home: <http://openzoom.org/>
   Twitter: <http://twitter.com/OpenZoom>
-  Code: <http://github.com/openzoom>
+  Code: <http://openzoom.org/go/code>
 
   ----------------------------------------------------------------------------
   

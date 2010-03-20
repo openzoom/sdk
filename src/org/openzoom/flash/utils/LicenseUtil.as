@@ -76,15 +76,13 @@ package org.openzoom.flash.utils
                     interactiveObject.contextMenu.hideBuiltInItems()
             }
 
-            var item:ContextMenuItem = new ContextMenuItem("About OpenZoom...",
-				                                           true)
+            var item:ContextMenuItem = new ContextMenuItem("About OpenZoom...", true)
 
             item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
                 function(event:ContextMenuEvent):void
                 {
                     if (event.target == item)
-                        navigateToURL(new URLRequest("http://openzoom.org"),
-							                         "_blank")
+                        navigateToURL(new URLRequest("http://openzoom.org"), "_blank")
                 }
             )
 

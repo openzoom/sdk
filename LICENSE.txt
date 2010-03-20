@@ -12,7 +12,7 @@
   The OpenZoom SDK project and examples are released under the
   MPL 1.1/GPL 3/LGPL 3 trilicense except where otherwise noted.
   Please read the accompanied licensing terms and consult with
-  a lawyer in case you have any questions.
+  a lawyer in case you have any questions:
 
   MPL 1.1: LICENSE-MPL.txt
   GPL 3:   LICENSE-GPL.txt
@@ -21,7 +21,18 @@
   Should none of the available licenses be compatible with your
   project or product please get in touch with me <daniel@gasienica.ch>
   in order to figure out a licensing scheme that suits your needs.
-
+  
+  Attribution
+  -----------
+  
+  It is required that you add a context menu item to your product
+  with the caption
+  
+    About OpenZoom...
+    
+  that links back to http://openzoom.org. For this purpose, you
+  can use the accompanied LicenseUtil class which resides in the
+  org.openzoom.flash.utils package.
 
 
   Third-party components

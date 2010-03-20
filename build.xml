@@ -18,7 +18,7 @@
 //  The Original Code is the OpenZoom SDK.
 //
 //  The Initial Developer of the Original Code is Daniel Gasienica.
-//  Portions created by the Initial Developer are Copyright (c) 2007-2009
+//  Portions created by the Initial Developer are Copyright (c) 2007-2010
 //  the Initial Developer. All Rights Reserved.
 //
 //  Contributor(s):
@@ -44,7 +44,7 @@
     <property file="${OPENZOOM_HOME}/local.properties"/>
     <property file="${OPENZOOM_HOME}/build.properties"/>
 	
-    <property name="openzoom.version" value="0.4.2"/>
+    <property name="openzoom.version" value="0.4.3"/>
     <property name="openzoom.lib" location="${OPENZOOM_HOME}/lib"/>
     <property name="openzoom.src" location="${OPENZOOM_HOME}/src" />
     <property name="openzoom.doc" location="${OPENZOOM_HOME}/resources/docs" />
