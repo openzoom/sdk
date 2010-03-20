@@ -17,7 +17,7 @@
 //  The Original Code is the OpenZoom SDK.
 //
 //  The Initial Developer of the Original Code is Daniel Gasienica.
-//  Portions created by the Initial Developer are Copyright (c) 2007-2009
+//  Portions created by the Initial Developer are Copyright (c) 2007-2010
 //  the Initial Developer. All Rights Reserved.
 //
 //  Contributor(s):
@@ -133,7 +133,7 @@ public final class BingMapsDescriptor extends ImagePyramidDescriptorBase
         var maxLevel:uint = numLevels - 1
 
         // TODO Increase level for spatial blending
-        var index:uint = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
+        var index:uint = clamp(Math.ceil(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)
         var level:IImagePyramidLevel = getLevelAt(index)
 
         return level

@@ -17,7 +17,7 @@
 //  The Original Code is the OpenZoom SDK.
 //
 //  The Initial Developer of the Original Code is Daniel Gasienica.
-//  Portions created by the Initial Developer are Copyright (c) 2007-2009
+//  Portions created by the Initial Developer are Copyright (c) 2007-2010
 //  the Initial Developer. All Rights Reserved.
 //
 //  Contributor(s):
@@ -309,7 +309,7 @@ internal class MultiScaleImageBase extends UIComponent
      * @private
      */
     override protected function updateDisplayList(unscaledWidth:Number,
-                                                   unscaledHeight:Number):void
+                                                  unscaledHeight:Number):void
     {
         container.setActualSize(unscaledWidth, unscaledHeight)
     }
@@ -345,9 +345,9 @@ internal class MultiScaleImageBase extends UIComponent
             constraintChanged = false
         }
 
-        if (zoomChanged || scaleChanged
-            || viewportXChanged || viewportYChanged
-            || viewportWidthChanged || viewportHeightChanged)
+        if (zoomChanged || scaleChanged ||
+			viewportXChanged || viewportYChanged ||
+			viewportWidthChanged || viewportHeightChanged)
         {
             if (zoomChanged)
             {

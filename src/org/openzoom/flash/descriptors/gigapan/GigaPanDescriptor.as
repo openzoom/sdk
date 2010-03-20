@@ -17,7 +17,7 @@
 //  The Original Code is the OpenZoom SDK.
 //
 //  The Initial Developer of the Original Code is Daniel Gasienica.
-//  Portions created by the Initial Developer are Copyright (c) 2007-2009
+//  Portions created by the Initial Developer are Copyright (c) 2007-2010
 //  the Initial Developer. All Rights Reserved.
 //
 //  Contributor(s):
@@ -129,6 +129,8 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
      */
     public function getTileURL(level:int, column:int, row:int):String
     {
+		trace("[GigaPanDescriptor] getTileURL")
+		
         var url:String = source
         var name:String = "r"
         var z:int = level
@@ -150,6 +152,9 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
         }
 
         var tileURL:String = [url, "/", name, extension].join("")
+		
+		trace(tileURL)
+		
         return tileURL
     }
 

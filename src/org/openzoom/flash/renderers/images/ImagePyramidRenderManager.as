@@ -17,7 +17,7 @@
 //  The Original Code is the OpenZoom SDK.
 //
 //  The Initial Developer of the Original Code is Daniel Gasienica.
-//  Portions created by the Initial Developer are Copyright (c) 2007-2009
+//  Portions created by the Initial Developer are Copyright (c) 2007-2010
 //  the Initial Developer. All Rights Reserved.
 //
 //  Contributor(s):
@@ -82,10 +82,13 @@ public final class ImagePyramidRenderManager implements IDisposable
 
     private static const TILE_BLEND_DURATION:Number = 500 // milliseconds
 
-    private static const MAX_CACHE_SIZE:uint = 150
+    private static const MAX_CACHE_SIZE:uint = 180
 
-    private static const MAX_DOWNLOADS_STATIC:uint = 6
+    private static const MAX_DOWNLOADS_STATIC:uint = 4
     private static const MAX_DOWNLOADS_DYNAMIC:uint = 2
+		
+	// Experimental
+    private static const LEVEL_BLENDING_ENABLED:Boolean = false
 
     //--------------------------------------------------------------------------
     //
@@ -235,12 +238,17 @@ public final class ImagePyramidRenderManager implements IDisposable
         localBounds.width /= sceneBoundsWidth
         localBounds.height /= sceneBoundsHeight
 
+		// Determine stage bounds
+        var stageBounds:Rectangle = renderer.getBounds(renderer.stage)		
+		var stageBoundsWidth:Number = stageBounds.width
+		var stageBoundsHeight:Number = stageBounds.height
+        
         // Determine optimal level
-        var stageBounds:Rectangle = renderer.getBounds(renderer.stage)
-        var optimalLevel:IImagePyramidLevel = descriptor.getLevelForSize(stageBounds.width,
-                                                                         stageBounds.height)
+		var optimalLevel:IImagePyramidLevel =
+				descriptor.getLevelForSize(stageBoundsWidth,
+										   stageBoundsHeight)
 			
-        // Render image pyramid from bottom up
+        // Render image pyramid from bottom up (painter's algorithm)
         var currentTime:int = getTimer()
 
         var toLevel:int
@@ -259,13 +267,15 @@ public final class ImagePyramidRenderManager implements IDisposable
             var done:Boolean = true
             level = descriptor.getLevelAt(l)
 			
-			// FIXME Level blending
-			var	levelAlpha:Number = 1
-//			levelAlpha = Math.min(1.0, (stageBounds.width / level.width - 0.5) * 2)
-			
 			// Cache level dimensions
 			var levelWidth:Number = level.width
 			var levelHeight:Number = level.height
+				
+			// FIXME Level blending
+			var	levelAlpha:Number = 1
+				
+			if (LEVEL_BLENDING_ENABLED)
+				levelAlpha = Math.min(1.0, (stageBoundsWidth / levelWidth - 0.5) * 2)
 				
             // Load or draw visible tiles
             var fromPoint:Point = new Point(localBounds.left * levelWidth,
@@ -328,8 +338,8 @@ public final class ImagePyramidRenderManager implements IDisposable
 					tile.alpha = Math.min(1, currentAlpha) * levelAlpha
 
                     if (tile.alpha < 1)
-                        done = false
-
+                        done = false						
+							
                     renderingQueue.push(tile)
                }
             }
@@ -417,7 +427,7 @@ public final class ImagePyramidRenderManager implements IDisposable
             g.beginBitmapFill(textureMap,
                               matrix,
                               false, /* repeat */
-                              true /* smoothing */)
+                              true   /* smoothing */)
             g.drawRect(tile.bounds.x * sx,
                        tile.bounds.y * sy,
                        tile.bounds.width * sx,
@@ -488,7 +498,7 @@ public final class ImagePyramidRenderManager implements IDisposable
                                     "Renderer already added.")
 
         if (renderers.length == 0)
-            owner.addEventListener(Event.ENTER_FRAME,
+            owner.addEventListener(Event.ENTER_FRAME /* "exitFrame" */,
                                    enterFrameHandler,
                                    false, 0, true)
 
@@ -511,7 +521,7 @@ public final class ImagePyramidRenderManager implements IDisposable
         renderers.splice(index, 1)
 
         if (renderers.length == 0)
-            owner.removeEventListener(Event.ENTER_FRAME,
+            owner.removeEventListener(Event.ENTER_FRAME /* "exitFrame" */,
                                       enterFrameHandler)
 
         return renderer
@@ -527,7 +537,7 @@ public final class ImagePyramidRenderManager implements IDisposable
     public function dispose():void
     {
         // Remove render loop
-        owner.removeEventListener(Event.ENTER_FRAME,
+        owner.removeEventListener(Event.ENTER_FRAME /* "exitFrame" */,
                                   enterFrameHandler)
 
         owner = null
