@@ -274,8 +274,8 @@ public final class ImagePyramidRenderManager implements IDisposable
 			// FIXME Level blending
 			var	levelAlpha:Number = 1
 				
-			if (LEVEL_BLENDING_ENABLED)
-				levelAlpha = Math.min(1.0, (stageBoundsWidth / levelWidth - 0.5) * 2)
+//			if (LEVEL_BLENDING_ENABLED)
+//				levelAlpha = Math.min(1.0, (stageBoundsWidth / levelWidth - 0.5) * 2)
 				
             // Load or draw visible tiles
             var fromPoint:Point = new Point(localBounds.left * levelWidth,

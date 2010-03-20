@@ -1,4 +1,7 @@
 
+OpenZoom SDK Change Log
+=======================
+
 Version 0.4.3 - March 20, 2010
 ==============================
 
@@ -6,7 +9,17 @@ Version 0.4.3 - March 20, 2010
     links to http://openzoom.org as required by the licensing terms of the
     OpenZoom SDK.
 
+  - Added descriptor (org.openzoom.flash.descriptors.iip.IIPImageDescriptor)
+    for IIP image server (http://iipimage.sourceforge.net).
+
   - Fixed ImagePyramidRenderer hashing function.
+  
+  - Added option to choose rendering style in BingMapsDescriptor (aerial, road).
+  
+  - Renamed VirtualEarthDescriptor to BingMapsDescriptor.
+  
+  - Added string formatting util (org.openzoom.flash.utils.string.format)
+    similar to the one found in .NET.
 
   - Fixed bug in MultiScaleImage component for both Flash and Flex where setting
     the source property with the same value twice caused the image to disappear.
