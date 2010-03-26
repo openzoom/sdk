@@ -1,6 +1,7 @@
 # .gitignore
 .DS_Store
 local.properties
+.settings
 bin-debug
 bin-release
 bin
