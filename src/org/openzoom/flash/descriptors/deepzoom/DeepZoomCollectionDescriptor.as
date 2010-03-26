@@ -253,8 +253,9 @@ public final class DeepZoomCollectionDescriptor
 
 }
 
-import flash.geom.Rectangle
-import org.openzoom.flash.utils.uri.resolveURI
+import flash.geom.Rectangle;
+
+import org.openzoom.flash.utils.uri.resolveURI;
 
 //------------------------------------------------------------------------------
 //

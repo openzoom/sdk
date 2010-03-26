@@ -38,55 +38,56 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.utils
 {
-    import flash.display.InteractiveObject;
-    import flash.events.ContextMenuEvent;
-    import flash.net.URLRequest;
-    import flash.net.navigateToURL;
-    import flash.ui.ContextMenu;
-    import flash.ui.ContextMenuItem;
+import flash.display.InteractiveObject;
+import flash.events.ContextMenuEvent;
+import flash.net.URLRequest;
+import flash.net.navigateToURL;
+import flash.ui.ContextMenu;
+import flash.ui.ContextMenuItem;
+
+import org.openzoom.flash.core.openzoom_internal;
+
+use namespace openzoom_internal;
+
+/**
+ * Utility for adding attribution to products built on OpenZoom SDK.
+ */
+public final class LicenseUtil
+{
+    include "../core/Version.as"
     
-    import org.openzoom.flash.core.openzoom_internal;
-
-    use namespace openzoom_internal;
-
+    //--------------------------------------------------------------------------
+    //
+    //  Class methods
+    //
+    //--------------------------------------------------------------------------
     /**
-     * Utility for adding attribution to products built on OpenZoom SDK.
+     *  Adds a "About OpenZoom..." context menu item
+     *  to the context menu of the given object.
+     *  Creates a context menu if none exists.
      */
-    public final class LicenseUtil
+    public static function addAboutMenuItem(interactiveObject:InteractiveObject,
+                                            hideBuiltInItems:Boolean=true):void
     {
-        include "../core/Version.as"
-
-        //--------------------------------------------------------------------------
-        //
-        //  Class methods
-        //
-        //--------------------------------------------------------------------------
-        /**
-         *  Adds a "About OpenZoom..." context menu item
-         *  to the context menu of the given object.
-         *  Creates a context menu if none exists.
-         */
-        public static function addAboutMenuItem(interactiveObject:InteractiveObject,
-                                                hideBuiltInItems:Boolean=true):void
+        if (interactiveObject.contextMenu == null)
         {
-            if (interactiveObject.contextMenu == null)
-            {
-                interactiveObject.contextMenu = new ContextMenu()
-                if (hideBuiltInItems)
-                    interactiveObject.contextMenu.hideBuiltInItems()
-            }
-
-            var item:ContextMenuItem = new ContextMenuItem("About OpenZoom...", true)
-
-            item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
-                function(event:ContextMenuEvent):void
-                {
-                    if (event.target == item)
-                        navigateToURL(new URLRequest("http://openzoom.org"), "_blank")
-                }
-            )
-
-            interactiveObject.contextMenu.customItems.push(item)
+            interactiveObject.contextMenu = new ContextMenu()
+            if (hideBuiltInItems)
+                interactiveObject.contextMenu.hideBuiltInItems()
         }
+        
+        var item:ContextMenuItem = new ContextMenuItem("About OpenZoom...", true)
+        
+        item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
+            function(event:ContextMenuEvent):void
+            {
+                if (event.target == item)
+                    navigateToURL(new URLRequest("http://openzoom.org"), "_blank")
+            }
+        )
+        
+        interactiveObject.contextMenu.customItems.push(item)
     }
+}
+
 }

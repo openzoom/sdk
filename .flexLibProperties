@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="false" version="3">
   <includeClasses>
     <classEntry path="org.openzoom.flash.components.IMultiScaleContainer"/>
@@ -60,6 +60,7 @@
     <classEntry path="org.openzoom.flash.utils.ICacheItem"/>
     <classEntry path="org.openzoom.flash.utils.IComparable"/>
     <classEntry path="org.openzoom.flash.utils.IDisposable"/>
+    <classEntry path="org.openzoom.flash.utils.LicenseUtil"/>
     <classEntry path="org.openzoom.flash.utils.MIMEUtil"/>
     <classEntry path="org.openzoom.flash.utils.MortonOrder"/>
     <classEntry path="org.openzoom.flash.utils.math.clamp"/>
