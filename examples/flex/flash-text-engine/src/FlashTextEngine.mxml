@@ -13,7 +13,7 @@
     xmlns:constraints="org.openzoom.flash.viewport.constraints.*"
     xmlns:controllers="org.openzoom.flash.viewport.controllers.*"
     xmlns:transformers="org.openzoom.flash.viewport.transformers.*"
-    backgroundGradientColors="[0xFFFFFF, 0xFFFFFF]"
+    backgroundColor="#FFFFFF"
     frameRate="60"
     layout="absolute"
     applicationComplete="applicationCompleteHandler(event)"

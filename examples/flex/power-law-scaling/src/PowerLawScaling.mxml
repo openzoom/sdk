@@ -19,18 +19,16 @@
     >
     <mx:Script>
         <![CDATA[
-
             import mx.events.FlexEvent;
-
-            import org.openzoom.examples.powerLawScaling.renderers.SimplePinRenderer;
+            
             import org.openzoom.examples.powerLawScaling.renderers.AdvancedPinRenderer;
-
-            import org.openzoom.flash.renderers.Renderer;
+            import org.openzoom.examples.powerLawScaling.renderers.SimplePinRenderer;
             import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
-            import org.openzoom.flash.descriptors.virtualearth.VirtualEarthDescriptor;
+            import org.openzoom.flash.descriptors.bing.BingMapsDescriptor;
+            import org.openzoom.flash.renderers.Renderer;
 
             [Bindable]
-            private var mapDescriptor:IMultiScaleImageDescriptor = new VirtualEarthDescriptor()
+            private var mapDescriptor:IMultiScaleImageDescriptor = new BingMapsDescriptor()
 
             private var home:Point = new Point(0.5234956109333568, 0.35019891395599395)
             private var dc:Point = new Point(0.2855689, 0.3823879)

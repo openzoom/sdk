@@ -60,27 +60,27 @@ use namespace openzoom_internal;
 /**
  * @inheritDoc
  */
-[Event(name="resize", type="org.openzoom.events.ViewportEvent")]
+[Event(name="resize", type="org.openzoom.flash.events.ViewportEvent")]
 
 /**
  * @inheritDoc
  */
-[Event(name="transformStart", type="org.openzoom.events.ViewportEvent")]
+[Event(name="transformStart", type="org.openzoom.flash.events.ViewportEvent")]
 
 /**
  * @inheritDoc
  */
-[Event(name="transformUpdate", type="org.openzoom.events.ViewportEvent")]
+[Event(name="transformUpdate", type="org.openzoom.flash.events.ViewportEvent")]
 
 /**
  * @inheritDoc
  */
-[Event(name="transformEnd", type="org.openzoom.events.ViewportEvent")]
+[Event(name="transformEnd", type="org.openzoom.flash.events.ViewportEvent")]
 
 /**
  * @inheritDoc
  */
-[Event(name="targetUpdate", type="org.openzoom.events.ViewportEvent")]
+[Event(name="targetUpdate", type="org.openzoom.flash.events.ViewportEvent")]
 
 
 /**
@@ -98,7 +98,7 @@ public final class NormalizedViewport extends EventDispatcher
     //
     //--------------------------------------------------------------------------
 
-    private static const NULL_TRANSFORMER:IViewportTransformer = new NullTransformer()
+    private const NULL_TRANSFORMER:IViewportTransformer = new NullTransformer()
 
     //--------------------------------------------------------------------------
     //
