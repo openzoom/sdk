@@ -47,6 +47,8 @@ import flash.events.Event;
 import flash.geom.Matrix;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+import flash.system.Capabilities;
+import flash.system.System;
 import flash.utils.getTimer;
 
 import org.openzoom.flash.core.openzoom_internal;
@@ -90,6 +92,10 @@ public final class ImagePyramidRenderManager implements IDisposable
 	// Experimental
     private static const LEVEL_BLENDING_ENABLED:Boolean = false
 
+    private static const PRE_FLASH_10_FRAME_EVENT_NAME:String = "enterFrame"
+    private static const POST_FLASH_10_FRAME_EVENT_NAME:String = "exitFrame"
+    private var frameEventName:String = PRE_FLASH_10_FRAME_EVENT_NAME
+
     //--------------------------------------------------------------------------
     //
     //  Constructor
@@ -104,6 +110,11 @@ public final class ImagePyramidRenderManager implements IDisposable
                                               viewport:INormalizedViewport,
                                               loader:INetworkQueue)
     {
+        // FIXME
+//        var playerMajorVersion:int = parseInt(Capabilities.version.split(" ")[1].toString().split(",")[0])
+//        if (playerMajorVersion >= 10)
+//            frameEventName = POST_FLASH_10_FRAME_EVENT_NAME
+        
         this.owner = owner
         this.scene = scene
         this.viewport = viewport
@@ -171,8 +182,13 @@ public final class ImagePyramidRenderManager implements IDisposable
         {
             invalidateDisplayListFlag = false
 
-            for each (var renderer:ImagePyramidRenderer in renderers)
-                updateDisplayList(renderer)
+            // FIXME Test performance
+            var length:int = renderers.length
+            for (var i:int = 0; i < length; i++)
+                updateDisplayList(renderers[i])                
+
+//            for each (var renderer:ImagePyramidRenderer in renderers)
+//                updateDisplayList(renderer)
         }
     }
 
@@ -447,7 +463,7 @@ public final class ImagePyramidRenderManager implements IDisposable
     /**
      * @private
      */
-    private function enterFrameHandler(event:Event):void
+    private function frameHandler(event:Event):void
     {
         // Rendering loop
         validateDisplayList()
@@ -498,8 +514,8 @@ public final class ImagePyramidRenderManager implements IDisposable
                                     "Renderer already added.")
 
         if (renderers.length == 0)
-            owner.addEventListener(Event.ENTER_FRAME /* "exitFrame" */,
-                                   enterFrameHandler,
+            owner.addEventListener(frameEventName,
+                                   frameHandler,
                                    false, 0, true)
 
         renderers.push(renderer)
@@ -521,8 +537,8 @@ public final class ImagePyramidRenderManager implements IDisposable
         renderers.splice(index, 1)
 
         if (renderers.length == 0)
-            owner.removeEventListener(Event.ENTER_FRAME /* "exitFrame" */,
-                                      enterFrameHandler)
+            owner.removeEventListener(frameEventName,
+                                      frameHandler)
 
         return renderer
     }
@@ -537,8 +553,8 @@ public final class ImagePyramidRenderManager implements IDisposable
     public function dispose():void
     {
         // Remove render loop
-        owner.removeEventListener(Event.ENTER_FRAME /* "exitFrame" */,
-                                  enterFrameHandler)
+        owner.removeEventListener(frameEventName,
+                                  frameHandler)
 
         owner = null
         scene = null

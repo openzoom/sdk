@@ -54,8 +54,8 @@ use namespace openzoom_internal;
  * Descriptor for the <a href="http://www.zoomify.com/">Zoomify</a>
  * multiscale image format.
  */
-public class ZoomifyDescriptor extends ImagePyramidDescriptorBase
-                               implements IImagePyramidDescriptor
+public final class ZoomifyDescriptor extends ImagePyramidDescriptorBase
+                                     implements IImagePyramidDescriptor
 {
     include "../../core/Version.as"
 

@@ -73,8 +73,7 @@ use namespace openzoom_internal;
  * Generic container for multiscale content.
  */
 public final class MultiScaleContainer extends UIComponent
-                                        implements /*IMultiScaleContainer,*/
-                                                   ILoaderClient
+                                       implements ILoaderClient
 {
 	include "../../flash/core/Version.as"
 

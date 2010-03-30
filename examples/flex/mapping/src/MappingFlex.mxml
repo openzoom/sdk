@@ -21,15 +21,13 @@
     <mx:Script>
         <![CDATA[
 
-            import mx.events.FlexEvent
-
-            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor
+            import mx.events.FlexEvent;
+            
+            import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
             import org.openzoom.flash.descriptors.openstreetmap.OpenStreetMapDescriptor;
-            import org.openzoom.flash.events.ViewportEvent
-            import org.openzoom.flash.utils.ExternalMouseWheel
-            import org.openzoom.flash.utils.math.clamp;
+            import org.openzoom.flash.utils.ExternalMouseWheel;
             import org.openzoom.flash.viewport.IViewportTransform;
-            import org.openzoom.flash.viewport.constraints.MapConstraint
+            import org.openzoom.flash.viewport.constraints.MapConstraint;
             import org.openzoom.flash.viewport.transformers.SmoothTransformer;
 
             private var transformer:SmoothTransformer
@@ -50,6 +48,7 @@
                 // Enable mouse wheel support on Mac OS
                 ExternalMouseWheel.initialize(stage)
                 transformer = SmoothTransformer.getInstance(map.viewport)
+                transformer.speed = 2
             }
 
             private function show(x:Number, y:Number, width:Number, height:Number):void
@@ -59,7 +58,6 @@
                 var t:IViewportTransform = map.viewport.transform
                 t.fitToBounds(bounds)
                 transformer.transform(t)
-
 //                map.fitToBounds(bounds)
             }
 

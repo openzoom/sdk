@@ -552,7 +552,7 @@ internal class MultiScaleImageBase extends Sprite
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
     	container.dispose()
