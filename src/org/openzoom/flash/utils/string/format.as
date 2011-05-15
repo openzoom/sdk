@@ -38,13 +38,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.openzoom.flash.utils.string
 {
-	public function format(string:String, ...rest):String
-	{
-		var result:String = string
-		
-		for (var i:int = 0; i < rest.length; i++)
-			result = result.replace("{" + i + "}", rest[i]) 
-		
-		return result
-	}
+
+/**
+ *  Replaces each format item in a specified string with the
+ *  text equivalent of a corresponding object's value.
+ */
+public function format(string:String, ...args):String
+{
+    var result:String = string
+
+    for (var i:int = 0; i < args.length; i++)
+        result = result.replace("{" + i + "}", args[i])
+
+    return result
+}
+
 }
