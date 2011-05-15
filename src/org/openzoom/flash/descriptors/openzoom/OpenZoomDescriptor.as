@@ -76,13 +76,12 @@ public final class OpenZoomDescriptor extends ImagePyramidDescriptorBase
     /**
      * Constructor.
      */
-    public function OpenZoomDescriptor(uri:String, data:XML)
+    public function OpenZoomDescriptor(source:String, data:XML)
     {
         use namespace openzoom
 
+        this.source = source
         this.data = data
-
-        this.source = uri
         parseXML(data)
     }
 
