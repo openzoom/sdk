@@ -422,7 +422,7 @@ public final class ImagePyramidRenderManager implements IDisposable
             {
                 // Deep Zoom collection
                 var levelSize:uint = 1 << tile.level
-                var position:Point = MortonOrder.getPosition(dziDescriptor.mortonNumber)
+                var position:Point = MortonOrder.getPoint(dziDescriptor.mortonNumber)
                 var tileSize:uint = dziDescriptor.collection.tileSize
                 var offsetX:uint = (position.x * levelSize) % tileSize
                 var offsetY:uint = (position.y * levelSize) % tileSize

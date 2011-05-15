@@ -186,7 +186,7 @@ public final class DeepZoomCollectionDescriptor
         var basePath:String = source.substring(0, source.lastIndexOf("."))
         var path:String = basePath + "_files"
 
-        var position:Point = MortonOrder.getPosition(mortonNumber)
+        var position:Point = MortonOrder.getPoint(mortonNumber)
         var size:uint = Math.pow(2, level)
         var column:int = Math.floor((position.x * size) / tileSize)
         var row:int = Math.floor((position.y * size) / tileSize)
