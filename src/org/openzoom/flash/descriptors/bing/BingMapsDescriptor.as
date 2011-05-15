@@ -134,7 +134,7 @@ public final class BingMapsDescriptor extends ImagePyramidDescriptorBase
 
         var index:uint
 		index = clamp(Math.floor(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)		
-        // FIXME Increase level for spatial blending
+        // TODO Increase level for spatial blending
 //		index = clamp(Math.ceil(log2) - DEFAULT_BASE_LEVEL, 0, maxLevel)		
         var level:IImagePyramidLevel = getLevelAt(index)
 
