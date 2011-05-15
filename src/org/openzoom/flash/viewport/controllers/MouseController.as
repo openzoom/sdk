@@ -375,7 +375,7 @@ public final class MouseController extends ViewportControllerBase
         var dx:Number = mouseUpPosition.x - mouseDownPosition.x
         var dy:Number = mouseUpPosition.y - mouseDownPosition.y
 
-        var distance:Number = Math.sqrt(dx * dx + dy * dy)
+        var distance:Number = Math.sqrt(dx*dx + dy*dy)
 
         if (clickEnabled && click && distance < CLICK_THRESHOLD_DISTANCE)
         {
