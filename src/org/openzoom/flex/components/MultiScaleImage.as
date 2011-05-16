@@ -159,7 +159,7 @@ public final class MultiScaleImage extends MultiScaleImageBase
                                        urlLoader_securityErrorHandler,
                                        false, 0, true)
         }
-        
+
         if (_source)
         {
             _source = null

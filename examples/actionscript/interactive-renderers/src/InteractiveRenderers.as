@@ -112,17 +112,17 @@ public class InteractiveRenderers extends Sprite
                 format = Format.LANDSCAPE
             else
                 format = Format.PORTRAIT
-                 
+
     		var renderer:InteractiveRenderer = new InteractiveRenderer(format)
-    		var dimension:Number = InteractiveRenderer.DIMENSION 
-    		var offsetX:Number = (renderer.width - dimension) / 2 
-    		var offsetY:Number = (renderer.height - dimension) / 2 
+    		var dimension:Number = InteractiveRenderer.DIMENSION
+    		var offsetX:Number = (renderer.width - dimension) / 2
+    		var offsetY:Number = (renderer.height - dimension) / 2
     		renderer.x = (i % numColumns) * (dimension + spacing) - offsetX
     		renderer.y = Math.floor(i / numColumns) * (dimension + spacing) - offsetY
     		
     		if (renderer.x + renderer.width > maxRight)
                 maxRight = renderer.x + renderer.width
-                
+
     		if (renderer.y + renderer.height > maxBottom)
                 maxBottom = renderer.y + renderer.height
     		
@@ -135,38 +135,38 @@ public class InteractiveRenderers extends Sprite
     	addChild(container)
     	layout()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var container:MultiScaleContainer
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     private function stage_resizeHandler(event:Event):void
     {
     	layout()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     private function layout():void
     {
     	if (container)
     	{
-    		container.width = stage.stageWidth 
-    		container.height = stage.stageHeight 
+    		container.width = stage.stageWidth
+    		container.height = stage.stageHeight
     	}
     }
 }
@@ -192,7 +192,7 @@ class InteractiveRenderer extends Renderer
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
 	public static const DIMENSION:Number = 300
 	public static const ASPECT_RATIO:Number = 2/3
 	public static const PADDING:Number = 8
@@ -202,10 +202,10 @@ class InteractiveRenderer extends Renderer
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
-     */ 
+     */
 	public function InteractiveRenderer(format:String)
 	{
 		addEventListener(RendererEvent.ADDED_TO_SCENE,
@@ -213,7 +213,7 @@ class InteractiveRenderer extends Renderer
 		                 false, 0, true)
 		draw(format)
 	}
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -224,7 +224,7 @@ class InteractiveRenderer extends Renderer
 	{
         var width:Number
         var height:Number
-        
+
         if (format == Format.LANDSCAPE)
         {
             width = DIMENSION
@@ -235,12 +235,12 @@ class InteractiveRenderer extends Renderer
             width = DIMENSION * ASPECT_RATIO
             height = DIMENSION
         }
-        
+
         var g:Graphics = graphics
         g.beginFill(0xFFFFFF)
         g.drawRect(0, 0, width, height)
         g.endFill()
-        
+
         g.beginFill(0x000000)
         g.drawRect(PADDING,
                    PADDING,
@@ -248,7 +248,7 @@ class InteractiveRenderer extends Renderer
                    height - 2 * PADDING)
         g.endFill()
 	}
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
@@ -274,6 +274,6 @@ class InteractiveRenderer extends Renderer
 
 class Format
 {
-	public static const PORTRAIT:String = "portrait" 
+	public static const PORTRAIT:String = "portrait"
 	public static const LANDSCAPE:String = "landscape"
 }

@@ -269,7 +269,7 @@ public class MultiScaleScene extends Sprite
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
         while (super.numChildren > 0)

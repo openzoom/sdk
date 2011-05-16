@@ -105,64 +105,64 @@ public class RendererVisibility extends Sprite
         var maxRight:Number = 0
         var maxBottom:Number = 0
         var numColumns:uint = 60
-        
+
         for (var i:int = 0; i < 800; i++)
         {
             var renderer:BoxRenderer = new BoxRenderer()
-            var dimension:Number = BoxRenderer.DIMENSION 
-            var offsetX:Number = (renderer.width - dimension) / 2 
-            var offsetY:Number = (renderer.height - dimension) / 2 
+            var dimension:Number = BoxRenderer.DIMENSION
+            var offsetX:Number = (renderer.width - dimension) / 2
+            var offsetY:Number = (renderer.height - dimension) / 2
             renderer.x = (i % numColumns) * (dimension + spacing) - offsetX
             renderer.y = Math.floor(i / numColumns) * (dimension + spacing) - offsetY
-            
+
             if (renderer.x + renderer.width > maxRight)
                 maxRight = renderer.x + renderer.width
-                
+
             if (renderer.y + renderer.height > maxBottom)
                 maxBottom = renderer.y + renderer.height
-            
+
             container.addChild(renderer)
         }
-        
+
         container.sceneWidth = maxRight
         container.sceneHeight = maxBottom
-        
+
     	
     	addChild(container)
     	layout()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Variables
     //
     //--------------------------------------------------------------------------
-    
+
     private var container:MultiScaleContainer
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     private function stage_resizeHandler(event:Event):void
     {
     	layout()
     }
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
     //
     //--------------------------------------------------------------------------
-    
+
     private function layout():void
     {
     	if (container)
     	{
-    		container.width = stage.stageWidth 
-    		container.height = stage.stageHeight 
+    		container.width = stage.stageWidth
+    		container.height = stage.stageHeight
     	}
     }
 }
@@ -189,7 +189,7 @@ class BoxRenderer extends Renderer
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
 	public static const DIMENSION:Number = 100
 	
     //--------------------------------------------------------------------------
@@ -197,10 +197,10 @@ class BoxRenderer extends Renderer
     //  Constructor
     //
     //--------------------------------------------------------------------------
-    
+
     /**
      * Constructor.
-     */ 
+     */
 	public function BoxRenderer()
 	{
 		addEventListener(RendererEvent.ADDED_TO_SCENE,
@@ -208,7 +208,7 @@ class BoxRenderer extends Renderer
 		                 false, 0, true)
 		draw()
 	}
-    
+
     //--------------------------------------------------------------------------
     //
     //  Methods
@@ -223,7 +223,7 @@ class BoxRenderer extends Renderer
         g.drawRect(0, 0, DIMENSION, DIMENSION)
         g.endFill()
 	}
-    
+
     //--------------------------------------------------------------------------
     //
     //  Event handlers
@@ -235,7 +235,7 @@ class BoxRenderer extends Renderer
 		addEventListener(MouseEvent.CLICK,
 		                 clickHandler,
 		                 false, 0, true)
-        
+
         viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE,
                                   viewport_transformEndHandler,
                                   false, 0, true)
@@ -251,9 +251,9 @@ class BoxRenderer extends Renderer
 
         var visibleBounds:Rectangle = vp.intersection(bounds)
         visibleBounds.offset(-bounds.x, -bounds.y)
-        
+
 //        trace("visibleBounds:", visibleBounds, width, height, scaleX, scaleY)
-    
+
         draw()
         var g:Graphics = graphics
         g.beginFill(0xFF0000)

@@ -171,7 +171,7 @@ public class ViewportTransformerBase
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
     	_viewport = null

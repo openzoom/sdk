@@ -810,7 +810,7 @@ public final class MultiScaleContainer extends Sprite
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
         removeEventListener(Event.ENTER_FRAME,
@@ -825,7 +825,7 @@ public final class MultiScaleContainer extends Sprite
 
         mouseCatcher = null
         contentMask = null
-                            
+
         _viewport.removeEventListener(ViewportEvent.TRANSFORM_START,
                                       viewport_transformStartHandler)
         _viewport.removeEventListener(ViewportEvent.TRANSFORM_UPDATE,

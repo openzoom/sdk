@@ -40,7 +40,7 @@ package shapes
 {
 
 import flash.display.Graphics;
-import flash.display.Sprite;    
+import flash.display.Sprite;
 
 public class Circle extends Sprite
 {

@@ -735,7 +735,7 @@ public final class ViewportTransform implements IViewportTransform,
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
     	bounds = null

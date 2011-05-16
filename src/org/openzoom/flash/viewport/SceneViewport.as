@@ -747,7 +747,7 @@ public final class SceneViewport extends EventDispatcher
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
     	// TODO

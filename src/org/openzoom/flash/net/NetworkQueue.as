@@ -119,7 +119,7 @@ public final class NetworkQueue extends EventDispatcher
 
         if (!request)
             throw new ArgumentError("Type " + type.toString() + " not supported.")
-            
+
         addEventListeners(request)
 
         // Add item to front (LIFO)
@@ -203,7 +203,7 @@ public final class NetworkQueue extends EventDispatcher
         progressEvent.bytesTotal = bytesTotal
         dispatchEvent(progressEvent)
     }
-    
+
     private function addEventListeners(request:INetworkRequest):void
     {
         request.addEventListener(ProgressEvent.PROGRESS,
@@ -213,7 +213,7 @@ public final class NetworkQueue extends EventDispatcher
         request.addEventListener(NetworkRequestEvent.ERROR,
                                  request_errorHandler)
     }
-    
+
     private function removeEventListeners(request:INetworkRequest):void
     {
         request.removeEventListener(ProgressEvent.PROGRESS,
@@ -229,7 +229,7 @@ public final class NetworkQueue extends EventDispatcher
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
     	var request:INetworkRequest
@@ -238,18 +238,18 @@ public final class NetworkQueue extends EventDispatcher
         	removeEventListeners(request)
             request.dispose()
         }
-        
+
         queue = []
-        
+
         for each (request in connections)
         {
         	removeEventListeners(request)
             request.dispose()
         }
-        
+
         connections = []
-            
-    }    
+
+    }
 }
 
 }

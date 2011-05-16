@@ -50,7 +50,7 @@ use namespace openzoom_internal;
 
 /**
  * @private
- * 
+ *
  * Descriptor for the
  * <a href="http://msdn.microsoft.com/en-us/library/cc645077(VS.95).aspx">
  * Microsoft Deep Zoom Collection (DZC) format</a>.

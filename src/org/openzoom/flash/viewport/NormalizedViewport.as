@@ -801,7 +801,7 @@ public final class NormalizedViewport extends EventDispatcher
     //  Methods: IDisposable
     //
     //--------------------------------------------------------------------------
-    
+
     public function dispose():void
     {
         _scene.removeEventListener(Event.RESIZE,

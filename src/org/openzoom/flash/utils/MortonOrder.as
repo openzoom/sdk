@@ -63,9 +63,9 @@ public final class MortonOrder
     //  Class constants
     //
     //--------------------------------------------------------------------------
-    
+
     private static const UINT_LENGTH:uint = 32
-    
+
     //--------------------------------------------------------------------------
     //
     //  Class methods

@@ -208,7 +208,7 @@ public final class SceneNavigator extends Sprite
     //  Event handlers
     //
     //--------------------------------------------------------------------------
-    
+
     private function addedToStageHandler(event:Event):void
     {
         stage.addEventListener(Event.MOUSE_LEAVE,
@@ -218,7 +218,7 @@ public final class SceneNavigator extends Sprite
             stage_mouseUpHandler,
             false, 0, true)
     }
-    
+
     private function removedFromStageHandler(event:Event):void
     {
         stage.removeEventListener(Event.MOUSE_LEAVE,
@@ -293,7 +293,7 @@ public final class SceneNavigator extends Sprite
                                   stage_mouseMoveHandler)
         panning = false
     }
-    
+
     private function stage_mouseLeaveHandler(event:Event):void
     {
         stage_mouseUpHandler(null)

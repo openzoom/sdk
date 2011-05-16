@@ -246,8 +246,8 @@ public final class MouseController extends ViewportControllerBase
 	                                 view_mouseDownHandler)
 	        view.removeEventListener(MouseEvent.ROLL_OUT,
 	                                 view_rollOutHandler)
-	                                 
-            if (view.stage) 
+	
+            if (view.stage)
 		        view.stage.removeEventListener(Event.MOUSE_LEAVE,
 		                                       stage_mouseLeaveHandler)
 	

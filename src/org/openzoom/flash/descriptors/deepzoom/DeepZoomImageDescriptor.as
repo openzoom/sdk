@@ -128,7 +128,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
     public static function fromXML(source:String, xml:XML):DeepZoomImageDescriptor
     {
         var ns:Namespace = deepzoom2008
-        
+
         if (xml.namespace() == deepzoom2009)
             ns = deepzoom2009
 
@@ -149,7 +149,7 @@ public final class DeepZoomImageDescriptor extends ImagePyramidDescriptorBase
                                               displayRect.ns::Rect.@Width,
                                               displayRect.ns::Rect.@Height,
                                               displayRect.@MinLevel,
-                                              displayRect.@MaxLevel))    
+                                              displayRect.@MaxLevel))
         }
 
         var descriptor:DeepZoomImageDescriptor =

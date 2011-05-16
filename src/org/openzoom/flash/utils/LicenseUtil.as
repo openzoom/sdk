@@ -55,7 +55,7 @@ use namespace openzoom_internal;
 public final class LicenseUtil
 {
     include "../core/Version.as"
-    
+
     //--------------------------------------------------------------------------
     //
     //  Class methods
@@ -75,9 +75,9 @@ public final class LicenseUtil
             if (hideBuiltInItems)
                 interactiveObject.contextMenu.hideBuiltInItems()
         }
-        
+
         var item:ContextMenuItem = new ContextMenuItem("About OpenZoom...", true)
-        
+
         item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT,
             function(event:ContextMenuEvent):void
             {
@@ -85,7 +85,7 @@ public final class LicenseUtil
                     navigateToURL(new URLRequest("http://openzoom.org"), "_blank")
             }
         )
-        
+
         interactiveObject.contextMenu.customItems.push(item)
     }
 }

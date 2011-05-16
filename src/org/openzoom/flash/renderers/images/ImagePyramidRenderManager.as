@@ -114,7 +114,7 @@ public final class ImagePyramidRenderManager implements IDisposable
 //        var playerMajorVersion:int = parseInt(Capabilities.version.split(" ")[1].toString().split(",")[0])
 //        if (playerMajorVersion >= 10)
 //            frameEventName = POST_FLASH_10_FRAME_EVENT_NAME
-        
+
         this.owner = owner
         this.scene = scene
         this.viewport = viewport
@@ -185,7 +185,7 @@ public final class ImagePyramidRenderManager implements IDisposable
             // FIXME Test performance
             var length:int = renderers.length
             for (var i:int = 0; i < length; i++)
-                updateDisplayList(renderers[i])                
+                updateDisplayList(renderers[i])
 
 //            for each (var renderer:ImagePyramidRenderer in renderers)
 //                updateDisplayList(renderer)
@@ -258,7 +258,7 @@ public final class ImagePyramidRenderManager implements IDisposable
         var stageBounds:Rectangle = renderer.getBounds(renderer.stage)		
 		var stageBoundsWidth:Number = stageBounds.width
 		var stageBoundsHeight:Number = stageBounds.height
-        
+
         // Determine optimal level
 		var optimalLevel:IImagePyramidLevel =
 				descriptor.getLevelForSize(stageBoundsWidth,
