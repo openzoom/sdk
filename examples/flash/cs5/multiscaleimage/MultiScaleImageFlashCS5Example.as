@@ -37,9 +37,9 @@ import org.openzoom.flash.viewport.controllers.MouseController;
 import org.openzoom.flash.viewport.transformers.TweenerTransformer;
 
 
-public class MultiScaleImageFlashCS4Example extends Sprite
+public class MultiScaleImageFlashCS5Example extends Sprite
 {
-    public function MultiScaleImageFlashCS4Example()
+    public function MultiScaleImageFlashCS5Example()
     {
         // Setup stage
         stage.align = StageAlign.TOP_LEFT
