@@ -98,9 +98,6 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
      */
     public static function fromID(id:uint, width:uint, height:uint):GigaPanDescriptor
     {
-        // FIXME: Legacy
-//        var path:String = "http://share.gigapan.org/gigapans0/" + id + "/tiles"
-
         var tileServer:uint = Math.floor(id / 1000.0)
         var zeroPaddedTileServer:String = tileServer <= 9 ? "0" + tileServer : tileServer.toString()
         var path:String = "http://tile" + zeroPaddedTileServer + ".gigapan.org/gigapans0/" + id + "/tiles"
@@ -129,8 +126,6 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
      */
     public function getTileURL(level:int, column:int, row:int):String
     {
-		trace("[GigaPanDescriptor] getTileURL")
-		
         var url:String = source
         var name:String = "r"
         var z:int = level
@@ -152,9 +147,7 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
         }
 
         var tileURL:String = [url, "/", name, extension].join("")
-		
-		trace(tileURL)
-		
+
         return tileURL
     }
 
@@ -172,9 +165,6 @@ public final class GigaPanDescriptor extends ImagePyramidDescriptorBase
         // FIXME
         if (width / level.width < 0.5)
             level = getLevelAt(Math.max(0, index - 1))
-
-        if (width / level.width < 0.5)
-            trace("[GigaPanDescriptor] getLevelForSize():", width / level.width)
 
         return level
     }
