@@ -25,6 +25,7 @@ import flash.events.MouseEvent;
 import org.openzoom.flash.components.MultiScaleImage;
 import org.openzoom.flash.components.SceneNavigator;
 import org.openzoom.flash.descriptors.IMultiScaleImageDescriptor;
+import org.openzoom.flash.descriptors.gigapan.GigaPanDescriptor;
 import org.openzoom.flash.events.ViewportEvent;
 import org.openzoom.flash.viewport.constraints.CenterConstraint;
 import org.openzoom.flash.viewport.constraints.CompositeConstraint;
@@ -100,7 +101,7 @@ public class MultiScaleImageFlashCS5Example extends Sprite
         image.constraint = constraint
 
         // Set the source image
-        image.source = "../../../../resources/images/deepzoom/billions.xml"
+        image.source = GigaPanDescriptor.fromID(5322, 154730, 36408)
 
         image.viewport.addEventListener(ViewportEvent.TRANSFORM_UPDATE, viewport_transformHandler)
 
