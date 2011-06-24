@@ -86,7 +86,7 @@ use namespace openzoom_internal;
  */
 public final class ExternalMouseWheel extends EventDispatcher
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

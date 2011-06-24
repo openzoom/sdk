@@ -74,7 +74,7 @@ public final class MultiScaleContainer extends Sprite
                                        implements ILoaderClient,
                                                   IDisposable
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -816,12 +816,12 @@ public final class MultiScaleContainer extends Sprite
         removeEventListener(Event.ENTER_FRAME,
                             enterFrameHandler)
 
-    	_transformer = null
-    	controllers = []
-    	_constraint = null
-    	
-    	while (super.numChildren > 0)
-    	   super.removeChildAt(0)
+        _transformer = null
+        controllers = []
+        _constraint = null
+
+        while (super.numChildren > 0)
+           super.removeChildAt(0)
 
         mouseCatcher = null
         contentMask = null
@@ -832,14 +832,14 @@ public final class MultiScaleContainer extends Sprite
                                       viewport_transformUpdateHandler)
         _viewport.removeEventListener(ViewportEvent.TRANSFORM_END,
                                       viewport_transformEndHandler)
-    	_viewport.dispose()
-    	_viewport = null
-    	
-    	_scene.dispose()
-    	_scene = null
-    	
-    	_loader.dispose()
-    	_loader = null
+        _viewport.dispose()
+        _viewport = null
+
+        _scene.dispose()
+        _scene = null
+
+        _loader.dispose()
+        _loader = null
     }
 }
 

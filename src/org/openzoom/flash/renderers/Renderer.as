@@ -73,7 +73,7 @@ use namespace openzoom_internal;
 public class Renderer extends Sprite
                       implements IRenderer
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

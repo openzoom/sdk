@@ -51,7 +51,7 @@ use namespace openzoom_internal;
  */
 public final class ViewportEvent extends Event
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

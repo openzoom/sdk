@@ -52,7 +52,7 @@ use namespace openzoom_internal;
  */
 public final class FullScreenUtil
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -60,12 +60,12 @@ public final class FullScreenUtil
     //
     //--------------------------------------------------------------------------
 
-	/**
-	 * Toggle fullscreen mode. If running inside AIR runtime, the
-	 * <code>interactive</code> paramener determines whether to switch
-	 * into interactive fullscreen mode or non-interactive (default
-	 * for non-AIR runtime).
-	 */
+    /**
+     * Toggle fullscreen mode. If running inside AIR runtime, the
+     * <code>interactive</code> paramener determines whether to switch
+     * into interactive fullscreen mode or non-interactive (default
+     * for non-AIR runtime).
+     */
     public static function toggleFullScreen(stage:Stage,
                                             interactive:Boolean=true):void
     {

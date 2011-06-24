@@ -55,7 +55,7 @@ use namespace openzoom_internal;
  */
 public class ImagePyramidDescriptorBase
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

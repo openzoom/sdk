@@ -55,7 +55,7 @@ use namespace openzoom_internal;
  */
 public class ViewportTransformerBase
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -174,9 +174,9 @@ public class ViewportTransformerBase
 
     public function dispose():void
     {
-    	_viewport = null
-    	_target = null
-    	_constraint = null
+        _viewport = null
+        _target = null
+        _constraint = null
     }
 }
 

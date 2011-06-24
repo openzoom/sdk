@@ -22,7 +22,7 @@ use namespace openzoom_internal;
  */
 public final class Spinner extends Sprite
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

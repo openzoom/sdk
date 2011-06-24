@@ -58,7 +58,7 @@ use namespace openzoom_internal;
 public final class NetworkQueue extends EventDispatcher
                                 implements INetworkQueue
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -232,10 +232,10 @@ public final class NetworkQueue extends EventDispatcher
 
     public function dispose():void
     {
-    	var request:INetworkRequest
+        var request:INetworkRequest
         for each (request in queue)
         {
-        	removeEventListeners(request)
+            removeEventListeners(request)
             request.dispose()
         }
 
@@ -243,7 +243,7 @@ public final class NetworkQueue extends EventDispatcher
 
         for each (request in connections)
         {
-        	removeEventListeners(request)
+            removeEventListeners(request)
             request.dispose()
         }
 

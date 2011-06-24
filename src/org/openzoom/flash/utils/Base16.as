@@ -50,7 +50,7 @@ use namespace openzoom_internal;
  */
 public final class Base16
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

@@ -44,7 +44,7 @@ use namespace openzoom_internal;
 internal final class URLRequest extends EventDispatcher
                                 implements INetworkRequest
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

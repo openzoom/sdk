@@ -52,7 +52,7 @@ use namespace openzoom_internal;
  */
 internal final class ImagePyramidOrigin
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

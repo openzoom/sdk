@@ -50,7 +50,7 @@ use namespace openzoom_internal;
  */
 public final class FillConstraint implements IViewportConstraint
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

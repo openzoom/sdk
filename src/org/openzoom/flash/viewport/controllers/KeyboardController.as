@@ -57,7 +57,7 @@ use namespace openzoom_internal;
 public final class KeyboardController extends ViewportControllerBase
                                       implements IViewportController
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

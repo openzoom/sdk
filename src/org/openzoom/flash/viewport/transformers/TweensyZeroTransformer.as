@@ -54,7 +54,7 @@ use namespace openzoom_internal;
 public class TweensyZeroTransformer extends ViewportTransformerBase
                                     implements IViewportTransformer
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

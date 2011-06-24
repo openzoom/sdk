@@ -52,7 +52,7 @@ use namespace openzoom_internal;
  */
 public class ImagePyramidDescriptorFactory
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

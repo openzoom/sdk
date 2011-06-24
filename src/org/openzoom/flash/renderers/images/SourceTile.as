@@ -54,7 +54,7 @@ use namespace openzoom_internal;
  */
 internal final class SourceTile implements ICacheItem
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

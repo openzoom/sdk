@@ -59,7 +59,7 @@ use namespace openzoom_internal;
 public final class ImagePyramidRenderer extends Renderer
                                         implements IDisposable
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -186,7 +186,7 @@ public final class ImagePyramidRenderer extends Renderer
         if (!descriptor.existsTile(level, column, row))
             return null
 
-		var tileHash:String = getTileHash(level, column, row)
+        var tileHash:String = getTileHash(level, column, row)
         var tile:ImagePyramidTile = tileCache[tileHash]
 
         if (!tile)
@@ -200,17 +200,17 @@ public final class ImagePyramidRenderer extends Renderer
 
         return tile
     }
-	
-	//--------------------------------------------------------------------------
-	//
-	//  Methods: Hash
-	//
-	//--------------------------------------------------------------------------
-	
-	private function getTileHash(level:int, column:int, row:int):String
-	{
-		return [level, column, row].join("-")
-	}
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Hash
+    //
+    //--------------------------------------------------------------------------
+
+    private function getTileHash(level:int, column:int, row:int):String
+    {
+        return [level, column, row].join("-")
+    }
 
     //--------------------------------------------------------------------------
     //

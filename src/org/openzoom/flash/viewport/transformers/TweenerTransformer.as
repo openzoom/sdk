@@ -57,7 +57,7 @@ use namespace openzoom_internal;
 public final class TweenerTransformer extends ViewportTransformerBase
                                       implements IViewportTransformer
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

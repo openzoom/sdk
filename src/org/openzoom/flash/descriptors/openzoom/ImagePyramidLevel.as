@@ -56,7 +56,7 @@ use namespace openzoom_internal;
 internal final class ImagePyramidLevel extends ImagePyramidLevelBase
                                        implements IImagePyramidLevel
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

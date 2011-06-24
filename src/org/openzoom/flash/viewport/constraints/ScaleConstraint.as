@@ -50,7 +50,7 @@ use namespace openzoom_internal;
  */
 public final class ScaleConstraint implements IViewportConstraint
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

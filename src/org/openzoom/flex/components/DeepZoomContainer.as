@@ -85,7 +85,7 @@ use namespace openzoom_internal;
  */
 public final class DeepZoomContainer extends MultiScaleImageBase
 {
-	include "../../flash/core/Version.as"
+    include "../../flash/core/Version.as"
 
     //--------------------------------------------------------------------------
     //

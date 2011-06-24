@@ -57,7 +57,7 @@ use namespace openzoom_internal;
 internal class ImagePyramidTile implements IDisposable,
                                            IComparable
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -236,7 +236,7 @@ internal class ImagePyramidTile implements IDisposable,
         loading = false
 
         alpha = 0
-		blendStartTime = 0
+        blendStartTime = 0
     }
 
     //--------------------------------------------------------------------------
@@ -274,18 +274,18 @@ internal class ImagePyramidTile implements IDisposable,
 
         return 0
     }
-	
-	//--------------------------------------------------------------------------
-	//
-	//  Methods: Debug
-	//
-	//--------------------------------------------------------------------------
-	
-	public function toString():String
-	{
-		return format("[ImagePyramidTile]: ({0}, {1}, {2}) alpha: {3}",
-			level, column, row, alpha)
-	}
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Debug
+    //
+    //--------------------------------------------------------------------------
+
+    public function toString():String
+    {
+        return format("[ImagePyramidTile]: ({0}, {1}, {2}) alpha: {3}",
+            level, column, row, alpha)
+    }
 }
 
 }

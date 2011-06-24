@@ -51,7 +51,7 @@ use namespace openzoom_internal;
  */
 public class ScaleInvariantRenderer extends Renderer
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

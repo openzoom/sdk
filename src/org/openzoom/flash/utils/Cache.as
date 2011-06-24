@@ -51,7 +51,7 @@ use namespace openzoom_internal;
  */
 public final class Cache implements ICache
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

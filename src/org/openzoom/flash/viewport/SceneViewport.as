@@ -89,7 +89,7 @@ use namespace openzoom_internal;
 public final class SceneViewport extends EventDispatcher
                                  implements ISceneViewport
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -750,7 +750,7 @@ public final class SceneViewport extends EventDispatcher
 
     public function dispose():void
     {
-    	// TODO
+        // TODO
     }
 }
 

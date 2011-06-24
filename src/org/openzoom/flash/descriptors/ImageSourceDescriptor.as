@@ -48,7 +48,7 @@ use namespace openzoom_internal;
  */
 public final class ImageSourceDescriptor implements IImageSourceDescriptor
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

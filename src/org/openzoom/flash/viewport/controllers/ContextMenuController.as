@@ -62,7 +62,7 @@ use namespace openzoom_internal;
 public final class ContextMenuController extends ViewportControllerBase
                                          implements IViewportController
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -711,9 +711,9 @@ public final class ContextMenuController extends ViewportControllerBase
      */
     override protected function view_removedFromStageHandler(event:Event):void
     {
-    	if (view && view.stage)
-	        view.stage.removeEventListener(FullScreenEvent.FULL_SCREEN,
-	                                       stage_fullScreenHandler)
+        if (view && view.stage)
+            view.stage.removeEventListener(FullScreenEvent.FULL_SCREEN,
+                                           stage_fullScreenHandler)
 
 
         if (showAll)
@@ -899,9 +899,9 @@ public final class ContextMenuController extends ViewportControllerBase
     private function removeContextMenuItem(menuItem:ContextMenuItem,
                                            menuItemSelectHandler:Function):void
     {
-    	// FIXME
-    	if (!menu)
-    	   return
+        // FIXME
+        if (!menu)
+           return
 
         var index:int = menu.customItems.indexOf(menuItem)
         if (index == -1)

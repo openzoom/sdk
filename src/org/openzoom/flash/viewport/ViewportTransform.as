@@ -52,7 +52,7 @@ use namespace openzoom_internal;
 public final class ViewportTransform implements IViewportTransform,
                                                 IViewportTransformContainer
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -738,7 +738,7 @@ public final class ViewportTransform implements IViewportTransform,
 
     public function dispose():void
     {
-    	bounds = null
+        bounds = null
     }
 }
 

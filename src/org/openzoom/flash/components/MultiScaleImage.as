@@ -84,7 +84,7 @@ use namespace openzoom_internal;
  */
 public final class MultiScaleImage extends MultiScaleImageBase
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -278,21 +278,21 @@ public final class MultiScaleImage extends MultiScaleImageBase
 
     override public function dispose():void
     {
-    	image.dispose()
-    	image = null
-    	
-    	try
-    	{
-	    	urlLoader.close()
-    	}
-    	catch(error:Error)
-    	{
-    		// Do nothing
-    	}
-    	
-    	urlLoader = null
-    	
-    	super.dispose()
+        image.dispose()
+        image = null
+
+        try
+        {
+            urlLoader.close()
+        }
+        catch(error:Error)
+        {
+            // Do nothing
+        }
+
+        urlLoader = null
+
+        super.dispose()
     }
 }
 

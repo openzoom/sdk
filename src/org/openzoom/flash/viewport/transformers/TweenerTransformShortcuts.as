@@ -52,7 +52,7 @@ use namespace openzoom_internal;
  */
 internal final class TweenerTransformShortcuts
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

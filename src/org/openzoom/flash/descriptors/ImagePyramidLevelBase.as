@@ -51,7 +51,7 @@ use namespace openzoom_internal;
  */
 public class ImagePyramidLevelBase
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

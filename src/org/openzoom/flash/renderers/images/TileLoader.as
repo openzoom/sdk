@@ -59,7 +59,7 @@ use namespace openzoom_internal;
  */
 internal final class TileLoader extends EventDispatcher
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

@@ -61,7 +61,7 @@ use namespace openzoom_internal;
 public class SmoothTransformer extends ViewportTransformerBase
                                implements IViewportTransformer
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -367,12 +367,12 @@ public class SmoothTransformer extends ViewportTransformerBase
 
     override public function dispose():void
     {
-    	
+
         if (viewport && external)
             viewport.removeEventListener(ViewportEvent.TARGET_UPDATE,
                                          viewport_targetUpdateHandler)
 
-    	super.dispose()
+        super.dispose()
     }
 }
 

@@ -62,7 +62,7 @@ use namespace openzoom_internal;
 internal class MultiScaleImageBase extends UIComponent
                                   /*implements IMultiScaleContainer*/
 {
-	include "../../flash/core/Version.as"
+    include "../../flash/core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -346,8 +346,8 @@ internal class MultiScaleImageBase extends UIComponent
         }
 
         if (zoomChanged || scaleChanged ||
-			viewportXChanged || viewportYChanged ||
-			viewportWidthChanged || viewportHeightChanged)
+            viewportXChanged || viewportYChanged ||
+            viewportWidthChanged || viewportHeightChanged)
         {
             if (zoomChanged)
             {

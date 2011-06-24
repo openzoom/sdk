@@ -60,7 +60,7 @@ use namespace openzoom_internal;
  */
 public final class MemoryMonitor extends UIComponent
 {
-	include "../../flash/core/Version.as"
+    include "../../flash/core/Version.as"
 
     //--------------------------------------------------------------------------
     //

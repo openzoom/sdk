@@ -55,7 +55,7 @@ use namespace openzoom_internal;
 public final class RosettaDiskFrontDescriptor extends ImagePyramidDescriptorBase
                                               implements IImagePyramidDescriptor
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

@@ -56,7 +56,7 @@ use namespace openzoom_internal;
  */
 public final class MortonOrder
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

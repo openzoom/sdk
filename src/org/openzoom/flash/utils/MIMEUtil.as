@@ -48,7 +48,7 @@ use namespace openzoom_internal;
  */
 public final class MIMEUtil
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //

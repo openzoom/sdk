@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 //
 //  OpenZoom SDK
 //
@@ -65,7 +65,7 @@ internal class MultiScaleImageBase extends Sprite
                                               ILoaderClient,
                                               IDisposable
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -300,16 +300,16 @@ internal class MultiScaleImageBase extends Sprite
     //----------------------------------
     //  contextMenu
     //----------------------------------
-
-    override public function get contextMenu():ContextMenu
-    {
-        return container.contextMenu
-    }
-
-    override public function set contextMenu(value:ContextMenu):void
-    {
-        container.contextMenu = value
-    }
+//
+//    override public function get contextMenu():NativeMenu
+//    {
+//        return container.contextMenu
+//    }
+//
+//    override public function set contextMenu(value:NativeMenu):void
+//    {
+//        container.contextMenu = value
+//    }
 
     //--------------------------------------------------------------------------
     //
@@ -555,10 +555,10 @@ internal class MultiScaleImageBase extends Sprite
 
     public function dispose():void
     {
-    	container.dispose()
-    	container = null
-    	
-    	loader = null
+        container.dispose()
+        container = null
+
+        loader = null
     }
 }
 

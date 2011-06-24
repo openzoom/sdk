@@ -90,7 +90,7 @@ public final class NormalizedViewport extends EventDispatcher
                                       implements INormalizedViewport,
                                                  INormalizedViewportContainer
 {
-	include "../core/Version.as"
+    include "../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -806,11 +806,11 @@ public final class NormalizedViewport extends EventDispatcher
     {
         _scene.removeEventListener(Event.RESIZE,
                                    scene_resizeHandler)
-    	
-    	_transform.dispose()
-    	_transform = null
-    	
-    	_transformer = null    	
+
+        _transform.dispose()
+        _transform = null
+
+        _transformer = null
     }
 }
 

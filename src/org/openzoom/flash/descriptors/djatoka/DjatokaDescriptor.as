@@ -58,7 +58,7 @@ use namespace openzoom_internal;
 public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
                                      implements IImagePyramidDescriptor
 {
-	include "../../core/Version.as"
+    include "../../core/Version.as"
 
     //--------------------------------------------------------------------------
     //
@@ -232,20 +232,20 @@ public final class DjatokaDescriptor extends ImagePyramidDescriptorBase
                                      type,
                                      dwtLevels)
     }
-	
-	//--------------------------------------------------------------------------
-	//
-	//  Methods: Debug
-	//
-	//--------------------------------------------------------------------------
-	
-	/**
-	 * @inheritDoc
-	 */
-	override public function toString():String
-	{
-		return "[DjatokaDescriptor]" + "\n" + super.toString()
-	}
+
+    //--------------------------------------------------------------------------
+    //
+    //  Methods: Debug
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * @inheritDoc
+     */
+    override public function toString():String
+    {
+        return "[DjatokaDescriptor]" + "\n" + super.toString()
+    }
 
     //--------------------------------------------------------------------------
     //
