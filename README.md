@@ -1,5 +1,5 @@
 ---
-# +++ OpenZoom is no longer being maintained or supported +++
+# +++ OpenZoom is no longer being maintained nor supported +++
 ---
 
       ____              ____
