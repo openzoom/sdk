@@ -1,3 +1,7 @@
+---
+# +++ OpenZoom is no longer being maintained or supported +++
+---
+
       ____              ____
      / __ \___  ___ ___/_  / ___  ___  __ _
     / /_/ / _ \/ -_) _ \/ /_/ _ \/ _ \/  ' \
@@ -7,7 +11,7 @@
 # OpenZoom
 ### Open Source Toolkit For Multiscale Images and Zoomable User Interfaces (ZUIs)
 
-Copyright © 2007–2011, [Daniel Gasienica](daniel@gasienica.ch). All rights reserved.
+Copyright © 2007–2012, [Daniel Gasienica](daniel@gasienica.ch). All rights reserved.
 
 - [Website](http://openzoom.org/)
 - Follow [@OpenZoom](http://twitter.com/OpenZoom) on Twitter
